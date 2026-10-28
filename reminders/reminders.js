@@ -162,6 +162,7 @@
         ${row("#gd-holidays", "Holidays", lines.holidays)}
         ${row("#gd-tending", "Tending", lines.tending)}
         ${row("#gd-planning", "Ritual planning", lines.planning)}
+        ${row("#gd-covens", "Covens", signedIn ? "Gatherings and applications, per coven" : "Sign in to hear from your covens")}
         ${row("#gd-quiet", "Quiet hours and pause", lines.quiet)}
       </ul>
       <p class="sp-caption">${signedIn ? "These follow you to the app on your phone, where they ring." : "Kept in this browser. Sign in and they follow you to the app."} The moon, rituals, devotion and dreams below are kept in this browser.</p></div></section>`;
@@ -311,6 +312,12 @@
       </div></section>`;
   }
 
+  /** Covens: their gatherings and applications together (as the app's Notifications & reminders → Covens), under one heading. */
+  function covensHtml() {
+    return `<section class="sp-section" id="gd-covens" aria-labelledby="gd-covens-label"><h2 class="sp-label" id="gd-covens-label">Covens</h2>
+      <p class="sp-caption">Each coven’s chat notifications ring in the app, and are chosen there under Settings → Notifications &amp; reminders → Covens, or from a coven’s Messages.</p></section>${gatheringsHtml()}${requestsHtml()}`;
+  }
+
   /** Coven gatherings: a rite or meeting put on a coven's calendar, moved or taken off it (as the app's Reminders shows them). */
   function gatheringsHtml() {
     const g = prefs.gatherings;
@@ -441,10 +448,10 @@
 
   function render() {
     const focus = focusKey(global.document.activeElement);
-    root.innerHTML = `${header({ title: "Reminders", eyebrow: "Your reminders", back: "/today/", backLabel: "Back to Today" })}
+    root.innerHTML = `${header({ title: "Notifications & reminders", eyebrow: "Settings", back: "/?sanctuary=settings&settings=notifications", backLabel: "Back to Settings" })}
       <p class="sp-muted">No account needed. Choose what you’d like to hear about, and when: the moon, your rituals, your holidays, tending, and planning.</p>
       <div class="sp-card sp-card--gold"><p>A browser can’t ring at a set time, so here your reminders go into your own calendar, which does the reminding. The Salt &amp; Sovereignty app can remind you on your phone instead.</p></div>
-      ${overviewHtml()}${moonHtml()}${ritualsHtml()}${devotionHtml()}${dreamsHtml()}${holidaysHtml()}${tendingHtml()}${planningHtml()}${gatheringsHtml()}${requestsHtml()}${quietHtml()}${yourCalendarHtml()}${skyHtml()}`;
+      ${overviewHtml()}${moonHtml()}${ritualsHtml()}${devotionHtml()}${dreamsHtml()}${holidaysHtml()}${tendingHtml()}${planningHtml()}${covensHtml()}${quietHtml()}${yourCalendarHtml()}${skyHtml()}`;
     if (focus) root.querySelector(focus)?.focus({ preventScroll: true });
   }
 

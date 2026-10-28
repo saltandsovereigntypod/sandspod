@@ -96,7 +96,7 @@ export default function Ancestors() {
           title="Ancestor days"
           detail="Samhain, Dziady, All Souls, Parentalia and Winter Nights come from the calendars you keep: Settings → Calendar"
           last
-          onPress={() => router.push('/more/settings/calendar' as Href)}
+          onPress={() => router.push('/rituals/settings/calendar' as Href)}
         />
       </List>
       <SupportLink />

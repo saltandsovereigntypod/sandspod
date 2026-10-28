@@ -1,7 +1,7 @@
 // Phone reminders for your covens: rites you've said you'll come to (or
 // might), the day before and an hour before; and, for covens you lead,
 // time to plan a ritual for the coven's holidays and to prepare its rites
-// (Reminders → Ritual planning); and what a rite asks you to write or bring
+// (Notifications & reminders → Ritual planning); and what a rite asks you to write or bring
 // ahead of time, two days before it; and actions agreed at a meeting, the
 // day before each is due. This reads your covens and hands them to
 // the reminders (lib/reminders/store.ts), which schedule them with

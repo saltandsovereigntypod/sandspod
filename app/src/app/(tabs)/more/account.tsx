@@ -40,7 +40,7 @@ export default function Account() {
 
   if (!user) {
     return (
-      <MoreScreen title="Account" eyebrow="Guest Sanctuary" back="/more" backLabel="Back to More">
+      <MoreScreen title="Account" eyebrow="Guest Sanctuary" back="/more/settings" backLabel="Back to Settings">
         <Card>
           <Text style={type.body}>
             Your work is kept only on this device. Sign in with your Salt &amp; Sovereignty account to open what you keep on
@@ -48,13 +48,13 @@ export default function Account() {
           </Text>
           <Button label="Sign in" onPress={() => router.push('/sign-in')} />
         </Card>
-        <Text style={type.caption}>Before removing the app, save a guest backup from More → Backup and restore.</Text>
+        <Text style={type.caption}>Before removing the app, save a guest backup from Settings → Account &amp; data → Backup and restore.</Text>
       </MoreScreen>
     );
   }
 
   return (
-    <MoreScreen title="Account" eyebrow="Your Sanctuary account" back="/more" backLabel="Back to More">
+    <MoreScreen title="Account" eyebrow="Your Sanctuary account" back="/more/settings" backLabel="Back to Settings">
       <Card>
         <Fact label="Signed in as" value={user.email ?? 'Current account'} />
         <Fact label="Sign-in method" value={providerSummary(user)} />
@@ -272,7 +272,7 @@ function RecoveryLink({ email }: { email: string }) {
  */
 export function ErrorBoundary({ retry }: ErrorBoundaryProps) {
   return (
-    <MoreScreen title="Account" eyebrow="Your Sanctuary account" back="/more" backLabel="Back to More">
+    <MoreScreen title="Account" eyebrow="Your Sanctuary account" back="/more/settings" backLabel="Back to Settings">
       <Card>
         <Text style={type.body}>
           This screen didn’t open properly. Your account and your work are safe; nothing was lost.

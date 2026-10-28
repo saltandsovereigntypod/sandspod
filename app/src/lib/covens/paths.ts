@@ -228,4 +228,4 @@ export function seesPaths(args: {
 
 /** What every overview says about itself. */
 export const ANONYMOUS_NOTE =
-  'This never shows who keeps what, only how many. Anything fewer than three share is gathered under Other, and nothing shows until five have shared. Anyone can leave themselves out in Settings → My practice → “Count me in my covens’ paths overview”.';
+  'This never shows who keeps what, only how many. Anything fewer than three share is gathered under Other, and nothing shows until five have shared. Anyone can leave themselves out in Settings → Covens & privacy → “Count me in my covens’ paths overview”.';

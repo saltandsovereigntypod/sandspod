@@ -1,11 +1,21 @@
-// Reminders → Ritual planning, Quiet hours & pause, and Daily practice.
+// Notifications & reminders → Ritual planning, Covens, Quiet hours & pause,
+// and Daily practice.
 
-import { View } from 'react-native';
+import { useEffect, useMemo, useState } from 'react';
+import { Platform, View } from 'react-native';
+
+import { Button } from '../Button';
 
 import { Body, Card, Chip, Chips, SectionLabel, Toggle, ui } from '../rituals/ui';
 import { TimeRow } from './parts';
 import { covenPlanning, dayKey } from '../../lib/reminders/plan';
-import { BUNDLE_CHOICES, gatheringsOn, isPaused, PLAN_DAY_CHOICES, requestsOn, setGatheringsFor, setRequestsFor, timeLabel, withChange, type ReminderPrefs } from '../../lib/reminders/prefs';
+import { BUNDLE_CHOICES, isPaused, PLAN_DAY_CHOICES, setGatheringsFor, setRequestsFor, timeLabel, withChange, type ReminderPrefs } from '../../lib/reminders/prefs';
+import { covenNotifyRows, wantsCovenPush, type ChatChoice, type CovenNotifySource } from '../../lib/reminders/covenNotifications';
+import { reviewsCoven } from '../../lib/reminders/covens';
+import { fetchMyStandings } from '../../lib/covens/api';
+import { fetchChatSettings, saveChatSettings } from '../../lib/covens/chat';
+import { errorMessage } from '../../lib/covens/model';
+import { covenPushOn, disableCovenPush, enableCovenPush } from '../../lib/covens/push';
 import type { CovenSource } from '../../lib/reminders/plan';
 import type { ReminderSettings } from '../../lib/reminders/schedule';
 
@@ -80,76 +90,188 @@ export function PlanningSection({ prefs, update, covens, signedIn }: Props & { c
           )}
         </Card>
       </View>
-      <GatheringsCard prefs={prefs} update={update} covens={covens} signedIn={signedIn} />
-      <RequestsCard prefs={prefs} update={update} covens={covens} signedIn={signedIn} />
+      <Body muted>Coven gatherings and new applications are under Covens.</Body>
     </>
   );
 }
 
-/** Coven gatherings: a rite or meeting put on a coven's calendar, moved or taken off it (each coven chooses who hears). */
-function GatheringsCard({ prefs, update, covens, signedIn }: Props & { covens: CovenSource[]; signedIn: boolean }) {
-  const ids = covens.map((c) => c.id);
-  return (
-    <View style={ui.gapSmall}>
-      <SectionLabel>Coven gatherings</SectionLabel>
-      <Card>
-        <Toggle
-          label="Tell me about my covens’ gatherings"
-          detail="A note on your phone when a rite or meeting you’re asked to hear about goes on the calendar, moves, or comes off it"
-          value={prefs.gatherings.on}
-          onChange={(on) => update(withChange(prefs, 'gatherings.on', on))}
-        />
-        {prefs.gatherings.on &&
-          covens.map((coven) => (
-            <Toggle
-              key={coven.id}
-              label={coven.name}
-              detail={gatheringsOn(prefs, coven.id) ? 'On' : 'Off'}
-              value={gatheringsOn(prefs, coven.id)}
-              onChange={(on) => update(setGatheringsFor(prefs, coven.id, on, ids))}
-            />
-          ))}
-        {prefs.gatherings.on && !covens.length && <Body muted>{signedIn ? 'Your covens will be listed here once they’ve loaded.' : 'Sign in to hear about your covens.'}</Body>}
-        <Body muted>Each coven chooses who hears about which gatherings. These come through coven notifications, so they reach a phone that has them turned on (in a coven’s Messages).</Body>
-      </Card>
-    </View>
-  );
+/** Your covens, whether you review each, and each one's chat settings. */
+async function readCovens(userId: string): Promise<{ sources: CovenNotifySource[]; chat: Record<string, ChatChoice | undefined>; problem: string | null }> {
+  try {
+    const standings = await fetchMyStandings(userId);
+    const choices = await Promise.all(standings.map((st) => fetchChatSettings(st.coven.id, userId).catch(() => undefined)));
+    return {
+      sources: standings.map((st) => ({ id: st.coven.id, slug: st.coven.slug, name: st.coven.name, reviewer: reviewsCoven(st, userId) })),
+      chat: Object.fromEntries(standings.map((st, i) => [st.coven.id, choices[i]])),
+      problem: null,
+    };
+  } catch (error) {
+    return { sources: [], chat: {}, problem: errorMessage(error) };
+  }
 }
 
-/** Coven requests: new applications and requests to advance in covens you review, and the answer to your own. */
-function RequestsCard({ prefs, update, covens, signedIn }: Props & { covens: CovenSource[]; signedIn: boolean }) {
-  const reviewing = covens.filter((c) => c.reviewer);
-  const ids = reviewing.map((c) => c.id);
+/**
+ * Covens: for each coven, its chat and your conversations there (the coven's
+ * chat settings), its gatherings and, where you review them, new applications
+ * (the synced reminder choices), and whether this phone gets coven
+ * notifications at all. Each is saved where it always was.
+ */
+export function CovensSection({ prefs, update, userId }: Props & { userId: string | null }) {
+  const [sources, setSources] = useState<CovenNotifySource[] | null>(null);
+  const [chat, setChat] = useState<Record<string, ChatChoice | undefined>>({});
+  const [device, setDevice] = useState<boolean | null>(null);
+  const [note, setNote] = useState<string | null>(null);
+
+  useEffect(() => {
+    let active = true;
+    if (userId)
+      readCovens(userId).then((found) => {
+        if (!active) return;
+        setSources(found.sources);
+        setChat(found.chat);
+        if (found.problem) setNote(found.problem);
+      });
+    covenPushOn().then((on) => active && setDevice(on));
+    return () => {
+      active = false;
+    };
+  }, [userId]);
+
+  const rows = useMemo(() => covenNotifyRows(sources ?? [], prefs, chat), [sources, prefs, chat]);
+  const ids = rows.map((r) => r.id);
+  const reviewing = rows.filter((r) => r.applications !== null).map((r) => r.id);
+
+  const turnOnDevice = async () => {
+    const result = await enableCovenPush();
+    setDevice(result.ok);
+    if (!result.ok)
+      setNote(
+        result.reason === 'denied'
+          ? 'Notifications are turned off for this app in your phone’s Settings. Turn them on there, then try again.'
+          : result.reason === 'offline'
+            ? 'Couldn’t reach your account. Check your connection and try again.'
+            : Platform.OS === 'web'
+              ? 'Your choices are saved. Coven notifications ring on phones with the Salt & Sovereignty app.'
+              : 'Your choices are saved. Phone notifications start with the next version of the app from the App Store or Google Play.',
+      );
+  };
+  // Turning something on signs this phone up, as a coven's Messages did.
+  const andDevice = (on: boolean) => {
+    if (on && device === false && Platform.OS !== 'web') void turnOnDevice();
+  };
+  const changeChat = async (covenId: string, next: ChatChoice) => {
+    if (!userId) return;
+    setChat((prev) => ({ ...prev, [covenId]: next }));
+    setNote(null);
+    try {
+      await saveChatSettings(covenId, userId, next);
+    } catch (error) {
+      setNote(errorMessage(error));
+    }
+    andDevice(next.notify_coven || next.notify_direct);
+  };
+
+  if (!userId) return <Body muted>Sign in to hear from your covens: their chat, gatherings and applications.</Body>;
+  if (!sources) return <Body muted>Reading your covens…</Body>;
+
   return (
-    <View style={ui.gapSmall}>
-      <SectionLabel>Coven requests</SectionLabel>
-      <Card>
-        <Toggle
-          label="Tell me about new applications"
-          detail="A note on your phone when someone asks to join, or to advance, in a coven you review"
-          value={prefs.requests.on}
-          onChange={(on) => update(withChange(prefs, 'requests.on', on))}
-        />
-        {prefs.requests.on &&
-          reviewing.map((coven) => (
+    <>
+      <View style={ui.gapSmall}>
+        <SectionLabel>On this phone</SectionLabel>
+        <Card>
+          {device ? (
             <Toggle
-              key={coven.id}
-              label={coven.name}
-              detail={requestsOn(prefs, coven.id) ? 'You review it · on' : 'You review it · off'}
-              value={requestsOn(prefs, coven.id)}
-              onChange={(on) => update(setRequestsFor(prefs, coven.id, on, ids))}
+              label="Coven notifications on this phone"
+              detail="Turn off to stop every coven notification here; your choices below are kept"
+              value
+              onChange={() =>
+                void disableCovenPush().then(() => {
+                  setDevice(false);
+                  setNote('This phone won’t get coven notifications. Turn them back on here to start again.');
+                })
+              }
             />
-          ))}
-        {prefs.requests.on && signedIn && !reviewing.length && <Body muted>Covens where you review applications will be listed here.</Body>}
-        <Toggle
-          label="When my own is answered"
-          detail="Your application to a coven, or your request to advance"
-          value={prefs.requests.answers}
-          onChange={(on) => update(withChange(prefs, 'requests.answers', on))}
-        />
-        <Body muted>These come through coven notifications, so they reach a phone that has them turned on (in a coven’s Messages).</Body>
-      </Card>
-    </View>
+          ) : (
+            <>
+              <Body muted>
+                {Platform.OS === 'web'
+                  ? 'Coven notifications ring on phones with the Salt & Sovereignty app. Your choices here follow you there.'
+                  : 'This phone isn’t signed up for coven notifications yet.'}
+              </Body>
+              {Platform.OS !== 'web' && wantsCovenPush(rows, prefs) && (
+                <Button label="Turn on notifications on this phone" variant="outline" onPress={() => void turnOnDevice()} />
+              )}
+            </>
+          )}
+          {!!note && <Body muted>{note}</Body>}
+        </Card>
+      </View>
+
+      {rows.map((row) => (
+        <View key={row.id} style={ui.gapSmall}>
+          <SectionLabel>{row.name}</SectionLabel>
+          <Card>
+            {row.chat !== null && row.conversations !== null ? (
+              <>
+                <Toggle label="The coven’s chat" detail="New messages to everyone in the coven" value={row.chat} onChange={(v) => void changeChat(row.id, { notify_coven: v, notify_direct: row.conversations ?? true })} />
+                <Toggle label="Your conversations" detail="One-to-one chats and groups you’re in" value={row.conversations} onChange={(v) => void changeChat(row.id, { notify_coven: row.chat ?? true, notify_direct: v })} />
+              </>
+            ) : (
+              <Body muted>Its chat settings couldn’t be read just now.</Body>
+            )}
+            <Toggle
+              label="Gatherings"
+              detail="A rite or meeting you’re asked to hear about goes on the calendar, moves, or comes off it"
+              value={row.gatherings}
+              onChange={(on) => {
+                update(setGatheringsFor(prefs, row.id, on, ids));
+                andDevice(on);
+              }}
+            />
+            {row.applications !== null && (
+              <Toggle
+                label="New applications"
+                detail="Someone asks to join, or to advance, here (you review them)"
+                value={row.applications}
+                onChange={(on) => {
+                  update(setRequestsFor(prefs, row.id, on, reviewing));
+                  andDevice(on);
+                }}
+              />
+            )}
+          </Card>
+        </View>
+      ))}
+      {!rows.length && <Body muted>When you join a coven, its notifications are chosen here.</Body>}
+
+      <View style={ui.gapSmall}>
+        <SectionLabel>Every coven</SectionLabel>
+        <Card>
+          <Toggle
+            label="Tell me about my covens’ gatherings"
+            detail="Off turns gatherings off for every coven; on, each coven above as you chose"
+            value={prefs.gatherings.on}
+            onChange={(on) => update(withChange(prefs, 'gatherings.on', on))}
+          />
+          <Toggle
+            label="Tell me about new applications"
+            detail="In covens you review. Off turns them off for every coven"
+            value={prefs.requests.on}
+            onChange={(on) => update(withChange(prefs, 'requests.on', on))}
+          />
+          <Toggle
+            label="When my own is answered"
+            detail="Your application to a coven, or your request to advance"
+            value={prefs.requests.answers}
+            onChange={(on) => {
+              update(withChange(prefs, 'requests.answers', on));
+              andDevice(on);
+            }}
+          />
+          <Body muted>Each coven chooses who hears about which gatherings. Mute a single conversation from its ⓘ button in the coven’s Messages.</Body>
+        </Card>
+      </View>
+    </>
   );
 }
 

@@ -127,6 +127,12 @@
     if (path === "/rituals/craft") return "/practice/";
     if (path.startsWith("/rituals/craft/")) return `/practice/${path.slice("/rituals/craft/".length).replace(/\/$/, "")}/`;
     if (path === "/today/reminders" || path === "/rituals/reminders" || path === "/more/reminders") return "/reminders/";
+    // A settings page opened inside a tab (the app's <tab>/settings/<page>) is the same page as under More.
+    const tabSettings = path.match(/^\/(?:today|altar|grimoire|rituals|coven)\/settings\/([^/]+)\/?$/);
+    if (tabSettings) path = `/more/settings/${tabSettings[1]}`;
+    if (path.replace(/\/$/, "") === "/more/settings/notifications") return "/reminders/";
+    if (path.replace(/\/$/, "") === "/more/settings/location") return "/today/sky/";
+    if (path.replace(/\/$/, "") === "/more/settings/today") return "/?sanctuary=settings&settings=today";
     if (path.replace(/\/$/, "") === "/more/settings/practice") return "/practice/#choose";
     if (path.replace(/\/$/, "") === "/more/settings/calendar") return "/today/calendar/";
     if (path.startsWith("/more/settings") && path.replace(/\/$/, "") !== "/more/settings/deities") return "/?sanctuary=settings";

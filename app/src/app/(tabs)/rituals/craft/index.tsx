@@ -42,7 +42,7 @@ export default function CraftHub() {
         <List>{others.map(row)}</List>
       </View>
       <List>
-        <Row icon="grimoire" title="Choose your crafts" detail={`Settings → ${YOUR_CRAFTS}`} last onPress={() => router.push('/more/settings/practice')} />
+        <Row icon="grimoire" title="Choose your crafts" detail={`Settings → ${YOUR_CRAFTS}`} last onPress={() => router.push('/rituals/settings/practice')} />
       </List>
     </RitualScreen>
   );

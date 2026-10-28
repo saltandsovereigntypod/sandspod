@@ -11,8 +11,8 @@ export default function BookSettings() {
         <>
           <MenuList>
             <SwitchRow
-              label="Mundane mode by default"
-              detail="Open your Grimoire in plain, everyday language."
+              label="Mundane mode"
+              detail="Your Grimoire in plain, everyday language. The same as the Mundane switch at the top of your Grimoire, on every device."
               value={draft.default_mundane_mode}
               onChange={(v) => set('default_mundane_mode', v)}
             />

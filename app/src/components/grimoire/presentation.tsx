@@ -1,15 +1,22 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { createContext, useContext, useEffect, useState } from 'react';
+import { createContext, useCallback, useContext, useEffect, useState } from 'react';
 import { Pressable, StyleSheet, Switch, Text } from 'react-native';
 
-import { MUNDANE_MODE_KEY, mundaneFromStorage, pageFace, type PageFace } from '../../lib/grimoire/presentation';
-import { useMySettings } from '../../lib/settings/store';
+import { MUNDANE_MODE_KEY, pageFace, type PageFace } from '../../lib/grimoire/presentation';
+import { migrateMundane } from '../../lib/grimoire/mundaneSetting';
+import { patchMySettings, useMySettings } from '../../lib/settings/store';
 import { colors, fonts, touch } from '../../theme';
 
-// The device's mundane-mode choice, shared by every Grimoire screen.
-// undefined until read from storage; null when nothing was ever saved.
+// Mundane mode: one choice, kept with your settings (`default_mundane_mode`,
+// synced) and changed by the switch in the Grimoire's header. What older
+// versions kept on this phone alone (MUNDANE_MODE_KEY) is carried into the
+// setting once and then cleared (lib/grimoire/mundaneSetting.ts).
+// undefined until the phone's old copy is read; null when there is none.
 let stored: string | null | undefined;
 let loading: Promise<void> | null = null;
+let migrated = false;
+// What the switch was just set to, shown until the saved setting catches up.
+let chosen: boolean | null = null;
 const listeners = new Set<() => void>();
 const notify = () => listeners.forEach((listener) => listener());
 
@@ -25,17 +32,9 @@ function load() {
   return loading;
 }
 
-function setMundane(value: boolean) {
-  stored = value ? 'true' : 'false';
-  notify();
-  AsyncStorage.setItem(MUNDANE_MODE_KEY, stored).catch(() => {
-    // Storage unavailable; the choice still holds until the app closes.
-  });
-}
-
-/** Mundane mode for this device, defaulting from the "Mundane mode by default" setting. */
+/** Mundane mode, from your settings, and the header switch that changes it. */
 export function useMundaneMode() {
-  const { settings } = useMySettings();
+  const { settings, status } = useMySettings();
   const [, rerender] = useState(0);
 
   useEffect(() => {
@@ -47,7 +46,48 @@ export function useMundaneMode() {
     };
   }, []);
 
-  const mundane = mundaneFromStorage(stored ?? null, !!settings?.default_mundane_mode);
+  const setting = !!settings?.default_mundane_mode;
+  // Once settings are read (from the account, when signed in), move the phone's old choice into them.
+  useEffect(() => {
+    if (migrated || stored === undefined || status !== 'ready' || !settings) return;
+    migrated = true;
+    const step = migrateMundane(stored, setting);
+    const done = () => {
+      if (step.clear) AsyncStorage.removeItem(MUNDANE_MODE_KEY).catch(() => {});
+      stored = null;
+      notify();
+    };
+    if (!step.save) return done();
+    chosen = step.value;
+    patchMySettings({ default_mundane_mode: step.value })
+      .then(done)
+      // Not saved (offline): keep the phone's copy, and try again next time.
+      .catch(() => {
+        migrated = false;
+        chosen = null;
+        notify();
+      });
+  }, [status, settings, setting]);
+
+  // Once the saved setting matches what the switch was set to, it speaks for itself again.
+  useEffect(() => {
+    if (chosen === setting) chosen = null;
+  }, [setting]);
+  const mundane = chosen ?? migrateMundane(stored ?? null, setting).value;
+
+  const setMundane = useCallback(
+    (value: boolean) => {
+      chosen = value;
+      notify();
+      patchMySettings({ default_mundane_mode: value }).catch(() => {
+        // Not saved: show what is saved.
+        chosen = null;
+        notify();
+      });
+    },
+    [],
+  );
+
   return { mundane, setMundane, settings };
 }
 

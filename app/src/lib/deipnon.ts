@@ -3,7 +3,7 @@
 // in the phone app: clean and cleanse the house, leave the supper at a
 // crossroads, and draw the Crossroads spread. Shown to those who keep the
 // Hellenic monthly days, or who hold Hekate as their patron (Settings → My
-// deities); turned off with `deipnon_prompt` (Settings → Calendars), a
+// deities); turned off with `deipnon_prompt` (Settings → Today), a
 // setting the app and the website share. Pure.
 
 import { holidayChoice, holidaysBetween } from './holidays.ts';

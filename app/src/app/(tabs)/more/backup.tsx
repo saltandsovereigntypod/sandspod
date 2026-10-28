@@ -119,7 +119,7 @@ export default function BackupScreen() {
     });
 
   return (
-    <MoreScreen title="Backup and restore" eyebrow="Keep your Sanctuary safe" back="/more" backLabel="Back to More">
+    <MoreScreen title="Backup and restore" eyebrow="Keep your Sanctuary safe" back="/more/settings" backLabel="Back to Settings">
       <Section label="Back up">
         <Card>
           <Text style={type.body}>

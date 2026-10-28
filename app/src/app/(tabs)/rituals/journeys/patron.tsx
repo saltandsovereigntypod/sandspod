@@ -32,7 +32,7 @@ export default function PatronGuide() {
                 detail={`${levelLabel(d.level)}${d.since ? ` · since ${d.since}` : ''}`}
                 icon="grimoire"
                 last={i === mine.length - 1}
-                onPress={() => router.push(d.key ? `/rituals/library/traditional:deity:${d.key}` as never : '/more/settings/deities')}
+                onPress={() => router.push(d.key ? `/rituals/library/traditional:deity:${d.key}` as never : '/rituals/settings/deities')}
               />
             ))}
           </List>
@@ -40,7 +40,7 @@ export default function PatronGuide() {
           <Body muted>None yet, and none is needed. When you’re ready, keep the gods you’re getting to know in My deities.</Body>
         )}
         <View style={ui.actions}>
-          <Button label="My deities" variant="outline" onPress={() => router.push('/more/settings/deities')} />
+          <Button label="My deities" variant="outline" onPress={() => router.push('/rituals/settings/deities')} />
           <Button
             label="Draw the Patron deity spread"
             variant="text"

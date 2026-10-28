@@ -423,6 +423,14 @@ export default function DrawScreen() {
           {kindId === 'runes' && (
             <Toggle label="The blank rune" detail="A modern addition to the set, standing for the unknown." value={options.blankRune} onChange={(v) => setOption('divination_blank_rune', v)} />
           )}
+          {(kindId === 'tarot' || kindId === 'runes') && !byHand && (
+            <View style={ui.gapSmall}>
+              <Body muted>{kindId === 'tarot' ? 'The deck and reversals you choose here are saved as your default.' : 'Saved as your default.'}</Body>
+              <Chips>
+                <Chip label="Divination settings ›" onPress={() => router.push('/rituals/settings/divination')} a11yLabel="Divination settings: deck, reversals and what to draw" />
+              </Chips>
+            </View>
+          )}
           {!enough && <Notice>{`This spread needs ${spread.positions.length} cards, and ${ownDeck?.data.name ?? 'the deck'} has ${pool.length}. Choose a smaller spread, or add more cards.`}</Notice>}
           {byHand ? (
             <>

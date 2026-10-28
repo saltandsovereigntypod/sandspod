@@ -1,4 +1,4 @@
-// Settings → Calendar & holidays: how the days are counted (the ordinary date
+// Settings → Calendars & holidays: how the days are counted (the ordinary date
 // or the moon's months) and which other calendars are shown beside it, each
 // with how solid it is, what it is, and its choices. Calendars of the
 // person's own path come first.
@@ -108,7 +108,8 @@ function CalendarRow({ def, on, onToggle, draft, set, last }: { def: CalendarDef
   );
 }
 
-export function CalendarCounting({ draft, set }: { draft: Settings; set: SetValue }) {
+/** `hemisphere={false}` leaves out the hemisphere choice (it lives in Settings → Location & hemisphere). */
+export function CalendarCounting({ draft, set, hemisphere: showHemisphere = true }: { draft: Settings; set: SetValue; hemisphere?: boolean }) {
   const place = usePlace();
   const lead = primaryCalendar(draft);
   const shown = new Set<string>(shownCalendars(draft));
@@ -145,9 +146,11 @@ export function CalendarCounting({ draft, set }: { draft: Settings; set: SetValu
             <ChoiceList def={MOON_CALENDAR} draft={draft} set={set} />
           </Card>
         )}
-        <Chips label="Hemisphere" options={HEMISPHERE_OPTIONS} value={hemisphere as (typeof HEMISPHERE_OPTIONS)[number]['value']} onChange={(v) => set(HEMISPHERE_KEY, v)} />
+        {showHemisphere && (
+          <Chips label="Hemisphere" options={HEMISPHERE_OPTIONS} value={hemisphere as (typeof HEMISPHERE_OPTIONS)[number]['value']} onChange={(v) => set(HEMISPHERE_KEY, v)} />
+        )}
         <Text style={type.caption}>
-          {`Seasons and moon names follow the ${hemisphereOf(draft, place)}ern hemisphere${hemisphere === 'auto' ? (place ? ', from your place' : '; add your place on the Sky screen to set it') : ''}.`}
+          {`Seasons and moon names follow the ${hemisphereOf(draft, place)}ern hemisphere${hemisphere === 'auto' ? (place ? ', from your place' : '; add your place in Settings → Location & hemisphere to set it') : ''}.`}
         </Text>
       </Section>
 

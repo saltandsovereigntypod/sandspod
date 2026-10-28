@@ -33,3 +33,28 @@ test("stale settings responses are rejected after edits", () => {
   assert.equal(Settings.isStale(2, 2, true), true);
   assert.equal(Settings.isStale(2, 2, false), false);
 });
+
+test("Settings is grouped as the app's: seven groups, with the older panels and links leading to their new homes", () => {
+  assert.deepEqual(Settings.GROUPS.map(([name]) => name), ["You", "Your practice", "Screens", "Notifications & reminders", "Accessibility", "Covens & privacy", "Account & data"]);
+  assert.equal(Settings.panelOf(Settings.categoryForName("default_altar_background")), "altar");
+  assert.equal(Settings.panelOf(Settings.categoryForName("companion_my_notes")), "altar");
+  assert.equal(Settings.panelOf(Settings.categoryForName("living_state_show_status")), "altar");
+  for (const name of ["appearance", "companion", "objects"]) assert.equal(Settings.panelFor(name), "altar");
+  assert.equal(Settings.panelFor("today"), "today");
+  assert.equal(Settings.panelFor("reminders"), "notifications");
+  assert.equal(Settings.panelFor("nonsense"), null);
+  assert.equal(Settings.LABELS.calendar, "Calendars & holidays");
+});
+
+test("Today's choices moved out of the calendar panel, with the same keys, and the dream prompt beside them", () => {
+  const More = require("../js/settings-more.js");
+  const html = More.todayHtml({ today_show: "both", today_draw: false, today_dream_prompt: false });
+  assert.match(html, /data-more-chip="todayShow"/);
+  assert.match(html, /data-more-chip="todayLayout"/);
+  assert.match(html, /data-today-draw\s+\/>/);
+  assert.match(html, /data-today-deipnon checked/);
+  assert.match(html, /data-today-dream\s+\/>/);
+  const source = require("node:fs").readFileSync("js/settings-more.js", "utf8");
+  assert.match(source, /save\(\{ today_dream_prompt: t\.checked \}, "today"\)/);
+  assert.match(source, /save\(\{ \[G\.calendars\.HEMISPHERE_KEY\]: value \}, "location"\)/);
+});
