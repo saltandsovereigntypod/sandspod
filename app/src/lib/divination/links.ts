@@ -33,17 +33,25 @@ export function refForDrawn(name: string): DivinationRef | null {
   return null;
 }
 
+// A tarot card's page can open in a given deck (`deck`, a tarot deck id, as
+// in decks.ts), so a card drawn with the Tarot de Marseille reads as the
+// Marseille on its page, whatever deck is chosen in settings. Left off for
+// the rest, and for no deck in particular.
+const deckQuery = (ref: DivinationRef, deck: string | null | undefined, join: '?' | '&') =>
+  ref.kind === 'tarot' && deck && /^[a-z-]+$/.test(deck) ? `${join}deck=${deck}` : '';
+
 /** Where an entry's page is in the app's Grimoire. */
-export const divinationRoute = (ref: DivinationRef) => `/grimoire/divination/${ref.kind}/${encodeURIComponent(ref.id)}`;
+export const divinationRoute = (ref: DivinationRef, deck?: string | null) => `/grimoire/divination/${ref.kind}/${encodeURIComponent(ref.id)}${deckQuery(ref, deck, '?')}`;
 
 /** The same page opened from a reading, on top of it, so Back returns to the reading. */
-export const divinationReadingRoute = (ref: DivinationRef) => `/rituals/divination/card/${ref.kind}/${encodeURIComponent(ref.id)}`;
+export const divinationReadingRoute = (ref: DivinationRef, deck?: string | null) =>
+  `/rituals/divination/card/${ref.kind}/${encodeURIComponent(ref.id)}${deckQuery(ref, deck, '?')}`;
 
 /** Where an entry's page is in the website's Book of Shadows. */
-export const divinationWebPath = (ref: DivinationRef) => `/grimoire/?divination=${ref.kind}/${encodeURIComponent(ref.id)}`;
+export const divinationWebPath = (ref: DivinationRef, deck?: string | null) => `/grimoire/?divination=${ref.kind}/${encodeURIComponent(ref.id)}${deckQuery(ref, deck, '&')}`;
 
-/** The website's "Read more" link for a drawn card or stave, or null. */
-export function readMoreHref(name: string): string | null {
+/** The website's "Read more" link for a drawn card or stave (in the deck it was drawn with, for tarot), or null. */
+export function readMoreHref(name: string, deck?: string | null): string | null {
   const ref = refForDrawn(name);
-  return ref ? divinationWebPath(ref) : null;
+  return ref ? divinationWebPath(ref, deck) : null;
 }

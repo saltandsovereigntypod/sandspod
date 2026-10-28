@@ -42,7 +42,7 @@ import { DREAMS, morningDreamPrompt, normalizeDream, quickDream } from '../../..
 import { addEntry, useCraft } from '../../../lib/craft/store';
 import { DREAM_ROUTES } from '../../../lib/grimoire/dreams';
 import { normalizeReading, READINGS } from '../../../lib/craft/hedge/readings';
-import { drawOnToday, todaysCard } from '../../../lib/divination/daily';
+import { drawOnToday, todaysCard, todaysCardLabel } from '../../../lib/divination/daily';
 import { deipnonToday } from '../../../lib/deipnon';
 import { keepsSouthernWheel, seasonalSpreads } from '../../../lib/divination/seasonal';
 import { deityLines } from '../../../lib/patron';
@@ -465,7 +465,7 @@ function CardOfTheDay({ now, south }: { now: Date; south: boolean }) {
     <>
       <Pressable
         accessibilityRole="link"
-        accessibilityLabel={kept ? `Today’s card: ${kept.name}${kept.reversed ? ', reversed' : ''}. Opens the reading.` : 'Draw a card for the day'}
+        accessibilityLabel={kept ? `Today’s card: ${todaysCardLabel(kept)}. Opens the reading.` : 'Draw a card for the day'}
         onPress={() =>
           kept
             ? router.navigate({ pathname: '/rituals/divination/[id]', params: { id: kept.id } })
@@ -476,7 +476,7 @@ function CardOfTheDay({ now, south }: { now: Date; south: boolean }) {
         {kept ? (
           <Text style={type.caption}>
             {'Today’s card: '}
-            <Text style={styles.gold}>{`${kept.name}${kept.reversed ? ', reversed' : ''}`}</Text>
+            <Text style={styles.gold}>{todaysCardLabel(kept)}</Text>
             {' ›'}
           </Text>
         ) : (

@@ -2,8 +2,10 @@
 // Rider–Waite–Smith (1909), the default; Nicolas Conver's Tarot de Marseille
 // (1760, in A. Camoin's printing of about 1890–1900); and the Sola Busca
 // (Italy, about 1491), the oldest complete 78-card deck. Every deck uses the
-// same 78 card ids and the same meanings (tarot.ts); a deck only changes the
-// picture, and the card's own title where the deck names it differently.
+// same 78 card ids; a deck changes the picture, the card's own title where
+// the deck names it differently, and the meanings: the Rider–Waite–Smith
+// reads with Waite's (tarot.ts), the others with their own
+// (deckMeanings/, through `deckMeaning`).
 // The deck is a setting (`tarot_deck`, shared with the website) and a kept
 // reading remembers the deck it was drawn with (`deck` on a `hedge.readings`
 // entry). Pure, so the app and the website share it.

@@ -7,6 +7,7 @@ import { PairsCard } from '../../../../components/divination/oracle/Pairs';
 import { PullPicker } from '../../../../components/divination/oracle/PullPicker';
 import { SpreadPicker } from '../../../../components/divination/Picker';
 import { ReadMore } from '../../../../components/divination/ReadMore';
+import { DeckReadingLines } from '../../../../components/divination/DeckReading';
 import { SpreadTable } from '../../../../components/divination/Spread';
 import { Body, Card, Chip, Chips, Field, List, Notice, RitualScreen, Row, SectionLabel, Title, Toggle, ui } from '../../../../components/rituals/ui';
 import { useReducedMotion } from '../../../../lib/accessibility/store';
@@ -15,8 +16,9 @@ import { DREAMS, normalizeDream, sortDreams } from '../../../../lib/craft/hedge/
 import { lookBackFrom, normalizeReading, READINGS, type ReadingLink, type ReadingLinkKind } from '../../../../lib/craft/hedge/readings';
 import { addEntry, useCraft } from '../../../../lib/craft/store';
 import { customSpreads, entryIdOfSpread, SPREADS_COLLECTION } from '../../../../lib/divination/custom';
-import { chosenDeck, DECK_SETTING, deckCardTitle, deckInfo, TAROT_DECKS, type DeckId } from '../../../../lib/divination/decks';
-import { todaysCard } from '../../../../lib/divination/daily';
+import { DECK_READING_NOTES } from '../../../../lib/divination/deckMeanings';
+import { chosenDeck, DECK_SETTING, deckInfo, TAROT_DECKS, type DeckId } from '../../../../lib/divination/decks';
+import { todaysCard, todaysCardLabel } from '../../../../lib/divination/daily';
 import { clearDrawDraft, loadDrawDraft, saveDrawDraft } from '../../../../lib/divination/draftStore';
 import { draftKey, draftSummary, isFreshDraft, opensOwnDraw, restoreDraft, stampDraft, type DrawDraft } from '../../../../lib/divination/drawDraft';
 import {
@@ -236,7 +238,9 @@ export default function DrawScreen() {
 
   const linkKind = linkKindOfSpread(spread.id);
   const linkedTo = link && link.kind === linkKind ? link : null;
-  const shown = selected !== null && draw && revealed[selected] ? meaningOf(draw.items[selected], ownDeck?.data) : null;
+  // A tarot card reads in the deck it's drawn with: the deck's own meaning where it has one.
+  const tarotDeck = kindId === 'tarot' ? deck : null;
+  const shown = selected !== null && draw && revealed[selected] ? meaningOf(draw.items[selected], ownDeck?.data, tarotDeck) : null;
   const position = selected !== null && draw ? placeOf(spread, draw, selected) : null;
   const ownWithoutCards = kindId === 'oracle' && (!ownDeck || ownDeck.data.cards.length === 0);
 
@@ -365,7 +369,7 @@ export default function DrawScreen() {
         <List>
           <Row
             icon="wheel"
-            title={`Today’s card: ${kept.name}${kept.reversed ? ', reversed' : ''}`}
+            title={`Today’s card: ${todaysCardLabel(kept)}`}
             detail="You’ve kept a card for today already. Open it, or draw another."
             last
             onPress={() => router.push(`/rituals/divination/${kept.id}` as Href)}
@@ -406,6 +410,7 @@ export default function DrawScreen() {
                 ))}
               </Chips>
               <Body muted>{`${deckInfo(deck).made}. ${deckInfo(deck).about}`}</Body>
+              {!!DECK_READING_NOTES[deck] && <Body muted>{DECK_READING_NOTES[deck]}</Body>}
             </View>
           )}
           {kindId === 'tarot' && (
@@ -449,11 +454,11 @@ export default function DrawScreen() {
           <SectionLabel>{position && spread.positions.length > 1 ? `${(selected ?? 0) + 1} · ${position.name}` : spread.label}</SectionLabel>
           {position && spread.positions.length > 1 && <Body muted>{position.about}</Body>}
           <Text style={type.cardTitle}>{`${shown.glyph ? `${shown.glyph}  ` : ''}${shown.name}${shown.reversed ? ', reversed' : ''}`}</Text>
-          {!!shown.card && !!deckCardTitle(deck, shown.card.id) && <Body muted>{`In the ${deckInfo(deck).name}: ${deckCardTitle(deck, shown.card.id)}`}</Body>}
+          <DeckReadingLines reading={shown.inDeck} />
           {!!shown.gloss && <Body muted>{shown.gloss}</Body>}
           {!!shown.meaning.keywords && <Text style={[type.body, { color: colors.gold }]}>{shown.meaning.keywords}</Text>}
           <Body>{shown.meaning.text}</Body>
-          {!shown.own && <ReadMore name={shown.name} />}
+          {!shown.own && <ReadMore name={shown.name} deck={tarotDeck} />}
         </Card>
       )}
 
@@ -464,7 +469,7 @@ export default function DrawScreen() {
               key={i}
               icon="wheel"
               title={`${i + 1}. ${item.name}${item.reversed ? ', reversed' : ''}`}
-              detail={[placeOf(spread, draw, i)?.name, meaningOf(item, ownDeck?.data)?.meaning.keywords].filter(Boolean).join(' · ')}
+              detail={[placeOf(spread, draw, i)?.name, meaningOf(item, ownDeck?.data, tarotDeck)?.meaning.keywords].filter(Boolean).join(' · ')}
               last={i === draw.items.length - 1}
               onPress={() => setSelected(i)}
             />

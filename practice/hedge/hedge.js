@@ -613,16 +613,18 @@
   /** What one card, rune or stave means, in its place. */
   function meaningHtml(spread, d, i, deck, own) {
     if (i === null || i === undefined || !d.items[i]) return "";
-    const m = Dv.draw.meaningOf(d.items[i], own);
+    // A tarot card reads in the deck it was drawn with: the deck's own meaning where it has one (as the app's).
+    const tarotDeck = spread.kind === "tarot" ? deck || null : null;
+    const m = Dv.draw.meaningOf(d.items[i], own, tarotDeck);
     if (!m) return "";
-    const title = m.card && deck && spread.kind === "tarot" ? Dv.decks.deckCardTitle(deck, m.card.id) : null;
+    const deckLines = Dv.deckMeanings ? Dv.deckMeanings.deckReadingLines(m.inDeck) : [];
     const place = spread.positions.length > 1 ? Dv.draw.placeOf(spread, d, i) : null;
     // Its page in the Book of Shadows' Traditional Information, unless that's turned off (none for a card of your own).
-    const more = settings.library_traditional_enabled !== false && !m.own ? Dv.links?.readMoreHref(m.name) : null;
+    const more = settings.library_traditional_enabled !== false && !m.own ? Dv.links?.readMoreHref(m.name, tarotDeck) : null;
     return kit.card(
       `${place ? kit.muted(place.about) : ""}<p class="dv-meaning__name">${m.glyph ? `<span class="dv-glyph" aria-hidden="true">${kit.esc(m.glyph)}</span>  ` : ""}${kit.esc(
         itemName(m)
-      )}</p>${title ? kit.muted(`In the ${Dv.decks.deckInfo(deck).name}: ${title}`) : ""}${m.gloss ? kit.muted(m.gloss) : ""}${m.meaning.keywords ? `<p class="dv-meaning__words">${kit.esc(m.meaning.keywords)}</p>` : ""}${kit.p(m.meaning.text)}${
+      )}</p>${deckLines.map((line) => kit.muted(line)).join("")}${m.gloss ? kit.muted(m.gloss) : ""}${m.meaning.keywords ? `<p class="dv-meaning__words">${kit.esc(m.meaning.keywords)}</p>` : ""}${kit.p(m.meaning.text)}${
         more ? `<p class="dv-meaning__more"><a href="${kit.esc(more)}" target="_blank" rel="noopener">Read more</a></p>` : ""
       }`,
       { gold: true, label: place ? `${i + 1} · ${place.name}` : spread.label }
@@ -860,7 +862,7 @@
                 act: "draw-pick",
                 data: { value: i },
                 title: `${i + 1}. ${itemName(item)}`,
-                detail: kit.join([Dv.draw.placeOf(spread, d, i)?.name, Dv.draw.meaningOf(item, deck)?.meaning.keywords])
+                detail: kit.join([Dv.draw.placeOf(spread, d, i)?.name, Dv.draw.meaningOf(item, deck, spread.kind === "tarot" ? drawDeck() : null)?.meaning.keywords])
               })
             ),
             "What was drawn"
@@ -961,7 +963,7 @@
         ? kit.list([
             kit.row({
               url: url.reading(kept.id),
-              title: `Today’s card: ${itemName(kept)}`,
+              title: `Today’s card: ${Dv.daily.todaysCardLabel(kept)}`,
               detail: "You’ve kept a card for today already. Open it, or draw another."
             })
           ])
@@ -996,7 +998,9 @@
                     `${kit.chips(
                       Dv.decks.TAROT_DECKS.map((x) => kit.chip({ label: x.name, act: "draw-deck", value: x.id, pressed: drawDeck() === x.id })),
                       "Deck"
-                    )}${kit.muted(`${Dv.decks.deckInfo(drawDeck()).made}. ${Dv.decks.deckInfo(drawDeck()).about}`)}`,
+                    )}${kit.muted(`${Dv.decks.deckInfo(drawDeck()).made}. ${Dv.decks.deckInfo(drawDeck()).about}`)}${
+                      Dv.deckMeanings?.DECK_READING_NOTES[drawDeck()] ? kit.muted(Dv.deckMeanings.DECK_READING_NOTES[drawDeck()]) : ""
+                    }`,
                     { id: "draw-deck" }
                   )
                 : "",
