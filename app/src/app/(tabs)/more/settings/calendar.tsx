@@ -7,7 +7,7 @@ import { CalendarCounting } from '../../../../components/more/CalendarCounting';
 import { Card, Chips, Field, MenuList, Notice, Section, SwitchRow } from '../../../../components/more/ui';
 import { SettingsForm } from '../../../../components/more/SettingsForm';
 import { shortDate } from '../../../../lib/calendar';
-import { calendarEventsBetween, CALENDARS_LIVE, calendarSettingsKey, mergeCalendarEvents } from '../../../../lib/calendars';
+import { calendarEventsBetween, calendarSettingsKey, mergeCalendarEvents } from '../../../../lib/calendars';
 import { usePlace } from '../../../../lib/location';
 import { customRepeat, HIDEABLE_TRADITIONS, hiddenTraditions, holidayChoice, holidaysBetween, pickId, TRADITIONS, type CustomHoliday, type Recurrence } from '../../../../lib/holidays';
 import { primaryTradition } from '../../../../lib/traditionDay';
@@ -92,7 +92,7 @@ function CalendarForm({ draft, set }: { draft: Settings; set: <K extends keyof S
     <>
       <Text style={type.body}>Choose the calendars you keep. Their holidays show on Today on the day, with what they mean, and On the horizon shows the next one.</Text>
 
-      {CALENDARS_LIVE && <CalendarCounting draft={draft} set={(key, value) => set(key, value)} hemisphere={false} />}
+      <CalendarCounting draft={draft} set={(key, value) => set(key, value)} hemisphere={false} />
 
       <Section label="Your calendars">
         <MenuList>
@@ -184,7 +184,7 @@ export function YearAhead({ draft }: { draft: Settings }) {
     const now = new Date();
     const end = new Date(now.getFullYear() + 1, now.getMonth(), now.getDate());
     // The other calendars' observances too; of the moon's, just each month's first day.
-    const events = (CALENDARS_LIVE ? calendarEventsBetween(now, end, draft, place) : []).filter((e) => e.calendar !== 'moon' || e.id.startsWith('moon-new-'));
+    const events = calendarEventsBetween(now, end, draft, place).filter((e) => e.calendar !== 'moon' || e.id.startsWith('moon-new-'));
     return mergeCalendarEvents(holidaysBetween(now, end, holidayChoice(draft)), events);
     // eslint-disable-next-line react-hooks/exhaustive-deps -- recompute when the calendar choice changes
   }, [draft.calendar_traditions, draft.calendar_custom_holidays, draft.calendar_picked_holidays, calendarKey, place]);

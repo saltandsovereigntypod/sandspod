@@ -251,7 +251,7 @@
 
     return (
       `<p>Choose the calendars you keep. Their holidays show on Today on the day, with what they mean, and On the horizon shows the next one.</p>` +
-      (K.CALENDARS_LIVE ? calendarCounting() : "") +
+      calendarCounting() +
       yours +
       main +
       onToday +
@@ -332,7 +332,7 @@
     const draft = state.draft;
     const now = new Date();
     const end = new Date(now.getFullYear() + 1, now.getMonth(), now.getDate());
-    const events = (K.CALENDARS_LIVE ? K.calendarEventsBetween(now, end, draft, state.place) : []).filter((e) => e.calendar !== "moon" || e.id.startsWith("moon-new-"));
+    const events = K.calendarEventsBetween(now, end, draft, state.place).filter((e) => e.calendar !== "moon" || e.id.startsWith("moon-new-"));
     const year = K.mergeCalendarEvents(H.holidaysBetween(now, end, H.holidayChoice(draft)), events);
     return (
       `<section class="sp-section"><h2 class="sp-label">The year ahead</h2>` +

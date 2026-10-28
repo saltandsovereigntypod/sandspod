@@ -167,11 +167,8 @@
     const choice = C.holidays.holidayChoice(settings);
     const primary = C.traditionDay.primaryTradition(settings, choice);
     const place = state.place;
-    const live = C.calendars.CALENDARS_LIVE;
-    const lines = live ? C.calendars.todayLines(now, settings, place) : [];
-    const events = live
-      ? C.calendars.calendarEventsBetween(now, new Date(now.getFullYear(), now.getMonth(), now.getDate() + 60), settings, place)
-      : [];
+    const lines = C.calendars.todayLines(now, settings, place);
+    const events = C.calendars.calendarEventsBetween(now, new Date(now.getFullYear(), now.getMonth(), now.getDate() + 60), settings, place);
     const today = C.today.buildToday(now, choice, primary, events);
     const sky = C.sky.skyNow(now, { planets: false });
     const here = place ? C.sky.placeSky(now, place) : null;

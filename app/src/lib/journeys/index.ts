@@ -49,9 +49,3 @@ export const pathsMineFirst = (mine: string[] = [], list: Journey[] = JOURNEYS):
 
 /** Journeys whose title, summary or paths hold every word of the query. */
 export const searchJourneys = (query: string, list: Journey[] = JOURNEYS): Journey[] => searchJourneysIn(list, query);
-
-/**
- * @deprecated Always on: journeys are live. Kept only until the Rituals home
- * and Craft hub (owned by another change) drop their checks; then delete it.
- */
-export const JOURNEYS_LIVE = true;

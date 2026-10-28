@@ -11,7 +11,6 @@ import { APOTHECARY, APOTHECARY_SUBTITLE, CRAFT_TOOLS, WORKINGS_LIBRARY } from '
 import { currentStep } from '../../../lib/rituals/lifecycle';
 import { journalDetail, planWhen } from '../../../lib/rituals/format';
 import { journalInsights } from '../../../lib/rituals/insights';
-import { JOURNEYS_LIVE } from '../../../lib/journeys';
 import { PREMADE } from '../../../lib/rituals/premade';
 import { sortJournal, upcomingPlans } from '../../../lib/rituals/plans';
 import { bringDeviceRitualsToAccount, refresh, useRituals } from '../../../lib/rituals/store';
@@ -110,14 +109,12 @@ export default function RitualsHome() {
             detail={`${PREMADE.length} premade rituals and spells for every practice and path`}
             onPress={() => router.push('/rituals/premade')}
           />
-          {JOURNEYS_LIVE && (
-            <Row
-              icon="wheel"
-              title="Dedication journeys"
-              detail="Study, practice and a rite of self-dedication to a path or a god"
-              onPress={() => router.push('/rituals/journeys')}
-            />
-          )}
+          <Row
+            icon="wheel"
+            title="Dedication journeys"
+            detail="Study, practice and a rite of self-dedication to a path or a god"
+            onPress={() => router.push('/rituals/journeys')}
+          />
           <Row
             icon="wheel"
             title={CRAFT_TOOLS}
