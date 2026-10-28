@@ -1260,7 +1260,7 @@ A coven Skira might be a midsummer women's gathering, or an open one, under shad
           kind: 'study',
           instructions: `1. Read "The Attic year" and the lessons for any festivals you haven't kept yet.
 2. Take the test. You can take it before the year is out; the choice questions are scored at once and your mentor scores the written answers.
-3. You need 80% to pass. If you don't pass, read the explanations, talk to your mentor, and try again.`,
+3. You need 80% to pass. If you don't pass, look at the questions you missed, talk to your mentor, and try again.`,
           times: 1,
           response: 'none',
           checked_by: 'mentor',

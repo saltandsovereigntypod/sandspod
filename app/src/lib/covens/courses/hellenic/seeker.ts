@@ -423,7 +423,7 @@ Your thirty days end with a decision: continue as a devotee, take longer, or par
           title: 'Take the test',
           kind: 'study',
           instructions: `1. Take the short test. The choice questions are scored at once; your mentor reads the written answers.
-2. You need 80% to pass. If you don't pass, read the explanations and try again; it's a check of understanding, not a hurdle.`,
+2. You need 80% to pass. If you don't pass, look at the questions you missed and try again (the explanations show once you've passed); it's a check of understanding, not a hurdle.`,
           times: 1,
           response: 'none',
           checked_by: 'mentor',

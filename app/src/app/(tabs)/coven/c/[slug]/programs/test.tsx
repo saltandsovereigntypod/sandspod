@@ -34,8 +34,8 @@ const when = (value: string) => new Date(value).toLocaleString(undefined, { day:
 
 // A step's test: before it (what it asks, attempts left), taking it (one
 // question at a time or all at once, the draft kept on this device as you
-// go), the result with explanations, and every attempt. Those overseeing see
-// the attempts and score them.
+// go), the result (with the right answers and explanations once passed), and
+// every attempt. Those overseeing see the attempts and score them.
 export default function StepTest() {
   const { e: enrollmentId, t: taskId } = useLocalSearchParams<{ e: string; t: string }>();
   const coven = useCoven();
@@ -169,7 +169,7 @@ export default function StepTest() {
           {viewing.scored_by && final ? ` · scored by ${coven.nameOf(viewing.scored_by)}` : ''}
         </Text>
         {viewing.status === 'passed' && <Notice>Passed. This step is done.</Notice>}
-        {viewing.status === 'failed' && self && <Notice>{can.line || 'Not passed this time.'} Read the explanations below, and ask your mentor about anything unclear.</Notice>}
+        {viewing.status === 'failed' && self && <Notice>{can.line || 'Not passed this time.'} See which questions to look at again below, and ask your mentor about anything unclear.</Notice>}
         {!final && <Notice>{self ? 'The choice questions are scored. Your written answers are with your mentor or the coven’s leaders, who will score them.' : 'Written answers are waiting to be scored.'}</Notice>}
         {!!viewing.feedback && final && (
           <Card>
@@ -177,7 +177,7 @@ export default function StepTest() {
             <Words text={viewing.feedback} />
           </Card>
         )}
-        <AttemptResult attempt={viewing} showRubric={!self} />
+        <AttemptResult attempt={viewing} showRubric={!self} self={self} />
         <View style={styles.row}>
           {mayScore && !final && <Button label="Score it" onPress={() => router.push(scoreHref(coven.slug, viewing.id))} />}
           <Button label={self ? 'Talk about your result' : `Talk with ${coven.nameOf(enrollment.user_id)} about it`} variant="outline" onPress={() => router.push(threadHref(coven.slug, enrollment.id, task.id))} />

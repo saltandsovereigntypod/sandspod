@@ -161,7 +161,7 @@
       const notes = state.perms.review && context.user
         ? `<p class="sp-caption">Phone notes for new applications here: <strong>${wanted ? "on" : "off"}</strong>. <a href="${esc(UI.href("/reminders/#gd-requests"))}">Change them in Reminders</a> (they ring phones with the app; this page shows the count while it’s open).</p>`
         : "";
-      pane.innerHTML = `${notes}<section class="sp-section"><h2>Applications to join</h2>${applications.length ? applications.map(appCard).join("") : `<p class="sp-empty">No applications are waiting.</p>`}</section>
+      pane.innerHTML = `${notes}<div data-proposals></div><section class="sp-section"><h2>Applications to join</h2>${applications.length ? applications.map(appCard).join("") : `<p class="sp-empty">No applications are waiting.</p>`}</section>
         <section class="sp-section"><h2>Requests to advance</h2>${advancements.length ? advancements.map(advCard).join("") : `<p class="sp-empty">No requests are waiting.</p>`}</section>
         ${past.length ? `<details class="sp-details"><summary>Decided applications</summary><div class="sp-list">${past
           .map((a) => `<div class="sp-row"><span class="sp-row__text"><span class="sp-row__title">${esc(profile(a.user_id).display_name || "A witch")} · ${esc(a.status)}</span>
@@ -177,12 +177,19 @@
             // Full, or something still to tick (covens/coven/positions.js reviewPanel).
             if (approve && form.dataset.blocked) return UI.setStatus(form.querySelector("[data-status]"), form.closest("article")?.querySelector("[data-block]")?.textContent || "This can’t be approved yet.", true);
             const ticks = JSON.parse(form.dataset.ticks || "[]");
+            // A full position: approved onto its waiting list (covens/coven/queue.js).
+            if (approve && form.dataset.full) {
+              if (await UI.busy(form, form.querySelector("[data-status]"), () => D.queueAdvancement(form.dataset.id, note, ticks))) refresh("review");
+              return;
+            }
             if (await UI.busy(form, form.querySelector("[data-status]"), () => D.decideAdvancement(form.dataset.id, approve, note, ticks))) refresh("review");
             return;
           }
           if (await UI.busy(form, form.querySelector("[data-status]"), () => D.decideApplication(form.dataset.id, approve, note))) refresh("review");
         })
       );
+      // A place freed in a full position, for the head and leaders: who is next in line.
+      if (global.CovenQueue) global.CovenQueue.proposals(pane.querySelector("[data-proposals]"), state, { refresh });
       pane.querySelectorAll("[data-report-app]").forEach((button) => button.addEventListener("click", () => UI.report({ target_type: "application", target_id: button.dataset.reportApp, target_user_id: button.dataset.user, coven_id: coven.id, label: "this application" })));
       // Each request's checklist, ticks, answers and places left (as the app's Review).
       if (advancements.length && global.CovenPositions) {
@@ -254,7 +261,7 @@
           <div class="sp-actions"><button class="button button--primary button--small" type="submit">${r.id ? "Save" : "Add"}</button>${r.id ? `<button class="button button--ghost button--small" type="button" data-delete-rank="${esc(r.id)}">Delete</button>` : ""}</div>
           ${statusLine()}
         </form>
-        ${r.id ? `<div class="sp-section" data-position-panel="${esc(r.id)}"><p class="sp-caption">Loading its places and what it asks…</p></div>` : ""}</details>`;
+        ${r.id ? `<div class="sp-section" data-position-panel="${esc(r.id)}"><p class="sp-caption">Loading its places and what it asks…</p></div><div data-queue-panel-holder></div>` : ""}</details>`;
   }
 
   function questionsForm(coven) {
@@ -405,6 +412,9 @@
           panel.dataset.loaded = "1";
           const rank = state.ranks.find((r) => r.id === details.dataset.rankDetails);
           if (rank && global.CovenPositions) global.CovenPositions.leaderPanel(panel, state, rank, { refresh });
+          // Its waiting list, after the places and what it asks.
+          const queue = details.querySelector("[data-queue-panel-holder]");
+          if (rank && queue && global.CovenQueue) global.CovenQueue.leaderPanel(queue, state, rank, { refresh });
         })
       );
       const S = global.SaltCore?.covens?.positions;

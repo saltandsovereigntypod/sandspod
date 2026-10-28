@@ -866,7 +866,7 @@ export default {
         {
           title: 'Take the test',
           kind: 'study',
-          instructions: '1. Look back over the seven lessons.\n2. Take the test. Choice questions are scored straight away; your written answers are scored by your mentor or the High Priestess.\n3. You need 80% to pass. If you don’t, read the explanations, talk to your mentor on this step, and try again.',
+          instructions: '1. Look back over the seven lessons.\n2. Take the test. Choice questions are scored straight away; your written answers are scored by your mentor or the High Priestess.\n3. You need 80% to pass. If you don’t, look at the questions you missed, talk to your mentor on this step, and try again.',
           times: 1,
           response: 'none',
           checked_by: 'mentor',

@@ -1,7 +1,10 @@
 // Tests on a coven program's steps: the coven's copies of them, attempts and
 // their scores, what a trainee may do next, and the words for each. The
 // database scores and decides (supabase/migrations/20261110000100_coven_courses.sql:
-// submit_coven_quiz, score_coven_quiz); these say what the screens show.
+// submit_coven_quiz, score_coven_quiz; and 20261111000100_coven_test_keys_and_waiting_lists.sql:
+// a trainee's attempts carry the answer key only once they've passed that
+// test, with right/wrong per question in `marks` before then); these say what
+// the screens show.
 // Shared with the website as SaltCore.covens.quiz. Pure.
 
 import type { Question, QuestionType, Quiz } from './courses/types.ts';
@@ -48,6 +51,8 @@ export type Attempt = {
   feedback: string | null;
   submitted_at: string;
   scored_at: string | null;
+  /** Which choice questions were answered right ({ id: true | false }), even when the key is held back. */
+  marks?: Record<string, boolean>;
 };
 
 /** coven_quiz_standing: attempts used and allowed, and when the next may be taken. */
@@ -74,6 +79,20 @@ const sameSet = (a: number[], b: number[]) => {
   const y = [...new Set(b)].sort((m, n) => m - n);
   return x.length === y.length && x.every((v, i) => v === y[i]);
 };
+
+/** Whether an attempt came with its answer key (the right options, explanations, the scoring guide). */
+export const hasKey = (a: Pick<Attempt, 'questions'>) => a.questions.some((q) => isChoice(q) ? Array.isArray(q.correct) : q.rubric !== undefined || q.explanation !== undefined);
+
+/**
+ * What the trainee is told about the key on a result. The right answers and
+ * explanations show only once they've passed the test.
+ */
+export function keyLine(a: Pick<Attempt, 'questions' | 'status'>, self: boolean): string {
+  if (hasKey(a)) return '';
+  if (!self) return 'You’re taking this test yourself, so its answers stay hidden from you until you’ve passed it. You can still score the written answers.';
+  if (a.status === 'passed') return '';
+  return 'The right answers and their explanations show here once you’ve passed this test. Until then you can see which questions you got right, and your mentor’s comments.';
+}
 
 /** Whether a choice answer is right (all the right options, none of the wrong). Null for written answers or without the key. */
 export function isRight(q: Question, answer: Answer | undefined): boolean | null {
@@ -147,7 +166,7 @@ export type AttemptLine = {
   comment: string | null;
 };
 
-export function attemptLines(a: Pick<Attempt, 'questions' | 'answers' | 'manual_scores' | 'status'>): AttemptLine[] {
+export function attemptLines(a: Pick<Attempt, 'questions' | 'answers' | 'manual_scores' | 'status'> & { marks?: Attempt['marks'] }): AttemptLine[] {
   const final = a.status === 'passed' || a.status === 'failed';
   return a.questions.map((q, i) => {
     const answer = a.answers[q.id];
@@ -155,8 +174,10 @@ export function attemptLines(a: Pick<Attempt, 'questions' | 'answers' | 'manual_
       const m = a.manual_scores[q.id];
       return { question: q, number: i + 1, answer, right: null, points: final && m ? m.points : null, comment: final && m ? m.comment : null };
     }
-    const right = isRight(q, answer);
-    return { question: q, number: i + 1, answer, right, points: right ? q.points : 0, comment: null };
+    // Without the key, the database's mark says whether it was right.
+    const mark = (a as Pick<Attempt, 'marks'>).marks?.[q.id];
+    const right = isRight(q, answer) ?? (typeof mark === 'boolean' ? mark : null);
+    return { question: q, number: i + 1, answer, right, points: right === null ? null : right ? q.points : 0, comment: null };
   });
 }
 

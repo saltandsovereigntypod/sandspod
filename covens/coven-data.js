@@ -56,6 +56,38 @@
   }
 
   /**
+   * Ring the phone notes the caller's last change made due on a position's
+   * waiting list (best effort), as the app does (app/src/lib/covens/api.ts
+   * ringQueue): coven_queue_fresh_notes says which are theirs to ring, and
+   * coven-notify { queue_id, event } sends each once.
+   */
+  function ringQueue(covenId) {
+    if (!covenId) return;
+    try {
+      rpc("coven_queue_fresh_notes", { p_coven: covenId })
+        .then((notes) => {
+          for (const n of notes || []) {
+            try {
+              Promise.resolve(db().functions?.invoke?.("coven-notify", { body: { queue_id: n.queue_id, event: n.event } })).catch(() => {});
+            } catch {
+              // Phones hear about it another time.
+            }
+          }
+        })
+        .catch(() => {});
+    } catch {
+      // Before the migration there is nothing to ring.
+    }
+  }
+  /** Run a call, then ring what it made due on the waiting lists. */
+  async function andRing(covenId, call) {
+    const out = await call;
+    ringQueue(typeof covenId === "function" ? covenId(out) : covenId);
+    return out;
+  }
+  const readQueue = (raw) => global.SaltCore?.covens?.queue?.readEntries(raw) ?? [];
+
+  /**
    * Let the coven-notify edge function ring phones about an invitation (best
    * effort), as the app does (app/src/lib/covens/api.ts notifyInvitation):
    * just sent, it tells the person invited; just accepted, the one who sent it.
@@ -180,17 +212,20 @@
     revokeInvitation: (id) => rpc("revoke_coven_invitation", { p_invitation: id }),
     apply: async (covenId, answers, message) => notifyRequest("application", await rpc("apply_to_coven", { p_coven: covenId, p_answers: answers, p_message: message || null })),
     withdraw: (kind, id) => rpc("withdraw_coven_request", { p_kind: kind, p_id: id }),
-    leave: (covenId) => rpc("leave_coven", { p_coven: covenId }),
+    leave: (covenId) => andRing(covenId, rpc("leave_coven", { p_coven: covenId })),
     transfer: (covenId, userId) => rpc("transfer_coven", { p_coven: covenId, p_user: userId }),
     updateMember: (covenId, userId, changes) =>
-      rpc("update_coven_member", {
-        p_coven: covenId,
-        p_user: userId,
-        p_rank: changes.rank_id || null,
-        p_status: changes.status || null,
-        p_muted_until: changes.muted_until || null,
-        p_clear_mute: Boolean(changes.clear_mute)
-      }),
+      andRing(
+        covenId,
+        rpc("update_coven_member", {
+          p_coven: covenId,
+          p_user: userId,
+          p_rank: changes.rank_id || null,
+          p_status: changes.status || null,
+          p_muted_until: changes.muted_until || null,
+          p_clear_mute: Boolean(changes.clear_mute)
+        })
+      ),
     async myCovenApplication(covenId, userId) {
       if (!userId) return null;
       const rows = await run(db().from("coven_applications").select("*").eq("coven_id", covenId).eq("user_id", userId).order("created_at", { ascending: false }).limit(1));
@@ -212,7 +247,24 @@
       notifyRequest("advancement", await rpc("request_coven_advancement", { p_coven: covenId, p_rank: rankId, p_statement: statement || null, ...(answers && Object.keys(answers).length ? { p_answers: answers } : {}) })),
     /** `checked`: the custom items and mentor's approval ticked (sent only when there are some). */
     decideAdvancement: async (id, approve, note, checked) =>
-      notifyRequest("advancement", await rpc("decide_coven_advancement", { p_request: id, p_approve: approve, p_note: note || null, ...(checked && checked.length ? { p_checked: checked } : {}) })),
+      andRing((row) => row?.coven_id, Promise.resolve(notifyRequest("advancement", await rpc("decide_coven_advancement", { p_request: id, p_approve: approve, p_note: note || null, ...(checked && checked.length ? { p_checked: checked } : {}) })))),
+    /** A full position: approve the request onto its waiting list (they're told where they are in line). */
+    queueAdvancement: (id, note, checked) =>
+      andRing((out) => out?.request?.coven_id, rpc("queue_coven_advancement", { p_request: id, p_note: note || null, ...(checked && checked.length ? { p_checked: checked } : {}) })),
+
+    // Waiting lists for full positions (SaltCore.covens.queue; …_coven_test_keys_and_waiting_lists.sql), as the app's api.ts.
+    /** Everyone on the coven's lists, for its leaders (the Review cards); [] before the migration or for others. */
+    queues: (covenId) => rpc("coven_position_queues", { p_coven: covenId }).then(readQueue).catch(() => []),
+    queueList: (rankId) => rpc("coven_position_queue_list", { p_rank: rankId }).then((raw) => global.SaltCore?.covens?.queue?.readList(raw) ?? null),
+    myQueue: (covenId) => rpc("coven_my_queue", { p_coven: covenId }).then(readQueue).catch(() => []),
+    fillPosition: (covenId, rankId, userId, note, passOver) =>
+      andRing(covenId, rpc("fill_coven_position", { p_rank: rankId, p_user: userId, p_note: String(note || "").trim() || null, p_pass_over: Boolean(passOver) })),
+    holdProposal: (queueId, note) => rpc("hold_coven_queue_proposal", { p_queue: queueId, p_note: String(note || "").trim() || null }),
+    addToQueue: (covenId, rankId, userId, note) => andRing(covenId, rpc("add_to_coven_position_queue", { p_rank: rankId, p_user: userId, p_note: String(note || "").trim() || null })),
+    removeFromQueue: (covenId, queueId, reason) => andRing(covenId, rpc("remove_from_coven_position_queue", { p_queue: queueId, p_reason: String(reason || "").trim() })),
+    reorderQueue: (rankId, order, reason) =>
+      rpc("reorder_coven_position_queue", { p_rank: rankId, p_order: order, p_reason: String(reason || "").trim() || null }).then((raw) => global.SaltCore?.covens?.queue?.readList(raw) ?? null),
+    withdrawFromQueue: (covenId, queueId) => andRing(covenId, rpc("withdraw_from_coven_position_queue", { p_queue: queueId })),
 
     // Open positions (SaltCore.covens.positions; …_coven_open_positions.sql), as the app's api.ts.
     /** How many hold each position, and each open to you with your checklist; null before the migration. */
@@ -235,10 +287,12 @@
           // It's open; phones aren't told this time.
         }
       }
+      // More places may free one for the next on its waiting list.
+      ringQueue(out?.rank?.coven_id);
       return out;
     },
     closePosition: (rankId) => rpc("close_coven_position", { p_rank: rankId }),
-    setPositionPlaces: (rankId, places) => rpc("set_coven_position_places", { p_rank: rankId, p_seat_limit: places }),
+    setPositionPlaces: (rankId, places) => andRing((rank) => rank?.coven_id, rpc("set_coven_position_places", { p_rank: rankId, p_seat_limit: places })),
     saveRankRequirements: (rankId, items, questions) => rpc("save_coven_rank_requirements", { p_rank: rankId, p_items: items, p_questions: questions }),
     /**
      * Applications and requests to advance waiting in each coven you review
@@ -538,7 +592,8 @@
     addMemberNote: (covenId, userId, body) => rpc("add_coven_member_note", { p_coven: covenId, p_user: userId, p_body: String(body || "").trim() }),
     removeMemberNote: (id) => rpc("remove_coven_member_note", { p_note: id }),
     /** Remove or ban someone, keeping the reason with their record. */
-    removeMember: (covenId, userId, status, reason) => rpc("remove_coven_member", { p_coven: covenId, p_user: userId, p_status: status, p_reason: String(reason || "").trim() || null }),
+    removeMember: (covenId, userId, status, reason) =>
+      andRing(covenId, rpc("remove_coven_member", { p_coven: covenId, p_user: userId, p_status: status, p_reason: String(reason || "").trim() || null })),
 
     // --- the coven's Book of Shadows -------------------------------------------
     // The same model as a personal grimoire (coven_grimoire_*), as the app's
@@ -654,7 +709,8 @@
     stagePasses: (covenId) => run(db().from("coven_program_stage_passes").select("*").eq("coven_id", covenId).limit(2000)),
     recordTask: (enrollmentId, taskId, response, count) => rpc("record_coven_task", { p_enrollment: enrollmentId, p_task: taskId, p_response: response || null, p_count: count ?? 1 }),
     checkTask: (progressId, approve, feedback) => rpc("check_coven_task", { p_progress: progressId, p_approve: approve, p_feedback: feedback || null }),
-    passStage: (enrollmentId, note, override) => rpc("pass_coven_stage", { p_enrollment: enrollmentId, p_note: note || null, p_override: Boolean(override) }),
+    /** Finishing a program into a full position puts them on its waiting list (and they're told). */
+    passStage: (enrollmentId, note, override) => andRing((e) => e?.coven_id, rpc("pass_coven_stage", { p_enrollment: enrollmentId, p_note: note || null, p_override: Boolean(override) })),
     setEnrollmentStatus: (enrollmentId, status) => rpc("set_coven_enrollment_status", { p_enrollment: enrollmentId, p_status: status }),
 
     // --- lessons, tests, practice and each step's conversation ---------------
@@ -684,7 +740,12 @@
     quizzes: (covenId) => run(db().from("coven_program_quizzes").select("*").eq("coven_id", covenId).limit(1000)).catch(() => []),
     quizView: (quizId, enrollmentId) => rpc("coven_quiz_view", { p_quiz: quizId, p_enrollment: enrollmentId || null }),
     saveQuiz: (covenId, id, quiz) => rpc("save_coven_program_quiz", { p_coven: covenId, p_id: id || null, p_quiz: quiz }),
-    attempts: (covenId) => run(db().from("coven_quiz_attempts").select("*").eq("coven_id", covenId).order("submitted_at", { ascending: false }).limit(2000)).catch(() => []),
+    /** Attempts as this person may see them (their own carry the key only once passed); before that migration, the table as it was. */
+    attempts: (covenId) =>
+      rpc("coven_quiz_attempts_seen", { p_coven: covenId })
+        .then((rows) => rows || [])
+        .catch(() => run(db().from("coven_quiz_attempts").select("*").eq("coven_id", covenId).order("submitted_at", { ascending: false }).limit(2000)))
+        .catch(() => []),
     quizStanding: (enrollmentId, taskId) => rpc("coven_quiz_standing", { p_enrollment: enrollmentId, p_task: taskId }),
     submitQuiz: (enrollmentId, taskId, answers) => rpc("submit_coven_quiz", { p_enrollment: enrollmentId, p_task: taskId, p_answers: answers }),
     scoreQuiz: (attemptId, scores, feedback, final) => rpc("score_coven_quiz", { p_attempt: attemptId, p_scores: scores, p_feedback: feedback || null, p_final: Boolean(final) }),

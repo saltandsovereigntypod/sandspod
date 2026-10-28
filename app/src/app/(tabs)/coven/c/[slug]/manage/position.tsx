@@ -5,6 +5,7 @@ import { Alert, StyleSheet, Text, View } from 'react-native';
 import { Button } from '../../../../../../components/Button';
 import { CovenScreen } from '../../../../../../components/covens/CovenScreen';
 import { OpeningEditor, RequirementsEditor } from '../../../../../../components/covens/PositionEditors';
+import { QueuePanel } from '../../../../../../components/covens/Queue';
 import { CheckRow, Field, Notice, Section } from '../../../../../../components/more/ui';
 import * as api from '../../../../../../lib/covens/api';
 import { useCoven } from '../../../../../../lib/covens/CovenContext';
@@ -42,6 +43,7 @@ export default function ManagePosition() {
     <CovenScreen title={rank ? rank.name : 'Add a position'} need="manage">
       {ready ? <PositionForm key={rank?.id ?? 'new'} rank={rank} /> : <Text style={type.caption}>This position couldn’t be found.</Text>}
       {rank && <OpeningEditor key={`open-${rank.id}`} rank={rank} members={members} onSaved={saved} />}
+      {rank && <QueuePanel key={`queue-${rank.id}`} rank={rank} members={members} onChanged={() => void saved()} />}
       {rank && <RequirementsEditor key={`asks-${rank.id}`} rank={rank} onSaved={saved} />}
     </CovenScreen>
   );

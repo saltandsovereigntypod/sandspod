@@ -915,7 +915,7 @@ export default {
         {
           title: 'Take the test',
           kind: 'study',
-          instructions: '1. Look back over the lessons, especially "Your rights, red flags and green flags" and "What membership will ask of you".\n2. Take the test. Choice questions are scored straight away; your mentor scores the written answers.\n3. You need 80% to pass. If you don’t pass, read the explanations, talk to your mentor on this step, and try again.',
+          instructions: '1. Look back over the lessons, especially "Your rights, red flags and green flags" and "What membership will ask of you".\n2. Take the test. Choice questions are scored straight away; your mentor scores the written answers.\n3. You need 80% to pass. If you don’t pass, look at the questions you missed, talk to your mentor on this step, and try again.',
           times: 1,
           response: 'none',
           checked_by: 'mentor',
