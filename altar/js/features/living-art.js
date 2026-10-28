@@ -59,6 +59,16 @@
   const xmlEsc = (value) => String(value ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
 
   const HALF_WIDTH = { taper: 0.09, "chime-spell": 0.08, "beeswax-rolled": 0.1, birthday: 0.05, "seven-knob": 0.13, "double-action": 0.12, reversible: 0.12, pillar: 0.3, jar: 0.3, vigil: 0.3, novena: 0.3, figure: 0.22 };
+  const FIGURE_HEAD = 0.07;
+  /** A figure's outline from its measured widths (CandleMarks.tsx silhouettePath). */
+  function silhouettePath(edges, pic) {
+    const last = edges.length - 1;
+    const mid = pic.left + pic.width / 2;
+    const at = (i, side) => `${(mid + edges[i][side] * pic.width).toFixed(1)} ${(pic.top + (i / last) * pic.height).toFixed(1)}`;
+    const right = edges.map((_, i) => at(i, 1));
+    const left = edges.map((_, i) => at(last - i, 0));
+    return `M ${[...right, ...left].join(" L ")} Z`;
+  }
   const FLECKS = [[-0.55, 0.12], [0.35, 0.2], [-0.2, 0.33], [0.6, 0.41], [-0.62, 0.52], [0.12, 0.6], [0.45, 0.7], [-0.35, 0.78], [0.2, 0.86], [-0.05, 0.47]];
   const DRIPS = [[-0.92, 0.55], [0.88, 0.8], [-0.45, 0.4], [0.55, 1], [0.1, 0.5], [-0.78, 0.9]];
 
@@ -91,21 +101,25 @@
 
     const flame = geo.flame;
     const cx = (flame.centerX / 100) * width;
-    let half; let surface; let bottom; let carveTop;
+    let half; let crown; let surface; let bottom; let carveTop;
     if (burn && pic) {
       half = burn.half * pic.width;
+      crown = A.wax.halfAt(burn, burn.waxTop, (cx - pic.left) / pic.width - 0.5) * pic.width;
       surface = pic.top + burn.waxTop * pic.height;
       bottom = pic.top + burn.bottom * pic.height;
       carveTop = pic.top + ((burn.mode === "cap" ? burn.capEnd : burn.top) + 0.03) * pic.height;
     } else {
       half = (HALF_WIDTH[form] ?? 0.2) * width;
+      crown = A.wax.FIGURE_FORMS.has(form) ? FIGURE_HEAD * width : half;
       surface = Math.max(2, ((flame.flameTop + flame.flameHeight) / 100) * height + 1);
       bottom = height * 0.93;
       carveTop = surface + (bottom - surface) * 0.06;
     }
     const body = Math.max(1, bottom - surface);
     const goneLine = burn && pic ? surface + (burn.mode === "cap" ? (burn.capEnd - burn.top) * pic.height : 0) : surface;
-    const rim = Math.max(1.2, half * 0.2);
+    const rim = Math.max(1.2, crown * 0.2);
+    // A figure's marks stay inside its outline, so nothing hangs off it like a cylinder.
+    const outline = burn?.outline && pic ? silhouettePath(burn.outline, pic) : "";
     const waxHex = A.colors.waxColor(String(saved.color || "white"));
     const cut = incision(waxHex);
     const drip = dripLook(waxHex, lit);
@@ -120,20 +134,22 @@
       <linearGradient id="sheen-${uid}" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="rgb(255,236,180)" stop-opacity="0"/><stop offset="0.35" stop-color="rgb(255,236,180)" stop-opacity="0.3"/><stop offset="0.5" stop-color="rgb(255,250,230)" stop-opacity="0.42"/><stop offset="0.7" stop-color="rgb(255,236,180)" stop-opacity="0.14"/><stop offset="1" stop-color="rgb(255,236,180)" stop-opacity="0"/></linearGradient>
       <radialGradient id="pool-${uid}" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="rgb(255,250,215)" stop-opacity="1"/><stop offset="0.45" stop-color="rgb(255,214,130)" stop-opacity="0.85"/><stop offset="1" stop-color="rgb(255,170,70)" stop-opacity="0"/></radialGradient>
       <linearGradient id="glow-${uid}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="rgb(255,206,120)" stop-opacity="0.75"/><stop offset="0.5" stop-color="rgb(255,190,100)" stop-opacity="0.25"/><stop offset="1" stop-color="rgb(255,190,100)" stop-opacity="0"/></linearGradient>
-      <linearGradient id="glass-${uid}" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="rgb(40,34,30)" stop-opacity="0.82"/><stop offset="0.22" stop-color="rgb(70,64,58)" stop-opacity="0.7"/><stop offset="0.3" stop-color="rgb(220,220,214)" stop-opacity="0.55"/><stop offset="0.38" stop-color="rgb(70,64,58)" stop-opacity="0.7"/><stop offset="1" stop-color="rgb(40,34,30)" stop-opacity="0.82"/></linearGradient>
+      ${outline ? `<clipPath id="outline-${uid}"><path d="${outline}"/></clipPath>` : ""}<linearGradient id="glass-${uid}" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="rgb(40,34,30)" stop-opacity="0.82"/><stop offset="0.22" stop-color="rgb(70,64,58)" stop-opacity="0.7"/><stop offset="0.3" stop-color="rgb(220,220,214)" stop-opacity="0.55"/><stop offset="0.38" stop-color="rgb(70,64,58)" stop-opacity="0.7"/><stop offset="1" stop-color="rgb(40,34,30)" stop-opacity="0.82"/></linearGradient>
     </defs>`);
 
-    const wick = (top) => `<line x1="${n2(cx)}" y1="${n2(top)}" x2="${n2(cx)}" y2="${n2(surface)}" stroke="rgb(30,20,14)" stroke-width="${n2(Math.max(0.8, half * 0.06))}" stroke-linecap="round"/>`;
+    const wick = (top) => `<line x1="${n2(cx)}" y1="${n2(top)}" x2="${n2(cx)}" y2="${n2(surface)}" stroke="rgb(30,20,14)" stroke-width="${n2(Math.max(0.8, crown * 0.06))}" stroke-linecap="round"/>`;
     if (glass && glass.drop > 0) {
       out.push(`<rect x="${n2(cx - half)}" y="${n2(pic.top + glass.top * pic.height - rim)}" width="${n2(half * 2)}" height="${n2(glass.drop * pic.height + rim)}" fill="url(#glass-${uid})"/>`);
       out.push(`<ellipse cx="${n2(cx)}" cy="${n2(surface)}" rx="${n2(half)}" ry="${n2(rim)}" fill="${mix(waxHex, [255, 255, 255], 0.25)}"/>`);
       out.push(wick(surface - rim * 1.6));
     }
+    const clipOpen = outline ? `<g clip-path="url(#outline-${uid})">` : "<g>";
     if (burn?.mode === "crop" && burn.drop > 0) {
-      out.push(`<ellipse cx="${n2(cx)}" cy="${n2(surface)}" rx="${n2(half)}" ry="${n2(rim)}" fill="${mix(waxHex, [255, 255, 255], 0.2)}"/>`);
+      out.push(`${clipOpen}<ellipse cx="${n2(cx)}" cy="${n2(surface)}" rx="${n2(crown)}" ry="${n2(rim)}" fill="${mix(waxHex, [255, 255, 255], 0.2)}"/></g>`);
       out.push(wick(surface - rim * 1.8));
     }
-    if (oil) out.push(`<rect x="${n2(cx - half * 0.85)}" y="${n2(surface + body * 0.04)}" width="${n2(half * 0.9)}" height="${n2(body * 0.9)}" rx="${n2(half * 0.4)}" fill="url(#sheen-${uid})"/>`);
+    out.push(clipOpen);
+    if (oil) out.push(`<rect x="${n2(cx - half * 0.72)}" y="${n2(surface + body * 0.06)}" width="${n2(half * 0.55)}" height="${n2(body * 0.86)}" rx="${n2(half * 0.27)}" fill="url(#sheen-${uid})" opacity="0.6"/>`);
     if (herbs.length) {
       FLECKS.slice(0, Math.min(FLECKS.length, 4 + herbs.length * 2)).forEach(([fx, fy], i) => {
         const herb = herbs[i % herbs.length];
@@ -189,22 +205,23 @@
       </g></g>`);
     });
     if (wax.kind === "tunnel") {
-      out.push(`<ellipse cx="${n2(cx)}" cy="${n2(surface + rim * 0.3)}" rx="${n2(half * 0.95)}" ry="${n2(rim)}" fill="${mix(waxHex, [255, 248, 236], 0.45)}" opacity="0.6"/>`);
-      out.push(`<ellipse cx="${n2(cx)}" cy="${n2(surface + rim * 0.45)}" rx="${n2(half * (0.34 + 0.22 * wax.amount))}" ry="${n2(rim * (0.55 + 0.2 * wax.amount))}" fill="rgb(40,20,10)" opacity="${n2(0.55 + 0.3 * wax.amount)}"/>`);
+      out.push(`<ellipse cx="${n2(cx)}" cy="${n2(surface + rim * 0.3)}" rx="${n2(crown * 0.95)}" ry="${n2(rim)}" fill="${mix(waxHex, [255, 248, 236], 0.45)}" opacity="0.6"/>`);
+      out.push(`<ellipse cx="${n2(cx)}" cy="${n2(surface + rim * 0.45)}" rx="${n2(crown * (0.34 + 0.22 * wax.amount))}" ry="${n2(rim * (0.55 + 0.2 * wax.amount))}" fill="rgb(40,20,10)" opacity="${n2(0.55 + 0.3 * wax.amount)}"/>`);
     }
     if (wax.kind === "pool") {
-      out.push(`<ellipse cx="${n2(cx)}" cy="${n2(surface + rim * 0.35)}" rx="${n2(half * 0.94)}" ry="${n2(rim * 0.95)}" fill="${mix(waxHex, [255, 250, 236], 0.55)}" opacity="${n2(0.5 + 0.3 * wax.amount)}" stroke="rgb(255,252,240)" stroke-opacity="0.65" stroke-width="${n2(Math.max(0.5, half * 0.04))}"/>`);
-      out.push(`<ellipse cx="${n2(cx - half * 0.3)}" cy="${n2(surface + rim * 0.2)}" rx="${n2(half * 0.28)}" ry="${n2(rim * 0.3)}" fill="rgb(255,255,250)" opacity="0.55"/>`);
+      out.push(`<ellipse cx="${n2(cx)}" cy="${n2(surface + rim * 0.35)}" rx="${n2(crown * 0.94)}" ry="${n2(rim * 0.95)}" fill="${mix(waxHex, [255, 250, 236], 0.55)}" opacity="${n2(0.5 + 0.3 * wax.amount)}" stroke="rgb(255,252,240)" stroke-opacity="0.65" stroke-width="${n2(Math.max(0.5, crown * 0.04))}"/>`);
+      out.push(`<ellipse cx="${n2(cx - crown * 0.3)}" cy="${n2(surface + rim * 0.2)}" rx="${n2(crown * 0.28)}" ry="${n2(rim * 0.3)}" fill="rgb(255,255,250)" opacity="0.55"/>`);
     }
     if (lit && wax.melt > 0) {
-      out.push(`<rect x="${n2(cx - half)}" y="${n2(surface)}" width="${n2(half * 2)}" height="${n2(Math.min(body, Math.max(rim * 3, body * 0.16)))}" fill="url(#glow-${uid})" opacity="${n2((lightness(waxHex) < 0.32 ? 0.22 : 0.4) + 0.3 * wax.melt)}"/>`);
-      out.push(`<ellipse cx="${n2(cx)}" cy="${n2(surface + rim * 0.35)}" rx="${n2(half * (0.45 + 0.5 * wax.melt))}" ry="${n2(rim * (0.55 + 0.45 * wax.melt))}" fill="url(#pool-${uid})" opacity="${n2(0.6 + 0.4 * wax.melt)}"/>`);
+      const glow = outline ? half * 1.6 : crown;
+      if (outline || !A.wax.FIGURE_FORMS.has(form)) out.push(`<rect x="${n2(cx - glow)}" y="${n2(surface)}" width="${n2(glow * 2)}" height="${n2(Math.min(body, Math.max(rim * 3, body * 0.16)))}" rx="${n2(crown * 0.5)}" fill="url(#glow-${uid})" opacity="${n2((lightness(waxHex) < 0.32 ? 0.22 : 0.4) + 0.3 * wax.melt)}"/>`);
+      out.push(`<ellipse cx="${n2(cx)}" cy="${n2(surface + rim * 0.35)}" rx="${n2(crown * (0.45 + 0.5 * wax.melt))}" ry="${n2(rim * (0.55 + 0.45 * wax.melt))}" fill="url(#pool-${uid})" opacity="${n2(0.6 + 0.4 * wax.melt)}"/>`);
     }
     if (wax.drips > 0) {
       DRIPS.slice(0, wax.drips).forEach(([dx, len]) => {
-        const x = cx + dx * half * 0.84;
+        const x = cx + dx * crown * (form === "seven-knob" ? 0.6 : 0.84);
         const l = Math.min(body * 0.7, body * (0.08 + 0.26 * len * Math.max(wax.amount, wax.melt * 0.7)));
-        const w = Math.max(1.1, half * 0.17);
+        const w = Math.max(1.1, crown * 0.17);
         const r = w * 0.62;
         const top = surface + rim * (0.3 + 0.3 * (1 - Math.abs(dx)));
         const end = top + l;
@@ -214,6 +231,7 @@
           <ellipse cx="${n2(x - r * 0.3)}" cy="${n2(end - r * 0.15)}" rx="${n2(r * 0.28)}" ry="${n2(r * 0.22)}" fill="${drip.shine}" opacity="0.4"/></g>`);
       });
     }
+    out.push("</g>");
     if (wax.kind === "remnant" && wax.amount > 0) {
       out.push(`<ellipse cx="${n2(cx)}" cy="${n2(bottom - rim * 0.3)}" rx="${n2(Math.max(half * 2, width * 0.2))}" ry="${n2(Math.max(2, rim * 1.2, width * 0.05))}" fill="${mix(waxHex, [70, 66, 60], 0.25)}" opacity="0.88" stroke="${mix(waxHex, [20, 10, 5], 0.45)}" stroke-opacity="0.55" stroke-width="${n2(Math.max(0.5, width * 0.012))}"/>`);
       out.push(`<ellipse cx="${n2(cx + half * 0.6)}" cy="${n2(bottom - rim * 0.1)}" rx="${n2(Math.max(half * 0.7, width * 0.06))}" ry="${n2(Math.max(1, width * 0.025))}" fill="${mix(waxHex, [20, 10, 5], 0.3)}" opacity="0.5"/>`);
