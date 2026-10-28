@@ -372,6 +372,7 @@ function renderCabinetTile(item, form, isMultiForm = false) {
 
       <span class="cabinet-tile-name">${isMultiForm ? form.label : item.name}</span>
       ${item.category === "seasonal" && item.description ? `<span class="cabinet-tile-festival">${item.description}</span>` : ""}
+      <span class="cabinet-tile-count" data-cabinet-count hidden></span>
 
       <span class="cabinet-custom-actions">
         <span data-upload-cabinet-image>${hasOverride ? "Replace Form Image" : "Add Form Image"}</span>
@@ -473,9 +474,50 @@ if (typeof document !== "undefined") document.addEventListener("toggle", (event)
   else closedCabinetPantheons.add(section.dataset.cabinetPantheon);
 }, true);
 
+/* The cabinet stays open while you place things (as the app's CabinetSheet):
+   each tile says how many are on the altar, the foot of the cabinet says what
+   was just added, and a redraw keeps your place in the list unless the drawer
+   or the search changed. */
+let cabinetShownView = null;
+let cabinetRequestedItemShown = false;
+
+function refreshCabinetCounts() {
+  if (!cabinetContent) return;
+  const counts = new Map();
+  (altarStage ? altarStage.querySelectorAll(".altar-object") : []).forEach((object) => {
+    const label = object.dataset.label || "";
+    if (label) counts.set(label, (counts.get(label) || 0) + 1);
+  });
+  cabinetContent.querySelectorAll(".cabinet-tile[data-label]").forEach((tile) => {
+    const count = counts.get(tile.dataset.label || "") || 0;
+    const badge = tile.querySelector("[data-cabinet-count]");
+    tile.classList.toggle("is-on-altar", count > 0);
+    if (!badge) return;
+    badge.hidden = count === 0;
+    badge.textContent = count > 1 ? `✓ on the altar ×${count}` : count ? "✓ on the altar" : "";
+  });
+}
+
+function noteCabinetPlacement(label) {
+  const added = document.querySelector("[data-cabinet-added]");
+  const undo = document.querySelector("[data-cabinet-undo]");
+  if (added) added.textContent = label ? `Added: ${label}` : "";
+  if (undo) undo.hidden = !label;
+  refreshCabinetCounts();
+}
+
 function renderCabinetItems() {
   if (!cabinetContent) return;
   ensureSeasonalCabinetItems();
+  const view = `${activeCabinetCategory}|${cabinetSearchTerm.trim().toLowerCase()}`;
+  const keepPlace = cabinetShownView === view;
+  const scroller = typeof altarCabinet !== "undefined" ? altarCabinet : null;
+  const scrollTop = scroller ? scroller.scrollTop : 0;
+  cabinetShownView = view;
+  const restorePlace = () => {
+    refreshCabinetCounts();
+    if (scroller && keepPlace) scroller.scrollTop = scrollTop;
+  };
 
   const search = cabinetSearchTerm.toLowerCase().trim();
   // A search looks in every drawer at once (as the app's cabinet and the coven ritual planner's
@@ -513,6 +555,7 @@ function renderCabinetItems() {
 
   if (items.length === 0 && activeCabinetCategory !== "backgrounds") {
     cabinetContent.innerHTML = `<p class="cabinet-empty">No cabinet items found.</p>`;
+    restorePlace();
     return;
   }
 
@@ -661,11 +704,14 @@ function renderCabinetItems() {
       `;
       });
 
-  const requestedItem = cabinetSearchParams.get("item");
+  restorePlace();
+  // A link to one item (?item=) shows it once, not on every redraw.
+  const requestedItem = cabinetRequestedItemShown ? "" : cabinetSearchParams.get("item");
   const requestedForm = cabinetSearchParams.get("form");
   if (requestedItem) {
+    cabinetRequestedItemShown = true;
     const targetLabel = requestedForm ? `${requestedItem} ${requestedForm}`.toLowerCase().replaceAll("-", " ") : requestedItem.toLowerCase();
-    const tile = [...cabinetItemsGrid.querySelectorAll("[data-label]")].find((item) => String(item.dataset.label || "").toLowerCase().replaceAll("-", " ").includes(targetLabel));
+    const tile = [...cabinetContent.querySelectorAll("[data-label]")].find((item) => String(item.dataset.label || "").toLowerCase().replaceAll("-", " ").includes(targetLabel));
     if (tile) { tile.classList.add("is-search-target"); tile.scrollIntoView({ block: "nearest" }); }
   }
 }

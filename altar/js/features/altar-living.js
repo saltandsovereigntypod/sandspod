@@ -401,7 +401,8 @@
   function openAnoint() {
     const object = selected();
     const core = A();
-    const state = { oil: null, typedOil: "", herbs: [], direction: "draw" };
+    // As many oils as you like, ticked on and off, and one of your own (the app's DressingSheet).
+    const state = { oils: [], typedOil: "", herbs: [], direction: "draw" };
     const apothecaryOils = (Array.isArray(global.apothecaryItems) ? global.apothecaryItems : []).filter((a) => /oil/i.test(String(a.type || a.apothecaryType || ""))).map((a) => a.name).filter(Boolean);
     const oils = [...new Set([...apothecaryOils, ...COMMON_OILS])];
     const herbNames = (() => {
@@ -411,18 +412,11 @@
         return [];
       }
     })();
-    const chosen = () => {
-      const at = nowIso();
-      const list = [];
-      const oilName = state.typedOil.trim() || state.oil;
-      if (oilName) list.push(core.dressing.dressingEntry("oil", oilName, state.direction, at, B().library()));
-      state.herbs.forEach((h) => list.push(core.dressing.dressingEntry("herb", h, state.direction, at, B().library())));
-      return list;
-    };
+    const chosen = () => core.dressing.chosenDressings({ oils: state.oils, typedOil: state.typedOil, herbs: state.herbs }, state.direction, nowIso(), B().library());
     const draw = (body) => {
       const existing = core.livingState.dressingsOf(B().toSaved(object));
       const reading = core.dressing.dressingCorrespondences([...existing, ...chosen()], B().library());
-      body.querySelector("[data-oils]").innerHTML = B().chips(oils.map((name) => ({ label: name, action: "oil", pressed: !state.typedOil.trim() && state.oil === name, data: { name } })));
+      body.querySelector("[data-oils]").innerHTML = B().chips(oils.map((name) => ({ label: name, action: "oil", pressed: state.oils.includes(name), data: { name } })));
       body.querySelector("[data-herbs]").innerHTML = state.herbs.length ? B().chips(state.herbs.map((h) => ({ label: `${h}  ×`, action: "unherb", data: { name: h }, hint: `Remove ${h}` }))) : "";
       body.querySelector("[data-direction]").innerHTML = B().chips(core.dressing.DIRECTIONS.map((d) => ({ label: d.label, action: "direction", pressed: state.direction === d.id, data: { id: d.id } }))) + `<p class="app-caption">${esc(core.dressing.DIRECTIONS.find((d) => d.id === state.direction)?.how)}</p>`;
       body.querySelector("[data-together]").innerHTML = `<p class="app-label">Together</p><p>${esc(reading.summary)}</p>${existing.length ? `<p class="app-caption">Already on it: ${esc(existing.map((d) => d.label).join(", "))}.</p>` : ""}`;
@@ -431,8 +425,8 @@
     B().openSheet({
       eyebrow: "Dress & anoint",
       title: short(object.dataset.label, "Candle"),
-      html: `<p class="app-label">An oil</p><div data-oils></div>
-        <label class="app-field"><span>Or your own oil</span><input data-typed-oil maxlength="40" placeholder="Or type your own blend"></label>
+      html: `<p class="app-label">Oils</p><div data-oils></div>
+        <label class="app-field"><span>And your own oil</span><input data-typed-oil maxlength="40" placeholder="Type your own blend, if you have one"></label>
         <p class="app-label">Herbs to roll it in</p>
         <label class="app-field"><span>Search herbs</span><input data-herb-search list="anoint-herbs" placeholder="Search herbs…" autocomplete="off"></label>
         <datalist id="anoint-herbs">${herbNames.map((h) => `<option value="${esc(h)}"></option>`).join("")}</datalist>
@@ -455,7 +449,7 @@
         search.addEventListener("keydown", (event) => { if (event.key === "Enter") { event.preventDefault(); addHerb(); } });
         body.addEventListener("click", (event) => {
           const button = event.target.closest("[data-app-action]");
-          if (button?.dataset.appAction === "oil") { state.typedOil = ""; body.querySelector("[data-typed-oil]").value = ""; state.oil = state.oil === button.dataset.name ? null : button.dataset.name; draw(body); }
+          if (button?.dataset.appAction === "oil") { state.oils = core.dressing.toggleName(state.oils, button.dataset.name); draw(body); }
           if (button?.dataset.appAction === "unherb") { state.herbs = state.herbs.filter((h) => h !== button.dataset.name); draw(body); }
           if (button?.dataset.appAction === "direction") { state.direction = button.dataset.id; draw(body); }
           if (event.target.closest("[data-dress]")) {
@@ -475,20 +469,39 @@
     const object = selected();
     const core = A();
     const els = B().objects();
-    const ingredients = els.map((el) => ({ el, saved: B().toSaved(el) })).filter(({ saved }) => core.livingState.canDressWith(saved));
+    const ingredients = els.filter((el) => el !== object).map((el) => ({ el, saved: B().toSaved(el) })).filter(({ saved }) => core.livingState.canDressWith(saved));
+    // Tick as many as you like, then dress the candle with them all at once (the app's DressSheet).
+    const ticked = new Set();
+    const draw = (body) => {
+      body.querySelector("[data-ingredients]").innerHTML = B().chips(ingredients.map(({ saved }, i) => ({ label: `${ticked.has(i) ? "✓ " : ""}${short(saved.label, "Ingredient")}`, action: "ingredient", pressed: ticked.has(i), data: { i } })));
+      const button = body.querySelector("[data-dress]");
+      button.disabled = !ticked.size;
+      button.textContent = ticked.size > 1 ? `Dress the candle with these ${ticked.size}` : "Dress the candle";
+    };
     B().openSheet({
       eyebrow: short(object.dataset.label, "Candle"),
       title: "Dress from the altar",
       html: ingredients.length
-        ? `<p class="app-caption">A loose herb or an oil that’s on the altar, rubbed onto the candle.</p>${B().chips(ingredients.map(({ saved }, i) => ({ label: short(saved.label, "Ingredient"), action: "ingredient", data: { i } })))}`
+        ? `<p class="app-caption">Tick the loose herbs and oils on the altar to rub onto the candle, as many as you like.</p><div data-ingredients></div><button type="button" class="app-button" data-dress disabled>Dress the candle</button>`
         : `<p class="app-caption">Set a loose herb or an oil on the altar first (from the cabinet), then dress the candle with it.</p>`,
       onMount(body, dialog, close) {
+        if (!ingredients.length) return;
+        draw(body);
         body.addEventListener("click", (event) => {
           const button = event.target.closest('[data-app-action="ingredient"]');
-          if (!button) return;
-          const ingredient = ingredients[Number(button.dataset.i)];
-          change((o) => core.livingState.dressCandle(o, ingredient.saved, nowIso()));
+          if (button) {
+            const i = Number(button.dataset.i);
+            if (ticked.has(i)) ticked.delete(i);
+            else ticked.add(i);
+            draw(body);
+            body.querySelector(`[data-app-action="ingredient"][data-i="${i}"]`)?.focus();
+            return;
+          }
+          if (!event.target.closest("[data-dress]") || !ticked.size) return;
+          const chosen = [...ticked].map((i) => ingredients[i].saved);
+          change((o) => core.livingState.dressCandleWithAll(o, chosen, nowIso()));
           close();
+          if (chosen.length > 1) notice(`Dressed with ${chosen.length} things from the altar.`);
         });
       }
     });

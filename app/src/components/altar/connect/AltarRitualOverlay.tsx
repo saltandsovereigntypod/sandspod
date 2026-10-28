@@ -180,7 +180,7 @@ export function AltarRitualOverlay({ altar, onEffect, closing, intentionKey, can
           </Pressable>
         </View>
 
-        <ScrollView style={styles.scroll} contentContainerStyle={styles.body}>
+        <ScrollView style={styles.scroll} contentContainerStyle={styles.body} keyboardShouldPersistTaps="handled">
         {showClosing ? (
           <View style={styles.body}>
             {plan.closing.text ? <Text style={styles.text}>{plan.closing.text}</Text> : <Text style={styles.text}>Thank what you called in, and say the working is done.</Text>}

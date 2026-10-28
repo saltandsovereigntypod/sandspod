@@ -850,10 +850,11 @@
     };
     switch (act) {
       case "view":
+        leaveOutline();
         m.view = d.view;
         m.more = false;
         draw();
-        global.scrollTo(0, 0);
+        global.scrollTo(0, d.view === "outline" ? m.outlineY || 0 : 0);
         return;
       case "kind":
         m.kind = d.kind;
@@ -887,6 +888,7 @@
         return begin({ kind: m.kind, plan, steps: L.stepsFromTemplate(copied).map((s) => ({ ...B().blankBuilderStep(work), ...s, assignees: [], key: B().shortId("k") })), title: t?.title || "", intention: t?.intention || "" });
       }
       case "open":
+        leaveOutline();
         m.view = { step: d.key };
         m.more = false;
         draw();
@@ -895,6 +897,7 @@
       case "add": {
         const s = B().blankBuilderStep(d.section);
         m.steps = B().insertStep(m.plan, m.steps, s, d.section);
+        leaveOutline();
         m.view = { step: s.key };
         m.choosing = { key: s.key, query: "" };
         m.group = "";
@@ -1171,6 +1174,11 @@
     el.addEventListener("click", onClick);
   }
 
+  // Where you were in the outline, so coming back from a step returns there (as the app's planner).
+  function leaveOutline() {
+    if (m && m.view === "outline") m.outlineY = global.scrollY;
+  }
+
   // coven.js asks first on the browser's Back; true means the builder took it.
   function onPop() {
     if (swallowPop) {
@@ -1181,6 +1189,7 @@
     innerPushed = false;
     m.view = "outline";
     draw();
+    global.scrollTo(0, m.outlineY || 0);
     return true;
   }
 

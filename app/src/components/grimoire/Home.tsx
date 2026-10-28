@@ -285,7 +285,7 @@ export function SectionPicker({
           </Text>
           <Button label="Cancel" variant="text" onPress={onClose} />
         </View>
-        <ScrollView contentContainerStyle={styles.sheetContent}>
+        <ScrollView contentContainerStyle={styles.sheetContent} keyboardShouldPersistTaps="handled">
           <View style={styles.list}>
             {loose && <SheetRow label="No section" selected={!shown?.section_id} onPress={() => onChoose(null)} />}
             {sections.map((s) => (

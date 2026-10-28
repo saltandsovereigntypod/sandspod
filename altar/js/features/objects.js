@@ -573,8 +573,18 @@ function placeObject(options) {
   altarStage.appendChild(object);
 
   const scale = Number(object.dataset.scale || 1);
-  const centerX = altarStage.clientWidth / 2;
-  const centerY = altarStage.clientHeight / 2;
+  // The middle of the altar, or a small step aside from what already sits
+  // there, so things placed one after another don't stack exactly on top of
+  // each other (app/src/lib/altar/cabinet.ts nudgedCenter).
+  const stageWidth = altarStage.clientWidth || 1;
+  const stageHeight = altarStage.clientHeight || 1;
+  const taken = Array.from(altarStage.querySelectorAll(".altar-object"))
+    .filter((other) => other !== object)
+    .map((other) => ({ cx: (parseFloat(other.style.left) || 0) / stageWidth, cy: (parseFloat(other.style.top) || 0) / stageHeight }));
+  const nudge = window.SaltCore?.altar?.cabinet?.nudgedCenter;
+  const spot = typeof nudge === "function" ? nudge({ cx: 0.5, cy: 0.5 }, taken) : { cx: 0.5, cy: 0.5 };
+  const centerX = spot.cx * stageWidth;
+  const centerY = spot.cy * stageHeight;
 
   object.style.left = `${centerX}px`;
   object.style.top = `${centerY}px`;

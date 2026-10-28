@@ -386,6 +386,11 @@ export function dressCandle(candle: SavedObject, ingredient: SavedObject, now: s
   return writeLivingState(candle, { ...state, lastUsedAt: now, candle: { ...state.candle, dressings: [...current, dressing] } }, now);
 }
 
+/** Dress a candle with several things from the altar at once (Dress from the altar, ticked together). */
+export function dressCandleWithAll(candle: SavedObject, ingredients: SavedObject[], now: string): SavedObject {
+  return ingredients.reduce((dressed, ingredient) => dressCandle(dressed, ingredient, now), candle);
+}
+
 export function undressCandle(candle: SavedObject, now: string): SavedObject {
   if (!isCandle(candle) || dressingsOf(candle).length === 0) return candle;
   const state = readLivingState(candle, now);
