@@ -24,12 +24,17 @@ import { boxToPixels, candleLightRadius, displayBox, IMAGE_INSET, imageRatio, ro
 import { stackOrder } from './altar/layers.ts';
 import { incenseLife, isIncense } from './altar/incense.ts';
 import { agingLook, isOfferingItself, offeringFreshness } from './altar/offerings.ts';
-import { apothecaryStateOf, candleLife, dressingOverlays, isCandle, isLit, lightCandle, readLivingState, snuffCandle } from './altar/livingState.ts';
+import { apothecaryStateOf, candleLife, candleLifeForm, dressingOverlays as allDressingOverlays, isCandle, isLit, lightCandle, readLivingState, snuffCandle } from './altar/livingState.ts';
 import { documentFromAltar, type AltarDocument } from './altar/snapshot.ts';
+import { FIGURE_FORMS } from './altar/wax.ts';
 import { activeAltars } from './altar/archive.ts';
 import { isCovenSlot } from './covenAltarWidget.ts';
 import type { SavedAltar, SavedObject } from './altar/types.ts';
 import { burnDown } from './altar/wax.ts';
+
+/** The painted dressing overlays, but not on figures: they'd glow round a figure as a box (the app draws a figure's dressing inside its outline). */
+const dressingOverlays = (object: SavedObject) =>
+  FIGURE_FORMS.has(candleLifeForm(object)) ? { herb: false, oil: false } : allDressingOverlays(object);
 
 /** How many altars can be on the home screen at once (the widget's "Which altar" choices). */
 export const ALTAR_WIDGET_SLOTS = 6;

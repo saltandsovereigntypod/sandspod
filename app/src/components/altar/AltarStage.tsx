@@ -483,8 +483,9 @@ export const AltarObjectArt = memo(function AltarObjectArt({ object, width, heig
           <Text style={[styles.symbol, { fontSize: width * 0.49 }]}>{object.fallbackSymbol || '✦'}</Text>
         )}
       </View>
-      {(overlays.herb || overlays.oil) && (
+      {(overlays.herb || overlays.oil) && !geometry?.burn?.outline && (
         // The dressing lies only on the wax that's there: cut to the candle's body, and off above its top as it burns down.
+        // A figure's is drawn by CandleMarks inside its outline instead: the painted overlay would glow round it as a box.
         <View pointerEvents="none" style={[styles.dressingClip, waxWindow]}>
           <View style={[styles.dressingBox, { width, height }, waxWindow && { left: -waxWindow.left, top: -waxWindow.top }]}>
             {overlays.herb && <Image source={candleHerbOverlay} style={styles.herbOverlay} resizeMode="contain" />}
