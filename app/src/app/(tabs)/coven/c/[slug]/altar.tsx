@@ -23,6 +23,7 @@ import {
 } from "../../../../../components/more/ui";
 import {
   createAltar,
+  deleteAltar,
   fetchAltarCounts,
   fetchCovenAltars,
   petitionOf,
@@ -30,8 +31,10 @@ import {
   tendedBy,
   type CovenAltar,
 } from "../../../../../lib/covens/altarSync";
+import { deleteAltarWords } from "../../../../../lib/covens/altarPanel";
 import { useCoven } from "../../../../../lib/covens/CovenContext";
 import { errorMessage } from "../../../../../lib/covens/model";
+import { confirmAction } from "../../../../../lib/grimoire/confirm";
 import { colors, radius, type } from "../../../../../theme";
 
 // The coven's altars: the main ritual altar, kept by the coven's head, and any
@@ -87,6 +90,27 @@ export default function CovenAltars() {
     setBusy(false);
   };
 
+  // The altar's keepers delete it: the coven's head, positions that keep
+  // altars, whoever started it, the site's moderators (the database decides).
+  const mayDelete = (altar: CovenAltar) =>
+    !altar.is_main &&
+    !petitionOf(altar) &&
+    (coven.perms.founder || coven.perms.manage || coven.perms.keepAltars || coven.perms.site || altar.created_by === coven.userId);
+  const remove = async (altar: CovenAltar) => {
+    const words = deleteAltarWords(altar.name);
+    if (!(await confirmAction(words.title, `${words.body} ${words.gentler}`, words.confirm))) return;
+    setBusy(true);
+    setMessage(null);
+    try {
+      await deleteAltar(altar.id);
+      await load();
+      setMessage(`${altar.name.trim() || "The altar"} is deleted.`);
+    } catch (error) {
+      setMessage(errorMessage(error));
+    }
+    setBusy(false);
+  };
+
   const here = (altar: CovenAltar) =>
     coven.presence.filter((p) => p.place === `altar:${altar.id}`).length;
   const showing = (altars ?? []).filter((a) => !a.archived_at);
@@ -128,6 +152,16 @@ export default function CovenAltars() {
           Coven rituals are held here unless a ritual says otherwise. During a
           ritual, its steps decide who tends it.
         </Text>
+      )}
+      {mayDelete(altar) && (
+        <View style={styles.actions}>
+          <Button
+            label="Delete"
+            variant="text"
+            onPress={() => void remove(altar)}
+            disabled={busy}
+          />
+        </View>
       )}
     </Pressable>
   );
@@ -217,6 +251,16 @@ export default function CovenAltars() {
               >
                 <Text style={type.body}>{altar.name}</Text>
                 <Text style={type.caption}>Its keeper can bring it back.</Text>
+                {mayDelete(altar) && (
+                  <View style={styles.actions}>
+                    <Button
+                      label="Delete"
+                      variant="text"
+                      onPress={() => void remove(altar)}
+                      disabled={busy}
+                    />
+                  </View>
+                )}
               </Pressable>
             ))
           ) : (
@@ -243,4 +287,5 @@ const styles = StyleSheet.create({
   },
   main: { borderColor: colors.gold },
   pressed: { opacity: 0.7 },
+  actions: { flexDirection: "row", justifyContent: "flex-end" },
 });

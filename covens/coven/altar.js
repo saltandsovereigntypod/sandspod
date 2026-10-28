@@ -67,6 +67,13 @@
     return `<div class="cv-still" role="img" aria-label="${esc(label || `${altar.name}, with ${list.length} ${list.length === 1 ? "thing" : "things"} on it`)}"${background}>${items}${list.length ? "" : `<p class="cv-altar__empty">Nothing on it yet.</p>`}</div>`;
   }
 
+  // The altar's keepers delete it: the coven's head, positions that keep
+  // altars, whoever started it, the site's moderators (the database decides).
+  function mayDelete(altar) {
+    const p = state.perms;
+    return !altar.is_main && !A()?.petitionOf(altar) && Boolean(p.founder || p.manage || p.keepAltars || p.site || altar.created_by === state.context.user?.id);
+  }
+
   function altarCard(altar) {
     const count = counts[altar.id] || 0;
     const petition = A()?.petitionOf(altar);
@@ -87,7 +94,9 @@
           ${archived ? "" : `<a class="button button--primary button--small" href="${esc(altarHref(altar))}">Open the altar</a>`}
           ${petition ? `<a class="button button--ghost button--small" href="${esc(href(`/covens/coven/?c=${encodeURIComponent(state.coven.slug)}&tab=petitions`))}" data-tab="petitions">See the petition</a>` : ""}
           <button class="button button--ghost button--small" type="button" data-tends="${esc(altar.id)}" aria-expanded="${open === altar.id}">Who tends it</button>
+          ${mayDelete(altar) ? `<button class="button button--ghost button--small" type="button" data-delete-card="${esc(altar.id)}">Delete</button>` : ""}
         </div>
+        <p class="cv-status" role="status" aria-live="polite" data-card-status="${esc(altar.id)}"></p>
         <div data-tends-panel="${esc(altar.id)}"${open === altar.id ? "" : " hidden"}></div>
       </article>`;
   }
@@ -238,6 +247,18 @@
   // --- wiring --------------------------------------------------------------------
 
   function wire() {
+    pane.querySelectorAll("[data-delete-card]").forEach((button) =>
+      button.addEventListener("click", async (event) => {
+        const altar = altars.find((a) => a.id === button.dataset.deleteCard);
+        if (!altar) return;
+        const words = deleteWords(altar.name);
+        if (!(await UI.confirmAction(words.title, words.body, words.confirm))) return;
+        const ok = await UI.busy(event.currentTarget, pane.querySelector(`[data-card-status="${altar.id}"]`), () => D.deleteAltar(altar.id).then(() => true));
+        if (!ok) return;
+        open = "";
+        await reload();
+      })
+    );
     const start = pane.querySelector("[data-start-altar]");
     start?.addEventListener("submit", async (event) => {
       event.preventDefault();
