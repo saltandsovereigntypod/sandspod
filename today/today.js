@@ -230,6 +230,10 @@
   function workingCard(m) {
     const { active, plans } = state.rituals;
     const next = C.plans.nextPlan(plans, new Date());
+    // A coven's rite or meeting counts as your next working too, whichever comes first.
+    const rite = window.CovenToday?.nextRite?.(m.now) || null;
+    const covenToday = window.SaltCore?.covens?.today;
+    const first = covenToday ? covenToday.nextWorkingFirst(next ? C.plans.planStart(next) : null, rite) : next ? "plan" : null;
     const step = active ? C.lifecycle.currentStep(active) : null;
     let text;
     let button;
@@ -239,11 +243,19 @@
         `<h2 class="td-card__title">${esc(active.title || "Your ritual")}</h2>` +
         `<p class="sp-caption">${esc(step ? step.title : "Finish and journal it when you are ready.")}</p>`;
       button = `<a class="button button--primary" href="${esc(T.siteHref("/rituals/run"))}">Continue the ritual</a>`;
+    } else if (first === "rite") {
+      text =
+        `<p class="sp-eyebrow td-gold">Your next working</p>` +
+        `<h2 class="td-card__title">${esc(rite.title)}</h2>` +
+        `<p class="sp-caption">${esc(rite.detail)}</p>` +
+        (next ? `<p class="sp-caption">${esc(`Then your own: ${next.title}, ${C.ritualFormat.planWhen(next, m.now)}`)}</p>` : "");
+      button = `<a class="button button--primary" href="${esc(rite.href)}">${rite.meeting ? "See the meeting" : "See the rite"}</a>`;
     } else if (next) {
       text =
         `<p class="sp-eyebrow td-gold">Your next working</p>` +
         `<h2 class="td-card__title">${esc(next.title)}</h2>` +
-        `<p class="sp-caption">${esc(`${C.ritualFormat.planWhen(next, m.now)} · ${C.ritualFormat.planSky(next)}`)}</p>`;
+        `<p class="sp-caption">${esc(`${C.ritualFormat.planWhen(next, m.now)} · ${C.ritualFormat.planSky(next)}`)}</p>` +
+        (rite ? `<p class="sp-caption">${esc(`Then with ${rite.covenName}: ${rite.title}`)}</p>` : "");
       button = `<a class="button button--primary" href="${esc(T.siteHref({ pathname: "/rituals/plan/[id]", params: { id: next.id } }))}">Open the plan</a>`;
     } else {
       text =
@@ -544,6 +556,7 @@
     });
   }
   window.addEventListener("saltSettingsChanged", () => loadSettings().then(render));
+  window.addEventListener("covenTodayLoaded", () => render());
   window.addEventListener("storage", (event) => {
     if (event.key === T.PLACE_KEY) {
       state.place = T.readPlace(storage);

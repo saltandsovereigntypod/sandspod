@@ -4,7 +4,10 @@ import { StyleSheet, Text, View } from 'react-native';
 
 import { Button } from '../../../components/Button';
 import { PracticeSwitch } from '../../../components/PracticeSwitch';
+import { covenHref } from '../../../components/covens/CovenScreen';
+import { useCovenToday } from '../../../components/covens/CovenToday';
 import { Body, Card, List, Notice, RitualScreen, Row, SectionLabel, Title, tell, ui } from '../../../components/rituals/ui';
+import { nextCovenRite, nextWorkingFirst } from '../../../lib/covens/today';
 import { moonState } from '../../../lib/moon';
 import { useReminders } from '../../../lib/reminders/store';
 import { PHASE_ORDER } from '../../../lib/reminders/schedule';
@@ -13,7 +16,7 @@ import { journalDetail, planSky, planWhen } from '../../../lib/rituals/format';
 import { journalInsights } from '../../../lib/rituals/insights';
 import { JOURNEYS_LIVE } from '../../../lib/journeys';
 import { PREMADE } from '../../../lib/rituals/premade';
-import { sortJournal, upcomingPlans } from '../../../lib/rituals/plans';
+import { planStart, sortJournal, upcomingPlans } from '../../../lib/rituals/plans';
 import { bringDeviceRitualsToAccount, refresh, useRituals } from '../../../lib/rituals/store';
 import { useSession } from '../../../lib/session';
 import { type } from '../../../theme';
@@ -30,6 +33,10 @@ export default function RitualsHome() {
   const insight = useMemo(() => journalInsights(rituals.journal, new Date()), [rituals.journal]);
   const plans = upcomingPlans(rituals.plans, now);
   const [next, ...laterPlans] = plans;
+  // A coven's rite or meeting counts as your next working too, whichever comes first.
+  const covenToday = useCovenToday();
+  const rite = nextCovenRite(covenToday, now);
+  const first = nextWorkingFirst(next ? planStart(next) : null, rite);
   const active = rituals.active;
   const step = active ? currentStep(active) : null;
   const stepIndex = active && step ? active.session_steps.findIndex((s) => s.id === step.id) : -1;
@@ -65,10 +72,18 @@ export default function RitualsHome() {
 
       <Card accent>
         <Text style={[type.eyebrow, ui.gold]}>Your next working</Text>
-        {next ? (
+        {first === 'rite' && rite ? (
+          <>
+            <Text style={type.cardTitle}>{rite.title}</Text>
+            <Body muted>{rite.detail}</Body>
+            {next && <Body muted>{`Then your own: ${next.title}, ${planWhen(next, now)}`}</Body>}
+            <Button label={rite.meeting ? 'See the meeting' : 'See the rite'} variant="outline" onPress={() => router.push(covenHref(rite.covenSlug, `ritual/${rite.ritualId}`))} />
+          </>
+        ) : next ? (
           <>
             <Text style={type.cardTitle}>{next.title}</Text>
             <Body muted>{`${planWhen(next, now)} · ${planSky(next)}`}</Body>
+            {rite && <Body muted>{`Then with ${rite.covenName}: ${rite.title}`}</Body>}
             <Button
               label="Open the plan"
               variant="outline"
