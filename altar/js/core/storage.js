@@ -733,7 +733,10 @@ savedAltarsManager.innerHTML = `
       </p>
     </div>
 
+    <div class="saved-altars-tabs" data-saved-altars-tabs></div>
+
     <div class="saved-altars-list saved-altars-grid" data-saved-altars-list></div>
+    <div class="saved-altars-list saved-altars-coven" data-coven-altars-list hidden></div>
   </div>
 `;
 
@@ -841,6 +844,8 @@ async function openSavedAltarsManager() {
 
   savedAltarsManager.hidden = false;
   document.body.classList.add("altar-modal-open");
+  // Personal | Coven at the top (altar/js/features/altar-tabs.js).
+  window.SaltAltarTabs?.opened?.();
 }
 
 function closeSavedAltarsManager() {

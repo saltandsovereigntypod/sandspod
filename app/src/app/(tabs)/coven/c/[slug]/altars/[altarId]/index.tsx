@@ -15,7 +15,7 @@ import { colors, radius, type } from '../../../../../../../theme';
 // who else is here, whether you can tend it right now (and why not), and the
 // coven's chat in a small window over the altar (ChatPanel.tsx).
 export default function CovenAltarScreen() {
-  const { altarId } = useLocalSearchParams<{ altarId: string }>();
+  const { altarId, from } = useLocalSearchParams<{ altarId: string; from?: string }>();
   const coven = useCoven();
   const me = coven.userId ? { userId: coven.userId, name: coven.me?.profile?.display_name || 'A member' } : null;
   const { shared, altar, access, others } = useCovenAltar(String(altarId ?? ''), me, coven.snapshot?.coven.name);
@@ -91,7 +91,15 @@ export default function CovenAltarScreen() {
       whose={whose}
       header={header}
       overlay={<AltarChat />}
-      onBack={() => (router.canGoBack() ? router.back() : router.replace(covenHref(coven.slug, 'altar')))}
+      onBack={() => {
+        if (from === 'altar') {
+          // Opened from the Altar tab's Coven list: close this altar first, so the
+          // Coven tab opens on its own list next time, then go back to the list.
+          router.dismissTo('/coven');
+          router.navigate('/altar');
+        } else if (router.canGoBack()) router.back();
+        else router.replace(covenHref(coven.slug, 'altar'));
+      }}
     />
   );
 }

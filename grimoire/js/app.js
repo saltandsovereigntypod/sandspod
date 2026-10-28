@@ -2159,7 +2159,7 @@ async function renderLibraryEntity(entityId) {
 
                 ${Object.keys(entity.myPractice || {}).length || entity.type === "apothecary" ? `
                   <button class="button button--small button--ghost" type="button" data-delete-library-entry="${entity.id}">
-                    Del
+                    Delete
                   </button>
                 ` : ""}
               `
@@ -2559,8 +2559,8 @@ async function deleteLibraryEntryFromMyPractice(entityId) {
 
   const confirmed = window.confirm(
     isApothecaryEntry
-      ? `Delete "${formatLibraryEntityName(entity.name)}" from My Practice and My Apothecary? This cannot be undone.`
-      : `Delete your My Practice notes for "${formatLibraryEntityName(entity.name)}"? The traditional entry will remain if it exists.`
+      ? `Delete "${formatLibraryEntityName(entity.name)}" from My Practice and My Apothecary? This can’t be undone.`
+      : `Delete your My Practice notes for "${formatLibraryEntityName(entity.name)}"? The traditional entry will remain if it exists. This can’t be undone.`
   );
 
   if (!confirmed) return;
@@ -2618,7 +2618,7 @@ async function deleteLibraryEntryFromMyPractice(entityId) {
   await renderLivingLibraryShelves();
   await renderLibraryEntity(entityId);
 
-  flashStatus("Removed from My Practice.");
+  flashStatus("Your My Practice notes are deleted.");
 }
 
 document.addEventListener("click", async (event) => {

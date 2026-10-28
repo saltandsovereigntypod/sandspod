@@ -42,7 +42,7 @@ export default function Correspondence() {
     return (
       <RitualScreen back="My correspondences">
         <Title eyebrow="My correspondences">{ready ? 'Not found' : '…'}</Title>
-        {ready && <Body>This entry may have been removed on another device.</Body>}
+        {ready && <Body>This entry may have been deleted on another device.</Body>}
       </RitualScreen>
     );
   }
@@ -54,7 +54,7 @@ export default function Correspondence() {
   const source = sourceLabel(c.source);
 
   const remove = async () => {
-    if (!(await confirmAction(`Remove ${c.name || 'this entry'}?`, 'It will be taken out of your correspondences on every device.', 'Remove'))) return;
+    if (!(await confirmAction(`Delete ${c.name || 'this entry'}?`, 'It will be deleted from your correspondences on every device. This can’t be undone.', 'Delete'))) return;
     await removeEntry(CORRESPONDENCES, entry.id);
     router.back();
   };
@@ -95,7 +95,7 @@ export default function Correspondence() {
           variant="outline"
           onPress={() => router.push({ pathname: '/rituals/craft/eclectic/correspondences/edit', params: { id: entry.id } } as Href)}
         />
-        <Button label="Remove" variant="text" onPress={remove} />
+        <Button label="Delete" variant="text" onPress={remove} />
       </View>
     </RitualScreen>
   );

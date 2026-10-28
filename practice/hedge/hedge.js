@@ -475,7 +475,7 @@
       kit.notice(personForm.problem, { live: true }),
       kit.actions([
         kit.button({ label: personForm.saving ? "Saving…" : existing ? "Save changes" : "Remember them", act: "person-save", primary: true, disabled: personForm.saving, id: "person-save" }),
-        existing ? kit.textButton({ label: "Remove this person", act: "person-delete", quiet: true }) : ""
+        existing ? kit.textButton({ label: "Delete this person", act: "person-delete", quiet: true }) : ""
       ])
     ].join("");
   }
@@ -1587,12 +1587,12 @@
     },
     async "person-delete"() {
       const name = personForm.person?.name || "this person";
-      if (!kit.confirm(`Remove ${name}? Their page and memories will be removed on every device.`)) return;
+      if (!kit.confirm(`Delete ${name}? Their page and memories will be deleted on every device. This can’t be undone.`)) return;
       try {
         await kit.remove(A.ANCESTORS, id);
         kit.go(url.ancestors);
       } catch (error) {
-        personForm.problem = failed(error, "They couldn’t be removed");
+        personForm.problem = failed(error, "They couldn’t be deleted");
         draw();
       }
     }

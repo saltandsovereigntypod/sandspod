@@ -144,7 +144,7 @@
           )
         : "",
       library ? kit.list([kit.row({ url: kit.href.library(library.id), title: `${library.name} in the Library`, detail: "Lore, uses, pairings and safety" })]) : "",
-      kit.actions([kit.button({ label: "Edit", url: url.edit(entry.id), ghost: true }), kit.textButton({ label: "Remove", act: "remove", quiet: true })])
+      kit.actions([kit.button({ label: "Edit", url: url.edit(entry.id), ghost: true }), kit.textButton({ label: "Delete", act: "remove", quiet: true })])
     ].join("");
   }
 
@@ -243,7 +243,7 @@
       kit.notice(form.problem, { live: true }),
       kit.actions([
         kit.button({ label: form.saving ? "Saving…" : existing ? "Save changes" : "Save", act: "c-save", primary: true, disabled: form.saving, id: "c-save" }),
-        existing ? kit.textButton({ label: "Remove", act: "remove", quiet: true }) : ""
+        existing ? kit.textButton({ label: "Delete", act: "remove", quiet: true }) : ""
       ]),
       kit.muted(kit.savedLine(user, "your correspondences"))
     ].join("");
@@ -351,7 +351,7 @@
     async remove() {
       const entry = entries.find((e) => e.id === id);
       if (!entry) return;
-      if (!kit.confirm(`Remove ${entry.data.name || "this entry"}? It will be taken out of your correspondences on every device.`)) return;
+      if (!kit.confirm(`Delete ${entry.data.name || "this entry"}? It will be deleted from your correspondences on every device. This can’t be undone.`)) return;
       try {
         await kit.remove(C.CORRESPONDENCES, entry.id);
         kit.go(url.list);

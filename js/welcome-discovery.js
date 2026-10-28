@@ -33,7 +33,7 @@
       finish: "Begin",
       steps: [
         ["Each day begins on Today", "Tonight’s moon and its sign, the holidays from the calendars you keep, and what is yours to do today. Click the moon or a holiday to read what it means and how to keep it. Turn to Sky & Lore at the top for the sky, what the day is good for and its correspondences."],
-        ["Your altar, piece by piece", "On the Altar, open the Cabinet’s drawers for candles, herbs, crystals, tools, deities, vessels, natural finds and offerings. Click anything you place to learn its correspondences."],
+        ["Your altar, piece by piece", "On the Altar, open the Cabinet’s drawers for candles, herbs, crystals, tools, deities, vessels, natural finds and offerings. Click anything you place to learn its correspondences. In My Altars, your own altars are under Personal and the ones you tend with your covens under Coven."],
         ["An altar that keeps time", "Candles and incense burn in real time, offerings freshen and fade, and pots for your real houseplants ask for water. Before a festival you keep, the Seasonal drawer brings its things to the top."],
         ["Workings at the altar", "Build a spell jar or a sachet, fold a petition under a candle, or keep a spell over days. “Set tonight’s altar” on Today starts one for you."],
         ["Rituals by the moon", "In Practice → Rituals, begin a premade ritual or spell, or plan your own for the right night and run it step by step. Journal it afterwards, and on the day you chose it asks: did it work?"],

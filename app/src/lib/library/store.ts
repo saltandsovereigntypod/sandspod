@@ -231,7 +231,7 @@ async function syncPracticeRelations(userId: string, entityId: string, myPractic
   await load(userId, true);
 }
 
-/** "Remove from My Practice": empties My Practice on every row behind the entry, as the website does. */
+/** "Delete my practice notes": empties My Practice on every row behind the entry, as the website does. */
 export async function clearPractice(userId: string, entry: LibraryEntry): Promise<void> {
   if (entry.practiceEntityIds.length === 0) return;
   const { error } = await supabase

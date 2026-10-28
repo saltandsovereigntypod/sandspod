@@ -95,9 +95,9 @@ export function PracticeEditor({ entryId, back, backLabel, hrefFor }: Props) {
   const remove = async () => {
     if (!editing) return;
     const ok = await confirmAction(
-      `Remove ${editing.name} from My Practice?`,
-      'Your My Practice notes for this entry will be cleared here and on the website.',
-      'Remove',
+      `Delete your practice notes for ${editing.name}?`,
+      'Your My Practice notes for this entry will be deleted here and on the website. This can’t be undone.',
+      'Delete',
     );
     if (!ok) return;
     setSaving(true);
@@ -106,7 +106,7 @@ export function PracticeEditor({ entryId, back, backLabel, hrefFor }: Props) {
       router.replace(back);
     } catch {
       setSaving(false);
-      setMessage('It couldn’t be removed. Check your connection and try again.');
+      setMessage('They couldn’t be deleted. Check your connection and try again.');
     }
   };
 
@@ -194,7 +194,7 @@ export function PracticeEditor({ entryId, back, backLabel, hrefFor }: Props) {
           <Button label={saving ? 'Saving…' : editing ? 'Save' : 'Create entry'} disabled={saving} onPress={() => void save()} />
           {editing?.myPractice && editing.type !== 'apothecary' && (
             <Pressable accessibilityRole="button" onPress={() => void remove()} disabled={saving} style={styles.remove}>
-              <Text style={styles.removeText}>Remove from My Practice</Text>
+              <Text style={styles.removeText}>Delete my practice notes</Text>
             </Pressable>
           )}
         </Section>
