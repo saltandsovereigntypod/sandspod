@@ -69,7 +69,7 @@ Mentors are people with their own lives. Give them a few days to reply unless so
 
 Each module ends with a test. It's there to check you've understood the points that matter, especially the safety ones, not to catch you out. Most questions are multiple choice or true/false and are marked straight away. A few ask you to write an answer in your own words; your mentor scores those against a short description of what a full answer includes.
 
-To pass, you need 80 per cent of the points. Every question has an explanation that appears after you answer, which teaches the point again. If you don't pass, read the explanations, go back over the lessons they point to, and talk to your mentor about trying again. Getting things wrong in a test is how you find out what to re-read; it's not a judgement on you.
+To pass, you need 80 per cent of the points. Your result shows which questions you got right and which you didn't, with your mentor's comments on the written answers. Every question also has an explanation, which teaches the point again; the right answers and their explanations open to you once you've passed the test, so a retake still asks you to think it through. If you don't pass, look at the questions you missed, go back over the lessons they come from, and talk to your mentor about trying again. Getting things wrong in a test is how you find out what to re-read; it's not a judgement on you.
 
 You can have the lessons open while you take a test. The aim is understanding, not memory.
 
@@ -510,7 +510,7 @@ The great majority of your time in a coven should feel like learning, friendship
           options: [`True`, `False`],
           correct: [0],
           points: 1,
-          explanation: `Each module's test needs 80 per cent. Choice questions are marked at once and written answers are scored by your mentor. If you don't pass, read the explanations, go back over the lessons and talk to your mentor about trying again.`,
+          explanation: `Each module's test needs 80 per cent. Choice questions are marked at once and written answers are scored by your mentor. If you don't pass, look at the questions you missed, go back over the lessons and talk to your mentor about trying again. The right answers and explanations show once you've passed.`,
         },
         {
           id: 'q3',
@@ -705,7 +705,7 @@ The great majority of your time in a coven should feel like learning, friendship
           title: `Take the test`,
           kind: 'study',
           instructions: `1. Take the Welcome test. You can have the lessons open.
-2. Read each explanation as you go.
+2. Once you've passed, read each question's explanation: it teaches the point again.
 3. Your mentor scores the written answers. You need 80 per cent to pass. If you don't, talk to your mentor about what to go over before you try again.`,
           times: 1,
           response: 'none',

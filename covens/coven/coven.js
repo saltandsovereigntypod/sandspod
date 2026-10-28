@@ -466,12 +466,16 @@
         </div></section>
       <details class="sp-details" data-standing-details><summary>Your record: your rituals, studies and mentoring, as the coven’s leaders see them</summary><div data-standing></div></details>
       <section class="sp-section"><h2>Agreements</h2><div data-signer></div></section>
+      <div data-queue-places></div>
       <section class="sp-section"><h2>Rise to a higher position</h2><div data-advance></div></section>
       ${perms.founder ? "" : `<section class="sp-section"><h2>Leaving</h2><div class="sp-actions"><button class="button button--ghost" type="button" data-leave>Leave ${esc(coven.name)}</button></div><p class="cv-status" role="status" aria-live="polite" data-leave-status></p></section>`}`;
 
     signer(pane.querySelector("[data-signer]"), () => refresh("path"));
     const standing = pane.querySelector("[data-standing-details]");
     standing.addEventListener("toggle", () => standing.open && !standing.dataset.loaded && (standing.dataset.loaded = "1") && global.CovenStanding?.mount(standing.querySelector("[data-standing]"), state));
+
+    // Your place on any position's waiting list (covens/coven/queue.js).
+    if (global.CovenQueue) global.CovenQueue.myPlaces(pane.querySelector("[data-queue-places]"), state, { refresh });
 
     const advance = pane.querySelector("[data-advance]");
     const history = advancements.filter((a) => a.status !== "pending").slice(0, 5);

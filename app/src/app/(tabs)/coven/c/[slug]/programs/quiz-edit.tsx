@@ -16,7 +16,7 @@ const num = (v: string, fallback: number) => (v.replace(/[^0-9]/g, '') === '' ? 
 
 // Writing or changing one of the coven's tests: its pass mark, retakes and
 // wait, and each question with its answers, the right ones, its points, the
-// explanation shown afterwards, and (for written answers) the scoring guide.
+// explanation shown once the test is passed, and (for written answers) the scoring guide.
 // Attempts already made keep the questions as they were.
 export default function QuizEdit() {
   const { id } = useLocalSearchParams<{ id?: string }>();
@@ -138,7 +138,7 @@ function Editor({ id, start, source, onSaved }: { id: string | null; start: Draf
                 </View>
               )}
               <Field label="Points" value={String(q.points)} onChangeText={(v) => setQ(i, { points: num(v, 0) })} keyboardType="number-pad" maxLength={3} />
-              <Field label="Explanation, shown after they answer (teach the point again)" value={q.explanation} onChangeText={(explanation) => setQ(i, { explanation })} multiline maxLength={4000} />
+              <Field label="Explanation, shown once they’ve passed the test (teach the point again)" value={q.explanation} onChangeText={(explanation) => setQ(i, { explanation })} multiline maxLength={4000} />
               {!isChoice(q) && <Field label="Scoring guide: what a full-marks answer includes" value={q.rubric ?? ''} onChangeText={(rubric) => setQ(i, { rubric })} multiline maxLength={4000} />}
               <View style={styles.row}>
                 <Button label="Move up" variant="text" onPress={() => move(i, -1)} />

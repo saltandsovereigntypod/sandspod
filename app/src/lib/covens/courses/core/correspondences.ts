@@ -852,7 +852,7 @@ Personal correspondences are valuable, but they are personal. When you share the
           title: 'Take the test',
           kind: 'study',
           instructions:
-            '1. Re-read any lesson you are unsure of.\n2. Take the Correspondences test. Choice questions are scored at once; your mentor scores the written answers.\n3. You need 80 per cent to pass. If you don’t pass, read the explanations, revisit the lessons and take it again.',
+            '1. Re-read any lesson you are unsure of.\n2. Take the Correspondences test. Choice questions are scored at once; your mentor scores the written answers.\n3. You need 80 per cent to pass. If you don’t pass, look at the questions you missed, revisit the lessons and take it again.',
           times: 1,
           response: 'none',
           checked_by: 'mentor',

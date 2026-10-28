@@ -4,6 +4,7 @@ import { cleanNote, gatheringEvent, gatheringNote, manualEvent, validZone, wants
 import { acceptedNote, invitedNote, wantsInvitation } from "./invitations.ts";
 import { openedNote, wantsPosition } from "./positions.ts";
 import { trainingNote, wantsTraining } from "./training.ts";
+import { promotedNote, proposedNote, queuedNote, type QueueSource } from "./queue.ts";
 
 // Phone notifications for covens: a new message, a new application or
 // request to advance, and the answer to one; a personal invitation, and its
@@ -75,6 +76,21 @@ import { trainingNote, wantsTraining } from "./training.ts";
 // else has written, or else those who run the coven's programs), never the
 // writer nor anyone blocking them, and only those whose "Training messages"
 // choice wants it (training.ts wantsTraining). Once each (notified_at), while fresh.
+//
+// { queue_id, event: 'queued' | 'proposed' | 'promoted' }: a position's
+// waiting list (supabase/migrations/20261111000100_coven_test_keys_and_waiting_lists.sql).
+// Rung by whoever caused it, within a few minutes (the app and the page ask
+// coven_queue_fresh_notes which are theirs to ring): 'queued' by whoever put
+// the member on the list (graduating them, approving their request onto it,
+// adding them), to the member ("Your training is complete. Initiate is full,
+// so you're #2 on its waiting list."); 'proposed' by whoever's change freed
+// the place, to the coven's head and those with the manage power
+// (public.coven_queue_deciders, never the person proposed nor the caller: "A
+// place is free in Initiate. Rowan is next in line."); 'promoted' by the
+// leader who confirmed it, to the member ("You're now Initiate in Moon
+// Circle."). Once each (the entry's *_notified_at), and only for those whose
+// "Coven requests" choices want it (requests.ts wantsNotice: 'new' for the
+// leaders, 'answer' for the member). Never to someone who has blocked the caller.
 
 const EXPO_PUSH = "https://exp.host/--/api/v2/push/send";
 
@@ -106,6 +122,8 @@ Deno.serve(async (request) => {
   let timeZone = "";
   let manual: { note: string; who: string[] | null } | null = null;
   let rankId = "";
+  let queueId = "";
+  let queueEvent: "queued" | "proposed" | "promoted" = "queued";
   try {
     const payload = (await request.json()) || {};
     messageId = String(payload.message_id || "");
@@ -114,6 +132,10 @@ Deno.serve(async (request) => {
     if (payload.program_thread_message_id) programMessageId = String(payload.program_thread_message_id);
     if (payload.ritual_id) ritualId = String(payload.ritual_id);
     if (payload.rank_id && payload.event === "opened") rankId = String(payload.rank_id);
+    if (payload.queue_id && ["queued", "proposed", "promoted"].includes(payload.event)) {
+      queueId = String(payload.queue_id);
+      queueEvent = payload.event;
+    }
     if (typeof payload.time_zone === "string") timeZone = payload.time_zone.slice(0, 64);
     if (payload.manual === true) {
       const who = Array.isArray(payload.who) ? payload.who.filter((k: unknown) => typeof k === "string").slice(0, 40).map((k: string) => k.slice(0, 80)) : null;
@@ -129,6 +151,10 @@ Deno.serve(async (request) => {
   }
   const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
   const admin = createClient(url, service, { auth: { persistSession: false } });
+  if (queueId) {
+    if (!UUID.test(queueId)) return reply(400, { error: "bad_request" });
+    return positionQueue(admin, sender, queueId, queueEvent);
+  }
   if (rankId) {
     if (!UUID.test(rankId)) return reply(400, { error: "bad_request" });
     return positionOpened(admin, verifier, sender, rankId, timeZone);
@@ -676,4 +702,99 @@ async function positionOpened(admin: SupabaseClient, caller: SupabaseClient, sen
   }
   await admin.from("coven_position_openings").update({ recipients: recipients.length }).eq("id", opening.id);
   return reply(200, { sent: delivered, recipients: recipients.length });
+}
+
+/** A position's waiting list (queue.ts): joining it, a place freeing for the next in line, and being moved up. */
+async function positionQueue(admin: SupabaseClient, sender: string, id: string, event: "queued" | "proposed" | "promoted") {
+  type Entry = {
+    id: string; coven_id: string; rank_id: string; user_id: string; source: QueueSource; status: string;
+    created_by: string | null; created_at: string; proposed_by: string | null; proposed_at: string | null;
+    decided_by: string | null; decided_at: string | null;
+  };
+  const { data: found, error } = await admin
+    .from("coven_position_queue")
+    .select("id,coven_id,rank_id,user_id,source,status,created_by,created_at,proposed_by,proposed_at,decided_by,decided_at")
+    .eq("id", id)
+    .maybeSingle();
+  // Before the migration there is nothing to send.
+  if (error) return reply(503, { error: "not_ready" });
+  const q = found as Entry | null;
+  if (!q) return reply(404, { error: "not_found" });
+
+  // Only whoever caused it rings, while it's fresh, and only once.
+  const stamp = new Date().toISOString();
+  let claimed: unknown[] | null = null;
+  if (event === "queued") {
+    if (q.created_by !== sender || !["waiting", "proposed"].includes(q.status)) return reply(404, { error: "not_found" });
+    if (!isFresh(q.created_at)) return reply(409, { error: "too_old" });
+    ({ data: claimed } = await admin.from("coven_position_queue").update({ queued_notified_at: stamp }).eq("id", id).is("queued_notified_at", null).select("id"));
+  } else if (event === "proposed") {
+    if (q.proposed_by !== sender || q.status !== "proposed" || !q.proposed_at) return reply(404, { error: "not_found" });
+    if (!isFresh(q.proposed_at)) return reply(409, { error: "too_old" });
+    // Proposed again later (someone else was chosen, then another place freed) is a new note.
+    ({ data: claimed } = await admin
+      .from("coven_position_queue")
+      .update({ proposed_notified_at: stamp })
+      .eq("id", id)
+      .or(`proposed_notified_at.is.null,proposed_notified_at.lt.${q.proposed_at}`)
+      .select("id"));
+  } else {
+    if (q.decided_by !== sender || q.status !== "promoted") return reply(404, { error: "not_found" });
+    if (!isFresh(q.decided_at)) return reply(409, { error: "too_old" });
+    ({ data: claimed } = await admin.from("coven_position_queue").update({ promoted_notified_at: stamp }).eq("id", id).is("promoted_notified_at", null).select("id"));
+  }
+  if (!claimed?.length) return reply(409, { error: "already_sent" });
+
+  const [{ data: coven }, { data: rank }, { data: profile }] = await Promise.all([
+    admin.from("covens").select("name,slug,status").eq("id", q.coven_id).single(),
+    admin.from("coven_ranks").select("name").eq("id", q.rank_id).maybeSingle(),
+    admin.from("coven_profiles").select("display_name").eq("user_id", q.user_id).maybeSingle(),
+  ]);
+  if (!coven || coven.status !== "active" || !rank) return reply(404, { error: "not_found" });
+
+  let recipients: string[];
+  let note: Note;
+  let wants: "new" | "answer";
+  if (event === "proposed") {
+    const { data: deciders } = await admin.rpc("coven_queue_deciders", { p_queue: id });
+    recipients = [...new Set(((deciders as string[] | null) || []).map(String))].filter((u) => u !== sender && u !== q.user_id);
+    note = proposedNote({ rankName: rank.name, who: profile?.display_name || "Someone", covenName: coven.name, covenSlug: coven.slug });
+    wants = "new";
+  } else {
+    // Never a note to yourself (finishing a self-passed program, say).
+    recipients = q.user_id === sender ? [] : [q.user_id];
+    if (event === "queued") {
+      const { data: place } = await admin.rpc("coven_queue_place", { p_queue: id });
+      note = queuedNote({ source: q.source, rankName: rank.name, covenName: coven.name, covenSlug: coven.slug, place: typeof place === "number" ? place : null });
+    } else {
+      note = promotedNote({ rankName: rank.name, covenName: coven.name, covenSlug: coven.slug });
+    }
+    wants = "answer";
+  }
+  if (recipients.length) {
+    const { data: blocks } = await admin.from("user_blocks").select("blocker_id").eq("blocked_id", sender).in("blocker_id", recipients);
+    const blocking = new Set((blocks || []).map((b) => b.blocker_id));
+    recipients = recipients.filter((u) => !blocking.has(u));
+  }
+  if (!recipients.length) return reply(200, { sent: 0 });
+
+  // Their own choices (Reminders → Coven requests), saved with their settings.
+  const { data: settings } = await admin.from("user_settings").select("user_id,reminders:settings->>reminders_v2").in("user_id", recipients);
+  const saved = new Map((settings || []).map((x: { user_id: string; reminders: string | null }) => [x.user_id, x.reminders]));
+  const now = new Date();
+  const listeners = recipients.filter((u) => wantsNotice(saved.get(u) ?? null, wants, q.coven_id, now));
+  if (!listeners.length) return reply(200, { sent: 0 });
+
+  const { data: tokens } = await admin.from("push_tokens").select("token,user_id").in("user_id", listeners);
+  if (!tokens?.length) return reply(200, { sent: 0 });
+  const notes: Push[] = tokens.map((t: { token: string }) => ({
+    to: t.token,
+    title: note.title,
+    body: note.body,
+    sound: "default",
+    channelId: "coven-requests",
+    threadId: `queue:${q.coven_id}`,
+    data: { source: `coven-queue-${event}`, url: note.url, covenId: q.coven_id, rankId: q.rank_id, queueId: id },
+  }));
+  return reply(200, { sent: await push(admin, notes) });
 }

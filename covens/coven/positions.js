@@ -9,7 +9,9 @@
  *                opening it for applications (note, closing date, who hears)
  *                and closing it, what it asks, and its questions.
  *   reviewPanel  Review: a request's checklist, ticks, answers and places left;
- *                Approve stays off while the position is full or ticks are missing.
+ *                Approve stays off while ticks are missing; while the position
+ *                is full it becomes "Approve: add to the waiting list"
+ *                (covens/coven/queue.js keeps the lists).
  *
  * The logic is the app's (SaltCore.covens.positions, js/core/covens.js); the
  * database checks everything again (…_coven_open_positions.sql).
@@ -300,8 +302,9 @@
 
   /**
    * A request's checklist (with ticks), its answers, and places left, into
-   * `holder`; keeps the form's Approve off while the position is full or
-   * something is still to tick. The ticks go with the decision (form.dataset.ticks).
+   * `holder`; keeps the form's Approve off while something is still to tick,
+   * and makes it "Approve: add to the waiting list" while the position is
+   * full (form.dataset.full). The ticks go with the decision (form.dataset.ticks).
    */
   async function reviewPanel(holder, state, request, holders) {
     if (!holder || !P()) return;
@@ -319,7 +322,8 @@
       const list = S.withTicks(checks, [...ticked]);
       const toTick = checks.filter((c) => !c.auto && c.status !== "met");
       const unticked = S.untickedLabels(checks, [...ticked]);
-      const block = left === 0 ? `${rank.name} is full. Give it more places under Manage → Positions, or decline this request.` : unticked.length ? `Tick what it asks before approving: ${unticked.join("; ")}.` : "";
+      const full = left === 0;
+      const block = unticked.length ? `Tick what it asks before approving: ${unticked.join("; ")}.` : "";
       holder.innerHTML = `${rank && held != null ? `<p class="sp-caption">${esc(S.placesLine(rank, held))}</p>` : ""}
         ${checklistHtml(list)}
         ${toTick
@@ -328,12 +332,17 @@
             : `<p class="sp-caption">Their mentor or the coven’s leaders give their mentor’s approval.</p>`))
           .join("")}
         ${S.rankQuestions(rank).map((q) => `<p><strong>${esc(q.prompt)}</strong><br />${prose(request.answers?.[q.id] || "—")}</p>`).join("")}
+        ${full ? `<p class="sp-caption">${esc(rank.name)} is full. Approving adds them to its waiting list, in turn; they’re told where they are in line. Or give it more places under Manage → Positions, or decline.</p>` : ""}
         ${block ? `<p class="sp-caption" data-block>${esc(block)}</p>` : ""}`;
       if (form) {
         form.dataset.ticks = JSON.stringify([...ticked]);
         form.dataset.blocked = block ? "1" : "";
+        form.dataset.full = full ? "1" : "";
         const approve = form.querySelector('[data-approve="1"]');
-        if (approve) approve.disabled = !!block;
+        if (approve) {
+          approve.disabled = !!block;
+          approve.textContent = full ? "Approve: add to the waiting list" : "Approve";
+        }
       }
       holder.querySelectorAll("[data-tick]").forEach((box) =>
         box.addEventListener("change", () => {

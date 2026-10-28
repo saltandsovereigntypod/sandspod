@@ -5,20 +5,25 @@ import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
 import { Button } from '../../../../../components/Button';
 import { CovenScreen } from '../../../../../components/covens/CovenScreen';
 import { Checklist } from '../../../../../components/covens/Positions';
+import { ProposalCards, useQueues } from '../../../../../components/covens/Queue';
 import { Words, useReport } from '../../../../../components/covens/ui';
 import { Card, CheckRow, Field, MenuList, MenuRow, Notice, Section } from '../../../../../components/more/ui';
 import * as api from '../../../../../lib/covens/api';
 import { useCoven } from '../../../../../lib/covens/CovenContext';
-import { errorMessage, normalizeQuestions, relativeTime, unsignedAgreements, type Advancement, type Application, type Signature } from '../../../../../lib/covens/model';
+import { errorMessage, normalizeQuestions, relativeTime, unsignedAgreements, type Advancement, type Application, type Member, type Signature } from '../../../../../lib/covens/model';
 import { placesLeft, placesLine, rankQuestions, untickedLabels, withTicks, type RequirementCheck } from '../../../../../lib/covens/positions';
 import { refreshRequests } from '../../../../../lib/covens/requestsBadge';
 import { colors, type } from '../../../../../theme';
 
 const STATUS: Record<string, string> = { approved: 'Approved', declined: 'Declined', withdrawn: 'Withdrawn', pending: 'Waiting' };
 
-// Review: applications to join and requests to rise to a higher position.
+// Review: applications to join and requests to rise to a higher position,
+// and (for the coven's head and leaders) a place freed in a full position,
+// with who is next on its waiting list (components/covens/Queue.tsx).
 export default function Review() {
   const coven = useCoven();
+  const { entries: queueEntries, reload: reloadQueues } = useQueues();
+  const [members, setMembers] = useState<Member[] | null>(null);
   const report = useReport(coven.userId);
   const covenId = coven.snapshot?.coven.id;
   const { loadNames } = coven;
@@ -47,15 +52,17 @@ export default function Review() {
       setAdvs(requests);
       setSignatures(sigs);
       setPast(all.filter((a) => a.status !== 'pending').slice(0, 30));
-      const [lists, overview] = await Promise.all([Promise.all(requests.map((r) => api.fetchChecklist(r.id))), api.fetchPositionsOverview(covenId)]);
+      const [lists, overview] = await Promise.all([Promise.all(requests.map((r) => api.fetchChecklist(r.id))), api.fetchPositionsOverview(covenId), reloadQueues()]);
+      const everyone = await api.fetchMembers(covenId).catch(() => null);
+      setMembers(everyone);
       setChecks(Object.fromEntries(requests.map((r, i) => [r.id, lists[i]])));
       setHolders(overview?.holders ?? null);
-      await loadNames([...pending, ...requests, ...all].map((r) => r.user_id));
+      await loadNames([...pending, ...requests, ...all, ...(everyone ?? [])].map((r) => r.user_id));
       void refreshRequests();
     } catch (error) {
       setMessage(errorMessage(error));
     }
-  }, [covenId, loadNames]);
+  }, [covenId, loadNames, reloadQueues]);
 
   useEffect(() => {
     void load();
@@ -75,15 +82,33 @@ export default function Review() {
     setBusy(false);
   };
 
+  // A full position: approve them onto its waiting list instead.
+  const queue = async (id: string) => {
+    setBusy(true);
+    setMessage(null);
+    try {
+      const out = await api.queueAdvancement(id, notes[id] ?? '', ticks[id] ?? []);
+      setMessage(out?.place ? `Approved: added to the waiting list, ${out.place === 1 ? 'first' : `number ${out.place}`} in line.` : 'Approved: added to the waiting list.');
+      await Promise.all([load(), coven.refresh()]);
+    } catch (error) {
+      setMessage(errorMessage(error));
+    }
+    setBusy(false);
+  };
+
   const snap = coven.snapshot;
   const questions = normalizeQuestions(snap?.coven.application_questions ?? []);
   const rankName = (id: string) => snap?.ranks.find((r) => r.id === id)?.name ?? 'a position';
-  const decision = (kind: 'application' | 'advancement', id: string, block?: string | null) => (
+  const decision = (kind: 'application' | 'advancement', id: string, block?: string | null, full?: boolean) => (
     <>
       <Field label="Note to them (optional)" value={notes[id] ?? ''} onChangeText={(text) => setNotes((prev) => ({ ...prev, [id]: text }))} multiline maxLength={2000} />
       {!!block && <Text style={type.caption}>{block}</Text>}
       <View style={styles.row}>
-        <Button label="Approve" onPress={() => void decide(kind, id, true)} disabled={busy || !!block} />
+        {full ? (
+          <Button label="Approve: add to the waiting list" onPress={() => void queue(id)} disabled={busy || !!block} />
+        ) : (
+          <Button label="Approve" onPress={() => void decide(kind, id, true)} disabled={busy || !!block} />
+        )}
         <Button label="Decline" variant="outline" onPress={() => void decide(kind, id, false)} disabled={busy} />
       </View>
     </>
@@ -102,6 +127,7 @@ export default function Review() {
           />
         </MenuList>
       )}
+      <ProposalCards entries={queueEntries} members={members} onChanged={() => void Promise.all([load(), coven.refresh()])} />
       {!apps && <ActivityIndicator color={colors.gold} style={styles.loading} />}
       {apps && (
         <Section label="Applications to join">
@@ -154,7 +180,8 @@ export default function Review() {
             const mentorsThem = coven.mentors.some((m) => m.user_id === a.user_id && m.mentor_id === coven.userId);
             const toTick = (checks[a.id] ?? []).filter((c) => !c.auto && c.status !== 'met');
             const unticked = untickedLabels(checks[a.id] ?? [], ticked);
-            const block = left === 0 ? `${rankName(a.rank_id)} is full. Give it more places under Manage → Positions, or decline this request.` : unticked.length ? `Tick what it asks before approving: ${unticked.join('; ')}.` : null;
+            const full = left === 0;
+            const block = unticked.length ? `Tick what it asks before approving: ${unticked.join('; ')}.` : null;
             return (
               <Card key={a.id}>
                 <Text style={type.cardTitle}>
@@ -196,7 +223,12 @@ export default function Review() {
                   <Text style={type.caption}>Why they’re ready</Text>
                   <Words text={a.statement || '—'} />
                 </View>
-                {decision('advancement', a.id, block)}
+                {full && (
+                  <Text style={type.caption}>
+                    {rankName(a.rank_id)} is full. Approving adds them to its waiting list, in turn; they’re told where they are in line. Or give it more places under Manage → Positions, or decline.
+                  </Text>
+                )}
+                {decision('advancement', a.id, block, full)}
               </Card>
             );
           })}
