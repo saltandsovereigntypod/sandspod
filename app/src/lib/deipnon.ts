@@ -77,6 +77,6 @@ export function deipnonReminders(settings: SettingsLike, from: Date, days: numbe
     date,
     title: 'Hekate’s Deipnon today',
     body: 'Clear and cleanse the house, leave her supper at a crossroads, and draw the Crossroads spread if you like.',
-    url: '/today',
+    url: '/today?section=deipnon',
   }));
 }

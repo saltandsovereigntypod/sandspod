@@ -18,7 +18,7 @@ const ComingUpWidget = (props: WidgetDayProps, environment: WidgetEnvironment) =
   const gold = '#e2c36d';
   const muted = '#cabf9d';
   const wide = frame({ maxWidth: 10000, alignment: 'leading' });
-  const link = widgetURL('saltandsovereignty://today');
+  const link = widgetURL('saltandsovereignty://today?section=horizon');
   const label = (text: string) => <Text modifiers={[font({ size: 10, weight: 'semibold' }), foregroundStyle(gold)]}>{text}</Text>;
   const none = (text: string) => <Text modifiers={[font({ size: 12 }), foregroundStyle(muted)]}>{text}</Text>;
   // What's coming, or (from an older app) the holidays alone.

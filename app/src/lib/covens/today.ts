@@ -28,6 +28,8 @@ export type CovenTodayInput = {
   enrollments: Enrollment[];
   progress: TaskProgress[];
   mentors: Mentorship[];
+  /** The coven's positions, for naming yours on the Coven tab's cards (optional: older loaders leave it out). */
+  ranks?: { id: string; coven_id: string; name?: string | null }[];
 };
 
 export type CovenTodayItem = {
@@ -156,6 +158,36 @@ export function nextCovenRite(input: CovenTodayInput | null | undefined, now = n
     at: new Date(next.scheduled_for!),
     detail: `${when(next.scheduled_for!, now).replace(/^./, (c) => c.toUpperCase())} · ${covenName} · ${yours}`,
   };
+}
+
+export type CovenGlance = {
+  /** Your position in the coven ("Initiate", "Founder"), or null when it has no name. */
+  position: string | null;
+  /** The next gathering: a rite under way, or the soonest one scheduled from the start of today. */
+  next: { ritualId: string; title: string; line: string; meeting: boolean; live: boolean } | null;
+};
+
+/**
+ * One coven at a glance, for its card under My covens: your position there
+ * and its next gathering (a rite or meeting). Shared with the website.
+ */
+export function covenGlance(input: CovenTodayInput | null | undefined, covenId: string, now = new Date()): CovenGlance {
+  if (!input) return { position: null, next: null };
+  const membership = input.memberships.find((m) => m.coven_id === covenId && m.user_id === input.userId);
+  const rank = membership?.rank_id ? input.ranks?.find((r) => r.id === membership.rank_id) : undefined;
+  const coven = input.covens.find((c) => c.id === covenId);
+  const position = rank?.name?.trim() || (coven?.founder_id && coven.founder_id === input.userId ? 'Founder' : null);
+  const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime();
+  const ours = input.rituals.filter((r) => r.coven_id === covenId);
+  const live = ours.find((r) => r.status === 'live');
+  const soonest = ours
+    .filter((r) => r.status === 'scheduled' && r.scheduled_for && new Date(r.scheduled_for).getTime() >= todayStart)
+    .sort((a, b) => new Date(a.scheduled_for!).getTime() - new Date(b.scheduled_for!).getTime())[0];
+  const ritual = live ?? soonest;
+  if (!ritual) return { position, next: null };
+  const meeting = ritual.kind === 'meeting';
+  const line = live ? `${ritual.title} is under way` : `${ritual.title}, ${when(ritual.scheduled_for!, now)}`;
+  return { position, next: { ritualId: ritual.id, title: ritual.title, line, meeting, live: !!live } };
 }
 
 /** Which comes first for "Your next working": your own plan or a coven's rite (a tie goes to the coven). */

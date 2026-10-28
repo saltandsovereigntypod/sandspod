@@ -107,6 +107,11 @@ export async function fetchMyCovens(userId: string): Promise<Coven[]> {
   return rows.map((r) => r.covens).filter((c): c is Coven => !!c);
 }
 
+/** Your applications to join still waiting for an answer, with the coven each is for (as the website's directory lists them). */
+export async function fetchMyPendingApplications(userId: string): Promise<(Pick<Application, 'id' | 'coven_id' | 'status' | 'created_at'> & { covens: { name: string; slug: string } | null })[]> {
+  return run(supabase.from('coven_applications').select('id,coven_id,status,created_at,covens(name,slug)').eq('user_id', userId).eq('status', 'pending').order('created_at', { ascending: false }).limit(50));
+}
+
 /** Your covens with your place in each (membership and the coven's positions), for planning reminders. */
 export async function fetchMyStandings(userId: string): Promise<{ coven: Coven; membership: Member; ranks: Rank[] }[]> {
   const rows = await run<(Member & { covens: Coven | null })[]>(
@@ -683,5 +688,5 @@ export async function fetchCovenToday(userId: string): Promise<import('./today')
       return c.founder_id === userId || rank?.can_manage || rank?.can_manage_programs || grants.some((g) => g.coven_id === c.id && g.power === 'manage_programs');
     })
     .map((c) => c.id);
-  return { userId, covens, memberships, programCovens, rituals, steps, rsvps, programs, stages: parts.stages, tasks: parts.tasks, enrollments, progress, mentors };
+  return { userId, covens, memberships, programCovens, rituals, steps, rsvps, programs, stages: parts.stages, tasks: parts.tasks, enrollments, progress, mentors, ranks };
 }

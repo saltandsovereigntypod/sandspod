@@ -1,4 +1,4 @@
-import { router } from 'expo-router';
+import { router, useLocalSearchParams, useNavigation } from 'expo-router';
 import { useEffect, useMemo, useState } from 'react';
 import { Pressable, StyleSheet, Text, useWindowDimensions, View } from 'react-native';
 
@@ -10,6 +10,9 @@ import { CalendarLineList, LeadCalendarLine } from '../../../components/Calendar
 import { Icon } from '../../../components/Icon';
 import { MoonDisc } from '../../../components/MoonDisc';
 import { Screen } from '../../../components/Screen';
+import { SegmentedSwitch } from '../../../components/SegmentedSwitch';
+import { preloadRememberedTab, useRememberedTab } from '../../../lib/rememberedTab';
+import { asTodayTab, TODAY_TAB_KEY, TODAY_TABS, todayTabFor } from '../../../lib/screenTabs';
 import { useReminderTaps } from '../../../lib/reminders/notifier';
 import { PHASE_ORDER } from '../../../lib/reminders/schedule';
 import { setHolidaySelection, syncSkyCalendar } from '../../../lib/reminders/calendarStore';
@@ -50,6 +53,8 @@ import { hasHolyPage, holyRef, moonRef, principalRef } from '../../../lib/holy';
 import { forYou, forYouContext, myPractices } from '../../../lib/rituals/premade';
 import type { Place } from '../../../lib/astro/rise';
 import { colors, fonts, radius, space, type } from '../../../theme';
+
+void preloadRememberedTab(TODAY_TAB_KEY);
 
 /** A clock that ticks every quarter hour, for the void-of-course Moon and planetary hours. */
 function useClock(): Date {
@@ -137,116 +142,146 @@ export default function Today() {
     />
   );
 
+  // Two tabs: what's happening for you today, and the wider sky and lore.
+  const [remembered, rememberTab] = useRememberedTab(TODAY_TAB_KEY, asTodayTab);
+  const tab = remembered ?? 'today';
+  // A link to one of Today's sections (/today?section=moon, or ?tab=sky)
+  // opens the tab that holds it; the link is then cleared so it works again.
+  const params = useLocalSearchParams<{ tab?: string; section?: string }>();
+  const linked = todayTabFor(params);
+  useEffect(() => {
+    if (!linked) return;
+    rememberTab(linked);
+    router.setParams({ tab: undefined, section: undefined });
+  }, [linked, params.tab, params.section, rememberTab]);
+  // Tapping Today in the tab bar while already here goes back to the first tab.
+  const navigation = useNavigation();
+  useEffect(() => {
+    const parent = navigation.getParent();
+    if (!parent) return;
+    return parent.addListener('tabPress' as never, () => {
+      if (navigation.isFocused()) rememberTab('today');
+    });
+  }, [navigation, rememberTab]);
+
   return (
     <Screen>
-      <View style={styles.header}>
-        {lead && <LeadCalendarLine line={lead} />}
-        <Text style={[type.eyebrow, styles.date]}>{today.dateLine}</Text>
-        <Text style={styles.ruler}>{today.rulerLine}</Text>
-        {today.tradition && <Text style={[type.caption, styles.center]}>{today.tradition.line}</Text>}
-        {today.tradition?.detail && <Text style={[type.caption, styles.center, styles.muted]}>{today.tradition.detail}</Text>}
-        <CalendarLineList lines={beside} />
-      </View>
-
-      <View style={side ? styles.sideBySide : styles.stacked}>
-        {show !== 'holiday' && (
-          <View style={side ? half : styles.stacked}>
-            <MoonPanel today={today} compact={side} />
-            {!side && reminderButton}
+      <SegmentedSwitch label="Today" options={TODAY_TABS} value={tab} onChange={rememberTab} />
+      {tab === 'today' ? (
+        <>
+          <View style={styles.header}>
+            {lead && <LeadCalendarLine line={lead} />}
+            <Text style={[type.eyebrow, styles.date]}>{today.dateLine}</Text>
+            <Text style={styles.ruler}>{today.rulerLine}</Text>
+            {today.tradition && <Text style={[type.caption, styles.center]}>{today.tradition.line}</Text>}
+            {today.tradition?.detail && <Text style={[type.caption, styles.center, styles.muted]}>{today.tradition.detail}</Text>}
+            <CalendarLineList lines={beside} />
           </View>
-        )}
-        {show !== 'moon' &&
-          (side ? (
-            // Only a holiday happening today shows here; otherwise this half stays empty.
-            <View style={half}>{today.holidaysToday.length > 0 && <HolidayPanel today={today} compact />}</View>
-          ) : today.holidaysToday.length > 0 ? (
-            <HolidayPanel today={today} compact={false} />
-          ) : show === 'holiday' ? (
-            <Text style={[type.caption, styles.center]}>No holiday today</Text>
-          ) : null)}
-      </View>
-      {side && reminderButton}
 
+          <View style={side ? styles.sideBySide : styles.stacked}>
+            {show !== 'holiday' && (
+              <View style={side ? half : styles.stacked}>
+                <MoonPanel today={today} compact={side} />
+                {!side && reminderButton}
+              </View>
+            )}
+            {show !== 'moon' &&
+              (side ? (
+                // Only a holiday happening today shows here; otherwise this half stays empty.
+                <View style={half}>{today.holidaysToday.length > 0 && <HolidayPanel today={today} compact />}</View>
+              ) : today.holidaysToday.length > 0 ? (
+                <HolidayPanel today={today} compact={false} />
+              ) : show === 'holiday' ? (
+                <Text style={[type.caption, styles.center]}>No holiday today</Text>
+              ) : null)}
+          </View>
+          {side && reminderButton}
 
-      <View style={styles.working}>
-        {active ? (
-          <>
-            <View style={styles.workingText}>
-              <Text style={[type.eyebrow, styles.gold]}>{active.status === 'paused' ? 'Paused' : 'Under way'}</Text>
-              <Text style={type.cardTitle}>{active.title || 'Your ritual'}</Text>
-              <Text style={type.caption}>{step ? step.title : 'Finish and journal it when you are ready.'}</Text>
+          <View style={styles.working}>
+            {active ? (
+              <>
+                <View style={styles.workingText}>
+                  <Text style={[type.eyebrow, styles.gold]}>{active.status === 'paused' ? 'Paused' : 'Under way'}</Text>
+                  <Text style={type.cardTitle}>{active.title || 'Your ritual'}</Text>
+                  <Text style={type.caption}>{step ? step.title : 'Finish and journal it when you are ready.'}</Text>
+                </View>
+                <Button label="Continue the ritual" onPress={() => router.navigate('/rituals/run')} />
+              </>
+            ) : first === 'rite' && rite ? (
+              <>
+                <View style={styles.workingText}>
+                  <Text style={[type.eyebrow, styles.gold]}>Your next working</Text>
+                  <Text style={type.cardTitle}>{rite.title}</Text>
+                  <Text style={type.caption}>{rite.detail}</Text>
+                  {next && <Text style={type.caption}>{`Then your own: ${next.title}, ${planWhen(next, now)}`}</Text>}
+                </View>
+                <Button label={rite.meeting ? 'See the meeting' : 'See the rite'} onPress={() => router.navigate(covenHref(rite.covenSlug, `ritual/${rite.ritualId}`))} />
+              </>
+            ) : next ? (
+              <>
+                <View style={styles.workingText}>
+                  <Text style={[type.eyebrow, styles.gold]}>Your next working</Text>
+                  <Text style={type.cardTitle}>{next.title}</Text>
+                  <Text style={type.caption}>{`${planWhen(next, now)} · ${planSky(next)}`}</Text>
+                  {rite && <Text style={type.caption}>{`Then with ${rite.covenName}: ${rite.title}`}</Text>}
+                </View>
+                <Button
+                  label="Open the plan"
+                  onPress={() => router.navigate({ pathname: '/rituals/plan/[id]', params: { id: next.id } })}
+                />
+              </>
+            ) : (
+              <>
+                <View style={styles.workingText}>
+                  <Text style={[type.eyebrow, styles.gold]}>Your next working</Text>
+                  <Text style={type.cardTitle}>Nothing planned yet</Text>
+                  <Text style={type.caption}>Choose an intention and we'll find the right night.</Text>
+                </View>
+                <Button label="Plan a ritual" onPress={() => router.navigate('/rituals/planner')} />
+              </>
+            )}
+          </View>
+
+          <CovenToday />
+
+          <TendToday />
+
+          <LookBackDue journal={rituals.journal} now={now} />
+
+          <DreamCapture settings={settings} now={clock} reminderOn={reminders.settings.dreamMorning} />
+          <DeipnonCard settings={settings} now={clock} />
+          {drawOnToday(settings) && <CardOfTheDay now={clock} south={keepsSouthernWheel(settings)} />}
+          <Button
+            label="Set tonight’s altar"
+            variant="outline"
+            accessibilityHint="Opens a starter altar for today's planet, moon or holiday"
+            onPress={() => router.navigate({ pathname: '/altar/[altarId]', params: { altarId: 'tonight', from: 'today' } })}
+          />
+          <View style={styles.prompt}>
+            <Text style={[type.eyebrow, styles.gold]}>Reflect</Text>
+            <Text style={styles.promptText}>{today.prompt}</Text>
+          </View>
+          <LastTimeLine journal={rituals.journal} now={clock} />
+        </>
+      ) : (
+        <>
+          <DaySky today={today} sky={sky} here={here} now={clock} />
+          <CorrespondencesCard today={today} />
+
+          <View style={styles.horizon}>
+            <Text style={type.eyebrow}>On the horizon</Text>
+            <View style={styles.tiles}>
+              {today.horizon.map((item) => (
+                <HorizonTile key={item.title} item={item} />
+              ))}
             </View>
-            <Button label="Continue the ritual" onPress={() => router.navigate('/rituals/run')} />
-          </>
-        ) : first === 'rite' && rite ? (
-          <>
-            <View style={styles.workingText}>
-              <Text style={[type.eyebrow, styles.gold]}>Your next working</Text>
-              <Text style={type.cardTitle}>{rite.title}</Text>
-              <Text style={type.caption}>{rite.detail}</Text>
-              {next && <Text style={type.caption}>{`Then your own: ${next.title}, ${planWhen(next, now)}`}</Text>}
-            </View>
-            <Button label={rite.meeting ? 'See the meeting' : 'See the rite'} onPress={() => router.navigate(covenHref(rite.covenSlug, `ritual/${rite.ritualId}`))} />
-          </>
-        ) : next ? (
-          <>
-            <View style={styles.workingText}>
-              <Text style={[type.eyebrow, styles.gold]}>Your next working</Text>
-              <Text style={type.cardTitle}>{next.title}</Text>
-              <Text style={type.caption}>{`${planWhen(next, now)} · ${planSky(next)}`}</Text>
-              {rite && <Text style={type.caption}>{`Then with ${rite.covenName}: ${rite.title}`}</Text>}
-            </View>
-            <Button
-              label="Open the plan"
-              onPress={() => router.navigate({ pathname: '/rituals/plan/[id]', params: { id: next.id } })}
-            />
-          </>
-        ) : (
-          <>
-            <View style={styles.workingText}>
-              <Text style={[type.eyebrow, styles.gold]}>Your next working</Text>
-              <Text style={type.cardTitle}>Nothing planned yet</Text>
-              <Text style={type.caption}>Choose an intention and we'll find the right night.</Text>
-            </View>
-            <Button label="Plan a ritual" onPress={() => router.navigate('/rituals/planner')} />
-          </>
-        )}
-      </View>
+            <Text style={[type.caption, styles.center]}>{today.nextSyzygyLine}</Text>
+            {today.eclipseLine && <Text style={[type.caption, styles.center, styles.gold]}>{today.eclipseLine}</Text>}
+          </View>
 
-      <CovenToday />
-
-      <TendToday />
-
-      <LookBackDue journal={rituals.journal} now={now} />
-
-      <View style={styles.horizon}>
-        <Text style={type.eyebrow}>On the horizon</Text>
-        <View style={styles.tiles}>
-          {today.horizon.map((item) => (
-            <HorizonTile key={item.title} item={item} />
-          ))}
-        </View>
-        <Text style={[type.caption, styles.center]}>{today.nextSyzygyLine}</Text>
-        {today.eclipseLine && <Text style={[type.caption, styles.center, styles.gold]}>{today.eclipseLine}</Text>}
-      </View>
-
-      <DreamCapture settings={settings} now={clock} reminderOn={reminders.settings.dreamMorning} />
-      <DeipnonCard settings={settings} now={clock} />
-      <PracticeCard settings={settings} place={place} now={clock} />
-      {drawOnToday(settings) && <CardOfTheDay now={clock} south={keepsSouthernWheel(settings)} />}
-      <DaySky today={today} sky={sky} here={here} now={clock} />
-      <CorrespondencesCard today={today} />
-      <Button
-        label="Set tonight’s altar"
-        variant="outline"
-        accessibilityHint="Opens a starter altar for today's planet, moon or holiday"
-        onPress={() => router.navigate({ pathname: '/altar/[altarId]', params: { altarId: 'tonight', from: 'today' } })}
-      />
-      <View style={styles.prompt}>
-        <Text style={[type.eyebrow, styles.gold]}>Reflect</Text>
-        <Text style={styles.promptText}>{today.prompt}</Text>
-      </View>
-      <LastTimeLine journal={rituals.journal} now={clock} />
+          <PracticeCard settings={settings} place={place} now={clock} />
+        </>
+      )}
     </Screen>
   );
 }

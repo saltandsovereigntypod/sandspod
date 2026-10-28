@@ -185,8 +185,11 @@ body.has-site-nav .accessibility-trigger {
   width: auto;
 }
 
-/* Practice: the Grimoire | Rituals switch at the top of their pages. */
-.practice-switch {
+/* Practice: the Grimoire | Rituals switch at the top of their pages. The
+   same pill switches tabs within a page (.seg-switch, js/segmented-switch.js):
+   Today | Sky & Lore, My covens | Find a coven. */
+.practice-switch,
+.seg-switch {
   display: flex;
   gap: 4px;
   width: max-content;
@@ -210,3 +213,25 @@ body.has-site-nav .accessibility-trigger {
   font-weight: 600;
 }
 .practice-switch a:focus-visible { outline: 2px solid var(--gold, #e2c36d); outline-offset: 2px; }
+.seg-switch {
+  flex-wrap: wrap;
+  justify-content: center;
+  margin: 0 auto 18px;
+}
+.seg-switch button {
+  padding: 7px 18px;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--cream, #f4ecd8);
+  font: inherit;
+  font-size: 0.95rem;
+  cursor: pointer;
+}
+.seg-switch button:hover:not([aria-selected="true"]) { opacity: 0.8; }
+.seg-switch button[aria-selected="true"] {
+  background: var(--gold, #e2c36d);
+  color: var(--charcoal, #102118);
+  font-weight: 600;
+}
+.seg-switch button:focus-visible { outline: 2px solid var(--gold, #e2c36d); outline-offset: 2px; }

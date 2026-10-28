@@ -21,7 +21,7 @@ const MoonWidget = (props: WidgetDayProps, environment: WidgetEnvironment) => {
   const muted = '#cabf9d';
   const fill = frame({ maxWidth: 10000, maxHeight: 10000, alignment: 'topLeading' });
   const family = environment.widgetFamily;
-  const link = widgetURL('saltandsovereignty://today');
+  const link = widgetURL('saltandsovereignty://today?section=moon');
   const lit = `${props.percent}%`;
   const label = (text: string) => <Text modifiers={[font({ size: 10, weight: 'semibold' }), foregroundStyle(gold)]}>{text}</Text>;
 

@@ -14,7 +14,7 @@ const HolidayWidget = (props: WidgetDayProps, environment: WidgetEnvironment) =>
   const cream = '#f4ecd8';
   const gold = '#e2c36d';
   const muted = '#cabf9d';
-  const link = widgetURL('saltandsovereignty://today');
+  const link = widgetURL('saltandsovereignty://today?section=holiday');
   const next = props.nextHoliday;
   const family = environment.widgetFamily;
 

@@ -246,7 +246,7 @@ export function buildSchedule(
         at: day,
         title: `${title} ${event.date.getTime() < day.getTime() ? 'today' : 'tonight'}`,
         body: body('A good time to plan or begin a working.'),
-        url: '/today',
+        url: '/today?section=moon',
       });
       if (settings.dayBefore) {
         reminders.push({
@@ -275,7 +275,7 @@ export function buildSchedule(
           at: event.date,
           title: `${title} now`,
           body: note || 'The moon is exact.',
-          url: '/today',
+          url: '/today?section=moon',
         });
       }
     }
