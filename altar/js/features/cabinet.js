@@ -200,13 +200,29 @@ window.AltarBackgrounds = {
 };
 window.dispatchEvent(new CustomEvent("altarBackgroundsReady"));
 
+// What a thing is traditionally for, from the Living Library (AltarArtwork.meanings,
+// as the app's cabinet.ts), so the search finds it by meaning: "heal" finds
+// every herb, crystal, candle colour and god for healing.
+function cabinetMeaningWords(item) {
+  const m = window.AltarArtwork?.meanings || {};
+  const key = (value) => String(value || "").replaceAll("_", "-");
+  return (item.forms || []).flatMap((form) => [
+    ...(form.herb ? m.herb?.[key(form.herb)] || [] : []),
+    ...(form.crystal ? m.crystal?.[key(form.crystal)] || [] : []),
+    ...(form.deity ? m.deity?.[key(form.deity)] || [] : []),
+    ...(form.tool ? m.tool?.[key(form.tool)] || [] : []),
+    ...(form.vessel ? m.vessel?.[key(form.vessel)] || [] : []),
+    ...(form.color ? m.candle?.[key(form.color)] || [] : [])
+  ]);
+}
+
 function cabinetSearchAliases(item) {
   const formWords = (item.forms || []).flatMap((form) => [form.label, form.type, form.form]);
   const variants = item.category === "candles" ? ["candle", "candles"]
     : item.category === "herbs" ? ["herb", "herbs"]
       : item.category === "crystals" ? ["crystal", "crystals"]
         : item.name === "Spell Jar" ? ["jar", "spell jar", "spell jars"] : [];
-  return [...new Set([...(item.keywords || []), ...formWords, ...variants].filter(Boolean))];
+  return [...new Set([...(item.keywords || []), ...formWords, ...variants, ...cabinetMeaningWords(item)].filter(Boolean))];
 }
 
 function cabinetItemId(item) {
@@ -487,7 +503,9 @@ function renderCabinetItems() {
       item.category,
       ...(item.keywords || []),
       ...(item.grimoireKeywords || []),
-      ...(item.forms || []).flatMap((form) => [form.label, form.form, form.color, ...(form.aliases || [])])
+      ...(item.forms || []).flatMap((form) => [form.label, form.form, form.color, ...(form.aliases || [])]),
+      ...cabinetMeaningWords(item),
+      item.description || ""
     ].join(" ").toLowerCase();
 
     return matchesCategory && words.every((word) => searchable.includes(word));

@@ -330,7 +330,18 @@ export function cabinetSearchAliases(item: CabinetItem): string[] {
           : item.name === 'Spell Jar'
             ? ['jar', 'spell jar', 'spell jars']
             : [];
-  return [...new Set([...item.keywords, ...formWords, ...variants].filter((word): word is string => !!word))];
+  // What it's traditionally for, from the Living Library, so a search by meaning finds it.
+  const m = ALTAR_ARTWORK.meanings;
+  const meaningWords = item.forms.flatMap((form) => [
+    ...(form.herb ? m.herb[String(form.herb).replaceAll('_', '-')] ?? [] : []),
+    ...(form.crystal ? m.crystal[String(form.crystal).replaceAll('_', '-')] ?? [] : []),
+    ...(form.deity ? m.deity[String(form.deity).replaceAll('_', '-')] ?? [] : []),
+    ...(form.tool ? m.tool[String(form.tool).replaceAll('_', '-')] ?? [] : []),
+    ...(form.vessel ? m.vessel[String(form.vessel).replaceAll('_', '-')] ?? [] : []),
+    ...(form.color ? m.candle[String(form.color).replaceAll('_', '-')] ?? [] : []),
+  ]);
+  const described = item.description ? [item.description] : [];
+  return [...new Set([...item.keywords, ...formWords, ...variants, ...meaningWords, ...described].filter((word): word is string => !!word))];
 }
 
 /** Items in one category matching a search, custom items first (renderCabinetItems). */
