@@ -128,13 +128,15 @@
   function loadToday() {
     if (global.SaltCore?.today) return Promise.resolve(global.SaltCore.today);
     if (!todayLoading) {
-      todayLoading = new Promise((resolve) => {
+      // js/core/today.js reads the Traditional Library (js/traditional-library.js), so that comes first.
+      const library = (global.SaltScripts?.traditionalLibrary() || Promise.resolve()).catch(() => {});
+      todayLoading = library.then(() => new Promise((resolve) => {
         const script = global.document.createElement("script");
         script.src = UI.href("/js/core/today.js");
         script.onload = () => resolve(global.SaltCore?.today || null);
         script.onerror = () => resolve(null);
         global.document.head.appendChild(script);
-      });
+      }));
     }
     return todayLoading;
   }

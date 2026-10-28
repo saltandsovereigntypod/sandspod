@@ -13,6 +13,8 @@ function loadCore() {
   const sandbox = { window: {}, console, TextEncoder, Intl, Date, Math };
   sandbox.window.window = sandbox.window;
   vm.createContext(sandbox);
+  // The bundle reads the Traditional Library from the page's own script (scripts/build-core.mjs).
+  vm.runInContext(fs.readFileSync(path.join(__dirname, "../js/traditional-library.js"), "utf8"), sandbox);
   const code = fs.readFileSync(path.join(__dirname, "../js/core/practice-a.js"), "utf8");
   vm.runInContext(code, sandbox);
   return sandbox.SaltCore["practice-a"];

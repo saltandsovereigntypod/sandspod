@@ -124,7 +124,7 @@ function restoreAltarSnapshot(snapshot) {
   clearCandleDressingMode();
 
   if (snapshot.background) {
-    altarStage.style.backgroundImage = `url("${snapshot.background}")`;
+    altarStage.style.backgroundImage = `url("${window.SanctuaryAssetCatalog?.displayPath?.(snapshot.background) || snapshot.background}")`;
     altarStage.dataset.background = snapshot.background;
     altarStage.dataset.backgroundName = snapshot.backgroundName || "";
   }

@@ -33,6 +33,7 @@ function loadHelpers(win) {
 function loadBundle() {
   const context = vm.createContext({ console });
   context.window = context;
+  vm.runInContext(fs.readFileSync(path.join(root, "js/traditional-library.js"), "utf8"), context);
   vm.runInContext(fs.readFileSync(path.join(root, "js/core/practice-b.js"), "utf8"), context);
   return context.SaltCore["practice-b"];
 }

@@ -282,7 +282,7 @@ function changeAltarBackground(button) {
 
   if (!backgroundPath) return;
 
-  altarStage.style.backgroundImage = `url("${backgroundPath}")`;
+  altarStage.style.backgroundImage = `url("${window.SanctuaryAssetCatalog?.displayPath?.(backgroundPath) || backgroundPath}")`;
   altarStage.dataset.background = backgroundPath;
   altarStage.dataset.backgroundName = backgroundName;
 

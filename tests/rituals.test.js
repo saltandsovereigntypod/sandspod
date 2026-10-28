@@ -10,6 +10,7 @@ const L = require("../rituals/js/rituals-logic.js");
 const sandbox = { window: {}, TextEncoder, Intl, crypto: globalThis.crypto };
 sandbox.window = sandbox;
 vm.createContext(sandbox);
+vm.runInContext(fs.readFileSync(path.join(__dirname, "../js/traditional-library.js"), "utf8"), sandbox);
 vm.runInContext(fs.readFileSync(path.join(__dirname, "../js/core/rituals.js"), "utf8"), sandbox);
 const R = sandbox.SaltCore.rituals;
 // Objects made in the sandbox have its prototypes; compare them as plain data.
