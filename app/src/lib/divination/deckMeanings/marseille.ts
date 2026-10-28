@@ -70,7 +70,7 @@ const MAJORS: DeckMeanings = {
     { title: 'IIII · L’Empereur' },
   ),
   '05-the-hierophant': card(
-    'The pope sits between two pillars with a triple cross, his hand raised in blessing. Two tonsured clerics kneel before him with their backs to us.',
+    'The pope sits between two pillars with a triple cross, his hand raised in blessing. Two smaller figures kneel before him with their backs to us, one in a broad round hat.',
     ['teaching, counsel, a bridge between', 'Le Pape is the one who passes knowledge on: a teacher, a counsellor, a tradition that helps. He stands between heaven and the people kneeling. Ask for good advice, or give it.'],
     ['dogma, bad advice, a closed door', 'The teacher stops listening, or the rule no longer fits the person. Beware counsel that serves the giver. Seek your own understanding.'],
     { title: 'V · Le Pape' },
@@ -169,8 +169,8 @@ const MAJORS: DeckMeanings = {
     },
   ),
   '17-the-star': card(
-    'A naked woman kneels by a stream and pours water from two jugs, one into the water and one onto the land. A great star shines among seven smaller ones, and a bird sits in a tree.',
-    ['hope, generosity, a gift', 'L’Étoile gives freely: water to the land, light to the night. Hope, renewal, a good omen, a gift without strings. Trust that it’s flowing your way.'],
+    'A naked woman kneels on one knee at the water’s edge and pours out two jugs into the stream. A great star shines among seven smaller ones, and a bird sits on top of a tree.',
+    ['hope, generosity, a gift', 'L’Étoile gives freely: water poured out, light to the night. Hope, renewal, a good omen, a gift without strings. Trust that it’s flowing your way.'],
     ['hope delayed, giving too much, doubt', 'The jugs run dry, or you pour out everything and keep nothing. Disappointment or self-doubt. Refill yourself first.'],
     { title: 'XVII · L’Étoile' },
   ),
@@ -199,7 +199,7 @@ const MAJORS: DeckMeanings = {
     { title: 'XX · Le Jugement' },
   ),
   '21-the-world': card(
-    'A dancing figure, bare but for a scarf, stands in an oval wreath with a wand in hand. An angel, an eagle, a lion and an ox fill the four corners.',
+    'A dancing figure, bare but for a scarf, stands in an oval wreath with a little flask in one hand and a wand in the other. An angel, an eagle, a lion and an ox fill the four corners.',
     ['fulfilment, completion, the whole', 'Le Monde is the work done and the dance in the middle of it: success, wholeness, the world opening. Everything is in its place. Enjoy it, and know it opens on to the next.'],
     ['incompletion, a closed circle, delay', 'Almost there, or the wreath has become a wall. Something is left unfinished. Tie the last thread.'],
     {
@@ -224,7 +224,7 @@ const COURT_NOTE =
 
 const WANDS: DeckMeanings = {
   'wands-01': card(
-    'A hand comes out of a cloud and grips a great rough club, its lopped branches sprouting, with little flames or leaves falling round it.',
+    'A hand comes out of a cloud and grips a great rough club, its branches lopped short, with little flames or leaves falling round it.',
     ['raw energy, a start, desire', 'The As de Bâton is the whole force of the suit in one hand: drive, desire, the will to make and do. A venture, a new work, a strong urge. Grasp it.'],
     ['energy blocked, a false start, force misused', 'The club is heavy and won’t swing, or swings too hard. Frustration or wasted strength. Find the right thing to put it to.'],
     { note: 'An ace is read as the root of its suit. Bâtons, the clubs of the old card games, stand for work, enterprise and the energy of the body in French cartomancy.' },
@@ -240,42 +240,42 @@ const WANDS: DeckMeanings = {
     ['rashness, scattered starts', 'Too much begun, not enough finished. Haste over craft. Slow the rush a little.'],
   ),
   'wands-04': card(
-    'Four staves cross in a lattice around a flowered centre, square and balanced.',
+    'Four staves cross two and two in a broad X, with flowers in the gaps above, below and at the sides.',
     ['stability, a firm base, steady work', 'Four is the number of the foundation. Work that is secure, a settled place, energy put into building. Rest on it.'],
     ['routine, rigidity, a shaky base', 'Security turns into a rut, or the ground isn’t as firm as it looks. Check the foundations, and make room to move.'],
   ),
   'wands-05': card(
-    'The lattice of four staves, with a fifth standing upright through the middle.',
+    'The X of four staves, with a fifth standing upright through the middle.',
     ['challenge, a new ambition, competition', 'Five breaks the square: a new desire, a test, a contest. Rivalry and struggle, or a step beyond the safe. The effort is worth it.'],
     ['quarrels, pointless rivalry', 'The struggle has become its own reason. Disputes over small things. Pick your contests.'],
   ),
   'wands-06': card(
-    'Six staves cross in a close, even lattice, with flowers set in its gaps.',
+    'Six staves cross three and three in a broad X, with flowers set in its gaps.',
     ['pleasure in work, harmony, success', 'Six is the number of pleasure and of things fitting together. Work you enjoy, energy that flows, recognition for it. Do what you love doing.'],
     ['vanity, pleasure without effort', 'Enjoyment slides into self-satisfaction, or the pleasure fades. Remember why you began.'],
   ),
   'wands-07': card(
-    'The lattice of six staves, with a seventh upright through the middle.',
+    'The X of six staves, with a seventh upright through the middle.',
     ['action, courage, holding your ground', 'Seven is action in the world: energy aimed and used. Effort, initiative, standing up for what you do. Keep at it.'],
     ['overwhelm, giving way, strain', 'Too much to hold at once, and effort turned to strain. Choose what to defend.'],
   ),
   'wands-08': card(
-    'Eight staves fill the card in a dense, even lattice.',
+    'Eight staves cross four and four in a great X that fills the card, a flower above and below.',
     ['full power, order, momentum', 'Eight is fullness and order: energy at its height and well directed. Things move fast and well. Use the momentum.'],
     ['haste, overload, a tangle', 'Too much at once, or things run ahead of you. Sort out what matters first.'],
   ),
   'wands-09': card(
-    'The lattice of eight staves, with a ninth upright through the middle.',
+    'The X of eight staves, with a ninth upright through the middle.',
     ['a turning point, endurance, change ahead', 'Nine is a crisis of passage: an effort near its end, energy changing form. Hold on; something is closing so another can start.'],
     ['exhaustion, stubbornness, letting go too late', 'Pushing on after the work is done, weary and on guard. Rest, and let it change.'],
   ),
   'wands-10': card(
-    'Ten staves crowd the card in a tight lattice, with two standing straight through the middle.',
+    'Ten staves crowd the card: eight crossing in a great X, with two standing straight through the middle.',
     ['the end of a cycle, a load laid down, a new start', 'Ten closes the suit: the work is done, and its energy is about to begin again in a new shape. A finished task, or a burden nearly put down. Begin to think of what is next.'],
     ['overburdened, unable to finish', 'Still carrying it all, long after it should be set down. Share the load, or let some of it go.'],
   ),
   'wands-11': card(
-    'A young man in a wide hat stands with a great club resting on the ground before him, both hands on it.',
+    'A young man in a small cap stands in profile with a great green club planted on the ground beside him, both hands on it.',
     ['eagerness, a beginner, a first venture', 'The Valet de Bâton has more energy than skill: a young worker, an apprentice, news of a venture. Enthusiasm and a strong pair of hands. Learn the craft.'],
     ['clumsiness, impatience, bluster', 'More force than sense, or the club too heavy for the hands. Be patient with the learning.'],
   ),
@@ -290,7 +290,7 @@ const WANDS: DeckMeanings = {
     ['domineering, jealous, held-in energy', 'Strength turns to control, or desire is kept back until it sours. Let it out kindly.'],
   ),
   'wands-14': card(
-    'A crowned king sits holding a long baton, looking out across the card.',
+    'A king in armour, his crown set on a wide hat, sits holding a long baton slanted down to the floor before him, his other hand on his hip.',
     ['leadership, mastery, an honest man', 'The Roi de Bâton knows his work and leads by doing it: an employer, a skilled hand, a decisive and fair man. Take charge.'],
     ['harshness, impatience, a tyrant', 'Leadership turns hard or hasty, and pride in the work becomes pride in himself. Lead, don’t drive.'],
   ),
@@ -309,7 +309,7 @@ const CUPS: DeckMeanings = {
     ['misunderstanding, a quarrel between friends', 'The cups face each other but don’t touch. A feeling not returned, or not spoken. Say what you feel.'],
   ),
   'cups-03': card(
-    'Three cups, two above and one below, with stems of flowers curling between them.',
+    'Three cups, one above and two below, with stems of flowers curling between them.',
     ['joy, celebration, a feeling blossoming', 'Three is the first burst: happiness that wants to be shared, a celebration, a love that shows itself. Be glad together.'],
     ['excess, a feeling too quick', 'Too much, too soon: a crush, or an evening that goes on too long. Enjoy it, but steady.'],
   ),
@@ -329,12 +329,12 @@ const CUPS: DeckMeanings = {
     ['nostalgia, sentimentality', 'Living in yesterday’s feeling, a love that is more memory than present. Come back to now.'],
   ),
   'cups-07': card(
-    'Six cups in two columns with a seventh in the middle, and vines curling round them.',
+    'Three cups above, three below and a seventh in the middle, with vines curling round them.',
     ['feeling put to work, generosity, a dream acted on', 'Seven is action: love that goes out and does something, help given, a dream made real. Let your feelings reach the world.'],
     ['illusion, wishful thinking', 'Many cups, few full. Daydreams, or choices made on a fancy. Find the one that’s real.'],
   ),
   'cups-08': card(
-    'Eight cups in even rows, with flowering stems between them.',
+    'Eight cups, three above, two in the middle and three below, with flowering stems between them.',
     ['fullness of heart, peace, love fulfilled', 'Eight is fullness: a heart complete and at peace, love given and returned. Rest in it.'],
     ['a heart overfull, or emptied', 'Overflowing feeling, or giving until there is nothing left. Find the measure.'],
   ),
@@ -345,12 +345,12 @@ const CUPS: DeckMeanings = {
     { note: 'The nine of hearts was the wish card of French and English fortune-telling with playing cards, and it carried the meaning over to the nine of cups. The rest is read by number and suit.' },
   ),
   'cups-10': card(
-    'Nine cups in rows, and a tenth, larger, laid across the top over them all.',
+    'Nine cups in three rows of three, and a tenth, larger, lying on its side across the top over them all.',
     ['the heart’s home, completion, family', 'Ten closes the suit: love fulfilled, a family or a place where you belong, and feeling ready for a new cycle. Be at home.'],
     ['a home disturbed, an ending in love', 'A family quarrel, or the close of a chapter of feeling. What ends makes room.'],
   ),
   'cups-11': card(
-    'A young man stands holding a cup in one hand and its lid in the other, as if about to show what is inside.',
+    'A bareheaded young man with flowers in his hair walks along holding up an open cup in one hand and its lid low in the other, as if about to show what is inside.',
     ['a tender start, an offer, a sensitive young person', 'The Valet de Coupe offers his heart, still shy: a message of love, a gentle beginner, a feeling just opening. Lift the lid.'],
     ['shyness, emotional immaturity', 'Feelings kept covered, or too easily hurt. Be brave with your heart.'],
   ),
@@ -360,13 +360,13 @@ const CUPS: DeckMeanings = {
     ['seduction, false promises', 'The cup is offered to charm, not to give. Look at the hands as well as the cup.'],
   ),
   'cups-13': card(
-    'A crowned queen sits holding a great covered cup, its lid closed.',
-    ['deep feeling, care, a loving woman', 'The Reine de Coupe keeps her feelings close and deep: devotion, intuition, a love that holds. Tend your inner life.'],
+    'A crowned queen sits holding a great covered cup in one hand and a sword in the other, its blade resting against her shoulder.',
+    ['deep feeling, care, a loving woman', 'The Reine de Coupe keeps her feelings close and deep, and has a blade by her to guard them: devotion, intuition, a love that holds. Tend your inner life.'],
     ['moodiness, a closed heart', 'The lid stays shut. Feelings brooded on, or kept from those who need them. Open the cup.'],
-    { note: 'Hers is the one closed cup among the courts, and Marseille readers make much of it as feeling held within. The courts are read by rank: the Reine is mastery turned inward.' },
+    { note: 'Hers is the one closed cup among the courts, and Marseille readers make much of it as feeling held within; the sword in her other hand is read as the clear mind that keeps it. The courts are read by rank: the Reine is mastery turned inward.' },
   ),
   'cups-14': card(
-    'A crowned king sits holding an open cup, calm and upright.',
+    'A crowned king in a wide hat sits on a bench holding a great open cup in one hand, his other hand on his hip.',
     ['emotional maturity, kindness, a generous man', 'The Roi de Coupe is feeling mastered and shared: a kind man, a protector, generosity without show. Be steady and warm.'],
     ['manipulation, indulgence', 'Feeling used to sway others, or comfort taken too far. Keep your heart honest.'],
   ),
@@ -420,12 +420,12 @@ const SWORDS: DeckMeanings = {
     ['anxiety eased, or anguish held too long', 'Either the worst of the worry lifts, or it turns over and over. Talk to someone.'],
   ),
   'swords-10': card(
-    'Ten curved blades fill the card, with two straight swords crossing through the middle.',
+    'Eight curved blades make the oval, and two straight swords cross through the middle of it, ten in all.',
     ['the end of a struggle, a mind made new', 'Ten closes the suit: a conflict over, an idea fully spent, the ground cleared for new thinking. Let the fight end.'],
     ['an ending that drags, defeat', 'The struggle won’t quite finish, or you hold on to the loss. Lay down the swords.'],
   ),
   'swords-11': card(
-    'A young man stands holding a drawn sword in one hand and its scabbard in the other, glancing aside.',
+    'A young man in a wide hat stands holding a drawn sword upright in one hand and its scabbard in the other, glancing down and aside.',
     ['vigilance, a quick mind, a beginner’s boldness', 'The Valet d’Épée has drawn his blade but hasn’t used it: alert, curious, ready to defend an idea. A young person of wit, or news that needs care. Watch and learn.'],
     ['suspicion, gossip, rashness', 'The sword waved about, or watched for in everyone. Sharp words, idle talk. Put the blade back until it’s needed.'],
   ),
@@ -440,7 +440,7 @@ const SWORDS: DeckMeanings = {
     ['coldness, a sharp tongue, loneliness', 'Clarity turns cold, or words cut more than they need to. Let warmth back in.'],
   ),
   'swords-14': card(
-    'A crowned king in armour sits holding a sword and a sceptre, faces on his shoulders.',
+    'A king in armour, his crown set on a wide hat, sits on a stone block holding an upright sword in one hand and a short sceptre in the other.',
     ['authority, judgement, a man of law', 'The Roi d’Épée decides and stands by it: a judge, an adviser, a mind used with authority. Make the decision and own it.'],
     ['severity, cruelty, injustice', 'Judgement without mercy, or power used to cut people down. Temper the law with kindness.'],
   ),
@@ -454,7 +454,7 @@ const PENTACLES: DeckMeanings = {
     { note: 'An ace is read as the root of its suit. Deniers, the old coins, stand for money, work that pays, the body and the home in French cartomancy; the diamonds of the playing cards.' },
   ),
   'pentacles-02': card(
-    'Two coins, one above the other, are joined by a long ribbon that winds round them like an S. Printers often put their name or the date on it.',
+    'Two coins, one above the other, are joined by a long ribbon that winds round them like an S. Printers put their name or the date on it; this one reads N. Conver and 1760.',
     ['exchange, movement, juggling resources', 'Two is gathering: money coming in and going out, an exchange, a partnership in business. Keep it moving.'],
     ['money worries, a balance lost', 'Too much to juggle, and the ribbon tangles. Simplify your accounts.'],
   ),
@@ -464,7 +464,7 @@ const PENTACLES: DeckMeanings = {
     ['amateurism, a slow start', 'Growth stalls, or the work isn’t done with care. Learn the trade properly.'],
   ),
   'pentacles-04': card(
-    'Four coins at the corners of a square, a flower at the centre.',
+    'Four coins at the corners of a square, with a shield of three fleurs-de-lis at the centre.',
     ['security, savings, a firm footing', 'Four is stability: money kept, a house secure, a body well rooted. Enjoy the ground under you.'],
     ['miserliness, holding on too hard', 'Security becomes clutching, or fear of losing. Loosen your hand a little.'],
   ),
@@ -474,27 +474,27 @@ const PENTACLES: DeckMeanings = {
     ['hardship, a loss, feeling left out', 'Money or health under strain for a while. Ask for help; it is there.'],
   ),
   'pentacles-06': card(
-    'Six coins in two columns of three, with flowering stems between them.',
+    'Six coins, one at the top, four in a square around a flower and one at the bottom, with leafy stems winding round them.',
     ['generosity, comfort, a fair exchange', 'Six is pleasure: enough to share, give and take in balance, comfort in the body. Be generous.'],
     ['debts, unequal giving', 'Gifts with strings, or giving more than you can. Even the scales.'],
   ),
   'pentacles-07': card(
-    'Six coins in two columns with a seventh in the middle.',
+    'Six coins in two columns of three, with a seventh between the top two pairs.',
     ['effort, work that pays, patience', 'Seven is action in the world: steady work, money earned, things built with your hands. Keep tending it.'],
     ['impatience, effort without return', 'Waiting for a harvest that hasn’t ripened, or working without reward. Look at where effort is going.'],
   ),
   'pentacles-08': card(
-    'Eight coins in even rows, with stems of flowers between them.',
+    'Eight coins in two columns of four, with stems of flowers between them.',
     ['prosperity, order, mastery', 'Eight is fullness: material life in good order, well earned, a skill perfected. Enjoy what is secure.'],
     ['perfectionism, too much detail', 'Polishing what is already done, or order turned fussy. Good enough is good.'],
   ),
   'pentacles-09': card(
-    'Eight coins in rows with a ninth set in the middle.',
+    'Eight coins in two columns of four with a ninth set in the middle.',
     ['ripeness, independence, a change in fortune', 'Nine is a turning: comfort earned and a readiness to move on, perhaps a change of work or home. Enjoy it, and see what comes next.'],
     ['insecurity, a loss of footing', 'The ground shifts under what you’ve built. Hold to what matters most.'],
   ),
   'pentacles-10': card(
-    'Ten coins fill the card in rows, with flowering stems between them.',
+    'Ten coins fill the card, two columns of four with two more down the middle, and flowering stems between them.',
     ['wealth, inheritance, the end of a cycle', 'Ten closes the suit: material life complete, a family’s wealth, a cycle ended and a new one ready to start. Share it and pass it on.'],
     ['family quarrels over money, a fortune at risk', 'Disputes about what is inherited or owed. Keep it fair, and keep perspective.'],
   ),
@@ -509,12 +509,12 @@ const PENTACLES: DeckMeanings = {
     ['stagnation, a deal delayed', 'Too slow, or riding after something just out of reach. Check that the goal is solid.'],
   ),
   'pentacles-13': card(
-    'A crowned queen sits holding a coin in one hand and a sceptre in the other, gazing at the coin.',
+    'A crowned queen, seen in profile, holds a coin up before her face, a sceptre resting against her shoulder and her other hand at her waist.',
     ['practical care, abundance, good sense', 'The Reine de Deniers looks after what she has: a capable, generous woman, a home that runs well, health well kept. Tend your resources.'],
     ['worry over money, neglect', 'Too much fret about having, or too little care for what you have. Find the balance.'],
   ),
   'pentacles-14': card(
-    'A crowned king in a wide hat sits holding up a coin, at ease on his throne.',
+    'A king in a wide hat sits outdoors on the grass with his legs crossed, holding his coin low in his lap.',
     ['prosperity, reliability, a man of means', 'The Roi de Deniers has built something that lasts: a businessman, a provider, a steady hand with money. Be generous with what you’ve made.'],
     ['greed, materialism, stubbornness', 'Wealth valued for itself, or a hand that won’t open. Remember what it’s for.'],
   ),
