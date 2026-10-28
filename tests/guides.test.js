@@ -6,6 +6,7 @@ const vm = require("node:vm");
 
 // The app's logic as the site loads it (js/core/guides.js sets window.SaltCore.guides).
 global.window = globalThis;
+vm.runInThisContext(fs.readFileSync(path.join(__dirname, "../js/traditional-library.js"), "utf8"));
 vm.runInThisContext(fs.readFileSync(path.join(__dirname, "../js/core/guides.js"), "utf8"));
 const G = globalThis.SaltCore.guides;
 const Notes = require("../help/web-notes.js");

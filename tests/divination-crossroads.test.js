@@ -8,6 +8,7 @@ const vm = require("node:vm");
 // Deipnon and the coven reading, as the site loads them (js/core/*.js set window.SaltCore).
 global.window = globalThis;
 const read = (file) => fs.readFileSync(path.join(__dirname, "..", file), "utf8");
+vm.runInThisContext(read("js/traditional-library.js")); // read by the bundles (scripts/build-core.mjs)
 for (const name of ["divination", "today", "rituals", "covens", "guides", "practice-a", "journeys"]) vm.runInThisContext(read(`js/core/${name}.js`));
 const Dv = globalThis.SaltCore.divination;
 const T = globalThis.SaltCore.today;

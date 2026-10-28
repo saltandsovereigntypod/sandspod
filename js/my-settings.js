@@ -278,7 +278,7 @@ async function applyDefaultAltarBackgroundSetting() {
 
   if (!matchingBackground) return;
 
-  altarStage.style.backgroundImage = `url("${matchingBackground.assetPath}")`;
+  altarStage.style.backgroundImage = `url("${window.SanctuaryAssetCatalog?.displayPath?.(matchingBackground.assetPath) || matchingBackground.assetPath}")`;
   altarStage.dataset.background = matchingBackground.assetPath;
   altarStage.dataset.backgroundName = matchingBackground.name;
 }

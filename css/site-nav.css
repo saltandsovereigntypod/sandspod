@@ -138,8 +138,9 @@ body.has-site-nav .my-sanctuary-card {
     margin: 0;
     padding: 0.35rem max(0.4rem, env(safe-area-inset-left)) max(0.45rem, env(safe-area-inset-bottom)) max(0.4rem, env(safe-area-inset-right));
     border-top: 1px solid var(--line);
+    /* Nearly opaque, so a backdrop blur here showed nothing but cost a full
+       re-blur of the page behind it on every frame of scrolling. */
     background: rgba(13, 17, 14, 0.96);
-    backdrop-filter: blur(18px);
   }
 
   .site-tab[data-site-tab="podcast"] {

@@ -9,7 +9,7 @@ const vm = require("node:vm");
 function core() {
   const sandbox = { console };
   sandbox.window = sandbox;
-  vm.runInNewContext(fs.readFileSync("js/core/altar.js", "utf8"), sandbox);
+  vm.runInNewContext(fs.readFileSync("js/traditional-library.js", "utf8") + "\n" + fs.readFileSync("js/core/altar.js", "utf8"), sandbox);
   return sandbox.SaltCore.altar;
 }
 
@@ -55,7 +55,7 @@ test("the Grimoire puts the altar's record under Items from the Altar", () => {
 test("an archived altar rests on the website too: off the To tend list, and the saved list offers Archive and Restore", () => {
   const sandbox = { console };
   sandbox.window = sandbox;
-  vm.runInNewContext(fs.readFileSync("js/core/tend.js", "utf8"), sandbox);
+  vm.runInNewContext(fs.readFileSync("js/traditional-library.js", "utf8") + "\n" + fs.readFileSync("js/core/tend.js", "utf8"), sandbox);
   const T = sandbox.SaltCore.tend;
   const sprig = { type: "herb", form: "sprig", label: "Bay Sprig", altarObjectId: "bay", livingState: living };
   const now = new Date("2026-10-27T12:00:00Z");

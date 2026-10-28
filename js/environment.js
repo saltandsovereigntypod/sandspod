@@ -106,6 +106,32 @@
     global.location.assign(environment.resolvePath(href));
   }, true);
 
+  // Scripts a page loads only when it needs them, each once however many
+  // parts of the page ask. Several js/core bundles read the Traditional
+  // Library rather than carrying their own copy (scripts/build-core.mjs), so a
+  // page loading one of those later calls traditionalLibrary() first.
+  const loading = new Map();
+  function loadScript(src) {
+    const url = environment.resolvePath(src);
+    if (!loading.has(url)) {
+      loading.set(url, new Promise((resolve, reject) => {
+        const script = global.document.createElement("script");
+        script.src = url;
+        script.async = true;
+        script.onload = () => resolve();
+        script.onerror = () => {
+          loading.delete(url);
+          reject(new Error(`${src} didn’t load.`));
+        };
+        global.document.head.appendChild(script);
+      }));
+    }
+    return loading.get(url);
+  }
+  // eslint-disable-next-line no-undef
+  const traditionalLibrary = () => (typeof TraditionalLibrary !== "undefined" ? Promise.resolve() : loadScript("/js/traditional-library.js"));
+  global.SaltScripts = Object.freeze({ load: loadScript, traditionalLibrary });
+
   const params = new URLSearchParams(global.location.search || "");
   if (params.get("debugEnvironment") === "1") {
     global.debugSaltEnvironment = () => ({

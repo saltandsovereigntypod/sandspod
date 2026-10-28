@@ -456,6 +456,13 @@ p {
   border-radius: 0.75rem;
 }
 
+/* They carry width and height so the page keeps their space while they load. */
+.portrait-card img,
+.book-card img {
+  width: 100%;
+  height: auto;
+}
+
 .copy-block {
   font-size: 1.08rem;
 }
@@ -812,6 +819,23 @@ summary:focus-visible {
 .reveal.is-visible {
   opacity: 1;
   transform: none;
+}
+
+/* The hero is in view from the start: it rises in as soon as the page paints,
+   with the same fade, rather than waiting for every script to load first. */
+.hero .reveal {
+  animation: hero-reveal 0.7s ease both;
+}
+
+@keyframes hero-reveal {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
 }
 
 

@@ -14,6 +14,7 @@ const read = (file) => fs.readFileSync(path.join(root, file), "utf8");
 global.window = global;
 global.CovenLogic = require("../covens/coven-logic.js");
 vm.runInThisContext(read("js/core/covens.js"));
+vm.runInThisContext(read("js/traditional-library.js"));
 vm.runInThisContext(read("js/core/guides.js"));
 const N = global.SaltCore.covens.notices;
 const G = global.SaltCore.covens.gatheringNotes;

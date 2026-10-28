@@ -11,6 +11,28 @@ test("lightweight catalogue exposes unique backgrounds outside Altar", () => {
   assert.ok(backgrounds.every((item) => item.thumbnailPath.startsWith("/assets/")));
 });
 
+test("altar backgrounds show as their WebP twins while saved altars keep the .png path", () => {
+  assert.equal(Catalog.displayPath("/assets/altar/backgrounds/forest-scene.png"), "/assets/altar/backgrounds/forest-scene.webp");
+  assert.equal(Catalog.displayPath("../assets/altar/backgrounds/ocean.png"), "../assets/altar/backgrounds/ocean.webp");
+  assert.equal(Catalog.displayPath("https://example.supabase.co/storage/v1/object/public/x/my-room.png"), "https://example.supabase.co/storage/v1/object/public/x/my-room.png");
+  assert.equal(Catalog.displayPath(""), "");
+  assert.ok(Catalog.getBackgrounds().every((item) => item.assetPath.endsWith(".png") && item.thumbnailPath.endsWith(".webp")));
+  const folder = "assets/altar/backgrounds";
+  for (const png of fs.readdirSync(folder).filter((name) => name.endsWith(".png"))) {
+    const name = png.replace(/\.png$/, "");
+    assert.ok(fs.existsSync(`${folder}/${name}.webp`), `${name}.webp`);
+    assert.ok(fs.existsSync(`${folder}/thumbs/${name}.webp`), `thumbs/${name}.webp`);
+  }
+});
+
+test("the core bundles share the Traditional Library rather than each carrying a copy", () => {
+  for (const name of ["altar", "guides", "practice-a", "practice-b", "rituals", "tend", "today"]) {
+    const code = fs.readFileSync(`js/core/${name}.js`, "utf8");
+    assert.doesNotMatch(code, /DisplayName:"Basil"/, name);
+    assert.match(code, /Load \/js\/traditional-library\.js before this script\./, name);
+  }
+});
+
 test("catalogue loads on every Sanctuary-capable page without Altar initialization", () => {
   for (const path of ["index.html", "altar/index.html", "grimoire/index.html", "grimoire/community-grimoire.html", "submit/index.html"]) {
     const html = fs.readFileSync(path, "utf8");

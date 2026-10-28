@@ -13,6 +13,7 @@ const root = path.join(__dirname, "..");
 const read = (file) => fs.readFileSync(path.join(root, file), "utf8");
 
 global.window = global;
+vm.runInThisContext(read("js/traditional-library.js"));
 vm.runInThisContext(read("js/core/tend.js"));
 const T = global.SaltCore.tend;
 

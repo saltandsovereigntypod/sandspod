@@ -8,6 +8,7 @@ const vm = require("node:vm");
 // the app (js/core/divination.js), the same saved shapes, and the pages wired.
 global.window = globalThis;
 vm.runInThisContext(fs.readFileSync(path.join(__dirname, "../js/core/divination.js"), "utf8"));
+vm.runInThisContext(fs.readFileSync(path.join(__dirname, "../js/traditional-library.js"), "utf8"));
 vm.runInThisContext(fs.readFileSync(path.join(__dirname, "../js/core/guides.js"), "utf8"));
 vm.runInThisContext(fs.readFileSync(path.join(__dirname, "../js/core/divination-library.js"), "utf8"));
 const Dv = globalThis.SaltCore.divination;

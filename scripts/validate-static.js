@@ -58,6 +58,26 @@ for (const page of trackedFiles("*.html")) {
     const resolved = localPath(page, reference);
     if (resolved && fs.existsSync(resolved) && resolved.endsWith(".js")) loadedScripts.add(resolved);
   }
+
+  // js/site-nav.js draws the bar as soon as it runs, so it must not come
+  // before a page's own header (it would draw a second one).
+  const navAt = html.search(/<script\b[^>]*\bsrc=["'][^"']*js\/site-nav\.js["']/i);
+  const headerAt = html.search(/<header\b[^>]*class=["'][^"']*\bsite-header\b/i);
+  if (navAt >= 0 && headerAt >= 0 && navAt < headerAt) failures.push(`${page}: js/site-nav.js is loaded before the page's .site-header`);
+
+  // Bundles that read the Traditional Library from js/traditional-library.js
+  // (scripts/build-core.mjs SHARED) need it loaded before them.
+  const resolvedScripts = scripts.map((value) => localPath(page, value)).map((value) => value && path.normalize(value));
+  const library = resolvedScripts.indexOf(path.join(root, "js/traditional-library.js"));
+  resolvedScripts.forEach((resolved, index) => {
+    if (!resolved || !needsTraditionalLibrary(resolved)) return;
+    if (library < 0 || library > index) failures.push(`${page}: ${scripts[index]} needs /js/traditional-library.js loaded before it`);
+  });
+}
+
+function needsTraditionalLibrary(file) {
+  if (!file.includes(`${path.sep}js${path.sep}core${path.sep}`) || !file.endsWith(".js") || !fs.existsSync(file)) return false;
+  return fs.readFileSync(file, "utf8").includes("Load /js/traditional-library.js before this script.");
 }
 
 for (const script of [...loadedScripts].sort()) {

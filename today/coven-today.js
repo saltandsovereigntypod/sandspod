@@ -26,16 +26,39 @@
     return data || [];
   }
 
+  // The covens logic (js/core/covens.js) is large and only matters to members
+  // of a coven, so Today fetches it once it knows you are one. The Covens page
+  // loads it up front.
+  let coreLoading = null;
+  function covensCore() {
+    if (global.SaltCore?.covens) return Promise.resolve(global.SaltCore.covens);
+    if (!coreLoading) {
+      coreLoading = new Promise((resolve, reject) => {
+        const script = document.createElement("script");
+        script.src = href("/js/core/covens.js");
+        script.async = true;
+        script.onload = () => (global.SaltCore?.covens ? resolve(global.SaltCore.covens) : reject(new Error("The covens logic didn’t load.")));
+        script.onerror = () => {
+          coreLoading = null;
+          reject(new Error("The covens logic didn’t load."));
+        };
+        document.head.appendChild(script);
+      });
+    }
+    return coreLoading;
+  }
+
   async function load() {
     const db = global.db;
-    const core = global.SaltCore?.covens;
-    if (!db || !core) return null;
+    if (!db) return null;
     const { data } = await db.auth.getUser();
     const userId = data?.user?.id;
     if (!userId) return null;
     const memberships = await rows(db.from("coven_members").select("coven_id,user_id,rank_id,status").eq("user_id", userId).eq("status", "active"));
     const ids = memberships.map((m) => m.coven_id);
     if (!ids.length) return { userId, empty: true };
+    const coreReady = covensCore();
+    coreReady.catch(() => {}); // awaited below; this keeps an early failure from going unhandled
     const [covens, ranks, grants, rituals, rsvps, enrollments, progress, mentors] = await Promise.all([
       rows(db.from("covens").select(COVEN_FIELDS).in("id", ids).eq("status", "active")),
       rows(db.from("coven_ranks").select("id,coven_id,name,can_manage,can_manage_programs").in("coven_id", ids)),
@@ -61,6 +84,7 @@
         return c.founder_id === userId || rank?.can_manage || rank?.can_manage_programs || grants.some((g) => g.coven_id === c.id && g.power === "manage_programs");
       })
       .map((c) => c.id);
+    await coreReady;
     return { userId, covens, memberships, programCovens, rituals, steps, rsvps, programs, stages, tasks, enrollments, progress, mentors, ranks };
   }
 

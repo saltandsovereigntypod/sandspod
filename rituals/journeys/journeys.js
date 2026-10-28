@@ -385,6 +385,8 @@
     if (!box || !ids.length) return;
     let book = global.SaltCore.rituals?.premade;
     if (!book) {
+      // js/core/rituals.js reads the Traditional Library, so that comes first.
+      await loadTraditional();
       await new Promise((resolve) => {
         const script = global.document.createElement("script");
         script.src = "/js/core/rituals.js";
@@ -662,6 +664,8 @@
   const traditional = () => (typeof global.TraditionalLibrary !== "undefined" ? global.TraditionalLibrary : typeof TraditionalLibrary !== "undefined" ? TraditionalLibrary : null); // eslint-disable-line no-undef
   function loadTraditional() {
     if (traditional()) return Promise.resolve();
+    // Once, however many parts of the page ask (js/environment.js).
+    if (global.SaltScripts) return global.SaltScripts.traditionalLibrary().catch(() => {});
     return new Promise((resolve) => {
       const script = global.document.createElement("script");
       script.src = "/js/traditional-library.js";
