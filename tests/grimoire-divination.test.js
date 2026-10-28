@@ -85,6 +85,8 @@ test("a drawn card's meaning links to its page, unless Traditional Information i
   assert.equal(Dv.links.readMoreHref("Úr"), "/grimoire/?divination=ogham/ur");
   assert.equal(Dv.links.readMoreHref("Nobody"), null);
   const hedge = read("practice/hedge/hedge.js");
-  assert.match(hedge, /settings\.library_traditional_enabled !== false && !m\.own \? Dv\.links\?\.readMoreHref\(m\.name\) : null/);
+  assert.match(hedge, /settings\.library_traditional_enabled !== false && !m\.own \? Dv\.links\?\.readMoreHref\(m\.name, tarotDeck\) : null/);
+  // A card drawn with another deck opens its page in that deck.
+  assert.equal(Dv.links.readMoreHref("The Tower", "marseille"), "/grimoire/?divination=tarot/16-the-tower&deck=marseille");
   assert.match(hedge, />Read more<\/a>/);
 });

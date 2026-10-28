@@ -3677,6 +3677,34 @@ body.library-page-open .book-toc .book-toc-section:not(.my-practice-shelf):not(.
   font-style: italic;
 }
 
+/* A deck's own reading, leading the page (the Tarot de Marseille, the Sola Busca), then the Rider–Waite–Smith's. */
+.divination-deck-reading {
+  padding: 1rem 1.25rem;
+  border: 1px solid rgba(185, 160, 93, 0.45);
+  border-radius: 12px;
+  margin-bottom: 1.5rem;
+}
+
+.divination-deck-reading .divination-gloss {
+  margin-top: 0;
+  text-align: left;
+}
+
+.divination-deck-reading h3 {
+  margin: 1rem 0 0.25rem;
+  font-size: 1rem;
+  color: var(--gold);
+}
+
+.divination-deck-words {
+  margin: 0;
+  color: var(--gold);
+}
+
+.divination-tradition {
+  margin-top: 0.5rem;
+}
+
 /* =========================================================
    THE HOME AS YOU ARRANGE IT (js/ui/layout.js) AND SUGGESTING A PAGE (js/ui/suggest.js)
    ========================================================= */

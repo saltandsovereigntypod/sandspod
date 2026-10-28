@@ -5,6 +5,8 @@
 import { LOOK_BACK_CHOICES, lookBackFrom, moonForReading, type Reading, type ReadingLink } from '../craft/hedge/readings.ts';
 import { localDateKey } from '../rituals/lifecycle.ts';
 import { DAILY_LABEL } from './daily.ts';
+import { deckMeaning, type DeckReading } from './deckMeanings/index.ts';
+import { isDeckId, type DeckId } from './decks.ts';
 import { layoutOf, RINGS, type Fall, type Laid, type Ring, type Shape } from './layout.ts';
 import { ownCard, ownMeaning, type OwnCard, type OwnDeckData, type OwnDeckEntry } from './oracle/decks.ts';
 import { KIPPER, type KipperCard } from './oracle/kipper.ts';
@@ -714,10 +716,16 @@ export type DrawnMeaning = {
   kipper?: KipperCard;
   /** A card from a deck of your own. */
   own?: OwnCard;
+  /** A tarot card's reading in the deck it was drawn with: its title and picture there, and whose reading it is. */
+  inDeck?: DeckReading;
 };
 
-/** What a drawn card, rune or stave means; `deck` for a card from a deck of your own. */
-export function meaningOf(item: Drawn, deck?: OwnDeckData | null): DrawnMeaning | null {
+/**
+ * What a drawn card, rune or stave means; `deck` for a card from a deck of
+ * your own, `tarotDeck` for the tarot deck it was drawn with (its own
+ * reading where it has one, else Waite's; the Rider–Waite–Smith if not said).
+ */
+export function meaningOf(item: Drawn, deck?: OwnDeckData | null, tarotDeck?: DeckId | null): DrawnMeaning | null {
   if (deck) {
     const mine = ownCard(deck, item.name);
     return mine ? { name: mine.name, glyph: null, card: null, reversed: item.reversed, meaning: ownMeaning(mine, item.reversed), gloss: null, own: mine } : null;
@@ -727,15 +735,18 @@ export function meaningOf(item: Drawn, deck?: OwnDeckData | null): DrawnMeaning 
   const kip = KIPPER.find((c) => c.name === item.name);
   if (kip) return { name: kip.name, glyph: null, card: null, reversed: false, meaning: kip.meaning, gloss: `${kip.number} · ${kip.german}`, kipper: kip };
   const card = TAROT_DECK.find((c) => c.name === item.name);
-  if (card) return { name: card.name, glyph: null, card, reversed: item.reversed, meaning: item.reversed ? card.reversed : card.upright, gloss: null };
+  if (card) {
+    const inDeck = deckMeaning(tarotDeck, card.id)!;
+    return { name: card.name, glyph: null, card, reversed: item.reversed, meaning: item.reversed ? inDeck.reversed : inDeck.upright, gloss: null, inDeck };
+  }
   const stave: Stave | undefined = [...RUNES, ...FEDA, BLANK_RUNE].find((s) => s.name === item.name);
   if (!stave) return null;
   return { name: stave.name, glyph: stave.glyph, card: null, reversed: false, meaning: { keywords: stave.keywords, text: stave.text }, gloss: stave.gloss };
 }
 
 /** One line of "What came up": "Past: The Tower, reversed (upheaval delayed, …)". */
-export function drawnLine(position: Position | null, item: Drawn, single: boolean, deck?: OwnDeckData | null): string {
-  const m = meaningOf(item, deck);
+export function drawnLine(position: Position | null, item: Drawn, single: boolean, deck?: OwnDeckData | null, tarotDeck?: DeckId | null): string {
+  const m = meaningOf(item, deck, tarotDeck);
   const name = `${item.name}${item.reversed ? ', reversed' : ''}`;
   const words = m ? ` (${m.meaning.keywords})` : '';
   return single || !position ? `${name}${words}` : `${position.name}: ${name}${words}`;
@@ -749,10 +760,14 @@ export const BY_HAND = 'pulled by hand';
  * "What came up" for a draw: the spread's name (with your deck's name, and
  * "pulled by hand" for a draw logged from real cards), then each card in its place.
  */
-export function cameUpText(spread: Spread, draw: Draw, { deck, byHand = false }: { deck?: OwnDeckData | null; byHand?: boolean } = {}): string {
+export function cameUpText(
+  spread: Spread,
+  draw: Draw,
+  { deck, byHand = false, tarotDeck }: { deck?: OwnDeckData | null; byHand?: boolean; tarotDeck?: DeckId | null } = {},
+): string {
   const single = spread.positions.length === 1;
   const head = [spread.label, deck ? deck.name : null, byHand ? BY_HAND : null].filter(Boolean).join(NOTE);
-  return [head, ...draw.items.map((item, i) => drawnLine(placeOf(spread, draw, i), item, single, deck))].join('\n');
+  return [head, ...draw.items.map((item, i) => drawnLine(placeOf(spread, draw, i), item, single, deck, tarotDeck))].join('\n');
 }
 
 /** The reading a draw becomes, in the reading log's own shape. */
@@ -789,7 +804,8 @@ export function readingFromDraw(
     ...(own ? { deck: own.id } : {}),
     question: question.trim(),
     drawn: draw.items.map((d) => d.name),
-    cameUp: cameUpText(spread, draw, { deck: own?.data, byHand }),
+    // The words in "What came up" are the drawing deck's own.
+    cameUp: cameUpText(spread, draw, { deck: own?.data, byHand, tarotDeck: spread.kind === 'tarot' && isDeckId(deck) ? deck : null }),
     interpretation: interpretation.trim(),
     lookBack: lookBack ?? lookBackFrom(date, spread.lookBackDays),
     outcome: '',

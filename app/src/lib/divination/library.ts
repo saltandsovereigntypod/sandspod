@@ -43,7 +43,7 @@ export const DIVINATION_TITLE = 'Divination';
 export const DIVINATION_LABELS: Record<DivinationKind, string> = { tarot: 'Tarot', runes: 'Runes', ogham: 'Ogham', lenormand: 'Lenormand', kipper: 'Kipper' };
 
 const NOTES: Record<DivinationKind, string> = {
-  tarot: 'A. E. Waite’s meanings, with the pictures of your deck: Pamela Colman Smith’s Rider–Waite–Smith of 1909 (the default), Nicolas Conver’s Tarot de Marseille of 1760, or the Sola Busca of about 1491. Choose in Settings → Divination.',
+  tarot: 'Each card in your deck, with that deck’s own reading: Pamela Colman Smith’s Rider–Waite–Smith of 1909 (the default) with A. E. Waite’s meanings, Nicolas Conver’s Tarot de Marseille of 1760 read in the French way, or the Sola Busca of about 1491. The Rider–Waite–Smith’s in-depth pages follow on every card. Choose in Settings → Divination.',
   runes: 'The twenty-four runes of the Elder Futhark, and the modern blank rune.',
   ogham: 'The twenty feda of the ogham, in their four aicmí.',
   ...ORACLE_NOTES,

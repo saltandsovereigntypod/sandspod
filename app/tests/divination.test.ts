@@ -169,7 +169,7 @@ test('today’s card of the day is found among the readings', () => {
   const yesterday = { ...kept, date: '2026-10-22' };
   const three = readingFromDraw(spreadById('past-present-future')!, drawSpread(spreadById('past-present-future')!, { reversals: false, blankRune: false }, seeded(9)), { now });
   assert.equal(todaysCard([entry('y', '2026-10-22T08:00:00Z', yesterday), entry('t', '2026-10-23T08:00:00Z', three)], now), null);
-  assert.deepEqual(todaysCard([entry('a', '2026-10-23T08:00:00Z', kept), entry('t', '2026-10-23T09:00:00Z', three)], now), { id: 'a', name: 'The Moon', reversed: true });
+  assert.deepEqual(todaysCard([entry('a', '2026-10-23T08:00:00Z', kept), entry('t', '2026-10-23T09:00:00Z', three)], now), { id: 'a', name: 'The Moon', reversed: true, deck: 'rws', title: null });
   const upright = readingFromDraw(daily, { spread: 'daily', items: [{ name: 'The Sun', reversed: false }] }, { now });
   assert.equal(todaysCard([entry('b', '2026-10-23T10:00:00Z', upright), entry('a', '2026-10-23T08:00:00Z', kept)], now)?.name, 'The Sun');
   assert.equal(todaysCard([entry('b', '2026-10-23T10:00:00Z', upright)], now)?.reversed, false);
