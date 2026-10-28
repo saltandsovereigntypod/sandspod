@@ -799,7 +799,7 @@ export default {
         {
           title: 'Take the test',
           kind: 'study',
-          instructions: '1. Look back over the six lessons.\n2. Take the test. Choice questions are scored straight away; your mentor scores the written answers.\n3. You need 80% to pass. If you don’t, read the explanations, talk to your mentor on this step, and try again.',
+          instructions: '1. Look back over the six lessons.\n2. Take the test. Choice questions are scored straight away; your mentor scores the written answers.\n3. You need 80% to pass. If you don’t, look at the questions you missed, talk to your mentor on this step, and try again.',
           times: 1,
           response: 'none',
           checked_by: 'mentor',

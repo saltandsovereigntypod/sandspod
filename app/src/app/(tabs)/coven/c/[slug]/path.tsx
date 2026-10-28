@@ -5,6 +5,7 @@ import { Alert, Text } from 'react-native';
 import { Button } from '../../../../../components/Button';
 import { covenHref, CovenScreen } from '../../../../../components/covens/CovenScreen';
 import { Checklist, OpenPositionsCard, useOpenPositions } from '../../../../../components/covens/Positions';
+import { MyQueuePlaces } from '../../../../../components/covens/Queue';
 import { Words } from '../../../../../components/covens/ui';
 import { Card, Chips, Field, MenuList, MenuRow, Notice, Section } from '../../../../../components/more/ui';
 import * as api from '../../../../../lib/covens/api';
@@ -119,6 +120,8 @@ export default function MyPath() {
               <Text style={type.caption}>You’ve signed everything the coven asks.</Text>
             )}
           </Section>
+
+          <MyQueuePlaces />
 
           <Section label="Rise to a higher position">
             {pending ? (

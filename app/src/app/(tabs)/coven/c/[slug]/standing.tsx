@@ -4,6 +4,7 @@ import { ActivityIndicator, Text } from 'react-native';
 
 import { covenHref, CovenScreen } from '../../../../../components/covens/CovenScreen';
 import { OpenPositionsHere } from '../../../../../components/covens/Positions';
+import { MyQueuePlaces } from '../../../../../components/covens/Queue';
 import { RecordSections } from '../../../../../components/covens/Record';
 import { Card, MenuList, MenuRow, Notice } from '../../../../../components/more/ui';
 import * as api from '../../../../../lib/covens/api';
@@ -96,6 +97,7 @@ export default function MyStanding() {
         />
       )}
       {message && <Notice>{message}</Notice>}
+      <MyQueuePlaces />
       <OpenPositionsHere />
       <MenuList>
         <MenuRow label="My standing" detail="Your position, agreements, rising higher, leaving" icon="journey" last onPress={() => router.push(covenHref(coven.slug, 'path'))} />

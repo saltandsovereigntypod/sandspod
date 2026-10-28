@@ -80,6 +80,8 @@ test("the website asks the database for the record with the app's calls and shap
     ["log_coven_mentor_checkin", { p_coven: "c1", p_user: "u1", p_met_on: "2026-11-01", p_note: null }],
     ["add_coven_member_note", { p_coven: "c1", p_user: "u1", p_body: "Quiet lately" }],
     ["remove_coven_member", { p_coven: "c1", p_user: "u1", p_status: "removed", p_reason: null }],
+    // A place they held may free for the next on its waiting list: the notes it made due are rung.
+    ["coven_queue_fresh_notes", { p_coven: "c1" }],
     ["set_coven_record_viewers", { p_coven: "c1", p_viewers: [{ kind: "rank", id: "r1" }], p_mentees_see_checkins: false }]
   ]);
   // The app calls the same functions with the same arguments.

@@ -765,7 +765,7 @@ const module = {
           kind: 'study',
           instructions: `1. Read over the lessons in this module.
 2. Take the test. The choice questions are scored at once; your mentor or the coven’s head scores the written answers.
-3. You need 80% to pass. If you don’t pass, read the explanations, talk to your mentor, and take it again.`,
+3. You need 80% to pass. If you don’t pass, look at the questions you missed, talk to your mentor, and take it again.`,
           times: 1,
           response: 'none',
           checked_by: 'mentor',

@@ -1,10 +1,11 @@
 // Pieces of a step's test: a question to answer, and an attempt's result
-// question by question with the right answers and explanations.
+// question by question: right or not, and, once the test is passed (or for
+// those scoring it), the right answers and explanations.
 
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 import { Field } from '../more/ui';
-import { answerWords, attemptLines, choose, isWritten, rightWords, type Answer, type Attempt, type Question } from '../../lib/covens/quiz';
+import { answerWords, attemptLines, choose, isWritten, keyLine, rightWords, type Answer, type Attempt, type Question } from '../../lib/covens/quiz';
 import { colors, fonts, radius, type } from '../../theme';
 
 export function QuestionView({ question, number, of, answer, onAnswer }: { question: Question; number: number; of: number; answer: Answer | undefined; onAnswer: (a: Answer) => void }) {
@@ -50,9 +51,11 @@ export function QuestionView({ question, number, of, answer, onAnswer }: { quest
 }
 
 /** An attempt question by question: the answer given, whether it was right, the right answer and why. */
-export function AttemptResult({ attempt, showRubric }: { attempt: Attempt; showRubric?: boolean }) {
+export function AttemptResult({ attempt, showRubric, self }: { attempt: Attempt; showRubric?: boolean; self?: boolean }) {
+  const hidden = keyLine(attempt, !!self);
   return (
     <View style={styles.result}>
+      {!!hidden && <Text style={type.caption}>{hidden}</Text>}
       {attemptLines(attempt).map((line) => {
         const q = line.question;
         return (

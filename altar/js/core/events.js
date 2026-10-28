@@ -462,8 +462,10 @@ document.addEventListener("change", (event) => {
    ACTION BAR
    ========================================================= */
 
-altarActionBar.addEventListener("click", (event) => {
-  const button = event.target.closest("[data-global-action]");
+// The altar's one toolbar ([data-altar-tools], with its More menu) and the
+// selected object's actions under the stage.
+document.addEventListener("click", (event) => {
+  const button = event.target.closest("[data-altar-tools] [data-global-action], .altar-action-bar [data-global-action]");
 
   if (!button || !altarStage) return;
 

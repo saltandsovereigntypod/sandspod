@@ -572,7 +572,7 @@ Your altar changes over time, and recording it lets you look back. Photograph yo
           title: `Take the test`,
           kind: 'study',
           instructions: `1. Take the Altar and tools test. You can have the lessons open.
-2. Read each explanation as you go.
+2. Once you've passed, read each question's explanation: it teaches the point again.
 3. Your mentor scores the written answers. You need 80 per cent to pass. If you don't, talk to your mentor about what to go over before you try again.`,
           times: 1,
           response: 'none',

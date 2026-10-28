@@ -762,7 +762,7 @@ What you can always expect:
           kind: 'study',
           instructions: `1. Re-read any lesson you're unsure of.
 2. Take the test. The choice questions are scored at once; your mentor scores the written answers.
-3. You need 80% to pass. If you don't pass, read the explanations, talk to your mentor, and try again.`,
+3. You need 80% to pass. If you don't pass, look at the questions you missed, talk to your mentor, and try again.`,
           times: 1,
           response: 'none',
           checked_by: 'mentor',
