@@ -3788,3 +3788,37 @@ body.library-page-open .book-toc .book-toc-section:not(.my-practice-shelf):not(.
   display: grid;
   gap: 0.75rem;
 }
+
+/* =========================================================
+   CONTENTS BUTTON (narrow screens)
+   The table of contents slides away below 900px; this keeps a way back to
+   it on every page. Library and divination pages carry their own ☰ button.
+   ========================================================= */
+
+.grimoire-contents-button {
+  display: none;
+}
+
+@media (max-width: 900px) {
+  .grimoire-contents-button {
+    position: sticky;
+    top: 4.75rem;
+    z-index: 20;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 0 0 1rem;
+    padding: 0.55rem 1.1rem;
+    border: 1px solid rgba(185, 160, 93, 0.45);
+    border-radius: 999px;
+    background: rgba(9, 16, 11, 0.92);
+    color: #f3ead2;
+    font: inherit;
+    cursor: pointer;
+  }
+
+  .book-page:has(.book-library-sticky-tools) > .grimoire-contents-button {
+    display: none;
+  }
+}
+

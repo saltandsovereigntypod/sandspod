@@ -9,6 +9,13 @@
  * On computers and iPads it sits in the top header. On phones it moves to the
  * bottom of the screen. More opens the Sanctuary panel; pages without the
  * panel send it to the home page, which opens it on arrival.
+ *
+ * Back goes to the screen you came from, as in the app. Pages that have their
+ * own back link ("‹ Back to Today", "← All rituals") keep it, but it now goes
+ * back the way you came while there is somewhere on the site to go back to,
+ * and only falls back to its written place when there isn't (a shared link,
+ * a fresh tab). Every other page gets a standard "‹ Back" under the header;
+ * the tabs' own first pages show it only when there is somewhere to go back to.
  */
 (function (global) {
   const ICONS = {
@@ -81,6 +88,45 @@
     }
   }
 
+  // The first page of each tab: no Back of its own unless you came from somewhere.
+  const TAB_ROOTS = new Set(["/", "/today/", "/altar/", "/grimoire/", "/rituals/", "/covens/"]);
+
+  /** Whether the previous entry in this tab's history is a page of this site. */
+  function canGoBack(loc = global.location, doc = global.document) {
+    try {
+      const nav = global.navigation;
+      if (nav && typeof nav.canGoBack === "boolean") return nav.canGoBack;
+    } catch {
+      // Fall through to the referrer.
+    }
+    try {
+      return global.history.length > 1 && Boolean(doc?.referrer) && new URL(doc.referrer).origin === loc.origin;
+    } catch {
+      return false;
+    }
+  }
+
+  /** A back link: one whose words start with ‹ or ← (not "Open the list ›"). */
+  function isBackLink(el) {
+    return Boolean(el?.matches?.("a.sp-back, a.site-back")) && /^\s*[‹←]/.test(el.textContent || "");
+  }
+
+  /** Where Back goes when there is no history: the page's tab. */
+  function fallbackHref(loc = global.location) {
+    const tab = activeTab(loc.pathname, loc.search);
+    if (tab === "practice") return PRACTICE.find((p) => p.key === practiceSection(loc.pathname, loc.search))?.href || "/grimoire/";
+    if (tab === "podcast" || tab === "more") return "/";
+    return TABS.find((t) => t.key === tab)?.href || "/";
+  }
+
+  function renderBack(doc = document, loc = global.location) {
+    doc.querySelectorAll(".site-back-bar").forEach((el) => el.remove());
+    if (TAB_ROOTS.has(normalPath(loc.pathname)) && !canGoBack(loc, doc)) return;
+    const header = doc.querySelector(".site-header");
+    if (!header) return;
+    header.insertAdjacentHTML("afterend", `<div class="site-back-bar"><a class="site-back" href="${fallbackHref(loc)}">‹ Back</a></div>`);
+  }
+
   function isHome(pathname) {
     return normalPath(pathname) === "/";
   }
@@ -133,6 +179,8 @@
         `<nav class="practice-switch" aria-label="Practice">${PRACTICE.map((p) => `<a href="${p.href}"${p.key === section ? ' aria-current="page"' : ""}>${p.label}</a>`).join("")}</nav>`
       );
     }
+
+    renderBack(doc, loc);
 
     header.querySelector(".site-subnav")?.remove();
     if (isHome(loc.pathname)) {
@@ -201,6 +249,39 @@
       new MutationObserver(() => markCurrent()).observe(panel, { subtree: true, attributes: true, attributeFilter: ["hidden", "class"] });
     }
 
+    // While Back will go back the way you came, a back link says just that,
+    // not the place written on it ("‹ Back to Today" from a coven holiday).
+    if (canGoBack()) {
+      let queued = false;
+      const relabel = () => {
+        queued = false;
+        document.querySelectorAll("a.sp-back:not([data-back-relabelled])").forEach((link) => {
+          link.dataset.backRelabelled = "";
+          if (!isBackLink(link)) return;
+          link.textContent = /^\s*←/.test(link.textContent) ? "← Back" : "‹ Back";
+        });
+      };
+      relabel();
+      if (typeof MutationObserver !== "undefined") {
+        new MutationObserver(() => {
+          if (queued) return;
+          queued = true;
+          global.requestAnimationFrame(relabel);
+        }).observe(document.body, { childList: true, subtree: true });
+      }
+    }
+
+    // Back links go back the way you came. Capturing runs this before a
+    // page's own handler for the link (the coven page's tabs, for one).
+    document.addEventListener("click", (event) => {
+      if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+      const back = event.target.closest?.("a");
+      if (!isBackLink(back) || !canGoBack()) return;
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      global.history.back();
+    }, true);
+
     document.addEventListener("click", (event) => {
       const state = panelState();
       const viewTab = event.target.closest("[data-site-tab-view]");
@@ -246,7 +327,7 @@
     }
   }
 
-  const api = { TABS, PRACTICE, PANEL_TABS, activeTab, practiceSection, isHome, render, install };
+  const api = { TABS, PRACTICE, PANEL_TABS, activeTab, practiceSection, isHome, isBackLink, fallbackHref, canGoBack, render, install };
   global.SiteNav = api;
   if (typeof module !== "undefined" && module.exports) module.exports = api;
   if (typeof document !== "undefined") {
