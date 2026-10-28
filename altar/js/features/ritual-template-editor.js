@@ -78,7 +78,7 @@ async function loadRitualTemplateEditorData() {
   const user = await getTemplateEditorUser();
   if (!user) throw new Error("Sign in to create ritual templates.");
 
-  const [{ data: templates, error: templatesError }, { data: altars, error: altarsError }] = await Promise.all([
+  const [{ data: templates, error: templatesError }, { data: altars, error: altarsError }, { data: archived }] = await Promise.all([
     db
       .from("ritual_templates")
       .select("*, ritual_template_steps(*)")
@@ -89,6 +89,13 @@ async function loadRitualTemplateEditorData() {
       .from("saved_altars")
       .select("id, name, updated_at")
       .eq("user_id", user.id)
+      .order("updated_at", { ascending: false }),
+    // Archived templates are kept whole, so they can be restored (as in the app).
+    db
+      .from("ritual_templates")
+      .select("id, title")
+      .eq("user_id", user.id)
+      .eq("status", "archived")
       .order("updated_at", { ascending: false })
   ]);
 
@@ -100,6 +107,7 @@ async function loadRitualTemplateEditorData() {
     ritual_template_steps: (template.ritual_template_steps || []).sort((a, b) => a.sort_order - b.sort_order)
   }));
   ritualTemplateEditorState.altars = altars || [];
+  ritualTemplateEditorState.archived = archived || [];
 }
 
 function convertSavedStepForEditor(step) {
@@ -135,6 +143,17 @@ function renderRitualTemplateLibrary() {
         </button>
       `).join("")
     : `<p class="ritual-template-empty">No templates yet. Begin a new page.</p>`;
+
+  const archived = ritualTemplateEditorState.archived || [];
+  if (archived.length) {
+    list.innerHTML += `<details class="ritual-template-archived"><summary>Archived templates (${archived.length})</summary>
+      ${archived.map((template) => `
+        <button type="button" class="ritual-template-list-button" data-restore-ritual-template="${template.id}" aria-label="Restore ${ritualTemplateEscape(template.title)}">
+          <strong>${ritualTemplateEscape(template.title)}</strong>
+          <span>Restore</span>
+        </button>`).join("")}
+    </details>`;
+  }
 }
 
 function renderRitualTemplateForm(template = null) {
@@ -516,7 +535,7 @@ async function archiveRitualTemplate(templateId) {
   const user = await getTemplateEditorUser();
   if (!user) return;
 
-  const confirmed = window.confirm("Archive this ritual template?");
+  const confirmed = window.confirm("Archive this ritual template?\n\nIt leaves your list here and in the app, kept whole: restore it from Archived templates.");
   if (!confirmed) return;
 
   const { error } = await db
@@ -620,6 +639,26 @@ document.addEventListener("click", async (event) => {
   const removeStepButton = event.target.closest("[data-remove-ritual-step]");
   const moveStepButton = event.target.closest("[data-move-ritual-step]");
   const archiveButton = event.target.closest("[data-archive-ritual-template]");
+  const restoreButton = event.target.closest("[data-restore-ritual-template]");
+
+  if (restoreButton) {
+    const user = await getTemplateEditorUser();
+    if (!user) return;
+    const { error } = await db
+      .from("ritual_templates")
+      .update({ status: "active" })
+      .eq("id", restoreButton.dataset.restoreRitualTemplate)
+      .eq("user_id", user.id);
+    if (error) {
+      console.error(error);
+      if (typeof showAltarToast === "function") showAltarToast("Template could not be restored");
+      return;
+    }
+    await loadRitualTemplateEditorData();
+    renderRitualTemplateLibrary();
+    if (typeof showAltarToast === "function") showAltarToast("Template restored");
+    return;
+  }
 
   if (openButton) {
     event.preventDefault();

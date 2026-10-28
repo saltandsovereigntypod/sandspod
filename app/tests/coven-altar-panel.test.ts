@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
 
-import { badgeLabel, canDeleteAltar, chatButtonLabel, chatPanelFrame, deleteAltarWords, myConversations } from '../src/lib/covens/altarPanel.ts';
+import { archiveAltarWords, badgeLabel, canDeleteAltar, chatButtonLabel, chatPanelFrame, deleteAltarWords, myConversations } from '../src/lib/covens/altarPanel.ts';
 import type { Conversation, ConversationMember } from '../src/lib/covens/thread.ts';
 
 test('an altar is deleted only by its keepers, never the main altar, never during a ritual', () => {
@@ -55,4 +55,18 @@ test('the chat window sits along the bottom of an upright screen and down the si
   assert.equal(sideways.height, 390);
   assert.ok(sideways.width >= 300 && sideways.width <= 400);
   assert.equal(chatPanelFrame(1280, 1400).side, 'right');
+});
+
+test('archive keeps the altar and says it can be restored; delete is the only word for good', () => {
+  const words = archiveAltarWords(' Healing altar ');
+  assert.equal(words.title, 'Archive Healing altar?');
+  assert.equal(words.confirm, 'Archive');
+  assert.equal(words.restore, 'Restore');
+  assert.match(words.body, /restore/);
+  assert.ok(!/delete|for good/i.test(Object.values(words).join(' ')));
+  assert.equal(archiveAltarWords('').title, 'Archive this altar?');
+  assert.equal(archiveAltarWords('').restored, 'The altar is back among the coven’s altars.');
+  // Deleting points to archiving as the gentler choice, in the same words.
+  assert.match(deleteAltarWords('x').gentler, /^Archiving it/);
+  for (const text of Object.values(words)) assert.ok(!text.includes('!'));
 });

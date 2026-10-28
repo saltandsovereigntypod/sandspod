@@ -1389,64 +1389,95 @@ export function AltarEditor({ shared, header, overlay, onBack, whose }: { shared
           />
         ) : doc ? (
           <View style={styles.section}>
-            <Button label="Open the cabinet" onPress={() => setSheet('cabinet')} />
             <ChipRow>
-              <Chip label="Background" symbol="❖" onPress={() => setSheet('background')} />
-              <Chip label="Layers" symbol="☰" onPress={() => setSheet('layers')} disabled={doc.objects.length === 0} />
-              <Chip label="Apothecary" symbol="⚗" accessibilityLabel="My Apothecary" onPress={() => setSheet('apothecary')} />
-              <Chip
-                label={box.open.length ? `Petitions (${box.open.length})` : 'Petitions'}
-                symbol="✉"
-                accessibilityLabel={`The petition box${box.open.length ? `, ${box.open.length} waiting` : ''}`}
-                onPress={openPetitions}
-              />
-              <Chip label="Sky & season" symbol="☾" accessibilityLabel="Sky and season options for this altar" onPress={() => setSheet('options')} />
-              <Chip
-                label="Workings"
-                symbol="✶"
-                accessibilityLabel="Workings: begin a ritual here, spell jar, sachet, spell timer, scrying, the gratitude bowl, and things from your practice"
-                onPress={() => setSheet('more-workings')}
-              />
-              <Chip label="Read & arrange" symbol="☉" accessibilityLabel="Read this altar, its intention and layouts with meaning" onPress={() => setSheet('more-reading')} />
-              {tonight && <Chip label="Why these pieces" symbol="✧" accessibilityLabel="Why each piece of tonight’s altar is there, and swaps" onPress={() => setSheet('tonight')} />}
-              <Chip label="History" symbol="◷" accessibilityLabel="This altar’s history: what happened here and how it looked" onPress={() => openSaved('history', 'history')} />
-              <Chip label="Share" symbol="⇪" accessibilityLabel="Share a picture of this altar" onPress={() => setSheet('share')} disabled={doc.objects.length === 0} />
-              <Chip
-                label="Record in Grimoire"
-                symbol="❧"
-                accessibilityLabel="Record this altar in your Grimoire"
-                onPress={() => setSheet('grimoire')}
-                disabled={doc.objects.length === 0}
-              />
-              {Platform.OS !== 'web' ? (
-                <Chip
-                  label="Home screen"
-                  symbol="▣"
-                  accessibilityLabel="Put this altar on your home screen"
-                  onPress={() => {
-                    // A coven altar is already saved for the coven.
-                    if (sourceId || shared) return setSheet('widget');
-                    // Only saved altars can go on the home screen.
-                    setNotice('Save this altar first, then tap Home screen again to choose its place on your home screen.');
-                    setSheet('save');
-                  }}
-                />
-              ) : null}
               <Chip label="Undo" symbol="↶" onPress={() => stepHistory(undo, redo)} disabled={undo.current.length === 0} />
               <Chip label="Redo" symbol="↷" onPress={() => stepHistory(redo, undo)} disabled={redo.current.length === 0} />
-              {!full ? <Chip label="Full screen" symbol="⤢" accessibilityLabel={canTurnScreen ? 'Turn the altar sideways to fill the screen' : 'Fill the screen with the altar'} onPress={() => enterFullScreen(true)} /> : null}
               <Chip label="Zoom in" symbol="+" onPress={() => zoomBy(1.5)} disabled={viewport.zoom >= 4} />
               <Chip label="Zoom out" symbol="−" onPress={() => zoomBy(1 / 1.5)} disabled={viewport.zoom <= 1} />
+              {!full ? <Chip label="Full screen" symbol="⤢" accessibilityLabel={canTurnScreen ? 'Turn the altar sideways to fill the screen' : 'Fill the screen with the altar'} onPress={() => enterFullScreen(true)} /> : null}
             </ChipRow>
-            {(doc.objects.some(isCandle) || doc.objects.length > 1) && (
+            <ToolGroup title="Add">
+              <Button label="Open the cabinet" onPress={() => setSheet('cabinet')} />
+              <ChipRow>
+                <Chip label="Apothecary" symbol="⚗" accessibilityLabel="My Apothecary" onPress={() => setSheet('apothecary')} />
+                <Chip label="Background" symbol="❖" onPress={() => setSheet('background')} />
+                <Chip label="Layers" symbol="☰" onPress={() => setSheet('layers')} disabled={doc.objects.length === 0} />
+                {doc.objects.length > 1 && <Chip label="Group" symbol="⊕" onPress={() => setSheet('group')} />}
+              </ChipRow>
+            </ToolGroup>
+            <ToolGroup title="Tend">
               <ChipRow>
                 {doc.objects.some((o) => isCandle(o) && !isLit(o) && !candleLife(o).spent) && (
                   <Chip label="Light all candles" symbol="✺" onPress={() => commit((d) => lightAll(d, nowIso()))} />
                 )}
                 {doc.objects.some(isLit) && <Chip label="Snuff all" symbol="◌" onPress={() => commit((d) => snuffAll(d, nowIso()))} />}
-                {doc.objects.length > 1 && <Chip label="Group" symbol="⊕" onPress={() => setSheet('group')} />}
+                <Chip
+                  label={box.open.length ? `Petitions (${box.open.length})` : 'Petitions'}
+                  symbol="✉"
+                  accessibilityLabel={`The petition box${box.open.length ? `, ${box.open.length} waiting` : ''}`}
+                  onPress={openPetitions}
+                />
+                <Chip
+                  label="Workings"
+                  symbol="✶"
+                  accessibilityLabel="Workings: begin a ritual here, spell jar, sachet, spell timer, scrying, the gratitude bowl, and things from your practice"
+                  onPress={() => setSheet('more-workings')}
+                />
               </ChipRow>
-            )}
+            </ToolGroup>
+            <ToolGroup title="Read">
+              <ChipRow>
+                <Chip label="Read & arrange" symbol="☉" accessibilityLabel="Read this altar, its intention and layouts with meaning" onPress={() => setSheet('more-reading')} />
+                {tonight && <Chip label="Why these pieces" symbol="✧" accessibilityLabel="Why each piece of tonight’s altar is there, and swaps" onPress={() => setSheet('tonight')} />}
+                <Chip label="History" symbol="◷" accessibilityLabel="This altar’s history: what happened here and how it looked" onPress={() => openSaved('history', 'history')} />
+                <Chip label="Sky & season" symbol="☾" accessibilityLabel="Sky and season options for this altar" onPress={() => setSheet('options')} />
+              </ChipRow>
+            </ToolGroup>
+            <ToolGroup title="Share & keep">
+              <ChipRow>
+                <Chip label="Share" symbol="⇪" accessibilityLabel="Share a picture of this altar" onPress={() => setSheet('share')} disabled={doc.objects.length === 0} />
+                <Chip
+                  label="Record in Grimoire"
+                  symbol="❧"
+                  accessibilityLabel="Record this altar in your Grimoire"
+                  onPress={() => setSheet('grimoire')}
+                  disabled={doc.objects.length === 0}
+                />
+                {Platform.OS !== 'web' ? (
+                  <Chip
+                    label="Home screen"
+                    symbol="▣"
+                    accessibilityLabel="Put this altar on your home screen"
+                    onPress={() => {
+                      // A coven altar is already saved for the coven.
+                      if (sourceId || shared) return setSheet('widget');
+                      // Only saved altars can go on the home screen.
+                      setNotice('Save this altar first, then tap Home screen again to choose its place on your home screen.');
+                      setSheet('save');
+                    }}
+                  />
+                ) : null}
+                {sourceId && !shared && !confirmDelete && (
+                  <>
+                    <Chip label={archivedNow ? 'Restore altar' : 'Archive altar'} onPress={() => void setArchived(!archivedNow)} />
+                    <Chip label="Delete altar" tone="danger" onPress={() => setConfirmDelete(true)} />
+                  </>
+                )}
+              </ChipRow>
+              {sourceId && !shared && archivedNow && (
+                <Text style={type.caption}>This altar is archived. It rests from reminders, tending nudges and the To tend list until you restore it.</Text>
+              )}
+              {sourceId && !shared && confirmDelete && (
+                <>
+                  <Text style={type.caption}>{ARCHIVE_WORDS.deleteBody}</Text>
+                  <ChipRow>
+                    <Chip label="Delete this altar for good" tone="danger" onPress={removeAltar} />
+                    {!archivedNow && <Chip label="Archive it instead" onPress={() => void setArchived(true)} />}
+                    <Chip label="Keep it" onPress={() => setConfirmDelete(false)} />
+                  </ChipRow>
+                </>
+              )}
+            </ToolGroup>
             {!!intention.text && (
               <Text style={styles.glance} accessibilityLabel={`This altar’s intention: ${intention.text}`} onPress={() => openSaved('intention', 'intention')}>
                 {`“${intention.text}”`}
@@ -1475,26 +1506,6 @@ export function AltarEditor({ shared, header, overlay, onBack, whose }: { shared
                   <Chip label="Clear altar" tone="danger" onPress={() => setConfirmClear(true)} />
                 )}
               </ChipRow>
-            )}
-            {sourceId && !shared && (
-              <View style={styles.danger}>
-                {archivedNow && <Text style={type.caption}>This altar is archived. It rests from reminders, tending nudges and the To tend list until you restore it.</Text>}
-                {confirmDelete ? (
-                  <>
-                    <Text style={type.caption}>{ARCHIVE_WORDS.deleteBody}</Text>
-                    <ChipRow>
-                      <Chip label="Delete this altar for good" tone="danger" onPress={removeAltar} />
-                      {!archivedNow && <Chip label="Archive it instead" onPress={() => void setArchived(true)} />}
-                      <Chip label="Keep it" onPress={() => setConfirmDelete(false)} />
-                    </ChipRow>
-                  </>
-                ) : (
-                  <ChipRow>
-                    <Chip label={archivedNow ? 'Restore altar' : 'Archive altar'} onPress={() => void setArchived(!archivedNow)} />
-                    <Chip label="Delete altar" tone="danger" onPress={() => setConfirmDelete(true)} />
-                  </ChipRow>
-                )}
-              </View>
             )}
           </View>
         ) : (
@@ -2628,7 +2639,7 @@ const styles = StyleSheet.create({
   notice: { color: colors.gold, textAlign: 'center' },
   attuned: { fontFamily: fonts.bodySemi, fontSize: 13, color: colors.gold, marginTop: 2 },
   faded: { color: colors.muted },
-  danger: { marginTop: 8 },
+  group: { gap: 8 },
   centered: { flex: 1, justifyContent: 'center', padding: space.gutter, gap: 14 },
   full: { flex: 1, backgroundColor: '#000000', alignItems: 'center', justifyContent: 'center' },
   fullStatus: { position: 'absolute', maxWidth: 320, paddingHorizontal: 10, paddingVertical: 4, borderRadius: 999, backgroundColor: 'rgba(0,0,0,0.55)' },
@@ -2650,3 +2661,15 @@ const styles = StyleSheet.create({
   drawerCloseText: { color: colors.gold, fontFamily: fonts.bodySemi, fontSize: 15 },
   drawerContent: { paddingHorizontal: 16, paddingBottom: 24, gap: 14 },
 });
+
+/** A labelled cluster of the altar's tools (Add, Tend, Read, Share & keep). */
+function ToolGroup({ title, children }: { title: string; children: ReactNode }) {
+  return (
+    <View style={styles.group}>
+      <Text style={type.eyebrow} accessibilityRole="header">
+        {title}
+      </Text>
+      {children}
+    </View>
+  );
+}

@@ -77,6 +77,10 @@
   }
 
   // ── The chips under the stage ───────────────────────────────────────────
+  // Grouped as the app's editor groups them: Undo, Redo and Full screen
+  // first, then Add, Tend, Read, and Share & keep (AltarEditor.tsx).
+  const toolChips = (list) => B().chips(list.map((c) => c && { ...c, action: `tool:${c.action}` }));
+  const toolGroup = (title, list) => `<div class="app-altar-tools__group" role="group" aria-label="${esc(title)}">${label(title)}${toolChips(list)}</div>`;
   let tools = null;
   function renderTools() {
     const core = A();
@@ -92,20 +96,41 @@
     const canLight = objects.some((o) => L.isCandle(o) && !L.isLit(o) && !L.candleLife(o).spent);
     const anyLit = objects.some((o) => L.isLit(o));
     const intention = state.intention?.data?.text || "";
+    const ownSaved = !!B().altarId() && !global.CovenAltarPage?.altarId;
+    const archived = ownSaved && global.altarExtraFields?.archived === true;
     tools.innerHTML = `
       ${intention ? `<p class="app-altar-tools__intention" role="button" tabindex="0" data-app-tool="intention" aria-label="${esc(`This altar’s intention: ${intention}`)}">“${esc(intention)}”</p>` : ""}
-      ${B().chips([
+      ${toolChips([
+        { label: "Undo", symbol: "↶", action: "undo" },
+        { label: "Redo", symbol: "↷", action: "redo" },
+        { label: "Full screen", symbol: "⤢", action: "full", hint: "Fill the screen with the altar" }
+      ])}
+      ${toolGroup("Add", [
+        { label: "Cabinet", symbol: "❖", action: "cabinet", hint: "Open the cabinet" },
+        { label: "Apothecary", symbol: "⚗", action: "apothecary", hint: "My Apothecary" },
+        { label: "Background", symbol: "❖", action: "background", hint: "Choose the altar’s background" }
+      ])}
+      ${toolGroup("Tend", [
+        canLight ? { label: "Light all candles", symbol: "✺", action: "light-all" } : null,
+        anyLit ? { label: "Snuff all", symbol: "◌", action: "snuff-all" } : null,
         { label: state.petitionsOpen ? `Petitions (${state.petitionsOpen})` : "Petitions", symbol: "✉", action: "petitions", hint: `The petition box${state.petitionsOpen ? `, ${state.petitionsOpen} waiting` : ""}` },
-        { label: "Sky & season", symbol: "☾", action: "options", hint: "Sky and season options for this altar" },
-        { label: "Workings", symbol: "✶", action: "workings", hint: "Workings: spell jar, sachet, spell timer, scrying, the gratitude bowl, and things from your practice" },
+        { label: "Workings", symbol: "✶", action: "workings", hint: "Workings: spell jar, sachet, spell timer, scrying, the gratitude bowl, and things from your practice" }
+      ])}
+      ${toolGroup("Read", [
         { label: "Read & arrange", symbol: "☉", action: "reading", hint: "Read this altar, its intention and layouts with meaning" },
         state.tonight ? { label: "Why these pieces", symbol: "✧", action: "tonight", hint: "Why each piece of tonight’s altar is there, and swaps" } : { label: "Tonight’s altar", symbol: "✧", action: "set-tonight", hint: "Set tonight’s altar from the day: its planet, moon and holidays" },
         { label: "History", symbol: "◷", action: "history", hint: "This altar’s history: what happened here and how it looked" },
+        { label: "Sky & season", symbol: "☾", action: "options", hint: "Sky and season options for this altar" }
+      ])}
+      ${toolGroup("Share & keep", [
         { label: "Share", symbol: "⇪", action: "share", disabled: !objects.length, hint: "Share a picture of this altar" },
-        canLight ? { label: "Light all candles", symbol: "✺", action: "light-all" } : null,
-        anyLit ? { label: "Snuff all", symbol: "◌", action: "snuff-all" } : null,
-        { label: "Full screen", symbol: "⤢", action: "full", hint: "Fill the screen with the altar" }
-      ].map((c) => c && { ...c, action: `tool:${c.action}` }))}`;
+        { label: "Record in Grimoire", symbol: "❧", action: "grimoire", disabled: !objects.length, hint: "Record this altar in your Grimoire" },
+        // Only your own saved altars are archived or deleted here; a coven
+        // altar is archived from the coven's Altars list.
+        ownSaved ? { label: archived ? "Restore altar" : "Archive altar", action: archived ? "restore" : "archive", hint: archived ? "Restore this altar" : "Archive this altar: kept whole, resting until you restore it" } : null,
+        ownSaved ? { label: "Delete altar", action: "delete", danger: true, hint: "Delete this altar for good" } : null
+      ])}
+      ${ownSaved && archived ? `<p class="app-caption" style="text-align:center">This altar is archived. It rests from reminders, tending nudges and the To tend list until you restore it.</p>` : ""}`;
   }
 
   // ── More sheets (MoreSheet.tsx) ─────────────────────────────────────────
@@ -1250,6 +1275,15 @@
     redo: () => global.redoAltarChange?.(),
     save: () => global.saveAltar?.(),
     cabinet: () => document.querySelector("[data-open-cabinet-overlay]")?.click(),
+    apothecary: () => document.querySelector("[data-open-apothecary-overlay]")?.click(),
+    background: () => {
+      document.querySelector("[data-open-cabinet-overlay]")?.click();
+      document.querySelector('[data-cabinet-category="backgrounds"]')?.click();
+    },
+    grimoire: () => document.querySelector('.altar-action-bar [data-global-action="record-in-grimoire"]')?.click(),
+    archive: async () => { await global.setSavedAltarArchived?.(B().altarId(), true); renderTools(); },
+    restore: async () => { await global.setSavedAltarArchived?.(B().altarId(), false); renderTools(); },
+    delete: async () => { await global.deleteSavedAltar?.(B().altarId()); renderTools(); },
     drawer: openDrawer,
     "drawer-close": closeDrawer,
     intention: openIntention

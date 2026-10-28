@@ -7,7 +7,7 @@ import type { Conversation, ConversationMember } from './thread.ts';
 
 // ─── Deleting an altar ──────────────────────────────────────────────────
 
-/** Who may delete an altar mirrors who may clear it away (delete_coven_altar, archive_coven_altar). */
+/** Who may delete an altar mirrors who may archive it (delete_coven_altar, archive_coven_altar). */
 export type DeleteCheck = { ok: boolean; reason: string | null };
 
 /**
@@ -34,7 +34,27 @@ export function deleteAltarWords(name: string) {
     body: 'This removes the altar and everything on it for the whole coven. This can’t be undone.',
     confirm: 'Delete the altar',
     // Offered beside it, for keeping the altar out of sight instead.
-    gentler: 'Clearing it away hides it instead, and its keepers can bring it back.',
+    gentler: 'Archiving it hides it instead, and its keepers can restore it.',
+  };
+}
+
+// ─── Archiving an altar ─────────────────────────────────────────────────
+// One rule across the app and the website: "Delete" is for good and always
+// asks first; "Archive" keeps everything and can be restored.
+
+/** The words for archiving (or restoring) a coven altar, the same in the app and on the website. */
+export function archiveAltarWords(name: string) {
+  const called = name.trim() || 'this altar';
+  const named = name.trim() || 'The altar';
+  return {
+    archive: 'Archive',
+    restore: 'Restore',
+    title: `Archive ${called}?`,
+    body: 'It leaves the coven’s altars with everything on it kept. Its keepers can restore it from Archived altars.',
+    confirm: 'Archive',
+    archived: `${named} is archived. Its keepers can restore it.`,
+    restored: `${named} is back among the coven’s altars.`,
+    section: 'Archived altars',
   };
 }
 

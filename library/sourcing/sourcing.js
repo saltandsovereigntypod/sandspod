@@ -21,7 +21,7 @@
     return `<p class="sp-caption" role="status" aria-live="polite">${esc(status)}</p>
       ${shown
         .map((note) => {
-          const tradition = C.CLOSED_GUIDE_LIVE ? C.closedById(note.tradition) : null;
+          const tradition = C.closedById(note.tradition);
           const links = [
             note.ref ? `<a class="gd-link" href="/library/entry/?entity=${encodeURIComponent(note.ref)}">Open its Library page</a>` : "",
             tradition ? `<a class="gd-link" href="/library/closed/?id=${encodeURIComponent(tradition.id)}">About ${esc(tradition.name)}</a>` : "",

@@ -50,7 +50,7 @@ export default function JournalEntry() {
     .filter((label): label is string => !!label);
 
   const remove = async () => {
-    const ok = await confirmAction('Delete this ritual?', 'It is removed from your journal here and on the website.', 'Delete');
+    const ok = await confirmAction('Delete this ritual?', 'It is removed from your journal here and on the website. This can’t be undone.', 'Delete');
     if (!ok) return;
     try {
       await deleteJournal(entry.id);
@@ -114,7 +114,7 @@ export default function JournalEntry() {
         {!!links.templateId && (
           <Button label="Plan it again" variant="outline" onPress={() => router.push({ pathname: '/rituals/planner', params: { templateId: links.templateId } })} />
         )}
-        <Button label="Delete" variant="text" onPress={remove} />
+        <Button label="Delete this ritual" variant="text" onPress={remove} />
       </View>
     </RitualScreen>
   );

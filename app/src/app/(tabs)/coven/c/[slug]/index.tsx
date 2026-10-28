@@ -137,7 +137,7 @@ export default function CovenHome() {
           {insider && (
             <Section label="The coven">
               <MenuList>
-                <MenuRow label="Chat" detail={presenceLine(coven.presence.length)} icon="letters" onPress={() => router.push(covenHref(coven.slug, 'chat'))} />
+                <MenuRow label="Messages" detail={presenceLine(coven.presence.length)} icon="letters" onPress={() => router.push(covenHref(coven.slug, 'chat'))} />
                 <MenuRow label="Rituals and rites" detail={upcoming.length ? `${upcoming.length} on the calendar` : 'Rites and their steps'} icon="moon" onPress={() => router.push(covenHref(coven.slug, 'rituals'))} />
                 <MenuRow label="Altars" detail="The ritual altar and others, tended together" icon="altar" onPress={() => router.push(covenHref(coven.slug, 'altar'))} />
                 <MenuRow label="Book of Shadows" detail="The coven’s own pages" icon="library" onPress={() => router.push(covenHref(coven.slug, 'book'))} />
@@ -181,7 +181,7 @@ export default function CovenHome() {
                   {!!rank.requirements && <Text style={type.caption}>Requirements: {rank.requirements}</Text>}
                 </Card>
               ))}
-              {coven.perms.member && <Text style={type.caption}>To ask to rise to a higher position, open My path.</Text>}
+              {coven.perms.member && <Text style={type.caption}>To ask to rise to a higher position, open My standing.</Text>}
             </Section>
           )}
 
@@ -195,7 +195,7 @@ export default function CovenHome() {
               <View style={styles.actions}>
                 <MenuList>
                   <MenuRow
-                    label="My path"
+                    label="My standing"
                     detail={coven.unsigned.length ? 'Agreements to sign' : 'Your position, rising higher, leaving'}
                     icon="journey"
                     last={!leads}

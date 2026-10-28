@@ -93,7 +93,7 @@ export default function PlanView() {
 
   const remove = async () => {
     const note = plan.calendarEventId ? 'Its reminder and calendar event are removed too.' : 'Its reminder is cancelled too.';
-    if (!(await confirmAction('Remove this plan?', note, 'Remove'))) return;
+    if (!(await confirmAction('Delete this plan?', `${note} This can’t be undone.`, 'Delete'))) return;
     await removePlanWithCalendar(plan);
     router.replace('/rituals');
   };
@@ -191,7 +191,7 @@ export default function PlanView() {
           variant="outline"
           onPress={() => router.push({ pathname: '/rituals/planner', params: { planId: plan.id } })}
         />
-        <Button label="Remove plan" variant="text" onPress={remove} />
+        <Button label="Delete plan" variant="text" onPress={remove} />
       </View>
     </RitualScreen>
   );

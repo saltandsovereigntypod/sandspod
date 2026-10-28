@@ -63,7 +63,7 @@
       };
 
       const formerCount = members.length - active.length;
-      pane.innerHTML = `${keepsRecord ? `<p class="sp-caption"><a href="${esc(recordHref())}" data-tab="record">Members’ record</a>: who has been taking part and who hasn’t.</p>` : ""}${state.perms.member ? `<p class="sp-caption">Your own standing is under <a href="${esc(covenHref("path"))}" data-tab="path">My path</a>.</p>` : ""}
+      pane.innerHTML = `${keepsRecord ? `<p class="sp-caption"><a href="${esc(recordHref())}" data-tab="record">Members’ record</a>: who has been taking part and who hasn’t.</p>` : ""}${state.perms.member ? `<p class="sp-caption">Your own standing is under <a href="${esc(covenHref("path"))}" data-tab="path">My standing</a>.</p>` : ""}
         <section class="sp-section"><h2>${active.length} member${active.length === 1 ? "" : "s"}</h2>${active.map(row).join("")}</section>
         ${formerCount && (perms.moderate || perms.site) ? `<details class="sp-details"><summary>Former members (${formerCount})</summary><div class="sp-list">${members
           .filter((m) => m.status !== "active")
@@ -296,7 +296,7 @@
     const sorted = [...members].filter((m) => m.status === "active" && m.user_id !== state.coven.founder_id).sort((a, b) => UI.nameOf(state.context, a.user_id).localeCompare(UI.nameOf(state.context, b.user_id)));
     const holders = (flag) => state.ranks.filter((r) => r[flag] || r.can_manage).map((r) => r.name);
     return `<section class="sp-card" data-grants>
-        <h2>Initiation and training</h2>
+        <h2>Who runs training</h2>
         <p class="sp-caption">Choose who designs the coven’s programs, chooses who takes them, assigns mentors and signs off work; and who may see everyone’s progress. You can give these to whole positions (below, under Positions) or to people by name here. You always can.</p>
         <p class="sp-caption">By position: manages programs: ${esc(holders("can_manage_programs").join(", ") || "none yet")}; sees progress: ${esc([...new Set([...holders("can_view_progress"), ...holders("can_manage_programs")])].join(", ") || "none yet")}.</p>
         ${sorted.length ? `<div class="cv-table-wrap"><table class="cv-table"><thead><tr><th>Member</th><th>Manages programs</th><th>Sees everyone’s progress</th></tr></thead><tbody>${sorted
@@ -309,7 +309,7 @@
   }
 
   const CovenManage = {
-    mount(pane, state, { refresh, covenHref }) {
+    mount(pane, state, { refresh }) {
       const { coven, perms } = state;
       pane.innerHTML = `${detailsForm(coven)}
         <section class="sp-section"><h2>Creed, rules, requirements and agreements</h2>
@@ -328,8 +328,6 @@
           <div data-participation-picker><p class="sp-caption">Loading…</p></div>
           <div class="sp-actions"><button class="button button--primary button--small" type="button" data-save-participation>Save</button></div>
           ${statusLine()}</section>` : ""}
-        ${global.CovenPathsAccess?.seesPaths(state) ? `<section class="sp-section"><h2>Paths in the coven</h2>
-          <p class="sp-caption">How the coven practises and whom it honours, as shares of those who have said, never who. <a href="${esc(covenHref("paths"))}" data-tab="paths">Open Paths in the coven</a>.</p></section>` : ""}
         ${perms.site || (perms.founder && coven.status === "active") ? `<section class="sp-section"><h2>Archive the coven</h2>
           <p class="sp-caption">An archived coven leaves the directory and becomes read-only for its members. ${perms.site ? "" : "Only the site moderators can reopen it."}</p>
           <div class="sp-actions"><button class="button button--ghost" type="button" data-archive>${coven.status === "archived" ? "Reopen the coven" : "Archive the coven"}</button></div>${statusLine()}</section>` : ""}`;

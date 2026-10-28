@@ -18,7 +18,7 @@
   let filter = params.get("show") || "all";
   let state = null;
   let sourcingDetail = "Plants, resins and stones to buy thoughtfully";
-  let closedLive = false;
+  let closedLive = false; // shown once the guides have loaded
 
   /** Keep the search in the address, so Back from an entry returns to it. */
   function remember() {
@@ -119,7 +119,7 @@
     if (!C) return;
     const count = (C.SOURCING_NOTES || C.sourcingNotes?.() || []).length;
     if (count) sourcingDetail = `${count} plants, resins and stones to buy thoughtfully`;
-    closedLive = !!C.CLOSED_GUIDE_LIVE;
+    closedLive = true;
     const slot = root.querySelector("[data-guides]");
     if (slot) slot.innerHTML = guidesHtml();
   });

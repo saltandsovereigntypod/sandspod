@@ -11,8 +11,11 @@ import { errorMessage, normalizeQuestions } from '../../../../../../lib/covens/m
 import { covenCalendarNames } from '../../../../../../lib/covens/programs';
 import { type } from '../../../../../../theme';
 
-// Manage: the coven's details, its pages and agreements, its positions and
-// their powers, the questions it asks applicants, and archiving it.
+// Manage: the coven's settings only: its details, pages and agreements,
+// positions and their powers, the questions it asks applicants, its calendar,
+// gathering notifications, who runs training, ritual participation, and
+// archiving it. People (Review, Members, Initiation & training, Paths) are on
+// the coven's page.
 export default function Manage() {
   const coven = useCoven();
   const [message, setMessage] = useState<string | null>(null);
@@ -59,18 +62,12 @@ export default function Manage() {
             <MenuRow label="Questions for applicants" detail={questions ? `${questions} ${questions === 1 ? 'question' : 'questions'}` : 'None yet'} icon="letters" onPress={() => go('questions')} />
             <MenuRow label="Practice calendar" detail={calendar.length ? calendar.join(', ') : 'The holidays the coven keeps'} icon="moon" onPress={() => go('calendar')} />
             <MenuRow label="Gathering notifications" detail="Who hears when a rite or meeting goes on the calendar, moves or comes off" icon="moon" last={!(coven.perms.manage || coven.perms.site)} onPress={() => go('notices')} />
-            {(coven.perms.manage || coven.perms.site) && <MenuRow label="Initiation & training powers" detail="Who manages programs, and who sees everyone’s progress" icon="journey" last={!(coven.perms.founder || coven.perms.site)} onPress={() => go('powers')} />}
+            {(coven.perms.manage || coven.perms.site) && <MenuRow label="Who runs training" detail="Who designs initiation and training programs, and who sees everyone’s progress" icon="journey" last={!(coven.perms.founder || coven.perms.site)} onPress={() => go('powers')} />}
             {(coven.perms.founder || coven.perms.site) && <MenuRow label="Ritual participation" detail="Who sees how many have written for a step, and who hasn’t" icon="community" last onPress={() => go('participation')} />}
           </MenuList>
-          <Section label="People">
-            <MenuList>
-              <MenuRow label="Review" detail="Applications and requests to advance" icon="offer" onPress={() => router.push(covenHref(coven.slug, 'review'))} />
-              <MenuRow label="Initiation & training" detail="Design programs, assign them and mentors" icon="journey" onPress={() => router.push(covenHref(coven.slug, 'programs/design'))} />
-              <MenuRow label="Members" detail="Positions, pauses, removing and handing on" icon="account" onPress={() => router.push(covenHref(coven.slug, 'members'))} />
-              <MenuRow label="Members’ record" detail="Who has been taking part and who hasn’t: rituals, studies, mentoring" icon="community" onPress={() => router.push(covenHref(coven.slug, 'record'))} />
-              <MenuRow label="Paths in the coven" detail="How the coven practises and whom it honours, as shares, never who" icon="journey" last onPress={() => router.push(covenHref(coven.slug, 'paths'))} />
-            </MenuList>
-          </Section>
+          <Text style={type.caption}>
+            Manage holds the coven’s settings. Review, Members, Initiation & training and Paths in the coven are on the coven’s page.
+          </Text>
           {(coven.perms.site || (coven.perms.founder && info.status === 'active')) && (
             <Section label={info.status === 'archived' ? 'Reopen the coven' : 'Archive the coven'}>
               <Text style={type.caption}>An archived coven leaves the directory and becomes read-only for its members.{coven.perms.site ? '' : ' Only the site moderators can reopen it.'}</Text>

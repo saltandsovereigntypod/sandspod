@@ -67,7 +67,7 @@ export default function TemplateEditor() {
 
   const archive = async () => {
     if (!draft.id) return;
-    const ok = await confirmAction('Archive this template?', 'It leaves your list here and on the website. Rituals you already did keep their record.', 'Archive');
+    const ok = await confirmAction('Archive this template?', 'It leaves your list here and on the website, kept whole: restore it from Archived templates. Rituals you already did keep their record.', 'Archive');
     if (!ok) return;
     try {
       await archiveTemplate(draft.id);

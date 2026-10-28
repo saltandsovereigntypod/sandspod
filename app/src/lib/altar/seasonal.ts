@@ -41,7 +41,7 @@
 // for a traditional calendar, its festivals' names in CALENDAR_FESTIVALS).
 
 import { startOfDay } from '../calendar.ts';
-import { calendarById, calendarContext, CALENDARS_LIVE, shownCalendars, type Place } from '../calendars/index.ts';
+import { calendarById, calendarContext, shownCalendars, type Place } from '../calendars/index.ts';
 import { DEFAULT_TRADITIONS, holidaysBetween, TRADITIONS, type HolidayChoice } from '../holidays.ts';
 import type { OfferingKindId } from './offerings.ts';
 import type { CabinetItem, SavedObject } from './types.ts';
@@ -756,7 +756,7 @@ const EPAGOMENAL_DAY = /^(birth-|epagomenal)/;
  * one span, "kemetic-epagomenal", from the first through the last.
  */
 export function calendarFestivalsBetween(from: Date, to: Date, shown?: CalendarsShown | null): CalendarFestival[] {
-  if (!shown || !CALENDARS_LIVE) return [];
+  if (!shown) return [];
   const first = startOfDay(from);
   const out: CalendarFestival[] = [];
   for (const id of shownCalendars(shown.settings).filter((c) => !!CALENDAR_FESTIVALS[c])) {

@@ -63,7 +63,7 @@ export const TOUR_PAGES: TourPage[] = [
   {
     icon: { tab: 'coven' },
     title: 'Practise with a coven',
-    body: 'Find or found a coven in the Coven tab. Tend its altars together, talk in its chat, hold rites as a circle, and walk its initiation and training.',
+    body: 'Find or found a coven in the Coven tab. Tend its altars together, talk in its Messages, hold rites as a circle, and walk its initiation and training.',
   },
   {
     icon: { more: 'account' },

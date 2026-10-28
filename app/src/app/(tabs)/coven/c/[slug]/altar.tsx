@@ -22,6 +22,7 @@ import {
   Section,
 } from "../../../../../components/more/ui";
 import {
+  archiveAltar,
   createAltar,
   deleteAltar,
   fetchAltarCounts,
@@ -31,7 +32,7 @@ import {
   tendedBy,
   type CovenAltar,
 } from "../../../../../lib/covens/altarSync";
-import { deleteAltarWords } from "../../../../../lib/covens/altarPanel";
+import { archiveAltarWords, deleteAltarWords } from "../../../../../lib/covens/altarPanel";
 import { useCoven } from "../../../../../lib/covens/CovenContext";
 import { errorMessage } from "../../../../../lib/covens/model";
 import { confirmAction } from "../../../../../lib/grimoire/confirm";
@@ -111,6 +112,23 @@ export default function CovenAltars() {
     setBusy(false);
   };
 
+  // Archive keeps the altar and everything on it, out of the list, until its
+  // keepers restore it (the same keepers who may delete it).
+  const setArchived = async (altar: CovenAltar, archived: boolean) => {
+    const words = archiveAltarWords(altar.name);
+    if (archived && !(await confirmAction(words.title, words.body, words.confirm))) return;
+    setBusy(true);
+    setMessage(null);
+    try {
+      await archiveAltar(altar.id, archived);
+      await load();
+      setMessage(archived ? words.archived : words.restored);
+    } catch (error) {
+      setMessage(errorMessage(error));
+    }
+    setBusy(false);
+  };
+
   const here = (altar: CovenAltar) =>
     coven.presence.filter((p) => p.place === `altar:${altar.id}`).length;
   const showing = (altars ?? []).filter((a) => !a.archived_at);
@@ -155,6 +173,12 @@ export default function CovenAltars() {
       )}
       {mayDelete(altar) && (
         <View style={styles.actions}>
+          <Button
+            label="Archive"
+            variant="text"
+            onPress={() => void setArchived(altar, true)}
+            disabled={busy}
+          />
           <Button
             label="Delete"
             variant="text"
@@ -208,8 +232,8 @@ export default function CovenAltars() {
               onChange={setMode}
             />
             <Text style={type.caption}>
-              You keep it: you can change who tends it, lock it, or clear it
-              away later. The coven’s head keeps every altar too.
+              You keep it: you can change who tends it, lock it, or archive it
+              later. The coven’s head keeps every altar too.
             </Text>
             <Button
               label="Start the altar"
@@ -237,7 +261,7 @@ export default function CovenAltars() {
       )}
 
       {cleared.length > 0 && (
-        <Section label="Cleared away">
+        <Section label="Archived altars">
           {showCleared ? (
             cleared.map((altar) => (
               <Pressable
@@ -250,9 +274,15 @@ export default function CovenAltars() {
                 ]}
               >
                 <Text style={type.body}>{altar.name}</Text>
-                <Text style={type.caption}>Its keeper can bring it back.</Text>
+                <Text style={type.caption}>Kept whole. Its keepers can restore it.</Text>
                 {mayDelete(altar) && (
                   <View style={styles.actions}>
+                    <Button
+                      label="Restore"
+                      variant="text"
+                      onPress={() => void setArchived(altar, false)}
+                      disabled={busy}
+                    />
                     <Button
                       label="Delete"
                       variant="text"
@@ -265,7 +295,7 @@ export default function CovenAltars() {
             ))
           ) : (
             <Button
-              label={`Show ${cleared.length} cleared away`}
+              label={`Show ${cleared.length} archived`}
               variant="text"
               onPress={() => setShowCleared(true)}
             />

@@ -6,7 +6,7 @@
  * Members get Messages (the coven's chat and their own conversations,
  * covens/coven/chat.js), Rituals (steps given to members or positions, run
  * live, covens/coven/rituals.js), Altars (whole altars, shared and live:
- * covens/coven/altar.js lists them, the altar page tends them), Members and My path (their
+ * covens/coven/altar.js lists them, the altar page tends them), Members and My standing (their
  * position, agreements, requests to advance and their own standing). Those
  * who keep the members' record get Members' record (covens/coven/record.js).
  * Reviewers get Review and
@@ -141,7 +141,7 @@
       if (global.CovenRecordAccess?.seesRecord(state)) list.push({ key: "record", label: "Members’ record" });
       if (global.CovenPathsAccess?.seesPaths(state)) list.push({ key: "paths", label: "Paths in the coven" });
     }
-    if (perms.member) list.push({ key: "path", label: "My path", count: state.unsigned.length });
+    if (perms.member) list.push({ key: "path", label: "My standing", count: state.unsigned.length });
     if (perms.review || perms.site) list.push({ key: "review", label: "Review", count: state.pending.applications + state.pending.advancements });
     if (perms.manage || perms.site) list.push({ key: "manage", label: "Manage" });
     return list;
@@ -432,7 +432,7 @@
     drawStep();
   }
 
-  // --- My path -------------------------------------------------------------
+  // --- My standing (?tab=path; once "My path") ------------------------------
 
   function path(pane) {
     const { perms, coven, context, advancements } = state;
@@ -447,7 +447,7 @@
           ${powers.length ? `<p class="sp-caption">Your position ${esc(powers.join(", "))}.</p>` : ""}
           <p class="sp-caption">Member since ${esc(new Date(state.membership.joined_at).toLocaleDateString())}${perms.muted ? ` · messages paused until ${esc(new Date(state.membership.muted_until).toLocaleString())}` : ""}</p>
         </div></section>
-      <details class="sp-details" data-standing-details><summary>My standing: your rituals, studies and mentoring, as the coven’s leaders see them</summary><div data-standing></div></details>
+      <details class="sp-details" data-standing-details><summary>Your record: your rituals, studies and mentoring, as the coven’s leaders see them</summary><div data-standing></div></details>
       <section class="sp-section"><h2>Agreements</h2><div data-signer></div></section>
       <section class="sp-section"><h2>Rise to a higher position</h2><div data-advance></div></section>
       ${perms.founder ? "" : `<section class="sp-section"><h2>Leaving</h2><div class="sp-actions"><button class="button button--ghost" type="button" data-leave>Leave ${esc(coven.name)}</button></div><p class="cv-status" role="status" aria-live="polite" data-leave-status></p></section>`}`;

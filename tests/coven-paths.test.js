@@ -78,7 +78,8 @@ test("the website asks the database with the app's calls, and shows the tab to t
   const coven = read("covens/coven/coven.js");
   assert.match(coven, /key: "paths", label: "Paths in the coven"/);
   assert.match(coven, /paths: \(\) => mount\(global\.CovenPaths\)/);
-  assert.match(read("covens/coven/manage.js"), /data-tab="paths"/);
+  // Manage holds settings only; Paths in the coven is its own tab, not repeated there.
+  assert.doesNotMatch(read("covens/coven/manage.js"), /data-tab="paths"/);
 
   const base = { founder: false, site: false, member: true, record: { record_viewers: [] }, paths: { paths_visible_to_all: false }, membership: { status: "active", rank_id: "r1" }, userId: "u2" };
   assert.equal(P.seesPaths(base), false);

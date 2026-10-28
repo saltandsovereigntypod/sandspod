@@ -197,7 +197,7 @@ document.addEventListener("click", async (event) => {
 
   if (!ritualId) return;
 
-  const confirmed = window.confirm("Delete this ritual?");
+  const confirmed = window.confirm("Delete this ritual? It is removed from your journal here and in the app. This can’t be undone.");
   if (!confirmed) return;
 
   try {

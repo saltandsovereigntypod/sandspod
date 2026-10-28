@@ -1,6 +1,6 @@
 /*
  * The members' record (?tab=record, and &member=<id> for one member), and
- * each member's own standing under My path. The website's twin of the app's
+ * each member's own record under My standing. The website's twin of the app's
  * record/index.tsx, record/[userId].tsx, standing.tsx and
  * components/covens/Record.tsx, summed up by the app's own logic
  * (lib/covens/record.ts, through js/core/covens.js as SaltCore.covens.record).
@@ -138,7 +138,7 @@
 
   const namesIn = (record) => [record.user_id, record.mentor?.mentor_id, ...record.checkins.map((c) => c.mentor_id), ...record.mentees.map((m) => m.user_id), ...record.notes.map((n) => n.author_id), ...record.removals.map((x) => x.removed_by)];
 
-  // --- My standing (in My path) ----------------------------------------------
+  // --- Your record (in My standing) -------------------------------------------
 
   const CovenStanding = {
     async mount(holder, state) {
