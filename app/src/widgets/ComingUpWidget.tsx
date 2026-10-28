@@ -1,6 +1,9 @@
-// "Coming Up": the next moon phases and the next holidays, side by side when
-// medium and as two lists when large. Runs in the widget extension's own
-// runtime (see MoonWidget).
+// "Coming Up": the next moon phases, and beside them what's coming, soonest
+// first: what wants tending today, your covens' rites and meetings, meeting
+// actions due, and the holidays, yours and your covens' (`comingUp`, from
+// lib/widgetMore). Side by side when medium; the phases in a row above the
+// list when large. Without `comingUp` it shows the holidays alone, as it
+// first did. Runs in the widget extension's own runtime (see MoonWidget).
 
 import { HStack, Image, Spacer, Text, VStack } from '@expo/ui/swift-ui';
 import { containerBackground, font, foregroundStyle, frame, lineLimit, widgetURL } from '@expo/ui/swift-ui/modifiers';
@@ -18,12 +21,19 @@ const ComingUpWidget = (props: WidgetDayProps, environment: WidgetEnvironment) =
   const link = widgetURL('saltandsovereignty://today');
   const label = (text: string) => <Text modifiers={[font({ size: 10, weight: 'semibold' }), foregroundStyle(gold)]}>{text}</Text>;
   const none = (text: string) => <Text modifiers={[font({ size: 12 }), foregroundStyle(muted)]}>{text}</Text>;
+  // What's coming, or (from an older app) the holidays alone.
+  const coming = props.comingUp ?? props.holidays.map((h) => ({ kind: 'holiday', name: h.name, detail: '', date: h.date, when: h.when, symbol: 'sparkles' }));
+  const onlyHolidays = coming.every((c) => c.kind === 'holiday');
+  const heading = onlyHolidays ? 'HOLIDAYS' : 'COMING UP';
 
   if (environment.widgetFamily === 'systemLarge') {
-    const row = (key: string, symbol: string | null, name: string, date: string, when: string) => (
+    const row = (key: string, symbol: string, name: string, detail: string, date: string, when: string) => (
       <HStack key={key} spacing={8} modifiers={[wide]}>
-        {symbol ? <Image systemName={symbol as never} size={16} color={cream} /> : null}
-        <Text modifiers={[font({ size: 14, design: 'serif' }), foregroundStyle(cream), lineLimit(1)]}>{name}</Text>
+        <Image systemName={symbol as never} size={14} color={gold} />
+        <VStack alignment="leading" spacing={0}>
+          <Text modifiers={[font({ size: 14, design: 'serif' }), foregroundStyle(cream), lineLimit(1)]}>{name}</Text>
+          {detail ? <Text modifiers={[font({ size: 11 }), foregroundStyle(muted), lineLimit(1)]}>{detail}</Text> : null}
+        </VStack>
         <Spacer />
         <VStack alignment="trailing" spacing={0}>
           <Text modifiers={[font({ size: 11 }), foregroundStyle(muted), lineLimit(1)]}>{date}</Text>
@@ -38,10 +48,18 @@ const ComingUpWidget = (props: WidgetDayProps, environment: WidgetEnvironment) =
         modifiers={[link, containerBackground(sky, 'widget'), frame({ maxWidth: 10000, maxHeight: 10000, alignment: 'topLeading' })]}
       >
         {label('MOON PHASES')}
-        {props.phases.slice(0, 4).map((p) => row(`m${p.date}`, p.symbol, p.name, p.date, p.when))}
+        <HStack spacing={0} modifiers={[frame({ maxWidth: 10000 })]}>
+          {props.phases.slice(0, 4).map((p) => (
+            <VStack key={p.date} spacing={2} modifiers={[frame({ maxWidth: 10000 })]}>
+              <Image systemName={p.symbol as never} size={18} color={cream} />
+              <Text modifiers={[font({ size: 10, weight: 'semibold' }), foregroundStyle(cream), lineLimit(1)]}>{p.name.split(' in ')[0]}</Text>
+              <Text modifiers={[font({ size: 10 }), foregroundStyle(muted), lineLimit(1)]}>{p.when}</Text>
+            </VStack>
+          ))}
+        </HStack>
         <Spacer />
-        {label('HOLIDAYS')}
-        {props.holidays.length ? props.holidays.slice(0, 4).map((h) => row(`h${h.name}${h.date}`, null, h.name, h.date, h.when)) : none('None in your calendars')}
+        {label(heading)}
+        {coming.length ? coming.slice(0, 5).map((c, i) => row(`c${i}${c.name}`, c.symbol, c.name, c.detail, c.date, c.when)) : none('Nothing in your calendars')}
         <Spacer />
       </VStack>
     );
@@ -68,8 +86,10 @@ const ComingUpWidget = (props: WidgetDayProps, environment: WidgetEnvironment) =
         {props.phases.slice(0, 3).map((p) => item(`m${p.date}`, p.symbol, p.name, p.when))}
       </VStack>
       <VStack alignment="leading" spacing={5} modifiers={[wide]}>
-        {label('HOLIDAYS')}
-        {props.holidays.length ? props.holidays.slice(0, 3).map((h) => item(`h${h.name}${h.date}`, null, h.name, h.when)) : none('None ahead')}
+        {label(heading)}
+        {coming.length
+          ? coming.slice(0, 3).map((c, i) => item(`c${i}${c.name}`, onlyHolidays ? null : c.symbol, c.name, c.when))
+          : none('None ahead')}
       </VStack>
     </HStack>
   );

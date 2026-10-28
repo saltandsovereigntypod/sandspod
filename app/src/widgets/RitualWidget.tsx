@@ -1,6 +1,8 @@
-// "Next Ritual": your next planned working; when medium or large, with its
-// intention, the moon that night and what you need to gather. Runs in the
-// widget extension's own runtime (see MoonWidget).
+// "Next Ritual": your next working, your own plan or your coven's rite or
+// meeting, whichever comes first (as on Today); when medium or large, with its
+// intention, the moon that night and what you need to gather, or for a coven's
+// rite whether you're going. Runs in the widget extension's own runtime (see
+// MoonWidget).
 
 import { HStack, Image, Spacer, Text, VStack } from '@expo/ui/swift-ui';
 import { containerBackground, font, foregroundStyle, frame, lineLimit, widgetURL } from '@expo/ui/swift-ui/modifiers';
@@ -16,7 +18,8 @@ const RitualWidget = (props: WidgetDayProps, environment: WidgetEnvironment) => 
   const muted = '#cabf9d';
   const family = environment.widgetFamily;
   const has = !!props.ritualId;
-  const link = widgetURL(has ? `saltandsovereignty://rituals/plan/${props.ritualId}` : 'saltandsovereignty://rituals/planner');
+  const link = widgetURL(props.ritualUrl || (has ? `saltandsovereignty://rituals/plan/${props.ritualId}` : 'saltandsovereignty://rituals/planner'));
+  const title = props.ritualKind === 'meeting' ? 'COVEN MEETING' : props.ritualKind === 'rite' ? 'COVEN RITE' : 'NEXT RITUAL';
   const fill = frame({ maxWidth: 10000, maxHeight: 10000, alignment: 'topLeading' });
   const label = (text: string) => <Text modifiers={[font({ size: 10, weight: 'semibold' }), foregroundStyle(gold)]}>{text}</Text>;
   const small = (text: string, lines: number) => <Text modifiers={[font({ size: 12 }), foregroundStyle(muted), lineLimit(lines)]}>{text}</Text>;
@@ -24,7 +27,7 @@ const RitualWidget = (props: WidgetDayProps, environment: WidgetEnvironment) => 
   if (family === 'accessoryRectangular') {
     return (
       <VStack alignment="leading" spacing={1} modifiers={[link, containerBackground('clear', 'widget')]}>
-        <Text modifiers={[font({ size: 12, weight: 'semibold' })]}>Next ritual</Text>
+        <Text modifiers={[font({ size: 12, weight: 'semibold' })]}>{props.ritualKind === 'meeting' ? 'Coven meeting' : props.ritualKind === 'rite' ? 'Coven rite' : 'Next ritual'}</Text>
         <Text modifiers={[font({ size: 14, weight: 'semibold' }), lineLimit(1)]}>{has ? props.ritualTitle : 'Nothing planned'}</Text>
         <Text modifiers={[font({ size: 12 }), lineLimit(1)]}>{props.ritualWhen}</Text>
       </VStack>
@@ -44,9 +47,10 @@ const RitualWidget = (props: WidgetDayProps, environment: WidgetEnvironment) => 
 
   const heading = (size: number) => (
     <VStack alignment="leading" spacing={2}>
-      {label('NEXT RITUAL')}
+      {label(title)}
       <Text modifiers={[font({ size, weight: 'semibold', design: 'serif' }), foregroundStyle(cream), lineLimit(2)]}>{props.ritualTitle}</Text>
       <Text modifiers={[font({ size: 12, weight: 'semibold' }), foregroundStyle(gold), lineLimit(1)]}>{props.ritualWhen}</Text>
+      {props.ritualFrom && size > 16 ? <Text modifiers={[font({ size: 12 }), foregroundStyle(cream), lineLimit(1)]}>{props.ritualFrom}</Text> : null}
       {props.ritualStart && size > 16 ? (
         <HStack spacing={3}>
           <Image systemName="hourglass" size={10} color={muted} />
@@ -111,7 +115,7 @@ const RitualWidget = (props: WidgetDayProps, environment: WidgetEnvironment) => 
     <VStack alignment="leading" spacing={3} modifiers={[link, containerBackground(sky, 'widget'), fill]}>
       {heading(16)}
       <Spacer />
-      {small(props.ritualNeeds.length ? `${props.ritualNeeds.length} thing${props.ritualNeeds.length === 1 ? '' : 's'} to gather` : props.ritualMoon, 2)}
+      {small(props.ritualFrom || (props.ritualNeeds.length ? `${props.ritualNeeds.length} thing${props.ritualNeeds.length === 1 ? '' : 's'} to gather` : props.ritualMoon), 2)}
     </VStack>
   );
 };

@@ -3,7 +3,9 @@
 // iOS's widget extension, in its own JavaScript runtime: no hooks, no imports at
 // run time, nothing from outside the function. The app sends it a month of
 // days (lib/widgetTimeline). When the person counts their days by the moon,
-// the large and medium sizes add the moon's date (`calendarLine`).
+// the large and medium sizes add the moon's date (`calendarLine`); the large
+// one adds the next moon day their path keeps (`observance`, such as Hekate's
+// Deipnon) and the card they drew today (`card`).
 
 import { HStack, Image, Spacer, Text, VStack } from '@expo/ui/swift-ui';
 import { containerBackground, font, foregroundStyle, frame, lineLimit, widgetURL } from '@expo/ui/swift-ui/modifiers';
@@ -86,6 +88,22 @@ const MoonWidget = (props: WidgetDayProps, environment: WidgetEnvironment) => {
           </VStack>
         </HStack>
         {today(4)}
+        {props.observance || props.card ? (
+          <VStack alignment="leading" spacing={3}>
+            {props.observance ? (
+              <HStack spacing={5}>
+                <Image systemName="moon.stars" size={11} color={gold} />
+                <Text modifiers={[font({ size: 12, design: 'serif' }), foregroundStyle(cream), lineLimit(1)]}>{props.observance}</Text>
+              </HStack>
+            ) : null}
+            {props.card ? (
+              <HStack spacing={5}>
+                <Image systemName="suit.diamond" size={11} color={gold} />
+                <Text modifiers={[font({ size: 12 }), foregroundStyle(muted), lineLimit(1)]}>{`Today’s card: ${props.card}`}</Text>
+              </HStack>
+            ) : null}
+          </VStack>
+        ) : null}
         <Spacer />
         <HStack spacing={0} modifiers={[frame({ maxWidth: 10000 })]}>
           {props.phases.slice(0, 4).map((p) => (

@@ -2,12 +2,18 @@
 // and the coming holidays, the coming moon phases and your next planned ritual
 // with what it needs. The app works out a month of days at once and hands them
 // to iOS, so the widgets stay right even when the app isn't opened. Every
-// widget gets the same day; each shows its own part. Pure, so it can be tested.
+// widget gets the same day; each shows its own part. With your covens and the
+// To tend list (lib/widgetMore) the next working may be a coven's rite, the
+// holidays include your covens', and Coming Up gathers rites, meeting actions
+// and what wants tending. Pure, so it can be tested.
 
 import { holidaysBetween, holidaysToday, nextHolidayAfterToday, type HolidayChoice } from './holidays.ts';
 import { moonSign, moonState, PRINCIPAL_NAMES, signAtSyzygy, upcomingPhases, type PhaseName } from './moon.ts';
 import { nextPlan, planStart, planTemplate } from './rituals/plans.ts';
 import type { Ingredient, RitualPlan, TemplateRow } from './rituals/types.ts';
+import { cardWords, comingUp, covenHolidaysAhead, moonObservance, notAlreadyYours, nextRiteOn, riteDetails, type WidgetComing, type WidgetMore } from './widgetMore.ts';
+import { dayAndTime, dayStart, daysApart, shortDate, whenWords } from './widgetWords.ts';
+import { nextWorkingFirst } from './covens/today.ts';
 
 export type WidgetPhase = {
   /** "Full Moon in Taurus" or "First Quarter". */
@@ -25,6 +31,8 @@ export type WidgetHoliday = {
   when: string;
   /** Days until it starts (0 today). */
   days: number;
+  /** The coven that keeps it, when it isn't in your own calendars. */
+  from?: string;
 };
 
 export type WidgetDayProps = {
@@ -68,7 +76,23 @@ export type WidgetDayProps = {
   ritualNeeds: string[];
   /** Preparation notes when nothing to gather is listed. */
   ritualPrep: string;
+  // Added after the first widgets (optional, so older layouts simply don't show them):
+  /** Your own plan, or your coven's rite or meeting. */
+  ritualKind?: 'plan' | 'rite' | 'meeting';
+  /** For a coven's: "Moon Circle · You’re going". */
+  ritualFrom?: string;
+  /** What a tap opens. */
+  ritualUrl?: string;
+  /** Coming Up, merged and soonest first: what wants tending, coven rites and meetings, meeting actions, holidays. */
+  comingUp?: WidgetComing[];
+  /** The next moon day your path keeps: "Hekate’s Deipnon tonight", "Noumenia tomorrow". */
+  observance?: string;
+  observanceMeaning?: string;
+  /** The card you drew today: "The Star, reversed". */
+  card?: string;
 };
+
+export type { WidgetComing, WidgetMore };
 
 /** The original widget's props; kept as a name for the moon widget. */
 export type MoonWidgetProps = WidgetDayProps;
@@ -88,48 +112,19 @@ const SYMBOLS: Record<PhaseName, string> = {
   'Waning Crescent': 'moonphase.waning.crescent',
 };
 
-const WEEKDAY = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-const SHORT_DAY = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-const SHORT_MONTH = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-
-function daysApart(from: Date, to: Date): number {
-  const a = new Date(from.getFullYear(), from.getMonth(), from.getDate()).getTime();
-  const b = new Date(to.getFullYear(), to.getMonth(), to.getDate()).getTime();
-  return Math.round((b - a) / 86_400_000);
-}
-
-function whenWords(day: Date, date: Date): string {
-  const apart = daysApart(day, date);
-  if (apart <= 0) return 'tonight';
-  if (apart === 1) return 'tomorrow';
-  if (apart < 7) return WEEKDAY[date.getDay()];
-  return `in ${apart} days`;
-}
-
-function shortDate(date: Date): string {
-  return `${SHORT_DAY[date.getDay()]}, ${SHORT_MONTH[date.getMonth()]} ${date.getDate()}`;
-}
-
-function clock(date: Date): string {
-  const h = date.getHours();
-  return `${h % 12 || 12}:${String(date.getMinutes()).padStart(2, '0')} ${h < 12 ? 'am' : 'pm'}`;
-}
-
 function phaseName(phase: keyof typeof PRINCIPAL_NAMES, date: Date): string {
   const name = PRINCIPAL_NAMES[phase];
   return phase === 'new' || phase === 'full' ? `${name} in ${signAtSyzygy(date, phase)}` : name;
 }
 
 function ritualDetails(plan: RitualPlan | null, day: Date, templates: TemplateRow[]) {
-  const empty = { ritual: '', ritualId: '', ritualTitle: '', ritualWhen: '', ritualStart: '', ritualIntention: '', ritualMoon: '', ritualNeeds: [], ritualPrep: '' };
+  const empty = { ritual: '', ritualId: '', ritualTitle: '', ritualWhen: '', ritualStart: '', ritualIntention: '', ritualMoon: '', ritualNeeds: [], ritualPrep: '', ritualUrl: 'saltandsovereignty://rituals/planner' };
   if (!plan) return empty;
   const start = planStart(plan);
   const title = plan.title || 'Ritual';
-  if (!start) return { ...empty, ritual: title, ritualId: plan.id, ritualTitle: title };
-  const apart = daysApart(day, start);
-  const dayWord =
-    apart === 0 ? 'Today' : apart === 1 ? 'Tomorrow' : apart < 7 ? WEEKDAY[start.getDay()] : `${SHORT_MONTH[start.getMonth()]} ${start.getDate()}`;
-  const when = `${dayWord} · ${clock(start)}`;
+  const url = `saltandsovereignty://rituals/plan/${plan.id}`;
+  if (!start) return { ...empty, ritual: title, ritualId: plan.id, ritualTitle: title, ritualKind: 'plan' as const, ritualUrl: url };
+  const when = dayAndTime(day, start);
   const template = planTemplate(plan, templates);
   const ingredients: Ingredient[] = plan.ingredients.length
     ? plan.ingredients
@@ -145,14 +140,24 @@ function ritualDetails(plan: RitualPlan | null, day: Date, templates: TemplateRo
     ritualMoon: `${moonState(start).name} in ${moonSign(start)}`,
     ritualNeeds: names.slice(0, NEEDS_LENGTH),
     ritualPrep: names.length ? '' : (template?.preparation ?? plan.draft?.preparation ?? '').trim(),
+    ritualKind: 'plan' as const,
+    ritualUrl: url,
   };
+}
+
+/** Your next working: your own plan, or your coven's rite or meeting when it comes first (as on Today). */
+function nextWorking(day: Date, plans: RitualPlan[], templates: TemplateRow[], more: WidgetMore) {
+  const plan = nextPlan(plans, day);
+  const rite = more.coven ? nextRiteOn(more.coven, day) : null;
+  if (rite && more.coven && nextWorkingFirst(plan ? planStart(plan) : null, rite) === 'rite') return riteDetails(rite, more.coven, day);
+  return ritualDetails(plan, day, templates);
 }
 
 /** Extra lines worked out by the app for each day (lib/calendars). */
 export type WidgetCalendar = { lead?: (day: Date) => string };
 
 /** The widgets' props for one day. */
-export function widgetDay(day: Date, choice: HolidayChoice, plans: RitualPlan[], templates: TemplateRow[] = [], calendar: WidgetCalendar = {}): WidgetDayProps {
+export function widgetDay(day: Date, choice: HolidayChoice, plans: RitualPlan[], templates: TemplateRow[] = [], calendar: WidgetCalendar = {}, more: WidgetMore = {}): WidgetDayProps {
   const evening = new Date(day.getFullYear(), day.getMonth(), day.getDate(), 21);
   const moon = moonState(evening);
   // The next principal phase after tonight's (so a full moon tonight points at the last quarter).
@@ -167,20 +172,32 @@ export function widgetDay(day: Date, choice: HolidayChoice, plans: RitualPlan[],
     when: whenWords(day, p.date).replace(/^tonight$/, 'today'),
   }));
 
-  const asWidget = (h: { name: string; date: Date }): WidgetHoliday => ({
+  const asWidget = (h: { name: string; date: Date; from?: string }): WidgetHoliday => ({
     name: h.name,
     date: shortDate(h.date),
     when: whenWords(day, h.date).replace(/^tonight$/, 'today'),
     days: Math.max(0, daysApart(day, h.date)),
+    ...(h.from ? { from: h.from } : {}),
   });
   const tomorrow = new Date(day.getFullYear(), day.getMonth(), day.getDate() + 1);
-  const holidays = holidaysBetween(tomorrow, new Date(day.getFullYear() + 1, day.getMonth(), day.getDate()), choice)
-    .filter((h) => h.date.getTime() >= tomorrow.getTime())
-    .slice(0, LIST_LENGTH)
-    .map(asWidget);
+  const yours = holidaysBetween(tomorrow, new Date(day.getFullYear() + 1, day.getMonth(), day.getDate()), choice).filter((h) => h.date.getTime() >= tomorrow.getTime());
 
-  const today = holidaysToday(day, choice);
-  const coming = nextHolidayAfterToday(day, choice);
+  // Your covens' holidays, beside your own (one of each).
+  const covenDays = more.covenHolidays ?? covenHolidaysAhead(more.coven, day, 366);
+  const covenAhead = notAlreadyYours(
+    covenDays.filter((h) => h.date.getTime() >= tomorrow.getTime()),
+    yours,
+  ).map((h) => ({ name: h.name, meaning: h.meaning, date: h.date, from: h.covenName }));
+  const ahead = [...yours.map((h) => ({ name: h.name, meaning: h.meaning, date: h.date, from: undefined as string | undefined })), ...covenAhead].sort((a, b) => a.date.getTime() - b.date.getTime());
+  const holidays = ahead.slice(0, LIST_LENGTH).map(asWidget);
+
+  const ownToday = holidaysToday(day, choice);
+  const today = [
+    ...ownToday.map((h) => ({ name: h.name, meaning: h.meaning })),
+    ...notAlreadyYours(covenDays.filter((h) => h.date.getTime() === dayStart(day).getTime()), ownToday.map((h) => ({ name: h.name, date: dayStart(day) }))),
+  ];
+  const ownComing = nextHolidayAfterToday(day, choice);
+  const coming = ownComing && (!covenAhead[0] || ownComing.date.getTime() <= covenAhead[0].date.getTime()) ? ownComing : (covenAhead[0] ?? ownComing);
   const holiday = today.length
     ? today.map((h) => h.name).join(' · ')
     : coming
@@ -207,14 +224,19 @@ export function widgetDay(day: Date, choice: HolidayChoice, plans: RitualPlan[],
     nextHoliday: coming ? asWidget(coming) : null,
     phases,
     holidays,
-    ...ritualDetails(nextPlan(plans, day), day, templates),
+    ...nextWorking(day, plans, templates, more),
+    comingUp: comingUp(day, ahead, more),
+    ...moonObservance(day, more.settings, today.map((h) => h.name)),
+    card: daysApart(more.now ?? day, day) === 0 ? cardWords(more.card) : '',
   };
 }
 
 /** A month of widget days: now, then each following midnight. */
-export function widgetTimeline(now: Date, choice: HolidayChoice, plans: RitualPlan[], templates: TemplateRow[] = [], days = WIDGET_DAYS, calendar: WidgetCalendar = {}) {
+export function widgetTimeline(now: Date, choice: HolidayChoice, plans: RitualPlan[], templates: TemplateRow[] = [], days = WIDGET_DAYS, calendar: WidgetCalendar = {}, more: WidgetMore = {}) {
+  // Your covens' holidays, once for the whole month (and the year beyond each day).
+  const prepared: WidgetMore = { ...more, now, covenHolidays: more.covenHolidays ?? covenHolidaysAhead(more.coven, now, days + 366) };
   return Array.from({ length: days }, (_, i) => {
     const date = i === 0 ? now : new Date(now.getFullYear(), now.getMonth(), now.getDate() + i);
-    return { date, props: widgetDay(date, choice, plans, templates, calendar) };
+    return { date, props: widgetDay(date, choice, plans, templates, calendar, prepared) };
   });
 }

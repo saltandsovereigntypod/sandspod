@@ -6,7 +6,7 @@
 import { FlexWidget } from 'react-native-android-widget';
 
 import type { WidgetDayProps } from '../../lib/widgetTimeline';
-import { cream, gold, Icon, Label, Moon, muted, serif, sky, Spacer, untilText, Words, type Box } from './look';
+import { cream, gold, Icon, iconFor, Label, Moon, muted, serif, sky, Spacer, untilText, Words, type Box } from './look';
 
 const TODAY = 'saltandsovereignty://today';
 
@@ -76,6 +76,22 @@ export function MoonWidgetAndroid({ day, box }: { day: WidgetDayProps; box: Box 
           </Col>
         </Row>
         {today(4)}
+        {day.observance || day.card ? (
+          <Col gap={3}>
+            {day.observance ? (
+              <FlexWidget style={{ flexDirection: 'row', alignItems: 'center', flexGap: 5 }}>
+                <Icon name="moonStars" size={11} />
+                <Words text={day.observance} size={12} font={serif} />
+              </FlexWidget>
+            ) : null}
+            {day.card ? (
+              <FlexWidget style={{ flexDirection: 'row', alignItems: 'center', flexGap: 5 }}>
+                <Icon name="diamond" size={11} />
+                <Words text={`Today’s card: ${day.card}`} size={12} color={muted} />
+              </FlexWidget>
+            ) : null}
+          </Col>
+        ) : null}
         <Spacer />
         <Row>
           {day.phases.slice(0, 4).map((p) => (
@@ -134,6 +150,7 @@ export function HolidayWidgetAndroid({ day, box }: { day: WidgetDayProps; box: B
           </FlexWidget>
           <Words text={next.name} size={16} weight="600" font={serif} lines={2} />
           <Words text={next.date} size={11} color={muted} />
+          {next.from ? <Words text={`Kept by ${next.from}`} size={11} color={gold} /> : null}
         </Col>
       ) : (
         <Words text="None in your calendars" size={13} color={muted} lines={2} />
@@ -145,12 +162,17 @@ export function HolidayWidgetAndroid({ day, box }: { day: WidgetDayProps; box: B
 // ── Coming Up ────────────────────────────────────────────────────────────
 export function ComingUpWidgetAndroid({ day, box }: { day: WidgetDayProps; box: Box }) {
   const none = (text: string) => <Words text={text} size={12} color={muted} />;
+  // What's coming (lib/widgetMore), or (from an older app) the holidays alone.
+  const coming = day.comingUp ?? day.holidays.map((h) => ({ kind: 'holiday', name: h.name, detail: '', date: h.date, when: h.when, symbol: 'sparkles' }));
+  const onlyHolidays = coming.every((c) => c.kind === 'holiday');
+  const heading = onlyHolidays ? 'HOLIDAYS' : 'COMING UP';
   if (box.size === 'large') {
-    const row = (key: string, symbol: string | null, name: string, date: string, when: string) => (
+    const row = (key: string, symbol: string, name: string, detail: string, date: string, when: string) => (
       <FlexWidget key={key} style={{ flexDirection: 'row', alignItems: 'center', flexGap: 8, width: 'match_parent' }}>
-        {symbol ? <Moon symbol={symbol} size={16} /> : null}
-        <FlexWidget style={{ flex: 1 }}>
+        <Icon name={iconFor(symbol)} size={14} />
+        <FlexWidget style={{ flex: 1, flexDirection: 'column' }}>
           <Words text={name} size={14} font={serif} />
+          {detail ? <Words text={detail} size={11} color={muted} /> : null}
         </FlexWidget>
         <FlexWidget style={{ flexDirection: 'column', alignItems: 'flex-end' }}>
           <Words text={date} size={11} color={muted} />
@@ -161,17 +183,25 @@ export function ComingUpWidgetAndroid({ day, box }: { day: WidgetDayProps; box: 
     return (
       <Frame box={box} gap={8}>
         <Label text="MOON PHASES" />
-        {day.phases.slice(0, 4).map((p) => row(`m${p.date}`, p.symbol, p.name, p.date, p.when))}
+        <Row>
+          {day.phases.slice(0, 4).map((p) => (
+            <FlexWidget key={p.date} style={{ flex: 1, flexDirection: 'column', alignItems: 'center', flexGap: 2 }}>
+              <Moon symbol={p.symbol} size={18} />
+              <Words text={p.name.split(' in ')[0]} size={10} weight="600" align="center" />
+              <Words text={p.when} size={10} color={muted} align="center" />
+            </FlexWidget>
+          ))}
+        </Row>
         <Spacer />
-        <Label text="HOLIDAYS" />
-        {day.holidays.length ? day.holidays.slice(0, 4).map((h) => row(`h${h.name}${h.date}`, null, h.name, h.date, h.when)) : none('None in your calendars')}
+        <Label text={heading} />
+        {coming.length ? coming.slice(0, 5).map((c, i) => row(`c${i}${c.name}`, c.symbol, c.name, c.detail, c.date, c.when)) : none('Nothing in your calendars')}
         <Spacer />
       </Frame>
     );
   }
-  const item = (key: string, symbol: string | null, name: string, when: string) => (
+  const item = (key: string, name: string, when: string, mark: React.ReactNode) => (
     <FlexWidget key={key} style={{ flexDirection: 'row', alignItems: 'center', flexGap: 5, width: 'match_parent' }}>
-      {symbol ? <Moon symbol={symbol} size={12} /> : null}
+      {mark}
       <Col>
         <Words text={name} size={12} font={serif} />
         <Words text={when} size={10} color={muted} />
@@ -182,11 +212,13 @@ export function ComingUpWidgetAndroid({ day, box }: { day: WidgetDayProps; box: 
     <Frame box={box} row gap={12}>
       <Col gap={5} flex={1}>
         <Label text="MOON" />
-        {day.phases.slice(0, 3).map((p) => item(`m${p.date}`, p.symbol, p.name, p.when))}
+        {day.phases.slice(0, 3).map((p) => item(`m${p.date}`, p.name, p.when, <Moon symbol={p.symbol} size={12} />))}
       </Col>
       <Col gap={5} flex={1}>
-        <Label text="HOLIDAYS" />
-        {day.holidays.length ? day.holidays.slice(0, 3).map((h) => item(`h${h.name}${h.date}`, null, h.name, h.when)) : none('None ahead')}
+        <Label text={heading} />
+        {coming.length
+          ? coming.slice(0, 3).map((c, i) => item(`c${i}${c.name}`, c.name, c.when, onlyHolidays ? null : <Icon name={iconFor(c.symbol)} size={12} color={cream} />))
+          : none('None ahead')}
       </Col>
     </Frame>
   );
@@ -195,7 +227,8 @@ export function ComingUpWidgetAndroid({ day, box }: { day: WidgetDayProps; box: 
 // ── Next Ritual ──────────────────────────────────────────────────────────
 export function RitualWidgetAndroid({ day, box, now }: { day: WidgetDayProps; box: Box; now: Date }) {
   const has = !!day.ritualId;
-  const uri = has ? `saltandsovereignty://rituals/plan/${day.ritualId}` : 'saltandsovereignty://rituals/planner';
+  const uri = day.ritualUrl || (has ? `saltandsovereignty://rituals/plan/${day.ritualId}` : 'saltandsovereignty://rituals/planner');
+  const title = day.ritualKind === 'meeting' ? 'COVEN MEETING' : day.ritualKind === 'rite' ? 'COVEN RITE' : 'NEXT RITUAL';
   const small = (text: string, lines: number) => <Words text={text} size={12} color={muted} lines={lines} />;
   if (!has) {
     return (
@@ -209,9 +242,10 @@ export function RitualWidgetAndroid({ day, box, now }: { day: WidgetDayProps; bo
   }
   const heading = (size: number) => (
     <Col gap={2}>
-      <Label text="NEXT RITUAL" />
+      <Label text={title} />
       <Words text={day.ritualTitle} size={size} weight="600" font={serif} lines={2} />
       <Words text={day.ritualWhen} size={12} weight="600" color={gold} />
+      {day.ritualFrom && size > 16 ? <Words text={day.ritualFrom} size={12} /> : null}
       {day.ritualStart && size > 16 ? (
         <FlexWidget style={{ flexDirection: 'row', alignItems: 'center', flexGap: 3 }}>
           <Icon name="hourglass" size={10} color={muted} />
@@ -271,7 +305,7 @@ export function RitualWidgetAndroid({ day, box, now }: { day: WidgetDayProps; bo
     <Frame box={box} uri={uri} gap={3}>
       {heading(16)}
       <Spacer />
-      {small(day.ritualNeeds.length ? `${day.ritualNeeds.length} thing${day.ritualNeeds.length === 1 ? '' : 's'} to gather` : day.ritualMoon, 2)}
+      {small(day.ritualFrom || (day.ritualNeeds.length ? `${day.ritualNeeds.length} thing${day.ritualNeeds.length === 1 ? '' : 's'} to gather` : day.ritualMoon), 2)}
     </Frame>
   );
 }
