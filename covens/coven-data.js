@@ -98,7 +98,7 @@
     },
     async myMemberships(userId) {
       if (!userId) return [];
-      return run(db().from("coven_members").select(`coven_id,status,rank_id,covens(${COVEN_FIELDS})`).eq("user_id", userId).eq("status", "active"));
+      return run(db().from("coven_members").select(`coven_id,status,rank_id,muted_until,covens(${COVEN_FIELDS})`).eq("user_id", userId).eq("status", "active"));
     },
     async myApplications(userId) {
       if (!userId) return [];

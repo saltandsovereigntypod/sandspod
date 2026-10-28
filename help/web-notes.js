@@ -68,7 +68,8 @@
     "altar-full-screen": "Not on the website: a computer screen is already wide. On a phone, use the app.",
     "altar-widget": "Only in the app.",
     "altar-widget-cleansing": "Only in the app.",
-    "covens-altars": "Open your coven and choose the Altars tab. “Open the altar” opens it in the Altar page’s own editor, with a bar over it saying who else is there and whether your changes are saved. “Keep a copy” (or Save) puts a copy among your own altars. Keepers choose who tends it under “Who tends it”. The Altar page fills the window, so there’s no full screen button.",
+    "altar-open-saved": "On the Altar page, choose Library to open My Altars. At the top, switch between Personal, your own altars, and Coven, the altars you tend with your covens. The page remembers the one you used last.",
+    "covens-altars": "Open your coven and choose the Altars tab, or on the Altar page choose Library and then Coven: every coven altar you can see, under each coven’s name, with Start a coven altar. “Open the altar” opens it in the Altar page’s own editor, with a bar over it saying who else is there and whether your changes are saved. “Keep a copy” (or Save) puts a copy among your own altars. Keepers choose who tends it under “Who tends it”. The Altar page fills the window, so there’s no full screen button.",
     "covens-chat": "Open your coven and choose the Messages tab: the coven’s chat first, then your conversations. “New message” starts one, and Details mutes, adds people or leaves. Phone notifications are chosen in the app; a browser can’t ring when you’re away.",
     "covens-petitions": "Open your coven and choose the Petitions tab. “Open its altar” opens the petition’s altar on the Altar page.",
     "covens-rituals": "Open your coven and choose the Rituals tab. A ritual’s page says which altar it’s held at; those who lead choose another and who may tend it at each step.",
@@ -121,8 +122,8 @@
   function siteHref(appHref) {
     if (!appHref || typeof appHref !== "string") return null;
     const path = appHref.split("?")[0].replace(/\/+$/, "") || "/";
-    // Today's and Coven's tabs: a link to one (/today?section=horizon) opens it on the website too.
-    if (path === "/today" || path === "/coven") {
+    // Today's, Coven's and Altar's tabs: a link to one (/today?section=horizon) opens it on the website too.
+    if (path === "/today" || path === "/coven" || path === "/altar") {
       const asked = new URLSearchParams(appHref.split("?")[1] || "");
       const keep = new URLSearchParams();
       for (const name of ["tab", "section"]) if (asked.get(name)) keep.set(name, asked.get(name));

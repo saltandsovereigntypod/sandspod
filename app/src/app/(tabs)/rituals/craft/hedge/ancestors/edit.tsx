@@ -42,7 +42,7 @@ export default function AncestorForm() {
     return (
       <RitualScreen back="Ancestors">
         <Title>Ancestor</Title>
-        <Body>{ready ? 'This page couldn’t be found. It may have been removed on another device.' : 'Opening…'}</Body>
+        <Body>{ready ? 'This page couldn’t be found. It may have been deleted on another device.' : 'Opening…'}</Body>
       </RitualScreen>
     );
   }
@@ -90,7 +90,7 @@ function Form({ existing }: { existing: CraftEntry<unknown> | null }) {
 
   const remove = async () => {
     if (!existing) return;
-    if (!(await confirmAction(`Remove ${person.name || 'this person'}?`, 'Their page and memories will be removed on every device.', 'Remove'))) return;
+    if (!(await confirmAction(`Delete ${person.name || 'this person'}?`, 'Their page and memories will be deleted on every device. This can’t be undone.', 'Delete'))) return;
     await removeEntry(ANCESTORS, existing.id);
     router.replace('/rituals/craft/hedge/ancestors' as Href);
   };
@@ -116,7 +116,7 @@ function Form({ existing }: { existing: CraftEntry<unknown> | null }) {
       {!session && <Notice>Saved on this phone. Sign in to keep them with your account.</Notice>}
       <View style={ui.actions}>
         <Button label={saving ? 'Saving…' : existing ? 'Save changes' : 'Remember them'} onPress={save} disabled={saving} />
-        {existing && <Button label="Remove this person" variant="text" onPress={remove} />}
+        {existing && <Button label="Delete this person" variant="text" onPress={remove} />}
       </View>
     </RitualScreen>
   );

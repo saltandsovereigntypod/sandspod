@@ -851,6 +851,22 @@
 .saved-altars-archived > summary { cursor: pointer; color: var(--gold); font-size: .85rem; letter-spacing: .08em; text-transform: uppercase; min-height: 44px; display: flex; align-items: center; }
 .saved-altars-archived-note { margin: 0; opacity: .72; }
 .saved-altars-archived .saved-altar-card { opacity: .82; }
+/* My Altars' Coven tab (altar/js/features/altar-tabs.js): each coven's altars under its name. */
+.saved-altars-tabs .seg-switch { margin: 0 auto 1rem; }
+.saved-altars-coven { display: grid; gap: 1.25rem; }
+.saved-altars-coven[hidden], .saved-altars-grid[hidden] { display: none; }
+.coven-altars-group { display: grid; gap: .75rem; }
+.coven-altars-name { margin: 0; color: var(--gold); font-size: .85rem; letter-spacing: .08em; text-transform: uppercase; }
+.coven-altar-card.is-main { border-color: var(--gold); }
+.coven-altars-form fieldset { border: 0; padding: 0; margin: 0 0 .75rem; display: grid; gap: .35rem; }
+.coven-altars-form legend { margin-bottom: .35rem; color: var(--gold); }
+.coven-altars-form { grid-template-columns: minmax(0, 1fr); }
+.coven-altars-form .saved-altar-body { text-align: left; }
+.coven-altars-choice { display: flex; align-items: center; justify-content: flex-start; gap: .5rem; min-height: 32px; text-align: left; }
+.coven-altars-choice input { width: auto; flex: 0 0 auto; margin: 0; }
+.coven-altars-choice span { flex: 1 1 auto; }
+.coven-altars-field { display: grid; gap: .35rem; margin-bottom: .75rem; }
+.coven-altars-field input { font: inherit; padding: .55rem .7rem; border-radius: .6rem; border: 1px solid rgba(185, 160, 93, .35); background: rgba(12, 21, 16, .6); color: var(--cream); }
 .object-workflow-intention { margin: 0; color: var(--cream); font-family: Georgia, serif; font-size: 1.08rem; line-height: 1.5; }
 .object-workflow-intention-entry { border-color: rgba(185,160,93,.55) !important; background: rgba(185,160,93,.1) !important; }
 .relationship-manager-table { display: grid; gap: .35rem; }

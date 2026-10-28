@@ -124,7 +124,7 @@ export function SigilMaker({ back, eyebrow, sectionId, fromGrimoire }: Props) {
   };
 
   const remove = async (id: string, label: string) => {
-    if (await confirmAction('Let this sigil go?', `“${label}” will be removed from your sigils. Pages and candles it is already on keep it.`, 'Remove')) {
+    if (await confirmAction(`Delete “${label}”?`, `It will be deleted from your sigils. Pages and candles it is already on keep it. This can’t be undone.`, 'Delete')) {
       await removeEntry(SIGILS, id);
     }
   };
@@ -369,7 +369,7 @@ export function SigilMaker({ back, eyebrow, sectionId, fromGrimoire }: Props) {
                 </Text>
                 <View style={styles.keptActions}>
                   {grimoire.canEdit && <Button label="To my Grimoire" variant="text" onPress={() => toGrimoire(k.sigil, k.name)} />}
-                  <Button label="Remove" variant="text" onPress={() => void remove(k.id, k.name)} />
+                  <Button label="Delete" variant="text" accessibilityHint="Deletes this sigil" onPress={() => void remove(k.id, k.name)} />
                 </View>
               </View>
             </Card>

@@ -1,11 +1,13 @@
-// The two tabs at the top of Today (Today | Sky & Lore) and of Coven (My
-// covens | Find a coven): their names, which tab a link to a section lands
-// on, and which opens first. Pure, and shared with the website (as
-// SaltCore.today.screenTabs and SaltCore.covens.screenTabs), which keeps
-// the same tabs under the same storage keys.
+// The two tabs at the top of Today (Today | Sky & Lore), of Coven (My
+// covens | Find a coven) and of Altar (Personal | Coven): their names, which
+// tab a link to a section lands on, and which opens first. Pure, and shared
+// with the website (as SaltCore.today.screenTabs, SaltCore.covens.screenTabs
+// and SaltCore.altar.screenTabs), which keeps the same tabs under the same
+// storage keys.
 
 export type TodayTab = 'today' | 'sky';
 export type CovenTab = 'mine' | 'find';
+export type AltarTab = 'personal' | 'coven';
 
 export const TODAY_TABS: readonly { key: TodayTab; label: string }[] = [
   { key: 'today', label: 'Today' },
@@ -17,9 +19,15 @@ export const COVEN_TABS: readonly { key: CovenTab; label: string }[] = [
   { key: 'find', label: 'Find a coven' },
 ];
 
+export const ALTAR_TABS: readonly { key: AltarTab; label: string }[] = [
+  { key: 'personal', label: 'Personal' },
+  { key: 'coven', label: 'Coven' },
+];
+
 /** Where the last tab used is kept on the device (AsyncStorage in the app, localStorage on the website). */
 export const TODAY_TAB_KEY = 'saltTodayTab';
 export const COVEN_TAB_KEY = 'saltCovenTab';
+export const ALTAR_TAB_KEY = 'saltAltarTab';
 
 /**
  * Today's sections, by the names links use for them (`/today?section=moon`,
@@ -57,6 +65,12 @@ export function asTodayTab(value: unknown): TodayTab | null {
 export function asCovenTab(value: unknown): CovenTab | null {
   const v = first(value);
   return v === 'mine' || v === 'find' ? v : null;
+}
+
+/** The Altar tab a link names (`/altar?tab=coven`), or the one stored. */
+export function asAltarTab(value: unknown): AltarTab | null {
+  const v = first(value);
+  return v === 'personal' || v === 'coven' ? v : null;
 }
 
 /**

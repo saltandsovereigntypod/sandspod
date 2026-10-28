@@ -23,7 +23,7 @@ export const TOUR_PAGES: TourPage[] = [
   {
     icon: { tab: 'altar' },
     title: 'Your altar, piece by piece',
-    body: 'Open the cabinet’s drawers for candles, herbs, crystals, tools, deities, vessels, natural finds and offerings. Tap anything you place to learn its correspondences.',
+    body: 'Open the cabinet’s drawers for candles, herbs, crystals, tools, deities, vessels, natural finds and offerings. Tap anything you place to learn its correspondences. Your own altars are under Personal; the ones you tend with your covens are under Coven.',
   },
   {
     icon: { tab: 'samhain' },
