@@ -36,7 +36,7 @@ export default function FindForm() {
     return (
       <RitualScreen back="Shore finds">
         <Title eyebrow="Shore finds">{ready ? 'Not found' : 'Edit find'}</Title>
-        <Body>{ready ? 'This find may have been removed on another device.' : 'Gathering your find…'}</Body>
+        <Body>{ready ? 'This find may have been deleted on another device.' : 'Gathering your find…'}</Body>
       </RitualScreen>
     );
   }
@@ -89,7 +89,7 @@ function FindEditor({ existing, entries }: { existing: CraftEntry<ShoreFind> | n
 
   const remove = async () => {
     if (!existing) return;
-    if (!(await confirmAction('Remove this find?', 'It will be taken out of your shore finds on every device.', 'Remove'))) return;
+    if (!(await confirmAction('Delete this find?', 'It will be deleted from your shore finds on every device. This can’t be undone.', 'Delete'))) return;
     await removeEntry(FINDS, existing.id);
     router.back();
   };
@@ -181,7 +181,7 @@ function FindEditor({ existing, entries }: { existing: CraftEntry<ShoreFind> | n
       {!!problem && <Notice>{problem}</Notice>}
       <View style={ui.actions}>
         <Button label={saving ? 'Saving…' : existing ? 'Save changes' : 'Save find'} disabled={saving} onPress={save} />
-        {existing && <Button label="Remove this find" variant="text" onPress={remove} />}
+        {existing && <Button label="Delete this find" variant="text" onPress={remove} />}
       </View>
     </RitualScreen>
   );

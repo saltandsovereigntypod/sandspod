@@ -61,7 +61,7 @@
     main.innerHTML = `
       ${UI.header({
         eyebrow: "Premade",
-        title: "Rituals & spells",
+        title: "Workings library",
         lead: "Workings from the Wheel of the Year, the old folk ways and every kind of practice, written for you to begin, plan, or make your own."
       })}
       <section class="sp-section" data-for-you aria-labelledby="rt-foryou">
@@ -69,7 +69,7 @@
           suggested.length
             ? `<h2 class="sp-label" id="rt-foryou">For you tonight</h2>
               <div class="sp-list">${suggested.map((p) => UI.row({ href: href(p), title: p.title, detail: detail(p) })).join("")}</div>
-              ${ctx.practices.length ? "" : `<p class="sp-muted">Choose your practice in <a class="rt-text-link" href="/?sanctuary=settings">Settings → My practice</a> and these will follow it.</p>`}`
+              ${ctx.practices.length ? "" : `<p class="sp-muted">Choose your crafts in <a class="rt-text-link" href="/practice/#choose">Craft tools → Choose your crafts</a> and these will follow them.</p>`}`
             : ""
         }
       </section>
@@ -118,7 +118,7 @@
     const main = UI.root();
     const p = view.premade;
     if (!p) {
-      main.innerHTML = `${UI.header({ back: { href: "/rituals/premade/", label: "Rituals & spells" }, title: "Not found" })}<p>This working isn’t in the book any more.</p>`;
+      main.innerHTML = `${UI.header({ back: { href: "/rituals/premade/", label: "Workings library" }, title: "Not found" })}<p>This working isn’t in the book any more.</p>`;
       return;
     }
     const account = S.user();
@@ -158,7 +158,7 @@
       : `<p>Nothing but yourself.</p>`;
 
     main.innerHTML = `
-      ${UI.header({ back: { href: "/rituals/premade/", label: "Rituals & spells" }, eyebrow: belongs, title: p.title, lead: L.premadeFacts(p) })}
+      ${UI.header({ back: { href: "/rituals/premade/", label: "Workings library" }, eyebrow: belongs, title: p.title, lead: L.premadeFacts(p) })}
       <p>${esc(p.summary)}</p>
       ${when.length ? `<p class="sp-muted">Best on: ${esc(when.join(", "))}</p>` : ""}
 

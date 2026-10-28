@@ -96,7 +96,7 @@ export default function SignIn() {
             : 'Use the same account as the Salt & Sovereignty website.'}
         </Text>
         <Text style={type.caption}>
-          Already have an account? Sign in the way you did before, then add other ways to sign in from More → Account.
+          Already have an account? Sign in the way you did before, then add other ways to sign in from More → Settings → Account.
         </Text>
 
         {appleAvailable && appleInBrowser ? (

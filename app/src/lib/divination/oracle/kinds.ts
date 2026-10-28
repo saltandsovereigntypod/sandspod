@@ -1,6 +1,6 @@
 // Which kinds of draw the draw screen offers: tarot, runes, ogham,
 // Lenormand, Kipper and your own decks, each of which you can hide in
-// Settings → My practice (app and website alike). Kept with your settings
+// Settings → Divination (app and website alike). Kept with your settings
 // as a comma list of the hidden ones, so a new kind shows until you hide
 // it. Small and self-contained, so the website's settings can load it
 // without the whole deck. Pure.

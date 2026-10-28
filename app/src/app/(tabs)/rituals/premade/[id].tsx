@@ -43,7 +43,7 @@ export default function PremadeView() {
 
   if (!premade) {
     return (
-      <RitualScreen back="Rituals & spells">
+      <RitualScreen back="Workings library">
         <Title>Not found</Title>
         <Body>This working isn’t in the book any more.</Body>
       </RitualScreen>
@@ -95,7 +95,7 @@ export default function PremadeView() {
   };
 
   return (
-    <RitualScreen back="Rituals & spells">
+    <RitualScreen back="Workings library">
       <Title eyebrow={belongs}>{premade.title}</Title>
       <Body muted>{facts}</Body>
       <Body>{premade.summary}</Body>

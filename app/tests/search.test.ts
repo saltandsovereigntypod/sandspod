@@ -3,6 +3,8 @@ import { test } from 'node:test';
 
 import { traditionalEntries } from '../src/lib/library/model.ts';
 import { searchEverything, snippet } from '../src/lib/search.ts';
+import { normalizeReading } from '../src/lib/craft/hedge/readings.ts';
+import { normalizeDream } from '../src/lib/craft/hedge/dreams.ts';
 import type { BlockRow, PageRow } from '../src/lib/grimoire/types.ts';
 import type { JournalRow, TemplateRow } from '../src/lib/rituals/types.ts';
 
@@ -34,6 +36,38 @@ test('short or empty queries find nothing, and case doesn’t matter', () => {
   assert.equal(searchEverything(sources, 'r').journal.length, 0);
   assert.equal(searchEverything(sources, '  ').library.length, 0);
   assert.equal(searchEverything(sources, 'MOON WATER').page[0].id, 'p3');
+});
+
+test('search covers divination readings and dreams too, and still works without them', () => {
+  const entry = <T>(id: string, data: T) => ({ id, data, created_at: '2026-10-01T00:00:00Z', updated_at: '2026-10-01T00:00:00Z' });
+  const readings = [
+    entry('r1', normalizeReading({ date: '2026-10-20', method: 'tarot', question: 'Should I move house?', drawn: ['The Tower', 'Six of Cups'], interpretation: 'Change is coming' })),
+    entry('r2', normalizeReading({ date: '2026-10-21', method: 'runes', question: 'The garden', drawn: ['Fehu'], cameUp: 'A rosemary hedge kept turning up' })),
+  ];
+  const dreams = [entry('d1', normalizeDream({ date: '2026-10-22', title: 'The flooded house', dream: 'Water rose through the floor', symbols: ['water'] }))];
+  const withMore = { ...sources, readings, dreams } as unknown as Parameters<typeof searchEverything>[0];
+
+  const tower = searchEverything(withMore, 'tower');
+  assert.deepEqual(tower.reading.map((h) => h.id), ['r1'], 'a drawn card finds its reading');
+  assert.match(tower.reading[0].detail, /2026-10-20 · The Tower, Six of Cups/);
+
+  const rosemary = searchEverything(withMore, 'rosemary');
+  assert.deepEqual(rosemary.reading.map((h) => h.id), ['r2']);
+  assert.match(rosemary.reading[0].detail, /rosemary hedge/, 'says why it matched');
+
+  const water = searchEverything(withMore, 'water');
+  assert.deepEqual(water.dream.map((h) => h.id), ['d1']);
+  assert.equal(water.dream[0].title, 'The flooded house');
+
+  const house = searchEverything(withMore, 'house');
+  assert.deepEqual(house.dream.map((h) => h.id), ['d1']);
+  assert.deepEqual(house.reading.map((h) => h.id), ['r1']);
+
+  // Callers that don't pass readings or dreams get empty groups.
+  const plain = searchEverything(sources, 'rosemary');
+  assert.deepEqual(plain.reading, []);
+  assert.deepEqual(plain.dream, []);
+  assert.deepEqual(searchEverything(withMore, 'x').dream, []);
 });
 
 test('snippets show a little either side of the match', () => {

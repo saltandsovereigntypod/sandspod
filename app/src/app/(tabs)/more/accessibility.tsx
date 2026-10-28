@@ -52,7 +52,7 @@ export default function AccessibilityScreen() {
   );
 
   return (
-    <MoreScreen title="Accessibility" eyebrow="The Sanctuary" back="/more" backLabel="Back to More">
+    <MoreScreen title="Accessibility" eyebrow="Settings" back="/more/settings" backLabel="Back to Settings">
       <Section label="Text size">
         <Chips
           label="Text size"

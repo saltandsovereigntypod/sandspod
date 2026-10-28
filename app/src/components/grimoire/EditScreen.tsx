@@ -47,7 +47,7 @@ export function GrimoireEditScreen({ pageId }: { pageId: string }) {
             <Text style={type.body}>Only those allowed to write on this page can change it. You can suggest changes from the page instead.</Text>
           ) : (
             <>
-              <Text style={type.body}>Sign in to write in your Book of Shadows.</Text>
+              <Text style={type.body}>Sign in to write in your Grimoire.</Text>
               <Button label="Sign in" onPress={() => router.push('/sign-in')} />
             </>
           )}

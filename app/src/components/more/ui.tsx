@@ -49,7 +49,7 @@ export function MoreScreen({
    */
   scrollKey?: string;
 }) {
-  // Redraws the title when More → Accessibility changes.
+  // Redraws the title when Settings → Accessibility changes.
   useAccessibility();
   const scroll = useRef<ScrollView>(null);
   const y = useRef(0);

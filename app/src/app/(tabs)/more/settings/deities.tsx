@@ -1,4 +1,4 @@
-import { router } from 'expo-router';
+import { router, usePathname } from 'expo-router';
 import { useMemo, useState } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
@@ -13,6 +13,7 @@ import { useReminders } from '../../../../lib/reminders/store';
 import { useReminderPrefs } from '../../../../lib/reminders/usePrefs';
 import { traditionalEntries } from '../../../../lib/library/model';
 import { deitiesValue, LEVELS, MY_DEITIES_KEY, myDeities, withDeity, withoutDeity, type DeityLevel, type MyDeity } from '../../../../lib/patron/mine';
+import { settingsHref } from '../../../../lib/settings/links';
 import { colors, fonts, type } from '../../../../theme';
 
 const today = () => {
@@ -130,8 +131,9 @@ export default function DeitySettings() {
   );
 }
 
-/** Reminders on the sacred days of patron and dedicated deities: their calendar among the holiday reminders (Reminders → Holidays). */
+/** Reminders on the sacred days of patron and dedicated deities: their calendar among the holiday reminders (Notifications & reminders → Holidays). */
 function SacredReminders() {
+  const pathname = usePathname();
   const { permission } = useReminders();
   const { prefs, update, ready, settings } = useReminderPrefs();
   if (!remindersSupported || !ready) return null;
@@ -142,8 +144,8 @@ function SacredReminders() {
     <Card>
       <Toggle label="Remind me on their sacred days" detail="For your patron and dedicated deities, with a small devotion for the day" value={on} onChange={turn} />
       {on && <TimeStepper minutes={prefs.holidays.at} onChange={(minutes) => void update(withChange(prefs, 'holidays.at', minutes))} />}
-      {on && <Text style={type.caption}>At the time chosen for holiday reminders. Choose how far ahead, and which of your other calendars remind you, in Reminders → Holidays.</Text>}
-      <Button label="Holiday reminders" variant="text" onPress={() => router.push({ pathname: '/more/reminders', params: { section: 'holidays' } })} />
+      {on && <Text style={type.caption}>At the time chosen for holiday reminders. Choose how far ahead, and which of your other calendars remind you, in Notifications & reminders → Holidays.</Text>}
+      <Button label="Holiday reminders" variant="text" onPress={() => router.push({ pathname: settingsHref('notifications', pathname), params: { section: 'holidays' } } as never)} />
       {permission === 'denied' && on && <Text style={type.caption}>Notifications are off for this app. Turn them on in your phone’s Settings to hear these.</Text>}
     </Card>
   );

@@ -1,4 +1,4 @@
-// Reminders → Tending: plants (each its own way if you like), altars,
+// Notifications & reminders → Tending: plants (each its own way if you like), altars,
 // offerings, crystals (with how to cleanse each safely) and candles, each on
 // its own schedule.
 

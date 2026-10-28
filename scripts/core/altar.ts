@@ -83,3 +83,7 @@ export * as tendAltar from '../../app/src/lib/tend/altar.ts';
 // Everything the altar knows, as one list to search (the coven ritual
 // planner's Items picker and the cabinet's search bar).
 export * as itemIndex from '../../app/src/lib/altar/itemIndex.ts';
+// The Altar page's two tabs (Personal | Coven) in My Altars, and the Coven
+// tab's list: every coven altar you can see, grouped under each coven.
+export * as screenTabs from '../../app/src/lib/screenTabs.ts';
+export * as altarsAcross from '../../app/src/lib/covens/altarsAcross.ts';

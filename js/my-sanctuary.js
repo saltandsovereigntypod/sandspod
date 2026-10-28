@@ -146,12 +146,10 @@ function createMySanctuaryPanel() {
 
         <nav class="my-sanctuary-links" aria-label="More from your Sanctuary">
           <button type="button" data-my-sanctuary-view-button="journey">🧭 My Journey</button>
-          <a href="/covens/">🕯 Covens</a>
           <a href="/grimoire/community-grimoire.html">✨ Community Grimoire</a>
           <a href="/submit/">✦ Offer to the Sanctuary</a>
           <button type="button" data-my-sanctuary-view-button="submissions">📬 My Submissions</button>
-          <button type="button" data-my-sanctuary-view-button="settings">⚙ Settings</button>
-          <button type="button" data-site-accessibility>♿ Accessibility Options</button>
+          <button type="button" data-my-sanctuary-view-button="settings">⚙ Settings: notifications, accessibility, calendars, deities, account</button>
         </nav>
 
         <h3 class="my-sanctuary-subheading">Practice</h3>
@@ -160,17 +158,14 @@ function createMySanctuaryPanel() {
           <a href="/divination/">✧ Divination: cards, runes &amp; ogham</a>
           <a href="/sigil/">◈ Sigil maker</a>
           <a href="/rituals/journeys/">🕯 Dedication journeys</a>
-          <a href="/more/settings/deities/">☾ My deities</a>
           <a href="/practice/cosmic/chart/">✶ Your birth chart</a>
-          <a href="/today/calendar/">📅 Calendar &amp; holidays</a>
           <a href="/today/sky/">🌙 The sky today</a>
-          <a href="/reminders/">🔔 Reminders</a>
           <a href="/library/">📚 Living Library</a>
           <a href="/library/closed/">🌍 Closed &amp; living traditions</a>
           <a href="/library/sourcing/">🌱 Sourcing with care</a>
         </nav>
 
-        <h3 class="my-sanctuary-subheading">Help</h3>
+        <h3 class="my-sanctuary-subheading">Help &amp; legal</h3>
         <nav class="my-sanctuary-links" aria-label="Help">
           <a href="/help/">❓ How to use the Sanctuary</a>
           <a href="/more/support/">💚 Support lines</a>
@@ -503,7 +498,7 @@ function createMySanctuaryPanel() {
             </div>
 
               <p class="my-sanctuary-soft-note">
-                Community information will appear once the Community Grimoire is connected.
+                Community information shows where the community has added to an entry.
               </p>
             </details>
           </fieldset>

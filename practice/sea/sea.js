@@ -110,7 +110,7 @@
     const { shortDate } = B.calendar;
 
     root.innerHTML = [
-      h.head("My practice", "Sea", { href: links.hub, label: "My practice" }),
+      h.head("Craft tools", "Sea", { href: links.hub, label: "Craft tools" }),
       about ? h.muted(about) : "",
       h.notice(problem),
       h.card(
@@ -621,7 +621,7 @@
       '<div data-part="problem" aria-live="assertive"></div>',
       h.actions([
         h.button(existing ? "Save changes" : "Save find", { attrs: { "data-action": "save" } }),
-        existing ? h.button("Remove this find", { variant: "text", attrs: { "data-action": "remove" } }) : ""
+        existing ? h.button("Delete this find", { variant: "text", attrs: { "data-action": "remove" } }) : ""
       ])
     ].join("");
 
@@ -712,12 +712,12 @@
         },
         remove: async () => {
           if (!existing) return;
-          if (!PB.confirmAction("Remove this find?", "It will be taken out of your shore finds on every device.")) return;
+          if (!PB.confirmAction("Delete this find?", "It will be deleted from your shore finds on every device. This can’t be undone.")) return;
           try {
             await window.SaltCraft.remove(F.FINDS, existing.id);
             window.location.href = FINDS_URL;
           } catch {
-            part("problem").innerHTML = h.notice("That couldn’t be removed just now. Please try again.");
+            part("problem").innerHTML = h.notice("That couldn’t be deleted just now. Please try again.");
           }
         }
       }

@@ -204,7 +204,7 @@
               (k, i) =>
                 `<li>${picture(k.sigil, 72, `Sigil for ${k.name}`)}<div><p class="sg-kept__name">${esc(k.name)}</p><div class="pr-row-actions">${
                   user ? kit.textButton({ label: "To my Grimoire", act: "sg-kept-grimoire", value: String(i) }) : ""
-                }${kit.textButton({ label: "Remove", act: "sg-kept-remove", value: String(i), quiet: true })}</div></div></li>`
+                }${kit.textButton({ label: "Delete", act: "sg-kept-remove", value: String(i), quiet: true })}</div></div></li>`
             )
             .join("")}</ul>${kit.muted(kit.savedLine(user, "your sigils"))}`,
           { id: "kept" }
@@ -394,7 +394,7 @@
     },
     async "sg-kept-remove"(el) {
       const k = kept[Number(el.dataset.value)];
-      if (!k || !kit.confirm(`Let “${k.name}” go from your sigils? Pages and candles it is already on keep it.`)) return;
+      if (!k || !kit.confirm(`Delete “${k.name}”? It will be deleted from your sigils. Pages and candles it is already on keep it. This can’t be undone.`)) return;
       await kit.remove(S.SIGILS, k.id);
       await loadKept();
       draw();

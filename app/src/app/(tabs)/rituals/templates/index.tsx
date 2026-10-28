@@ -90,7 +90,7 @@ export default function Templates() {
       </Card>
 
       <List>
-        <Row icon="grimoire" title="Rituals & spells" detail="Begin one of the premade workings, or copy it to change" onPress={() => router.push('/rituals/premade')} />
+        <Row icon="grimoire" title="Workings library" detail="Begin one of the premade workings, or copy it to change" onPress={() => router.push('/rituals/premade')} />
         <Row icon="altar" title="Build a spell" detail="Choose ingredients and words, and we'll lay out the steps" last onPress={() => router.push('/rituals/spell')} />
       </List>
     </RitualScreen>

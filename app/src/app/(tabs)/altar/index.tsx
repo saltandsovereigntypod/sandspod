@@ -1,10 +1,12 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { router } from 'expo-router';
+import { router, useLocalSearchParams, useNavigation } from 'expo-router';
 import { useEffect, useMemo, useState } from 'react';
 import { ActivityIndicator, Image, Pressable, RefreshControl, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { Button } from '../../../components/Button';
+import { CovenAltars } from '../../../components/altar/CovenAltars';
+import { SegmentedSwitch } from '../../../components/SegmentedSwitch';
 import { Icon } from '../../../components/Icon';
 import { altarImageSource } from '../../../lib/altar/assets';
 import { DEFAULT_BACKGROUND } from '../../../lib/altar/cabinet';
@@ -15,8 +17,15 @@ import { tendCard } from '../../../lib/tend/card';
 import { altarSummary } from '../../../lib/altar/snapshot';
 import { useAltars } from '../../../lib/altar/store';
 import type { SavedAltar } from '../../../lib/altar/types';
+import type { CovenAltarsInput } from '../../../lib/covens/altarsAcross';
+import { fetchAltarsAcrossCovens } from '../../../lib/covens/altarSync';
+import { useCachedQuery } from '../../../lib/more/useCachedQuery';
+import { preloadRememberedTab, useRememberedTab } from '../../../lib/rememberedTab';
+import { ALTAR_TAB_KEY, ALTAR_TABS, asAltarTab } from '../../../lib/screenTabs';
 import { useSession } from '../../../lib/session';
 import { colors, fonts, radius, space, type } from '../../../theme';
+
+void preloadRememberedTab(ALTAR_TAB_KEY);
 
 function savedDate(altar: SavedAltar): string {
   const raw = altar.updatedAt || altar.savedAt;
@@ -29,6 +38,31 @@ export default function AltarList() {
   const { session } = useSession();
   const { altars, draft, draftSourceId, status, refresh, signedIn, sync, pendingCount, save } = useAltars();
   const [pulling, setPulling] = useState(false);
+
+  // Two tabs: your own altars, and the altars you tend with your covens.
+  const [remembered, rememberTab] = useRememberedTab(ALTAR_TAB_KEY, asAltarTab);
+  const tab = remembered ?? 'personal';
+  // A link can pick the tab (/altar?tab=coven); it is then cleared so it works again.
+  const params = useLocalSearchParams<{ tab?: string }>();
+  const linked = asAltarTab(params.tab);
+  useEffect(() => {
+    if (!linked) return;
+    rememberTab(linked);
+    router.setParams({ tab: undefined });
+  }, [linked, rememberTab]);
+  // Tapping Altar in the tab bar while already here goes back to Personal.
+  const navigation = useNavigation();
+  useEffect(() => {
+    const parent = navigation.getParent();
+    if (!parent) return;
+    return parent.addListener('tabPress' as never, () => {
+      if (navigation.isFocused()) rememberTab('personal');
+    });
+  }, [navigation, rememberTab]);
+  // The covens' altars load only when that tab is open (from the copy on the phone first).
+  const userId = session?.user.id ?? null;
+  const covenAltars = useCachedQuery<CovenAltarsInput[]>(userId && tab === 'coven' ? `altar-covens-${userId}` : null, () => fetchAltarsAcrossCovens(userId!));
+
   const open = (altarId: string) => router.push({ pathname: '/altar/[altarId]', params: { altarId } });
   const draftSource = draftSourceId ? altars.find((a) => a.id === draftSourceId) : null;
   // Offerings that have gone over on your saved altars (water drying, flowers wilting).
@@ -77,7 +111,7 @@ export default function AltarList() {
             tintColor={colors.gold}
             onRefresh={async () => {
               setPulling(true);
-              await refresh();
+              await (tab === 'coven' ? covenAltars.refresh() : refresh());
               setPulling(false);
             }}
           />
@@ -85,116 +119,124 @@ export default function AltarList() {
       >
         <View style={styles.titleRow}>
           <View style={{ flex: 1 }}>
-            <Text style={type.eyebrow}>{signedIn ? 'Saved sanctuaries' : 'On this device'}</Text>
+            <Text style={type.eyebrow}>{tab === 'coven' ? 'Tended together' : signedIn ? 'Saved sanctuaries' : 'On this device'}</Text>
             <Text accessibilityRole="header" style={type.title}>
               Altar
             </Text>
           </View>
         </View>
 
-        <Button label="Build a new altar" onPress={() => open('new')} />
+        <SegmentedSwitch label="Altar" options={ALTAR_TABS} value={tab} onChange={rememberTab} />
 
-        <View style={[styles.tending, card.pressing && styles.tendingDue]}>
-          <Pressable
-            onPress={() => router.push('/altar/tend')}
-            accessibilityRole="link"
-            accessibilityHint="Everything you tend, from every altar, coven and journey, in one list"
-            style={({ pressed }) => [styles.tendingBody, pressed && styles.pressed]}
-          >
-            <Text style={type.eyebrow}>To tend</Text>
-            <Text style={type.body}>{card.body}</Text>
-          </Pressable>
-          {card.altarId && (
-            <Button
-              label={card.altarName ? `Open ${card.altarName}` : 'Open the altar'}
-              variant="text"
-              onPress={() => open(card.altarId!)}
-              accessibilityHint="Opens the altar, where you can tend it"
-            />
-          )}
-        </View>
+        {tab === 'coven' ? (
+          <CovenAltars signedIn={!!session} userId={userId} data={covenAltars.data} status={covenAltars.status} refresh={covenAltars.refresh} />
+        ) : (
+          <>
+            <Button label="Build a new altar" onPress={() => open('new')} />
 
-        {draft && (draft.objects?.length ?? 0) > 0 && (
-          <Pressable
-            onPress={() => open('draft')}
-            accessibilityRole="button"
-            accessibilityLabel={`Continue your working altar${draftSource ? `, ${draftSource.name}` : ''}. ${altarSummary(draft)}. Not saved yet.`}
-            style={({ pressed }) => [styles.draft, pressed && styles.pressed]}
-          >
-            <Text style={type.eyebrow}>Unsaved changes</Text>
-            <Text style={type.cardTitle}>{draftSource ? draftSource.name : 'Working altar'}</Text>
-            <Text style={type.caption}>{altarSummary(draft)} · tap to continue</Text>
-          </Pressable>
-        )}
+            <View style={[styles.tending, card.pressing && styles.tendingDue]}>
+              <Pressable
+                onPress={() => router.push('/altar/tend')}
+                accessibilityRole="link"
+                accessibilityHint="Everything you tend, from every altar, coven and journey, in one list"
+                style={({ pressed }) => [styles.tendingBody, pressed && styles.pressed]}
+              >
+                <Text style={type.eyebrow}>To tend</Text>
+                <Text style={type.body}>{card.body}</Text>
+              </Pressable>
+              {card.altarId && (
+                <Button
+                  label={card.altarName ? `Open ${card.altarName}` : 'Open the altar'}
+                  variant="text"
+                  onPress={() => open(card.altarId!)}
+                  accessibilityHint="Opens the altar, where you can tend it"
+                />
+              )}
+            </View>
 
-        {status === 'offline' && signedIn && (
-          <Text style={[type.caption, styles.notice]}>Offline · showing the copy saved on this phone</Text>
-        )}
-
-        {signedIn && pendingCount > 0 && sync === 'offline' && (
-          <Text style={[type.caption, styles.notice]} accessibilityLiveRegion="polite">
-            {pendingCount === 1 ? 'One change is' : `${pendingCount} changes are`} kept on this device until you’re back
-            online
-          </Text>
-        )}
-
-        <RefusedChanges />
-
-        {altars.length === 0 && (status === 'loading' || status === 'idle') && (
-          <ActivityIndicator color={colors.gold} style={{ marginTop: 24 }} />
-        )}
-
-        {altars.length === 0 && status !== 'loading' && status !== 'idle' && (
-          <View style={styles.card}>
-            <Text style={type.cardTitle}>No saved altars yet</Text>
-            <Text style={type.body}>
-              Build an altar, then save it to return to it here{signedIn ? ' and on the website' : ''}.
-            </Text>
-          </View>
-        )}
-
-        {!!notice && (
-          <Text style={[type.caption, styles.notice]} accessibilityLiveRegion="polite">
-            {notice}
-          </Text>
-        )}
-
-        <View style={styles.list}>
-          {active.map((altar) => (
-            <AltarCard key={altar.id} altar={altar} onPress={() => open(altar.id)} action={ARCHIVE_WORDS.archive} onAction={() => void setArchived(altar, true)} />
-          ))}
-        </View>
-
-        {archived.length > 0 && (
-          <View style={styles.list}>
-            <Pressable
-              onPress={toggleArchived}
-              accessibilityRole="button"
-              accessibilityState={{ expanded: showArchived }}
-              style={({ pressed }) => [styles.archivedHead, pressed && styles.pressed]}
-            >
-              <Text style={type.eyebrow}>{ARCHIVE_WORDS.section(archived.length)}</Text>
-              <Text style={styles.archivedToggle}>{showArchived ? 'Hide' : 'Show'}</Text>
-            </Pressable>
-            {showArchived && (
-              <>
-                <Text style={type.caption}>Kept whole and resting: no reminders, nudges or To tend items until you restore them.</Text>
-                {archived.map((altar) => (
-                  <AltarCard key={altar.id} altar={altar} muted onPress={() => open(altar.id)} action={ARCHIVE_WORDS.restore} onAction={() => void setArchived(altar, false)} />
-                ))}
-              </>
+            {draft && (draft.objects?.length ?? 0) > 0 && (
+              <Pressable
+                onPress={() => open('draft')}
+                accessibilityRole="button"
+                accessibilityLabel={`Continue your working altar${draftSource ? `, ${draftSource.name}` : ''}. ${altarSummary(draft)}. Not saved yet.`}
+                style={({ pressed }) => [styles.draft, pressed && styles.pressed]}
+              >
+                <Text style={type.eyebrow}>Unsaved changes</Text>
+                <Text style={type.cardTitle}>{draftSource ? draftSource.name : 'Working altar'}</Text>
+                <Text style={type.caption}>{altarSummary(draft)} · tap to continue</Text>
+              </Pressable>
             )}
-          </View>
-        )}
 
-        {!session && (
-          <View style={styles.card}>
-            <Text style={type.body}>
-              You're exploring as a guest, so altars stay on this phone. Sign in to open the altars you keep on the
-              website.
-            </Text>
-            <Button label="Sign in" variant="outline" onPress={() => router.push('/sign-in')} />
-          </View>
+            {status === 'offline' && signedIn && (
+              <Text style={[type.caption, styles.notice]}>Offline · showing the copy saved on this phone</Text>
+            )}
+
+            {signedIn && pendingCount > 0 && sync === 'offline' && (
+              <Text style={[type.caption, styles.notice]} accessibilityLiveRegion="polite">
+                {pendingCount === 1 ? 'One change is' : `${pendingCount} changes are`} kept on this device until you’re back
+                online
+              </Text>
+            )}
+
+            <RefusedChanges />
+
+            {altars.length === 0 && (status === 'loading' || status === 'idle') && (
+              <ActivityIndicator color={colors.gold} style={{ marginTop: 24 }} />
+            )}
+
+            {altars.length === 0 && status !== 'loading' && status !== 'idle' && (
+              <View style={styles.card}>
+                <Text style={type.cardTitle}>No saved altars yet</Text>
+                <Text style={type.body}>
+                  Build an altar, then save it to return to it here{signedIn ? ' and on the website' : ''}.
+                </Text>
+              </View>
+            )}
+
+            {!!notice && (
+              <Text style={[type.caption, styles.notice]} accessibilityLiveRegion="polite">
+                {notice}
+              </Text>
+            )}
+
+            <View style={styles.list}>
+              {active.map((altar) => (
+                <AltarCard key={altar.id} altar={altar} onPress={() => open(altar.id)} action={ARCHIVE_WORDS.archive} onAction={() => void setArchived(altar, true)} />
+              ))}
+            </View>
+
+            {archived.length > 0 && (
+              <View style={styles.list}>
+                <Pressable
+                  onPress={toggleArchived}
+                  accessibilityRole="button"
+                  accessibilityState={{ expanded: showArchived }}
+                  style={({ pressed }) => [styles.archivedHead, pressed && styles.pressed]}
+                >
+                  <Text style={type.eyebrow}>{ARCHIVE_WORDS.section(archived.length)}</Text>
+                  <Text style={styles.archivedToggle}>{showArchived ? 'Hide' : 'Show'}</Text>
+                </Pressable>
+                {showArchived && (
+                  <>
+                    <Text style={type.caption}>Kept whole and resting: no reminders, nudges or To tend items until you restore them.</Text>
+                    {archived.map((altar) => (
+                      <AltarCard key={altar.id} altar={altar} muted onPress={() => open(altar.id)} action={ARCHIVE_WORDS.restore} onAction={() => void setArchived(altar, false)} />
+                    ))}
+                  </>
+                )}
+              </View>
+            )}
+
+            {!session && (
+              <View style={styles.card}>
+                <Text style={type.body}>
+                  You're exploring as a guest, so altars stay on this phone. Sign in to open the altars you keep on the
+                  website.
+                </Text>
+                <Button label="Sign in" variant="outline" onPress={() => router.push('/sign-in')} />
+              </View>
+            )}
+          </>
         )}
       </ScrollView>
     </SafeAreaView>

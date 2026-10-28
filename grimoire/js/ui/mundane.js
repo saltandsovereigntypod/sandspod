@@ -19,7 +19,7 @@ function updateMundaneModeUI() {
   }
 
   if (coverTitle) {
-    coverTitle.textContent = mundaneMode ? "Personal Journal" : "Book of Shadows";
+    coverTitle.textContent = mundaneMode ? "Personal Journal" : "Grimoire";
   }
 
   if (coverText) {

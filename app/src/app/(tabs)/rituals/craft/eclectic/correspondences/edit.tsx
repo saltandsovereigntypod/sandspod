@@ -46,7 +46,7 @@ export default function CorrespondenceForm() {
     return (
       <RitualScreen back="My correspondences">
         <Title eyebrow="My correspondences">{ready ? 'Not found' : 'Edit'}</Title>
-        <Body>{ready ? 'This entry may have been removed on another device.' : 'Gathering your entry…'}</Body>
+        <Body>{ready ? 'This entry may have been deleted on another device.' : 'Gathering your entry…'}</Body>
       </RitualScreen>
     );
   }
@@ -109,7 +109,7 @@ function CorrespondenceEditor({ existing }: { existing: CraftEntry<MyCorresponde
 
   const remove = async () => {
     if (!existing) return;
-    if (!(await confirmAction(`Remove ${existing.data.name || 'this entry'}?`, 'It will be taken out of your correspondences on every device.', 'Remove'))) return;
+    if (!(await confirmAction(`Delete ${existing.data.name || 'this entry'}?`, 'It will be deleted from your correspondences on every device. This can’t be undone.', 'Delete'))) return;
     await removeEntry(CORRESPONDENCES, existing.id);
     router.dismissTo('/rituals/craft/eclectic/correspondences');
   };
@@ -200,7 +200,7 @@ function CorrespondenceEditor({ existing }: { existing: CraftEntry<MyCorresponde
       {!!problem && <Notice>{problem}</Notice>}
       <View style={ui.actions}>
         <Button label={saving ? 'Saving…' : existing ? 'Save changes' : 'Save'} disabled={saving} onPress={save} />
-        {existing && <Button label="Remove" variant="text" onPress={remove} />}
+        {existing && <Button label="Delete" variant="text" onPress={remove} />}
       </View>
     </RitualScreen>
   );

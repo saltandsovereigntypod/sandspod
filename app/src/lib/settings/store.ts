@@ -57,6 +57,22 @@ const notify = () => listeners.forEach((listener) => listener());
 /** The settings last read or saved, outside React (e.g. for reminders), or null before any screen has loaded them. */
 export const cachedSettings = (): Settings | null => cached?.settings ?? null;
 
+/**
+ * Save just these keys onto the latest settings (a settings screen's
+ * changes, the Grimoire's mundane switch), so a change made elsewhere
+ * meanwhile is kept. Throws before any settings have been read.
+ */
+export async function patchMySettings(changes: Partial<Settings>): Promise<Settings> {
+  if (!cached) throw new Error('Settings are not loaded yet.');
+  const { userId } = cached;
+  const saved = await saveMySettings({ ...cached.settings, ...changes } as Settings, userId);
+  if (cached?.userId === userId) {
+    cached = { userId, settings: saved };
+    notify();
+  }
+  return saved;
+}
+
 /** Be told when settings are loaded or saved. */
 export function subscribeSettings(listener: () => void): () => void {
   listeners.add(listener);

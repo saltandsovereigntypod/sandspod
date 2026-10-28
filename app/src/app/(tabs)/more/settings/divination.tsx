@@ -1,9 +1,12 @@
 import { StyleSheet, Text, View } from 'react-native';
 
 import { TarotArt } from '../../../../components/divination/TarotArt';
-import { Chips, MenuList, Section, SwitchRow } from '../../../../components/more/ui';
+import { router } from 'expo-router';
+
+import { Chips, MenuList, MenuRow, Section, SwitchRow } from '../../../../components/more/ui';
 import { SettingsForm } from '../../../../components/more/SettingsForm';
 import { chosenDeck, DECK_SETTING, deckCardTitle, deckInfo, TAROT_DECKS, type DeckId } from '../../../../lib/divination/decks';
+import { hiddenKinds, HIDDEN_KINDS_KEY, KIND_CHOICES, withKindShown } from '../../../../lib/divination/oracle/kinds';
 import { tarotCard } from '../../../../lib/divination/tarot';
 import { deckImages } from '../../../../lib/divination/tarotAssets';
 import { colors, radius, type } from '../../../../theme';
@@ -11,14 +14,17 @@ import { colors, radius, type } from '../../../../theme';
 // The cards to show three of, so the decks can be seen side by side.
 const SAMPLES = ['01-the-magician', '17-the-star', 'cups-03'];
 
-// Divination: which tarot deck to draw with (shared with the website, and
-// changed in a tap on the draw screen too), and the draw's own choices.
+// Settings → Divination: which tarot deck to draw with (shared with the
+// website; a tap on the draw screen changes it too, as your default), the
+// draw's own choices, which kinds of draw are offered (once under My
+// practice), and your own oracle decks.
 export default function DivinationSettings() {
   return (
     <SettingsForm title="Divination">
       {(draft, set) => {
         const deck = chosenDeck(draft);
         const info = deckInfo(deck);
+        const hidden = hiddenKinds(draft);
         return (
           <>
             <Section label="Tarot deck">
@@ -54,6 +60,26 @@ export default function DivinationSettings() {
                   onChange={(v) => set('divination_blank_rune', v)}
                   last
                 />
+              </MenuList>
+            </Section>
+            <Section label="What to draw">
+              <Text style={type.caption}>The kinds the draw screen offers. Hide the ones you don’t use; your readings with them are kept.</Text>
+              <MenuList>
+                {KIND_CHOICES.map((k, index) => (
+                  <SwitchRow
+                    key={k.id}
+                    label={k.label}
+                    detail={k.detail}
+                    value={!hidden.includes(k.id)}
+                    onChange={(on) => set(HIDDEN_KINDS_KEY, withKindShown(draft, k.id, on))}
+                    last={index === KIND_CHOICES.length - 1}
+                  />
+                ))}
+              </MenuList>
+            </Section>
+            <Section label="Your oracle decks">
+              <MenuList>
+                <MenuRow label="Your oracle decks" detail="Decks of your own, card by card" onPress={() => router.push('/rituals/divination/decks')} last />
               </MenuList>
             </Section>
           </>

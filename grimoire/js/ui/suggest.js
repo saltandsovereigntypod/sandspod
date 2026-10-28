@@ -30,6 +30,11 @@
     return data || [];
   }
 
+  // Share…: both ways to share a page of your own, as the app's Share… sheet
+  // on a Grimoire page: suggest it to a coven, or make an offering of it.
+  const shareButtons = () =>
+    `<span class="book-note">Share…</span> <button type="button" class="button button--ghost button--small" data-suggest-open>Suggest to a coven</button> <a class="button button--ghost button--small" href="/submit/">Make an offering</a>`;
+
   function addButton() {
     if (!entryList || typeof currentPage === "undefined" || !currentPage || pageMode !== "read") return;
     const reader = entryList.querySelector(".book-reader-page");
@@ -37,7 +42,7 @@
     const box = document.createElement("div");
     box.className = "grimoire-suggest";
     box.setAttribute("data-suggest-coven", "");
-    box.innerHTML = `<button type="button" class="button button--ghost button--small" data-suggest-open>Suggest to a coven</button>`;
+    box.innerHTML = shareButtons();
     reader.appendChild(box);
   }
 
@@ -91,7 +96,7 @@
     form.elements.coven.addEventListener("change", fillSections);
     fillSections();
     box.querySelector("[data-suggest-close]").addEventListener("click", () => {
-      box.innerHTML = `<button type="button" class="button button--ghost button--small" data-suggest-open>Suggest to a coven</button>`;
+      box.innerHTML = shareButtons();
     });
     form.addEventListener("submit", async (event) => {
       event.preventDefault();

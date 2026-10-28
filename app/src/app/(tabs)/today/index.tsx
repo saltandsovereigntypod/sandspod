@@ -3,8 +3,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { Pressable, StyleSheet, Text, useWindowDimensions, View } from 'react-native';
 
 import { Button } from '../../../components/Button';
-import { covenHref } from '../../../components/covens/CovenScreen';
-import { CovenToday, useCovenToday } from '../../../components/covens/CovenToday';
+import { CovenToday } from '../../../components/covens/CovenToday';
 import { TendToday } from '../../../components/tend/TendToday';
 import { CalendarLineList, LeadCalendarLine } from '../../../components/CalendarLines';
 import { Icon } from '../../../components/Icon';
@@ -17,17 +16,14 @@ import { useReminderTaps } from '../../../lib/reminders/notifier';
 import { PHASE_ORDER } from '../../../lib/reminders/schedule';
 import { setHolidaySelection, syncSkyCalendar } from '../../../lib/reminders/calendarStore';
 import { useReminders } from '../../../lib/reminders/store';
-import { planSky, planWhen } from '../../../lib/rituals/format';
 import { journalInsights } from '../../../lib/rituals/insights';
 import { dueLookBacks } from '../../../lib/rituals/lookBack';
 import type { JournalRow } from '../../../lib/rituals/types';
 import { DidItWork } from '../../../components/rituals/DidItWork';
+import { NextWorking } from '../../../components/rituals/NextWorking';
 import { ItemDidItWork } from '../../../components/rituals/ItemDidItWork';
 import { dueItems } from '../../../lib/altar/apothecaryLookBack';
 import { useWorkshop } from '../../../lib/altar/workshop';
-import { nextCovenRite, nextWorkingFirst } from '../../../lib/covens/today';
-import { currentStep } from '../../../lib/rituals/lifecycle';
-import { nextPlan, planStart } from '../../../lib/rituals/plans';
 import { useRituals } from '../../../lib/rituals/store';
 import { Field, Tags } from '../../../components/more/ui';
 import { dateFrom, daysBetween, shortDate, timeOfDay } from '../../../lib/calendar';
@@ -44,6 +40,7 @@ import { practiceToday } from '../../../lib/craft/today';
 import { DREAMS, morningDreamPrompt, normalizeDream, quickDream } from '../../../lib/craft/hedge/dreams';
 import { addEntry, useCraft } from '../../../lib/craft/store';
 import { DREAM_ROUTES } from '../../../lib/grimoire/dreams';
+import { dreamPromptOnToday } from '../../../lib/settings/links';
 import { normalizeReading, READINGS } from '../../../lib/craft/hedge/readings';
 import { drawOnToday, todaysCard, todaysCardLabel } from '../../../lib/divination/daily';
 import { deipnonToday } from '../../../lib/deipnon';
@@ -122,13 +119,6 @@ export default function Today() {
     if (settings && setHolidaySelection(holidayChoice(settings))) void syncSkyCalendar(reminders.settings.phases);
     // eslint-disable-next-line react-hooks/exhaustive-deps -- re-run only when the calendar choice changes
   }, [choiceKey, settings !== null]);
-  const next = nextPlan(rituals.plans, new Date());
-  // A coven's rite or meeting counts as your next working too, whichever comes first.
-  const covenToday = useCovenToday();
-  const rite = nextCovenRite(covenToday, now);
-  const first = nextWorkingFirst(next ? planStart(next) : null, rite);
-  const active = rituals.active;
-  const step = active ? currentStep(active) : null;
   const moonReminders = PHASE_ORDER.some((p) => reminders.settings.phases[p]);
 
   // Under the moon when stacked; below the row when side by side, where a half is too narrow.
@@ -197,50 +187,7 @@ export default function Today() {
           </View>
           {side && reminderButton}
 
-          <View style={styles.working}>
-            {active ? (
-              <>
-                <View style={styles.workingText}>
-                  <Text style={[type.eyebrow, styles.gold]}>{active.status === 'paused' ? 'Paused' : 'Under way'}</Text>
-                  <Text style={type.cardTitle}>{active.title || 'Your ritual'}</Text>
-                  <Text style={type.caption}>{step ? step.title : 'Finish and journal it when you are ready.'}</Text>
-                </View>
-                <Button label="Continue the ritual" onPress={() => router.navigate('/rituals/run')} />
-              </>
-            ) : first === 'rite' && rite ? (
-              <>
-                <View style={styles.workingText}>
-                  <Text style={[type.eyebrow, styles.gold]}>Your next working</Text>
-                  <Text style={type.cardTitle}>{rite.title}</Text>
-                  <Text style={type.caption}>{rite.detail}</Text>
-                  {next && <Text style={type.caption}>{`Then your own: ${next.title}, ${planWhen(next, now)}`}</Text>}
-                </View>
-                <Button label={rite.meeting ? 'See the meeting' : 'See the rite'} onPress={() => router.navigate(covenHref(rite.covenSlug, `ritual/${rite.ritualId}`))} />
-              </>
-            ) : next ? (
-              <>
-                <View style={styles.workingText}>
-                  <Text style={[type.eyebrow, styles.gold]}>Your next working</Text>
-                  <Text style={type.cardTitle}>{next.title}</Text>
-                  <Text style={type.caption}>{`${planWhen(next, now)} · ${planSky(next)}`}</Text>
-                  {rite && <Text style={type.caption}>{`Then with ${rite.covenName}: ${rite.title}`}</Text>}
-                </View>
-                <Button
-                  label="Open the plan"
-                  onPress={() => router.navigate({ pathname: '/rituals/plan/[id]', params: { id: next.id } })}
-                />
-              </>
-            ) : (
-              <>
-                <View style={styles.workingText}>
-                  <Text style={[type.eyebrow, styles.gold]}>Your next working</Text>
-                  <Text style={type.cardTitle}>Nothing planned yet</Text>
-                  <Text style={type.caption}>Choose an intention and we'll find the right night.</Text>
-                </View>
-                <Button label="Plan a ritual" onPress={() => router.navigate('/rituals/planner')} />
-              </>
-            )}
-          </View>
+          <NextWorking now={now} variant="today" />
 
           <CovenToday />
 
@@ -262,6 +209,14 @@ export default function Today() {
             <Text style={styles.promptText}>{today.prompt}</Text>
           </View>
           <LastTimeLine journal={rituals.journal} now={clock} />
+          <Pressable
+            accessibilityRole="link"
+            accessibilityHint="Choose what Today shows"
+            onPress={() => router.navigate('/today/settings/today')}
+            style={styles.customise}
+          >
+            <Text style={[type.caption, styles.gold, styles.center]}>Customise Today ›</Text>
+          </Pressable>
         </>
       ) : (
         <>
@@ -299,7 +254,7 @@ function DreamCapture({ settings, now, reminderOn }: { settings: SettingsLike; n
   const [saving, setSaving] = useState(false);
   const dreams = useMemo(() => entries.map((e) => ({ ...e, data: normalizeDream(e.data) })), [entries]);
   const keepsHedge = myPractices(settings).includes('hedge');
-  const prompt = morningDreamPrompt(now, { keepsHedge, reminderOn, dreams: kept ? [] : dreams });
+  const prompt = dreamPromptOnToday(settings) ? morningDreamPrompt(now, { keepsHedge, reminderOn, dreams: kept ? [] : dreams }) : null;
 
   if (kept) {
     return (
@@ -361,7 +316,7 @@ function PracticeCard({ settings, place, now }: { settings: SettingsLike; place:
 
   if (!practices.length && !deities.length) {
     return (
-      <Pressable accessibilityRole="link" onPress={() => router.navigate('/more/settings/practice')} style={styles.working}>
+      <Pressable accessibilityRole="link" onPress={() => router.navigate('/today/settings/practice')} style={styles.working}>
         <Text style={[type.eyebrow, styles.gold]}>For your practice</Text>
         <Text style={type.body}>Choose the practices you keep, green, kitchen, hedge, cosmic and more, and Today will offer something from each.</Text>
       </Pressable>
@@ -463,7 +418,7 @@ function LookBackDue({ journal, now }: { journal: JournalRow[]; now: Date }) {
 /**
  * On Hekate's Deipnon, the last day of the Attic month, for those who keep
  * the Hellenic monthly days or hold Hekate as patron: clear the house, leave
- * her supper, draw the Crossroads. Turned off in Settings → Calendars.
+ * her supper, draw the Crossroads. Turned off in Settings → Today.
  */
 function DeipnonCard({ settings, now }: { settings: SettingsLike; now: Date }) {
   const day = now.toDateString();
@@ -485,7 +440,7 @@ function DeipnonCard({ settings, now }: { settings: SettingsLike; now: Date }) {
   );
 }
 
-/** A card for the day: one to draw, or the one you've kept today. Turned off in Settings → Calendars. */
+/** A card for the day: one to draw, or the one you've kept today. Turned off in Settings → Today. */
 function CardOfTheDay({ now, south }: { now: Date; south: boolean }) {
   const { entries } = useCraft<unknown>(READINGS);
   const day = now.toDateString();
@@ -658,7 +613,9 @@ function DaySky({ today, sky, here, now }: { today: TodayModel; sky: Sky; here: 
           )}
         </>
       ) : (
-        <Text style={type.caption}>Add your location on the Sky screen for sunrise, moonrise and planetary hours.</Text>
+        <Pressable accessibilityRole="link" onPress={() => router.navigate('/today/settings/location')}>
+          <Text style={[type.caption, styles.gold]}>Add your location in Settings for sunrise, moonrise and planetary hours ›</Text>
+        </Pressable>
       )}
       <Button label="The sky today" variant="outline" onPress={() => router.navigate('/today/sky')} />
     </View>
@@ -799,6 +756,7 @@ const styles = StyleSheet.create({
     gap: 14,
   },
   workingText: { gap: 3 },
+  customise: { minHeight: 44, justifyContent: 'center' },
   dreamActions: { flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center', gap: 10 },
   practiceRow: { flexDirection: 'row', alignItems: 'center', gap: 10, paddingTop: 12, borderTopWidth: StyleSheet.hairlineWidth, borderTopColor: colors.goldLine },
   practiceText: { flex: 1, gap: 2 },

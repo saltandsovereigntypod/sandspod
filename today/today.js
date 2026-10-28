@@ -226,7 +226,8 @@
           cardOfTheDay(m) +
           `<div class="sp-actions"><a class="button button--ghost" href="${esc(T.siteHref({ pathname: "/altar/[altarId]", params: { altarId: "tonight" } }))}">Set tonight’s altar</a></div>` +
           `<section class="td-prompt" aria-label="Reflect"><p class="sp-eyebrow td-gold">Reflect</p><p class="td-prompt__text">${esc(today.prompt)}</p></section>` +
-          lastTimeLine(m)
+          lastTimeLine(m) +
+          `<p class="td-customise"><a class="td-gold" href="/?sanctuary=settings&amp;settings=today">Customise Today ›</a></p>`
         : daySkyCard(m) + correspondencesCard(today) + horizonSection(today) + practiceCard(m);
 
     root.innerHTML =
@@ -345,6 +346,8 @@
    */
   function dreamCard(m) {
     if (!C.dreams || !window.SaltCraft) return "";
+    // Turned off in Settings → Today (the app's today_dream_prompt; on unless false).
+    if (!state.dreamKept && (m.settings?.today_dream_prompt === false || m.settings?.today_dream_prompt === "false")) return "";
     if (state.dreamKept) {
       return (
         `<section class="td-card td-card--working" aria-labelledby="td-dream-label"><h2 class="sp-eyebrow td-gold" id="td-dream-label">Last night’s dream</h2>` +

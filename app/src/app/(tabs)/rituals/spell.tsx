@@ -208,7 +208,7 @@ export default function SpellBuilder() {
           {session ? (
             <Button label="Keep as a template" variant="outline" disabled={busy} onPress={keep} />
           ) : (
-            <Body muted>Sign in to keep spells as templates in your account and Book of Shadows.</Body>
+            <Body muted>Sign in to keep spells as templates in your account and Grimoire.</Body>
           )}
         </View>
         {!!rituals.active && <Notice>A ritual is under way. Finish it before beginning this one.</Notice>}

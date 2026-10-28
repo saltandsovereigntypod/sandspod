@@ -2830,6 +2830,7 @@ body:has(.sanctuary-submission-form) h1 {
 .journey-timeline li { display: grid; grid-template-columns: minmax(7rem, .35fr) 1fr; gap: 1rem; padding: .9rem 0; border-top: 1px solid rgba(196, 165, 96, .18); }
 .journey-timeline p { margin: .25rem 0; }
 .settings-category-nav { margin-block: 1.25rem 1.5rem; }
+.settings-category-group { flex-basis: 100%; margin-top: .35rem; color: #cabf9d; font-size: .74rem; letter-spacing: .16em; text-transform: uppercase; }
 .settings-category { min-width: 0; margin-block: 0 1.5rem; border: 0; border-top: 1px solid rgba(196, 165, 96, .28); padding: 1.25rem .25rem .5rem; }
 .settings-category > legend { padding-inline: .45rem; color: #e5cf91; font-size: 1.15rem; }
 .settings-category fieldset { margin-block: 1rem; border-color: rgba(196, 165, 96, .16); }

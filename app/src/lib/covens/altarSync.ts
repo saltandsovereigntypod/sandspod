@@ -17,6 +17,9 @@ import type { AltarDocument } from '../altar/snapshot';
 import type { SavedObject } from '../altar/types';
 import { supabase } from '../supabase';
 import { diff, documentFromRows, keyed, keyOf, sceneFromAltar, sceneOf, sortAltars, withObject, withScene, type AltarAccess, type AltarEditor, type Change, type CovenAltar, type Scene } from './altarDoc';
+import type { CovenAltarsInput } from './altarsAcross';
+import * as api from './api';
+import { permissions, standing, unsignedAgreements, type CovenDocument, type Signature } from './model';
 
 export * from './altarDoc';
 
@@ -64,6 +67,47 @@ export async function fetchAltarCounts(covenId: string): Promise<Record<string, 
   const counts: Record<string, number> = {};
   for (const row of (data ?? []) as { altar_id: string }[]) counts[row.altar_id] = (counts[row.altar_id] ?? 0) + 1;
   return counts;
+}
+
+/**
+ * Every coven altar you can see, for the Altar tab's Coven half: for each
+ * coven you belong to (and that is open), its altars, the things on each, and
+ * whether you may start altars there or keep them all (the coven's own Altars
+ * page works these out the same way, through CovenContext). The database still
+ * decides every change. Grouped and ordered by altarsAcross.ts.
+ */
+export async function fetchAltarsAcrossCovens(userId: string): Promise<CovenAltarsInput[]> {
+  const standings = (await api.fetchMyStandings(userId)).filter((s) => s.coven.status === 'active');
+  if (!standings.length) return [];
+  const ids = standings.map((s) => s.coven.id);
+  const [me, documents, signatures] = await Promise.all([
+    api.fetchMe(userId).catch(() => null),
+    supabase
+      .from('coven_documents')
+      .select('*')
+      .in('coven_id', ids)
+      .then(({ data }) => (data ?? []) as CovenDocument[], () => [] as CovenDocument[]),
+    supabase
+      .from('coven_signatures')
+      .select('document_id,version,user_id')
+      .eq('user_id', userId)
+      .in('coven_id', ids)
+      .then(({ data }) => (data ?? []) as Signature[], () => [] as Signature[]),
+  ]);
+  return Promise.all(
+    standings.map(async ({ coven, membership, ranks }) => {
+      const [altars, counts] = await Promise.all([fetchCovenAltars(coven.id), fetchAltarCounts(coven.id).catch(() => ({}) as Record<string, number>)]);
+      const perms = permissions({ coven, membership, ranks, userId, siteModerator: me?.siteModerator });
+      const unsigned = unsignedAgreements(documents.filter((d) => d.coven_id === coven.id), signatures, userId);
+      return {
+        coven: { id: coven.id, slug: coven.slug, name: coven.name },
+        altars,
+        counts,
+        canStart: perms.startAltars && standing(perms, unsigned, !!me?.banned).ok,
+        keeps: perms.founder || perms.manage || perms.keepAltars || perms.site,
+      };
+    }),
+  );
 }
 
 export async function fetchAltarEditors(altarId: string): Promise<AltarEditor[]> {

@@ -97,7 +97,7 @@
             : ""
         }
       </div>
-      ${account ? "" : `<p class="sp-muted">Sign in to keep spells as templates in your account and Book of Shadows.</p>`}
+      ${account ? "" : `<p class="sp-muted">Sign in to keep spells as templates in your account and Grimoire.</p>`}
       ${state.saved ? `<p class="sp-notice">Kept as a template. <a class="rt-text-link" href="/altar/?editRitualTemplate=${encodeURIComponent(state.saved.id)}">Open it</a></p>` : ""}
       ${state.active ? `<p class="sp-notice">A ritual is under way. Finish it before beginning this one. <a class="rt-text-link" href="/altar/?ritual=1">Continue it</a></p>` : ""}`;
   }

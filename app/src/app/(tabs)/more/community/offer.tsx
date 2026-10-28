@@ -1,10 +1,12 @@
-import { router } from 'expo-router';
+import { router, useLocalSearchParams } from 'expo-router';
 import { useState } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 import { Button } from '../../../../components/Button';
 import { Card, CheckRow, Chips, Field, MoreScreen, Notice, Section } from '../../../../components/more/ui';
 import { insertSubmission } from '../../../../lib/community/api';
+import { pageAsOffering } from '../../../../lib/grimoire/share';
+import { useGrimoire } from '../../../../lib/grimoire/store';
 import { DISPLAY_AS, OFFERING_TYPES, offeringPayload, type DisplayAs } from '../../../../lib/community/model';
 import { useSession } from '../../../../lib/session';
 import { getMySettings } from '../../../../lib/settings/store';
@@ -25,6 +27,18 @@ export default function Offer() {
   const [sending, setSending] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
   const [sent, setSent] = useState(false);
+  // From a Grimoire page's Share… sheet: start from that page's title and words, once.
+  const { pageId } = useLocalSearchParams<{ pageId?: string }>();
+  const { snapshot } = useGrimoire();
+  const [fromPage, setFromPage] = useState<string | null>(null);
+  const sharedPage = pageId && fromPage !== pageId ? snapshot?.pages.find((p) => p.id === pageId) : undefined;
+  if (pageId && sharedPage && snapshot) {
+    // Adjusting state while rendering (once per page), rather than in an effect.
+    const offering = pageAsOffering(sharedPage, snapshot.blocks);
+    setFromPage(pageId);
+    setTitle((t) => t || offering.title);
+    setBody((b) => b || offering.body);
+  }
 
   const submit = async () => {
     setMessage(null);

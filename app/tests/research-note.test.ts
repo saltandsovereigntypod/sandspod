@@ -58,7 +58,10 @@ test('the full note has a screen, reached from More', () => {
 });
 
 test('the Living Library opens with the research card the first time', () => {
-  assert.match(src('app/(tabs)/more/library/index.tsx'), /<ResearchCard \/>/);
+  // The Library lives in the Grimoire (grimoire/library); More's old route redirects there.
+  assert.match(src('components/library/LibraryBrowser.tsx'), /<ResearchCard \/>/);
+  assert.match(src('app/(tabs)/grimoire/library/index.tsx'), /<LibraryBrowser/);
+  assert.match(src('app/(tabs)/more/library/index.tsx'), /<Redirect href="\/grimoire\/library" \/>/);
   const component = src('components/ResearchNote.tsx');
   assert.match(component, /AsyncStorage\.getItem\(RESEARCH_CARD_SEEN_KEY\)/);
   assert.match(component, /AsyncStorage\.setItem\(RESEARCH_CARD_SEEN_KEY/);

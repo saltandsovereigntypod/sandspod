@@ -120,8 +120,8 @@
     const paths = [url.dreams, url.readings, url.ancestors];
     const coming = comingForTheDead(anniversaries, days, now);
     return [
-      kit.back(kit.href.hub, "My practice"),
-      kit.head({ eyebrow: "My practice", title: "Hedge", lede: about }),
+      kit.back(kit.href.hub, "Craft tools"),
+      kit.head({ eyebrow: "Craft tools", title: "Hedge", lede: about }),
       kit.card(
         `${kit.big(`${tonight.moonPhase} in ${tonight.moonSign}`)}${kit.muted(
           "Keep a notebook by the bed. Write as soon as you wake, before you move or check your phone; dreams fade within minutes."
@@ -163,12 +163,15 @@
     return [
       kit.back("/rituals/", "Rituals"),
       kit.head({ eyebrow: readings.length ? kit.plural(readings.length, "reading", "readings") : "For every practice", title: "Divination" }),
-      kit.actions([
-        kit.button({ label: "Draw cards, runes or ogham", url: url.draw(), primary: true }),
-        kit.button({ label: "Log a reading", url: url.readingEdit(), ghost: true }),
-        kit.button({ label: "Make a spread", url: url.spreadEdit(), ghost: true }),
-        kit.button({ label: "Your oracle decks", url: url.decks, ghost: true })
+      // The Divination hub, as the app's Rituals → Divination: Draw · Readings · Decks · Card meanings.
+      kit.list([
+        kit.row({ url: url.draw(), title: "Draw cards, runes or ogham", detail: "A card for the day, the Celtic Cross and many more spreads, or one of your own" }),
+        kit.row({ url: url.readingEdit(), title: "Log a reading", detail: "One you did by hand: what you asked, what came up" }),
+        kit.row({ url: url.decks, title: "Your oracle decks", detail: "Make a deck of your own, and draw from it" }),
+        kit.row({ url: "/grimoire/", title: "Card meanings", detail: "Tarot, runes, ogham, Lenormand and Kipper, in your Grimoire under Traditional Information" }),
+        kit.row({ url: url.spreadEdit(), title: "Make a spread", detail: "Lay out positions of your own" })
       ]),
+      `<h2 class="sp-label">Your readings</h2>`,
       !readings.length
         ? kit.card(
             kit.p(
@@ -472,7 +475,7 @@
       kit.notice(personForm.problem, { live: true }),
       kit.actions([
         kit.button({ label: personForm.saving ? "Saving…" : existing ? "Save changes" : "Remember them", act: "person-save", primary: true, disabled: personForm.saving, id: "person-save" }),
-        existing ? kit.textButton({ label: "Remove this person", act: "person-delete", quiet: true }) : ""
+        existing ? kit.textButton({ label: "Delete this person", act: "person-delete", quiet: true }) : ""
       ])
     ].join("");
   }
@@ -1584,12 +1587,12 @@
     },
     async "person-delete"() {
       const name = personForm.person?.name || "this person";
-      if (!kit.confirm(`Remove ${name}? Their page and memories will be removed on every device.`)) return;
+      if (!kit.confirm(`Delete ${name}? Their page and memories will be deleted on every device. This can’t be undone.`)) return;
       try {
         await kit.remove(A.ANCESTORS, id);
         kit.go(url.ancestors);
       } catch (error) {
-        personForm.problem = failed(error, "They couldn’t be removed");
+        personForm.problem = failed(error, "They couldn’t be deleted");
         draw();
       }
     }

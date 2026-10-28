@@ -26,8 +26,8 @@ export default function SolitaryPractice() {
   const state = [kept?.morning ? 'Morning kept' : null, kept?.evening ? 'Evening kept' : null].filter(Boolean).join(' · ');
 
   return (
-    <RitualScreen back="My practice">
-      <Title eyebrow="My practice">{about?.name ?? 'Solitary'}</Title>
+    <RitualScreen back="Craft tools">
+      <Title eyebrow="Craft tools">{about?.name ?? 'Solitary'}</Title>
       {!!about && <Body muted>{about.about}</Body>}
 
       <Card accent>

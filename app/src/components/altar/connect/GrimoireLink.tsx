@@ -38,7 +38,7 @@ export function GrimoireLinkSheet({ visible, object, onClose, onLink, onUnlink }
   return (
     <Sheet
       visible={visible}
-      eyebrow="Book of Shadows"
+      eyebrow="Grimoire"
       title={`A page for ${label}`}
       onClose={onClose}
       header={
@@ -51,10 +51,10 @@ export function GrimoireLinkSheet({ visible, object, onClose, onLink, onUnlink }
     >
       {!grimoire.snapshot ? (
         <Text style={connectStyles.body}>
-          {grimoire.status === 'loading' ? 'Opening your Book of Shadows…' : 'Your Book of Shadows lives with your account. Sign in, and its pages can be linked to things on your altar.'}
+          {grimoire.status === 'loading' ? 'Opening your Grimoire…' : 'Your Grimoire lives with your account. Sign in, and its pages can be linked to things on your altar.'}
         </Text>
       ) : choices.length === 0 ? (
-        <Text style={connectStyles.body}>{query ? 'No page has that in its title.' : 'Your Book of Shadows has no pages yet. Write one in Practice → Grimoire, then link it here.'}</Text>
+        <Text style={connectStyles.body}>{query ? 'No page has that in its title.' : 'Your Grimoire has no pages yet. Write one in Practice → Grimoire, then link it here.'}</Text>
       ) : (
         <>
           {current && (
@@ -99,11 +99,11 @@ export function GrimoirePageLink({ object, onPick }: { object: SavedObject; onPi
   const link = pageLinkOf(object);
   const resolved = resolvePageLink(link, grimoire.snapshot);
   return (
-    <PanelSection title="Book of Shadows">
+    <PanelSection title="Grimoire">
       {link && resolved ? (
         <>
           <Text style={connectStyles.value}>{resolved.title}</Text>
-          {resolved.exists === false && <Text style={type.caption}>That page has been deleted from your Book of Shadows.</Text>}
+          {resolved.exists === false && <Text style={type.caption}>That page has been deleted from your Grimoire.</Text>}
           <ChipRow>
             {resolved.exists !== false && <Chip label="Open the page" symbol="❧" onPress={() => router.push({ pathname: '/grimoire/[pageId]', params: { pageId: link.pageId } })} />}
             <Chip label="Change" onPress={onPick} />
@@ -111,7 +111,7 @@ export function GrimoirePageLink({ object, onPick }: { object: SavedObject; onPi
         </>
       ) : (
         <ChipRow>
-          <Chip label="Link a page" symbol="❧" accessibilityLabel="Link a page from your Book of Shadows" onPress={onPick} />
+          <Chip label="Link a page" symbol="❧" accessibilityLabel="Link a page from your Grimoire" onPress={onPick} />
         </ChipRow>
       )}
     </PanelSection>

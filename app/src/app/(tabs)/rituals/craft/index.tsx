@@ -3,11 +3,12 @@ import { View } from 'react-native';
 
 import { Body, List, RitualScreen, Row, SectionLabel, Title, ui } from '../../../../components/rituals/ui';
 import { CRAFT_TOOLS } from '../../../../lib/craft/practices';
-import { JOURNEYS_LIVE } from '../../../../lib/journeys';
+import { CRAFT_TOOLS as CRAFT_TOOLS_TITLE, YOUR_CRAFTS } from '../../../../lib/names';
 import { myPractices, PRACTICES, type Practice } from '../../../../lib/rituals/premade';
 import { useMySettings } from '../../../../lib/settings/store';
 
-// My practice: a page of tools for each kind of practice, yours first.
+// Craft tools: a page of tools for each kind of practice, yours first.
+// (Dedication journeys are on the Rituals home, under Learn.)
 export default function CraftHub() {
   const { settings } = useMySettings();
   const mine = myPractices(settings);
@@ -27,29 +28,21 @@ export default function CraftHub() {
 
   return (
     <RitualScreen back="Rituals">
-      <Title eyebrow="Tools for your craft">My practice</Title>
+      <Title eyebrow="Tools for your craft">{CRAFT_TOOLS_TITLE}</Title>
       {chosen.length ? (
         <View style={ui.gapSmall}>
-          <SectionLabel>Your practice</SectionLabel>
+          <SectionLabel>Your crafts</SectionLabel>
           <List>{chosen.map(row)}</List>
         </View>
       ) : (
-        <Body muted>Choose your practice in Settings → My practice to put its tools first. Every practice’s tools are open to you either way.</Body>
+        <Body muted>{`Choose your crafts in Settings → ${YOUR_CRAFTS} to put their tools first. Every practice’s tools are open to you either way.`}</Body>
       )}
       <View style={ui.gapSmall}>
         <SectionLabel>{chosen.length ? 'Other practices' : 'Practices'}</SectionLabel>
         <List>{others.map(row)}</List>
       </View>
       <List>
-        {JOURNEYS_LIVE && (
-          <Row
-            icon="wheel"
-            title="Dedication journeys"
-            detail="A guided path to dedicating yourself to a tradition or a god"
-            onPress={() => router.push('/rituals/journeys')}
-          />
-        )}
-        <Row icon="grimoire" title="Choose my practice" detail="Settings → My practice" last onPress={() => router.push('/more/settings/practice')} />
+        <Row icon="grimoire" title="Choose your crafts" detail={`Settings → ${YOUR_CRAFTS}`} last onPress={() => router.push('/rituals/settings/practice')} />
       </List>
     </RitualScreen>
   );

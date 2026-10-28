@@ -57,7 +57,7 @@ export default function KitchenSpellBook() {
       </View>
 
       <List>
-        <Row icon="wheel" title="All premade workings" detail="Rituals & spells for every practice" last onPress={() => router.push('/rituals/premade')} />
+        <Row icon="wheel" title="All premade workings" detail="From the Workings library, for every practice" last onPress={() => router.push('/rituals/premade')} />
       </List>
     </RitualScreen>
   );

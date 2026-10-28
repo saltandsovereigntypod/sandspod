@@ -181,7 +181,7 @@ async function initGrimoire() {
     const reportTiming = (label, startedAt = initializationStartedAt) => {
       console.info(`[Grimoire timing] ${label}: ${Math.round((performance.now() - startedAt) * 10) / 10}ms`);
     };
-    setStatus("Opening your Book of Shadows...");
+    setStatus("Opening your Grimoire...");
 
     await loadOrCreateBook(user);
     await loadSections();
@@ -694,7 +694,7 @@ async function waitForBook(timeoutMs = 15000) {
 
 // Returns true once the page is saved, so the altar's handoff is only cleared then.
 async function createRitualPageFromAltarImport(ritual, details = "") {
-  setStatus("Opening your Book of Shadows...");
+  setStatus("Opening your Grimoire...");
   await waitForBook();
   const user = requireUser();
 
@@ -943,7 +943,7 @@ async function renderMyPracticeShelf() {
 
     <div class="book-section-pages traditional-library-root" data-my-practice-list ${isLibraryShelfOpen("my-practice-root") ? "" : "hidden"}>
       <button class="button button--primary my-practice-new-entry-button" type="button" data-create-library-entry>
-        New Entry
+        New Library note
       </button>
 
       <label class="library-sidebar-search">
@@ -2159,7 +2159,7 @@ async function renderLibraryEntity(entityId) {
 
                 ${Object.keys(entity.myPractice || {}).length || entity.type === "apothecary" ? `
                   <button class="button button--small button--ghost" type="button" data-delete-library-entry="${entity.id}">
-                    Del
+                    Delete
                   </button>
                 ` : ""}
               `
@@ -2559,8 +2559,8 @@ async function deleteLibraryEntryFromMyPractice(entityId) {
 
   const confirmed = window.confirm(
     isApothecaryEntry
-      ? `Delete "${formatLibraryEntityName(entity.name)}" from My Practice and My Apothecary? This cannot be undone.`
-      : `Delete your My Practice notes for "${formatLibraryEntityName(entity.name)}"? The traditional entry will remain if it exists.`
+      ? `Delete "${formatLibraryEntityName(entity.name)}" from My Practice and My Apothecary? This can’t be undone.`
+      : `Delete your My Practice notes for "${formatLibraryEntityName(entity.name)}"? The traditional entry will remain if it exists. This can’t be undone.`
   );
 
   if (!confirmed) return;
@@ -2618,7 +2618,7 @@ async function deleteLibraryEntryFromMyPractice(entityId) {
   await renderLivingLibraryShelves();
   await renderLibraryEntity(entityId);
 
-  flashStatus("Removed from My Practice.");
+  flashStatus("Your My Practice notes are deleted.");
 }
 
 document.addEventListener("click", async (event) => {
@@ -3064,7 +3064,7 @@ function updateMundaneModeUI() {
   const tagline = document.querySelector(".grimoire-cover p, .grimoire-hero p, .book-hero p");
 
   if (title) {
-    title.textContent = isMundane ? "Personal Journal" : "Book of Shadows";
+    title.textContent = isMundane ? "Personal Journal" : "Grimoire";
   }
 
   const pageTitle = document.querySelector(".book-library-header h1, .book-reader-header h1");

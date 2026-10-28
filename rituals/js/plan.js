@@ -20,7 +20,7 @@
     const ingredients = plan.ingredients || [];
     const parts = [];
     if (template) parts.push(`<li><a href="/altar/?editRitualTemplate=${encodeURIComponent(template.id)}">The template: ${esc(template.title)}</a></li>`);
-    if (template?.grimoire_page_id) parts.push(`<li><a href="/grimoire/?page=${encodeURIComponent(template.grimoire_page_id)}">Its page in your Book of Shadows</a></li>`);
+    if (template?.grimoire_page_id) parts.push(`<li><a href="/grimoire/?page=${encodeURIComponent(template.grimoire_page_id)}">Its page in your Grimoire</a></li>`);
     if (altar) parts.push(`<li>Linked altar: ${esc(altar.name)}</li>`);
     // A deleted altar's rituals are kept; say so rather than leave a gap.
     else if (altarId && state.altarsKnown) parts.push(`<li>This altar was deleted</li>`);
@@ -160,7 +160,7 @@
     if (saved) {
       state.templates = [saved, ...state.templates];
       state.plan = await S.savePlan({ ...plan, templateId: saved.id, draft: null });
-      UI.say("Saved. The spell is now a template in your account and your Book of Shadows.");
+      UI.say("Saved. The spell is now a template in your account and your Grimoire.");
     }
     state.busy = false;
     render();

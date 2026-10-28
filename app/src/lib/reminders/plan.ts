@@ -35,7 +35,7 @@ export type CovenSource = {
   name: string;
   /** Head of the coven, or a position that leads or schedules its rites. */
   leader: boolean;
-  /** Can decide its applications and requests to advance (Reminders → Coven requests). */
+  /** Can decide its applications and requests to advance (Notifications & reminders → Covens). */
   reviewer?: boolean;
   /** The coven's own holidays (covens/programs.ts covenHolidaysBetween). */
   holidays: { baseId: string; name: string; date: Date; days: number }[];
