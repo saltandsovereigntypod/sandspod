@@ -334,7 +334,7 @@
     const end = new Date(now.getFullYear() + 1, now.getMonth(), now.getDate());
     const K = G.calendars;
     // The other calendars' observances too; of the moon's, just each month's first day.
-    const events = (K.CALENDARS_LIVE ? K.calendarEventsBetween(now, end, settings, readPlace()) : []).filter((e) => e.calendar !== "moon" || e.id.startsWith("moon-new-"));
+    const events = K.calendarEventsBetween(now, end, settings, readPlace()).filter((e) => e.calendar !== "moon" || e.id.startsWith("moon-new-"));
     const year = K.mergeCalendarEvents(G.holidays.holidaysBetween(now, end, G.holidays.holidayChoice(settings)), events);
     return group(
       "The year ahead",
@@ -354,7 +354,7 @@
     const shownTraditions = H.TRADITIONS.filter((t) => !hidden.includes(t.id));
     const mainOptions = shownTraditions.filter((t) => chosen.has(t.id)).map((t) => ({ value: t.id, label: t.name }));
     return `<p class="my-sanctuary-intro">Choose the calendars you keep. Their holidays show on Today on the day, with what they mean, and On the horizon shows the next one.</p>
-      ${G.calendars.CALENDARS_LIVE ? countingHtml(settings, G, ui.open) : ""}
+      ${countingHtml(settings, G, ui.open)}
       ${group(
         "Your calendars",
         `${shownTraditions

@@ -24,13 +24,6 @@ export { MOON_CALENDAR } from './moon.ts';
 type SettingsLike = Record<string, unknown> | null | undefined;
 
 /** The moon first, then the traditional calendars that exist (see registry.ts). */
-/**
- * @deprecated Always on: the calendars are live. Kept only until Today,
- * Settings → Calendar & holidays and the website pages that read it
- * (js/settings-more.js, today/) drop their checks; then delete it.
- */
-export const CALENDARS_LIVE = true as boolean;
-
 export const CALENDARS: CalendarDef[] = [MOON_CALENDAR, ...TRADITIONAL_CALENDARS.filter((c) => c.id !== 'moon')];
 
 export const calendarById = (id: string): CalendarDef | undefined => CALENDARS.find((c) => c.id === id);

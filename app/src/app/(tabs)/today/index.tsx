@@ -27,7 +27,7 @@ import { useWorkshop } from '../../../lib/altar/workshop';
 import { useRituals } from '../../../lib/rituals/store';
 import { Field, Tags } from '../../../components/more/ui';
 import { dateFrom, daysBetween, shortDate, timeOfDay } from '../../../lib/calendar';
-import { calendarEventsBetween, CALENDARS_LIVE, calendarSettingsKey, todayLines } from '../../../lib/calendars';
+import { calendarEventsBetween, calendarSettingsKey, todayLines } from '../../../lib/calendars';
 import { holidayChoice, type Holiday } from '../../../lib/holidays';
 import { findByName, todayLibraryHref, useLibrary } from '../../../lib/library';
 import { usePlace } from '../../../lib/location';
@@ -87,12 +87,12 @@ export default function Today() {
   const calendarKey = calendarSettingsKey(settings);
   // The other calendars: the moon's date when it leads, a line for each shown, and their observances.
   const lines = useMemo(
-    () => (CALENDARS_LIVE ? todayLines(now, settings, place) : []),
+    () => todayLines(now, settings, place),
     // eslint-disable-next-line react-hooks/exhaustive-deps -- the keys stand in for the settings and place they read
     [now, calendarKey, placeKey],
   );
   const calendarEvents = useMemo(
-    () => !CALENDARS_LIVE ? [] : calendarEventsBetween(now, new Date(now.getFullYear(), now.getMonth(), now.getDate() + 60), settings, place),
+    () => calendarEventsBetween(now, new Date(now.getFullYear(), now.getMonth(), now.getDate() + 60), settings, place),
     // eslint-disable-next-line react-hooks/exhaustive-deps -- the keys stand in for the settings and place they read
     [now, calendarKey, placeKey],
   );
