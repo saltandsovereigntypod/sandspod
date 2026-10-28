@@ -5,7 +5,7 @@ import { View } from 'react-native';
 import { Button } from '../../../../components/Button';
 import { Body, Card, Field, List, Notice, RitualScreen, Row, SectionLabel, SignInCard, Title, tell, ui } from '../../../../components/rituals/ui';
 import { minutesLabel } from '../../../../lib/rituals/format';
-import { refresh, startRitual, useRituals } from '../../../../lib/rituals/store';
+import { fetchArchivedTemplates, refresh, restoreTemplate, startRitual, useRituals, type ArchivedTemplate } from '../../../../lib/rituals/store';
 import { useSession } from '../../../../lib/session';
 
 export default function Templates() {
@@ -72,6 +72,7 @@ export default function Templates() {
               })}
             </List>
           )}
+          <ArchivedTemplates />
         </View>
       ) : (
         <SignInCard
@@ -93,5 +94,56 @@ export default function Templates() {
         <Row icon="altar" title="Build a spell" detail="Choose ingredients and words, and we'll lay out the steps" last onPress={() => router.push('/rituals/spell')} />
       </List>
     </RitualScreen>
+  );
+}
+
+// Archived templates are kept whole, out of the list, until you restore them.
+function ArchivedTemplates() {
+  const [shown, setShown] = useState<ArchivedTemplate[] | null>(null);
+  const [busy, setBusy] = useState(false);
+
+  const show = async () => {
+    setBusy(true);
+    try {
+      setShown(await fetchArchivedTemplates());
+    } catch (e) {
+      tell("Couldn't open your archived templates", e instanceof Error ? e.message : 'Please try again.');
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  const restore = async (template: ArchivedTemplate) => {
+    setBusy(true);
+    try {
+      await restoreTemplate(template.id);
+      setShown((list) => (list ?? []).filter((t) => t.id !== template.id));
+    } catch (e) {
+      tell("Couldn't restore it", e instanceof Error ? e.message : 'Please try again.');
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  if (!shown) return <Button label="Archived templates" variant="text" disabled={busy} onPress={() => void show()} />;
+  return (
+    <View style={ui.gapSmall}>
+      <SectionLabel>Archived templates</SectionLabel>
+      {shown.length === 0 ? (
+        <Body muted>Nothing archived. A template you archive rests here, kept whole, until you restore it.</Body>
+      ) : (
+        <List>
+          {shown.map((template, i, all) => (
+            <Row
+              key={template.id}
+              title={template.title}
+              detail={`${template.intention ? `${template.intention} · ` : ''}Tap to restore`}
+              last={i === all.length - 1}
+              onPress={() => void restore(template)}
+            />
+          ))}
+        </List>
+      )}
+    </View>
   );
 }

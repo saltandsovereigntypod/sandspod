@@ -109,7 +109,7 @@ export default function CovenBook() {
 
   const removeSection = async (section: CovenSectionRow) => {
     const count = pages.filter((p) => p.section_id === section.id).length;
-    const ok = await confirmAction(`Remove “${section.title}”?`, count ? `Its ${count === 1 ? 'page stays' : `${count} pages stay`} in the book, without a section.` : 'This section has no pages.', 'Remove section');
+    const ok = await confirmAction(`Delete “${section.title}”?`, count ? `Its ${count === 1 ? 'page stays' : `${count} pages stay`} in the book, without a section.` : 'This section has no pages.', 'Delete section');
     if (ok) actions.deleteSection(section.id);
   };
 
@@ -151,7 +151,7 @@ export default function CovenBook() {
           <>
             {approveHere && section && <SmallButton label="Who can open it" onPress={() => router.push(`${href('access')}?kind=section&id=${section.id}` as Href)} />}
             {writeHere && <SmallButton label="Add a page" onPress={() => router.push(`${href('new-page')}${section ? `?sectionId=${section.id}` : ''}` as Href)} />}
-            {approveHere && section && !shelf && <SmallButton label="Remove section" tone="danger" onPress={() => void removeSection(section)} />}
+            {approveHere && section && !shelf && <SmallButton label="Delete section" tone="danger" onPress={() => void removeSection(section)} />}
           </>
         }
       >

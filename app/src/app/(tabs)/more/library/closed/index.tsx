@@ -3,7 +3,7 @@ import { useMemo, useState } from 'react';
 import { Text } from 'react-native';
 
 import { Card, Chips, Field, MenuList, MenuRow, MoreScreen, Paragraphs, Section } from '../../../../../components/more/ui';
-import { CLOSED_GUIDE_VISIBLE, ClosedNotice } from '../../../../../components/library/ClosedNotice';
+import { ClosedNotice } from '../../../../../components/library/ClosedNotice';
 import { ResearchFooter } from '../../../../../components/ResearchNote';
 import {
   CLOSED_GUIDE_TITLE,
@@ -41,14 +41,6 @@ export default function ClosedTraditionsIndex() {
     [query, filter],
   );
   const count = groups.reduce((n, g) => n + g.items.length, 0);
-
-  if (!CLOSED_GUIDE_VISIBLE) {
-    return (
-      <MoreScreen title="Closed & living traditions" back="/more/library" backLabel="Back to the Library">
-        <Text style={type.body}>This guide isn’t open yet. It’s being read by people from the traditions it describes first.</Text>
-      </MoreScreen>
-    );
-  }
 
   return (
     <MoreScreen title="Closed & living traditions" eyebrow="Living Library" back="/more/library" backLabel="Back to the Library">

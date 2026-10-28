@@ -380,7 +380,7 @@
           ${(section && writeHere) || (!section && arrange) ? `<button type="button" class="button button--ghost button--small" data-part-rename>Rename</button>` : ""}
           ${section && approveHere ? `<a class="button button--ghost button--small" href="${esc(bookHref(`&access=section:${encodeURIComponent(section.id)}`))}" data-tab="book">Who can open it</a>` : ""}
           ${writeHere ? `<a class="button button--ghost button--small" href="${esc(bookHref(`&new=1${section ? `&section=${encodeURIComponent(section.id)}` : ""}`))}" data-tab="book">Add a page</a>` : ""}
-          ${section && approveHere && !shelf ? `<button type="button" class="button button--ghost button--small" data-part-remove>Remove section</button>` : ""}
+          ${section && approveHere && !shelf ? `<button type="button" class="button button--ghost button--small" data-part-remove>Delete section</button>` : ""}
         </div>` : ""}
         ${item.open ? `${note ? `<p class="sp-caption">${esc(note)}</p>` : ""}
           ${list.length ? `<nav class="sp-list" aria-label="${esc(item.title)}">${list.map((p) => `<div class="cv-grimoire-row">${row(bookHref(`&page=${encodeURIComponent(p.id)}`), p.title, [G().structure.pageTypeLabel(p), p.shared_by ? `shared by ${nameOf(p.shared_by)}` : ""].filter(Boolean).join(" · "), "book")}
@@ -473,7 +473,7 @@
         } else save(Lt.renamePart(layout, key, name, item.defaultTitle));
       });
       el.querySelector("[data-part-remove]")?.addEventListener("click", async () => {
-        if (!(await UI.confirmAction(`Remove “${section.title}”?`, "Its pages stay in the book, without a section.", "Remove section"))) return;
+        if (!(await UI.confirmAction(`Delete “${section.title}”?`, "Its pages stay in the book, without a section.", "Delete section"))) return;
         if (await commit([G().edits.deleteOp("grimoire_sections", section.id)], status)) contents();
       });
       el.querySelectorAll("[data-page-move]").forEach((b) =>

@@ -84,7 +84,7 @@
           <div class="cv-meta">
             ${altar.is_main ? `<span class="cv-pill cv-pill--gold">Ritual altar</span>` : ""}
             ${petition ? `<span class="cv-pill">A petition’s altar</span>` : ""}
-            ${archived ? `<span class="cv-pill">Cleared away</span>` : ""}
+            ${archived ? `<span class="cv-pill">Archived</span>` : ""}
             <span class="cv-pill">${count} ${count === 1 ? "thing" : "things"} on it</span>
           </div>
           <p class="sp-caption">${esc(tendedBy(altar))}${altar.created_by && !altar.is_main ? ` · started by ${esc(UI.nameOf(state.context, altar.created_by))}` : ""}</p>
@@ -94,6 +94,7 @@
           ${archived ? "" : `<a class="button button--primary button--small" href="${esc(altarHref(altar))}">Open the altar</a>`}
           ${petition ? `<a class="button button--ghost button--small" href="${esc(href(`/covens/coven/?c=${encodeURIComponent(state.coven.slug)}&tab=petitions`))}" data-tab="petitions">See the petition</a>` : ""}
           <button class="button button--ghost button--small" type="button" data-tends="${esc(altar.id)}" aria-expanded="${open === altar.id}">Who tends it</button>
+          ${mayDelete(altar) ? `<button class="button button--ghost button--small" type="button" data-archive-card="${esc(altar.id)}" data-archived="${archived ? "1" : "0"}">${archived ? "Restore" : "Archive"}</button>` : ""}
           ${mayDelete(altar) ? `<button class="button button--ghost button--small" type="button" data-delete-card="${esc(altar.id)}">Delete</button>` : ""}
         </div>
         <p class="cv-status" role="status" aria-live="polite" data-card-status="${esc(altar.id)}"></p>
@@ -112,7 +113,7 @@
           <fieldset class="sp-field"><legend>Who tends it</legend>
             ${choices().map((c, i) => `<label class="cv-check"><input type="radio" name="edit_mode" value="${c.value}"${i === 0 ? " checked" : ""} /> <span>${esc(c.label)}</span></label>`).join("")}
           </fieldset>
-          <p class="sp-caption">You keep the altars you start: you choose who tends them, lock them and clear them away. The coven’s head and those who keep altars can too.</p>
+          <p class="sp-caption">You keep the altars you start: you choose who tends them, lock them and archive them. The coven’s head and those who keep altars can too.</p>
           <div class="sp-actions"><button class="button button--primary" type="submit">Start the altar</button></div>
           <p class="cv-status" role="status" aria-live="polite" data-status></p>
         </form></details>`;
@@ -127,7 +128,7 @@
         <p class="cv-presence" data-presence aria-live="polite"></p>
         ${startForm()}
         ${current.length ? current.map(altarCard).join("") : `<p class="sp-empty">The coven has no altars yet.</p>`}
-        ${cleared.length ? `<details class="sp-details"><summary>Cleared away (${cleared.length})</summary>${cleared.map(altarCard).join("")}</details>` : ""}
+        ${cleared.length ? `<details class="sp-details"><summary>${esc(archiveWords("").section)} (${cleared.length})</summary>${cleared.map(altarCard).join("")}</details>` : ""}
       </section>`;
     presence(state.presence);
     wire();
@@ -149,7 +150,18 @@
       title: `Delete ${name || "this altar"}?`,
       body: "This removes the altar and everything on it for the whole coven. This can’t be undone.",
       confirm: "Delete the altar",
-      gentler: "Clearing it away hides it instead, and its keepers can bring it back."
+      gentler: "Archiving it hides it instead, and its keepers can restore it."
+    };
+  const archiveWords = (name) =>
+    P()?.archiveAltarWords?.(name) || {
+      archive: "Archive",
+      restore: "Restore",
+      title: `Archive ${name || "this altar"}?`,
+      body: "It leaves the coven’s altars with everything on it kept. Its keepers can restore it from Archived altars.",
+      confirm: "Archive",
+      archived: `${name || "The altar"} is archived. Its keepers can restore it.`,
+      restored: `${name || "The altar"} is back among the coven’s altars.`,
+      section: "Archived altars"
     };
 
   /** For an altar's keepers: delete it for good, beside the gentler clearing away. */
@@ -204,7 +216,7 @@
         <div class="cv-chosen">${active.filter((m) => m.user_id !== state.context.user?.id).map((m) => `<label class="cv-check"><input type="checkbox" data-editor-user="${esc(m.user_id)}"${chosenPerson(m.user_id) ? " checked" : ""} /> <span>${esc(UI.nameOf(state.context, m.user_id))}</span></label>`).join("") || `<span class="sp-caption">No one else yet.</span>`}</div>
         <p class="cv-status" role="status" aria-live="polite" data-chosen-status></p>
       </div>
-      ${altar.is_main ? "" : `<div class="sp-actions"><button class="button button--ghost button--small" type="button" data-archive="${altar.archived_at ? "0" : "1"}">${altar.archived_at ? "Bring it back" : "Clear it away"}</button></div><p class="cv-status" role="status" aria-live="polite" data-archive-status></p>`}
+      ${altar.is_main ? "" : `<div class="sp-actions"><button class="button button--ghost button--small" type="button" data-archive="${altar.archived_at ? "0" : "1"}">${altar.archived_at ? "Restore" : "Archive"}</button></div><p class="cv-status" role="status" aria-live="polite" data-archive-status></p>`}
       ${deleteHtml(altar, access)}`;
 
     const form = holder.querySelector("[data-altar-settings]");
@@ -238,7 +250,8 @@
     });
     holder.querySelector("[data-archive]")?.addEventListener("click", async (event) => {
       const archive = event.currentTarget.dataset.archive === "1";
-      if (archive && !(await UI.confirmAction(`Clear away ${altar.name}?`, "It leaves the coven’s altars. Its keepers can bring it back.", "Clear it away"))) return;
+      const words = archiveWords(altar.name);
+      if (archive && !(await UI.confirmAction(words.title, words.body, words.confirm))) return;
       const ok = await UI.busy(event.currentTarget, holder.querySelector("[data-archive-status]"), () => D.archiveAltar(altar.id, archive).then(() => true));
       if (ok) await reload();
     });
@@ -247,6 +260,19 @@
   // --- wiring --------------------------------------------------------------------
 
   function wire() {
+    pane.querySelectorAll("[data-archive-card]").forEach((button) =>
+      button.addEventListener("click", async (event) => {
+        const altar = altars.find((a) => a.id === button.dataset.archiveCard);
+        if (!altar) return;
+        const archive = button.dataset.archived !== "1";
+        const words = archiveWords(altar.name);
+        if (archive && !(await UI.confirmAction(words.title, words.body, words.confirm))) return;
+        const ok = await UI.busy(event.currentTarget, pane.querySelector(`[data-card-status="${altar.id}"]`), () => D.archiveAltar(altar.id, archive).then(() => true));
+        if (!ok) return;
+        open = "";
+        await reload();
+      })
+    );
     pane.querySelectorAll("[data-delete-card]").forEach((button) =>
       button.addEventListener("click", async (event) => {
         const altar = altars.find((a) => a.id === button.dataset.deleteCard);
@@ -339,7 +365,7 @@
     if (!holder || !altarId) return;
     try {
       const [altar, rows] = await Promise.all([D.altar(altarId), D.altarObjects(altarId)]);
-      if (!altar) return (holder.innerHTML = `<p class="sp-caption">The ritual’s altar has been cleared away.</p>`);
+      if (!altar) return (holder.innerHTML = `<p class="sp-caption">The ritual’s altar has been archived.</p>`);
       const link = href(`/altar/?covenAltar=${encodeURIComponent(altar.id)}&c=${encodeURIComponent(s.coven.slug)}`);
       holder.innerHTML = `<a class="cv-still-link" href="${esc(link)}">${previewHtml(altar, rows)}</a><div class="sp-actions"><a class="button button--ghost button--small" href="${esc(link)}">Open ${esc(altar.name)}</a></div>`;
     } catch (error) {

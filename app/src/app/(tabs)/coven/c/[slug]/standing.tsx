@@ -1,20 +1,22 @@
+import { router } from 'expo-router';
 import { useCallback, useEffect, useState } from 'react';
 import { ActivityIndicator, Text } from 'react-native';
 
-import { CovenScreen } from '../../../../../components/covens/CovenScreen';
+import { covenHref, CovenScreen } from '../../../../../components/covens/CovenScreen';
 import { RecordSections } from '../../../../../components/covens/Record';
-import { Card, Notice } from '../../../../../components/more/ui';
+import { Card, MenuList, MenuRow, Notice } from '../../../../../components/more/ui';
 import * as api from '../../../../../lib/covens/api';
 import { useCoven } from '../../../../../lib/covens/CovenContext';
 import { errorMessage } from '../../../../../lib/covens/model';
 import { recordFlags, type MemberRecord } from '../../../../../lib/covens/record';
 import { colors, type } from '../../../../../theme';
 
-// My standing: what the coven's leaders see of your taking part (lib/covens/record.ts),
+// Your record (the standing route), inside My standing: what the coven's
+// leaders see of your taking part (lib/covens/record.ts),
 // so nothing about it is hidden from you: the rituals you came to or sent word
 // about, your studies, your mentoring, and how much else you've done. Leaders'
 // notes aren't shown here. If you mentor someone, you log your check-ins here.
-// As on the website's My path (covens/coven/record.js).
+// As on the website under My standing (covens/coven/record.js).
 export default function MyStanding() {
   const coven = useCoven();
   const covenId = coven.snapshot?.coven.id;
@@ -67,7 +69,7 @@ export default function MyStanding() {
   const flags = record ? recordFlags(record, Date.parse(record.now)) : [];
 
   return (
-    <CovenScreen title="My standing" onRefresh={load}>
+    <CovenScreen title="Your record" onRefresh={load}>
       <Text style={type.body}>
         The coven’s head, and those they choose, keep a record of how each member takes part: which rituals you came to or sent word about, how your studies and mentoring are going, and how much else you’ve done. This is what they see of yours. They never see what you wrote privately, or your own conversations.
       </Text>
@@ -93,6 +95,9 @@ export default function MyStanding() {
         />
       )}
       {message && <Notice>{message}</Notice>}
+      <MenuList>
+        <MenuRow label="My standing" detail="Your position, agreements, rising higher, leaving" icon="journey" last onPress={() => router.push(covenHref(coven.slug, 'path'))} />
+      </MenuList>
     </CovenScreen>
   );
 }

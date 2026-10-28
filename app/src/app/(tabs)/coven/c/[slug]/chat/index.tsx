@@ -278,7 +278,9 @@ function Notifications() {
           ? "Notifications are turned off for this app in your phone’s Settings. Turn them on there, then try again."
           : result.reason === "offline"
             ? "Couldn’t reach your account. Check your connection and try again."
-            : "Your choices are saved. Phone notifications start with the next version of the app from the App Store or Google Play.",
+            : // Reached on the web, or where this phone can’t get notifications (no
+              // Google Play services, say). Every store build since push landed has them.
+              "Your choices are saved. This device can’t get notifications from the app, so new messages wait here in Messages.",
       );
   };
 

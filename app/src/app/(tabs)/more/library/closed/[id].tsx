@@ -1,7 +1,7 @@
 import { router, useLocalSearchParams } from 'expo-router';
 import { StyleSheet, Text, View } from 'react-native';
 
-import { CLOSED_GUIDE_VISIBLE, ClosedNotice } from '../../../../../components/library/ClosedNotice';
+import { ClosedNotice } from '../../../../../components/library/ClosedNotice';
 import { ResearchFooter } from '../../../../../components/ResearchNote';
 import { Card, MenuList, MenuRow, MoreScreen, Paragraphs, Section, Tags } from '../../../../../components/more/ui';
 import { CLOSED_GUIDE_TITLE, closedById, GROUP_LABELS, OPENNESS_DETAIL, OPENNESS_LABELS, relatedTo } from '../../../../../lib/library/closed';
@@ -12,14 +12,12 @@ const paragraphs = (text: string) => text.split(/\n\s*\n|\n/).map((p) => p.trim(
 // One closed or living tradition: what it is, how people come in, and how to be a good guest.
 export default function ClosedTraditionPage() {
   const { id } = useLocalSearchParams<{ id: string }>();
-  const tradition = CLOSED_GUIDE_VISIBLE ? closedById(id) : null;
+  const tradition = closedById(id);
 
   if (!tradition) {
     return (
       <MoreScreen title="Closed & living traditions" back="/more/library/closed" backLabel="Back to the guide">
-        <Text style={type.body}>
-          {CLOSED_GUIDE_VISIBLE ? 'This tradition couldn’t be found.' : 'This guide isn’t open yet. It’s being read by people from the traditions it describes first.'}
-        </Text>
+        <Text style={type.body}>This tradition couldn’t be found.</Text>
       </MoreScreen>
     );
   }

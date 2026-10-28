@@ -124,6 +124,8 @@
 .app-altar-tools {
   display: grid; gap: 10px; margin: 14px auto 0; max-width: 72rem; padding: 0 4px;
 }
+.app-altar-tools__group { display: grid; gap: 6px; justify-items: center; }
+.app-altar-tools__group .app-label { text-align: center; }
 .app-altar-tools__intention { font-family: "Cormorant Garamond", serif; font-style: italic; font-size: 1.15rem; color: var(--cream); text-align: center; margin: 0; cursor: pointer; }
 .app-chips { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
 .app-chip {

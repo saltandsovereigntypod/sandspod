@@ -23,7 +23,6 @@
     "So this guide explains these traditions, where they come from and how people really come into them, and it corrects common myths. It doesn’t teach workings, ceremonies or how to call a spirit, and it won’t. That isn’t ours to teach. If something here calls to you, the next step is to learn from them.",
   ];
 
-  const NOT_OPEN = "This guide isn’t open yet. It’s being read by people from the traditions it describes first.";
 
   const FILTERS = [
     { value: "all", label: "All" },
@@ -67,10 +66,6 @@
 
   function renderIndex() {
     global.document.title = `${TITLE} | Salt & Sovereignty`;
-    if (!C.CLOSED_GUIDE_LIVE) {
-      root.innerHTML = `${header({ title: TITLE, back: "/library/", backLabel: "Back to the Library" })}<p>${esc(NOT_OPEN)}</p>`;
-      return;
-    }
     root.innerHTML = `${header({ title: TITLE, eyebrow: "Living Library", back: "/library/", backLabel: "Back to the Library" })}
       ${notice(null)}
       <section class="sp-section" aria-labelledby="gd-why">
@@ -114,11 +109,11 @@
     `<section class="sp-section"><h2 class="sp-label">${esc(label)}</h2><div class="sp-card${tone ? ` sp-card--${tone}` : ""}">${body}</div></section>`;
 
   function renderTradition(id) {
-    const tradition = C.CLOSED_GUIDE_LIVE ? C.closedById(id) : null;
+    const tradition = C.closedById(id);
     if (!tradition) {
       global.document.title = `${TITLE} | Salt & Sovereignty`;
       root.innerHTML = `${header({ title: TITLE, back: BASE, backLabel: "Back to the guide" })}
-        <p>${esc(C.CLOSED_GUIDE_LIVE ? "This tradition couldn’t be found." : NOT_OPEN)}</p>`;
+        <p>This tradition couldn’t be found.</p>`;
       return;
     }
     global.document.title = `${tradition.name} | ${TITLE} | Salt & Sovereignty`;

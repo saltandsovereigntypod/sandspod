@@ -10,13 +10,6 @@ import type { ClosedGroup, ClosedTradition, Openness, SourcingNote } from './typ
 
 export type { ClosedGroup, ClosedSection, ClosedTradition, Openness, SourcingNote } from './types.ts';
 
-/**
- * The traditions guide stays hidden until the owner has arranged review by
- * practitioners from the traditions themselves. The sourcing notes and the
- * land card don't depend on it and are live.
- */
-export const CLOSED_GUIDE_LIVE = true as boolean;
-
 export const CLOSED_TRADITIONS: ClosedTradition[] = [...INDIGENOUS, ...DIASPORA, ...OTHER];
 export const SOURCING_NOTES: SourcingNote[] = SOURCING;
 

@@ -126,7 +126,7 @@
 
       <div class="sp-actions">
         <a class="button button--ghost" href="/rituals/planner/?planId=${encodeURIComponent(plan.id)}">Change the night or time</a>
-        <button type="button" class="button button--ghost rt-quiet" data-remove>Remove plan</button>
+        <button type="button" class="button button--ghost rt-quiet" data-remove>Delete plan</button>
       </div>`;
   }
 
@@ -167,7 +167,7 @@
   }
 
   async function remove() {
-    if (!global.confirm("Remove this plan?")) return;
+    if (!global.confirm("Delete this plan? Its reminder is cancelled too. This can’t be undone.")) return;
     await UI.attempt(() => S.removePlan(state.plan), "The plan couldn't be removed");
     global.location.href = "/rituals/";
   }

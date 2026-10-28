@@ -13,7 +13,8 @@ import { type } from '../../../../../theme';
 
 const STATUS: Record<string, string> = { approved: 'approved', declined: 'declined', withdrawn: 'withdrawn' };
 
-// My path: your place in the coven, your agreements, asking to rise to a
+// My standing (the path route; once "My path"): your place in the coven, your
+// agreements, your record (standing.tsx), asking to rise to a
 // higher position, and leaving.
 export default function MyPath() {
   const coven = useCoven();
@@ -76,7 +77,7 @@ export default function MyPath() {
     ]);
 
   return (
-    <CovenScreen title="My path" onRefresh={load}>
+    <CovenScreen title="My standing" onRefresh={load}>
       {perms.member && snapshot?.membership && (
         <>
           <Card>
@@ -90,7 +91,7 @@ export default function MyPath() {
           </Card>
 
           <MenuList>
-            <MenuRow label="My standing" detail="Your rituals, studies and mentoring, as the coven’s leaders see them" icon="journey" last onPress={() => router.push(covenHref(coven.slug, 'standing'))} />
+            <MenuRow label="Your record" detail="Your rituals, studies and mentoring, as the coven’s leaders see them" icon="journey" last onPress={() => router.push(covenHref(coven.slug, 'standing'))} />
           </MenuList>
 
           <Section label="Agreements">
