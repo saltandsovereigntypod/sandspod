@@ -1,0 +1,12 @@
+# Publishes the app's over-the-air update to the production channel.
+# Run by hand from the Expo dashboard (Workflows) or the Expo connector.
+name: Publish update
+on: {}
+jobs:
+  publish:
+    name: Publish the production update
+    type: update
+    environment: production
+    params:
+      channel: production
+      platform: all
