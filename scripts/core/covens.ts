@@ -5,6 +5,10 @@
 // Keep it to pure modules from app/src/lib.
 export * as programs from '../../app/src/lib/covens/programs.ts';
 export * as holidays from '../../app/src/lib/holidays.ts';
+// How the coven counts its days (the moon's months and the calendars beside
+// the date), and taking it for your own Settings: covens/coven/moon-calendar.js.
+export * as calendars from '../../app/src/lib/calendars/index.ts';
+export * as moonCalendar from '../../app/src/lib/covens/moonCalendar.ts';
 export * as today from '../../app/src/lib/covens/today.ts';
 export * as thread from '../../app/src/lib/covens/thread.ts';
 export * as unreadCount from '../../app/src/lib/covens/unreadCount.ts';

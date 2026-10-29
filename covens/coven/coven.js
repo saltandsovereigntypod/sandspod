@@ -82,6 +82,8 @@
     // Whether you may invite people (null before the database has invitations).
     state.inviteSettings = state.perms.member || state.perms.site ? await D.inviteSettings(coven.id).catch(() => null) : null;
     if (coven.founder_id) await UI.loadNames(context, [coven.founder_id]);
+    // The coven's moon calendar, for gatherings' dates by the coven's count (covens/coven/moon-calendar.js).
+    if (state.perms.member || state.perms.site) await global.CovenMoonCalendar?.prime(state).catch(() => {});
   }
 
   /** Applications and requests to advance waiting for review here, leaving out your own (as the app counts them). */
@@ -251,7 +253,8 @@
     const r = soon[0];
     const answer = L.rsvpSummary(state.rsvps, r.id, state.context.user?.id).mine;
     const when = new Date(r.scheduled_for).toLocaleString(undefined, { weekday: "long", hour: "numeric", minute: "2-digit" });
-    return `<div class="cv-banner cv-banner--turn" role="status"><p><strong>${esc(L.occasionLabel(r) || "Rite")} coming up:</strong> ${esc(r.title)}, ${esc(when)}.
+    const counted = global.CovenMoonCalendar?.lineOf(state, r.scheduled_for);
+    return `<div class="cv-banner cv-banner--turn" role="status"><p><strong>${esc(L.occasionLabel(r) || "Rite")} coming up:</strong> ${esc(r.title)}, ${esc(when)}${counted ? ` (${esc(counted)})` : ""}.
       ${answer === "going" ? "You’re going." : answer === "maybe" ? "You might come." : answer === "not_going" ? "You can’t make it." : "Will you come?"}
       <a href="${esc(covenHref("rituals"))}&amp;ritual=${esc(encodeURIComponent(r.id))}" data-tab="rituals">${answer ? "Open the rite" : "Answer"}</a></p></div>`;
   }
@@ -356,6 +359,7 @@
         ${!perms.member && coven.status === "active" && coven.joining !== "closed" ? `<div class="sp-actions"><a class="button button--primary" href="${esc(covenHref("join"))}" data-tab="join">${coven.joining === "open" ? "Join this coven" : "Apply to join"}</a></div>` : ""}
         ${coven.joining === "closed" && !perms.member ? `<p class="sp-notice">${esc(join.detail)}</p>` : ""}
       </div>
+      <div data-coven-follows></div>
       ${perms.member ? `<div data-open-positions></div>` : ""}
       ${state.documents.length ? `<section class="sp-section"><h2>Our ways</h2>${state.documents.map(documentSection).join("")}</section>` : ""}
       ${positions()}
@@ -366,6 +370,8 @@
     pane.querySelector("[data-report-coven]")?.addEventListener("click", () => UI.report({ target_type: "coven", target_id: coven.id, coven_id: coven.id, label: "this coven" }));
     // Open positions above you, with what they ask (covens/coven/positions.js); Apply opens My standing.
     global.CovenPositions?.card(pane.querySelector("[data-open-positions]"), state, { covenHref });
+    // What the coven follows: its calendars and moon calendar, and taking it for your own (covens/coven/moon-calendar.js).
+    global.CovenMoonCalendar?.card(pane.querySelector("[data-coven-follows]"), state);
   }
 
   /** The coven's practice calendar and its next holiday. */

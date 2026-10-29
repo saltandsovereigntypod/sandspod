@@ -24,6 +24,33 @@ export type CalendarContext = {
   hemisphere: 'north' | 'south';
   /** Per-calendar choices, e.g. { kemeticNewYear: 'sirius' | 'aug-1' }. */
   options: Record<string, string>;
+  /**
+   * The contexts of the other calendars this one follows (the moon's months
+   * named or begun as the Attic calendar, say), by id, so a followed
+   * calendar is worked out with the person's own choices for it.
+   */
+  related?: Partial<Record<CalendarId, CalendarContext>>;
+};
+
+/** One choice a calendar offers, with its options. */
+export type CalendarChoice = {
+  key: string;
+  label: string;
+  options: CalendarOption[];
+  default: string;
+  /** What to say when none of the options follows a calendar the person shows. */
+  followHint?: string;
+};
+
+export type CalendarOption = {
+  value: string;
+  label: string;
+  note?: string;
+  /**
+   * The calendar this option follows: offered only while that calendar is
+   * shown beside the date (Also show), and read as the default otherwise.
+   */
+  follows?: CalendarId;
 };
 
 /** A day worth noticing in that calendar: the Kalends, the Noumenia, the first day of Þorri. */
@@ -66,7 +93,7 @@ export type CalendarDef = {
   /** A few sentences shown in Settings: what it is, where it comes from, what's uncertain. */
   about: string;
   /** Choices the person can make, e.g. where the Egyptian year starts. */
-  choices?: { key: string; label: string; options: { value: string; label: string; note?: string }[]; default: string }[];
+  choices?: CalendarChoice[];
   sources: string[];
   /** The date in this calendar for a given ordinary day (local midday of `day`). */
   dateOf(day: Date, ctx: CalendarContext): CalendarDate;

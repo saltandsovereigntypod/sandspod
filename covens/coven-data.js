@@ -166,6 +166,20 @@
         p_founder_rank: draft.founder_rank || null
       }),
     updateCoven: (id, changes) => run(db().from("covens").update(changes).eq("id", id).select(COVEN_FIELDS).single()),
+    // The coven's moon calendar (covens.moon_calendar), or null when it can't be read (before
+    // 20261114000000_coven_moon_calendar.sql the column is missing: nothing set).
+    async fetchCovenMoon(id) {
+      const { data, error } = await db().from("covens").select("moon_calendar").eq("id", id).maybeSingle();
+      if (error || !data) return null;
+      const value = data.moon_calendar;
+      return value && typeof value === "object" && !Array.isArray(value) ? value : null;
+    },
+    // How the coven counts its days: the calendars it shows beside the date, and its moon calendar.
+    async saveCovenCounting(id, calendars, moon) {
+      await run(db().from("covens").update({ practice_calendars: calendars }).eq("id", id).select("id").single());
+      const { error } = await db().from("covens").update({ moon_calendar: moon }).eq("id", id);
+      if (error) throw new Error(/moon_calendar/.test(error.message) ? "The coven’s calendars are saved, but its moon calendar can’t be saved until the site’s next update." : error.message);
+    },
     ranks: (covenId) => run(db().from("coven_ranks").select("*").eq("coven_id", covenId).order("level", { ascending: true })),
     saveRank: (rank) => (rank.id ? run(db().from("coven_ranks").update(rank).eq("id", rank.id).select().single()) : run(db().from("coven_ranks").insert(rank).select().single())),
     deleteRank: (id) => run(db().from("coven_ranks").delete().eq("id", id)),

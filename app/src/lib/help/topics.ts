@@ -470,9 +470,29 @@ export const HELP: HelpSection[] = [
         ],
         tips: [
           '"From my place" uses the location you set on the sky screen.',
+          'Under the moon’s months, choose how the months are named, where the year begins and what a Blue Moon is. Tap "About this calendar" for where each comes from.',
         ],
         href: '/more/settings/calendar',
-        keywords: ['lunar calendar', 'moon months', 'moon date', 'hemisphere', 'southern', 'count days'],
+        keywords: ['lunar calendar', 'moon months', 'moon date', 'hemisphere', 'southern', 'count days', 'blue moon', 'lunar new year'],
+      },
+      {
+        id: 'calendar-moon-follow',
+        title: 'Let the moon’s months follow your calendar',
+        summary: 'Name the moons and begin the year as the Attic, Coligny or Hindu calendar does.',
+        steps: [
+          'Open More, then Settings, then "Calendar & holidays".',
+          'Under "Also show", tick the calendar you follow: the Attic (Athenian), Coligny (Gaulish) or Hindu lunar calendar.',
+          'Under the moon’s months, choose "As the Attic calendar" (or the one you ticked) under "The year begins": for the Attic calendar, the first new moon after the summer solstice, when Hekatombaion begins.',
+          'Under "Name the months", choose "The Attic months" (or the Coligny or Hindu months) to call each moon by that calendar’s month.',
+          'Each change saves itself.',
+        ],
+        tips: [
+          'Each choice says where it comes from. The moon’s day 1 is still the day of the new moon, so the Attic date, which begins the next day, runs a day behind.',
+          'If you stop showing that calendar, the moon goes back to the folk names or the winter solstice for the moment, and Settings says so. Show it again and your choice comes back.',
+          'The southern names and the Blue Moon have no calendar to follow: no calendar here defines them, so they stay as they are.',
+        ],
+        href: '/more/settings/calendar',
+        keywords: ['attic new year', 'hekatombaion', 'hellenic new year', 'samonios', 'chaitra', 'ugadi', 'follow calendar', 'month names', 'year begins', 'lunar new year'],
       },
       {
         id: 'calendar-old-calendars',
@@ -3041,6 +3061,39 @@ export const HELP: HelpSection[] = [
           'Add the coven’s own days, then tap "Save the calendar".',
         ],
         keywords: ['coven calendar', 'holidays', 'sabbats', 'festivals', 'practice calendar'],
+      },
+      {
+        id: 'covens-moon-calendar',
+        title: 'Set the coven’s calendar',
+        summary: 'How the coven counts its days: the moon’s months, its new year and the calendars beside the date.',
+        steps: [
+          'Open your coven, tap "Manage", then "Practice calendar".',
+          'Under "How the coven counts its days", choose Standard or The moon.',
+          'Tick the calendars the coven keeps beside the date, such as the Attic (Athenian) calendar.',
+          'Choose the moon’s month names, where the year begins (as the Attic calendar, for one, when the coven shows it) and what a Blue Moon is.',
+          'Tap "Save how the coven counts".',
+        ],
+        tips: [
+          'Those who manage the coven set it, and the head of a mother coven too.',
+          'Members see it on the coven’s page under "What the coven follows". It never changes anyone’s own settings unless they choose to take it.',
+        ],
+        keywords: ['coven calendar', 'moon calendar', 'lunar calendar', 'new year', 'attic', 'hellenic', 'count days', 'coven moon'],
+      },
+      {
+        id: 'covens-follow-calendar',
+        title: 'Follow your coven’s calendar',
+        summary: 'See how your coven counts its days, and take it for your own if you like.',
+        steps: [
+          'Open your coven. Under "What the coven follows" are its calendars and its moon calendar in plain words, with today’s date by the coven’s count.',
+          'Tap "Use the coven’s calendar for my own" to see what would change in your Settings, then "Yes, use it". Or tap "Keep my own".',
+          'Changed your mind? Tap "Put back my own calendar" to have your settings as they were.',
+        ],
+        tips: [
+          'Calendars you already show are kept; the coven’s are added.',
+          'If the coven changes its calendar later, you are asked whether to update yours. Nothing changes by itself.',
+          'Gatherings show their date by the coven’s moon count too, when it differs from yours.',
+        ],
+        keywords: ['coven calendar', 'follow coven', 'moon calendar', 'use coven calendar', 'keep my own', 'undo', 'new year'],
       },
       {
         id: 'covens-altars',

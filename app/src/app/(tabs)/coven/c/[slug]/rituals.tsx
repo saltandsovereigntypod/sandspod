@@ -2,6 +2,7 @@ import { router } from 'expo-router';
 import { Text } from 'react-native';
 
 import { Button } from '../../../../../components/Button';
+import { useCovenMoonFor } from '../../../../../components/covens/CovenMoonCalendar';
 import { covenHref, CovenScreen } from '../../../../../components/covens/CovenScreen';
 import { MenuList, MenuRow, Section } from '../../../../../components/more/ui';
 import { useCoven } from '../../../../../lib/covens/CovenContext';
@@ -13,6 +14,8 @@ export default function Rituals() {
   const { live, upcoming, past } = ritualGroups(coven.rituals);
   const drafts = coven.rituals.filter((r) => r.status === 'draft');
   const canPlan = (coven.perms.lead && coven.standing.ok) || coven.perms.site;
+  // Each gathering's date by the coven's moon count, when it differs from yours.
+  const covenMoonOf = useCovenMoonFor(coven.snapshot?.coven);
 
   const row = (r: Ritual, detail: string, last: boolean) => (
     <MenuRow key={r.id} label={r.title} detail={detail} last={last} onPress={() => router.push(covenHref(coven.slug, `ritual/${r.id}`))} />
@@ -24,7 +27,7 @@ export default function Rituals() {
   const answer = (r: Ritual) => {
     const { going, mine } = rsvpSummary(coven.rsvps, r.id, coven.userId);
     const you = mine === 'going' ? 'You’re going' : mine === 'maybe' ? 'You might go' : mine === 'not_going' ? 'You can’t make it' : '';
-    return [riteTime(r.scheduled_for), occasionLabel(r), going.length ? `${going.length} going` : '', you].filter(Boolean).join(' · ');
+    return [riteTime(r.scheduled_for), occasionLabel(r), covenMoonOf(r.scheduled_for), going.length ? `${going.length} going` : '', you].filter(Boolean).join(' · ');
   };
 
   return (
