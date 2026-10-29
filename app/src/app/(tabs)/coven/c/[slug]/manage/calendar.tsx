@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
 import { Button } from '../../../../../../components/Button';
+import { CovenCountingForm } from '../../../../../../components/covens/CovenMoonCalendar';
 import { CovenScreen } from '../../../../../../components/covens/CovenScreen';
 import { Card, CheckRow, Chips, Field, Notice, Section } from '../../../../../../components/more/ui';
 import * as api from '../../../../../../lib/covens/api';
@@ -17,6 +18,8 @@ type Day = { name: string; month: number; day: number; meaning: string };
 // The coven's practice calendar: the same holiday choices as a person's
 // Settings → Calendar. Shown on the coven's page and members' Today, used to
 // suggest dates for rites, and to suggest the ready-made programs for it.
+// Below it, how the coven counts its days: the moon's months and the
+// calendars it shows beside the date (CovenCountingForm).
 export default function ManageCalendar() {
   const coven = useCoven();
   const info = coven.snapshot?.coven;
@@ -94,6 +97,7 @@ function CalendarForm({ info }: { info: Coven }) {
       </Section>
       <Button label={busy ? 'Saving…' : 'Save the calendar'} onPress={save} disabled={busy} />
       {message && <Notice>{message}</Notice>}
+      <CovenCountingForm info={info} />
       <View style={styles.space} />
     </>
   );

@@ -8,8 +8,8 @@ import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 import { longDate } from '../../lib/calendar';
 import {
-  calendarChoices,
   calendarPathName,
+  choiceViews,
   calendarsForSettings,
   COUNT_KEY,
   EXTRA_KEY,
@@ -43,27 +43,29 @@ const HEMISPHERE_OPTIONS = [
   { value: 'south', label: 'Southern' },
 ] as const;
 
-/** A calendar's choices as chips, with the chosen option's note beneath. */
-function ChoiceList({ def, draft, set }: { def: CalendarDef; draft: Settings; set: SetValue }) {
-  const values = calendarChoices(draft, def.id);
+/**
+ * A calendar's choices as chips, with the chosen option's note beneath.
+ * Options that follow another calendar (the moon's year begun as the Attic
+ * calendar's) show only while that calendar is shown under Also show.
+ */
+export function ChoiceList({ def, draft, set }: { def: CalendarDef; draft: Record<string, unknown>; set: SetValue }) {
   return (
     <>
-      {(def.choices ?? []).map((choice) => {
-        const value = values[choice.key];
-        const note = choice.options.find((o) => o.value === value)?.note;
-        return (
-          <View key={choice.key} style={styles.choice}>
-            <Text style={styles.choiceLabel}>{choice.label}</Text>
-            <Chips label={choice.label} options={choice.options} value={value} onChange={(v) => set(optionKey(def.id, choice.key), v)} />
-            {!!note && <Text style={type.caption}>{note}</Text>}
-          </View>
-        );
-      })}
+      {choiceViews(draft, def.id).map((choice) => (
+        <View key={choice.key} style={styles.choice}>
+          <Text style={styles.choiceLabel}>{choice.label}</Text>
+          <Chips label={choice.label} options={choice.options} value={choice.value} onChange={(v) => set(optionKey(def.id, choice.key), v)} />
+          {!!choice.fallback && <Text style={[type.caption, styles.cream]}>{choice.fallback}</Text>}
+          {!!choice.note && <Text style={type.caption}>{choice.note}</Text>}
+          {!!choice.aside && <Text style={type.caption}>{choice.aside}</Text>}
+          {!!choice.hint && <Text style={type.caption}>{choice.hint}</Text>}
+        </View>
+      ))}
     </>
   );
 }
 
-function About({ def }: { def: CalendarDef }) {
+export function About({ def }: { def: CalendarDef }) {
   const [open, setOpen] = useState(false);
   return (
     <View style={styles.about}>

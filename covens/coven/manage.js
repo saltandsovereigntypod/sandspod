@@ -371,6 +371,7 @@
           ${[...state.ranks].sort((a, b) => b.level - a.level).map(rankForm).join("")}${rankForm({ level: 1 })}</section>
         ${questionsForm(coven)}
         ${calendarForm(coven)}
+        <div data-coven-counting-holder></div>
         <section class="sp-section"><h2>Gathering notifications</h2><div data-notice-rules></div></section>
         <div data-grants-holder></div>
         <div data-leadership-holder></div>
@@ -477,6 +478,8 @@
         if (await UI.busy(questions, questions.querySelector("[data-status]"), () => D.updateCoven(coven.id, { application_questions: next }), { done: "Saved." })) refresh("manage");
       });
 
+      // How the coven counts its days (covens/coven/moon-calendar.js).
+      global.CovenMoonCalendar?.form(pane.querySelector("[data-coven-counting-holder]"), coven);
       const calendar = pane.querySelector("[data-calendar]");
       const customList = calendar.querySelector("[data-custom-list]");
       calendar.addEventListener("click", (event) => {

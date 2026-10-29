@@ -169,7 +169,7 @@
       const steps = stepsOf(r);
       const yours = steps.filter(mine).length;
       return `<a class="sp-row" href="${esc(ritualHref(r.id))}" data-tab="rituals"><span class="sp-row__text"><span class="sp-row__title">${esc(r.title)}</span>
-        <span class="sp-row__detail">${r.kind === "meeting" ? "Meeting · " : ""}${L.occasionLabel(r) ? `${esc(L.occasionLabel(r))} · ` : ""}${esc(when(r))} · ${steps.length} step${steps.length === 1 ? "" : "s"}${yours ? ` · ${yours} ${yours === 1 ? "is" : "are"} yours` : ""}${r.status === "cancelled" ? " · cancelled" : ""}${rsvpWord(r)}</span></span><span class="sp-row__chevron" aria-hidden="true">›</span></a>`;
+        <span class="sp-row__detail">${r.kind === "meeting" ? "Meeting · " : ""}${L.occasionLabel(r) ? `${esc(L.occasionLabel(r))} · ` : ""}${esc(when(r))}${global.CovenMoonCalendar?.lineOf(state, r.scheduled_for) ? ` · ${esc(global.CovenMoonCalendar.lineOf(state, r.scheduled_for))}` : ""} · ${steps.length} step${steps.length === 1 ? "" : "s"}${yours ? ` · ${yours} ${yours === 1 ? "is" : "are"} yours` : ""}${r.status === "cancelled" ? " · cancelled" : ""}${rsvpWord(r)}</span></span><span class="sp-row__chevron" aria-hidden="true">›</span></a>`;
     };
     const section = (title, rows) => (rows.length ? `<section class="sp-section"><h2>${esc(title)}</h2><nav class="sp-list" aria-label="${esc(title)}">${rows.map(row).join("")}</nav></section>` : "");
     const liveCards = groups.live

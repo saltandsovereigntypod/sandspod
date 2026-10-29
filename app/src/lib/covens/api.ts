@@ -828,6 +828,25 @@ export async function copyCourseProgram(covenId: string, program: CourseProgram,
 export const saveCalendar = (covenId: string, traditions: string[], holidays: string[], custom: { id: string; name: string; month: number; day: number; meaning: string }[]) =>
   run<Coven>(supabase.from('covens').update({ practice_traditions: traditions, practice_holidays: holidays, practice_custom: custom }).eq('id', covenId).select(COVEN_FIELDS).single());
 
+/**
+ * The coven's moon calendar (covens.moon_calendar), or null when it can't be
+ * read: before 20261114000000_coven_moon_calendar.sql is applied the column
+ * is missing, and the coven reads as having set nothing.
+ */
+export async function fetchCovenMoon(covenId: string): Promise<Record<string, unknown> | null> {
+  const { data, error } = await supabase.from('covens').select('moon_calendar').eq('id', covenId).maybeSingle();
+  if (error || !data) return null;
+  const value = (data as { moon_calendar?: unknown }).moon_calendar;
+  return value && typeof value === 'object' && !Array.isArray(value) ? (value as Record<string, unknown>) : null;
+}
+
+/** Save how the coven counts its days: the calendars it shows beside the date, and its moon calendar. */
+export async function saveCovenCounting(covenId: string, calendars: string[], moon: Record<string, string>): Promise<void> {
+  await run(supabase.from('covens').update({ practice_calendars: calendars }).eq('id', covenId).select('id').single());
+  const { error } = await supabase.from('covens').update({ moon_calendar: moon }).eq('id', covenId);
+  if (error) throw new Error(/moon_calendar/.test(error.message) ? 'The coven’s calendars are saved, but its moon calendar can’t be saved until the site’s next update.' : error.message);
+}
+
 
 // ─── Site moderation (Salt & Sovereignty's moderators) ──────────────────
 

@@ -8,6 +8,14 @@
 //   calendar_extra             comma-separated calendar ids shown beside it
 //   calendar_hemisphere        'auto' (default: from the place) | 'north' | 'south'
 //   calendar_opt_<id>_<key>    one choice of one calendar, e.g. calendar_opt_moon_yearStart
+//   calendar_coven             JSON: the coven whose calendar you took for your
+//                              own, and what you had before (see covens/moonCalendar.ts)
+//
+// An option can follow another calendar (the moon's year beginning as the
+// Attic calendar's, `calendar_opt_moon_yearStart = 'attic'`): it is offered,
+// and counts, only while that calendar is shown under Also show. The saved
+// value is kept when it isn't, so showing the calendar again brings it back;
+// meanwhile the choice reads as its default and Settings says why.
 //
 // (`calendar_primary` already names the main holiday tradition, see
 // traditionDay.ts, so the counting choice has its own key.)
@@ -16,9 +24,9 @@ import type { Holiday } from '../holidays.ts';
 import { pathName } from '../library/traditions.ts';
 import { MOON_CALENDAR } from './moon.ts';
 import { TRADITIONAL_CALENDARS } from './registry.ts';
-import type { CalendarContext, CalendarDate, CalendarDef, CalendarEvent, CalendarId, CalendarMark, Confidence, Place } from './types.ts';
+import type { CalendarChoice, CalendarContext, CalendarDate, CalendarDef, CalendarEvent, CalendarId, CalendarMark, CalendarOption, Confidence, Place } from './types.ts';
 
-export type { CalendarContext, CalendarDate, CalendarDef, CalendarEvent, CalendarId, CalendarMark, Confidence, Place } from './types.ts';
+export type { CalendarChoice, CalendarContext, CalendarDate, CalendarDef, CalendarEvent, CalendarId, CalendarMark, CalendarOption, Confidence, Place } from './types.ts';
 export { MOON_CALENDAR } from './moon.ts';
 
 type SettingsLike = Record<string, unknown> | null | undefined;
@@ -62,15 +70,62 @@ export function withShown(settings: SettingsLike, id: CalendarId, on: boolean): 
   return next.join(',');
 }
 
-/** One calendar's choices, each its saved value or its default. */
+/** Whether an option may be chosen now: it follows no calendar, or one shown beside the date. */
+export function optionOffered(settings: SettingsLike, option: CalendarOption): boolean {
+  return !option.follows || shownCalendars(settings).includes(option.follows);
+}
+
+/** One calendar's choices, each its saved value or its default (also when it follows a calendar no longer shown). */
 export function calendarChoices(settings: SettingsLike, id: string): Record<string, string> {
   const def = calendarById(id);
   const out: Record<string, string> = {};
   for (const choice of def?.choices ?? []) {
     const saved = settings?.[optionKey(id, choice.key)];
-    out[choice.key] = typeof saved === 'string' && choice.options.some((o) => o.value === saved) ? saved : choice.default;
+    const option = typeof saved === 'string' ? choice.options.find((o) => o.value === saved) : undefined;
+    out[choice.key] = option && optionOffered(settings, option) ? option.value : choice.default;
   }
   return out;
+}
+
+/** A choice as Settings shows it: the options open now, the one in force, and what to say about it. */
+export type ChoiceView = {
+  key: string;
+  label: string;
+  options: CalendarOption[];
+  value: string;
+  /** The note of the option in force. */
+  note: string;
+  /** How to get options that follow a calendar, when none is open now. */
+  hint: string;
+  /** Said when the saved option follows a calendar no longer shown, so its default is used for now. */
+  fallback: string;
+  /** Said when another choice makes this one count for nothing just now. */
+  aside: string;
+};
+
+/** A calendar's choices for Settings (the app's and the website's), with options that follow calendars only while those are shown. */
+export function choiceViews(settings: SettingsLike, id: string): ChoiceView[] {
+  const def = calendarById(id);
+  const values = calendarChoices(settings, id);
+  return (def?.choices ?? []).map((choice: CalendarChoice) => {
+    const value = values[choice.key];
+    const options = choice.options.filter((o) => optionOffered(settings, o));
+    const saved = settings?.[optionKey(id, choice.key)];
+    const stale = typeof saved === 'string' && saved !== value ? choice.options.find((o) => o.value === saved && o.follows) : undefined;
+    const inForce = choice.options.find((o) => o.value === value);
+    const followed = stale?.follows ? calendarById(stale.follows) : undefined;
+    const hasFollowers = choice.options.some((o) => o.follows);
+    return {
+      key: choice.key,
+      label: choice.label,
+      options,
+      value,
+      note: inForce?.note ?? '',
+      hint: hasFollowers && !options.some((o) => o.follows) && choice.followHint ? choice.followHint : '',
+      fallback: followed ? `You chose “${stale?.label}”, but the ${followed.name} isn’t shown under Also show now, so this is “${inForce?.label ?? ''}” for the moment. Show it again and your choice comes back.` : '',
+      aside: id === 'moon' && choice.key === 'southNames' && !['folk', 'numbered'].includes(values.names) ? 'The months take another calendar’s names just now, so this applies only to the full moons’ folk names in their notes.' : '',
+    };
+  });
 }
 
 /**
@@ -86,7 +141,16 @@ export function hemisphereOf(settings: SettingsLike, place: Place | null): 'nort
 }
 
 export function calendarContext(settings: SettingsLike, place: Place | null, id: string): CalendarContext {
-  return { place, hemisphere: hemisphereOf(settings, place), options: calendarChoices(settings, id) };
+  const options = calendarChoices(settings, id);
+  const hemisphere = hemisphereOf(settings, place);
+  // The calendars this one's choices follow, each with the person's own choices for it.
+  const def = calendarById(id);
+  const related: Partial<Record<CalendarId, CalendarContext>> = {};
+  for (const choice of def?.choices ?? []) {
+    const follows = choice.options.find((o) => o.value === options[choice.key])?.follows;
+    if (follows && !related[follows]) related[follows] = { place, hemisphere, options: calendarChoices(settings, follows) };
+  }
+  return Object.keys(related).length ? { place, hemisphere, options, related } : { place, hemisphere, options };
 }
 
 export type CalendarLine = {

@@ -33,12 +33,26 @@
 // October the September moon is the Corn Moon and the Hunter's Moon (the
 // full moon after the Harvest Moon) moves to November, as Time and Date and
 // EarthSky name it; the Old Farmer's Almanac keeps the Beaver Moon then, so
-// sources differ for those Novembers. A thirteenth moon in a lunar year is not by itself a Blue Moon: the
+// sources differ for those Novembers.
+//
+// Following another calendar: when the person shows the Attic, Coligny or
+// Hindu calendar beside the date, the months can take that calendar's names
+// and the year can begin at its new year. Each moon (new moon to new moon)
+// takes the name of that calendar's month that begins during it: the Attic
+// month begins the day after the new moon (the Noumenia), the Hindu (amānta)
+// month at the new moon itself, and the Coligny month at the phase chosen for
+// it (the first quarter by default). The months and their order, the extra
+// months included, come from those calendars' own code (attic.ts,
+// coligny.ts, hindu.ts), so the two always agree on which month it is; the
+// moon's day 1 here is still the day of the new moon. A thirteenth moon in a lunar year is not by itself a Blue Moon: the
 // Blue Moon is the extra full moon by the chosen rule, which usually but not
 // always falls in a thirteen-moon year.
 
 import { dateToJulianDay, julianDayToDate, moonState, phaseJde, lunationNear, sunReaches, type PrincipalPhase } from '../moon.ts';
-import type { CalendarContext, CalendarDate, CalendarDef, CalendarEvent, CalendarMark } from './types.ts';
+import { atticDay } from './attic.ts';
+import { colignyMonth } from './coligny.ts';
+import { HINDU_MONTHS, lunarMonthAt } from './hindu.ts';
+import type { CalendarContext, CalendarDate, CalendarDef, CalendarEvent, CalendarId, CalendarMark } from './types.ts';
 
 const DAY_MS = 86_400_000;
 
@@ -98,8 +112,13 @@ function firstLunationFrom(instant: Date): Lunation {
 
 // ─── Choices ─────────────────────────────────────────────────────────────
 
-export type YearStart = 'winter-solstice' | 'spring-equinox' | 'samhain';
-export type NameStyle = 'folk' | 'numbered';
+/** The calendars the moon's months can follow, for their names or their new year. */
+export type FollowedCalendar = 'attic' | 'coligny' | 'hindu';
+export const FOLLOWABLE: readonly FollowedCalendar[] = ['attic', 'coligny', 'hindu'];
+const isFollowed = (value: string): value is FollowedCalendar => (FOLLOWABLE as readonly string[]).includes(value);
+
+export type YearStart = 'winter-solstice' | 'spring-equinox' | 'samhain' | FollowedCalendar;
+export type NameStyle = 'folk' | 'numbered' | FollowedCalendar;
 export type BlueRule = 'seasonal' | 'almanac' | 'monthly';
 export type SouthNames = 'turned' | 'northern';
 
@@ -107,15 +126,21 @@ const option = <T extends string>(ctx: CalendarContext, key: string, allowed: re
   const value = ctx.options[key];
   return (allowed as readonly string[]).includes(value) ? (value as T) : fallback;
 };
-const yearStartOf = (ctx: CalendarContext) => option<YearStart>(ctx, 'yearStart', ['winter-solstice', 'spring-equinox', 'samhain'], 'winter-solstice');
-const nameStyleOf = (ctx: CalendarContext) => option<NameStyle>(ctx, 'names', ['folk', 'numbered'], 'folk');
+const yearStartOf = (ctx: CalendarContext) => option<YearStart>(ctx, 'yearStart', ['winter-solstice', 'spring-equinox', 'samhain', ...FOLLOWABLE], 'winter-solstice');
+const nameStyleOf = (ctx: CalendarContext) => option<NameStyle>(ctx, 'names', ['folk', 'numbered', ...FOLLOWABLE], 'folk');
+/** The person's own choices for a followed calendar (its defaults when not given). */
+const relatedOf = (ctx: CalendarContext, id: CalendarId): CalendarContext => ctx.related?.[id] ?? { place: ctx.place, hemisphere: ctx.hemisphere, options: {} };
 const blueRuleOf = (ctx: CalendarContext) => option<BlueRule>(ctx, 'blue', ['seasonal', 'almanac', 'monthly'], 'seasonal');
 /** Whether the folk names are turned six months: only in the south, and only when chosen (the default there). */
 const namesTurned = (ctx: CalendarContext) => ctx.hemisphere === 'south' && option<SouthNames>(ctx, 'southNames', ['turned', 'northern'], 'turned') === 'turned';
 
 /** The moment the lunar year's starting point is reached in ordinary year `year`. */
-function yearPoint(year: number, start: YearStart, south: boolean): Date {
+function yearPoint(year: number, start: Exclude<YearStart, 'coligny' | 'hindu'>, south: boolean): Date {
   switch (start) {
+    case 'attic':
+      // The Attic year: the first new moon after the (northern) summer solstice,
+      // as atticYear() in holidays.ts counts it, whatever the hemisphere.
+      return sunReaches(year, 90);
     case 'spring-equinox':
       return sunReaches(year, south ? 180 : 0);
     case 'samhain':
@@ -128,13 +153,62 @@ function yearPoint(year: number, start: YearStart, south: boolean): Date {
 
 export type LunarYear = { start: Lunation; next: Lunation; months: Lunation[] };
 
+/** The day of a lunation's full moon, at midday: inside the month of every calendar followed here. */
+const fullDay = (l: Lunation) => new Date(l.full.getFullYear(), l.full.getMonth(), l.full.getDate(), 12);
+
+/** The followed calendar's month that begins during lunation `l`, and whether it opens that calendar's year. */
+export function followedMonth(l: Lunation, id: FollowedCalendar, ctx: CalendarContext): { name: string; first: boolean } {
+  switch (id) {
+    case 'attic': {
+      const a = atticDay(fullDay(l));
+      return { name: a.name, first: a.index === 1 };
+    }
+    case 'coligny': {
+      const m = colignyMonth(fullDay(l), relatedOf(ctx, 'coligny'));
+      return { name: m.info.name, first: m.info.name === 'Samonios' };
+    }
+    default: {
+      const m = lunarMonthAt(l.full);
+      return { name: `${m.adhika ? 'Adhika ' : ''}${HINDU_MONTHS[m.index].name}`, first: m.index === 0 && !m.adhika };
+    }
+  }
+}
+
+/** The first lunations of the lunar years beginning in ordinary years `from` to `to`, in order. */
+function yearStarts(from: number, to: number, start: YearStart, south: boolean, ctx: CalendarContext): Lunation[] {
+  const out: Lunation[] = [];
+  if (start === 'hindu') {
+    // Nija (not extra) Chaitra begins between about 1 March and mid-May.
+    for (let y = from; y <= to; y++) {
+      for (let l = lunationOf(new Date(y, 2, 1)), n = 0; n < 4; l = lunation(l.k + 1), n++) {
+        if (followedMonth(l, 'hindu', ctx).first) {
+          out.push(l);
+          break;
+        }
+      }
+    }
+    return out;
+  }
+  if (start === 'coligny') {
+    // Samonios, by the person's Coligny choices: walk from one to the next.
+    const c = relatedOf(ctx, 'coligny');
+    let at = colignyMonth(new Date(from, 0, 1, 12), c).yearStart;
+    for (let n = 0; n < 12 && at.getFullYear() <= to; n++) {
+      out.push(lunationOf(at));
+      at = colignyMonth(new Date(at.getFullYear(), at.getMonth(), at.getDate(), 12), c).nextYearStart;
+    }
+    return out;
+  }
+  for (let y = from; y <= to; y++) out.push(firstLunationFrom(yearPoint(y, start, south)));
+  return out;
+}
+
 /** The lunar year holding `day`: its first lunation, the next year's first, and its months. */
-export function lunarYearOf(day: Date, start: YearStart, south: boolean): LunarYear {
+export function lunarYearOf(day: Date, start: YearStart, south: boolean, ctx: CalendarContext = { place: null, hemisphere: south ? 'south' : 'north', options: {} }): LunarYear {
   const here = lunationOf(day);
   let first: Lunation | null = null;
   let after: Lunation | null = null;
-  for (let y = day.getFullYear() - 2; y <= day.getFullYear() + 1; y++) {
-    const candidate = firstLunationFrom(yearPoint(y, start, south));
+  for (const candidate of yearStarts(day.getFullYear() - 2, day.getFullYear() + 1, start, south, ctx)) {
     if (candidate.k <= here.k) first = candidate;
     else if (!after) after = candidate;
   }
@@ -300,7 +374,7 @@ type Month = {
   year: LunarYear;
   /** 1–13 within the lunar year. */
   number: number;
-  /** The name shown: folk or numbered, per the choice. */
+  /** The name shown: folk, numbered or the followed calendar's, per the choice. */
   name: string;
   numbered: string;
   full: FullMoonName;
@@ -311,11 +385,13 @@ const ordinalWord = (n: number) => ORDINAL_WORDS[n - 1]?.toLowerCase() ?? ordina
 
 function monthOf(l: Lunation, ctx: CalendarContext): Month {
   const south = ctx.hemisphere === 'south';
-  const year = lunarYearOf(l.start, yearStartOf(ctx), south);
+  const year = lunarYearOf(l.start, yearStartOf(ctx), south, ctx);
   const number = l.k - year.start.k + 1;
   const full = fullMoonName(l.full, namesTurned(ctx), blueRuleOf(ctx));
   const numbered = numberedName(number);
-  return { lunation: l, year, number, name: nameStyleOf(ctx) === 'numbered' ? numbered : full.name, numbered, full };
+  const style = nameStyleOf(ctx);
+  const name = style === 'numbered' ? numbered : isFollowed(style) ? followedMonth(l, style, ctx).name : full.name;
+  return { lunation: l, year, number, name, numbered, full };
 }
 
 /** What a full moon means, with a word on the Blue Moon. */
@@ -367,13 +443,14 @@ function dateOf(day: Date, ctx: CalendarContext): CalendarDate {
   const at = new Date(day.getFullYear(), day.getMonth(), day.getDate(), 12);
   const m = monthOf(lunationOf(at), ctx);
   const dayNumber = daysFrom(m.lunation.start, at) + 1;
-  const folkStyle = nameStyleOf(ctx) === 'folk';
-  const short = folkStyle ? `${m.name} · day ${dayNumber}` : `Moon ${m.number} · day ${dayNumber}`;
-  const which = folkStyle ? `the ${ordinalWord(m.number)} moon of the year` : `the ${m.full.name}`;
+  const style = nameStyleOf(ctx);
+  const short = style === 'numbered' ? `Moon ${m.number} · day ${dayNumber}` : `${m.name} · day ${dayNumber}`;
+  const which =
+    style === 'folk' ? `the ${ordinalWord(m.number)} moon of the year` : style === 'numbered' ? `the ${m.full.name}` : `the ${ordinalWord(m.number)} moon of the year, its full moon the ${m.full.name}`;
   return {
     calendar: 'moon',
     short,
-    long: `The ${ordinal(dayNumber)} day of the ${m.name}, ${which}: ${phaseWords(at)}.`,
+    long: `The ${ordinal(dayNumber)} day of ${isFollowed(style) ? m.name : `the ${m.name}`}, ${which}: ${phaseWords(at)}.`,
     month: { name: m.name, index: m.number, days: daysFrom(m.lunation.start, m.lunation.next), meaning: fullMeaning(m, ctx) },
     day: dayNumber,
     year: { label: yearLabel(m.year) },
@@ -385,7 +462,8 @@ function eventsBetween(from: Date, to: Date, ctx: CalendarContext): CalendarEven
   const first = startOfDay(from).getTime();
   const last = startOfDay(to).getTime();
   const out: CalendarEvent[] = [];
-  const folkStyle = nameStyleOf(ctx) === 'folk';
+  const style = nameStyleOf(ctx);
+  const folkStyle = style === 'folk';
   for (let l = lunationOf(from); l.start.getTime() <= last; l = lunation(l.k + 1)) {
     const m = monthOf(l, ctx);
     const newYear = m.number === 1;
@@ -393,14 +471,14 @@ function eventsBetween(from: Date, to: Date, ctx: CalendarContext): CalendarEven
       calendar: 'moon',
       id: `moon-new-${dayKey(l.start)}`,
       name: newYear ? `${m.name} begins · the lunar new year` : `${m.name} begins`,
-      meaning: `New moon: day 1 of the ${folkStyle ? `${ordinalWord(m.number)} moon of the year` : `${ordinalWord(m.number)} moon, the ${m.full.name}`}.${newYear ? ' The first new moon of the lunar year.' : ''}`,
+      meaning: `New moon: day 1 of ${folkStyle ? `the ${ordinalWord(m.number)} moon of the year` : style === 'numbered' ? `the ${ordinalWord(m.number)} moon, the ${m.full.name}` : `${m.name}, the ${ordinalWord(m.number)} moon of the year`}.${newYear ? ' The first new moon of the lunar year.' : ''}`,
       date: l.start,
       days: 1,
     });
     out.push({
       calendar: 'moon',
       id: `moon-full-${dayKey(startOfDay(l.full))}`,
-      name: folkStyle ? `${m.full.name} · full moon` : `Full moon of the ${m.numbered}`,
+      name: folkStyle ? `${m.full.name} · full moon` : style === 'numbered' ? `Full moon of the ${m.numbered}` : `Full moon of ${m.name} · the ${m.full.name}`,
       meaning: folkStyle ? fullMeaning(m, ctx) : `The ${m.full.name}. ${fullMeaning(m, ctx)}`,
       date: startOfDay(l.full),
       days: 1,
@@ -414,7 +492,7 @@ export const MOON_CALENDAR: CalendarDef = {
   name: 'The moon’s months',
   confidence: 'modern',
   about:
-    'Counting months by the moon is one of the oldest ways of keeping time, used across the ancient world and still kept in the Hebrew, Islamic, Chinese and Hindu calendars. This calendar is a modern arrangement drawing on that: the new and full moons are exact astronomy, but the way the months are gathered into a year and named is convention. Each month runs from one new moon to the next, and day 1 is the day the new moon falls where you are; many older calendars began instead at the first thin crescent, a day or two later. By default the year begins at the first new moon on or after the winter solstice, with the spring equinox or Samhain as other choices. Each month is named for its full moon. The folk names (Wolf, Snow, Worm and the rest) go by the calendar month the full moon falls in and come from the Old Farmer’s Almanac, a 20th-century gathering of Algonquian, Colonial American and European names; the Harvest Moon is the full moon nearest the autumn equinox, and sources differ on whether the moon after an October Harvest Moon is the Hunter’s or the Beaver Moon. The names follow the northern seasons: south of the equator many turn them six months, a modern convention, and you can keep the northern names instead. A Blue Moon is, by the old Maine Farmers’ Almanac rule, the third full moon of a season that has four; the almanac counted four equal seasons, so its dates sometimes differ from the same rule on the true seasons. The popular “second full moon in a month” comes from a 1946 misreading of it. All three are offered.',
+    'Counting months by the moon is one of the oldest ways of keeping time, used across the ancient world and still kept in the Hebrew, Islamic, Chinese and Hindu calendars. This calendar is a modern arrangement drawing on that: the new and full moons are exact astronomy, but the way the months are gathered into a year and named is convention. Each month runs from one new moon to the next, and day 1 is the day the new moon falls where you are; many older calendars began instead at the first thin crescent, a day or two later. By default the year begins at the first new moon on or after the winter solstice, with the spring equinox or Samhain as other choices. Each month is named for its full moon. The folk names (Wolf, Snow, Worm and the rest) go by the calendar month the full moon falls in and come from the Old Farmer’s Almanac, a 20th-century gathering of Algonquian, Colonial American and European names; the Harvest Moon is the full moon nearest the autumn equinox, and sources differ on whether the moon after an October Harvest Moon is the Hunter’s or the Beaver Moon. The names follow the northern seasons: south of the equator many turn them six months, a modern convention, and you can keep the northern names instead. A Blue Moon is, by the old Maine Farmers’ Almanac rule, the third full moon of a season that has four; the almanac counted four equal seasons, so its dates sometimes differ from the same rule on the true seasons. The popular “second full moon in a month” comes from a 1946 misreading of it. All three are offered. If you show the Attic, Coligny or Hindu calendar beside the date (under Also show), the months can take that calendar’s names and the year can begin at its new year instead. Each moon is then named for that calendar’s month that begins during it, worked out by that calendar’s own rules, so it is as historical or as reconstructed as that calendar says. Day 1 here is still the day of the new moon, so the Attic date, which begins the day after, runs a day behind, and the Coligny date (from the first quarter, by default) about a week behind. If you stop showing that calendar, the moon’s months go back to the folk names or the winter solstice, and Settings says so.',
   choices: [
     {
       key: 'names',
@@ -423,7 +501,26 @@ export const MOON_CALENDAR: CalendarDef = {
       options: [
         { value: 'folk', label: 'Folk full moon names', note: 'Wolf, Snow, Worm, Pink… from the Old Farmer’s Almanac.' },
         { value: 'numbered', label: 'First Moon, Second Moon…', note: 'Simply counted from the start of the year.' },
+        {
+          value: 'attic',
+          label: 'The Attic months',
+          follows: 'attic',
+          note: 'Hekatombaion, Metageitnion, Boedromion… with Poseideon II in years of thirteen moons, from the Attic calendar: historical names, on the modern Hellenists’ reckoning. Each moon takes the name of the Attic month that begins the day after its new moon, at the Noumenia.',
+        },
+        {
+          value: 'coligny',
+          label: 'The Coligny months',
+          follows: 'coligny',
+          note: 'Samonios, Dumannios, Riuros… with the bronze’s extra months, from the Coligny calendar. Each moon takes the name of the Coligny month that begins during it, by your Coligny choices (at the first quarter, by default). A reconstruction.',
+        },
+        {
+          value: 'hindu',
+          label: 'The Hindu months',
+          follows: 'hindu',
+          note: 'Chaitra, Vaishakha, Jyeshtha… with an Adhika (extra) month when one falls, from the Hindu lunar calendar, counted new moon to new moon (amānta) as south and west India do; in the north the dark fortnight takes the next month’s name.',
+        },
       ],
+      followHint: 'Show the Attic, Coligny or Hindu calendar under Also show to name the months by it.',
     },
     {
       key: 'southNames',
@@ -442,7 +539,26 @@ export const MOON_CALENDAR: CalendarDef = {
         { value: 'winter-solstice', label: 'After the winter solstice', note: 'The first new moon on or after midwinter. A modern convention.' },
         { value: 'spring-equinox', label: 'After the spring equinox', note: 'As the Babylonian and Hebrew years began in spring. A modern convention here.' },
         { value: 'samhain', label: 'After Samhain', note: 'The first new moon from 1 November (1 May in the south). A modern Pagan convention.' },
+        {
+          value: 'attic',
+          label: 'As the Attic calendar',
+          follows: 'attic',
+          note: 'The first new moon after the summer solstice, when Hekatombaion begins: the Athenian new year as most modern Hellenists keep it (Athens itself had no fixed rule). Kept to the northern solstice, as the Attic calendar is.',
+        },
+        {
+          value: 'coligny',
+          label: 'As the Coligny calendar',
+          follows: 'coligny',
+          note: 'The moon in which Samonios begins, by your Coligny choices (after Beltane, by default). A reconstruction: the bronze doesn’t say where the Gaulish year began.',
+        },
+        {
+          value: 'hindu',
+          label: 'As the Hindu calendar',
+          follows: 'hindu',
+          note: 'The new moon that begins Chaitra, the month that opens with the Sun in sidereal Pisces; Ugadi and Gudi Padwa fall on its first lunar day. An extra (Adhika) Chaitra is passed over. Some regions begin the year elsewhere, Gujarat after Diwali.',
+        },
       ],
+      followHint: 'Show the Attic, Coligny or Hindu calendar under Also show to follow its new year.',
     },
     {
       key: 'blue',

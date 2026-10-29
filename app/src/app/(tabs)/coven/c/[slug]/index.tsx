@@ -5,6 +5,7 @@ import { Alert, StyleSheet, Text, View } from 'react-native';
 
 import { Button } from '../../../../../components/Button';
 import { covenHref, CovenScreen } from '../../../../../components/covens/CovenScreen';
+import { CovenFollowsCard, useCovenMoon, useCovenMoonFor } from '../../../../../components/covens/CovenMoonCalendar';
 import { DisclosureCard, LineageSection, useDisclosure } from '../../../../../components/covens/lineage';
 import { OpenPositionsHere } from '../../../../../components/covens/Positions';
 import { Pill, Pills, Words, useReport } from '../../../../../components/covens/ui';
@@ -35,6 +36,9 @@ export default function CovenHome() {
   const documents = snap ? orderDocuments(snap.documents).filter((d) => d.published !== false && (insider || d.visibility === 'public')) : [];
   const { live, upcoming } = ritualGroups(coven.rituals);
   const next = upcoming.find((r) => r.scheduled_for && new Date(r.scheduled_for).getTime() > Date.now() - 3600000);
+  // The coven's moon calendar, for "What the coven follows" and its dates by the coven's count.
+  const [covenMoon] = useCovenMoon(info?.id);
+  const covenMoonOf = useCovenMoonFor(info, covenMoon);
 
   const leads = coven.perms.review || coven.perms.manage || coven.perms.site;
   // What you're asked to write, place or do before the coven's rites.
@@ -141,7 +145,7 @@ export default function CovenHome() {
             <Card>
               <Text style={type.eyebrow}>Coming up</Text>
               <Text style={type.cardTitle}>{next.title}</Text>
-              <Text style={type.caption}>{[riteTime(next.scheduled_for), occasionLabel(next)].filter(Boolean).join(' · ')}</Text>
+              <Text style={type.caption}>{[riteTime(next.scheduled_for), occasionLabel(next), covenMoonOf(next.scheduled_for)].filter(Boolean).join(' · ')}</Text>
               <Button label="See the rite" variant="outline" onPress={() => router.push(covenHref(coven.slug, `ritual/${next.id}`))} />
             </Card>
           )}
@@ -206,6 +210,8 @@ export default function CovenHome() {
             {calendarLine(info) && <Text style={type.caption}>{calendarLine(info)}</Text>}
             <Text style={type.caption}>Led by {coven.nameOf(info.founder_id)}</Text>
           </Section>
+
+          <CovenFollowsCard info={info} member={coven.perms.member} moon={covenMoon} />
 
           <LineageSection lineage={lineage} slug={coven.slug} />
 
