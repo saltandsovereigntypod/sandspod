@@ -25,8 +25,13 @@ export async function loadSet(folder: string): Promise<CourseModule[]> {
   return modules;
 }
 
-/** The standard checks for one tradition's set; `calendar` is the holidays.ts tradition its lore keeps. */
-export function checkSet(prefix: string, modules: CourseModule[], calendar: string) {
+/**
+ * The standard checks for one tradition's set; `calendar` is the holidays.ts
+ * tradition its lore keeps. `borrowed` are other sets whose lessons its steps
+ * may also give to read (Wicca's sabbats send people to the Wheel's lessons for
+ * a festival's history rather than repeat them).
+ */
+export function checkSet(prefix: string, modules: CourseModule[], calendar: string, borrowed: CourseModule[] = []) {
   test(`${prefix}: all nine modules are present with the fixed ids`, () => {
     assert.deepEqual(
       modules.map((m) => m.id),
@@ -56,7 +61,7 @@ export function checkSet(prefix: string, modules: CourseModule[], calendar: stri
   });
 
   test(`${prefix}: every task links lessons and a test that exist`, () => {
-    const docIds = new Set(modules.flatMap((m) => m.docs.map((d) => d.id)));
+    const docIds = new Set([...modules, ...borrowed].flatMap((m) => m.docs.map((d) => d.id)));
     const quizIds = new Set(modules.flatMap((m) => m.quizzes.map((q) => q.id)));
     for (const m of modules) {
       assert.ok(m.stages.length >= 1, `${m.id} has a stage`);
