@@ -57,6 +57,16 @@ import wheelDedication from './wheel/dedication.ts';
 import wheelElder from './wheel/elder.ts';
 import wheelHighPriestess from './wheel/high-priestess.ts';
 
+import wiccaTradition from './wicca/tradition.ts';
+import wiccaRitual from './wicca/ritual.ts';
+import wiccaDevotion from './wicca/devotion.ts';
+import wiccaLore from './wicca/lore.ts';
+import wiccaInitiation from './wicca/initiation.ts';
+import wiccaSeeker from './wicca/seeker.ts';
+import wiccaDedication from './wicca/dedication.ts';
+import wiccaElder from './wicca/elder.ts';
+import wiccaHighPriestess from './wicca/high-priestess.ts';
+
 export type { CourseDoc, CourseLink, CourseModule, CourseStage, CourseTask, Quiz } from './types.ts';
 
 /** The eclectic Wheel's modules. */
@@ -108,13 +118,25 @@ export const MODULES: CourseModule[] = [
   hellenicHighPriestess,
   ...WHEEL,
   ...WHEEL.map(southernWheel),
+  // Wicca keeps the Wheel's festivals (holidays.ts 'wheel'); its sabbat steps
+  // also give the Wheel's lesson on each festival for its history.
+  wiccaTradition,
+  wiccaRitual,
+  wiccaDevotion,
+  wiccaLore,
+  wiccaInitiation,
+  wiccaSeeker,
+  wiccaDedication,
+  wiccaElder,
+  wiccaHighPriestess,
 ];
 
-/** Traditions with modules of their own (Hellenic first, then the eclectic Wheel, north and south; the rest as they're written). */
+/** Traditions with modules of their own (Hellenic first, then the eclectic Wheel, north and south, then Wicca; the rest as they're written). */
 export const COURSE_TRADITIONS: { id: string; name: string }[] = [
   { id: 'hellenic', name: 'Hellenic' },
   { id: 'wheel', name: 'Wheel of the Year' },
   { id: 'wheel_south', name: 'Wheel of the Year (Southern Hemisphere)' },
+  { id: 'wicca', name: 'Wicca' },
 ];
 
 /** Written: it has something to teach (placeholders have no stages). */
