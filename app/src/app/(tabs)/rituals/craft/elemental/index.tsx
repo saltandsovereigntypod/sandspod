@@ -18,7 +18,7 @@ export default function ElementalPractice() {
   const guide = ELEMENT_GUIDES[today.element];
 
   return (
-    <RitualScreen back="Craft tools">
+    <RitualScreen back="Craft">
       <Title eyebrow="Craft tools">Elemental</Title>
       {!!about && <Body muted>{about}</Body>}
 

@@ -88,7 +88,7 @@ Migration: `supabase/migrations/20261027000000_coven_programs.sql`; ready-made p
 
 ## Navigation
 
-The app's and the website's tabs are Today · Altar · Practice · Coven · More. Practice holds the Grimoire and Rituals, with a Grimoire | Rituals switch at the top of both; the tab reopens whichever was used last (`app/src/lib/practiceSection.ts`, `js/site-nav.js`). In the app, covens live under `/coven` (a coven at `/coven/c/<address>`). Old `/more/covens/…` links, including rite reminders set before the move, redirect there. The podcast is the website's logo.
+The app's and the website's tabs are Today · Altar · Practice · Coven · More. Practice holds three sections: the Grimoire, Rituals (ritual work) and Craft (the tools that aren't rituals: Cycle & Moon, astrology, divination, the sigil maker and the Craft tools for each path), with a Grimoire | Rituals | Craft switch at the top of each; the tab reopens whichever was used last (`app/src/lib/practiceSections.ts`, `app/src/lib/practiceSection.ts`, `js/site-nav.js`). Craft keeps every old address: in the app its screens stay in the Rituals stack (`/rituals/craft`, `/rituals/cycle`, `/rituals/divination`, `/rituals/sigil`), and on the website at `/practice/`, `/rituals/cycle/`, `/divination/` and `/sigil/`. In the app, covens live under `/coven` (a coven at `/coven/c/<address>`). Old `/more/covens/…` links, including rite reminders set before the move, redirect there. The podcast is the website's logo.
 
 ## In the app
 

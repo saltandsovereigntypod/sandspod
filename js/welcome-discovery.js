@@ -37,9 +37,9 @@
         ["An altar that keeps time", "Candles and incense burn in real time, offerings freshen and fade, and pots for your real houseplants ask for water. Before a festival you keep, the Seasonal drawer brings its things to the top."],
         ["Workings at the altar", "Build a spell jar or a sachet, fold a petition under a candle, or keep a spell over days. “Set tonight’s altar” on Today starts one for you."],
         ["Rituals by the moon", "In Practice → Rituals, begin a premade ritual or spell, or plan your own for the right night and run it step by step. Journal it afterwards, and on the day you chose it asks: did it work?"],
-        ["Cards, runes and sigils", "Practice → Rituals → Divination draws tarot, runes, ogham, Lenormand, Kipper or a deck of your own in a spread laid out in its shape, and you can come back to the reading later. The sigil maker turns an intent into one mark, and both are open to every practice."],
+        ["Cards, runes and sigils", "Practice → Craft → Divination draws tarot, runes, ogham, Lenormand, Kipper or a deck of your own in a spread laid out in its shape, and you can come back to the reading later. The sigil maker turns an intent into one mark, and both are open to every practice."],
         ["Your Grimoire", "Practice → Grimoire keeps your pages, with the Living Library as a section of it: herbs, crystals, deities and candle colours with their traditional lore. Your dreams live there too, with pages for the holidays and moons."],
-        ["Your practice, your path", "Craft tools gathers tools for green, kitchen, hedge, cosmic, crystal, sea and folk craft. Dedication journeys, patron deities and the Closed & living traditions guide help you walk a path with care."],
+        ["Your practice, your path", "Practice → Craft keeps Cycle & Moon, your birth chart and the Craft tools for green, kitchen, hedge, cosmic, crystal, sea and folk craft. Dedication journeys (under Rituals), patron deities and the Closed & living traditions guide help you walk a path with care."],
         ["Calendars and reminders", "Keep the holidays of the calendars you follow, count your days by the moon, and show old calendars such as the Athenian or the Roman. Reminders turn the moon, your plans, the holidays you choose, tending and ritual planning into calendar events."],
         ["Practise with a coven", "Find or found a coven under Coven. Tend its altars together, talk in its messages, hold rites as a circle, and walk its initiation and training."],
         ["Yours on every screen", "Sign in and your altars, Grimoire, rituals and settings stay in step with the Salt & Sovereignty app. As a guest, everything stays in this browser."],
@@ -66,7 +66,7 @@
         ["When Traditional is hidden", "Traditional entities and pages stay out of view, while My Practice and enabled Community content can remain visible. The internal Traditional Library can still help link a new My Practice entry."],
         ["Create My Practice", "Choose a category, search for a canonical Traditional entry, and add your own layer to that entity. If no match belongs, create a completely custom entity instead."],
         ["Keep building connections", "Every entity page can add or edit My Practice. Relationships connect related entries, while Rituals, Templates, Spells, and Apothecary records remain available in their existing sections."],
-        ["Dreams, cards and runes", "Your dreams have their own shelf, with a dictionary of symbols. Tarot, rune and ogham pages read like a book, and readings you draw in Practice → Rituals come back to them. A completed Ritual Session can become a page of its own."],
+        ["Dreams, cards and runes", "Your dreams have their own shelf, with a dictionary of symbols. Tarot, rune and ogham pages read like a book, and readings you draw in Practice → Craft come back to them. A completed Ritual Session can become a page of its own."],
         ["Read in your own language", "Mundane Mode offers less overtly magical wording. Guest work remains in this browser; signed in, your Book, Library, rituals and practice are the same in the Salt & Sovereignty app."]
       ]
     }

@@ -22,7 +22,7 @@ export default function KitchenPractice() {
   const guide = useMemo(() => TIDE_GUIDES[homeTide(new Date())], []);
 
   return (
-    <RitualScreen back="Craft tools">
+    <RitualScreen back="Craft">
       <Title eyebrow="Craft tools">{about?.name ?? 'Kitchen & hearth'}</Title>
       {!!about && <Body muted>{about.about}</Body>}
 

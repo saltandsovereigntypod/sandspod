@@ -2,7 +2,7 @@
 // (chosen in its settings, open on this phone, and following the moon or
 // with a bleed in the last two months): today's exact reading in a line
 // (cycle day, season and phase, the moon) and its title, the next-bleed
-// estimate, Log today and a link to the full reading. Everything else is in Practice → Rituals →
+// estimate, Log today and a link to the full reading. Everything else is in Practice → Craft →
 // Cycle & Moon. The website's Today has the same card (today/cycle-today.js).
 
 import { router } from 'expo-router';

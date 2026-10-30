@@ -1,10 +1,12 @@
 /*
  * The site's main bar, shared by every page, laid out like the app's tabs:
  * Today · Altar · Practice · Coven · More.
- * Practice holds the Grimoire (/grimoire/) and Rituals (/rituals/, with the
- * practice tools under /practice/), with a Grimoire | Rituals switch at the
- * top of those pages; the tab returns to whichever was used last. Coven is
- * /covens/. The podcast is the logo (the home page), as in the app.
+ * Practice holds three sections, as in the app: the Grimoire (/grimoire/),
+ * Rituals (/rituals/: ritual work) and Craft (/practice/: the tools that
+ * aren't rituals, with Cycle & Moon at /rituals/cycle/, divination at
+ * /divination/ and the sigil maker at /sigil/, all kept where they were), with
+ * a Grimoire | Rituals | Craft switch at the top of those pages; the tab
+ * returns to whichever was used last. Coven is /covens/. The podcast is the logo (the home page), as in the app.
  *
  * On computers and iPads it sits in the top header. On phones it moves to the
  * bottom of the screen. More opens the Sanctuary panel; pages without the
@@ -37,10 +39,12 @@
     { key: "more", label: "More", view: "more" }
   ];
 
-  // The two halves of Practice, switched at the top of their pages.
+  // The three sections of Practice, switched at the top of their pages (the
+  // app's lib/practiceSections.ts PRACTICE_SECTIONS).
   const PRACTICE = [
     { key: "grimoire", label: "Grimoire", href: "/grimoire/" },
-    { key: "rituals", label: "Rituals", href: "/rituals/" }
+    { key: "rituals", label: "Rituals", href: "/rituals/" },
+    { key: "craft", label: "Craft", href: "/practice/" }
   ];
   const PRACTICE_KEY = "saltPracticeSection";
 
@@ -59,12 +63,15 @@
     return path.endsWith("/") || path.includes(".") ? path : `${path}/`;
   }
 
-  /** Which part of Practice a page is: "grimoire", "rituals", or null. */
+  /** Which part of Practice a page is: "grimoire", "rituals", "craft", or null. */
   function practiceSection(pathname, search = "") {
     const path = normalPath(pathname);
     if (path.startsWith("/altar/")) return new URLSearchParams(search).get("ritual") ? "rituals" : null;
-    // Rituals holds the planner, premade book, journeys, My practice, divination and the sigil maker, as in the app.
-    if (path.startsWith("/rituals/") || path.startsWith("/practice/") || path.startsWith("/divination/") || path.startsWith("/sigil/")) return "rituals";
+    // Craft holds the tools that aren't rituals, as in the app: the craft tools and astrology
+    // (/practice/), Cycle & Moon, divination and the sigil maker, each at its old address.
+    if (path.startsWith("/practice/") || path.startsWith("/rituals/cycle/") || path.startsWith("/divination/") || path.startsWith("/sigil/")) return "craft";
+    // Rituals holds ritual work: the planner, premade book, spells, community rituals, journeys and the journal.
+    if (path.startsWith("/rituals/")) return "rituals";
     if (path === "/grimoire/" || path.startsWith("/grimoire/dreams/")) return "grimoire";
     return null;
   }
@@ -82,14 +89,15 @@
 
   function rememberedPractice() {
     try {
-      return global.localStorage?.getItem(PRACTICE_KEY) === "rituals" ? "rituals" : "grimoire";
+      const stored = global.localStorage?.getItem(PRACTICE_KEY);
+      return PRACTICE.some((p) => p.key === stored) ? stored : "grimoire";
     } catch {
       return "grimoire";
     }
   }
 
   // The first page of each tab: no Back of its own unless you came from somewhere.
-  const TAB_ROOTS = new Set(["/", "/today/", "/altar/", "/grimoire/", "/rituals/", "/covens/"]);
+  const TAB_ROOTS = new Set(["/", "/today/", "/altar/", "/grimoire/", "/rituals/", "/practice/", "/covens/"]);
 
   /** Whether the previous entry in this tab's history is a page of this site. */
   function canGoBack(loc = global.location, doc = global.document) {
@@ -331,7 +339,7 @@
     }
   }
 
-  const api = { TABS, PRACTICE, PANEL_TABS, activeTab, practiceSection, isHome, isBackLink, fallbackHref, canGoBack, render, install };
+  const api = { TABS, PRACTICE, PANEL_TABS, activeTab, practiceSection, rememberedPractice, isHome, isBackLink, fallbackHref, canGoBack, render, install };
   global.SiteNav = api;
   if (typeof module !== "undefined" && module.exports) module.exports = api;
   if (typeof document !== "undefined") {

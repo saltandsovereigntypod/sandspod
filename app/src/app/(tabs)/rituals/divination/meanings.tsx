@@ -8,7 +8,7 @@ import { chosenDeck } from '../../../../lib/divination/decks';
 import { divinationGroups } from '../../../../lib/divination/library';
 import { useMySettings } from '../../../../lib/settings/store';
 
-// Card meanings, from Rituals → Divination: the same tarot, rune, ogham and
+// Card meanings, from Craft → Divination: the same tarot, rune, ogham and
 // oracle pages your Grimoire keeps under Traditional Information, opened here
 // so Back comes back to Divination.
 export default function CardMeanings() {

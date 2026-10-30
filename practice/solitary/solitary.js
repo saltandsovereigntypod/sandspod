@@ -96,11 +96,14 @@
       const prompt = evening ? today.evening : today.morning;
       const words = kit.join([kept?.morning ? "Morning kept" : null, kept?.evening ? "Evening kept" : null]);
       return [
-        kit.back(kit.href.hub, "Craft tools"),
+        kit.back(kit.href.hub, "Craft"),
         kit.head({ eyebrow: "Craft tools", title: about?.name ?? "Solitary", lede: about?.about }),
         kit.card(`${kit.p(prompt.title)}${kit.muted(words || "Waiting for you, whenever you’re ready.")}`, { gold: true, label: evening ? "This evening" : "This morning" }),
         kit.section("Tools", kit.list(practices.CRAFT_TOOLS.solitary.map((t) => kit.row({ url: kit.href.tool("solitary", "devotion"), title: t.title, detail: t.detail }))), { id: "tools" }),
-        kit.list([kit.row({ url: kit.href.premadeList("solitary"), title: "Premade workings", detail: "Every ritual and spell, filter by Solitary" })])
+        kit.list([
+          kit.row({ url: "/rituals/journeys/", title: "Dedication journeys", detail: "On Rituals · study, practice and a rite of self-dedication to a path or a god" }),
+          kit.row({ url: kit.href.premadeList("solitary"), title: "Premade workings", detail: "Every ritual and spell, filter by Solitary" })
+        ])
       ].join("");
     }
 

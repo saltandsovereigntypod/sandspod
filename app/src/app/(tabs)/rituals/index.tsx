@@ -7,7 +7,7 @@ import { PracticeSwitch } from '../../../components/PracticeSwitch';
 import { NextWorking } from '../../../components/rituals/NextWorking';
 import { Body, Card, List, Notice, RitualScreen, Row, SectionLabel, Title, tell, ui } from '../../../components/rituals/ui';
 import { moonState } from '../../../lib/moon';
-import { APOTHECARY, APOTHECARY_SUBTITLE, CRAFT_TOOLS, WORKINGS_LIBRARY } from '../../../lib/names';
+import { APOTHECARY, APOTHECARY_SUBTITLE, WORKINGS_LIBRARY } from '../../../lib/names';
 import { currentStep } from '../../../lib/rituals/lifecycle';
 import { journalDetail, planWhen } from '../../../lib/rituals/format';
 import { journalInsights } from '../../../lib/rituals/insights';
@@ -17,8 +17,10 @@ import { bringDeviceRitualsToAccount, refresh, useRituals } from '../../../lib/r
 import { useSession } from '../../../lib/session';
 import { type } from '../../../theme';
 
-// The Rituals home: what's under way and next, then three groups — Do, Learn
-// and Record. Reminders live in Settings (More); the website's Rituals page
+// The Rituals home: ritual work. What's under way and next, then three
+// groups — Do, Learn and Record. The tools that aren't rituals (Cycle & Moon,
+// astrology, divination, the sigil maker, the craft tools) are on the Craft
+// home, Practice's third section (rituals/craft/index.tsx). Reminders live in Settings (More); the website's Rituals page
 // (rituals/js/home.js) is grouped the same way.
 export default function RitualsHome() {
   const { session } = useSession();
@@ -85,29 +87,11 @@ export default function RitualsHome() {
           <Row icon="calendar" title="Plan a ritual" detail="The moon phase and weekday for your intention" onPress={() => router.push('/rituals/planner')} />
           <Row icon="altar" title="Build a spell" detail="Ingredients from the Library, steps to follow" onPress={() => router.push('/rituals/spell')} />
           <Row
-            icon="altar"
-            title="Sigil maker"
-            detail="An intent made into one mark, from its letters or a planetary square"
-            onPress={() => router.push('/rituals/sigil')}
-          />
-          <Row
             icon="wheel"
-            title="Divination"
-            detail="Draw cards, runes or ogham · your readings, decks and card meanings"
-            onPress={() => router.push('/rituals/divination')}
-          />
-          <Row
-            icon="today"
-            title="Cycle & Moon"
-            detail="Your cycle beside the moon, or the moon alone · private and encrypted"
-            onPress={() => router.push('/rituals/cycle')}
-          />
-          <Row
-            icon="wheel"
-            title="Astrology"
-            detail="Your birth chart, today’s transits and planetary hours · private and encrypted"
+            title="Cycle, astrology, divination and more"
+            detail="Now under Craft, at the top · with the sigil maker and tools for every path"
             last
-            onPress={() => router.push('/rituals/craft/cosmic' as Href)}
+            onPress={() => router.navigate('/rituals/craft' as Href)}
           />
         </List>
       </View>
@@ -129,22 +113,10 @@ export default function RitualsHome() {
           />
           <Row
             icon="wheel"
-            title="Learn astrology"
-            detail="Every planet, sign, house and aspect explained · simply or in depth"
-            onPress={() => router.push('/rituals/craft/cosmic/learn' as Href)}
-          />
-          <Row
-            icon="wheel"
             title="Dedication journeys"
             detail="Study, practice and a rite of self-dedication to a path or a god"
-            onPress={() => router.push('/rituals/journeys')}
-          />
-          <Row
-            icon="wheel"
-            title={CRAFT_TOOLS}
-            detail="Tools for green, kitchen, hedge, cosmic, crystal, sea and folk craft"
             last
-            onPress={() => router.push('/rituals/craft')}
+            onPress={() => router.push('/rituals/journeys')}
           />
         </List>
       </View>

@@ -18,11 +18,11 @@ export const HELP: HelpSection[] = [
           'Look at the bar along the bottom of the screen.',
           'Today shows the moon, the holidays from your calendars and what is yours to do today. Switch to "Sky & Lore" at the top for the sky, the day’s correspondences, what is on the horizon and what suits your practice.',
           'Altar is where you build and tend altars. Switch between "Personal", your own altars, and "Coven", the altars you tend with your covens, at the top.',
-          'Practice holds your Grimoire (your own book and the Living Library) and Rituals (doing, learning and recording your workings, with Divination and Craft tools). Switch between them at the top.',
+          'Practice holds three sections, switched at the top: Grimoire (your own book and the Living Library), Rituals (ritual work: beginning, planning and building rituals and spells, the Workings library, Community Rituals, dedication journeys and your ritual journal) and Craft (the tools that aren’t rituals: Cycle & Moon, astrology, divination, the sigil maker and the Craft tools for each path). The Practice tab reopens whichever you used last.',
           'Coven is where you find, join and take part in covens: Messages, rites, the coven’s altars, initiation and training. Switch between "My covens" and "Find a coven" at the top.',
           'More holds Search, the Community, My chronicle, Settings (notifications and reminders, accessibility, your account and backup among them) and Help & legal, with "How to use the app" and support.',
         ],
-        keywords: ['tabs', 'navigation', 'menu', 'bottom bar', 'where is', 'practice', 'coven', 'grimoire', 'rituals'],
+        keywords: ['tabs', 'navigation', 'menu', 'bottom bar', 'where is', 'practice', 'coven', 'grimoire', 'rituals', 'craft'],
       },
       {
         id: 'welcome-tour',
@@ -1590,7 +1590,7 @@ export const HELP: HelpSection[] = [
         title: 'Keep a dream journal',
         summary: 'Write dreams down, with the moon they came under.',
         steps: [
-          'Open Practice → Grimoire and open the Dreams shelf, then "Open Dreams" (or Craft tools, then Hedge, then "Dream journal").',
+          'Open Practice → Grimoire and open the Dreams shelf, then "Open Dreams" (or Practice → Craft, then Hedge, then "Dream journal").',
           'Tap "Write down a dream".',
           'Type the dream and a title, choose "Which morning?", and add symbols and feelings.',
           'Optionally mark it Lucid or Recurring, then tap "Keep this dream".',
@@ -1625,7 +1625,7 @@ export const HELP: HelpSection[] = [
           'Tap a card or stave for its picture or letter, its three words and its page.',
         ],
         tips: [
-          'Rituals → Divination → "Card meanings" opens the same pages, with a search.',
+          'Practice → Craft → "Card meanings" opens the same pages, with a search.',
           'They follow the Traditional Information setting in More, then Settings, then "Living Library".',
         ],
         keywords: ['tarot meanings', 'card meaning', 'rune meaning', 'ogham meaning', 'futhark', 'major arcana', 'minor arcana', 'lenormand meanings', 'kipper meanings', 'playing card insert'],
@@ -1692,16 +1692,17 @@ export const HELP: HelpSection[] = [
       {
         id: 'rituals-home',
         title: 'Find your way around Practice → Rituals',
-        summary: 'Practice → Rituals gathers what you do, what you learn and what you record.',
+        summary: 'Practice → Rituals holds your ritual work: what you do, what you learn and what you record.',
         steps: [
-          'Open Practice → Rituals.',
+          'Open Practice and choose Rituals at the top (Grimoire · Rituals · Craft).',
           'The top cards show a ritual under way, and "Your next working".',
-          'Under Do: "Begin a ritual", "Plan a ritual", "Build a spell", "Sigil maker" and "Divination".',
-          'Under Learn: "Workings library", "Community Rituals", "Dedication journeys" and "Craft tools".',
+          'Under Do: "Begin a ritual", "Plan a ritual" and "Build a spell".',
+          'Under Learn: "Workings library", "Community Rituals" and "Dedication journeys".',
           'Under Record: your latest rituals, "Record a ritual", Journal, "Your moon" and Apothecary.',
         ],
+        tips: ['Cycle & Moon, astrology, divination, the sigil maker and the Craft tools are under Craft, the third section at the top. Their old links still open them.'],
         href: '/rituals',
-        keywords: ['rituals', 'workings', 'spells', 'overview'],
+        keywords: ['rituals', 'workings', 'spells', 'overview', 'where is divination', 'where is cycle'],
       },
       {
         id: 'ritual-plan-night',
@@ -2032,7 +2033,7 @@ export const HELP: HelpSection[] = [
         title: 'Cycle & Moon',
         summary: 'Keep your cycle beside the moon: log your bleeds and days, see where each bleed falls in the lunar month, and find practice for your inner season. Or follow the moon alone.',
         steps: [
-          'Open Practice, then Rituals, and tap "Cycle & Moon" under Do.',
+          'Open Practice, choose Craft at the top, and tap "Cycle & Moon" under "Body & moon".',
           'The first time, choose "Set a passphrase" to keep it with your account, or "Keep it on this phone".',
           'Tap "Add past periods" to give it your history: pick the days on a calendar or paste a list of dates (see "Log past periods").',
           'Tap "Log today" to mark "My bleed began this day", the flow, symptoms, and how the day feels: energy, intuition, mood, body, dreams and anything else.',
@@ -2057,7 +2058,7 @@ export const HELP: HelpSection[] = [
         title: 'Log past periods',
         summary: 'Add the periods you remember, many at once, so Cycle & Moon knows your history.',
         steps: [
-          'Open Practice, then Rituals, then "Cycle & Moon", then "Past periods".',
+          'Open Practice, then Craft, then "Cycle & Moon", then "Past periods".',
           'On the calendar, tap the day each period began. Use "‹ Earlier" to go back a month. Days already logged are shaded.',
           'Under "Each lasted about", choose how many days they usually lasted, or "Not sure", then tap "Add".',
           'Or paste a list: one period a line, such as "2026-09-29", "1 September 2026 to 5 September 2026" or "04/08/2026, 5 days". Choose whether slashed dates are day first or month first, tap "Read these dates", check them, then tap "Add".',
@@ -2075,7 +2076,7 @@ export const HELP: HelpSection[] = [
         title: 'What am I? Your moon pattern from your history',
         summary: 'From the periods you’ve logged: your average cycle and how much it varies, how long your bleeds last, and the moon pattern they lean to.',
         steps: [
-          'Open Practice, then Rituals, then "Cycle & Moon", then "What am I?".',
+          'Open Practice, then Craft, then "Cycle & Moon", then "What am I?".',
           'At the top is your moon pattern, such as "Based on 6 cycles: Red Moon, strongly" or "mixed between White and Pink Moon", with what it means and how it has shifted over time.',
           'Under "Your rhythm" are your average cycle, the shortest and longest, how long your bleeds last, and how your cycle sits beside the moon’s 29.5-day month.',
           'Under "Each bleed and the moon" is the moon phase and lunar day each bleed began on.',
@@ -2112,7 +2113,7 @@ export const HELP: HelpSection[] = [
         title: 'Keep Cycle & Moon private (passphrase and sync)',
         summary: 'Your Cycle & Moon notes are encrypted on your phone or browser before they’re kept anywhere, and only your passphrase or recovery key opens them.',
         steps: [
-          'Open Practice, then Rituals, then "Cycle & Moon", then "Settings and privacy".',
+          'Open Practice, then Craft, then "Cycle & Moon", then "Settings and privacy".',
           'To keep it with your account (so it shows on other phones and the website), choose "Keep it with my account (set a passphrase)". Choose one you’ll remember; it isn’t your account password.',
           'Write down the recovery key it shows you and keep it somewhere safe. It won’t be shown again.',
           'On another phone or on the website, open Cycle & Moon and enter the same passphrase once; that device remembers it after that.',
@@ -2133,7 +2134,7 @@ export const HELP: HelpSection[] = [
         title: 'Share that you’re in moon time with your coven',
         summary: 'If you want to, let chosen covens or people see a few words by your name, like “In moon time · resting”. Never dates or notes.',
         steps: [
-          'Open Practice, then Rituals, then "Cycle & Moon", then "Share with my covens".',
+          'Open Practice, then Craft, then "Cycle & Moon", then "Share with my covens".',
           'Choose what it says: "In moon time", "In moon time · resting", "Resting · gentle days" or "Keeping quiet for a few days".',
           'Choose for how long: it clears itself after 1 to 7 days.',
           'Choose the covens whose members may see it, or open "Or only certain people" and choose them.',
@@ -2304,7 +2305,7 @@ export const HELP: HelpSection[] = [
         title: 'Draw tarot cards, runes or ogham',
         summary: 'A card for the day, three cards, the Celtic Cross and many more spreads, runes or ogham staves, with what each means; or a spread of your own.',
         steps: [
-          'On the Rituals home, under Do, tap "Divination", then "Draw cards, runes or ogham". On Today, "Draw a card for the day" opens it too.',
+          'Open Practice → Craft and, under "Divination & sigils", tap "Divination", then "Draw cards, runes or ogham". On Today, "Draw a card for the day" opens it too.',
           'Choose Tarot, Runes or Ogham. Tap the spread to see the others, grouped Quick, Classic, Moon & seasons, Deep work and Your spreads, each with a picture of its shape.',
           'Tap "Shuffle and draw" ("Cast the runes" or "Draw the staves"), then tap each card to turn it over and read what it means in its place, or "Turn them all over". Big spreads scroll sideways; "Look closer" makes them bigger.',
           'Write what you make of it, choose a day to come back to it, and tap "Keep this reading". It goes into your readings under Divination, and lays out in its shape again when you open it.',
@@ -2330,7 +2331,7 @@ export const HELP: HelpSection[] = [
         title: 'Make a spread of your own',
         summary: 'Name it, give it a shape, and say what each place means.',
         steps: [
-          'Open Practice → Rituals, tap "Divination", then "Make a spread". Or, as you draw, tap the spread, then "Make your own".',
+          'Open Practice → Craft, tap "Divination", then "Make a spread". Or, as you draw, tap the spread, then "Make your own".',
           'Give it a name and what it’s for, then choose what to draw and its shape: a line, a cross, an arc, a circle or a grid.',
           'Name each place and add a line on how to read it. Tap "Add a place" for another, or "Take this place out".',
           'Tap "Keep this spread". It is under "Your spreads" when you draw; tap "Change this spread" there to change it, or "Delete this spread".',
@@ -2360,7 +2361,7 @@ export const HELP: HelpSection[] = [
         title: 'Add an oracle deck of your own',
         summary: 'Your own deck’s cards, with photos and meanings, to draw from or to log the cards you pull by hand.',
         steps: [
-          'Open Practice → Rituals, tap "Divination", then "Your oracle decks", then "Make a deck". Or choose "Your decks" on the draw screen.',
+          'Open Practice → Craft, tap "Divination", then "Your oracle decks", then "Make a deck". Or choose "Your decks" on the draw screen.',
           'Name it, and add a cover photo if you like. Turn on "Read reversals" if you read cards upside down.',
           'Add cards one at a time (name, a few words, what it means, a photo of the card), or paste in a whole list, one "Name — meaning" to a line.',
           'Tap "Keep this deck". On the draw screen, choose "Your decks" and the deck, then any spread: its own, any tarot spread, or one of yours.',
@@ -2455,7 +2456,7 @@ export const HELP: HelpSection[] = [
         title: 'Log a divination reading and come back to it',
         summary: 'Record cards, runes or other readings, then see how they turned out.',
         steps: [
-          'On the Rituals home, under Do, tap "Divination", then "Log a reading". Your readings are listed below it. Divination is open to every practice.',
+          'Open Practice → Craft and, under "Divination & sigils", tap "Divination", then "Log a reading". Your readings are listed below it. Divination is open to every practice.',
           'Choose a method such as Tarot, Oracle cards, Runes, Tea leaves, Scrying, Pendulum or Ogham.',
           'Type the question and what came up, and add cards or runes drawn.',
           'Under "Come back to it", choose a day, then tap "Keep this reading".',
@@ -2469,7 +2470,7 @@ export const HELP: HelpSection[] = [
         title: 'Make a sigil',
         summary: 'A statement of intent made into one mark: from its letters, on a planetary square, or drawn by hand.',
         steps: [
-          'On the Rituals home, under Do, tap "Sigil maker", beside "Build a spell". It is open to every practice; Eclectic, the altar and the Grimoire open it too.',
+          'Open Practice → Craft and, under "Divination & sigils", tap "Sigil maker". It is open to every practice; Eclectic, the altar and the Grimoire open it too.',
           'Under "Your statement of intent", write it as if it were already so. Switch on "Strike out the vowels too" if you like.',
           'Under "How to make it", choose "From the letters", "On a planetary square" or "Draw it yourself", then choose how it looks and whether it has "A circle around it".',
           'Under "Keep it", name it and tap "Keep it with my sigils", or "Give it a page in my Grimoire".',
@@ -2483,12 +2484,28 @@ export const HELP: HelpSection[] = [
     ],
   },
 
-  // ─── Craft tools (the section id stays 'my-practice') ─────────────────
+  // ─── Craft (the section id stays 'my-practice') ───────────────────────
   {
     id: 'my-practice',
-    title: 'Craft tools',
-    intro: 'Ten practices, each with its own tools. Choose yours to put them first.',
+    title: 'Craft and the Craft tools',
+    intro: 'Practice’s third section: the tools that aren’t rituals, and ten practices with tools of their own. Choose yours to put them first.',
     topics: [
+      {
+        id: 'craft-home',
+        title: 'Find your way around Practice → Craft',
+        summary: 'Craft holds the practice tools that aren’t rituals: your cycle and the moon, the sky, divination and the tools for each path.',
+        steps: [
+          'Open Practice and choose Craft at the top (Grimoire · Rituals · Craft).',
+          'Under "Body & moon": "Cycle & Moon".',
+          'Under "The sky": "Astrology", "Planetary hours" and "Learn astrology".',
+          'Under "Divination & sigils": "Divination", "Draw cards, runes or ogham", "Card meanings" (in the app) and "Sigil maker".',
+          'Under "Craft tools by path": your crafts first, then the other practices, and "Choose your crafts".',
+          'Under "Elsewhere in Practice": "Dedication journeys" and the "Workings library", which stay under Rituals, and your dreams, which live in your Grimoire.',
+        ],
+        tips: ['The Practice tab reopens whichever of Grimoire, Rituals and Craft you used last.'],
+        href: '/rituals/craft',
+        keywords: ['craft', 'tools', 'cycle', 'astrology', 'divination', 'sigil', 'where is', 'overview', 'practice tools'],
+      },
       {
         id: 'practice-choose',
         title: 'Choose how you practise',
@@ -2505,9 +2522,9 @@ export const HELP: HelpSection[] = [
       {
         id: 'practice-hub',
         title: 'Open the tools for your practice',
-        summary: 'Craft tools lists each kind of craft and its tools.',
+        summary: 'The Craft home lists each kind of craft and its tools, under "Craft tools by path".',
         steps: [
-          'Open Rituals and, under Learn, tap "Craft tools".',
+          'Open Practice → Craft and look under "Craft tools by path".',
           'Tap one of your crafts under "Your crafts", or any under "Other practices".',
           'Tap a tool on that practice’s page.',
           'Tap its premade workings row, such as "Green workings", for rituals and spells made for it.',
@@ -2520,7 +2537,7 @@ export const HELP: HelpSection[] = [
         title: 'Plant by the moon',
         summary: 'What to sow, tend and harvest tonight.',
         steps: [
-          'Open Craft tools, then Green, then "Planting by the moon".',
+          'Open Practice → Craft, then Green, then "Planting by the moon".',
           'Read tonight’s phase, what suits it and why.',
           'Look at "The moon’s sign" and "The next fourteen nights".',
           'Tap "Log it in My garden" or "What’s in season now".',
@@ -2533,7 +2550,7 @@ export const HELP: HelpSection[] = [
         title: 'See what is in season now',
         summary: 'Herbs to sow and gather this month where you are.',
         steps: [
-          'Open Craft tools, then Green, then "In season now".',
+          'Open Practice → Craft, then Green, then "In season now".',
           'Choose "Northern" or "Southern" under Hemisphere if needed.',
           'Tap a month to look elsewhere in the year.',
           'Tap a herb to open its Living Library page.',
@@ -2546,7 +2563,7 @@ export const HELP: HelpSection[] = [
         title: 'Keep a magical garden',
         summary: 'Track your plants, sowings and harvests.',
         steps: [
-          'Open Craft tools, then Green, then "My garden".',
+          'Open Practice → Craft, then Green, then "My garden".',
           'Tap "Add a plant".',
           'Name it, optionally link it to its Living Library herb, and say where it grows.',
           'Choose "Sowed as seed" or "Planted", and the date, then tap "Add to my garden".',
@@ -2571,7 +2588,7 @@ export const HELP: HelpSection[] = [
         title: 'Look up a pantry ingredient’s correspondences',
         summary: 'Salt, honey, cinnamon and the rest of the cupboard.',
         steps: [
-          'Open Craft tools, then "Kitchen & hearth", then "Pantry correspondences".',
+          'Open Practice → Craft, then "Kitchen & hearth", then "Pantry correspondences".',
           'Search, or choose a Shelf, an Element, or "Good for…".',
           'Tap an item to read its lore, how to use it and "Take care".',
           'Tap "Open … in the Library" when it has a full entry.',
@@ -2584,7 +2601,7 @@ export const HELP: HelpSection[] = [
         title: 'Make a simmer pot',
         summary: 'A pot for your home from what you have, for an intention and a season.',
         steps: [
-          'Open Craft tools, then "Kitchen & hearth", then "Simmer pot".',
+          'Open Practice → Craft, then "Kitchen & hearth", then "Simmer pot".',
           'Under "What’s it for?", choose an intention, then a Season.',
           'Read the ingredients and "At the stove".',
           'Tap "Begin as a ritual" to be guided through it.',
@@ -2597,7 +2614,7 @@ export const HELP: HelpSection[] = [
         title: 'Do housework by the moon',
         summary: 'Which tasks suit tonight.',
         steps: [
-          'Open Craft tools, then "Kitchen & hearth", then "Home by the moon".',
+          'Open Practice → Craft, then "Kitchen & hearth", then "Home by the moon".',
           'Read the part of the moon’s month and its list of tasks.',
           'Tick tasks off as you do them.',
           'Tap a working under "Workings that suit tonight".',
@@ -2610,7 +2627,7 @@ export const HELP: HelpSection[] = [
         title: 'Use the kitchen spell book',
         summary: 'Recipes as workings: breads, broths, washes and blessings.',
         steps: [
-          'Open Craft tools, then "Kitchen & hearth", then "Kitchen spell book".',
+          'Open Practice → Craft, then "Kitchen & hearth", then "Kitchen spell book".',
           'Search, or choose a "For" intention.',
           'Tap a recipe to read ingredients, method and the words to say.',
         ],
@@ -2622,7 +2639,7 @@ export const HELP: HelpSection[] = [
         title: 'Remember your ancestors and the beloved dead',
         summary: 'Keep the people you carry, with their days and a candle to light.',
         steps: [
-          'Open Craft tools, then Hedge, then "Ancestors".',
+          'Open Practice → Craft, then Hedge, then "Ancestors".',
           'Tap "Add someone".',
           'Type their name and who they are to you, add born and died dates, and what they loved.',
           'Tap "Remember them".',
@@ -2647,7 +2664,7 @@ export const HELP: HelpSection[] = [
         title: 'Add your birth chart (or someone else’s)',
         summary: 'Your birth date is enough; a time and place add your rising sign and houses. The place search fills in the time zone for that moment, summer time included.',
         steps: [
-          'Open Rituals, then Craft tools, then "Cosmic & celestial", then "All charts", and tap "Add my chart" (or "Add someone’s chart").',
+          'Open Practice → Craft, then "Astrology", then "All charts", and tap "Add my chart" (or "Add someone’s chart").',
           'Give it a name and choose "Mine" or "Someone else’s".',
           'Enter the birth date and, if you know it, the birth time. If you don’t, turn on "I don’t know the time".',
           'Search for the birth town and tap it. The UTC offset at that moment appears under "Time zone at the birth".',
@@ -2668,7 +2685,7 @@ export const HELP: HelpSection[] = [
         title: 'Read your birth chart',
         summary: 'The wheel, every placement, the aspects, the balance of elements and modalities, and the whole chart read in full.',
         steps: [
-          'Open Rituals, then Craft tools, then "Cosmic & celestial", then "My chart".',
+          'Open Practice → Craft, then "Astrology", then "My chart".',
           'On "Wheel", tap any planet, sign, house number or aspect line to see what it means there.',
           'Use the chips along the top for "Placements", "Aspects" (with the grid and the patterns), "Balance" and "Read in full".',
           'Under "Read in full", every part of the chart is read in turn; pieces still being written show a short sketch and the words to learn.',
@@ -2765,7 +2782,7 @@ export const HELP: HelpSection[] = [
         title: 'Find the planetary hour for your working',
         summary: 'The day’s planet, the 24 hours as a wheel from your real sunrise and sunset, and a way to plan or be reminded at the next hour of any planet.',
         steps: [
-          'Open Craft tools, then "Cosmic & celestial", then "Planetary hours".',
+          'Open Practice → Craft, then "Cosmic & celestial", then "Planetary hours".',
           'The wheel shows the day’s 24 hours, the one you’re in in gold, and how long it has left. Tap any hour for what it suits.',
           'Under "Find the next hour of", tap a planet to see its next hours, and the next one on its own day (a Venus hour on a Friday).',
           'Tap "Remind me at the next … hour on …" to put a working in your planner with a reminder, or "Plan a working then" to open the planner at that time.',
@@ -2789,7 +2806,7 @@ export const HELP: HelpSection[] = [
         title: 'Keep a collection of stones and track their cleansing',
         summary: 'Your collection, and when each stone was last cleansed.',
         steps: [
-          'Open Craft tools, then Crystal, then "My stones".',
+          'Open Practice → Craft, then Crystal, then "My stones".',
           'Tap "Add a stone", search the Library or type your own name, and choose its form.',
           'Add where it came from and what it is working on, then tap "Save stone".',
           'Under "When stones fall due", choose how often cleansing is due.',
@@ -2814,7 +2831,7 @@ export const HELP: HelpSection[] = [
         title: 'Check which stones are safe in water, sun and salt',
         summary: 'Some stones dissolve, fade or are toxic.',
         steps: [
-          'Open Craft tools, then Crystal, then "Stone care".',
+          'Open Practice → Craft, then Crystal, then "Stone care".',
           'Read "Reading the badges".',
           'Type in "Find a stone" or use the filters.',
           'Open a stone to see its hardness, notes and safe cleansing methods.',
@@ -2827,7 +2844,7 @@ export const HELP: HelpSection[] = [
         title: 'See the balance of the elements in your work',
         summary: 'Earth, air, fire and water in what you use.',
         steps: [
-          'Open Craft tools, then Elemental, then "Elements in your work".',
+          'Open Practice → Craft, then Elemental, then "Elements in your work".',
           'Read "Your balance" and which element lags behind.',
           'Tap "Begin" a suggested rite, or "Read it first".',
           'Open "How this is worked out" for the details.',
@@ -2840,7 +2857,7 @@ export const HELP: HelpSection[] = [
         title: 'Plan around the weather',
         summary: 'Rain, wind, storm and clear skies for the next three days.',
         steps: [
-          'Open Craft tools, then Elemental, then "Weather for working".',
+          'Open Practice → Craft, then Elemental, then "Weather for working".',
           'Tap "Use my location", or "Enter it by hand".',
           'Read each day and tap a suggested working.',
           'Pull down to refresh the forecast.',
@@ -2854,7 +2871,7 @@ export const HELP: HelpSection[] = [
         title: 'Follow the tides',
         summary: 'Springs and neaps anywhere; high and low water for US coasts.',
         steps: [
-          'Open Craft tools, then Sea, then "Tides".',
+          'Open Practice → Craft, then Sea, then "Tides".',
           'Read "By the moon, everywhere" and "Springs and neaps ahead".',
           'For high and low water on a US coast, tap "Choose a station".',
           'Choose "Feet" or "Metres".',
@@ -2880,7 +2897,7 @@ export const HELP: HelpSection[] = [
         title: 'Log shells, sea glass and driftwood',
         summary: 'Record where the tide left them and what you will ask of them.',
         steps: [
-          'Open Craft tools, then Sea, then "Shore finds".',
+          'Open Practice → Craft, then Sea, then "Shore finds".',
           'Tap "Log a find".',
           'Choose what it is, such as Shell, Sea glass, Hagstone or Driftwood, then its colour, where and when.',
           'Add what it is for and notes, then tap "Save find".',
@@ -2893,7 +2910,7 @@ export const HELP: HelpSection[] = [
         title: 'Read the folk calendar',
         summary: 'Old customs through the year, and a way to keep each now.',
         steps: [
-          'Open Craft tools, then "Traditional & folk", then "Folk calendar".',
+          'Open Practice → Craft, then "Traditional & folk", then "Folk calendar".',
           'Read "The next 30 days".',
           'Tap a month under "Through the year".',
           'Open a custom to read what people did and "Keeping it now".',
@@ -2906,7 +2923,7 @@ export const HELP: HelpSection[] = [
         title: 'Write down local lore',
         summary: 'A notebook for the lore of where you live.',
         steps: [
-          'Open Craft tools, then "Traditional & folk", then "Local lore".',
+          'Open Practice → Craft, then "Traditional & folk", then "Local lore".',
           'Tap "Write down some lore".',
           'Choose what kind: Place, Spirit or being, Story, Custom, Saying, or Plant or creature lore.',
           'Add a title, where, the lore itself and who told you, then tap "Keep this lore".',
@@ -2919,7 +2936,7 @@ export const HELP: HelpSection[] = [
         title: 'Read weather lore for the month',
         summary: 'Old sayings with a plain note on whether the weather bears them out.',
         steps: [
-          'Open Craft tools, then "Traditional & folk", then "Weather lore".',
+          'Open Practice → Craft, then "Traditional & folk", then "Weather lore".',
           'Tap a month to read its sayings.',
           'South of the equator, tap "Use my location" and switch on "Follow my seasons".',
         ],
@@ -2931,7 +2948,7 @@ export const HELP: HelpSection[] = [
         title: 'Keep a daily devotion',
         summary: 'A few minutes in the morning and at night, gently kept.',
         steps: [
-          'Open Craft tools, then Solitary, then "Daily devotion".',
+          'Open Practice → Craft, then Solitary, then "Daily devotion".',
           'Read the prompt for this morning or evening.',
           'Tap "I kept my morning practice" or "I kept my evening practice".',
           'Optionally write "A note for today" and tap "Save note".',
@@ -2945,7 +2962,7 @@ export const HELP: HelpSection[] = [
         title: 'Write your own correspondences',
         summary: 'What things mean to you, beside the Library’s meanings.',
         steps: [
-          'Open Craft tools, then Eclectic, then "My correspondences".',
+          'Open Practice → Craft, then Eclectic, then "My correspondences".',
           'Tap "Add a correspondence".',
           'Name the thing, or pick it from the Library to see the traditional view beside yours.',
           'Write what it means to you. Optionally add element, planet, day, colour and where it came from.',
@@ -2959,7 +2976,7 @@ export const HELP: HelpSection[] = [
         title: 'Borrow a tool from every path',
         summary: 'The Eclectic page offers one tool from each practice, changing daily.',
         steps: [
-          'Open Craft tools, then Eclectic.',
+          'Open Practice → Craft, then Eclectic.',
           'Scroll to "From every path".',
           'Tap a tool to open that practice.',
         ],
@@ -2971,7 +2988,7 @@ export const HELP: HelpSection[] = [
         title: 'Learn whose land you are on',
         summary: 'A prompt to learn the Indigenous history of where you practise.',
         steps: [
-          'Open Craft tools, then Green, Hedge, or "Traditional & folk".',
+          'Open Practice → Craft, then Green, Hedge, or "Traditional & folk".',
           'Scroll to the card "Whose land are you on?".',
           'Tap "Open the Native Land map" to look up your place in your browser.',
         ],

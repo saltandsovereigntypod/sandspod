@@ -38,12 +38,12 @@ export const TOUR_PAGES: TourPage[] = [
   {
     icon: { tab: 'rituals' },
     title: 'Rituals by the moon',
-    body: 'Begin a premade ritual or spell, or plan your own for the right night and run it step by step. Journal it afterwards, and on the day you chose it asks: did it work?',
+    body: 'In Practice → Rituals, begin a premade ritual or spell, or plan your own for the right night and run it step by step. Journal it afterwards, and on the day you chose it asks: did it work?',
   },
   {
     icon: { tab: 'wheel' },
     title: 'Cards, runes and sigils',
-    body: 'Rituals → Divination draws tarot, runes, ogham, Lenormand, Kipper or a deck of your own in a spread laid out in its shape, and you can come back to the reading later. The sigil maker turns an intent into one mark, and both are open to every practice.',
+    body: 'Practice → Craft → Divination draws tarot, runes, ogham, Lenormand, Kipper or a deck of your own in a spread laid out in its shape, and you can come back to the reading later. The sigil maker turns an intent into one mark, and both are open to every practice.',
   },
   {
     icon: { tab: 'grimoire' },
@@ -53,7 +53,7 @@ export const TOUR_PAGES: TourPage[] = [
   {
     icon: { more: 'journey' },
     title: 'Your practice, your path',
-    body: 'Craft tools gathers tools for green, kitchen, hedge, cosmic, crystal, sea and folk craft. Dedication journeys, patron deities and the Closed & living traditions guide help you walk a path with care.',
+    body: 'Practice → Craft keeps Cycle & Moon, your birth chart and the Craft tools for green, kitchen, hedge, cosmic, crystal, sea and folk craft. Dedication journeys (under Rituals), patron deities and the Closed & living traditions guide help you walk a path with care.',
   },
   {
     icon: { tab: 'calendar' },

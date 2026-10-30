@@ -212,7 +212,7 @@
       : "";
 
     return [
-      fromGrimoire ? kit.back("/grimoire/", "Your Grimoire") : kit.back("/rituals/", "Rituals"),
+      fromGrimoire ? kit.back("/grimoire/", "Your Grimoire") : kit.back("/practice/", "Craft"),
       kit.head({
         eyebrow: fromGrimoire ? "Grimoire" : "For every practice",
         title: "Sigil maker",

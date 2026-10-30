@@ -45,7 +45,7 @@ const SYNC_LINE: Record<CycleState['sync'], string> = {
   'signed-out': 'Encrypted · kept on this phone only',
 };
 
-// Practice → Rituals → Cycle & Moon: the whole tool. Today shows one small
+// Practice → Craft → Cycle & Moon: the whole tool (its address stays /rituals/cycle). Today shows one small
 // card from it (components/cycle/CycleToday.tsx); the website's twin is
 // /rituals/cycle/.
 export default function CycleHome() {
@@ -55,7 +55,7 @@ export default function CycleHome() {
   const [recovery, setRecovery] = useState<string | null>(null);
 
   return (
-    <RitualScreen back="Rituals" onRefresh={refreshCycle}>
+    <RitualScreen back="Back" onRefresh={refreshCycle}>
       <Title eyebrow={moon.name}>Cycle &amp; Moon</Title>
       {cycle.phase === 'loading' && <ActivityIndicator />}
       {cycle.phase === 'new' && <Begin onRecovery={setRecovery} />}

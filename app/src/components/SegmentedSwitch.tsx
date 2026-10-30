@@ -1,5 +1,5 @@
-// The pill-shaped switch between two halves of a screen or tab: Grimoire |
-// Rituals at the top of Practice (PracticeSwitch), Today | Sky & Lore on
+// The pill-shaped switch between the parts of a screen or tab: Grimoire |
+// Rituals | Craft at the top of Practice (PracticeSwitch), Today | Sky & Lore on
 // Today, My covens | Find a coven on Coven. A tablist of tabs, so screen
 // readers hear which is chosen; labels grow with the reader's text size.
 

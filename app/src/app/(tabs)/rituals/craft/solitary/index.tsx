@@ -26,7 +26,7 @@ export default function SolitaryPractice() {
   const state = [kept?.morning ? 'Morning kept' : null, kept?.evening ? 'Evening kept' : null].filter(Boolean).join(' · ');
 
   return (
-    <RitualScreen back="Craft tools">
+    <RitualScreen back="Craft">
       <Title eyebrow="Craft tools">{about?.name ?? 'Solitary'}</Title>
       {!!about && <Body muted>{about.about}</Body>}
 
@@ -53,6 +53,12 @@ export default function SolitaryPractice() {
       </View>
 
       <List>
+        <Row
+          icon="wheel"
+          title="Dedication journeys"
+          detail="On Rituals · study, practice and a rite of self-dedication to a path or a god"
+          onPress={() => router.push('/rituals/journeys')}
+        />
         <Row
           icon="wheel"
           title="Premade workings"

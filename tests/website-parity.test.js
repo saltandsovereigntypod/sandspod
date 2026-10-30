@@ -271,5 +271,5 @@ test("the Altar and Book of Shadows guides know the drawers, workings, dreams an
   const altar = W.GUIDES.altar.steps.map((s) => s.join(" ")).join(" ");
   for (const word of ["Seasonal drawer", "potted plants", "offerings", "spell jar", "tonight’s altar", "did it work", "Coven → Altars"]) assert.ok(altar.toLowerCase().includes(word.toLowerCase()), word);
   const book = W.GUIDES.grimoire.steps.map((s) => s.join(" ")).join(" ");
-  for (const word of ["dreams", "ogham", "Practice → Rituals", "app"]) assert.ok(book.includes(word), word);
+  for (const word of ["dreams", "ogham", "Practice → Craft", "app"]) assert.ok(book.includes(word), word);
 });
