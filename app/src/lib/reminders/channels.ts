@@ -3,7 +3,7 @@
 
 import type { ReminderKind } from './schedule.ts';
 
-export type Channel = { id: string; name: string; description: string; quiet?: boolean };
+export type Channel = { id: string; name: string; description: string; quiet?: boolean; private?: boolean };
 
 export const CHANNELS: Channel[] = [
   // The first channel keeps its id, so reminders set before there were others stay where they were.
@@ -13,6 +13,8 @@ export const CHANNELS: Channel[] = [
   { id: 'planning-reminders', name: 'Ritual planning and coven rites', description: 'Time to plan a ritual for a holiday, and your covens’ rites.' },
   { id: 'practice-reminders', name: 'Daily practice', description: 'Morning and evening devotion, and the dream journal.', quiet: true },
   { id: 'summary-reminders', name: 'The day’s reminders together', description: 'One note for a busy day, in place of many.' },
+  // Worded discreetly, and hidden on the lock screen (notifier.ts), since anyone nearby might see it.
+  { id: 'private-reminders', name: 'Private notes', description: 'Cycle & Moon, only if you turn its reminders on. Hidden on the lock screen.', quiet: true, private: true },
 ];
 
 const BY_KIND: Record<ReminderKind, string> = {
@@ -33,6 +35,7 @@ const BY_KIND: Record<ReminderKind, string> = {
   devotion: 'practice-reminders',
   dream: 'practice-reminders',
   summary: 'summary-reminders',
+  cycle: 'private-reminders',
 };
 
 /** The channel a reminder rings on. */

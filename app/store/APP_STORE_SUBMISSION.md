@@ -158,6 +158,17 @@ Two judgement calls, explained so you can decide:
   aggregate. Most Expo apps don't declare this; if you want to be maximally
   careful, add Identifiers → Device ID as *not linked*, App Functionality.
 
+**Cycle & Moon (menstrual cycle notes).** Its notes are end-to-end encrypted
+(only ciphertext reaches Supabase; we hold no key), and the "in moon time"
+status a person may choose to show their covens is stored as written. Careful
+answer: add **Health & Fitness → Health**, Linked: Yes, Tracking: No, App
+Functionality only, and say in review notes that cycle notes are encrypted on
+the device and never used for ads, analytics or anything else. (Apple lets
+end-to-end encrypted data go undeclared in some cases, but the plaintext
+status is health-adjacent, so declaring it is the safer choice.) Nothing from
+it goes to HealthKit, advertising or analytics; reminders are local and
+discreet by default.
+
 The Privacy Policy on this branch now covers coven conversations, push tokens,
 photos for oracle decks, the weather service and what deletion keeps; deploy
 the website before you submit.

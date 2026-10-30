@@ -54,6 +54,8 @@ async function ensureChannel() {
       description: channel.description,
       importance: channel.quiet ? Notifications.AndroidImportance.DEFAULT : Notifications.AndroidImportance.HIGH,
       lightColor: '#e2c36d',
+      // Private notes show only "Salt & Sovereignty" on a locked screen.
+      ...(channel.private ? { lockscreenVisibility: Notifications.AndroidNotificationVisibility.PRIVATE } : {}),
     });
   }
   channelsMade = true;

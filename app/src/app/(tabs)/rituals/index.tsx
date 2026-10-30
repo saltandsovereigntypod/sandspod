@@ -94,8 +94,14 @@ export default function RitualsHome() {
             icon="wheel"
             title="Divination"
             detail="Draw cards, runes or ogham · your readings, decks and card meanings"
-            last
             onPress={() => router.push('/rituals/divination')}
+          />
+          <Row
+            icon="today"
+            title="Cycle & Moon"
+            detail="Your cycle beside the moon, or the moon alone · private and encrypted"
+            last
+            onPress={() => router.push('/rituals/cycle')}
           />
         </List>
       </View>

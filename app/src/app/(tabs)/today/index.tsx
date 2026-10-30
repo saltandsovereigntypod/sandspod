@@ -5,6 +5,7 @@ import { Pressable, StyleSheet, Text, useWindowDimensions, View } from 'react-na
 import { Button } from '../../../components/Button';
 import { CovenToday } from '../../../components/covens/CovenToday';
 import { TendToday } from '../../../components/tend/TendToday';
+import { CycleToday } from '../../../components/cycle/CycleToday';
 import { CalendarLineList, LeadCalendarLine } from '../../../components/CalendarLines';
 import { Icon } from '../../../components/Icon';
 import { MoonDisc } from '../../../components/MoonDisc';
@@ -192,6 +193,8 @@ export default function Today() {
           <CovenToday />
 
           <TendToday />
+
+          <CycleToday />
 
           <LookBackDue journal={rituals.journal} now={now} />
 

@@ -66,7 +66,7 @@ Limits are Google's; counts are noted where they're tight.
   - Instructions: `Sign in on the Welcome screen with email. Sign-in is optional: "Continue as a guest" uses the app without an account.`
 - **Content rating** (IARC questionnaire): category **Reference, News, or Educational** isn't right; choose **All other app types**. Answer **No** to violence, sexuality, language, controlled substances, gambling and crude humour. **Yes** to "users can interact or exchange content" (the Community Grimoire; posts are moderated before they appear). **No** to sharing location with other users, **No** to digital purchases. Expect a Teen / 12+ rating.
 - **Target audience:** 13–15, 16–17 and 18+ (do not include anything under 13; the app isn't for children). "Could it unintentionally appeal to children?" No.
-- **News app:** No. **Government app:** No. **Financial features:** none. **Health:** none (the Living Library's herbal uses are traditional reference, with warnings, not medical features).
+- **News app:** No. **Government app:** No. **Financial features:** none. **Health:** Cycle & Moon keeps optional, end-to-end encrypted menstrual-cycle notes (see Data safety); the Living Library's herbal uses are traditional reference, with warnings, not medical features.
 - **Data deletion** (asked inside Data safety): users can delete their account in the app (More → Account → Delete account) and at https://saltandsovereignty.com/delete-account.html
 
 ## Data safety
@@ -85,7 +85,11 @@ Limits are Google's; counts are noted where they're tight.
 | App activity → Other user-generated content (altars, grimoire, rituals, notes, community posts) | Yes | Optional | App functionality |
 | Messages → Other in-app messages (community reports and moderator replies) | Yes | Optional | App functionality, Customer support |
 
-Not collected: location (used on the phone only, for sunrise and planetary hours), financial info, health, contacts, calendar (events are written to the phone only), files, audio, web browsing, app info and performance, device IDs.
+| Health and fitness → Health info (Cycle & Moon: encrypted cycle notes, and an optional "in moon time" status shown to chosen covens) | Yes | Optional | App functionality |
+
+Cycle & Moon is a menstrual-cycle feature: complete Play Console's **Health apps declaration** (App content → Health apps; choose "Period tracking" or the nearest), and state that the notes are end-to-end encrypted, never used for ads or analytics, and deletable in the app ("Delete all my Cycle & Moon data") and with the account.
+
+Not collected: location (used on the phone only, for sunrise and planetary hours), financial info, contacts, calendar (events are written to the phone only), files, audio, web browsing, app info and performance, device IDs.
 
 ## Release notes (first release)
 

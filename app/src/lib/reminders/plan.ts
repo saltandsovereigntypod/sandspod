@@ -58,6 +58,8 @@ export type PlanInput = {
   covens?: CovenSource[];
   /** Your To tend list's choices (`tend.rhythms`): those with a reminder ring by their rhythm. */
   tend?: TendRecord[];
+  /** Cycle & Moon's notes (cycle/reminders.ts), when chosen there: the phone only, never the website's calendar file. */
+  cycle?: Omit<Reminder, 'kind'>[];
   place?: Place | null;
   now: Date;
   horizonDays?: number;
@@ -444,7 +446,7 @@ function candleReminders(prefs: ReminderPrefs, sources: TendingSources, now: Dat
 /** Reminders that are about a set moment: they come before quiet hours rather than after, and are never gathered. */
 export const isUrgent = (r: Pick<Reminder, 'kind' | 'key'>) => r.kind === 'ritual' || r.kind === 'coven' || r.key.startsWith('candle-end:') || r.key.startsWith('moon-exact:');
 
-/** Gathered into the day's note when there are many: everything but the moon, rituals, rites and the daily practices. */
+/** Gathered into the day's note when there are many: everything but the moon, rituals, rites, the daily practices and Cycle & Moon's private notes. */
 const GATHERED = new Set<ReminderKind>(['holiday', 'deipnon', 'sacred', 'planning', 'lookback', 'offering', 'watering', 'altar', 'crystal', 'candle', 'tend']);
 
 const PRIORITY: Record<ReminderKind, number> = {
@@ -463,6 +465,7 @@ const PRIORITY: Record<ReminderKind, number> = {
   crystal: 2,
   candle: 2,
   tend: 2,
+  cycle: 3,
   devotion: 1,
   dream: 1,
 };
@@ -579,7 +582,8 @@ export function planReminders(input: PlanInput, options: { cap?: number; gather?
   const prefs = input.prefs ?? readPrefs(input.appSettings, input.legacy as LegacyReminders);
   // Sacred days, offerings and watering now come from the prefs (and the Deipnon with the holidays), so the older switches don't ring them twice.
   const device = buildSchedule({ ...input.legacy, sacredDays: false, offerings: false, watering: false }, input.plans ?? [], now, horizonDays, [], input.lookBacks ?? [], [], [], [], Infinity);
-  let list = [...settle(device, prefs, now, horizonDays), ...calendarReminders({ ...input, prefs, horizonDays })];
+  const cycle = settle((input.cycle ?? []).map((r): Reminder => ({ ...r, kind: 'cycle' })), prefs, now, horizonDays);
+  let list = [...settle(device, prefs, now, horizonDays), ...calendarReminders({ ...input, prefs, horizonDays }), ...cycle];
   if (options.gather !== false && prefs.bundle.on) list = gather(list, prefs.bundle.max);
   return choose(list, options.cap ?? MAX_REMINDERS, now);
 }

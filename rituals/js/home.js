@@ -86,6 +86,7 @@
           ${UI.row({ href: "/rituals/spell/", title: "Build a spell", detail: "Ingredients from the Library, steps to follow" })}
           ${UI.row({ href: "/sigil/", title: "Sigil maker", detail: "An intent made into one mark, from its letters or a planetary square" })}
           ${UI.row({ href: "/divination/", title: "Divination", detail: "Draw cards, runes or ogham · your readings, decks and card meanings" })}
+          ${UI.row({ href: "/rituals/cycle/", title: "Cycle & Moon", detail: "Your cycle beside the moon, or the moon alone · private and encrypted" })}
         </nav>
       </section>`;
     const learnList = `

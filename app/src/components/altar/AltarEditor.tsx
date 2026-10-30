@@ -241,7 +241,7 @@ import { useLibrary } from '../../lib/library';
 import { setAltarFullScreen } from '../../lib/altarFullScreen';
 import { canTurnScreen, turnScreen } from '../../lib/screenOrientation';
 import { useMySettings } from '../../lib/settings/store';
-import { shrineAltar, tonightAltar } from '../../lib/altar/tonight';
+import { moonTimeAltar, shrineAltar, tonightAltar } from '../../lib/altar/tonight';
 import { TRADITIONAL_LIBRARY } from '../../lib/library/traditionalData';
 import { hiddenTraditions, holidayChoice, holidaysToday } from '../../lib/holidays';
 import { moonState } from '../../lib/moon';
@@ -425,6 +425,12 @@ export function AltarEditor({ shared, header, overlay, onBack, whose }: { shared
       start(tonight.doc, null, 'Tonight’s Altar');
       setTonight({ altar: tonight, date: night });
       setNotice(`Set for ${tonight.reason}. Move, swap or add anything, then Save to keep it.`);
+      return;
+    }
+    if (altarId === 'moon-time') {
+      // From Cycle & Moon, while bleeding (when chosen there): a starter altar from the cabinet. Nothing is saved until Save.
+      start(moonTimeAltar(new Date()).doc, null, 'Moon-Time Altar');
+      setNotice('A moon-time altar: a moon bowl, red candles and a red cord, moonstone and red jasper, mugwort and rose. Move, swap or add anything, then Save to keep it.');
       return;
     }
     if (altarId === 'shrine' && deity) {

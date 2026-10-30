@@ -217,6 +217,7 @@
           workingCard(m) +
           `<div data-coven-today>${window.CovenToday?.html?.() || ""}</div>` +
           `<div data-tend-today>${window.TendToday?.html?.() || ""}</div>` +
+          `<div data-cycle-today>${window.CycleToday?.html?.() || ""}</div>` +
           lookBackCard(m) +
           dreamCard(m) +
           deipnonCard(m) +
