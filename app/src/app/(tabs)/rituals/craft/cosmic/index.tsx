@@ -15,7 +15,7 @@ import { usePlace } from '../../../../../lib/location';
 import { PRACTICES } from '../../../../../lib/rituals/premade';
 import { type } from '../../../../../theme';
 
-const ROUTES = ['/rituals/craft/cosmic/chart', '/rituals/craft/cosmic/hours', '/rituals/craft/cosmic/learn'];
+const ROUTES = ['/rituals/craft/cosmic/chart', '/rituals/craft/cosmic/hours', '/rituals/craft/cosmic/course'];
 
 // Cosmic & celestial practice: your charts, the planetary days and hours, and learning astrology.
 export default function CosmicPractice() {
@@ -57,6 +57,7 @@ export default function CosmicPractice() {
           {tools.map((tool, i) => (
             <Row key={tool.title} icon={i === 1 ? 'calendar' : 'wheel'} title={tool.title} detail={details[i] ?? tool.detail} onPress={() => router.push(ROUTES[i] as Href)} />
           ))}
+          <Row icon="wheel" title="Astrology glossary" detail="Every term explained, simply or in depth" onPress={() => router.push('/rituals/craft/cosmic/learn' as Href)} />
           <Row
             icon="wheel"
             title="All charts"

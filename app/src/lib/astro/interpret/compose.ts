@@ -9,7 +9,25 @@ import { PLANET_RULES, SIGN_STYLE } from '../meanings.ts';
 import { positionOf, type Chart, type Position } from '../natal.ts';
 import type { Planet } from '../planets.ts';
 import { DIGNITY_LABEL, MODERN_RULER, SIGNS, TRADITIONAL_RULER, type ChartPointName } from '../signs.ts';
-import { aspectReading, balanceReading, houseMeaning, inHouse, inSign, patternReading, rulerReading, signOnCusp, type Interpretation } from './registry.ts';
+import type { ProgressedPhase, ReturnChart, TransitHit } from '../forecast.ts';
+import {
+  aspectReading,
+  balanceReading,
+  chartRulerReading,
+  houseMeaning,
+  inHouse,
+  inSign,
+  patternReading,
+  progressedMoonHouse,
+  progressedMoonSign,
+  progressedPhaseReading,
+  returnGuide,
+  returnHouseReading,
+  rulerReading,
+  signOnCusp,
+  transitReading,
+  type Interpretation,
+} from './registry.ts';
 
 export type ReadingPiece =
   | { status: 'ready'; title: string; reading: Interpretation; terms: string[] }
@@ -76,6 +94,15 @@ export function composeReading(chart: Chart): ReadingSection[] {
         title: 'Your chart ruler',
         intro: `With ${chart.ruler.sign} rising, your chart ruler is ${chart.ruler.traditional}${modern}. It sits in ${r.sign}${r.house ? `, in the ${ordinalHouse(r.house)}` : ''}.`,
         pieces: [
+          piece(
+            `${chart.ruler.traditional} rules your chart`,
+            chartRulerReading(chart.ruler.traditional),
+            `${chart.ruler.traditional} (${PLANET_RULES[chart.ruler.traditional as Planet]}) steers the whole chart.`,
+            ['chart-ruler', termId(chart.ruler.traditional)],
+          ),
+          ...(chart.ruler.modern !== chart.ruler.traditional
+            ? [piece(`${chart.ruler.modern}, the modern co-ruler`, chartRulerReading(chart.ruler.modern), `${chart.ruler.modern} (${PLANET_RULES[chart.ruler.modern]}) also colours the chart.`, ['chart-ruler', termId(chart.ruler.modern)])]
+            : []),
           piece(
             `${chart.ruler.traditional} in the ${r.house ? ordinalHouse(r.house) : 'chart'}`,
             r.house ? rulerReading(chart.ruler.traditional, r.house) : null,
@@ -166,10 +193,62 @@ export function composeReading(chart: Chart): ReadingSection[] {
     piece(`Mostly ${b.dominantElement}`, balanceReading('dominant', b.dominantElement), `The ${b.dominantElement} signs are strongest in your chart.`, ['elements', b.dominantElement]),
     ...b.missingElements.map((e) => piece(`No ${e}`, balanceReading('missing', e), `No planet is in a ${e} sign; many people find they seek ${e} in others or grow it with care.`, ['elements', e])),
     piece(`Mostly ${b.dominantModality}`, balanceReading('dominant', b.dominantModality), `Cardinal starts, fixed sustains, mutable adapts: you lean ${b.dominantModality}.`, ['modalities', b.dominantModality]),
+    ...(['cardinal', 'fixed', 'mutable'] as const)
+      .filter((m) => b.modalities[m].points.length === 0)
+      .map((m) => piece(`No ${m}`, balanceReading('missing', m), `No planet is in a ${m} sign.`, ['modalities', m])),
   ];
+  const polar = b.polarity.yang.score === b.polarity.yin.score ? null : b.polarity.yang.score > b.polarity.yin.score ? 'yang' : 'yin';
+  if (polar) balance.push(piece(`Mostly ${polar}`, balanceReading('dominant', polar), `The ${polar} signs lead in your chart.`, ['polarity']));
+  for (const side of leaningSides(b)) {
+    const label = { above: 'Mostly above the horizon', below: 'Mostly below the horizon', east: 'Mostly on the eastern side', west: 'Mostly on the western side' }[side];
+    balance.push(piece(label, balanceReading('dominant', side), `Most of your planets are on the ${side} side of the chart.`, ['houses']));
+  }
+  const q = leadingQuadrant(b);
+  if (q) balance.push(piece(`Mostly in quadrant ${q}`, balanceReading('dominant', `quadrant-${q}`), `Most of your planets are in houses ${q * 3 - 2} to ${q * 3}.`, ['houses']));
   sections.push({ id: 'balance', title: 'Balance', pieces: balance });
 
   return sections;
+}
+
+/** The halves of the chart holding at least seven of the ten planets. */
+export function leaningSides(b: Chart['balance']): ('above' | 'below' | 'east' | 'west')[] {
+  if (!b.hemispheres) return [];
+  return (['above', 'below', 'east', 'west'] as const).filter((side) => b.hemispheres![side].length >= 7);
+}
+
+/** The quadrant holding the most planets, when it holds at least four and more than any other. */
+export function leadingQuadrant(b: Chart['balance']): number | null {
+  if (!b.quadrants) return null;
+  const counts = b.quadrants.map((q) => q.length);
+  const max = Math.max(...counts);
+  return max >= 4 && counts.filter((c) => c === max).length === 1 ? counts.indexOf(max) + 1 : null;
+}
+
+/** A transit as a reading piece, for the transits list. */
+export function transitPiece(h: Pick<TransitHit, 'transiting' | 'aspect' | 'natal'>): ReadingPiece {
+  const def = aspectDef(h.aspect);
+  return piece(
+    `Transiting ${h.transiting} ${h.aspect} natal ${h.natal}`,
+    transitReading(h.transiting, h.aspect, h.natal),
+    `${h.transiting} (${PLANET_WORDS[h.transiting] ?? h.transiting}) is passing ${def.tone === 'soft' ? 'in easy aspect to' : def.tone === 'hard' ? 'in hard aspect to' : 'over'} your ${h.natal} (${PLANET_WORDS[h.natal] ?? h.natal}).`,
+    ['transit', termId(h.transiting), h.aspect, termId(h.natal)],
+  );
+}
+
+/** The progressed Moon's sign, natal house and phase, as reading pieces. */
+export function progressedPieces(p: { moon: { position: Position; natalHouse: number | null }; phase: ProgressedPhase }): ReadingPiece[] {
+  const out = [piece(`Progressed Moon in ${p.moon.position.sign}`, progressedMoonSign(p.moon.position.sign), `An emotional chapter coloured ${SIGN_STYLE[p.moon.position.sign]}.`, ['progressions', 'moon', termId(p.moon.position.sign)])];
+  if (p.moon.natalHouse) out.push(piece(`Progressed Moon in your ${ordinalHouse(p.moon.natalHouse)}`, progressedMoonHouse(p.moon.natalHouse), houseSketch({ ...p.moon.position, house: p.moon.natalHouse }), ['progressions', `house-${p.moon.natalHouse}`]));
+  out.push(piece(`Progressed ${p.phase} phase`, progressedPhaseReading(p.phase), `The progressed lunar phase is ${p.phase.toLowerCase()}.`, ['progressions', 'moon-phases']));
+  return out;
+}
+
+/** How to read a return, and its light's house. */
+export function returnPieces(r: Pick<ReturnChart, 'kind' | 'chart'>): ReadingPiece[] {
+  const light = positionOf(r.chart, r.kind === 'solar' ? 'Sun' : 'Moon');
+  const out: ReadingPiece[] = [{ status: 'ready', title: r.kind === 'solar' ? 'Reading a solar return' : 'Reading a lunar return', reading: returnGuide(r.kind), terms: [r.kind === 'solar' ? 'solar-return' : 'lunar-return', 'returns'] }];
+  if (light?.house) out.push(piece(`The ${light.point} in the return's ${ordinalHouse(light.house)}`, returnHouseReading(r.kind, light.house), houseSketch(light), [`house-${light.house}`]));
+  return out;
 }
 
 /** How many pieces are written, of how many shown, for a gentle progress note. */

@@ -27,3 +27,5 @@ export * as chartInput from '../../app/src/lib/craft/cosmic/chart.ts';
 export * as calendar from '../../app/src/lib/calendar.ts';
 export * as moon from '../../app/src/lib/moon.ts';
 export * as holyRefs from '../../app/src/lib/holy/refs.ts';
+// "In your chart" for the Learn Astrology course page (the course itself is js/core/astro-course.js).
+export * as courseChart from '../../app/src/lib/astro/course/yourChart.ts';

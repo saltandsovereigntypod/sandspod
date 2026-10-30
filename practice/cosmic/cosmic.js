@@ -148,7 +148,7 @@
 
   function aspectCard(a, transit) {
     const def = A.aspects.aspectDef(a.aspect);
-    const reading = transit ? null : A.interpret.aspectReading(a.a, a.aspect, a.b);
+    const reading = transit ? A.interpret.transitReading(a.a, a.aspect, a.b) : A.interpret.aspectReading(a.a, a.aspect, a.b);
     const tone = def.tone === "soft" ? "an easy flow between them" : def.tone === "hard" ? "friction that asks for effort and grows strength" : def.tone === "blend" ? "the two acting as one" : "a subtle link";
     const w = A.meanings.PLANET_RULES;
     return explainCard({
@@ -189,13 +189,13 @@
     const hour = place ? A.hours.currentHour(now, place) : null;
     const line = chart ? A.craftLinks.todayLine(chart, now) : null;
     const details = [chart ? A.natal.bigThreeLine(chart) : null, hour ? `${hour.planet} hour until ${timeOfDay(hour.end)}` : null, null];
-    const routes = ["/practice/cosmic/chart/", "/practice/cosmic/hours/", "/practice/cosmic/learn/"];
+    const routes = ["/practice/cosmic/chart/", "/practice/cosmic/hours/", "/practice/cosmic/course/"];
     root.innerHTML = [
       h.head("Craft tools", "Cosmic & celestial", { href: links.hub, label: "Craft tools" }),
       about ? h.muted(about) : "",
       hour ? h.card(`${h.label("This hour")}<h2 class="pb-card-title">${tx(`The hour of ${hour.planet}`)}</h2>${h.muted(`Until ${timeOfDay(hour.end)}. Good for ${A.cosmicHours.HOUR_SUITS[hour.planet].short}.`)}`, { gold: true }) : "",
       line ? h.card(`${h.label("The sky on your chart today")}${ptx(line.line)}<a class="astro-link" href="${esc(url.chart(null, "transits"))}">All your transits ›</a>`) : "",
-      h.section("Tools", h.list([...tools.map((tool, i) => h.row({ href: routes[i], title: tool.title, detail: details[i] ?? tool.detail })), h.row({ href: "/practice/cosmic/charts/", title: "All charts", detail: ST.state.data.charts.length ? `${ST.state.data.charts.length} kept, privately · synastry` : "Yours and others’, kept privately" })], "Cosmic tools")),
+      h.section("Tools", h.list([...tools.map((tool, i) => h.row({ href: routes[i], title: tool.title, detail: details[i] ?? tool.detail })), h.row({ href: "/practice/cosmic/learn/", title: "Astrology glossary", detail: "Every term explained, simply or in depth" }), h.row({ href: "/practice/cosmic/charts/", title: "All charts", detail: ST.state.data.charts.length ? `${ST.state.data.charts.length} kept, privately · synastry` : "Yours and others’, kept privately" })], "Cosmic tools")),
       h.list([
         h.row({ href: "/today/sky/", title: "The sky today", detail: "Planets, retrogrades and eclipses" }),
         h.row({ href: links.premadeFor("cosmic"), title: "Cosmic workings", detail: "Premade rituals and spells; filter by Cosmic & celestial" })
@@ -410,6 +410,8 @@
       ].join("");
     };
 
+    const pieceHtml = (p) => (p.status === "ready" ? explainCard({ title: p.title, reading: p.reading, terms: p.terms }) : h.card(`${h.cardTitle(p.title)}${ptx(p.sketch)}${h.caption("Full reading coming soon.")}${termChips(p.terms)}`));
+
     const readingTab = (chart) => {
       const sections = A.compose.composeReading(chart);
       const progress = A.compose.readingProgress(sections);
@@ -418,7 +420,7 @@
           h.section(
             sec.title,
             `${sec.intro ? ptx(sec.intro) : ""}${sec.pieces
-              .map((p) => (p.status === "ready" ? explainCard({ title: p.title, reading: p.reading, terms: p.terms }) : h.card(`${h.cardTitle(p.title)}${ptx(p.sketch)}${h.caption("Full reading coming soon.")}${termChips(p.terms)}`)))
+              .map(pieceHtml)
               .join("")}`
           )
         )
@@ -476,7 +478,7 @@
           const lit = A.natal.positionOf(r.chart, r.kind === "solar" ? "Sun" : "Moon");
           return h.card(
             `${h.label(r.kind === "solar" ? `Solar return ${view.year}` : "Next lunar return")}${h.cardTitle(`${shortDate(r.when)} ${r.when.getFullYear()}, ${timeOfDay(r.when)}`)}${ptx(A.natal.bigThreeLine(r.chart))}${r.chart.houses && lit?.house ? ptx(`${r.kind === "solar" ? "The Sun" : "The Moon"} falls in the return's ${ordinal(lit.house)}: ${r.kind === "solar" ? "a focus for the year" : "a focus for the month"}.`) : ""}<div class="astro-wheel-wrap">${W.chart(A, r.chart, { size, noAspects: true })}</div>${h.muted(`Cast for ${r.placeLabel || (chart.placeKnown ? "the birthplace" : "no place (no houses)")}. Times are in this browser’s time zone.`)}`
-          );
+          ) + A.compose.returnPieces(r).map(pieceHtml).join("");
         }),
         termChips(["returns", "solar-return", "lunar-return"])
       ].join("");
@@ -491,6 +493,7 @@
           `${h.label("The progressed Moon")}<h2 class="pb-card-title">${tx(`Progressed Moon in ${m.position.sign}`)}</h2>${h.p(`${A.natal.formatDegree(m.position)}${m.natalHouse ? ` · in your natal ${ordinal(m.natalHouse)}` : ""}`)}${m.nextSign ? ptx(`It enters ${m.nextSign.sign} around ${shortDate(m.nextSign.date)} ${m.nextSign.date.getFullYear()}: a new emotional chapter, about every two and a half years.`) : ""}${ptx(`Progressed lunar phase: ${p.phase} (${Math.round(p.phaseAngle)}° from the progressed Sun), part of a thirty-year cycle.`)}`,
           { gold: true }
         ),
+        A.compose.progressedPieces(p).map(pieceHtml).join(""),
         p.ascendant && p.midheaven ? ptx(`By solar arc, the progressed Ascendant is in ${p.ascendant.sign} and the progressed Midheaven in ${p.midheaven.sign}.`) : "",
         p.changedSign.length ? h.card(`${h.label("Changed sign since birth")}${p.changedSign.map((c) => ptx(`${c.point}: ${c.from} → ${c.to}`)).join("")}`) : "",
         p.stationed.length ? ptx(`Turned direction by progression: ${p.stationed.join(", ")}.`) : "",
@@ -1060,7 +1063,8 @@
       PB.paint(
         root,
         [
-          h.head("Cosmic & celestial", "Learn astrology", HUB),
+          h.head("Cosmic & celestial", "Astrology glossary", HUB),
+          `<a class="astro-link" href="/practice/cosmic/course/">New to astrology? Take the course, from the very beginning ›</a>`,
           ptx("Everything in a birth chart, explained from the beginning. Start with The basics, then the planets, signs and houses; every underlined word anywhere opens its own explanation."),
           h.muted("Simple gives a sentence or two. Detailed adds the astronomy, the history, how different traditions read it, its use in the craft, and what to take care over."),
           h.chips(["simple", "detailed"].map((l) => h.chip(l === "simple" ? "Simple" : "Detailed", { pressed: (T ? T.level : "simple") === l, attrs: { "data-action": "level", "data-value": l } })), "Explanations everywhere"),
@@ -1173,6 +1177,7 @@
     "cosmic-hours": hoursPage,
     "cosmic-planet": planetPage,
     "cosmic-learn": learnPage,
+    "cosmic-course": (root, user) => window.SaltAstroCourse && window.SaltAstroCourse.page(root, user),
     "cosmic-keep": keepPage
   };
   const view = document.querySelector("[data-page-root]")?.getAttribute("data-view");
