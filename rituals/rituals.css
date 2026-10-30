@@ -114,3 +114,9 @@ a.sp-chip { display: inline-flex; align-items: center; }
 .rt-works { display: grid; gap: 2px; }
 .rt-works__label { width: 150px; }
 .rt-bar__track.is-faint > span { opacity: 0.45; }
+
+/* Community Rituals (rituals/js/community.js). */
+.rt-card-title { font-family: "Cormorant Garamond", serif; font-size: 1.5rem; line-height: 1.15; margin: 0; }
+.rt-check-row { display: flex; gap: 10px; align-items: flex-start; }
+.rt-check-row input { margin-top: 4px; }
+[data-share-form] { display: grid; gap: 16px; }

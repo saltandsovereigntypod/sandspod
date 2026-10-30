@@ -143,6 +143,8 @@ async function addHandoffToRitualSession(handoff, user) {
   const extra = {};
   if (Array.isArray(handoff.ingredients) && handoff.ingredients.length) extra.ingredients = handoff.ingredients;
   if (handoff.premadeId) extra.premadeId = handoff.premadeId;
+  // Done once from Community Rituals, kept as the app keeps it (lib/rituals/community.ts communityOrigin).
+  if (handoff.community?.id) extra.from = { kind: "community", id: handoff.community.id, credit: handoff.community.credit || "" };
   if (handoff.closing) extra.closing = handoff.closing;
   if (handoff.altarId) extra.ranOnAltar = handoff.altarId;
   // The plan it was begun from, so a reading drawn before it shows beside "Did it work?".

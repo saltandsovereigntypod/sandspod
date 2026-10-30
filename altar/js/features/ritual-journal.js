@@ -328,6 +328,14 @@ async function saveRitualJournal(form, saveMode = "journal") {
   return ritual;
 }
 
+/** A ritual done once from Community Rituals: offer to keep it, as the app's journal page does. */
+function communityKeepLink() {
+  const from = pendingRitualJournalSession?.metadata?.from;
+  if (!from || from.kind !== "community" || !from.id) return "";
+  return `<p>${escapeRitualHtml(from.credit ? `${from.credit}. Add it to your rituals to do it again or change it.` : "Add it to your rituals to do it again or change it.")}</p>
+      <a class="ritual-journal-button" href="/rituals/community/?id=${encodeURIComponent(from.id)}&keep=1">Add it to my rituals</a>`;
+}
+
 function renderRitualJournalSaved(ritual) {
   const { eyebrow, title, content } = getRitualCompanionElements();
   if (eyebrow) eyebrow.textContent = "Completed Ritual";
@@ -339,6 +347,7 @@ function renderRitualJournalSaved(ritual) {
       <p class="ritual-companion-kicker">Held in My Practice</p>
       <h3 class="ritual-companion-title">${escapeRitualHtml(ritual.title)}</h3>
       <p>Your reflections, altar details, timing, and Living Library connections have been saved as one ritual record.</p>
+      ${communityKeepLink()}
       <a class="ritual-journal-button is-primary" href="../grimoire/?entity=${encodeURIComponent(`ritual:${ritual.id}`)}">View in My Practice</a>
       <button type="button" class="ritual-journal-button is-primary" data-close-ritual-journal>Return to the Altar</button>
     </div>

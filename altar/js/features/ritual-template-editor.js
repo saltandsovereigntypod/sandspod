@@ -233,8 +233,10 @@ function renderRitualTemplateForm(template = null) {
         <button class="ritual-template-action-button is-primary" type="submit">
           ${template ? "Save Changes" : "Save Ritual Template"}
         </button>
+        ${template ? `<a class="ritual-template-action-button" href="/rituals/community/?share=1&template=${encodeURIComponent(template.id)}">Share with the community</a>` : ""}
         ${template ? `<button class="ritual-template-action-button is-danger" type="button" data-archive-ritual-template="${template.id}">Archive Template</button>` : ""}
       </div>
+      ${template?.metadata?.from?.credit ? `<p class="ritual-template-status">${ritualTemplateEscape(template.metadata.from.credit)}</p>` : ""}
       <p class="ritual-template-status" data-ritual-template-status role="status"></p>
     </form>
   `;
@@ -451,7 +453,8 @@ async function saveRitualTemplateFromEditor(form) {
       ...(ritualTemplateEditorState.templates.find((item) => item.id === templateId)?.settings || {}),
       candle_end_behavior: window.RitualLifecycle?.normalizeCandleEndBehavior?.(String(formData.get("candle_end_behavior") || "ask_at_end")) || "ask_at_end"
     },
-    metadata: { editorVersion: 1 }
+    // Keep what the template already holds (a spell's kind and ingredients, where it was copied from).
+    metadata: { ...(ritualTemplateEditorState.templates.find((item) => item.id === templateId)?.metadata || {}), editorVersion: 1 }
   };
 
   let savedTemplate;

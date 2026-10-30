@@ -161,6 +161,8 @@ export function createSession(
     linkedAltarId = d.linked_altar_id;
     steps = stepsFromDraft(d.steps);
     if (d.ingredients.length) metadata = { ...metadata, ingredients: d.ingredients };
+    // Done once from Community Rituals: kept, so the end can offer to save it.
+    if (d.from) metadata = { ...metadata, from: d.from };
   } else {
     title = source.title.trim() || 'Untitled Ritual';
     intention = source.intention.trim() || null;
@@ -541,6 +543,38 @@ export function draftFromTemplate(template: TemplateRow | null): TemplateDraft {
     })),
     ingredients,
     kind: template.metadata?.kind === 'spell' ? 'spell' : 'template',
+    ...(template.metadata?.from && typeof template.metadata.from === 'object' ? { from: template.metadata.from as Record<string, unknown> } : {}),
+  };
+}
+
+/**
+ * A ritual already done (a session) as a new template: its title, intention
+ * and steps as they were, ready to keep and change. Pure.
+ */
+export function draftFromSession(session: RitualSession): TemplateDraft {
+  const meta = session.metadata ?? {};
+  const ingredients = Array.isArray(meta.ingredients) ? (meta.ingredients as TemplateDraft['ingredients']) : [];
+  return {
+    id: null,
+    title: session.title || 'Untitled Ritual',
+    intention: session.intention ?? '',
+    preparation: '',
+    closing: typeof meta.closing === 'string' ? meta.closing : '',
+    linked_altar_id: session.linked_altar_id,
+    grimoire_page_id: null,
+    steps: [...session.session_steps]
+      .sort((a, b) => a.sort_order - b.sort_order)
+      .map((s) => ({
+        id: null,
+        title: s.title,
+        instructions: s.instructions ?? '',
+        spoken_text: s.spoken_text ?? '',
+        minutes: secondsToMinutes(s.duration_seconds),
+        completion_mode: s.completion_mode === 'timed' ? 'timed' : 'manual',
+        actions: Array.isArray(s.actions) ? s.actions : [],
+      })),
+    ingredients,
+    kind: 'template',
   };
 }
 

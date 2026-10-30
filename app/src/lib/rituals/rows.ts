@@ -103,6 +103,7 @@ export function templatePayload(
   const metadata: Record<string, unknown> = { editorVersion: 1, app: 'mobile' };
   if (draft.kind === 'spell') metadata.kind = 'spell';
   if (draft.ingredients.length) metadata.ingredients = draft.ingredients;
+  if (draft.from) metadata.from = draft.from;
 
   return {
     template: {

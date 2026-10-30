@@ -88,6 +88,8 @@
     "community-browse": "Open More, then Community Grimoire.",
     "community-offer": "Open More, then Offer to the Sanctuary.",
     "community-my-submissions": "Open More, then My Submissions.",
+    "ritual-community-share": "On the website, open Practice → Rituals, then Community Rituals, and choose Share a ritual. A coven’s templates are listed there too for those who lead its rituals, and the altar’s template editor has Share with the community for a saved template.",
+    "ritual-community-find": "On the website, open Practice → Rituals, then Community Rituals. Do it once opens the ritual at the altar’s Ritual Companion, and the journal page at the end offers to add it to your rituals.",
   };
 
   // App screens and where they live on the website. Anything not listed keeps
@@ -127,6 +129,8 @@
     "/more/community/offer": "/submit/",
     "/more/community/terms": "/submission-terms.html",
     "/more/community/mine": "/?sanctuary=submissions",
+    "/rituals/community": "/rituals/community/",
+    "/rituals/community/share": "/rituals/community/?share=1",
     "/rituals/reminders": "/reminders/",
     "/today/reminders": "/reminders/",
     "/more/reminders": "/reminders/",

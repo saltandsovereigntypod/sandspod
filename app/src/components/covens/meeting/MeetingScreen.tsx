@@ -3,6 +3,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Alert, ScrollView, StyleSheet, Text, useWindowDimensions, View } from 'react-native';
 
 import { Button } from '../../Button';
+import { KeepRitual } from '../KeepRitual';
 import { Card, Chips, Field, MenuList, Notice, Section } from '../../more/ui';
 import { Composer, ThreadRow, useMessageActions } from '../Chat';
 import { CovenScreen, covenHref } from '../CovenScreen';
@@ -469,6 +470,7 @@ export function MeetingScreen({ ritualId }: { ritualId: string }) {
         </View>
       )}
       {!live && ritual.status === 'scheduled' && <SendNotice ritual={ritual} />}
+      {!live && <KeepRitual ritual={ritual} steps={steps} />}
     </View>
   );
 
@@ -861,4 +863,3 @@ const styles = StyleSheet.create({
   actionLast: { borderBottomWidth: 0 },
   doneText: { textDecorationLine: 'line-through', color: colors.muted },
 });
-

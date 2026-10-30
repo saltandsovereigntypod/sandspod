@@ -198,6 +198,8 @@ export type TemplateDraft = {
   steps: StepDraft[];
   ingredients: Ingredient[];
   kind: 'template' | 'spell';
+  /** Where it was copied from (Community Rituals), kept in the template's metadata as "from". */
+  from?: Record<string, unknown> | null;
 };
 
 export type StepDraft = {

@@ -311,7 +311,10 @@
           ${!live && leads() && ritual.status === "draft" && (state().perms.schedule || state().perms.site) ? btn("Put it on the calendar", "status", 'data-to="scheduled"') : ""}
           ${!live && leads() && ritual.status === "scheduled" ? btn("Cancel the meeting", "status", 'data-to="cancelled"') : ""}
         </div>${!live && !leads() && pw.steers ? `<p class="sp-caption">Those who lead the coven’s rituals start the meeting; then you chair it.</p>` : ""}${statusLine()}` : ""}
-      ${!live && ritual.status === "scheduled" ? `<div data-mt-send></div>` : ""}`;
+      ${!live && ritual.status === "scheduled" ? `<div data-mt-send></div>` : ""}
+      ${!live && raw.length && state().context.user?.id && (state().perms.member || state().perms.site) ? `<section class="sp-section" aria-label="Keep it"><h3>Keep it</h3>
+        <p class="sp-caption">Keep its agenda to use again as your own. Those who lead the coven’s rituals can keep it as one of the coven’s templates from Edit the meeting.</p>
+        <div class="sp-actions"><a class="button button--ghost button--small" href="/rituals/community/?keep=coven&coven=${encodeURIComponent(state().coven.id)}&ritual=${encodeURIComponent(ritual.id)}">Save to my templates</a></div></section>` : ""}`;
 
     return `<p><a class="sp-back" href="${esc(ctx.api.covenHref("rituals"))}" data-tab="rituals">← All rituals</a></p>
       <div class="cv-meeting">

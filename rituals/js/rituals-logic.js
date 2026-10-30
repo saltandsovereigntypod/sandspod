@@ -98,7 +98,9 @@
       createdAt: options.now ? new Date(options.now).getTime() : Date.now(),
       altarId: options.altarId || null,
       planId: options.planId || null,
-      premadeId: options.premadeId || null
+      premadeId: options.premadeId || null,
+      // Done once from Community Rituals ({ id, credit }): the end offers to keep it.
+      ...(options.community && options.community.id ? { community: { id: String(options.community.id), credit: String(options.community.credit || "") } } : {})
     };
     if (source.kind === "template") return { ...base, kind: "template", templateId: source.templateId };
     if (source.kind === "draft") {

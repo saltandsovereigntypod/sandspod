@@ -110,6 +110,12 @@ export default function RitualsHome() {
             onPress={() => router.push('/rituals/premade')}
           />
           <Row
+            icon="coven"
+            title="Community Rituals"
+            detail="Rituals and spells the community has shared · search, add to yours or do once"
+            onPress={() => router.push('/rituals/community')}
+          />
+          <Row
             icon="wheel"
             title="Dedication journeys"
             detail="Study, practice and a rite of self-dedication to a path or a god"

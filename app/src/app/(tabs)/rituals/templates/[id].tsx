@@ -6,6 +6,7 @@ import { Button } from '../../../../components/Button';
 import { AltarChoiceSheet, useBeginOnAltar } from '../../../../components/altar/connect/BeginOnAltar';
 import { Connections } from '../../../../components/rituals/Connections';
 import { Body, Card, RitualScreen, SectionLabel, Title, tell, ui } from '../../../../components/rituals/ui';
+import { templateCredit } from '../../../../lib/rituals/community';
 import { minutesLabel } from '../../../../lib/rituals/format';
 import { startRitual, useRituals } from '../../../../lib/rituals/store';
 import type { Ingredient } from '../../../../lib/rituals/types';
@@ -57,6 +58,7 @@ export default function TemplateView() {
     <RitualScreen back="Templates">
       <Title eyebrow={template.metadata?.kind === 'spell' ? 'Spell' : 'Ritual template'}>{template.title}</Title>
       <Body muted>{facts}</Body>
+      {!!templateCredit(template.metadata) && <Body muted>{templateCredit(template.metadata)}</Body>}
       {!!template.intention && <Body>{template.intention}</Body>}
 
       <View style={ui.actions}>
@@ -119,6 +121,12 @@ export default function TemplateView() {
         label="Edit template"
         variant="outline"
         onPress={() => router.push({ pathname: '/rituals/templates/edit', params: { id: template.id } })}
+      />
+      <Button
+        label="Share with the community"
+        variant="outline"
+        accessibilityHint="Offers a copy to Community Rituals, reviewed before it appears"
+        onPress={() => router.push({ pathname: '/rituals/community/share', params: { templateId: template.id } })}
       />
 
       <AltarChoiceSheet visible={choosingAltar} title={template.title} onClose={() => setChoosingAltar(false)} onPick={(id) => void beginOnAltar(id)} />

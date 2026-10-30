@@ -7,9 +7,11 @@ import { LookBackPicker, lookBackWords, type LookBackPick } from '../../../../co
 import { Body, Card, Chip, Chips, Expander, Field, Notice, RitualScreen, SectionLabel, Title, ui } from '../../../../components/rituals/ui';
 import { fullDate } from '../../../../lib/calendar';
 import { moonState, type PhaseName } from '../../../../lib/moon';
-import { answersFromJournal, blankAnswers, dateFromKey, formatClock, localDateKey, sessionElapsed } from '../../../../lib/rituals/lifecycle';
+import { answersFromJournal, blankAnswers, dateFromKey, draftFromSession, formatClock, localDateKey, sessionElapsed } from '../../../../lib/rituals/lifecycle';
 import { answerLabel, readLookBack, suggestedWhen } from '../../../../lib/rituals/lookBack';
-import { findSession, saveJournal, useRituals } from '../../../../lib/rituals/store';
+import { communityOrigin, draftFromCommunity } from '../../../../lib/rituals/community';
+import { noteSaved, usePublishedRituals } from '../../../../lib/rituals/communityApi';
+import { findSession, saveJournal, saveTemplate, useRituals } from '../../../../lib/rituals/store';
 import type { JournalAnswers, RitualSession } from '../../../../lib/rituals/types';
 import { useSession } from '../../../../lib/session';
 
@@ -125,6 +127,8 @@ export default function JournalForm() {
             </Card>
           )}
 
+          {ritual && <KeepCommunityRitual ritual={ritual} signedIn={!!account} />}
+
           <View style={ui.gap}>
             <SectionLabel>The threshold</SectionLabel>
             <Field label="Ritual name" value={answers.title} onChange={(title) => set({ title })} placeholder="Untitled Ritual" />
@@ -222,5 +226,47 @@ export default function JournalForm() {
         </>
       )}
     </RitualScreen>
+  );
+}
+
+/**
+ * A ritual done once from Community Rituals: offer to keep it, as an
+ * independent copy credited to its sharer.
+ */
+function KeepCommunityRitual({ ritual, signedIn }: { ritual: RitualSession; signedIn: boolean }) {
+  const origin = communityOrigin(ritual.metadata);
+  const published = usePublishedRituals();
+  const [state, setState] = useState<'idle' | 'saving' | 'saved'>('idle');
+  const [problem, setProblem] = useState<string | null>(null);
+  if (!origin) return null;
+
+  const keep = async () => {
+    setState('saving');
+    setProblem(null);
+    try {
+      const row = published.data?.rituals.find((r) => r.id === origin.id);
+      // The shared ritual as it is now, or (if it's gone or offline) the steps as you did them.
+      await saveTemplate(row ? draftFromCommunity(row) : { ...draftFromSession(ritual), from: ritual.metadata.from as Record<string, unknown> });
+      if (row) void noteSaved(row.id, 'mine');
+      setState('saved');
+    } catch (e) {
+      setProblem(e instanceof Error ? e.message : 'Please try again.');
+      setState('idle');
+    }
+  };
+
+  return (
+    <Card>
+      <SectionLabel>Keep this ritual?</SectionLabel>
+      <Body>{origin.credit ? `${origin.credit}. Add it to your rituals to do it again or change it.` : 'Add it to your rituals to do it again or change it.'}</Body>
+      {state === 'saved' ? (
+        <Body muted>Added to your rituals.</Body>
+      ) : signedIn ? (
+        <Button label={state === 'saving' ? 'Adding…' : 'Add it to my rituals'} variant="outline" disabled={state === 'saving'} onPress={keep} />
+      ) : (
+        <Body muted>Sign in to keep it with your rituals.</Body>
+      )}
+      {!!problem && <Notice>{problem}</Notice>}
+    </Card>
   );
 }

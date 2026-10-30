@@ -93,6 +93,7 @@
         <h2 class="sp-label" id="rt-learn">Learn</h2>
         <nav class="sp-list" aria-label="Learn">
           ${UI.row({ href: "/rituals/premade/", title: "Workings library", detail: `${R.premade.PREMADE.length} premade rituals and spells for every practice and path` })}
+          ${UI.row({ href: "/rituals/community/", title: "Community Rituals", detail: "Rituals and spells the community has shared · search, add to yours or do once" })}
           ${UI.row({ href: "/rituals/journeys/", title: "Dedication journeys", detail: "Study, practice and a rite of self-dedication, for each path and god" })}
           ${UI.row({ href: "/practice/", title: "Craft tools", detail: "Tools for your craft: garden, hearth, dreams, stars, stones, tides and more" })}
         </nav>
