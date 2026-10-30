@@ -442,7 +442,9 @@ function createSavedObject(savedObject) {
 
   if (savedObject.imagePath) {
     const img = document.createElement("img");
-    img.src = savedObject.imagePath;
+    // Shown as its WebP twin; data-asset-path keeps the saved path (js/sanctuary-asset-catalog.js).
+    if (window.SanctuaryAssetCatalog?.showImage) window.SanctuaryAssetCatalog.showImage(img, savedObject.imagePath);
+    else img.src = savedObject.imagePath;
     img.alt = savedObject.label || "altar object";
     img.draggable = false;
     object.appendChild(img);

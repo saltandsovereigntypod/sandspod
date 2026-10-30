@@ -18,7 +18,10 @@
 
   const esc = (value) =>
     String(value ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
-  const picture = (path) => {
+  // An altar object picture's small WebP twin (js/sanctuary-asset-catalog.js thumbnailPath).
+  const thumbnail = (path) => String(path || "").replace(/(assets\/altar\/(?:objects|overlays)\/(?:[\w-]+\/)*[\w-]+)\.png$/i, "$1.thumb.webp");
+  const picture = (raw) => {
+    const path = thumbnail(raw);
     if (!path) return "";
     if (/^https:\/\//.test(path)) return path;
     const clean = String(path).replace(/^(\.\.\/)+/, "/");

@@ -367,7 +367,7 @@ function renderCabinetTile(item, form, isMultiForm = false) {
       data-offering="${form.offering || ""}"
       data-offering-label="${form.offeringLabel || ""}">
       <span class="cabinet-tile-image-wrap">
-        ${displayImage ? `<img src="${displayImage}" alt="${form.label || item.name} preview" class="cabinet-tile-image" loading="lazy" />` : '<span class="cabinet-form-unavailable">Image unavailable</span>'}
+        ${displayImage ? `<img src="${window.SanctuaryAssetCatalog?.thumbnailPath?.(displayImage) || displayImage}" alt="${form.label || item.name} preview" class="cabinet-tile-image" loading="lazy" />` : '<span class="cabinet-form-unavailable">Image unavailable</span>'}
       </span>
 
       <span class="cabinet-tile-name">${isMultiForm ? form.label : item.name}</span>

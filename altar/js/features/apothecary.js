@@ -515,7 +515,7 @@ function renderApothecaryItems() {
                     data-apothecary-place
                     data-apothecary-item-id="${item.id}">
                     <span class="cabinet-tile-image-wrap">
-                      <img src="${item.imagePath}" alt="" class="cabinet-tile-image" loading="lazy" />
+                      <img src="${window.SanctuaryAssetCatalog?.thumbnailPath?.(item.imagePath) || item.imagePath}" alt="" class="cabinet-tile-image" loading="lazy" />
                     </span>
                     <span class="cabinet-tile-name">${item.name}</span>
                     <span class="apothecary-tile-type">${item.typeLabel || "Apothecary Item"}</span>
@@ -1032,7 +1032,8 @@ function syncPlacedApothecaryObjects(item) {
       const img = object.querySelector("img:not(.candle-herb-overlay):not(.candle-oil-overlay)");
 
       if (img && item.imagePath) {
-        img.src = item.imagePath;
+        if (window.SanctuaryAssetCatalog?.showImage) window.SanctuaryAssetCatalog.showImage(img, item.imagePath);
+        else img.src = item.imagePath;
         img.alt = item.name;
       }
 

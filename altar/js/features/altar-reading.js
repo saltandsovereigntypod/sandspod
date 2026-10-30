@@ -588,7 +588,11 @@
     const ctx = canvas.getContext("2d");
     canvas.width = card.width;
     canvas.height = card.height;
-    const src = (p) => (/^(https?:|\/|\.\.\/)/.test(p) ? p : `../${p}`);
+    // The pictures' WebP twins, the same shape and a fraction the size (js/sanctuary-asset-catalog.js).
+    const src = (p) => {
+      const path = /^(https?:|\/|\.\.\/)/.test(p) ? p : `../${p}`;
+      return window.SanctuaryAssetCatalog?.displayPath?.(path) || path;
+    };
     ctx.fillStyle = "#070a08";
     ctx.fillRect(0, 0, card.width, card.height);
     const bg = card.background.path ? await loadImage(src(card.background.path)) : null;
