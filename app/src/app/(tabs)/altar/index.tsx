@@ -168,7 +168,7 @@ export default function AltarList() {
             )}
 
             {status === 'offline' && signedIn && (
-              <Text style={[type.caption, styles.notice]}>Offline · showing the copy saved on this phone</Text>
+              <Text style={[type.caption, styles.notice]}>Couldn’t refresh just now · showing the copy saved on this phone</Text>
             )}
 
             {signedIn && pendingCount > 0 && sync === 'offline' && (

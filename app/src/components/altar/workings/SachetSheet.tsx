@@ -99,14 +99,16 @@ function SachetBuilder({ altar, onPlace, center }: Props) {
     setBusy(true);
     const now = nowIso();
     let item = startItemLookBack(sachetItem(bag, now), lookBack.pick, new Date(now), lookBack.custom);
+    let kept = true;
     try {
       item = await saveApothecary(userId, item, null);
     } catch {
       // Still placed; it saves with the altar.
+      kept = false;
     }
     const result = sachetObject(bag, altar.objects, now, center, item);
     setBusy(false);
-    onPlace(result);
+    onPlace({ ...result, kept });
   };
 
   return (

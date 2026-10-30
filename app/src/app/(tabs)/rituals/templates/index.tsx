@@ -44,7 +44,7 @@ export default function Templates() {
             <SectionLabel>Your templates</SectionLabel>
             <Button label="New template" variant="text" onPress={() => router.push('/rituals/templates/edit')} />
           </View>
-          {rituals.status === 'offline' && <Notice>Offline · showing the copy saved on this phone</Notice>}
+          {rituals.status === 'offline' && <Notice>Couldn’t refresh just now · showing the copy saved on this phone</Notice>}
           {rituals.templates.length === 0 ? (
             <Card>
               <Body>

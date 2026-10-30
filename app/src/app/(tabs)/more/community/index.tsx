@@ -58,7 +58,7 @@ export default function CommunityGrimoire() {
         <Chips label="Filter by type" options={TYPE_FILTERS} value={filter} onChange={setFilter} />
       </View>
 
-      {status === 'offline' && data && <Notice>Offline · showing the copy saved on this device</Notice>}
+      {status === 'offline' && data && <Notice>Couldn’t refresh just now · showing the copy saved on this device</Notice>}
 
       {!data && (status === 'loading' || status === 'idle') && <ActivityIndicator color={colors.gold} style={styles.loading} />}
 

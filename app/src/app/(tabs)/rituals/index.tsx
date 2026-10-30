@@ -39,7 +39,7 @@ export default function RitualsHome() {
       <PracticeSwitch current="rituals" />
       <Title eyebrow={moon.name}>Rituals</Title>
 
-      {rituals.status === 'offline' && <Notice>Offline · showing the copy saved on this phone</Notice>}
+      {rituals.status === 'offline' && <Notice>Couldn’t refresh just now · showing the copy saved on this phone</Notice>}
 
       {active && (
         <Card accent>

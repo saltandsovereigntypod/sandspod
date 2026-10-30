@@ -125,6 +125,7 @@
     { id: "ritual", symbol: "✶", title: "Begin a ritual here", line: "A working from the book or one of your templates, its steps over the altar.", needsSave: true },
     { id: "jar", symbol: "⚱", title: "Spell jar", line: "Build a jar in layers, a word spoken with each, and seal it with wax." },
     { id: "sachet", symbol: "❦", title: "Sachet or charm bag", line: "Fill it, tie it with knots, carry it, and feed it on its day." },
+    { id: "cord", symbol: "➰", title: "Cord cutting", line: "A cord tied between two candles burns through when they burn down to it." },
     { id: "spell", symbol: "◔", title: "Spell over days", line: "A seven-day candle, nine nights, a moon’s jar: the altar keeps count.", needsSave: true },
     { id: "scry", symbol: "◉", title: "Scrying bowl", line: "A quiet, timed sit with dark water, then a few words on what came.", needsSave: true },
     { id: "gratitude", symbol: "❂", title: "Gratitude bowl", line: "A bead for each thing you’re thankful for, filling through the moon.", needsSave: true }
@@ -189,6 +190,7 @@
     else if (action === "plant") openPlants();
     else if (action === "drawn") openDrawn();
     else if (action === "ritual") openRitualPicker();
+    else if (action === "cord") global.AltarCords?.openSheet();
   }
 
   // ── Reading the altar ───────────────────────────────────────────────────
@@ -841,13 +843,16 @@
     const earlier = R.sortReadings(entries.map((e) => ({ ...e, data: R.normalizeReading(e.data) }))).filter((e) => e.id !== tonight?.id && e.data.drawn.length).slice(0, 8);
     const t = tonight ? R.normalizeReading(tonight.data) : null;
     const choices = [];
+    const earlierHtml = () => (earlier.length ? `${label("Earlier readings")}<div class="app-rows">${earlier.map((e) => { choices.push([e, e.data.drawn[0]]); return `<button type="button" class="app-row" style="text-align:left;color:inherit;font:inherit;cursor:pointer" data-app-action="place" data-i="${choices.length - 1}"><span class="app-row__title">${esc(e.data.drawn.join(", "))}</span><span class="app-caption">${esc([R.methodLabel(e.data.method), B().dateShort(dayOf(e.data.date), { day: "numeric", month: "long", year: "numeric" })].filter(Boolean).join(" · "))}</span></button>`; }).join("")}</div>` : "");
     B().openSheet({
       eyebrow: "From your readings",
       title: "Tonight’s card or rune",
-      html: !t ? `<p>Draw a card or a rune and keep it in Hedge → Readings; then it can sit on your altar while you sit with it.</p><a class="app-button app-button--outline" href="${PAGES.readings}">Open Readings</a>`
+      // Nothing drawn tonight: the earlier readings are still offered (the app's ReadingSheet).
+      html: !t && !earlier.length ? `<p>Draw a card or a rune and keep it in Hedge → Readings; then it can sit on your altar while you sit with it.</p><a class="app-button app-button--outline" href="${PAGES.readings}">Open Readings</a>`
+        : !t ? `<p>Nothing drawn tonight yet. Draw in Hedge → Readings, or set out a card from an earlier reading below.</p><a class="app-button app-button--outline" href="${PAGES.readings}">Draw tonight</a>${earlierHtml()}`
         : `${label(`${R.methodLabel(t.method)} · ${B().dateShort(dayOf(t.date), { day: "numeric", month: "long", year: "numeric" }) || t.date}`)}${t.question ? `<p class="app-living__glance">${esc(t.question)}</p>` : ""}
           ${B().chips(t.drawn.map((name) => { choices.push([tonight, name]); return { label: name, symbol: "✦", action: "place", data: { i: choices.length - 1 }, hint: `Set ${name} on the altar` }; }))}
-          ${earlier.length ? `${label("Earlier readings")}<div class="app-rows">${earlier.map((e) => { choices.push([e, e.data.drawn[0]]); return `<button type="button" class="app-row" style="text-align:left;color:inherit;font:inherit;cursor:pointer" data-app-action="place" data-i="${choices.length - 1}"><span class="app-row__title">${esc(e.data.drawn.join(", "))}</span><span class="app-caption">${esc([R.methodLabel(e.data.method), B().dateShort(dayOf(e.data.date), { day: "numeric", month: "long", year: "numeric" })].filter(Boolean).join(" · "))}</span></button>`; }).join("")}</div>` : ""}`,
+          ${earlierHtml()}`,
       onMount(body, dialog, close) {
         body.addEventListener("click", (event) => {
           const b = event.target.closest('[data-app-action="place"]');

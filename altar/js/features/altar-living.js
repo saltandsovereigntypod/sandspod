@@ -192,6 +192,8 @@
         parts.push(chips([{ label: life?.spent ? "How it burned · its remnant" : "How it burned", symbol: "✧", action: "read" }]));
       }
       if (wax?.line) parts.push(caption(wax.line));
+      // Cord cutting: the cord tied to this candle, or tying one (altar-cords.js).
+      parts.push(global.AltarCords?.panelHtml?.(saved) || "");
       parts.push(chips([
         life?.adjustable ? { label: "How long it burns", symbol: "⧗", action: "length" } : null,
         !life?.spent ? { label: "Dress & anoint", symbol: "❦", action: "anoint", hint: `Dress and anoint ${label} with oil and herbs` } : null,
@@ -1212,7 +1214,7 @@
   document.addEventListener("click", (event) => {
     const button = event.target.closest("[data-app-living] [data-app-action]");
     if (!button) return;
-    const action = ACTIONS[button.dataset.appAction] || global.AltarPlants?.actions?.[button.dataset.appAction];
+    const action = ACTIONS[button.dataset.appAction] || global.AltarPlants?.actions?.[button.dataset.appAction] || global.AltarCords?.actions?.[button.dataset.appAction];
     if (!action) return;
     event.preventDefault();
     event.stopPropagation();

@@ -127,6 +127,37 @@ import { CabinetSheet } from './CabinetSheet';
 import { CarveSheet } from './CarveSheet';
 import { CloseUpSheet } from './CloseUpSheet';
 import { GroupGrimoireSheet, GroupSheet, RenameSheet } from './ArrangeSheets';
+import { SelectionPanel } from './SelectionPanel';
+import { CordSheet, type CordChoice } from './workings/CordSheet';
+import {
+  CORD_HEIGHTS,
+  cordLine,
+  cordOfCandle,
+  cordsOf,
+  cordState,
+  freeCandles,
+  heightWords,
+  nextCordEvent,
+  setOutCordPair,
+  tieCord,
+  untieCord,
+  updateCord,
+  type Cord,
+} from '../../lib/altar/cord';
+import {
+  groupsIn,
+  idsOf,
+  indicesOf,
+  layerTogether,
+  lightTogether,
+  lockTogether,
+  moveTogether,
+  removeObjects,
+  selectAll,
+  selectionWords,
+  toggleSelection,
+  withGroups,
+} from '../../lib/altar/selection';
 import { PracticeSheet } from './PracticeSheet';
 import { CrystalSheet, DeitySheet, type CrystalMode, type DeityMode } from './DevotionSheets';
 import { careForCrystal, dedicateCrystal, humanize, offeringsOf, recordOffering, setDefaultCleansing, setDefaultOffering, setPresenceReason, updateOffering } from '../../lib/altar/devotion';
@@ -269,6 +300,7 @@ type SheetName =
   | 'potted-details'
   | 'potted-harvest'
   | 'potted-journal'
+  | 'cord'
   | null;
 
 const nowIso = () => new Date().toISOString();
@@ -301,6 +333,13 @@ export function AltarEditor({ shared, header, overlay, onBack, whose }: { shared
   const [name, setName] = useState('My Altar');
   const [missing, setMissing] = useState(false);
   const [selected, setSelected] = useState<number | null>(null);
+  // Select mode: several things chosen at once (by altarObjectId, so they're found again after changes); null when not choosing.
+  const [selectIds, setSelectIds] = useState<string[] | null>(null);
+  // The notice that Undo can take back (a deletion of several), shown with an Undo chip.
+  const [undoOffer, setUndoOffer] = useState<string | null>(null);
+  // Cord cutting: the candle a cord is being tied from, and a cut cord to write into the Grimoire.
+  const [cordFrom, setCordFrom] = useState<string | null>(null);
+  const [recordCord, setRecordCord] = useState<Cord | null>(null);
   // "Find mine": your own things on a coven altar, lit up (components/tend/AltarListing.tsx).
   const [highlight, setHighlight] = useState<string[] | null>(null);
   const [sheet, setSheet] = useState<SheetName>(null);
@@ -353,6 +392,7 @@ export function AltarEditor({ shared, header, overlay, onBack, whose }: { shared
       setSourceId(id);
       setName(altarName);
       setSelected(null);
+      setSelectIds(null);
       setMissing(false);
       setTonight(null);
       undo.current = [];
@@ -507,7 +547,9 @@ export function AltarEditor({ shared, header, overlay, onBack, whose }: { shared
   const [clock, setClock] = useState(0);
   useEffect(() => {
     if (!doc) return;
-    const next = nextBurnout(doc);
+    // The soonest of a candle or incense burning out and a cord catching or burning through.
+    const times = [nextBurnout(doc), nextCordEvent(doc)].filter((t): t is number => t != null);
+    const next = times.length ? Math.min(...times) : null;
     if (next == null) return;
     const timer = setTimeout(
       () => {
@@ -519,6 +561,12 @@ export function AltarEditor({ shared, header, overlay, onBack, whose }: { shared
         const ash = current.objects
           .filter((o, i) => isIncense(o) && incenseLife(o).lit && incenseLife(settled.objects[i]).ash)
           .map((o) => shortLabel(o.label, 'Incense'));
+        // A cord that has caught, or burned through.
+        const before = new Map(cordsOf(current).map((c) => [c.id, c.status]));
+        const cords = cordsOf(settled).filter((c) => before.get(c.id) !== c.status);
+        const caught = cords.filter((c) => c.status === 'burning');
+        const cut = cords.filter((c) => c.status === 'cut');
+        if (cut.length) setRecordCord(cut[0]);
         docRef.current = settled;
         setDoc(settled);
         // Going out isn't an edit of yours: a saved altar stays saved (it's saved for you in the background).
@@ -527,6 +575,8 @@ export function AltarEditor({ shared, header, overlay, onBack, whose }: { shared
           [
             out.length ? `${out.join(' and ')} burned down and went out. Tap ${out.length > 1 ? 'one' : 'it'} to read how it burned.` : '',
             ash.length ? `${ash.join(' and ')} burned down to ash.` : '',
+            caught.length ? 'The flame has reached the cord. It’s catching.' : '',
+            cut.length ? 'The cord has burned through and fallen apart. Tap one of its candles to write it in your Grimoire.' : '',
           ]
             .filter(Boolean)
             .join(' '),
@@ -803,24 +853,31 @@ export function AltarEditor({ shared, header, overlay, onBack, whose }: { shared
   // Record a group, or with nothing selected the whole altar, in the Grimoire
   // as a ritual page (groups.js sendCurrentGroupToGrimoire / sendAltarToGrimoire).
   const grimoire = useGrimoire();
+  const recordingCord = sheet === 'grimoire' && !!recordCord;
+  const cordObjects = useMemo(
+    () => (doc && recordCord ? doc.objects.filter((o) => o.altarObjectId === recordCord.a || o.altarObjectId === recordCord.b) : []),
+    [doc, recordCord],
+  );
   const groupItems = useMemo(
     () =>
       !doc
         ? []
-        : selectedObject?.groupId
+        : recordingCord
+          ? cordObjects.map((o) => altarRitualItem(o, dressingsOf(o)))
+          : selectedObject?.groupId
           ? doc.objects.filter((o) => o.groupId === selectedObject.groupId).map((o) => altarRitualItem(o, dressingsOf(o)))
           : selectedObject
             ? []
             : doc.objects.map((o) => altarRitualItem(o, dressingsOf(o))),
-    [doc, selectedObject],
+    [doc, selectedObject, recordingCord, cordObjects],
   );
-  const grimoireTitle = doc && selectedObject ? groupName(doc, selectedObject) : name;
+  const grimoireTitle = recordingCord ? 'Cord cutting' : doc && selectedObject ? groupName(doc, selectedObject) : name;
   const { entries: tendEntries } = useCraft<PetitionTending>(TEND_COLLECTION);
   const { entries: historyEntries } = useCraft<unknown>('altar.history');
   const createRitualPage = (details: WorkingDetails, title: string) => {
     if (!doc || !groupItems.length) return;
     // Everything on it written down, with this altar's petitions (open, and finished since it was last recorded).
-    const objects = selectedObject?.groupId ? doc.objects.filter((o) => o.groupId === selectedObject.groupId) : doc.objects;
+    const objects = recordingCord ? cordObjects : selectedObject?.groupId ? doc.objects.filter((o) => o.groupId === selectedObject.groupId) : doc.objects;
     const record = altarRecordBlocks(objects, {
       now: new Date(),
       altarId: sourceId,
@@ -828,12 +885,18 @@ export function AltarEditor({ shared, header, overlay, onBack, whose }: { shared
       tendings: tendEntries.map((e) => e.data),
       since: sourceId ? lastRecordedAt(historyEntries, sourceId) : '',
       allObjects: doc.objects,
-      groupOnly: !!selectedObject?.groupId,
+      groupOnly: recordingCord || !!selectedObject?.groupId,
     });
     const pageId = grimoire.actions.createRitualFromAltar({ title: title || grimoireTitle, purpose: details, items: groupItems, record });
     setSheet(null);
     if (!pageId) {
       setNotice('Your Grimoire hasn’t loaded yet. Open it once while online, then try again.');
+      return;
+    }
+    if (recordingCord && recordCord) {
+      commit((d) => updateCord(d, recordCord.id, { recordedAt: nowIso() }), false);
+      setRecordCord(null);
+      router.push({ pathname: '/grimoire/edit/[pageId]', params: { pageId } });
       return;
     }
     if (sourceId && !selectedObject?.groupId) void addEntry('altar.history', { altarId: sourceId, text: RECORDED_LINE, at: nowIso(), recorded: true });
@@ -1049,15 +1112,20 @@ export function AltarEditor({ shared, header, overlay, onBack, whose }: { shared
       else if (action === 'layouts') setSheet('layouts');
       else if (action === 'tonight') setSheet('tonight');
       else if (action === 'ritual') openSaved('ritual', 'ritual');
+      else if (action === 'cord') openCord(null);
       else if (action === 'ancestor' || action === 'stone' || action === 'plant' || action === 'drawn') setSheet(action);
     });
   };
-  const placeWorking = ({ object }: PlacedWorking) => {
+  const placeWorking = ({ object, kept }: PlacedWorking) => {
     const index = docRef.current?.objects.length ?? 0;
     commit((d) => addObject(d, object));
     setSelected(index);
     setSheet(null);
-    setNotice(`${shortLabel(object.label, 'It')} is on your altar and saved to My Apothecary.`);
+    setNotice(
+      kept === false
+        ? `${shortLabel(object.label, 'It')} is on your altar. My Apothecary couldn’t be reached just now, so it’s kept with this altar; save the altar to keep it.`
+        : `${shortLabel(object.label, 'It')} is on your altar and saved to My Apothecary.`,
+    );
   };
   /** Tend today's step of a spell worked with an object (lighting its candle counts). */
   const tendSpell = (id: string, spell: SpellEntry, quiet = false) => {
@@ -1218,6 +1286,67 @@ export function AltarEditor({ shared, header, overlay, onBack, whose }: { shared
       />
     ) : null;
 
+  // ── Choosing several ─────────────────────────────────────────────────
+  const selecting = selectIds != null;
+  const chosen = useMemo(() => (doc && selectIds ? indicesOf(doc, selectIds) : []), [doc, selectIds]);
+  /** Start choosing several, with this object (and its group) chosen. */
+  const startSelecting = (index?: number | null) => {
+    const current = docRef.current;
+    if (!current) return;
+    setSelected(null);
+    setSheet(null);
+    setSelectIds(index != null ? idsOf(current, withGroups(current, [index])) : []);
+  };
+  const chosenObjects = chosen.map((i) => doc?.objects[i]).filter((o): o is NonNullable<typeof o> => !!o);
+  const chosenGroups = doc ? groupsIn(doc, chosen) : [];
+  const selectionActs = {
+    all: () => doc && setSelectIds(idsOf(doc, selectAll(doc))),
+    none: () => setSelectIds([]),
+    done: () => setSelectIds(null),
+    remove: () => {
+      const n = chosen.length;
+      const before = docRef.current;
+      commit((d) => removeObjects(d, indicesOf(d, selectIds ?? [])));
+      if (docRef.current === before) return;
+      setSelectIds([]);
+      const words = `${n === 1 ? 'It’s' : `${selectionWords(n).replace(/^./, (c) => c.toUpperCase())} are`} off the altar.`;
+      setNotice(words);
+      setUndoOffer(words);
+    },
+    group: () => setSheet('group'),
+    ungroup: () => {
+      commit((d) => chosenGroups.reduce((next, id) => ungroup(next, id), d));
+      setNotice(chosenGroups.length > 1 ? 'Ungrouped. Each moves on its own again.' : 'Ungrouped. Each moves on its own again.');
+    },
+    layer: (to: 'front' | 'back') => commit((d) => layerTogether(d, indicesOf(d, selectIds ?? []), to)),
+    light: (on: boolean) => commit((d) => lightTogether(d, indicesOf(d, selectIds ?? []), on, nowIso())),
+    lock: (on: boolean) => commit((d) => lockTogether(d, indicesOf(d, selectIds ?? []), on)),
+  };
+
+  // ── Cord cutting ─────────────────────────────────────────────────────
+  const labelOf = (id: string) => shortLabel(doc?.objects.find((o) => o.altarObjectId === id)?.label, 'the candle');
+  const openCord = (from: string | null) => {
+    setCordFrom(from);
+    setSheet('cord');
+  };
+  const tieChosen = (a: string, b: string, choice: CordChoice) => {
+    commit((d) => tieCord(d, a, b, choice, nowIso()));
+    setSheet(null);
+    setNotice(`The cord is tied ${heightWords(choice.height)} between ${labelOf(a)} and ${labelOf(b)}. Light them when you’re ready; it burns when they reach it.`);
+  };
+  const setOutPair = (choice: CordChoice) => {
+    const index = docRef.current?.objects.length ?? 0;
+    commit((d) => setOutCordPair(d, viewCenter(), choice, nowIso(), overrides));
+    setSheet(null);
+    setSelected(index);
+    setNotice('Two chime candles are set out with the cord tied between them. Light them when you’re ready.');
+  };
+  const recordCordInGrimoire = (cord: Cord) => {
+    setRecordCord(cord);
+    setSelected(null);
+    setSheet('grimoire');
+  };
+
   const stage =
     doc && stageWidth > 0 ? (
           <AltarStage
@@ -1226,11 +1355,31 @@ export function AltarEditor({ shared, header, overlay, onBack, whose }: { shared
             viewport={viewport}
             selected={selected}
             highlightKeys={highlight ?? undefined}
-            onSelect={setSelected}
+            selecting={selecting}
+            chosen={chosen}
+            onSelect={(index) => {
+              if (!selecting) return setSelected(index);
+              // Choosing several: a tap adds it (with its group) or leaves it out; a tap on the altar itself does nothing.
+              if (index == null || !docRef.current) return;
+              setSelectIds(idsOf(docRef.current, toggleSelection(docRef.current, indicesOf(docRef.current, selectIds ?? []), index)));
+            }}
+            onLongPress={(index) => {
+              if (selecting) return;
+              startSelecting(index);
+            }}
             onGestureStart={pushUndo}
             onMove={(i, cx, cy) => {
-              // Snap to meaning: near a direction or the centre, it settles onto it.
               const current = docRef.current;
+              // Choosing several: dragging any chosen thing moves them all, kept in their places to one another.
+              if (selecting && current) {
+                const together = indicesOf(current, selectIds ?? []);
+                if (together.includes(i)) {
+                  const box = displayBox(current.objects[i]);
+                  commit((d) => moveTogether(d, indicesOf(d, selectIds ?? []), cx - box.cx, cy - box.cy), false);
+                  return;
+                }
+              }
+              // Snap to meaning: near a direction or the centre, it settles onto it.
               const snap = options.snapToMeaning && current?.objects[i] ? snapToMeaning(current.objects[i], cx, cy, current.background) : null;
               if (snap?.role !== guideRef.current?.role) {
                 guideRef.current = snap;
@@ -1262,8 +1411,33 @@ export function AltarEditor({ shared, header, overlay, onBack, whose }: { shared
             {notice}
           </Text>
         )}
+        {notice && undoOffer === notice && (
+          <View style={styles.undoRow}>
+            <Chip
+              label="Undo"
+              symbol="↶"
+              accessibilityLabel="Undo that, and put them back"
+              onPress={() => {
+                stepHistory(undo, redo);
+                setUndoOffer(null);
+                setNotice('Put back.');
+              }}
+            />
+          </View>
+        )}
 
-        {doc && selectedObject && selected != null ? (
+        {doc && selecting ? (
+          <SelectionPanel
+            count={chosen.length}
+            total={doc.objects.length}
+            unlit={chosenObjects.filter((o) => isCandle(o) && !isLit(o) && !candleLife(o).spent).length}
+            lit={chosenObjects.filter(isLit).length}
+            grouped={chosenGroups.length > 0}
+            oneGroup={chosenGroups.length === 1 && chosenObjects.every((o) => o.groupId === chosenGroups[0])}
+            locked={chosenObjects.length > 0 && chosenObjects.every((o) => o.locked === 'true')}
+            act={selectionActs}
+          />
+        ) : doc && selectedObject && selected != null ? (
           <ObjectPanel
             key={selected}
             objectLabel={shortLabel(selectedObject.label)}
@@ -1278,6 +1452,15 @@ export function AltarEditor({ shared, header, overlay, onBack, whose }: { shared
             tonightWhy={tonightWhy}
             spells={selectedSpells}
             canMirror={canMirror}
+            cord={
+              selectedObject && isCandle(selectedObject)
+                ? (() => {
+                    const cord = cordOfCandle(doc, selectedUid);
+                    if (!cord) return { cord: null, line: '', status: null, canTie: freeCandles(doc).length >= 2 && !candleLife(selectedObject).spent };
+                    return { cord, line: cordLine(doc, cord, labelOf, minute * 60_000), status: cordState(doc, cord, minute * 60_000).status, canTie: false };
+                  })()
+                : null
+            }
             connect={{
               altarId: sourceId,
               altarName: name,
@@ -1342,6 +1525,22 @@ export function AltarEditor({ shared, header, overlay, onBack, whose }: { shared
               ungroup: () => {
                 if (selectedObject.groupId) commit((d) => ungroup(d, selectedObject.groupId!));
               },
+              several: () => startSelecting(selected),
+              tieCord: () => openCord(selectedUid),
+              cordHeight: (height) => {
+                const cord = cordOfCandle(doc, selectedUid);
+                if (cord) commit((d) => updateCord(d, cord.id, { height }));
+              },
+              untieCord: () => {
+                const cord = cordOfCandle(doc, selectedUid);
+                if (!cord) return;
+                commit((d) => untieCord(d, cord.id));
+                setNotice(cord.status === 'cut' ? 'The burned cord is cleared away.' : 'The cord is untied.');
+              },
+              recordCord: () => {
+                const cord = cordOfCandle(doc, selectedUid);
+                if (cord) recordCordInGrimoire(cord);
+              },
               dress: () => setSheet('dress'),
               carve: () => setSheet('carve'),
               tend: () => setSheet('tend'),
@@ -1392,6 +1591,13 @@ export function AltarEditor({ shared, header, overlay, onBack, whose }: { shared
             <ChipRow>
               <Chip label="Undo" symbol="↶" onPress={() => stepHistory(undo, redo)} disabled={undo.current.length === 0} />
               <Chip label="Redo" symbol="↷" onPress={() => stepHistory(redo, undo)} disabled={redo.current.length === 0} />
+              <Chip
+                label="Select"
+                symbol="☑"
+                accessibilityLabel="Choose several things on the altar, to move, group or delete them together"
+                onPress={() => startSelecting(null)}
+                disabled={doc.objects.length === 0}
+              />
               <Chip label="Zoom in" symbol="+" onPress={() => zoomBy(1.5)} disabled={viewport.zoom >= 4} />
               <Chip label="Zoom out" symbol="−" onPress={() => zoomBy(1 / 1.5)} disabled={viewport.zoom <= 1} />
               {!full ? <Chip label="Full screen" symbol="⤢" accessibilityLabel={canTurnScreen ? 'Turn the altar sideways to fill the screen' : 'Fill the screen with the altar'} onPress={() => enterFullScreen(true)} /> : null}
@@ -1402,7 +1608,7 @@ export function AltarEditor({ shared, header, overlay, onBack, whose }: { shared
                 <Chip label="Apothecary" symbol="⚗" accessibilityLabel="My Apothecary" onPress={() => setSheet('apothecary')} />
                 <Chip label="Background" symbol="❖" onPress={() => setSheet('background')} />
                 <Chip label="Layers" symbol="☰" onPress={() => setSheet('layers')} disabled={doc.objects.length === 0} />
-                {doc.objects.length > 1 && <Chip label="Group" symbol="⊕" onPress={() => setSheet('group')} />}
+                {doc.objects.length > 1 && <Chip label="Group" symbol="⊕" accessibilityLabel="Group things so they move together" onPress={() => setSheet('group')} />}
               </ChipRow>
             </ToolGroup>
             <ToolGroup title="Tend">
@@ -1420,7 +1626,7 @@ export function AltarEditor({ shared, header, overlay, onBack, whose }: { shared
                 <Chip
                   label="Workings"
                   symbol="✶"
-                  accessibilityLabel="Workings: begin a ritual here, spell jar, sachet, spell timer, scrying, the gratitude bowl, and things from your practice"
+                  accessibilityLabel="Workings: begin a ritual here, spell jar, sachet, cord cutting, spells over days, scrying, the gratitude bowl, and things from your practice"
                   onPress={() => setSheet('more-workings')}
                 />
               </ChipRow>
@@ -1485,7 +1691,7 @@ export function AltarEditor({ shared, header, overlay, onBack, whose }: { shared
             )}
             <Text style={type.caption}>
               {altarSummary(doc)}. Tap something on the altar to tend it. Drag to move it, pinch to resize and twist to
-              turn it.{viewport.zoom > 1 ? ' Drag an empty spot to look around.' : ''}
+              turn it. Press and hold to choose several.{viewport.zoom > 1 ? ' Drag an empty spot to look around.' : ''}
             </Text>
             <AltarListing doc={doc} personal={!shared} whose={whose ?? null} highlighting={highlight !== null} onHighlight={setHighlight} onSelect={setSelected} />
             {doc.objects.length > 0 && (
@@ -1595,8 +1801,11 @@ export function AltarEditor({ shared, header, overlay, onBack, whose }: { shared
             items={groupAltarItems(groupItems)}
             sectionTitle={grimoire.openSection?.title ?? null}
             signedIn={signedIn}
-            defaults={workingDefaults()}
-            onClose={() => setSheet(null)}
+            defaults={recordingCord && recordCord ? cordDefaults(recordCord, labelOf, cordObjects.length) : workingDefaults()}
+            onClose={() => {
+              setSheet(null);
+              setRecordCord(null);
+            }}
             onCreate={createRitualPage}
           />
           <CustomItemSheet
@@ -1676,12 +1885,21 @@ export function AltarEditor({ shared, header, overlay, onBack, whose }: { shared
           <GroupSheet
             visible={sheet === 'group'}
             objects={doc.objects}
+            preselected={selecting ? chosen : undefined}
             onClose={() => setSheet(null)}
             onGroup={(indices, name) => {
               commit((d) => groupObjects(d, indices, name, nowIso()));
               setSheet(null);
-              setNotice('Grouped. They move together now.');
+              setNotice('Grouped. They move together now; tap one to see the group.');
             }}
+          />
+          <CordSheet
+            visible={sheet === 'cord'}
+            candles={freeCandles(doc).map((o) => ({ id: String(o.altarObjectId), label: shortLabel(o.label, 'Candle') }))}
+            first={cordFrom}
+            onClose={() => setSheet(null)}
+            onTie={tieChosen}
+            onPair={setOutPair}
           />
           <CarveSheet
             visible={sheet === 'carve'}
@@ -2039,7 +2257,12 @@ export function AltarEditor({ shared, header, overlay, onBack, whose }: { shared
               <Chip label={dirty ? 'Save' : 'Saved'} symbol="✓" onPress={() => setSheet('save')} />
             )}
             <Chip label="Cabinet" symbol="❖" accessibilityLabel="Open the cabinet" onPress={() => setSheet('cabinet')} />
-            {selectedObject ? (
+            {selecting ? (
+              <>
+                <Chip label={`Chosen (${chosen.length})`} symbol="☑" accessibilityLabel={`${selectionWords(chosen.length)} chosen: show what can be done with them`} onPress={() => setTools(true)} />
+                <Chip label="Done choosing" symbol="✓" onPress={() => setSelectIds(null)} />
+              </>
+            ) : selectedObject ? (
               <Chip label="Show details" symbol="☰" accessibilityLabel={`Show details for ${shortLabel(selectedObject.label)}`} onPress={() => setTools(true)} />
             ) : (
               <Chip label="Tools" symbol="☰" accessibilityLabel="Show the altar's tools" onPress={() => setTools(true)} />
@@ -2188,6 +2411,12 @@ type Actions = {
   length: () => void;
   rename: () => void;
   ungroup: () => void;
+  /** Choose several, starting with this one. */
+  several: () => void;
+  tieCord: () => void;
+  cordHeight: (height: number) => void;
+  untieCord: () => void;
+  recordCord: () => void;
   crystal: (mode: CrystalMode) => void;
   deity: (mode: DeityMode) => void;
   dress: () => void;
@@ -2232,6 +2461,7 @@ function ObjectPanel({
   tonightWhy,
   spells,
   canMirror,
+  cord,
   connect,
   act,
   onAbout,
@@ -2256,6 +2486,8 @@ function ObjectPanel({
   /** Open spells worked with it. */
   spells: CraftEntry<SpellEntry>[];
   canMirror: boolean;
+  /** A candle's cord (cord cutting), or null for anything that isn't a candle. */
+  cord: { cord: Cord | null; line: string; status: 'tied' | 'burning' | 'cut' | null; canTie: boolean } | null;
   group: string;
   crafted: boolean;
   canPractice: boolean;
@@ -2548,6 +2780,30 @@ function ObjectPanel({
             </ChipRow>
           ) : null}
           {!!wax?.line && <Text style={type.caption}>{wax.line}</Text>}
+          {cord?.cord ? (
+            <View style={styles.living}>
+              <Text style={type.eyebrow}>{cord.status === 'cut' ? 'Cord cutting · cut' : cord.status === 'burning' ? 'Cord cutting · burning' : 'Cord cutting · tied'}</Text>
+              <Text style={type.caption}>{cord.line}</Text>
+              {!!cord.cord.intention && <Text style={styles.glance}>{cord.cord.intention}</Text>}
+              {cord.status === 'tied' && (
+                <ChipRow>
+                  {CORD_HEIGHTS.map((h) => (
+                    <Chip key={h.value} label={h.label} active={Math.abs(cord.cord!.height - h.value) < 0.01} accessibilityLabel={`Tie the cord ${h.label.toLowerCase()}`} onPress={() => act.cordHeight(h.value)} />
+                  ))}
+                </ChipRow>
+              )}
+              <ChipRow>
+                {cord.status === 'cut' && (
+                  <Chip label={cord.cord.recordedAt ? 'Write it again in Grimoire' : 'Record in Grimoire'} symbol="❧" onPress={act.recordCord} />
+                )}
+                {cord.status !== 'burning' && <Chip label={cord.status === 'cut' ? 'Clear the cord away' : 'Untie the cord'} symbol="⌫" onPress={act.untieCord} />}
+              </ChipRow>
+            </View>
+          ) : cord?.canTie ? (
+            <ChipRow>
+              <Chip label="Tie a cord to another candle" symbol="➰" accessibilityLabel="Cord cutting: tie a cord between this candle and another" onPress={act.tieCord} />
+            </ChipRow>
+          ) : null}
           <ChipRow>
             {life?.adjustable && <Chip label="How long it burns" symbol="⧗" onPress={act.length} />}
             {!life?.spent && <Chip label="Dress & anoint" symbol="❦" accessibilityLabel={`Dress and anoint ${objectLabel} with oil and herbs`} onPress={act.anoint} />}
@@ -2600,6 +2856,12 @@ function ObjectPanel({
         <Chip label="Duplicate" symbol="⧉" onPress={act.duplicate} />
         <Chip label="Rename" symbol="✎" onPress={act.rename} />
         <Chip label="Spell over days" symbol="◔" accessibilityLabel={`Start a spell timer with ${objectLabel}`} onPress={act.spell} />
+        <Chip
+          label={group ? 'Choose the group' : 'Choose several'}
+          symbol="☑"
+          accessibilityLabel={group ? `Choose everything in the group “${group}”, to move, layer or delete together` : `Choose ${objectLabel} and others, to move, group or delete together`}
+          onPress={act.several}
+        />
         {!!group && <Chip label="Send group to Grimoire" symbol="❧" onPress={act.grimoire} />}
         {!!group && <Chip label="Ungroup" symbol="⊘" onPress={act.ungroup} />}
         {confirmRemove ? (
@@ -2615,6 +2877,23 @@ function ObjectPanel({
   );
 }
 
+
+/** A cut cord's page starts with what happened on the altar. */
+function cordDefaults(cord: Cord, labelOf: (id: string) => string, candles: number): WorkingDetails {
+  const cut = cord.cutAt ? new Date(cord.cutAt) : new Date();
+  return {
+    ...workingDefaults(cut),
+    kind: 'Spell',
+    intention: cord.intention ?? '',
+    extraItems: `A ${cord.color === 'natural' ? 'twine' : cord.color} cord, tied ${heightWords(cord.height)} between the candles`,
+    steps: [
+      `Tied a cord between ${labelOf(cord.a)} and ${labelOf(cord.b)}.`,
+      'Lit the candles and let them burn down to it.',
+      `The flame of ${labelOf(cord.caughtOn || cord.a)} reached the cord and it burned through${cord.cutAt ? `, ${cut.toLocaleString(undefined, { weekday: 'long', hour: 'numeric', minute: '2-digit' })}` : ''}.`,
+    ].join('\n'),
+    ...(candles < 2 ? { followUp: 'One of the candles has since left the altar.' } : {}),
+  };
+}
 
 /** A recorded working starts with tonight's moon phase and the day filled in. */
 function workingDefaults(now = new Date()): WorkingDetails {
@@ -2637,6 +2916,7 @@ const styles = StyleSheet.create({
   glance: { fontFamily: fonts.displayItalic, fontSize: 17, lineHeight: 22, color: colors.parchment },
   living: { gap: 8 },
   notice: { color: colors.gold, textAlign: 'center' },
+  undoRow: { flexDirection: 'row', justifyContent: 'center' },
   attuned: { fontFamily: fonts.bodySemi, fontSize: 13, color: colors.gold, marginTop: 2 },
   faded: { color: colors.muted },
   group: { gap: 8 },

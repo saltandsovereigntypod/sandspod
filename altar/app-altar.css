@@ -275,3 +275,14 @@ a.app-chip { text-decoration: none; }
 .altar-hero__tend a { color: var(--gold); text-decoration: none; }
 .altar-hero__tend a:hover, .altar-hero__tend a:focus-visible { text-decoration: underline; }
 body.is-coven-altar .altar-hero__tend { display: none; }
+
+/* Cords tied between candles (altar-cords.js): drawn over the objects, never in the way of a tap. */
+.altar-cords { position: absolute; inset: 0; z-index: 900; pointer-events: none; overflow: visible; }
+.altar-cords[hidden] { display: none; }
+
+/* Choosing several (altar-select.js): the bar under the stage (each chosen thing is outlined, altar.css). */
+.altar-select-bar { display: grid; gap: 10px; margin: 10px 0; padding: 12px 14px; border: 1px solid rgba(185, 160, 93, .35); border-radius: 14px; background: rgba(12, 21, 16, .9); }
+.altar-select-bar[hidden] { display: none; }
+.altar-select-bar__head { display: flex; align-items: flex-start; gap: 10px; justify-content: space-between; }
+.altar-select-bar__count { margin: 2px 0; font-family: var(--font-display, serif); font-size: 1.25rem; color: var(--cream, #f4ecd8); }
+.altar-select-bar .app-chips { justify-content: flex-start; }

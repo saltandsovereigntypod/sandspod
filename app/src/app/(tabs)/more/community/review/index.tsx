@@ -69,7 +69,7 @@ export default function ReviewInbox() {
       <Chips label="Folder" options={options} value={filter} onChange={setFilter} />
       <Field label="Search title, writing or name" value={search} onChangeText={setSearch} autoCorrect={false} />
 
-      {status === 'offline' && data && <Notice>Offline · showing the copy saved on this phone</Notice>}
+      {status === 'offline' && data && <Notice>Couldn’t refresh just now · showing the copy saved on this phone</Notice>}
       {!data && status !== 'offline' && <ActivityIndicator color={colors.gold} />}
       {!data && status === 'offline' && (
         <Card>

@@ -27,6 +27,8 @@ import {
 } from './livingState.ts';
 import { incenseLife, incenseStateOf, isIncense, settleIncense } from './incense.ts';
 import { chargeUnderMoons } from './moonCharge.ts';
+import { settleCords, withCords } from './cord.ts';
+import { moveTogether, removeObjects } from './selection.ts';
 import type { AltarDocument } from './snapshot.ts';
 import type { SavedObject } from './types.ts';
 import { newId } from './uid.ts';
@@ -52,23 +54,14 @@ export function prepareDocument(doc: AltarDocument, now: string): AltarDocument 
 
 /**
  * Drag: put the object's centre at (cx, cy) and move the rest of its group by
- * the same amount. Locked objects stay put (group members that are locked too).
+ * the same amount, the group kept whole on the altar (each member keeps its
+ * place to the others). Locked objects stay put (group members that are locked too).
  */
 export function moveObject(doc: AltarDocument, index: number, cx: number, cy: number): AltarDocument {
   const object = doc.objects[index];
   if (!object || isLocked(object)) return doc;
   const start = displayBox(object);
-  const moved = withCenter(object, cx, cy);
-  const end = displayBox(moved);
-  const dx = end.cx - start.cx;
-  const dy = end.cy - start.cy;
-  const updates = new Map<number, SavedObject>([[index, moved]]);
-  for (const i of groupIndices(doc, index)) {
-    if (i === index || isLocked(doc.objects[i])) continue;
-    const box = displayBox(doc.objects[i]);
-    updates.set(i, withCenter(doc.objects[i], box.cx + dx, box.cy + dy));
-  }
-  return replace(doc, updates);
+  return moveTogether(doc, groupIndices(doc, index), cx - start.cx, cy - start.cy);
 }
 
 /** Resize by a factor about each object's centre; groups resize together (resizeObject). */
@@ -184,9 +177,10 @@ export function addObject(doc: AltarDocument, object: SavedObject): AltarDocumen
   return { ...doc, objects: [...doc.objects, object] };
 }
 
+/** Take one object off the altar (its group and any cord tied to it are tidied, as removeObjects does). */
 export function removeObject(doc: AltarDocument, index: number): AltarDocument {
   if (!doc.objects[index]) return doc;
-  return { ...doc, objects: doc.objects.filter((_, i) => i !== index) };
+  return removeObjects(doc, [index]);
 }
 
 /**
@@ -289,7 +283,9 @@ export function snuffAll(doc: AltarDocument, now: string): AltarDocument {
  */
 export function settleCandles(doc: AltarDocument, now: string): AltarDocument {
   const objects = doc.objects.map((o) => settleIncense(settleCandle(o, now), now));
-  return objects.every((o, i) => o === doc.objects[i]) ? doc : { ...doc, objects };
+  const burned = objects.every((o, i) => o === doc.objects[i]) ? doc : { ...doc, objects };
+  // A cord tied between candles catches when either burns down to it (cord.ts).
+  return settleCords(burned, now);
 }
 
 /**
@@ -331,7 +327,7 @@ export function setCandleLifeAt(doc: AltarDocument, index: number, ms: number, n
 
 /** Take everything off the altar, groups too (events.js clear-altar). */
 export function clearAltar(doc: AltarDocument): AltarDocument {
-  return { ...doc, objects: [], groups: [], activeGroupId: null };
+  return withCords({ ...doc, objects: [], groups: [], activeGroupId: null }, []);
 }
 
 /** Rename an object on this altar (object-actions.js Edit). */

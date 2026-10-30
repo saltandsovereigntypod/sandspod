@@ -111,7 +111,7 @@ export function CovenAltars({
 
   return (
     <>
-      {status === 'offline' && <Notice>Offline · showing the copy saved on this phone</Notice>}
+      {status === 'offline' && <Notice>Couldn’t refresh just now · showing the copy saved on this phone</Notice>}
       {!!message && <Notice>{message}</Notice>}
 
       {startable.length > 0 &&

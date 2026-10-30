@@ -38,6 +38,9 @@ export * as shelf from '../../app/src/lib/altar/shelf.ts';
 export * as pottedPlants from '../../app/src/lib/altar/pottedPlants.ts';
 export * as pottedSprig from '../../app/src/lib/altar/pottedSprig.ts';
 export * as editor from '../../app/src/lib/altar/editor.ts';
+// Choosing several things at once, and cord cutting between two candles.
+export * as selection from '../../app/src/lib/altar/selection.ts';
+export * as cord from '../../app/src/lib/altar/cord.ts';
 export * as snapshot from '../../app/src/lib/altar/snapshot.ts';
 export * as altarOptions from '../../app/src/lib/altar/altarOptions.ts';
 export * as ambient from '../../app/src/lib/altar/ambient.ts';

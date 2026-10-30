@@ -97,7 +97,7 @@ export function SettingsForm({
         <ActivityIndicator color={colors.gold} />
       ) : (
         <>
-          {status === 'offline' && <Notice>Offline · showing the settings saved on this device</Notice>}
+          {status === 'offline' && <Notice>Couldn’t refresh just now · showing the settings saved on this device</Notice>}
           {children(draft, set)}
           {!!note && <Notice tone={state === 'failed' ? 'gold' : 'muted'}>{note}</Notice>}
           {state === 'failed' && <Button label="Try again" variant="outline" onPress={() => void auto.flush()} />}

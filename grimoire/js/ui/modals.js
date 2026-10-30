@@ -159,7 +159,9 @@ function openAltarImportModal(ritual) {
   const now = new Date();
   const defaults = {
     moonPhase: typeof approximateMoonPhase === "function" ? approximateMoonPhase(now) : "",
-    day: now.toLocaleDateString(undefined, { weekday: "long" })
+    day: now.toLocaleDateString(undefined, { weekday: "long" }),
+    // What the altar already knows about the working (a cut cord: what it stood for and what happened).
+    ...(ritual.details && typeof ritual.details === "object" ? ritual.details : {})
   };
   const bodyHtml = `
     <div class="book-import-modal">
@@ -179,7 +181,7 @@ function openAltarImportModal(ritual) {
 
       <fieldset class="book-import-field book-import-kinds">
         <legend>Type of working</legend>
-        ${WORKING_KINDS.map((kind) => `<label class="book-import-kind"><input type="radio" name="working-kind" value="${escapeHtml(kind)}" /> ${escapeHtml(kind)}</label>`).join("")}
+        ${WORKING_KINDS.map((kind) => `<label class="book-import-kind"><input type="radio" name="working-kind" value="${escapeHtml(kind)}"${defaults.kind === kind ? " checked" : ""} /> ${escapeHtml(kind)}</label>`).join("")}
       </fieldset>
 
       ${WORKING_FIELDS.slice(0, 6).map((field) => renderWorkingField(field, defaults[field[0]] || "")).join("")}
@@ -188,7 +190,7 @@ function openAltarImportModal(ritual) {
         ${renderAltarImportSummary(ritual)}
       </div>
 
-      ${WORKING_FIELDS.slice(6).map((field) => renderWorkingField(field)).join("")}
+      ${WORKING_FIELDS.slice(6).map((field) => renderWorkingField(field, defaults[field[0]] || "")).join("")}
 
       <div class="book-import-actions">
         <button class="button" type="button" data-cancel-altar-import>
