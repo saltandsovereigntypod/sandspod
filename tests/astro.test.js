@@ -19,14 +19,24 @@ function loadAstro() {
   return context;
 }
 
+/** astro.js and the readings beside it, as the chart pages load them. */
+function loadReadings() {
+  const context = loadAstro();
+  vm.runInContext(read("js/core/astro-readings.js"), context);
+  return context;
+}
+
 test("the astro bundle casts the same chart as the app", () => {
-  const A = loadAstro().SaltCore.astro;
+  const ctx = loadReadings();
+  const A = ctx.SaltCore.astro;
+  const R = ctx.SaltCore["astro-readings"];
   const chart = A.natal.castChart({ date: "1990-06-15", time: "14:30", utcOffsetMinutes: 60, latitude: 51.5074, longitude: -0.1278 });
   assert.equal(A.natal.positionOf(chart, "Sun").sign, "Gemini");
   assert.equal(A.natal.positionOf(chart, "Ascendant").sign, "Libra");
   assert.equal(chart.houses.system, "placidus");
   assert.ok(A.forecast.transitsTo(chart, new Date("2026-10-30T12:00:00Z")).length > 0);
-  assert.ok(A.compose.composeReading(chart).length >= 6);
+  assert.ok(R.compose.composeReading(chart).length >= 6);
+  assert.ok(R.interpret.houseMeaning(1).name);
   assert.equal(A.glossary.term("void-of-course").term, "Void of course");
   assert.equal(A.time.zoneOffsetAt("America/New_York", new Date("1975-07-01T12:00:00Z")), -240);
 });
@@ -95,6 +105,40 @@ test("astro settings match the app's defaults", () => {
     assert.match(web, new RegExp(`${key}: "${value}"`));
     assert.match(app, new RegExp(`${key}: '${value}'`));
   }
+});
+
+test("the readings are their own bundle, loaded by every page that reads a chart", () => {
+  const A = loadAstro().SaltCore.astro;
+  // The light bundle (Today, the sky, the planner) has no reading tables.
+  assert.equal(A.interpret, undefined);
+  assert.equal(A.compose, undefined);
+  assert.ok(fs.statSync(path.join(root, "js/core/astro.js")).size < 400 * 1024, "js/core/astro.js stays light");
+  for (const file of ["today/today.js", "today/sky/sky.js", "today/holy/holy.js", "rituals/js/planner.js", "js/astro-terms.js", "practice/cosmic/course.js"]) {
+    assert.doesNotMatch(read(file), /\b(interpret|compose)\.|astro-readings/, file);
+  }
+  // cosmic.js reads them only through R(), and only on the chart and synastry views.
+  const cosmic = read("practice/cosmic/cosmic.js");
+  assert.doesNotMatch(cosmic, /\bA\.(interpret|compose)\b/);
+  for (const page of ["chart", "synastry"]) {
+    const html = read(path.join("practice/cosmic", page, "index.html"));
+    assert.ok(html.indexOf("/js/core/astro-readings.js") > html.indexOf("/js/core/astro.js"), page);
+    assert.ok(html.indexOf("/js/core/astro-readings.js") < html.indexOf("/practice/cosmic/cosmic.js"), page);
+  }
+});
+
+test("chart deities carry their link and put the person's patrons first, as the app does", () => {
+  const A = loadAstro().SaltCore.astro;
+  for (const g of Object.values(A.guides.PLANET_GUIDES)) for (const d of g.deities) assert.ok(d.link === "ancient" || d.link === "modern", d.name);
+  const chart = A.natal.castChart({ date: "1990-06-15", time: "14:30", utcOffsetMinutes: 60, latitude: 51.5074, longitude: -0.1278 });
+  assert.equal(A.craftLinks.patronsFromSettings(null).length, 0);
+  const patrons = A.craftLinks.patronsFromSettings({ my_deities: JSON.stringify([{ key: "aphrodite", name: "Aphrodite", level: "patron", since: "" }]) });
+  const [first] = A.craftLinks.deitiesForChart(chart, patrons);
+  assert.equal(first.name, "Aphrodite");
+  assert.equal(first.patronLine, "Aphrodite, your patron, links to your chart ruler, Venus.");
+  const cosmic = read("practice/cosmic/cosmic.js");
+  assert.match(cosmic, /deitiesForChart\(chart, patrons\)/);
+  assert.match(cosmic, /patronPlanets\(chart, patrons\)/);
+  assert.match(cosmic, /DEITY_LINK_LABEL/);
 });
 
 test("the cosmic pages load the astrology and its store", () => {

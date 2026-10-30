@@ -3,6 +3,7 @@ import { useMemo } from 'react';
 import { View } from 'react-native';
 
 import { Button } from '../../../../../components/Button';
+import { DeityLinkTag } from '../../../../../components/astro/DeityLinkTag';
 import { ExplainCard, TermChips, TermText } from '../../../../../components/astro/Explain';
 import { Body, Card, Chip, Chips, List, RitualScreen, Row, SectionLabel, Title, ui } from '../../../../../components/rituals/ui';
 import { term, termIdFor } from '../../../../../lib/astro/glossary';
@@ -105,6 +106,7 @@ export default function PlanetGuideScreen() {
             <Card key={d.name}>
               <TermText style={type.cardTitle} text={d.name} />
               <Body muted>{d.tradition}</Body>
+              <DeityLinkTag link={d.link} />
               <Body>{d.note}</Body>
               {(lib || journey) && (
                 <View style={ui.actions}>
@@ -117,7 +119,7 @@ export default function PlanetGuideScreen() {
         })}
       </View>
 
-      <Body muted>{`Sources: ${g.sourcing} The gods are not interchangeable: each has their own tradition and is approached through it.`}</Body>
+      <Body muted>{`Sources: ${g.sourcing} The gods are not interchangeable: each has their own tradition and is approached through it. An ancient link is attested in antiquity or the tradition’s own sources; a modern link was made in modern practice.`}</Body>
       <TermChips ids={['planetary-days', 'planetary-hours', 'chaldean-order', 'rulership', 'dignity']} />
       <List>
         <Row icon="altar" title={`Set a ${planet} altar`} detail="Its colours, stones and herbs, ready to change" onPress={() => router.push({ pathname: '/altar/[altarId]', params: { altarId: 'natal', planet, from: 'chart' } } as unknown as Href)} />

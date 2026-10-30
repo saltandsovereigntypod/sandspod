@@ -6,7 +6,7 @@
 import { aspectDef, PATTERN_LABEL } from '../aspects.ts';
 import { natalAltarPlanet, transitLineFor } from '../craftLinks.ts';
 import { progressionsFor, transitsTo } from '../forecast.ts';
-import { ordinalHouse } from '../interpret/compose.ts';
+import { ordinalHouse } from '../interpret/houses.ts';
 import { HOUR_SUITS } from '../../craft/cosmic/hours.ts';
 import { positionOf, type Chart, type Position } from '../natal.ts';
 import { DIGNITY_LABEL, elementOf, TRADITIONAL_RULER } from '../signs.ts';

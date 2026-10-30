@@ -3,6 +3,10 @@
 
 import type { HouseMeaning } from './types.ts';
 
+const ORDINAL = ['first', 'second', 'third', 'fourth', 'fifth', 'sixth', 'seventh', 'eighth', 'ninth', 'tenth', 'eleventh', 'twelfth'];
+/** "seventh house": kept here, apart from the reading tables, so light modules can use it. */
+export const ordinalHouse = (n: number) => `${ORDINAL[n - 1]} house`;
+
 export const HOUSE_MEANINGS: HouseMeaning[] = [
   {
     house: 1,

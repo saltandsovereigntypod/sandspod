@@ -14,6 +14,18 @@
 
 import type { Classical } from './signs.ts';
 
+/**
+ * How a god came to be tied to a planet. 'ancient': attested in antiquity or
+ * the tradition's own sources (the planet or weekday named for them, their
+ * own lore, the old astrologers); 'modern': a link made in modern practice
+ * and not found in their own lore. Where the evidence is unsure, 'modern'.
+ */
+export type DeityLink = 'ancient' | 'modern';
+
+export const DEITY_LINK_LABEL: Record<DeityLink, string> = { ancient: 'Ancient link', modern: 'Modern link' };
+
+export type PlanetDeity = { name: string; tradition: string; note: string; link: DeityLink };
+
 export type PlanetGuide = {
   planet: Classical;
   day: string;
@@ -32,7 +44,7 @@ export type PlanetGuide = {
   square: string;
   angel: { name: string; source: string };
   intelligence: string;
-  deities: { name: string; tradition: string; note: string }[];
+  deities: PlanetDeity[];
   /** What workings it suits. */
   suits: string;
   /** What it isn't the best time for. */
@@ -60,15 +72,15 @@ export const PLANET_GUIDES: Record<Classical, PlanetGuide> = {
     angel: { name: 'Michael', source: HEPTAMERON },
     intelligence: 'Nakhiel',
     deities: [
-      { name: 'Ra', tradition: 'Egyptian', note: 'The sun god whose boat crosses the day and the underworld night.' },
-      { name: 'Helios', tradition: 'Greek', note: 'The Sun himself, all-seeing witness of oaths.' },
-      { name: 'Sol', tradition: 'Roman', note: 'Sol Invictus, whose day became Sunday.' },
-      { name: 'Apollo', tradition: 'Greek', note: 'Linked with the Sun in later antiquity: light, healing, music, prophecy.' },
-      { name: 'Sól', tradition: 'Norse', note: 'The Sun as a goddess driving her chariot, chased by a wolf.' },
-      { name: 'Surya', tradition: 'Hindu', note: 'The Sun among the Navagraha, the nine planetary deities.' },
-      { name: 'Amaterasu', tradition: 'Shinto', note: 'The Sun goddess, ancestor of the imperial line.' },
-      { name: 'Saulė', tradition: 'Baltic', note: 'The Sun goddess of Lithuanian and Latvian song.' },
-      { name: 'Shamash', tradition: 'Mesopotamian', note: 'The Sun as god of justice and seeing.' },
+      { name: 'Ra', tradition: 'Egyptian', note: 'The sun god whose boat crosses the day and the underworld night.', link: 'ancient' },
+      { name: 'Helios', tradition: 'Greek', note: 'The Sun himself, all-seeing witness of oaths.', link: 'ancient' },
+      { name: 'Sol', tradition: 'Roman', note: 'Sol Invictus, whose day became Sunday.', link: 'ancient' },
+      { name: 'Apollo', tradition: 'Greek', note: 'Linked with the Sun in later antiquity: light, healing, music, prophecy.', link: 'ancient' },
+      { name: 'Sól', tradition: 'Norse', note: 'The Sun as a goddess driving her chariot, chased by a wolf.', link: 'ancient' },
+      { name: 'Surya', tradition: 'Hindu', note: 'The Sun among the Navagraha, the nine planetary deities.', link: 'ancient' },
+      { name: 'Amaterasu', tradition: 'Shinto', note: 'The Sun goddess, ancestor of the imperial line.', link: 'ancient' },
+      { name: 'Saulė', tradition: 'Baltic', note: 'The Sun goddess of Lithuanian and Latvian song.', link: 'ancient' },
+      { name: 'Shamash', tradition: 'Mesopotamian', note: 'The Sun as god of justice and seeing.', link: 'ancient' },
     ],
     suits: 'Success, confidence, health and vitality, career and recognition, favour from those in authority, blessing new ventures, joy, clearing gloom.',
     avoid: 'Secrecy, hiding and quiet banishing; the Sun shows everything.',
@@ -90,16 +102,16 @@ export const PLANET_GUIDES: Record<Classical, PlanetGuide> = {
     angel: { name: 'Gabriel', source: HEPTAMERON },
     intelligence: 'Malkah be-Tharshishim',
     deities: [
-      { name: 'Selene', tradition: 'Greek', note: 'The Moon herself, driving her silver chariot.' },
-      { name: 'Artemis', tradition: 'Greek', note: 'Joined with the Moon from the classical period on.' },
-      { name: 'Diana', tradition: 'Roman', note: 'Queen of the night in later Roman and modern witchcraft.' },
-      { name: 'Hekate', tradition: 'Greek', note: 'Linked with the Moon in late antiquity and modern practice; a goddess of crossroads first.' },
-      { name: 'Máni', tradition: 'Norse', note: 'The Moon as a god, brother of Sól.' },
-      { name: 'Khonsu', tradition: 'Egyptian', note: 'The Moon as wanderer and healer.' },
-      { name: 'Nanna', tradition: 'Mesopotamian', note: 'Sîn, the Moon god of Ur.' },
-      { name: 'Chang’e', tradition: 'Chinese', note: 'The lady in the Moon of the Mid-Autumn Festival.' },
-      { name: 'Tsukuyomi', tradition: 'Shinto', note: 'The Moon god, brother of Amaterasu.' },
-      { name: 'Mėnulis', tradition: 'Baltic', note: 'The Moon, husband of Saulė.' },
+      { name: 'Selene', tradition: 'Greek', note: 'The Moon herself, driving her silver chariot.', link: 'ancient' },
+      { name: 'Artemis', tradition: 'Greek', note: 'Joined with the Moon from the classical period on.', link: 'ancient' },
+      { name: 'Diana', tradition: 'Roman', note: 'Queen of the night in later Roman and modern witchcraft.', link: 'ancient' },
+      { name: 'Hekate', tradition: 'Greek', note: 'Linked with the Moon in late antiquity and modern practice; a goddess of crossroads first.', link: 'ancient' },
+      { name: 'Máni', tradition: 'Norse', note: 'The Moon as a god, brother of Sól.', link: 'ancient' },
+      { name: 'Khonsu', tradition: 'Egyptian', note: 'The Moon as wanderer and healer.', link: 'ancient' },
+      { name: 'Nanna', tradition: 'Mesopotamian', note: 'Sîn, the Moon god of Ur.', link: 'ancient' },
+      { name: 'Chang’e', tradition: 'Chinese', note: 'The lady in the Moon of the Mid-Autumn Festival.', link: 'ancient' },
+      { name: 'Tsukuyomi', tradition: 'Shinto', note: 'The Moon god, brother of Amaterasu.', link: 'ancient' },
+      { name: 'Mėnulis', tradition: 'Baltic', note: 'The Moon, husband of Saulė.', link: 'ancient' },
     ],
     suits: 'Dreamwork, divination, intuition, home and family, emotional healing, cleansing, water magic, travel, fertility, anything timed to the phase.',
     avoid: 'Firm, lasting decisions and contracts; the Moon changes.',
@@ -121,13 +133,13 @@ export const PLANET_GUIDES: Record<Classical, PlanetGuide> = {
     angel: { name: 'Samael', source: HEPTAMERON },
     intelligence: 'Graphiel',
     deities: [
-      { name: 'Ares', tradition: 'Greek', note: 'War\'s fury and courage.' },
-      { name: 'Mars', tradition: 'Roman', note: 'War and also a guardian of fields and boundaries; father of Rome.' },
-      { name: 'Tyr', tradition: 'Norse', note: 'The god of oaths and justice behind Tuesday.' },
-      { name: 'Tiw', tradition: 'Anglo-Saxon', note: 'Tyr\'s English name, kept in Tuesday.' },
-      { name: 'Sekhmet', tradition: 'Egyptian', note: 'The fierce lioness of plague and healing.' },
-      { name: 'Perun', tradition: 'Slavic', note: 'Thunder and the warrior\'s strength.' },
-      { name: 'Hachiman', tradition: 'Shinto', note: 'Protector and god of archery and war.' },
+      { name: 'Ares', tradition: 'Greek', note: 'War\'s fury and courage.', link: 'ancient' },
+      { name: 'Mars', tradition: 'Roman', note: 'War and also a guardian of fields and boundaries; father of Rome.', link: 'ancient' },
+      { name: 'Tyr', tradition: 'Norse', note: 'The god of oaths and justice behind Tuesday.', link: 'ancient' },
+      { name: 'Tiw', tradition: 'Anglo-Saxon', note: 'Tyr\'s English name, kept in Tuesday.', link: 'ancient' },
+      { name: 'Sekhmet', tradition: 'Egyptian', note: 'In modern practice, the fierce lioness of plague and healing (Egypt\'s own Mars was Horus the Red).', link: 'modern' },
+      { name: 'Perun', tradition: 'Slavic', note: 'In modern practice, for thunder and the warrior\'s strength (older comparisons match him with Jupiter, if anyone).', link: 'modern' },
+      { name: 'Hachiman', tradition: 'Shinto', note: 'In modern practice, as protector and god of archery and war (not a planetary deity in his own lore).', link: 'modern' },
     ],
     suits: 'Courage, protection, defence, banishing, cutting cords, breaking curses, physical strength, competition and getting things moving.',
     avoid: 'Reconciliation, love and peace-making (unless it is courage for them).',
@@ -149,12 +161,12 @@ export const PLANET_GUIDES: Record<Classical, PlanetGuide> = {
     angel: { name: 'Raphael', source: HEPTAMERON },
     intelligence: 'Tiriel',
     deities: [
-      { name: 'Hermes', tradition: 'Greek', note: 'Messenger, guide of souls, god of roads and trade.' },
-      { name: 'Mercury', tradition: 'Roman', note: 'Merchants\' and travellers\' god.' },
-      { name: 'Thoth', tradition: 'Egyptian', note: 'Scribe of the gods; joined with Hermes as Hermes Trismegistus.' },
-      { name: 'Odin', tradition: 'Norse', note: 'Woden of Wednesday: runes, poetry, wisdom.' },
-      { name: 'Ogma', tradition: 'Celtic (Irish)', note: 'Eloquence and the ogham script.' },
-      { name: 'Nisaba', tradition: 'Mesopotamian', note: 'Goddess of writing and grain; Nabû was the planet\'s own god.' },
+      { name: 'Hermes', tradition: 'Greek', note: 'Messenger, guide of souls, god of roads and trade.', link: 'ancient' },
+      { name: 'Mercury', tradition: 'Roman', note: 'Merchants\' and travellers\' god.', link: 'ancient' },
+      { name: 'Thoth', tradition: 'Egyptian', note: 'Scribe of the gods; joined with Hermes as Hermes Trismegistus.', link: 'ancient' },
+      { name: 'Odin', tradition: 'Norse', note: 'Woden of Wednesday: runes, poetry, wisdom.', link: 'ancient' },
+      { name: 'Ogma', tradition: 'Celtic (Irish)', note: 'In modern practice, for eloquence and the ogham script.', link: 'modern' },
+      { name: 'Nisaba', tradition: 'Mesopotamian', note: 'In modern practice, as goddess of writing and grain; Nabû was the planet\'s own god.', link: 'modern' },
     ],
     suits: 'Communication, study, exams, writing, contracts, business, travel plans, divination, road opening and quick results.',
     avoid: 'Slow, lasting work; Mercury rarely stays.',
@@ -176,13 +188,13 @@ export const PLANET_GUIDES: Record<Classical, PlanetGuide> = {
     angel: { name: 'Sachiel', source: HEPTAMERON },
     intelligence: 'Iophiel',
     deities: [
-      { name: 'Zeus', tradition: 'Greek', note: 'King of the gods, keeper of hospitality and oaths.' },
-      { name: 'Jupiter', tradition: 'Roman', note: 'Best and greatest; the state\'s protector.' },
-      { name: 'Thor', tradition: 'Norse', note: 'Thunderer of Thursday, friend of farmers.' },
-      { name: 'Thunor', tradition: 'Anglo-Saxon', note: 'Thor\'s English name.' },
-      { name: 'Marduk', tradition: 'Mesopotamian', note: 'Babylon\'s king of the gods, and the planet itself.' },
-      { name: 'Perun', tradition: 'Slavic', note: 'Thunder god, matched with Jupiter by some writers.' },
-      { name: 'Taranis', tradition: 'Celtic (Gaulish)', note: 'The wheel-bearing thunderer, matched with Jupiter by the Romans.' },
+      { name: 'Zeus', tradition: 'Greek', note: 'King of the gods, keeper of hospitality and oaths.', link: 'ancient' },
+      { name: 'Jupiter', tradition: 'Roman', note: 'Best and greatest; the state\'s protector.', link: 'ancient' },
+      { name: 'Thor', tradition: 'Norse', note: 'Thunderer of Thursday, friend of farmers.', link: 'ancient' },
+      { name: 'Thunor', tradition: 'Anglo-Saxon', note: 'Thor\'s English name.', link: 'ancient' },
+      { name: 'Marduk', tradition: 'Mesopotamian', note: 'Babylon\'s king of the gods, and the planet itself.', link: 'ancient' },
+      { name: 'Perun', tradition: 'Slavic', note: 'Thunder god, matched with Jupiter by some modern writers.', link: 'modern' },
+      { name: 'Taranis', tradition: 'Celtic (Gaulish)', note: 'The wheel-bearing thunderer, matched with Jupiter by the Romans.', link: 'ancient' },
     ],
     suits: 'Luck, abundance, growth, legal matters and justice, learning and teaching, generosity, spiritual expansion and blessing.',
     avoid: 'Binding and restricting; Jupiter enlarges.',
@@ -204,15 +216,15 @@ export const PLANET_GUIDES: Record<Classical, PlanetGuide> = {
     angel: { name: 'Anael', source: HEPTAMERON },
     intelligence: 'Hagiel',
     deities: [
-      { name: 'Aphrodite', tradition: 'Greek', note: 'Born of the sea foam; the planet bore her name.' },
-      { name: 'Venus', tradition: 'Roman', note: 'Love, beauty and the gardens; ancestor of Rome.' },
-      { name: 'Inanna', tradition: 'Mesopotamian', note: 'The morning and evening star herself, queen of heaven.' },
-      { name: 'Astarte', tradition: 'Canaanite', note: 'The star goddess of love and war.' },
-      { name: 'Freyja', tradition: 'Norse', note: 'Love, beauty, seiðr and war; often joined with Friday.' },
-      { name: 'Frigg', tradition: 'Norse', note: 'Whose name Friday most likely carries.' },
-      { name: 'Hathor', tradition: 'Egyptian', note: 'Love, music, joy and the sky.' },
-      { name: 'Lakshmi', tradition: 'Hindu', note: 'Beauty and abundance (Shukra is the planet among the Navagraha).' },
-      { name: 'Turan', tradition: 'Etruscan', note: 'Etruscan goddess of love.' },
+      { name: 'Aphrodite', tradition: 'Greek', note: 'Born of the sea foam; the planet bore her name.', link: 'ancient' },
+      { name: 'Venus', tradition: 'Roman', note: 'Love, beauty and the gardens; ancestor of Rome.', link: 'ancient' },
+      { name: 'Inanna', tradition: 'Mesopotamian', note: 'The morning and evening star herself, queen of heaven.', link: 'ancient' },
+      { name: 'Astarte', tradition: 'Canaanite', note: 'The star goddess of love and war.', link: 'ancient' },
+      { name: 'Freyja', tradition: 'Norse', note: 'Love, beauty, seiðr and war; often joined with Friday in modern practice, though the day is most likely Frigg\'s.', link: 'modern' },
+      { name: 'Frigg', tradition: 'Norse', note: 'Whose name Friday most likely carries.', link: 'ancient' },
+      { name: 'Hathor', tradition: 'Egyptian', note: 'Love, music, joy and the sky; the Greeks matched her with Aphrodite, but the planet is not hers in Egyptian lore.', link: 'modern' },
+      { name: 'Lakshmi', tradition: 'Hindu', note: 'Beauty and abundance, honoured on Fridays in later Hindu practice (Shukra is the planet among the Navagraha).', link: 'modern' },
+      { name: 'Turan', tradition: 'Etruscan', note: 'Etruscan goddess of love, matched with Venus today; no planetary link of hers survives.', link: 'modern' },
     ],
     suits: 'Love and self-love, friendship, beauty and glamour, art, harmony and reconciliation, pleasure, fertility of gardens, drawing money gently.',
     avoid: 'Fights, harsh banishing and severing; Venus joins.',
@@ -234,11 +246,11 @@ export const PLANET_GUIDES: Record<Classical, PlanetGuide> = {
     angel: { name: 'Cassiel', source: HEPTAMERON },
     intelligence: 'Agiel',
     deities: [
-      { name: 'Saturn', tradition: 'Roman', note: 'God of sowing and the golden age; the Saturnalia.' },
-      { name: 'Kronos', tradition: 'Greek', note: 'The Titan of the harvest sickle and of time\'s devouring.' },
-      { name: 'Ninurta', tradition: 'Mesopotamian', note: 'The planet\'s Babylonian god.' },
-      { name: 'The Cailleach', tradition: 'Celtic (Irish)', note: 'In modern practice, a winter crone of age and endurance (not a planetary deity in her own lore).' },
-      { name: 'Hekate', tradition: 'Greek', note: 'In modern practice, for thresholds and protection (not a planetary deity in her own lore).' },
+      { name: 'Saturn', tradition: 'Roman', note: 'God of sowing and the golden age; the Saturnalia.', link: 'ancient' },
+      { name: 'Kronos', tradition: 'Greek', note: 'The Titan of the harvest sickle and of time\'s devouring.', link: 'ancient' },
+      { name: 'Ninurta', tradition: 'Mesopotamian', note: 'The planet\'s Babylonian god.', link: 'ancient' },
+      { name: 'The Cailleach', tradition: 'Celtic (Irish)', note: 'In modern practice, a winter crone of age and endurance (not a planetary deity in her own lore).', link: 'modern' },
+      { name: 'Hekate', tradition: 'Greek', note: 'In modern practice, for thresholds and protection (not a planetary deity in her own lore).', link: 'modern' },
     ],
     suits: 'Binding, banishing, boundaries, protection of the home, endings, discipline, long-term goals, ancestor work and work with the land.',
     avoid: 'Love, luck and quick beginnings; Saturn slows things.',
