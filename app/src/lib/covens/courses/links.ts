@@ -172,4 +172,3 @@ export const LESSON_LINKS: Record<string, CourseLink[]> = {
   'hellenic-high-priestess-modern-priesthood': [coven('manage'), coven('standing')],
   'hellenic-high-priestess-theology-and-ethics-of-leading': [coven('ritual-builder'), page('divination')],
 };
-
