@@ -200,7 +200,7 @@
       about ? h.muted(about) : "",
       hour ? h.card(`${h.label("This hour")}<h2 class="pb-card-title">${tx(`The hour of ${hour.planet}`)}</h2>${h.muted(`Until ${timeOfDay(hour.end)}. Good for ${A.cosmicHours.HOUR_SUITS[hour.planet].short}.`)}`, { gold: true }) : "",
       line ? h.card(`${h.label("The sky on your chart today")}${ptx(line.line)}<a class="astro-link" href="${esc(url.chart(null, "transits"))}">All your transits ›</a>`) : "",
-      h.section("Tools", h.list([...tools.map((tool, i) => h.row({ href: routes[i], title: tool.title, detail: details[i] ?? tool.detail })), h.row({ href: "/practice/cosmic/learn/", title: "Astrology glossary", detail: "Every term explained, simply or in depth" }), h.row({ href: "/practice/cosmic/charts/", title: "All charts", detail: ST.state.data.charts.length ? `${ST.state.data.charts.length} kept, privately · synastry` : "Yours and others’, kept privately" })], "Cosmic tools")),
+      h.section("Tools", h.list([...tools.map((tool, i) => h.row({ href: routes[i], title: tool.title, detail: details[i] ?? tool.detail })), h.row({ href: "/practice/cosmic/timing/", title: "Find a good time", detail: "The best hours ahead for a working, from the moon, the planets and your chart" }), h.row({ href: "/practice/cosmic/learn/", title: "Astrology glossary", detail: "Every term explained, simply or in depth" }), h.row({ href: "/practice/cosmic/charts/", title: "All charts", detail: ST.state.data.charts.length ? `${ST.state.data.charts.length} kept, privately · synastry` : "Yours and others’, kept privately" })], "Cosmic tools")),
       h.list([
         h.row({ href: "/today/sky/", title: "The sky today", detail: "Planets, retrogrades and eclipses" }),
         h.row({ href: links.premadeFor("cosmic"), title: "Cosmic workings", detail: "Premade rituals and spells; filter by Cosmic & celestial" })
@@ -973,7 +973,7 @@
           place ? h.details("Change your place", PB.placeForm("hours", { place })) : "",
           h.section("The seven planets", h.list(H.HOUR_PLANETS.map((p) => h.row({ href: url.planet(p), title: `${A.signs.POINT_GLYPH[p]} ${p} · ${G[p].day}`, detail: H.HOUR_SUITS[p].short })))),
           termChips(["planetary-days", "planetary-hours", "chaldean-order", "void-of-course"]),
-          h.list([h.row({ href: "/rituals/planner/", title: "The ritual planner", detail: "Find the night, then the hour" }), h.row({ href: "/today/sky/", title: "The sky today", detail: "Planets, retrogrades, eclipses and your place" })])
+          h.list([h.row({ href: "/practice/cosmic/timing/", title: "Find a good time", detail: "The spell timing advisor: the best hours ahead for a working, and why" }), h.row({ href: "/rituals/planner/", title: "The ritual planner", detail: "Find the night, then the hour" }), h.row({ href: "/today/sky/", title: "The sky today", detail: "Planets, retrogrades, eclipses and your place" })])
         ].join("")
       );
     };
@@ -1033,7 +1033,14 @@
       explainCard({ title: `${planet} in astrology`, entry: A.glossary.term(termId(planet)), terms: [termId(planet), "planetary-days", "planetary-hours"] }),
       h.card(`${h.label("Its nature")}${ptx(g.nature)}${ptx(`Rules ${A.signs.domiciles(planet).join(" and ")}${exalt ? `; exalted in ${exalt}` : ""}. ${g.rules}`)}${h.muted(`The body: ${g.body}`)}`, { gold: true }),
       h.card(`${h.label(`Its day: ${g.day}`)}${h.p(g.dayNames)}${next ? ptx(`Next hour of ${planet} on ${g.day}: ${shortDate(next.start)}, ${timeOfDay(next.start)} – ${timeOfDay(next.end)}.`) : h.muted("Add your place (The sky today) to see its hours where you are.")}${h.actions([h.button(`Find a ${planet} hour`, { variant: "ghost", href: url.hours(planet) }), next ? h.button("Plan a working then", { variant: "text", href: url.planner(next.start, planet) }) : ""])}`),
-      h.card(`${h.label("What it suits")}${h.p(g.suits)}${h.muted(`Less suited to: ${g.avoid}`)}`),
+      h.card(
+        `${h.label("What it suits")}${h.p(g.suits)}${h.muted(`Less suited to: ${g.avoid}`)}${
+          // The spell timing advisor for this planet's work (js/core/timing.js, where the page loads it).
+          window.SaltCore.timing
+            ? `${h.muted("Find a good time for")}${h.chips(window.SaltCore.timing.timing.intentsForPlanet(planet).map((i) => `<a class="sp-chip" href="/practice/cosmic/timing/?intent=${encodeURIComponent(i.key)}" aria-label="${esc(`Find a good time for ${i.label.toLowerCase()}`)}">${esc(i.label)}</a>`))}`
+            : ""
+        }`
+      ),
       h.card(
         `${h.label("Correspondences")}${h.p(`Metal: ${g.metal}`)}${h.p(`Colours: ${g.colours.join(", ")}`)}${h.p(`Incense: ${g.incense.join(", ")}`)}${h.p(`Number and square: ${g.square}`)}${h.p(`Angel: ${g.angel.name} (${g.angel.source}). Intelligence: ${g.intelligence} (Agrippa).`)}${h.label("Herbs")}${h.chips(g.herbs.map(chip))}${h.label("Stones")}${h.chips(g.stones.map(chip))}${fromLibrary.length ? `${h.label(`Everything in the Living Library under ${planet}`)}${h.chips(fromLibrary.slice(0, 24).map(chip))}` : ""}`
       ),
@@ -1185,6 +1192,7 @@
     "cosmic-planet": planetPage,
     "cosmic-learn": learnPage,
     "cosmic-course": (root, user) => window.SaltAstroCourse && window.SaltAstroCourse.page(root, user),
+    "cosmic-timing": (root, user) => window.SaltTiming && window.SaltTiming.page(root, user),
     "cosmic-keep": keepPage
   };
   const view = document.querySelector("[data-page-root]")?.getAttribute("data-view");

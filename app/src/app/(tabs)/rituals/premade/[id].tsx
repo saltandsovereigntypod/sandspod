@@ -82,6 +82,21 @@ export default function PremadeView() {
     router.push({ pathname: '/rituals/planner', params: { fromSpell: '1', ...(intention ? { intention: intention.key } : {}) } });
   };
 
+  // The timing advisor, shaped by this working's own moon and weekday.
+  const findTime = () => {
+    handOffDraft(premadeDraft(premade));
+    router.push({
+      pathname: '/rituals/craft/cosmic/timing',
+      params: {
+        fromSpell: '1',
+        title: premade.title,
+        ...(intention ? { intent: intention.key } : {}),
+        ...(premade.moon?.length ? { moon: premade.moon.join(',') } : {}),
+        ...(premade.weekday !== undefined ? { weekday: String(premade.weekday) } : {}),
+      },
+    } as never);
+  };
+
   const save = async () => {
     setBusy('save');
     try {
@@ -112,6 +127,7 @@ export default function PremadeView() {
         />
         {!!rituals.active && <Body muted>Finish the ritual that’s under way before beginning another.</Body>}
         <Button label="Plan a night for it" variant="outline" onPress={plan} />
+        <Button label="Find a good time" variant="outline" accessibilityHint="The best times ahead for this working, from the moon and the planets" onPress={findTime} />
         {session ? (
           <Button label={busy === 'save' ? 'Saving…' : 'Save a copy to my templates'} variant="outline" disabled={!!busy} onPress={save} />
         ) : (

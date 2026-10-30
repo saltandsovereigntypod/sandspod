@@ -126,6 +126,7 @@
 
       <div class="sp-actions">
         <a class="button button--ghost" href="/rituals/planner/?planId=${encodeURIComponent(plan.id)}">Change the night or time</a>
+        <a class="button button--ghost" href="/practice/cosmic/timing/?${esc(new URLSearchParams({ planId: plan.id, title: plan.title || "", ...(plan.intentionKey ? { intent: plan.intentionKey } : {}) }).toString())}">Find a better time</a>
         <button type="button" class="button button--ghost rt-quiet" data-remove>Delete plan</button>
       </div>`;
   }

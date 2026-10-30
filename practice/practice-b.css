@@ -108,3 +108,12 @@
 
 .pb-stack { display: grid; gap: 10px; }
 .pb-plain { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; }
+
+/* The spell timing advisor (/practice/cosmic/timing/): a window's reasons, and the factors' weights. */
+.pb-parts { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.pb-parts li { display: flex; gap: 10px; align-items: flex-start; }
+.pb-parts li > span:nth-child(2) { display: grid; gap: 2px; min-width: 0; }
+.pb-points { width: 44px; flex: none; color: var(--gold); font-weight: 600; }
+.pb-points.is-against { color: var(--muted); }
+.pb-part__label { margin: 0; font-weight: 600; }
+.pb-factor { display: grid; gap: 4px; padding: 6px 0; }

@@ -1,4 +1,4 @@
-import { router } from 'expo-router';
+import { router, type Href } from 'expo-router';
 import { useMemo, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
@@ -102,6 +102,7 @@ export default function SkyScreen() {
 
       <TermChips ids={['zodiac', 'retrograde', 'shadow-period', 'void-of-course', 'eclipse', 'planetary-hours', 'natal-chart']} label="Learn the words" />
       <Button label="Your birth chart" variant="outline" onPress={() => router.push('/rituals/craft/cosmic/chart')} />
+      <Button label="Find a good time for a working" variant="outline" onPress={() => router.push('/rituals/craft/cosmic/timing' as Href)} />
 
       <Section label="Where you are">
         {here ? (

@@ -53,6 +53,7 @@
         kit.list([
           kit.row({ url: "/practice/cosmic/chart/", title: "Astrology", detail: "Your birth chart, today’s transits and planetary hours · private and encrypted" }),
           kit.row({ url: "/practice/cosmic/hours/", title: "Planetary hours", detail: "The planet ruling this hour and day, and what each is good for" }),
+          kit.row({ url: "/practice/cosmic/timing/", title: "Find a good time", detail: "The spell timing advisor: the best times ahead for a working, and why" }),
           kit.row({ url: "/practice/cosmic/learn/", title: "Learn astrology", detail: "Every planet, sign, house and aspect explained · simply or in depth" })
         ]),
         { id: "sky" }

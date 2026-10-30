@@ -64,6 +64,12 @@ export default function CraftHome() {
           />
           <Row icon="calendar" title="Planetary hours" detail="The planet ruling this hour and day, and what each is good for" onPress={go('/rituals/craft/cosmic/hours')} />
           <Row
+            icon="calendar"
+            title="Find a good time"
+            detail="The spell timing advisor: the best times ahead for a working, and why"
+            onPress={go('/rituals/craft/cosmic/timing')}
+          />
+          <Row
             icon="wheel"
             title="Learn astrology"
             detail="Every planet, sign, house and aspect explained · simply or in depth"

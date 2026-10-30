@@ -57,6 +57,7 @@ export default function CosmicPractice() {
           {tools.map((tool, i) => (
             <Row key={tool.title} icon={i === 1 ? 'calendar' : 'wheel'} title={tool.title} detail={details[i] ?? tool.detail} onPress={() => router.push(ROUTES[i] as Href)} />
           ))}
+          <Row icon="calendar" title="Find a good time" detail="The best hours ahead for a working, from the moon, the planets and your chart" onPress={() => router.push('/rituals/craft/cosmic/timing' as Href)} />
           <Row icon="wheel" title="Astrology glossary" detail="Every term explained, simply or in depth" onPress={() => router.push('/rituals/craft/cosmic/learn' as Href)} />
           <Row
             icon="wheel"

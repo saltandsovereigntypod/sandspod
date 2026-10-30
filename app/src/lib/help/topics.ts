@@ -2497,7 +2497,7 @@ export const HELP: HelpSection[] = [
         steps: [
           'Open Practice and choose Craft at the top (Grimoire · Rituals · Craft).',
           'Under "Body & moon": "Cycle & Moon".',
-          'Under "The sky": "Astrology", "Planetary hours" and "Learn astrology".',
+          'Under "The sky": "Astrology", "Planetary hours", "Find a good time" and "Learn astrology".',
           'Under "Divination & sigils": "Divination", "Draw cards, runes or ogham", "Card meanings" (in the app) and "Sigil maker".',
           'Under "Craft tools by path": your crafts first, then the other practices, and "Choose your crafts".',
           'Under "Elsewhere in Practice": "Dedication journeys" and the "Workings library", which stay under Rituals, and your dreams, which live in your Grimoire.',
@@ -2791,6 +2791,28 @@ export const HELP: HelpSection[] = [
         tips: ['Planetary hours need your place. Set it with "Use my location" on that screen.', 'Each planet has its own guide: tap it under "The seven planets".'],
         href: '/rituals/craft/cosmic/hours',
         keywords: ['planetary hour', 'planetary day', 'void of course', 'timing', 'sunrise hours', 'magical hours', 'chaldean order', 'remind me'],
+      },
+      {
+        id: 'practice-spell-timing',
+        title: 'Find a good time for a spell or ritual',
+        summary: 'The spell timing advisor: say what a working is for, and see the best times in the next week, month or three months, each with a score and the reasons behind it.',
+        steps: [
+          'Open Practice → Craft and, under "The sky", tap "Find a good time". It is also on "Planetary hours", "Cosmic & celestial", each planet’s guide, "The sky today", the ritual planner, the spell builder, each premade working and each plan.',
+          'Under "What is it for?", choose love, money and luck, protection, banishing, healing, divination, communication, courage, ancestors, endings, new beginnings, cleansing or peace. From a working or a plan, it is chosen for you.',
+          'Choose how far ahead: the next week, month or three months.',
+          '"Right now" says how this hour measures up; "Good enough now" means there is little to gain by waiting.',
+          'Each time below shows the moon, a score and its main reasons. Tap "Why" for every factor and what it added or took away.',
+          'Tap "Plan it then" to open the planner at that day and time, with the reminder your planner reminders give. From a plan, "Move the plan to then" changes its time.',
+          'Under "Weigh the factors", turn the moon phase, Moon sign, void-of-course Moon, planetary day and hour, retrogrades, your festivals, your deities and your chart up, down or off, and choose whether to include the small hours.',
+        ],
+        tips: [
+          'It weighs traditional correspondences, not rules: waxing to draw in, waning to release, Mercury retrograde for words, the Deipnon for Hekate’s work, and so on.',
+          'Planetary hours need your place (Settings → Location). Without it, it judges three-hour stretches of each day.',
+          'Your festivals come from Settings → Calendars, and your patron and dedicated deities from My deities. Your birth chart counts only while your charts are open on this device, and is optional.',
+          'The website has the same advisor under Practice → Craft.',
+        ],
+        href: '/rituals/craft/cosmic/timing',
+        keywords: ['timing', 'when', 'best time', 'electional', 'spell timing', 'good time', 'moon phase', 'void of course', 'mercury retrograde', 'planetary hour', 'advisor', 'when to cast'],
       },
       {
         id: 'practice-planet-guides',

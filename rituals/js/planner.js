@@ -218,6 +218,7 @@
         <h2 class="sp-label" id="rt-for">What is it for?</h2>
         <div class="sp-chips">${P.INTENTIONS.map((i) => UI.chip(i.label, { pressed: state.intentionKey === i.key, attrs: `data-intention="${i.key}" data-key="int-${i.key}"` })).join("")}</div>
         ${intention ? `<p class="sp-muted">${esc(intention.why)}</p>` : ""}
+        <p><a class="rt-text-link" href="${esc(timingHref(intention, template))}">Find a good time, hour by hour</a></p>
       </section>
       ${
         intention && !fixedDay
@@ -233,6 +234,19 @@
       ${nightCard}
       ${fromLibrary}
       ${saveButton}`;
+  }
+
+  /** The spell timing advisor for this plan: what it's for, and the ritual it carries on to the planner. */
+  function timingHref(intention, template) {
+    const q = new URLSearchParams();
+    if (intention) q.set("intent", intention.key);
+    if (state.editing) q.set("planId", state.editing.id);
+    if (state.attach.kind === "template") q.set("templateId", state.attach.id);
+    if (state.attach.kind === "draft" && params.get("premade")) q.set("premade", params.get("premade"));
+    else if (state.attach.kind === "draft" && params.get("fromSpell")) q.set("fromSpell", "1");
+    const title = (state.attach.kind === "draft" && state.draft && state.draft.title) || (template && template.title);
+    if (title) q.set("title", title);
+    return `/practice/cosmic/timing/${q.toString() ? `?${q}` : ""}`;
   }
 
   /** Re-render, keeping focus on the control that was used. */
@@ -349,8 +363,9 @@
       const plan = state.editing;
       const begins = R.plans.planStart(plan);
       state.intentionKey = plan.intentionKey;
-      if (begins) state.night = eveningOf(begins);
-      state.time = plan.time;
+      // A new night and time can come with the link (the timing advisor's "Move the plan to then").
+      if (begins && !fixedDay) state.night = eveningOf(begins);
+      state.time = /^\d{2}:\d{2}$/.test(params.get("time") || "") ? params.get("time") : plan.time;
       state.attach = plan.templateId ? { kind: "template", id: plan.templateId } : plan.draft ? { kind: "draft" } : { kind: "none" };
       state.picked = plan.ingredients || [];
       state.name = plan.title;

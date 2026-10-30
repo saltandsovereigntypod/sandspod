@@ -142,7 +142,7 @@ test("chart deities carry their link and put the person's patrons first, as the 
 });
 
 test("the cosmic pages load the astrology and its store", () => {
-  for (const page of ["", "charts", "chart", "chart-edit", "synastry", "hours", "planet", "learn", "keep"]) {
+  for (const page of ["", "charts", "chart", "chart-edit", "synastry", "hours", "planet", "learn", "keep", "timing"]) {
     const html = read(path.join("practice/cosmic", page, "index.html"));
     for (const src of ["/js/core/astro.js", "/js/astro-terms.js", "/practice/cosmic/astro-store.js", "/practice/cosmic/wheel.js", "/css/astro.css"]) assert.ok(html.includes(src), `${page}: ${src}`);
   }

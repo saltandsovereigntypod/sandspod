@@ -105,6 +105,12 @@ export default function SpellBuilder() {
     router.push({ pathname: '/rituals/planner', params: { fromSpell: '1', ...(intention ? { intention: intention.key } : {}) } });
   };
 
+  // The timing advisor, which hands the chosen time to the planner with this spell.
+  const findTime = () => {
+    handOffDraft(draft);
+    router.push({ pathname: '/rituals/craft/cosmic/timing', params: { fromSpell: '1', title: draft.title, ...(intention ? { intent: intention.key } : {}) } } as never);
+  };
+
   return (
     <RitualScreen back="Rituals">
       <Title eyebrow="Spell builder">{draft.title}</Title>
@@ -205,6 +211,7 @@ export default function SpellBuilder() {
         <View style={ui.actions}>
           <Button label={busy ? 'One moment…' : 'Begin now'} disabled={busy || !!rituals.active} onPress={begin} />
           <Button label="Plan a night for it" variant="outline" onPress={plan} />
+          <Button label="Find a good time" variant="outline" onPress={findTime} />
           {session ? (
             <Button label="Keep as a template" variant="outline" disabled={busy} onPress={keep} />
           ) : (
