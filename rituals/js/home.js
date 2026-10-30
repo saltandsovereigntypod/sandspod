@@ -87,6 +87,7 @@
           ${UI.row({ href: "/sigil/", title: "Sigil maker", detail: "An intent made into one mark, from its letters or a planetary square" })}
           ${UI.row({ href: "/divination/", title: "Divination", detail: "Draw cards, runes or ogham · your readings, decks and card meanings" })}
           ${UI.row({ href: "/rituals/cycle/", title: "Cycle & Moon", detail: "Your cycle beside the moon, or the moon alone · private and encrypted" })}
+          ${UI.row({ href: "/practice/cosmic/chart/", title: "Astrology", detail: "Your birth chart, today’s transits and planetary hours · private and encrypted" })}
         </nav>
       </section>`;
     const learnList = `
@@ -95,6 +96,7 @@
         <nav class="sp-list" aria-label="Learn">
           ${UI.row({ href: "/rituals/premade/", title: "Workings library", detail: `${R.premade.PREMADE.length} premade rituals and spells for every practice and path` })}
           ${UI.row({ href: "/rituals/community/", title: "Community Rituals", detail: "Rituals and spells the community has shared · search, add to yours or do once" })}
+          ${UI.row({ href: "/practice/cosmic/learn/", title: "Learn astrology", detail: "Every planet, sign, house and aspect explained · simply or in depth" })}
           ${UI.row({ href: "/rituals/journeys/", title: "Dedication journeys", detail: "Study, practice and a rite of self-dedication, for each path and god" })}
           ${UI.row({ href: "/practice/", title: "Craft tools", detail: "Tools for your craft: garden, hearth, dreams, stars, stones, tides and more" })}
         </nav>

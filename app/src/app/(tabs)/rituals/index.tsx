@@ -1,4 +1,4 @@
-import { router } from 'expo-router';
+import { router, type Href } from 'expo-router';
 import { useMemo, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
@@ -100,8 +100,14 @@ export default function RitualsHome() {
             icon="today"
             title="Cycle & Moon"
             detail="Your cycle beside the moon, or the moon alone · private and encrypted"
-            last
             onPress={() => router.push('/rituals/cycle')}
+          />
+          <Row
+            icon="wheel"
+            title="Astrology"
+            detail="Your birth chart, today’s transits and planetary hours · private and encrypted"
+            last
+            onPress={() => router.push('/rituals/craft/cosmic' as Href)}
           />
         </List>
       </View>
@@ -120,6 +126,12 @@ export default function RitualsHome() {
             title="Community Rituals"
             detail="Rituals and spells the community has shared · search, add to yours or do once"
             onPress={() => router.push('/rituals/community')}
+          />
+          <Row
+            icon="wheel"
+            title="Learn astrology"
+            detail="Every planet, sign, house and aspect explained · simply or in depth"
+            onPress={() => router.push('/rituals/craft/cosmic/learn' as Href)}
           />
           <Row
             icon="wheel"
