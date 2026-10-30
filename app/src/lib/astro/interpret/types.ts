@@ -36,6 +36,14 @@
 //    'Sun' ... 'Pluto', 'Chiron', 'North Node', 'South Node', 'Lilith',
 //    'Part of Fortune', 'Ascendant', 'Midheaven'. Signs are 'Aries' ... 'Pisces'.
 //    Aspect names: lib/astro/aspects.ts ASPECT_NAMES.
+//    Big tables are split one file per body or house (planetInSign/,
+//    planetInHouse/, signOnCusp/), gathered by the file of the same name.
+//
+// 2b. Links: name herbs, stones and gods in `magic` exactly as the Living
+//    Library spells them (see LIBRARY_LINK_NAMES in links.ts) and the
+//    registry links them; it also adds the planet guide, the planet's and
+//    house's premade rituals and dedication journeys. The tests check every
+//    link target exists.
 //
 // 3. The composer (compose.ts) walks a chart and asks the registry for each
 //    piece; missing pieces become `{ status: 'coming-soon' }` sections, which
@@ -45,6 +53,7 @@
 //    glossary (lib/astro/glossary.ts); see LessonSeed below for the planned shape.
 
 import type { AspectName, PatternName } from '../aspects.ts';
+import type { TermLink } from '../glossary/types.ts';
 import type { ChartPointName, ZodiacSign } from '../signs.ts';
 
 export type Interpretation = {
@@ -55,6 +64,13 @@ export type Interpretation = {
   shadow?: string;
   /** Where a traditional meaning comes from. */
   sources?: string;
+  /**
+   * Where it leads in the app: planet guides, Living Library entries,
+   * premade rituals, dedication journeys. Usually left out of the tables:
+   * the registry adds them (interpret/links.ts), from the body, the house
+   * and the herbs, stones and gods the magic text names.
+   */
+  links?: TermLink[];
 };
 
 export type HouseMeaning = {

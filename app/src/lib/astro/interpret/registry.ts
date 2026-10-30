@@ -7,6 +7,7 @@ import type { ChartPointName, ZodiacSign } from '../signs.ts';
 import { ASPECT_READINGS } from './aspects.ts';
 import { ELEMENT_READINGS } from './balance.ts';
 import { HOUSE_MEANINGS } from './houses.ts';
+import { linkCusp, linkInHouse, linkInSign } from './links.ts';
 import { MOON_IN_SIGN_READING } from './moonSigns.ts';
 import { PATTERN_READINGS } from './patterns.ts';
 import { PLANET_IN_HOUSE } from './planetInHouse.ts';
@@ -21,17 +22,22 @@ import { keys, type HouseMeaning, type Interpretation, type InterpretationTable 
 
 export type { HouseMeaning, Interpretation };
 
-export function inSign(body: ChartPointName, sign: ZodiacSign): Interpretation | null {
+function rawInSign(body: ChartPointName, sign: ZodiacSign): Interpretation | null {
   if (body === 'Sun') return SUN_IN_SIGN[sign];
   if (body === 'Moon') return MOON_IN_SIGN_READING[sign];
   if (body === 'Ascendant') return RISING_IN_SIGN[sign];
   return PLANET_IN_SIGN[keys.planetInSign(body, sign)] ?? POINT_READINGS[keys.pointInSign(body, sign)] ?? null;
 }
 
-export const inHouse = (body: ChartPointName, house: number): Interpretation | null =>
-  PLANET_IN_HOUSE[keys.planetInHouse(body, house)] ?? POINT_READINGS[keys.pointInHouse(body, house)] ?? null;
+/** A body in a sign, with its links (planet guide, Library, rituals, journeys). */
+export const inSign = (body: ChartPointName, sign: ZodiacSign): Interpretation | null => linkInSign(rawInSign(body, sign), body);
 
-export const signOnCusp = (house: number, sign: ZodiacSign): Interpretation | null => SIGN_ON_CUSP[keys.signOnCusp(house, sign)] ?? null;
+/** A body in a house, with its links. */
+export const inHouse = (body: ChartPointName, house: number): Interpretation | null =>
+  linkInHouse(PLANET_IN_HOUSE[keys.planetInHouse(body, house)] ?? POINT_READINGS[keys.pointInHouse(body, house)] ?? null, body, house);
+
+/** A sign on a house cusp, with its links. */
+export const signOnCusp = (house: number, sign: ZodiacSign): Interpretation | null => linkCusp(SIGN_ON_CUSP[keys.signOnCusp(house, sign)] ?? null, house, sign);
 
 export const aspectReading = (a: ChartPointName, aspect: AspectName, b: ChartPointName): Interpretation | null => ASPECT_READINGS[keys.aspect(a, aspect, b)] ?? null;
 

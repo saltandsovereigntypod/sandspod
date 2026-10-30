@@ -114,14 +114,17 @@ export function composeReading(chart: Chart): ReadingSection[] {
       const ruler = TRADITIONAL_RULER[cuspSign];
       const modern = MODERN_RULER[cuspSign];
       const rulerAt = positionOf(chart, ruler);
+      const onCusp = signOnCusp(n, cuspSign);
       houses.push({
         status: 'ready',
         title: `${n}. ${h.name}`,
         terms: [`house-${n}`, termId(cuspSign)],
         reading: {
-          simple: h.simple,
-          detailed: `${h.detailed}\n\n${cuspSign} is on the cusp${inside.length ? `, and ${inside.join(', ')} ${inside.length === 1 ? 'is' : 'are'} here` : ', and no planet is here'}. Its ruler, ${ruler}${modern !== ruler ? ` (modern: ${modern})` : ''}, is in ${rulerAt ? `${rulerAt.sign}${rulerAt.house ? `, the ${ordinalHouse(rulerAt.house)}` : ''}` : 'the chart'}.${signOnCusp(n, cuspSign) ? `\n\n${signOnCusp(n, cuspSign)!.detailed}` : ''}`,
-          magic: h.magic,
+          simple: onCusp ? `${h.simple} ${onCusp.simple}` : h.simple,
+          detailed: `${h.detailed}\n\n${cuspSign} is on the cusp${inside.length ? `, and ${inside.join(', ')} ${inside.length === 1 ? 'is' : 'are'} here` : ', and no planet is here'}. Its ruler, ${ruler}${modern !== ruler ? ` (modern: ${modern})` : ''}, is in ${rulerAt ? `${rulerAt.sign}${rulerAt.house ? `, the ${ordinalHouse(rulerAt.house)}` : ''}` : 'the chart'}.${onCusp ? `\n\n${onCusp.detailed}` : ''}`,
+          magic: onCusp ? `${h.magic} ${onCusp.magic}` : h.magic,
+          ...(onCusp?.shadow ? { shadow: onCusp.shadow } : {}),
+          ...(onCusp?.links ? { links: onCusp.links } : {}),
         },
       });
     }
