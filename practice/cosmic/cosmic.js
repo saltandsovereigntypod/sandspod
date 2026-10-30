@@ -7,7 +7,8 @@
  * details with the place search, synastry, planetary days and hours, the
  * planet guides, Learn astrology, and how charts are kept.
  *
- * The astrology is the app's own (js/core/astro.js); terms anywhere are
+ * The astrology is the app's own (js/core/astro.js, with the readings in
+ * js/core/astro-readings.js on the chart and synastry pages); terms anywhere are
  * tappable (js/astro-terms.js); the wheels are practice/cosmic/wheel.js.
  */
 (function () {
@@ -17,6 +18,8 @@
   const { h, links } = PB;
   const B = window.SaltCore && window.SaltCore["practice-b"];
   const A = window.SaltCore && window.SaltCore.astro;
+  // The readings (js/core/astro-readings.js), loaded only by the pages that read a chart: chart/ and synastry/.
+  const R = () => window.SaltCore && window.SaltCore["astro-readings"];
   const ST = window.SaltAstroStore;
   const T = window.SaltAstroTerms;
   const W = window.SaltAstroWheel;
@@ -40,6 +43,8 @@
   const termId = (name) => A.glossary.termIdFor(name);
   const ORD = ["first", "second", "third", "fourth", "fifth", "sixth", "seventh", "eighth", "ninth", "tenth", "eleventh", "twelfth"];
   const ordinal = (n) => `${ORD[n - 1]} house`;
+  /** "Ancient link" or "Modern link": how a god came to be tied to a planet. */
+  const deityLinkTag = (d) => (d.link ? `<p class="astro-deity-link${d.link === "modern" ? " astro-deity-link--modern" : ""}">${esc(A.guides.DEITY_LINK_LABEL[d.link])}</p>` : "");
 
   // ── Settings ──────────────────────────────────────────────────────────────
 
@@ -109,7 +114,7 @@
   }
 
   function positionCard(p, chart) {
-    const reading = A.interpret.inSign(p.point, p.sign);
+    const reading = R().interpret.inSign(p.point, p.sign);
     const words = A.meanings.PLANET_RULES[p.point];
     const decan = A.signs.decanOf(p.longitude);
     const facts = [A.natal.formatDegree(p), p.house ? ordinal(p.house) : null, p.retrograde ? "retrograde" : null, p.dignity ? A.signs.DIGNITY_LABEL[p.dignity] : null, `decan ${decan.decan} (${decan.ruler})`].filter(Boolean).join(" · ");
@@ -124,14 +129,14 @@
       extra: reading ? "" : ptx(words ? `${p.point} (${words}) works ${A.meanings.SIGN_STYLE[p.sign]} in ${p.sign}. ${coming}` : coming, "sp-caption")
     });
     if (p.house && p.point !== "Ascendant") {
-      const hr = A.interpret.inHouse(p.point, p.house);
-      out += explainCard({ title: `In the ${ordinal(p.house)}`, reading: hr, entry: hr ? null : A.glossary.term(`house-${p.house}`), terms: [`house-${p.house}`], extra: hr ? "" : ptx(`${p.point} brings its themes into ${A.interpret.houseMeaning(p.house).keywords.slice(0, 4).join(", ")}.`, "sp-caption") });
+      const hr = R().interpret.inHouse(p.point, p.house);
+      out += explainCard({ title: `In the ${ordinal(p.house)}`, reading: hr, entry: hr ? null : A.glossary.term(`house-${p.house}`), terms: [`house-${p.house}`], extra: hr ? "" : ptx(`${p.point} brings its themes into ${R().interpret.houseMeaning(p.house).keywords.slice(0, 4).join(", ")}.`, "sp-caption") });
     }
     return out;
   }
 
   function houseCard(n, chart) {
-    const hm = A.interpret.houseMeaning(n);
+    const hm = R().interpret.houseMeaning(n);
     const cusps = chart.houses ? chart.houses.cusps : chart.solarCusps;
     const sign = cusps ? A.signs.SIGNS[Math.floor(cusps[n - 1] / 30) % 12] : null;
     const inside = chart.positions.filter((p) => p.house === n && !["Ascendant", "Midheaven", "Descendant", "IC"].includes(p.point)).map((p) => p.point);
@@ -148,7 +153,7 @@
 
   function aspectCard(a, transit) {
     const def = A.aspects.aspectDef(a.aspect);
-    const reading = transit ? A.interpret.transitReading(a.a, a.aspect, a.b) : A.interpret.aspectReading(a.a, a.aspect, a.b);
+    const reading = transit ? R().interpret.transitReading(a.a, a.aspect, a.b) : R().interpret.aspectReading(a.a, a.aspect, a.b);
     const tone = def.tone === "soft" ? "an easy flow between them" : def.tone === "hard" ? "friction that asks for effort and grows strength" : def.tone === "blend" ? "the two acting as one" : "a subtle link";
     const w = A.meanings.PLANET_RULES;
     return explainCard({
@@ -413,8 +418,8 @@
     const pieceHtml = (p) => (p.status === "ready" ? explainCard({ title: p.title, reading: p.reading, terms: p.terms }) : h.card(`${h.cardTitle(p.title)}${ptx(p.sketch)}${h.caption("Full reading coming soon.")}${termChips(p.terms)}`));
 
     const readingTab = (chart) => {
-      const sections = A.compose.composeReading(chart);
-      const progress = A.compose.readingProgress(sections);
+      const sections = R().compose.composeReading(chart);
+      const progress = R().compose.readingProgress(sections);
       return `${ptx(`Your chart read in full, section by section. ${progress.ready} of ${progress.total} pieces are written so far; the rest show a short sketch and the terms to read while their full readings are being written.`, "sp-caption")}${sections
         .map((sec) =>
           h.section(
@@ -478,7 +483,7 @@
           const lit = A.natal.positionOf(r.chart, r.kind === "solar" ? "Sun" : "Moon");
           return h.card(
             `${h.label(r.kind === "solar" ? `Solar return ${view.year}` : "Next lunar return")}${h.cardTitle(`${shortDate(r.when)} ${r.when.getFullYear()}, ${timeOfDay(r.when)}`)}${ptx(A.natal.bigThreeLine(r.chart))}${r.chart.houses && lit?.house ? ptx(`${r.kind === "solar" ? "The Sun" : "The Moon"} falls in the return's ${ordinal(lit.house)}: ${r.kind === "solar" ? "a focus for the year" : "a focus for the month"}.`) : ""}<div class="astro-wheel-wrap">${W.chart(A, r.chart, { size, noAspects: true })}</div>${h.muted(`Cast for ${r.placeLabel || (chart.placeKnown ? "the birthplace" : "no place (no houses)")}. Times are in this browser’s time zone.`)}`
-          ) + A.compose.returnPieces(r).map(pieceHtml).join("");
+          ) + R().compose.returnPieces(r).map(pieceHtml).join("");
         }),
         termChips(["returns", "solar-return", "lunar-return"])
       ].join("");
@@ -493,7 +498,7 @@
           `${h.label("The progressed Moon")}<h2 class="pb-card-title">${tx(`Progressed Moon in ${m.position.sign}`)}</h2>${h.p(`${A.natal.formatDegree(m.position)}${m.natalHouse ? ` · in your natal ${ordinal(m.natalHouse)}` : ""}`)}${m.nextSign ? ptx(`It enters ${m.nextSign.sign} around ${shortDate(m.nextSign.date)} ${m.nextSign.date.getFullYear()}: a new emotional chapter, about every two and a half years.`) : ""}${ptx(`Progressed lunar phase: ${p.phase} (${Math.round(p.phaseAngle)}° from the progressed Sun), part of a thirty-year cycle.`)}`,
           { gold: true }
         ),
-        A.compose.progressedPieces(p).map(pieceHtml).join(""),
+        R().compose.progressedPieces(p).map(pieceHtml).join(""),
         p.ascendant && p.midheaven ? ptx(`By solar arc, the progressed Ascendant is in ${p.ascendant.sign} and the progressed Midheaven in ${p.midheaven.sign}.`) : "",
         p.changedSign.length ? h.card(`${h.label("Changed sign since birth")}${p.changedSign.map((c) => ptx(`${c.point}: ${c.from} → ${c.to}`)).join("")}`) : "",
         p.stationed.length ? ptx(`Turned direction by progression: ${p.stationed.join(", ")}.`) : "",
@@ -517,7 +522,9 @@
     };
     const craftTab = (chart) => {
       const allies = A.craftLinks.personalAllies(chart);
-      const deities = A.craftLinks.deitiesForChart(chart);
+      const patrons = A.craftLinks.patronsFromSettings(s);
+      const deities = A.craftLinks.deitiesForChart(chart, patrons);
+      const patronElsewhere = A.craftLinks.patronPlanets(chart, patrons);
       const altar = A.craftLinks.natalAltarPlanet(chart);
       const place = PB.getPlace();
       const ruler = allies[0];
@@ -534,8 +541,8 @@
         h.section(
           "Deities tied to your strongest planets",
           `${h.muted("The gods whom the planets were named for, or whom their own traditions tie to that light. A place to start, never an assignment; each is approached through their own tradition.")}${deities
-            .map((d) => h.card(`${h.cardTitle(d.name)}${h.muted(`${d.tradition} · ${d.planet} (${d.why})`)}${h.p(d.note)}${h.actions([libHref(d.name) ? h.button("In the Living Library", { variant: "ghost", href: libHref(d.name) }) : "", journeyFor(d.name) ? h.button("Dedication journey", { variant: "text", href: journeyFor(d.name) }) : ""])}`))
-            .join("")}`
+            .map((d) => h.card(`${d.patron ? h.label("Your patron") : ""}${h.cardTitle(d.name)}${h.muted(`${d.tradition} · ${d.planet} (${d.why})`)}${deityLinkTag(d)}${d.patronLine ? ptx(d.patronLine) : ""}${h.p(d.note)}${h.actions([libHref(d.name) ? h.button("In the Living Library", { variant: "ghost", href: libHref(d.name) }) : "", journeyFor(d.name) ? h.button("Dedication journey", { variant: "text", href: journeyFor(d.name) }) : ""])}`, { gold: !!d.patron }))
+            .join("")}${patronElsewhere.map((p) => h.card(`${h.label("Your patron in your chart")}${ptx(p.line)}${h.actions([h.button(`${p.planet}: the full guide`, { variant: "text", href: url.planet(p.planet) })])}`)).join("")}`
         ),
         termChips(["chart-ruler", "planetary-days", "planetary-hours", "dignity"])
       ].join("");
@@ -1035,11 +1042,11 @@
         g.deities
           .map((d) => {
             const slug = d.name.toLowerCase().replace(/[^a-z]/g, "");
-            return h.card(`${h.cardTitle(d.name)}${h.muted(d.tradition)}${h.p(d.note)}${h.actions([libHref(d.name) ? h.button("In the Living Library", { variant: "ghost", href: libHref(d.name) }) : "", journeys.includes(slug) ? h.button("Dedication journey", { variant: "text", href: `/rituals/journeys/?id=deity-${slug}` }) : ""])}`);
+            return h.card(`${h.cardTitle(d.name)}${h.muted(d.tradition)}${deityLinkTag(d)}${h.p(d.note)}${h.actions([libHref(d.name) ? h.button("In the Living Library", { variant: "ghost", href: libHref(d.name) }) : "", journeys.includes(slug) ? h.button("Dedication journey", { variant: "text", href: `/rituals/journeys/?id=deity-${slug}` }) : ""])}`);
           })
           .join("")
       ),
-      h.muted(`Sources: ${g.sourcing} The gods are not interchangeable: each has their own tradition and is approached through it.`),
+      h.muted(`Sources: ${g.sourcing} The gods are not interchangeable: each has their own tradition and is approached through it. An ancient link is attested in antiquity or the tradition’s own sources; a modern link was made in modern practice.`),
       termChips(["planetary-days", "planetary-hours", "chaldean-order", "rulership", "dignity"]),
       h.list([h.row({ href: links.premadeFor("cosmic"), title: "Cosmic workings", detail: "Premade rituals and spells for the planets" })])
     ].join("");

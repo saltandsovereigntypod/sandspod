@@ -4,12 +4,13 @@ import { Pressable, StyleSheet, Text, useWindowDimensions, View } from 'react-na
 
 import { Button } from '../../../../../components/Button';
 import { ChartWheel, type WheelTap } from '../../../../../components/astro/ChartWheel';
+import { DeityLinkTag } from '../../../../../components/astro/DeityLinkTag';
 import { ExplainCard, openTerm, Term, TermChips, TermText } from '../../../../../components/astro/Explain';
 import { AspectDetail, HouseDetail, PositionDetail } from '../../../../../components/astro/PointDetail';
 import { useCharts } from '../../../../../components/astro/useCharts';
 import { Body, Card, Chip, Chips, Field, Notice, RitualScreen, SectionLabel, Title, ui } from '../../../../../components/rituals/ui';
 import { aspectDef, PATTERN_LABEL, type AspectHit } from '../../../../../lib/astro/aspects';
-import { deitiesForChart, natalAltarPlanet, personalAllies, transitLineFor } from '../../../../../lib/astro/craftLinks';
+import { deitiesForChart, natalAltarPlanet, patronPlanets, patronsFromSettings, personalAllies, transitLineFor } from '../../../../../lib/astro/craftLinks';
 import { progressionsFor, retrogradePeriods, retroPhaseAt, returnChart, transitHouses, transitsTo } from '../../../../../lib/astro/forecast';
 import { termIdFor } from '../../../../../lib/astro/glossary';
 import { composeReading, ordinalHouse, progressedPieces, readingProgress, returnPieces, type ReadingPiece } from '../../../../../lib/astro/interpret/compose';
@@ -23,6 +24,7 @@ import { findByName } from '../../../../../lib/library/model';
 import { libraryHref } from '../../../../../lib/library';
 import { useLibrary } from '../../../../../lib/library/store';
 import { usePlace } from '../../../../../lib/location';
+import { useMySettings } from '../../../../../lib/settings/store';
 import { offsetLabel } from '../../../../../lib/astro/birth';
 import { colors, fonts, radius, type } from '../../../../../theme';
 
@@ -536,7 +538,10 @@ function Progressions({ chart }: { chart: Chart }) {
 
 function Craft({ chart }: { chart: Chart }) {
   const allies = useMemo(() => personalAllies(chart), [chart]);
-  const deities = useMemo(() => deitiesForChart(chart), [chart]);
+  const { settings } = useMySettings();
+  const myPatrons = useMemo(() => patronsFromSettings(settings), [settings]);
+  const deities = useMemo(() => deitiesForChart(chart, myPatrons), [chart, myPatrons]);
+  const patronElsewhere = useMemo(() => patronPlanets(chart, myPatrons), [chart, myPatrons]);
   const { entries } = useLibrary();
   const place = usePlace();
   const altarPlanet = natalAltarPlanet(chart);
@@ -595,9 +600,12 @@ function Craft({ chart }: { chart: Chart }) {
           const lib = findByName(entries, d.name);
           const journey = JOURNEY_CATALOG.find((j) => j.kind === 'deity' && j.id === `deity-${d.name.toLowerCase().replace(/[^a-z]/g, '')}`);
           return (
-            <Card key={d.name}>
+            <Card key={d.name} accent={d.patron}>
+              {d.patron && <SectionLabel>Your patron</SectionLabel>}
               <Text style={type.cardTitle}>{d.name}</Text>
               <Body muted>{`${d.tradition} · ${d.planet} (${d.why})`}</Body>
+              <DeityLinkTag link={d.link} />
+              {d.patronLine && <TermText style={type.body} text={d.patronLine} />}
               <Body>{d.note}</Body>
               <View style={styles.actions}>
                 {lib && <Button label="In the Living Library" variant="outline" onPress={() => router.push(libraryHref(lib))} />}
@@ -606,6 +614,13 @@ function Craft({ chart }: { chart: Chart }) {
             </Card>
           );
         })}
+        {patronElsewhere.map((p) => (
+          <Card key={`${p.name}-${p.planet}`}>
+            <SectionLabel>Your patron in your chart</SectionLabel>
+            <TermText style={type.body} text={p.line} />
+            <Button label={`${p.planet}: the full guide`} variant="text" onPress={() => router.push({ pathname: '/rituals/craft/cosmic/planet', params: { planet: p.planet } } as unknown as Href)} />
+          </Card>
+        ))}
       </View>
       <TermChips ids={['chart-ruler', 'planetary-days', 'planetary-hours', 'dignity']} />
     </View>

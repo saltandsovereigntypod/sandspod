@@ -10,6 +10,7 @@ import { positionOf, type Chart, type Position } from '../natal.ts';
 import type { Planet } from '../planets.ts';
 import { DIGNITY_LABEL, MODERN_RULER, SIGNS, TRADITIONAL_RULER, type ChartPointName } from '../signs.ts';
 import type { ProgressedPhase, ReturnChart, TransitHit } from '../forecast.ts';
+import { ordinalHouse } from './houses.ts';
 import {
   aspectReading,
   balanceReading,
@@ -36,8 +37,7 @@ export type ReadingPiece =
 export type ReadingSection = { id: string; title: string; intro?: string; pieces: ReadingPiece[] };
 
 const termId = (name: string) => name.toLowerCase().replace(/\s+/g, '-');
-const ORDINAL = ['first', 'second', 'third', 'fourth', 'fifth', 'sixth', 'seventh', 'eighth', 'ninth', 'tenth', 'eleventh', 'twelfth'];
-export const ordinalHouse = (n: number) => `${ORDINAL[n - 1]} house`;
+export { ordinalHouse };
 
 const PLANET_WORDS: Partial<Record<ChartPointName, string>> = {
   ...PLANET_RULES,

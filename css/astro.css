@@ -39,6 +39,9 @@
 .astro-part { display: grid; gap: 4px; }
 .astro-part__head { font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase; color: #e2c36d; font-weight: 600; }
 .astro-link { color: #e2c36d; font-weight: 600; min-height: 44px; display: inline-flex; align-items: center; }
+/* How a god came to be tied to a planet (planetGuides DeityLink). */
+.astro-deity-link { justify-self: start; align-self: start; display: inline-block; border: 1px solid #e2c36d; border-radius: 999px; padding: 1px 8px; font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; color: #e2c36d; font-weight: 600; }
+.astro-deity-link--modern { border-color: #cabf9d; color: #cabf9d; }
 
 .astro-wheel { width: 100%; max-width: 460px; height: auto; display: block; margin: 0 auto; }
 .astro-wheel .wheel-btn { cursor: pointer; }

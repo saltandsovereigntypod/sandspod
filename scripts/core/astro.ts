@@ -1,7 +1,8 @@
 // The app's astrology for the website: the chart engine, houses, aspects,
-// transits, returns, progressions and synastry, the glossary and the
-// interpretation library, the planet guides, the chart vault and the place
-// search. Built by scripts/build-core.mjs into js/core/astro.js
+// transits, returns, progressions and synastry, the glossary, the planet
+// guides, the chart vault and the place search. The interpretation library
+// (the readings themselves) is js/core/astro-readings.js, loaded only by the
+// pages that read a chart. Built by scripts/build-core.mjs into js/core/astro.js
 // (window.SaltCore.astro). The places themselves are fetched on demand from
 // /js/core/cities.json. Keep it to pure modules from app/src/lib.
 export * as time from '../../app/src/lib/astro/time.ts';
@@ -12,8 +13,6 @@ export * as aspects from '../../app/src/lib/astro/aspects.ts';
 export * as natal from '../../app/src/lib/astro/natal.ts';
 export * as forecast from '../../app/src/lib/astro/forecast.ts';
 export * as glossary from '../../app/src/lib/astro/glossary.ts';
-export * as interpret from '../../app/src/lib/astro/interpret/registry.ts';
-export * as compose from '../../app/src/lib/astro/interpret/compose.ts';
 export * as guides from '../../app/src/lib/astro/planetGuides.ts';
 export * as craftLinks from '../../app/src/lib/astro/craftLinks.ts';
 export * as places from '../../app/src/lib/astro/places.ts';

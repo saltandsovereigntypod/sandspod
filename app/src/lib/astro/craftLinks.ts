@@ -8,8 +8,10 @@ import { aspectDef } from './aspects.ts';
 import { transitsTo, type TransitHit } from './forecast.ts';
 import { PLANET_RULES } from './meanings.ts';
 import { positionOf, type Chart } from './natal.ts';
-import { PLANET_GUIDES, type PlanetGuide } from './planetGuides.ts';
-import { CLASSICAL, TRADITIONAL_RULER, type Classical, type ChartPointName } from './signs.ts';
+import { ordinalHouse } from './interpret/houses.ts';
+import { PLANET_GUIDES, type DeityLink, type PlanetDeity, type PlanetGuide } from './planetGuides.ts';
+import { CLASSICAL, TRADITIONAL_RULER, type Classical, type ChartPointName, type ZodiacSign } from './signs.ts';
+import { myDeities, patrons } from '../patron/mine.ts';
 
 export type PersonalAlly = {
   planet: Classical;
@@ -58,16 +60,98 @@ export function strongPlacements(chart: Chart): StrongPlacement[] {
   return [...out.entries()].map(([planet, reasons]) => ({ planet, reasons })).sort((a, b) => b.reasons.length - a.reasons.length);
 }
 
-/** Deities tied to the strong planets, with the planet and why. Names match the Living Library. */
-export function deitiesForChart(chart: Chart, limit = 8): { name: string; tradition: string; note: string; planet: Classical; why: string }[] {
-  const out: { name: string; tradition: string; note: string; planet: Classical; why: string }[] = [];
+/** A deity someone keeps (My deities): a Living Library key and/or a name. */
+export type PatronLike = { key?: string | null; name: string };
+
+/** The patrons in someone's settings (the `my_deities` setting); none when signed out or unset. */
+export const patronsFromSettings = (settings: Record<string, unknown> | null | undefined): PatronLike[] => patrons(myDeities(settings));
+
+const nameKey = (name: string) =>
+  name
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/^the\s+/, '')
+    .replace(/[^a-z]/g, '');
+
+/** The patron this guide deity is, if any: by Library key or by name. */
+function patronFor(name: string, list: PatronLike[]): PatronLike | null {
+  const k = nameKey(name);
+  if (!k) return null;
+  return list.find((p) => (p.key ? nameKey(p.key) === k : false) || nameKey(p.name) === k) ?? null;
+}
+
+export type ChartDeity = PlanetDeity & {
+  planet: Classical;
+  why: string;
+  /** One of the person's patrons. */
+  patron?: boolean;
+  /** "Hekate, your patron, links to your chart ruler, Saturn." */
+  patronLine?: string;
+};
+
+const theName = (planet: Classical) => (planet === 'Sun' || planet === 'Moon' ? `the ${planet}` : planet);
+
+/**
+ * Deities tied to the strong planets, with the planet and why. Names match
+ * the Living Library. Any of the person's patrons among them come first,
+ * with a line saying so (and are never cut by the limit).
+ */
+export function deitiesForChart(chart: Chart, patronList: PatronLike[] = [], limit = 8): ChartDeity[] {
+  const out: ChartDeity[] = [];
   for (const s of strongPlacements(chart)) {
     for (const d of PLANET_GUIDES[s.planet].deities) {
       if (out.some((o) => o.name === d.name)) continue;
-      out.push({ ...d, planet: s.planet, why: s.reasons.join(', ') });
+      const entry: ChartDeity = { ...d, planet: s.planet, why: s.reasons.join(', ') };
+      if (patronFor(d.name, patronList)) {
+        entry.patron = true;
+        entry.patronLine =
+          chart.ruler?.traditional === s.planet
+            ? `${d.name}, your patron, links to your chart ruler, ${s.planet}.`
+            : `${d.name}, your patron, links to ${theName(s.planet)}, ${s.reasons[0]} in your chart.`;
+      }
+      out.push(entry);
     }
   }
-  return out.slice(0, limit);
+  const mine = out.filter((d) => d.patron);
+  return [...mine, ...out.filter((d) => !d.patron)].slice(0, Math.max(limit, mine.length));
+}
+
+export type PatronPlanet = {
+  name: string;
+  planet: Classical;
+  link: DeityLink;
+  sign: ZodiacSign;
+  house: number | null;
+  /** "Your patron Apollo is tied to the Sun; in your chart the Sun is in Leo, in the fifth house." */
+  line: string;
+};
+
+/**
+ * Patrons tied in the guides to a planet that isn't among the chart's strong
+ * placements (so deitiesForChart doesn't show them): where that planet sits.
+ */
+export function patronPlanets(chart: Chart, patronList: PatronLike[]): PatronPlanet[] {
+  if (!patronList.length) return [];
+  const shown = deitiesForChart(chart, patronList, Infinity).filter((d) => d.patron);
+  const out: PatronPlanet[] = [];
+  for (const planet of CLASSICAL) {
+    const p = positionOf(chart, planet);
+    if (!p) continue;
+    for (const d of PLANET_GUIDES[planet].deities) {
+      if (!patronFor(d.name, patronList) || shown.some((s) => s.name === d.name)) continue;
+      const where = `${p.sign}${p.house ? `, in the ${ordinalHouse(p.house)}` : ''}`;
+      const how = d.link === 'modern' ? ' in modern practice' : '';
+      out.push({
+        name: d.name,
+        planet,
+        link: d.link,
+        sign: p.sign,
+        house: p.house ?? null,
+        line: `Your patron ${d.name} is tied to ${theName(planet)}${how}; in your chart ${theName(planet)} is in ${where}.`,
+      });
+    }
+  }
+  return out;
 }
 
 /** The natal altar: the chart ruler's planet (or the Sun sign's ruler without a time). */
