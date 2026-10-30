@@ -55,12 +55,14 @@ export default function Planner() {
     filled.current = true;
     const start = planStart(editing);
     setIntentionKey(editing.intentionKey);
-    if (start) setNight(new Date(start.getFullYear(), start.getMonth(), start.getDate(), EVENING_HOUR));
-    setTime(editing.time);
+    // A new night and time can come with the link (the timing advisor's "Move the plan to then").
+    if (start && !fixedDay) setNight(new Date(start.getFullYear(), start.getMonth(), start.getDate(), EVENING_HOUR));
+    setTime(/^\d{2}:\d{2}$/.test(params.time ?? '') ? params.time! : editing.time);
     setAttach(editing.templateId ? { kind: 'template', id: editing.templateId } : editing.draft ? { kind: 'draft' } : { kind: 'none' });
     setPicked(editing.ingredients);
     setName(editing.title);
     setToCalendar(!!editing.addToCalendar);
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- filled once, from the plan and the link
   }, [editing]);
 
   const intention = intentionByKey(intentionKey);
@@ -141,6 +143,23 @@ export default function Planner() {
           ))}
         </Chips>
         {intention && <Body muted>{intention.why}</Body>}
+        <Button
+          label="Find a good time, hour by hour"
+          variant="text"
+          accessibilityHint="The spell timing advisor: the best times ahead from the moon, the planets, your festivals and your chart"
+          onPress={() =>
+            router.push({
+              pathname: '/rituals/craft/cosmic/timing',
+              params: {
+                ...(intention ? { intent: intention.key } : {}),
+                ...(editing ? { planId: editing.id } : {}),
+                ...(attach.kind === 'template' ? { templateId: attach.id } : {}),
+                ...(attach.kind === 'draft' && params.fromSpell ? { fromSpell: '1' } : {}),
+                ...((attach.kind === 'draft' && draft?.title) || template?.title ? { title: (attach.kind === 'draft' && draft?.title) || template?.title } : {}),
+              },
+            } as never)
+          }
+        />
       </View>
 
       {intention && !fixedDay && (

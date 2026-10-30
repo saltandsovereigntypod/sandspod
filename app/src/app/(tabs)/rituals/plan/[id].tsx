@@ -191,6 +191,16 @@ export default function PlanView() {
           variant="outline"
           onPress={() => router.push({ pathname: '/rituals/planner', params: { planId: plan.id } })}
         />
+        <Button
+          label="Find a better time"
+          variant="outline"
+          onPress={() =>
+            router.push({
+              pathname: '/rituals/craft/cosmic/timing',
+              params: { planId: plan.id, title: plan.title, ...(plan.intentionKey ? { intent: plan.intentionKey } : {}) },
+            } as never)
+          }
+        />
         <Button label="Delete plan" variant="text" onPress={remove} />
       </View>
     </RitualScreen>

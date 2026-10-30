@@ -24,6 +24,7 @@ export type AstroPage =
   | 'chart:craft'
   | 'charts'
   | 'hours'
+  | 'timing'
   | 'learn'
   | 'sky'
   | `planet:${string}`;

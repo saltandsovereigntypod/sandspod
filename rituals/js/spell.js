@@ -89,6 +89,7 @@
       <div class="sp-actions">
         <button type="button" class="button button--primary" data-begin${blocked ? " disabled" : ""}>${state.busy ? "One moment…" : "Begin now"}</button>
         <button type="button" class="button button--ghost" data-plan>Plan a night for it</button>
+        <button type="button" class="button button--ghost" data-find-time>Find a good time</button>
         ${
           account
             ? state.saved
@@ -184,6 +185,12 @@
         S.handOffDraft(draft());
         const i = intention();
         global.location.href = `/rituals/planner/?fromSpell=1${i ? `&intention=${i.key}` : ""}`;
+      } else if (button.hasAttribute("data-find-time")) {
+        // The timing advisor, which hands the chosen time to the planner with this spell.
+        const spell = draft();
+        S.handOffDraft(spell);
+        const i = intention();
+        global.location.href = `/practice/cosmic/timing/?${new URLSearchParams({ fromSpell: "1", title: spell.title, ...(i ? { intent: i.key } : {}) })}`;
       } else if (button.hasAttribute("data-keep")) {
         state.busy = true;
         renderActions();
