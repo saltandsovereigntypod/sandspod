@@ -61,7 +61,9 @@
         const top = Number(o.topPercent);
         const size = Number(o.sizePercent) || 0.08;
         if (!Number.isFinite(left) || !Number.isFinite(top)) return "";
-        const image = o.imagePath ? `<img src="${esc(picture(o.imagePath))}" alt="" loading="lazy" decoding="async" />` : `<span>${esc(o.fallbackSymbol || "✦")}</span>`;
+        // An object picture's WebP twin, a twentieth the size (js/sanctuary-asset-catalog.js displayPath).
+        const shownImage = String(o.imagePath || "").replace(/(assets\/altar\/(?:objects|overlays)\/(?:[\w-]+\/)*[\w-]+)\.png$/i, "$1.webp");
+        const image = o.imagePath ? `<img src="${esc(picture(shownImage))}" alt="" loading="lazy" decoding="async" />` : `<span>${esc(o.fallbackSymbol || "✦")}</span>`;
         const lit = String(o.lit) === "true" && o.type === "candle";
         return `<span class="cv-still__item${lit ? " is-lit" : ""}" style="left:${(left * 100).toFixed(2)}%;top:${(top * 100).toFixed(2)}%;width:${(size * 100).toFixed(2)}%;z-index:${Number(o.zIndex) || 10};--rot:${Number(o.rotation) || 0}deg">${image}${lit ? `<span class="cv-flame" aria-hidden="true"></span>` : ""}</span>`;
       })

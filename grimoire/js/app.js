@@ -1150,7 +1150,7 @@ function openLibraryImageManager(entityId) {
             displayImage
               ? `
                 <figure class="book-library-hero-image">
-                  <img src="${displayImage}" alt="${escapeHtml(entity.name)}" />
+                  <img src="${window.SanctuaryAssetCatalog?.displayPath?.(displayImage) || displayImage}" alt="${escapeHtml(entity.name)}" />
                 </figure>
               `
               : `<p class="book-placeholder">No image is available yet.</p>`
@@ -2177,7 +2177,7 @@ async function renderLibraryEntity(entityId) {
 
         ${entityImage ? `
           <figure class="book-library-hero-image">
-            <img src="${entityImage}" alt="${escapeHtml(entity.name)}" />
+            <img src="${window.SanctuaryAssetCatalog?.displayPath?.(entityImage) || entityImage}" alt="${escapeHtml(entity.name)}" />
           </figure>
         ` : ""}
 

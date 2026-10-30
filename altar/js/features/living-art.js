@@ -493,7 +493,7 @@
     ].join("");
     const parts = [
       // Food or flowers heaped in the vessel, the rim's front hiding its foot, browning as it goes over (FoodHeap.tsx).
-      food ? `<image href="${xmlEsc(food.image)}" x="${n2(food.left)}" y="${n2(food.top)}" width="${n2(food.width)}" height="${n2(food.height)}" preserveAspectRatio="none" clip-path="url(#food-${uid})"${food.tint ? ` style="filter:${core().offeringArt.tintFilter(food.tint)}"` : ""}/>` : "",
+      food ? `<image href="${xmlEsc(global.SanctuaryAssetCatalog?.displayPath?.(food.image) || food.image)}" x="${n2(food.left)}" y="${n2(food.top)}" width="${n2(food.width)}" height="${n2(food.height)}" preserveAspectRatio="none" clip-path="url(#food-${uid})"${food.tint ? ` style="filter:${core().offeringArt.tintFilter(food.tint)}"` : ""}/>` : "",
       stain ? ell(stain, `fill="url(#stain-${uid})"`) : "",
       tide ? ell(tide, `fill="none" stroke="${tide.color}" stroke-opacity="${tide.opacity}" stroke-width="${tide.stroke}"`) : "",
       liquid ? ell(liquid, `fill="url(#liquid-${uid})"`) : "",

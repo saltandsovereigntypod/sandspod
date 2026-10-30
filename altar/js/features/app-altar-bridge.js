@@ -68,16 +68,20 @@
         resolve(ratioOf(path));
       };
       img.onerror = () => resolve(null);
-      img.src = /^(https?:|\/|\.\.\/)/.test(path) ? path : `../${path}`;
+      // The WebP twin has the same shape and is a twentieth the size (js/sanctuary-asset-catalog.js).
+      const src = /^(https?:|\/|\.\.\/)/.test(path) ? path : `../${path}`;
+      img.src = global.SanctuaryAssetCatalog?.displayPath?.(src) || src;
     });
   }
   function registerRatioLookup() {
     core()?.geometry?.setImageRatioLookup?.((path) => ratioOf(path));
   }
   registerRatioLookup();
+  // An object picture's own .png path, though the altar shows its WebP twin.
+  const pathOf = (img) => global.SanctuaryAssetCatalog?.imagePath?.(img) ?? img?.getAttribute("src") ?? "";
   document.addEventListener("load", (event) => {
     const img = event.target;
-    if (img instanceof HTMLImageElement && img.closest?.(".altar-object")) noteRatio(img.getAttribute("src"), img.naturalWidth, img.naturalHeight);
+    if (img instanceof HTMLImageElement && img.closest?.(".altar-object")) noteRatio(pathOf(img), img.naturalWidth, img.naturalHeight);
   }, true);
 
   // ── Objects ⇄ saved objects ──────────────────────────────────────────
@@ -89,12 +93,12 @@
     if (!object) return null;
     if (!object.dataset.livingState && typeof global.initializeLivingObjectState === "function") global.initializeLivingObjectState(object);
     const img = mainImage(object);
-    if (img?.naturalWidth) noteRatio(img.getAttribute("src"), img.naturalWidth, img.naturalHeight);
+    if (img?.naturalWidth) noteRatio(pathOf(img), img.naturalWidth, img.naturalHeight);
     const position = typeof global.getStagePositionPercent === "function" && stage()?.clientWidth
       ? global.getStagePositionPercent(object)
       : { leftPercent: Number(object.dataset.leftPercent) || 0.5, topPercent: Number(object.dataset.topPercent) || 0.5, sizePercent: Number(object.dataset.sizePercent) || 0.08 };
     const saved = { ...(typeof global.savedObjectExtras === "function" ? global.savedObjectExtras(object) : {}) };
-    saved.imagePath = img ? img.getAttribute("src") || "" : "";
+    saved.imagePath = img ? pathOf(img) || "" : "";
     saved.fallbackSymbol = typeof global.objectFallbackSymbol === "function" ? global.objectFallbackSymbol(object) : object.dataset.fallbackSymbol || "";
     DATASET_FIELDS.forEach((field) => { saved[field] = object.dataset[field] ?? DEFAULTS[field] ?? ""; });
     saved.livingState = object.dataset.livingState || "";
@@ -131,7 +135,8 @@
 
     if (next.imagePath && next.imagePath !== before.imagePath) {
       const img = mainImage(object);
-      if (img) img.src = next.imagePath;
+      if (img && global.SanctuaryAssetCatalog?.showImage) global.SanctuaryAssetCatalog.showImage(img, next.imagePath);
+      else if (img) img.src = next.imagePath;
     }
     if (next.label !== before.label) {
       object.setAttribute("aria-label", `${next.label || "Object"}. Click to select. Drag to move. Double click to remove.`);

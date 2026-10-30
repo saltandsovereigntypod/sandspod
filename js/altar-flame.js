@@ -71,7 +71,8 @@
     if (!img) return;
     const apply = () => {
       const ratio = img.naturalWidth ? img.naturalHeight / img.naturalWidth : null;
-      const layout = flameLayout(img.getAttribute("src"), ratio, global.AltarArtwork?.candleWicks);
+      // The candle's own .png path, though the altar shows its WebP twin (same shape).
+      const layout = flameLayout(global.SanctuaryAssetCatalog?.imagePath?.(img) ?? img.getAttribute("src"), ratio, global.AltarArtwork?.candleWicks);
       VARS.forEach((name) => {
         if (layout) object.style.setProperty(name, layout[name]);
         else object.style.removeProperty(name);
