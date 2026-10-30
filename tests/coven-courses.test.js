@@ -122,9 +122,32 @@ test("the ready-made courses are data of their own, fetched only when chosen", (
   assert.match(read("covens/coven/course.js"), /\/js\/core\/course-programs\.json/);
   assert.match(read("app/src/lib/covens/courseCatalog.ts"), /\/js\/core\/course-programs\.json/, "the app fetches the same file");
   const catalog = JSON.parse(read("js/core/course-programs.json"));
-  assert.deepEqual(catalog.programs.map((p) => p.id), ["hellenic-seeker", "hellenic-devotee", "hellenic-initiate", "hellenic-elder", "hellenic-high-priestess"]);
+  const path = (t) => ["seeker", "devotee", "initiate", "elder", "high-priestess"].map((step) => `${t}-${step}`);
+  assert.deepEqual(catalog.programs.map((p) => p.id), [...path("hellenic"), ...path("wheel"), ...path("wheel_south")]);
   assert.equal(catalog.label, "Seeker → Devotee → Initiate → Elder → High Priestess");
-  assert.deepEqual(catalog.traditions, [{ id: "hellenic", name: "Hellenic" }]);
+  assert.deepEqual(catalog.traditions, [
+    { id: "hellenic", name: "Hellenic" },
+    { id: "wheel", name: "Wheel of the Year" },
+    { id: "wheel_south", name: "Wheel of the Year (Southern Hemisphere)" },
+  ]);
+});
+
+test("a course step's links into the Sanctuary show as buttons on the website, opening the same pages as the app", () => {
+  const programs = read("covens/coven/programs.js");
+  assert.match(programs, /SaltCore\?\.covens\?\.courseLinks/);
+  assert.match(programs, /courseLinkSiteHref\(l, \(tab\) => helpers\.covenHref\(tab\)\)/);
+  assert.match(programs, /withoutCourseLinks/, "the markers never show as text");
+  assert.match(read("scripts/core/covens.ts"), /export \* as courseLinks from '\.\.\/\.\.\/app\/src\/lib\/covens\/courseLinks\.ts'/);
+  // The built bundle carries the same logic the app uses.
+  const CL = K.courseLinks;
+  const links = CL.courseLinks("[[go:holy:wheel_south/imbolc|Holy day: Imbolc]]\n[[go:coven:ritual-builder|Plan a coven ritual]]");
+  assert.deepEqual(links.map((l) => CL.courseLinkSiteHref(l, (tab) => `/covens/coven/?c=x&tab=${tab}`)), ["/today/holy/?ref=wheel-imbolc", "/covens/coven/?c=x&tab=rituals"]);
+  // Every course step's links survive into the catalog the website copies from.
+  const catalog = JSON.parse(read("js/core/course-programs.json"));
+  const wheel = catalog.programs.find((p) => p.id === "wheel-initiate");
+  const samhain = wheel.stages.flatMap((s) => s.tasks).find((t) => t.holiday === "wheel/samhain");
+  assert.ok(samhain.links.some((l) => l.kind === "holy" && l.id === "wheel/samhain" && l.label === "Holy day: Samhain"));
+  assert.ok(samhain.links.some((l) => l.kind === "spread" && l.id === "samhain"));
 });
 
 test("the Reminders page keeps the Training messages choice with the synced reminders", () => {
