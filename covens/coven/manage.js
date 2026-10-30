@@ -24,17 +24,30 @@
 
   // --- Members -------------------------------------------------------------
 
+  // A member's "in moon time" status, shared (Cycle & Moon, strictly opt-in)
+  // with this coven or with you: the same words as app/src/lib/cycle/status.ts.
+  const MOON_STATUS = { moon_time: "In moon time", moon_time_resting: "In moon time · resting", resting: "Resting · gentle days", quiet: "Keeping quiet for a few days" };
+  async function moonStatuses(covenId) {
+    try {
+      const { data, error } = await global.db.rpc("cycle_moon_statuses", { p_coven: covenId });
+      return error || !Array.isArray(data) ? new Map() : new Map(data.filter((r) => MOON_STATUS[r.status]).map((r) => [r.user_id, r.status]));
+    } catch {
+      return new Map();
+    }
+  }
+
   const CovenMembers = {
     async mount(pane, state, { refresh, covenHref }) {
       pane.innerHTML = `<p class="sp-caption">Gathering the members…</p>`;
       const keepsRecord = Boolean(global.CovenRecordAccess?.seesRecord(state));
       const recordHref = (userId) => `${covenHref("record")}${userId ? `&member=${encodeURIComponent(userId)}` : ""}`;
-      const [members, signatures, enrollments, programs] = await Promise.all([
+      const [members, signatures, enrollments, programs, moons] = await Promise.all([
         D.members(state.coven.id).catch(() => []),
         state.perms.review || state.perms.site ? D.covenSignatures(state.coven.id).catch(() => []) : Promise.resolve(null),
         // Their training, as far as you may see it (their mentor, those who keep progress, the head).
         state.perms.member ? D.enrollments(state.coven.id).catch(() => []) : Promise.resolve([]),
-        state.perms.member ? D.programs(state.coven.id).catch(() => []) : Promise.resolve([])
+        state.perms.member ? D.programs(state.coven.id).catch(() => []) : Promise.resolve([]),
+        state.perms.member ? moonStatuses(state.coven.id) : Promise.resolve(new Map())
       ]);
       const trainingHtml = (userId) => {
         const theirs = enrollments.filter((e) => e.user_id === userId && e.status !== "withdrawn");
@@ -66,7 +79,7 @@
         const manageable = actsOn(m) && (perms.review || perms.moderate || perms.site);
         return `<details class="sp-details" data-member="${esc(m.user_id)}">
             <summary>${esc(profile.display_name || "A witch")}${profile.pronouns ? ` <span class="sp-muted">(${esc(profile.pronouns)})</span>` : ""} · ${esc(m.user_id === coven.founder_id ? `${rank?.name || "Leader"} · founder` : rank?.name || "Member")}
-              ${muted ? ` · <span class="sp-muted">paused</span>` : ""}${missing ? ` · <span class="sp-muted">needs to sign</span>` : ""}${m.visiting_from ? ` · <span class="sp-muted">visiting from a daughter coven</span>` : ""}</summary>
+              ${muted ? ` · <span class="sp-muted">paused</span>` : ""}${missing ? ` · <span class="sp-muted">needs to sign</span>` : ""}${m.visiting_from ? ` · <span class="sp-muted">visiting from a daughter coven</span>` : ""}${moons.has(m.user_id) ? ` · <span class="sp-muted" data-moon-status>☾ ${esc(MOON_STATUS[moons.get(m.user_id)])}</span>` : ""}</summary>
             <div class="sp-section">
               ${profile.bio ? `<p class="cv-doc">${prose(profile.bio)}</p>` : ""}
               <p class="sp-caption">Joined ${esc(new Date(m.joined_at).toLocaleDateString())}${muted ? ` · messages paused until ${esc(new Date(m.muted_until).toLocaleString())}` : ""}</p>

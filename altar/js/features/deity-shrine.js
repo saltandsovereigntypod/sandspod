@@ -7,10 +7,27 @@
    shrineAltar (js/core/altar.js): their statue, candles in
    their colours, their plants and stones, incense and an
    offering bowl. Nothing is saved until you Save.
+
+   Cycle & Moon's moon-time altar comes the same way, with
+   ?moontime=1 (the app's altarId "moon-time"): a moon bowl,
+   red candles and a red cord, moonstone and red jasper,
+   mugwort and rose (moonTimeAltar in js/core/altar.js).
    ========================================================= */
 
 (function initializeDeityShrine(global) {
   "use strict";
+
+  function setMoonTime() {
+    const url = new URL(global.location.href);
+    if (url.searchParams.get("moontime") !== "1") return;
+    url.searchParams.delete("moontime");
+    global.history.replaceState(global.history.state, "", `${url.pathname}${url.search}${url.hash}`);
+    const app = global.AltarApp;
+    const tonight = global.SaltCore?.altar?.tonight;
+    if (!app?.setDocument || !tonight?.moonTimeAltar) return;
+    app.setDocument(tonight.moonTimeAltar(new Date()).doc, "Moon-Time Altar");
+    app.notice?.("A moon-time altar: a moon bowl, red candles and a red cord, moonstone and red jasper, mugwort and rose. Move, swap or add anything, then Save to keep it.");
+  }
 
   function setShrine() {
     const url = new URL(global.location.href);
@@ -32,5 +49,5 @@
   }
 
   // After the working altar is restored on load, so the shrine is what's on the stage.
-  global.addEventListener("load", () => global.setTimeout(setShrine, 50), { once: true });
+  global.addEventListener("load", () => global.setTimeout(() => (setShrine(), setMoonTime()), 50), { once: true });
 })(window);
