@@ -145,7 +145,7 @@
     },
     async myMemberships(userId) {
       if (!userId) return [];
-      return run(db().from("coven_members").select(`coven_id,status,rank_id,muted_until,covens(${COVEN_FIELDS})`).eq("user_id", userId).eq("status", "active"));
+      return run(db().from("coven_members").select(`coven_id,status,rank_id,muted_until,covens!coven_members_coven_id_fkey(${COVEN_FIELDS})`).eq("user_id", userId).eq("status", "active"));
     },
     async myApplications(userId) {
       if (!userId) return [];
@@ -317,7 +317,7 @@
       const R = global.SaltCore?.covens?.requests;
       const L = global.CovenLogic;
       if (!userId || !R || !L) return {};
-      let mine = ((await run(db().from("coven_members").select(`coven_id,user_id,status,rank_id,muted_until,covens(${COVEN_FIELDS})`).eq("user_id", userId).eq("status", "active"))) || []).filter((m) => m.covens);
+      let mine = ((await run(db().from("coven_members").select(`coven_id,user_id,status,rank_id,muted_until,covens!coven_members_coven_id_fkey(${COVEN_FIELDS})`).eq("user_id", userId).eq("status", "active"))) || []).filter((m) => m.covens);
       if (covenIds) mine = mine.filter((m) => covenIds.includes(m.coven_id));
       if (!mine.length) return {};
       const ranks = (await run(db().from("coven_ranks").select("*").in("coven_id", mine.map((m) => m.coven_id)))) || [];
