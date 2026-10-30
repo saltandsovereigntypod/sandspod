@@ -1,8 +1,9 @@
 /*
  * Cycle & Moon on Today, as the app's Today has it
  * (app/src/components/cycle/CycleToday.tsx): one small card, only when it
- * has something to say: the day, season and moon, one suggestion and Log
- * today. Everything else is at /rituals/cycle/.
+ * has something to say: today's exact reading in a line (cycle day, season
+ * and phase, the moon) and its title, the estimate, Log today and a link to
+ * the full reading. Everything else is at /rituals/cycle/.
  *
  * Today stays light: js/core/cycle.js and rituals/cycle/cycle-store.js load
  * only when this browser holds a Cycle & Moon key (remembered on this
@@ -59,13 +60,11 @@
     if (!S || !C || S.state.phase !== "open" || !S.state.data || !C.model.todayCardRelevant(S.state.data, now)) html = "";
     else {
       const v = C.model.todayView(S.state.data, now);
-      const s = C.content.suggestionFor(v.season, v.quarter);
-      const first = s.links[0];
-      const link = first ? (first.kind === "premade" ? `/rituals/premade/?id=${encodeURIComponent(first.id)}` : first.kind === "library" ? `/library/entry/?entity=${encodeURIComponent(first.id.replace(/:/g, "/"))}` : `/divination/draw/?spread=${encodeURIComponent(first.id)}`) : "";
+      const r = C.readings.exactReading(S.state.data, now);
       html =
         `<section class="sp-card td-covens td-cycle" aria-label="Cycle and Moon"><p class="sp-eyebrow td-gold"><a href="${esc(href("/rituals/cycle/"))}">Cycle &amp; Moon</a></p>` +
-        `<h3>${esc(v.line)}</h3>${v.estimate ? `<p class="sp-caption">${esc(v.estimate.line)}</p>` : ""}<p>${esc(s.line)}</p>` +
-        `<div class="sp-actions"><a class="button button--ghost" href="${esc(href(`/rituals/cycle/?view=log&date=${C.model.dayKey(now)}`))}">Log today</a>${first ? `<a class="sp-back" href="${esc(href(link))}">${esc(first.label)} ›</a>` : ""}</div></section>`;
+        `<h3>${esc(r.headline)}</h3>${v.estimate ? `<p class="sp-caption">${esc(v.estimate.line)}</p>` : ""}<p>${esc(`${r.reading.title}. ${r.moonLine}.`)}</p>` +
+        `<div class="sp-actions"><a class="button button--ghost" href="${esc(href(`/rituals/cycle/?view=log&date=${C.model.dayKey(now)}`))}">Log today</a><a class="sp-back" href="${esc(href("/rituals/cycle/"))}">Today’s reading ›</a></div></section>`;
     }
     global.document.querySelectorAll("[data-cycle-today]").forEach((el) => (el.innerHTML = html));
   }

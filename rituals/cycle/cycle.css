@@ -15,3 +15,24 @@
 .cm-stack { display: grid; gap: 12px; }
 .cm-note { margin-top: 24px; }
 .td-cycle .sp-actions { margin-top: 6px; }
+/* Past periods: a month to pick days on. */
+.cm-cal { display: grid; gap: 4px; }
+.cm-cal__bar { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.cm-cal__bar h3 { margin: 0; }
+.cm-cal__nav { background: none; border: 0; color: var(--gold); font: inherit; cursor: pointer; min-height: 44px; padding: 0 6px; }
+.cm-cal__week { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 4px; }
+.cm-cal__head { text-align: center; font-size: 0.8rem; color: var(--muted); padding: 4px 0; }
+.cm-day { min-height: 40px; border-radius: 10px; border: 1px solid transparent; background: rgba(28, 46, 34, 0.6); color: var(--cream); font: inherit; cursor: pointer; }
+.cm-day:hover:not(:disabled), .cm-day:focus-visible { border-color: var(--gold); outline: none; }
+.cm-day.is-outside { opacity: 0.45; }
+.cm-day.is-bleeding { background: rgba(155, 59, 74, 0.45); cursor: default; }
+.cm-day.is-picked { background: var(--gold); color: var(--charcoal); font-weight: 600; }
+.cm-day:disabled:not(.is-bleeding) { opacity: 0.3; cursor: default; }
+.cm-row-button { width: 100%; background: none; border: 0; border-bottom: 1px solid var(--line); color: inherit; font: inherit; text-align: left; cursor: pointer; }
+/* Cycle length. */
+.cm-stepper { display: flex; align-items: center; gap: 10px; }
+.cm-stepper > span { flex: 1; }
+.cm-step { width: 44px; height: 44px; border-radius: 50%; border: 1px solid var(--line); background: rgba(28, 46, 34, 0.9); color: var(--cream); font-size: 1.3rem; cursor: pointer; }
+.cm-step:disabled { opacity: 0.35; cursor: default; }
+.cm-stepper output { min-width: 2.2em; text-align: center; font-size: 1.15rem; font-weight: 600; color: var(--cream); }
+.cm-ideas { margin: 0; padding-left: 1.2em; display: grid; gap: 6px; }

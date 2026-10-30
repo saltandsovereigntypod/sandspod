@@ -30,8 +30,10 @@ export function cycleReminders(data: CycleData, now: Date, days = 60): CycleRemi
   };
   if (data.settings.mode === 'cycle') {
     const estimate = nextBleedEstimate(data, now);
-    if (estimate && estimate.daysAway > r.ahead) {
-      const day = addDays(dayKey(now), estimate.daysAway - r.ahead);
+    // With a window, ahead of its first day.
+    const away = estimate ? (estimate.span ? estimate.span[0] : estimate.daysAway) : 0;
+    if (estimate && away > r.ahead) {
+      const day = addDays(dayKey(now), away - r.ahead);
       note(`ahead:${day}`, atMinutes(day, r.at), `Your bleed may start in about ${r.ahead} ${r.ahead === 1 ? 'day' : 'days'}. Inner autumn: time to slow down.`);
     }
   } else {

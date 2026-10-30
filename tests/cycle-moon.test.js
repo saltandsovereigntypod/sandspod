@@ -19,7 +19,12 @@ const plain = (value) => JSON.parse(JSON.stringify(value));
 test("the website opens a Cycle & Moon vault the app encrypted, and only with the right passphrase", async () => {
   const C = cycleCore();
   const key = await C.vault.unlockWithPassphrase(APP_VAULT.vault, "moon over the water");
-  assert.deepEqual(plain(C.vault.decryptData(key, APP_VAULT.vault.data)), APP_VAULT.data);
+  // The first release's notes (content version 1) open as version 2: nothing lost, symptoms empty, the cycle length worked out from history.
+  const opened = plain(C.vault.decryptData(key, APP_VAULT.vault.data));
+  assert.equal(opened.version, 2);
+  assert.deepEqual(opened.bleeds, APP_VAULT.data.bleeds);
+  assert.deepEqual(opened.notes, APP_VAULT.data.notes.map((n) => ({ ...n, symptoms: {}, custom: {} })));
+  assert.deepEqual(opened.settings, { ...APP_VAULT.data.settings, length: { mode: "auto", exact: 28, min: 26, max: 30 } });
   assert.deepEqual(Array.from(C.vault.unlockWithRecovery(APP_VAULT.vault, APP_VAULT.recovery)), Array.from(key));
   await assert.rejects(() => C.vault.unlockWithPassphrase(APP_VAULT.vault, "moon over the waves"), (e) => e.code === "wrong-passphrase");
   // Nothing readable is in what's stored.
@@ -28,7 +33,7 @@ test("the website opens a Cycle & Moon vault the app encrypted, and only with th
   // And the website's own vault round-trips.
   const made = await C.vault.protectVault(C.vault.newDataKey(), C.model.emptyData(), "written on the website", new Date(), { cost: { N: 1024, r: 8, p: 1 } });
   const k2 = await C.vault.unlockWithPassphrase(plain(made.vault), "written on the website");
-  assert.equal(C.vault.decryptData(k2, made.vault.data).version, 1);
+  assert.equal(C.vault.decryptData(k2, made.vault.data).version, 2);
 });
 
 test("Cycle & Moon keeps to its own storage, its own words and the private reminder rules", () => {
@@ -53,6 +58,36 @@ test("Cycle & Moon keeps to its own storage, its own words and the private remin
   assert.equal(notes.siteHref("/rituals/cycle/share"), "/rituals/cycle/?view=share");
   // The moon-time altar on the website.
   assert.match(fs.readFileSync("altar/js/features/deity-shrine.js", "utf8"), /moonTimeAltar/);
+});
+
+test("the website has past periods, What am I?, today's exact reading and symptoms, from the app's own code", () => {
+  const C = cycleCore();
+  const today = "2026-10-30";
+  const now = new Date(2026, 9, 30, 12);
+  let data = C.model.emptyData();
+  const starts = ["2026-05-04", "2026-06-01", "2026-06-30", "2026-07-27", "2026-08-26", "2026-09-23"];
+  data = C.past.addPastBleeds(data, starts.map((s) => C.past.entryWithLength(s, 5)), C.newId, now).data;
+  assert.equal(data.bleeds.length, 6);
+  assert.equal(C.past.parsePastList("2026-09-23\n4 May 2026", "dmy", today).entries.length, 2);
+  assert.match(C.history.historyReading(data).type.headline, /^Based on 6 cycles: /);
+  data = C.model.changeSettings(data, { length: { mode: "range", exact: 28, min: 27, max: 31 } }, now);
+  assert.match(C.model.nextBleedEstimate(data, new Date(2026, 9, 10, 12)).line, /^Your bleed may start between /);
+  assert.match(C.readings.exactReading(data, now).headline, /^Cycle day \d+ · inner \w+ \(\w+\) · /);
+  let count = 0;
+  for (const season of Object.values(C.readings.READINGS)) count += Object.keys(season).length;
+  assert.equal(count, 32);
+  assert.ok(C.symptoms.SYMPTOMS.some((s) => s.id === "cramps"));
+  // The page has each view, and help can take you to them.
+  const page = fs.readFileSync("rituals/cycle/cycle.js", "utf8");
+  for (const view of ["past", "history", "insights"]) assert.ok(page.includes(`v === "${view}"`), view);
+  assert.match(page, /data-symptom=/);
+  assert.match(page, /data-length-mode=/);
+  assert.match(fs.readFileSync("today/cycle-today.js", "utf8"), /readings\.exactReading/);
+  const notes = require("../help/web-notes.js");
+  assert.equal(notes.siteHref("/rituals/cycle/past"), "/rituals/cycle/?view=past");
+  assert.equal(notes.siteHref("/rituals/cycle/history"), "/rituals/cycle/?view=history");
+  assert.equal(notes.siteHref("/rituals/cycle/insights"), "/rituals/cycle/?view=insights");
+  for (const id of ["cycle-moon-past", "cycle-moon-history", "cycle-moon-symptoms"]) assert.ok(notes.TOPIC_NOTES[id], id);
 });
 
 test("deleting an account deletes Cycle & Moon, and the policy says how it's kept", () => {

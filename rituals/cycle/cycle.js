@@ -1,9 +1,11 @@
 /*
  * Practice → Rituals → Cycle & Moon on the website, as the app has it
- * (app/src/app/(tabs)/rituals/cycle/): the tool itself, then ?view=log (a
- * day), learn (inner seasons and moon patterns), settings (choices, privacy
- * and sync, delete), share (the coven status) and keep (a reflection in the
- * Grimoire). The maths, words and encryption are the app's own
+ * (app/src/app/(tabs)/rituals/cycle/): the tool itself with today's exact
+ * reading, then ?view=log (a day, with symptoms), past (past periods: a
+ * calendar, a pasted list, editing), history (What am I?), insights
+ * (symptoms, patterns and comfort), learn (inner seasons and moon patterns),
+ * settings (cycle length, choices, privacy and sync, delete), share (the
+ * coven status) and keep (a reflection in the Grimoire). The maths, words and encryption are the app's own
  * (js/core/cycle.js); the vault is kept by rituals/cycle/cycle-store.js.
  */
 (function (global) {
@@ -43,6 +45,15 @@
       <h3>${esc(s.title)}</h3><p>${esc(s.line)}</p>
       <div class="sp-chips">${s.links.map((l) => `<a class="sp-chip" href="${esc(linkHref(l))}">${esc(l.label)} ›</a>`).join("")}</div>
     </section>`;
+  const chipLinks = (links) => (links.length ? `<div class="sp-chips">${links.map((l) => `<a class="sp-chip" href="${esc(linkHref(l))}">${esc(l.label)} ›</a>`).join("")}</div>` : "");
+  const readingHtml = (r, date) => `<section class="sp-card sp-card--gold" data-reading>
+      <p class="sp-eyebrow sp-gold">Today’s reading</p><h2>${esc(r.headline)}</h2><p class="sp-caption">${esc(r.moonLine)}</p>
+      <h3>${esc(r.reading.title)}</h3><p>${esc(r.reading.line)}</p><p>${esc(r.reading.practice)}</p>${chipLinks(r.reading.links)}
+      <p class="sp-caption">To write about</p><h3>${esc(r.reading.prompt)}</h3>
+      <p><a class="rt-text-link" href="${esc(href("log", { date }))}">Write about it</a></p></section>`;
+  const comfortHtml = (c) => `<section class="sp-card"><h3>${esc(c.title)}</h3><ul class="cm-ideas">${c.ideas.map((i) => `<li>${esc(i)}</li>`).join("")}</ul>
+      <p class="sp-caption">With care: ${esc(c.safety)}</p>${chipLinks(c.links)}</section>`;
+  const longDate = (key) => `${C().model.dayMonth(key)} ${key.slice(0, 4)}`;
   const back = (label = "Cycle & Moon", to = href("")) => `<a class="sp-back" href="${esc(to)}">‹ ${esc(label)}</a>`;
   const head = (title, eyebrow = "") => `<header class="rt-head">${eyebrow ? `<p class="sp-eyebrow">${esc(eyebrow)}</p>` : ""}<h1>${esc(title)}</h1></header>`;
   const status = () => (flash ? `<p class="sp-notice" role="status" aria-live="polite">${esc(flash)}</p>` : `<p class="sp-notice" role="status" aria-live="polite" hidden></p>`);
@@ -154,7 +165,10 @@
     const today = M.dayKey(now);
     const v = M.todayView(data, now);
     const info = T.SEASON_INFO[v.season];
-    const prompt = info.prompts[now.getDate() % info.prompts.length];
+    const reading = C().readings.exactReading(data, now);
+    const past = C().history.historyReading(data);
+    const insights = C().symptoms.symptomInsights(data);
+    const flags = C().symptoms.redFlags(data, now);
     const summary = M.patternSummary(data);
     const patterns = M.notePatterns(data);
     const moons = M.bleedMoons(data);
@@ -167,14 +181,16 @@
         <p class="sp-eyebrow sp-gold">Today</p><h2>${esc(v.line)}</h2>
         ${v.bleeding ? "<p>In moon time. Rest counts as practice.</p>" : ""}
         ${v.estimate ? `<p>${esc(v.estimate.line)}</p>` : ""}
-        ${s.mode === "cycle" && !data.bleeds.length ? `<p class="sp-muted">Log when your next bleed begins and the days will count from there. Until then, the moon gives the season.</p>` : ""}
+        ${s.mode === "cycle" && !data.bleeds.length ? `<p class="sp-muted">Add your past periods, or log when your next bleed begins, and the days will count from there. Until then, the moon gives the season.</p>` : ""}
         ${s.archetypes ? `<p class="sp-muted">${esc(`${a.name} (${a.plain}): ${a.line}`)}</p>` : ""}
-        <div class="sp-actions"><a class="button button--primary" href="${esc(href("log", { date: today }))}">Log today</a></div>
+        <div class="sp-actions"><a class="button button--primary" href="${esc(href("log", { date: today }))}">Log today</a>${s.mode === "cycle" && data.bleeds.length < 3 ? `<a class="button button--ghost" href="${esc(href("past"))}">Add past periods</a>` : ""}</div>
       </section>
-      ${suggestionHtml(T.suggestionFor(v.season, v.quarter), "For today")}
+      ${readingHtml(reading, today)}
       ${v.bleeding && s.altar ? `<section class="sp-card"><h3>Your moon-time altar</h3><p>A moon bowl of water, red candles and a red cord, moonstone and red jasper, mugwort and rose. Set it out while you bleed, put it away when you’re done.</p><div class="sp-actions"><a class="button button--ghost" href="/altar/?moontime=1">Set out the moon-time altar</a></div></section>` : ""}
-      <section class="sp-card"><p class="sp-eyebrow sp-gold">${esc(M.seasonTitle(v.season))}</p><p>${esc(info.feel)}</p><p>${esc(info.practice)}</p><h3>${esc(prompt)}</h3>
-        <p><a class="rt-text-link" href="${esc(href("log", { date: today }))}">Write about it</a></p></section>
+      <section class="sp-card"><p class="sp-eyebrow sp-gold">${esc(M.seasonTitle(v.season))}</p><p>${esc(info.feel)}</p><p>${esc(info.practice)}</p></section>
+      ${s.mode === "cycle" ? `<section class="sp-card" data-whatami><p class="sp-eyebrow sp-gold">What am I?</p><h3>${esc(past.type ? past.type.headline : "Add your past periods to find out")}</h3>${past.average != null ? `<p>${esc(past.lines[0])}</p>` : ""}<p><a class="rt-text-link" href="${esc(href("history"))}">Your history, read</a></p></section>` : ""}
+      <section class="sp-card" data-insights-card><p class="sp-eyebrow sp-gold">Symptoms and insights</p>${flags.length ? `<p>${esc(flags[0])}</p>` : ""}${insights.slice(0, 3).map((i) => `<p>${esc(i.text)}</p>`).join("")}
+        ${!insights.length && !flags.length ? `<p class="sp-muted">Log symptoms on the days you have them, and patterns, comfort and folk remedies for them will show here.</p>` : ""}<p><a class="rt-text-link" href="${esc(href("insights"))}">Symptoms, patterns and comfort</a></p></section>
       <section class="sp-section" aria-labelledby="cm-wheel"><h2 class="sp-label" id="cm-wheel">The moon wheel</h2>${wheelSvg(M.wheelModel(data, now))}
         ${summary ? `<p>${esc(summary)}</p>` : ""}<p class="sp-caption">${esc(T.FRAMEWORK_NOTE)}</p></section>
       ${patterns.length ? `<section class="sp-card"><p class="sp-eyebrow sp-gold">Over time</p>${patterns.map((l) => `<p>${esc(l)}</p>`).join("")}</section>` : ""}
@@ -188,10 +204,12 @@
           : ""
       }
       <nav class="sp-list" aria-label="Cycle & Moon">
-        ${row(href("log", { date: today }), "Log a day", "A bleed, its flow, and how the day feels")}
+        ${row(href("log", { date: today }), "Log a day", "A bleed, its flow, symptoms and how the day feels")}
+        ${s.mode === "cycle" ? row(href("past"), "Past periods", "Add many at once, paste a list, or change one") + row(href("history"), "What am I?", "Your average cycle, its rhythm and your moon pattern") : ""}
+        ${row(href("insights"), "Symptoms and insights", "Patterns over your cycles and the moon, and comfort for each")}
         ${row(href("learn"), "Inner seasons and moon patterns", "What suits each season, prompts, and the four moon patterns")}
         ${row(href("share"), "Share with my covens", "Only “in moon time” or “resting”, if you choose")}
-        ${row(href("settings"), "Settings and privacy", "Moon only, reminders, passphrase, delete")}
+        ${row(href("settings"), "Settings and privacy", "Cycle length, moon only, reminders, passphrase, delete")}
       </nav>`;
   }
 
@@ -227,7 +245,10 @@
             }</section>`
           : ""
       }
-      <form class="sp-card" data-form="note" data-date="${esc(date)}"><h2 class="sp-label">How the day feels</h2>
+      <form class="sp-card" data-form="note" data-date="${esc(date)}"><h2 class="sp-label">Symptoms</h2>
+        <p class="sp-muted">Tap once for mild, twice for moderate, three times for strong, and once more to clear. Kept as you tap.</p>
+        ${symptomChips(note)}
+        <h2 class="sp-label">How the day feels</h2>
         <p class="sp-caption">Energy</p>${rating("energy", note.energy)}
         <p class="sp-caption">Intuition</p>${rating("intuition", note.intuition)}
         <div class="sp-field"><label for="cm-mood">Mood</label><input id="cm-mood" name="mood" value="${esc(note.mood)}" placeholder="A word or two" /></div>
@@ -237,6 +258,147 @@
         <input type="hidden" name="energy" value="${note.energy || 0}" /><input type="hidden" name="intuition" value="${note.intuition || 0}" />
         <div class="sp-actions"><button class="button button--primary" type="submit">Keep these notes</button></div>
       </form>`;
+  }
+
+  function symptomChips(note) {
+    const Y = C().symptoms;
+    const label = (name, level) => (level ? `${name} · ${Y.INTENSITY_NAMES[level]}` : name);
+    const groups = [["body", "Body"], ["mood", "Mood"], ["other", "Desire and other"]];
+    const own = [...new Set([...Object.keys(note.custom || {}), ...Y.customNames(S.state.data)])];
+    return `${groups
+      .map(([g, l]) => `<p class="sp-caption">${esc(l)}</p><div class="sp-chips" role="group" aria-label="${esc(l)}">${Y.SYMPTOMS.filter((x) => x.group === g).map((x) => chip(label(x.label, note.symptoms[x.id]), `data-symptom="${esc(x.id)}"`, !!note.symptoms[x.id])).join("")}</div>`)
+      .join("")}
+      <p class="sp-caption">Your own</p>${own.length ? `<div class="sp-chips">${own.map((n) => chip(label(n, note.custom[n]), `data-custom="${esc(n)}"`, !!note.custom[n])).join("")}</div>` : ""}
+      <div class="sp-field"><label for="cm-own">Add a symptom of your own</label><input id="cm-own" name="own" maxlength="60" placeholder="Jaw ache, itchy eyes…" /></div>
+      <div class="sp-actions"><button class="button button--ghost" type="button" data-act="add-own">Add it</button><a class="rt-text-link" href="${esc(href("insights"))}">Symptoms and insights ›</a></div>`;
+  }
+
+  // ── Past periods ──
+  const pastState = { y: new Date().getFullYear(), m: new Date().getMonth(), picked: [], length: 5, order: null, read: null, text: "", result: null, editing: null, problem: null };
+  function pastView() {
+    const M = C().model;
+    const P = C().past;
+    const data = S.state.data;
+    const today = M.dayKey(new Date());
+    const st = pastState;
+    if (!st.order) st.order = P.dateOrderFor(global.navigator.language);
+    const weeks = P.calendarMonth(data, st.y, st.m, st.picked, today);
+    const kept = M.sortedBleeds(data).reverse();
+    const lengths = [[0, "Not sure"], ...[3, 4, 5, 6, 7, 8].map((n) => [n, `${n} days`])];
+    const title = `${P.MONTH_TITLES[st.m]} ${st.y}`;
+    const grid = `<div class="cm-cal">
+        <div class="cm-cal__bar"><button type="button" class="cm-cal__nav" data-month="-1">‹ Earlier</button><h3 aria-live="polite">${esc(title)}</h3><button type="button" class="cm-cal__nav" data-month="1">Later ›</button></div>
+        <div class="cm-cal__week" aria-hidden="true">${P.WEEKDAY_LETTERS.map((d) => `<span class="cm-cal__head">${d}</span>`).join("")}</div>
+        ${weeks
+          .map(
+            (w) =>
+              `<div class="cm-cal__week">${w
+                .map(
+                  (d) =>
+                    `<button type="button" class="cm-day${d.inMonth ? "" : " is-outside"}${d.bleeding ? " is-bleeding" : ""}${d.picked ? " is-picked" : ""}" data-pick="${d.key}" aria-pressed="${d.picked}" aria-label="${esc(`${longDate(d.key)}${d.start ? ", a logged bleed began" : d.bleeding ? ", a logged bleed" : ""}`)}" ${d.future || d.bleeding ? "disabled" : ""}>${d.day}</button>`
+                )
+                .join("")}</div>`
+          )
+          .join("")}</div>`;
+    const result = st.result ? `<p class="sp-notice" data-past-result>${esc(st.result.added ? `${st.result.added} ${st.result.added === 1 ? "period" : "periods"} added, encrypted.` : "Nothing was added.")}${st.result.problems.map((p) => `<br />${esc(p)}`).join("")}</p>` : "";
+    const editing = (b) =>
+      st.editing === b.id
+        ? `<form class="sp-card cm-stack" data-form="edit-bleed" data-id="${esc(b.id)}">
+          <div class="sp-field"><label for="cm-es">Began</label><input id="cm-es" name="start" type="date" value="${esc(b.start)}" max="${today}" required /></div>
+          <div class="sp-field"><label for="cm-ee">Ended (leave empty if not known)</label><input id="cm-ee" name="end" type="date" value="${esc(b.end || "")}" max="${today}" /></div>
+          ${st.problem ? `<p class="sp-notice">${esc(st.problem)}</p>` : ""}
+          <div class="sp-actions"><button class="button button--primary" type="submit">Keep the change</button><button class="button button--ghost" type="button" data-act="remove-past" data-id="${esc(b.id)}">Remove this period</button></div></form>`
+        : "";
+    return `${back()}${head("Past periods", "Cycle & Moon")}
+      <p class="sp-muted">Add the periods you remember, so Cycle &amp; Moon knows your history: your average cycle, where in the moon’s month your bleeds tend to begin, and today’s place in your cycle. Rough dates are fine.</p>
+      ${result}
+      <h2 class="sp-label">Pick them on the calendar</h2>
+      <section class="sp-card" data-past-calendar><p class="sp-muted">Tap the day each period began. Days already logged are shaded.</p>${grid}
+        ${
+          st.picked.length
+            ? `<p class="sp-caption">Picked (tap one to unpick it)</p><div class="sp-chips">${st.picked.map((k) => chip(`${longDate(k)} ×`, `data-unpick="${k}"`, false)).join("")}</div>
+          <p class="sp-caption">Each lasted about</p><div class="sp-chips" role="group" aria-label="Each lasted about">${lengths.map(([n, l]) => chip(l, `data-plength="${n}"`, st.length === n)).join("")}</div>
+          <div class="sp-actions"><button class="button button--primary" type="button" data-act="add-picked">Add ${st.picked.length} ${st.picked.length === 1 ? "period" : "periods"}</button></div>`
+            : ""
+        }</section>
+      <h2 class="sp-label">Or paste a list of dates</h2>
+      <form class="sp-card" data-form="paste"><p class="sp-muted">One period a line, from notes or another app. A start date, a start and an end (“4 May 2026 to 8 May 2026”), or a start and how long (“2026-06-01, 5 days”).</p>
+        <div class="sp-field"><label for="cm-paste">Dates</label><textarea id="cm-paste" name="text" placeholder="2026-09-29&#10;1 September 2026 to 5 September 2026&#10;04/08/2026, 5 days">${esc(st.text)}</textarea></div>
+        <p class="sp-caption">Dates written with slashes</p><div class="sp-chips" role="group" aria-label="Dates written with slashes">${chip("Day first (29/06)", 'data-order="dmy"', st.order === "dmy")}${chip("Month first (06/29)", 'data-order="mdy"', st.order === "mdy")}</div>
+        ${
+          st.read
+            ? `<p class="sp-caption">${st.read.entries.length ? `Read ${st.read.entries.length}:` : "No dates could be read."}</p><ul class="cm-ideas">${st.read.entries.map((e) => `<li>${esc(`${longDate(e.start)}${e.end ? ` to ${longDate(e.end)}` : ""}`)}</li>`).join("")}</ul>
+          ${st.read.unread.length ? `<p class="sp-muted">Couldn’t read: ${esc(st.read.unread.join("; "))}</p>` : ""}
+          <div class="sp-actions">${st.read.entries.length ? `<button class="button button--primary" type="button" data-act="add-read">Add ${st.read.entries.length} ${st.read.entries.length === 1 ? "period" : "periods"}</button>` : ""}<button class="button button--ghost" type="submit">Read them again</button></div>`
+            : `<div class="sp-actions"><button class="button button--ghost" type="submit">Read these dates</button></div>`
+        }</form>
+      <h2 class="sp-label">Logged (${kept.length})</h2>
+      ${kept.length ? `<div class="sp-list">${kept.map((b) => `<button type="button" class="sp-row cm-row-button" data-edit-bleed="${esc(b.id)}" aria-expanded="${st.editing === b.id}"><span class="sp-row__text"><span class="sp-row__title">${esc(longDate(b.start))}</span><span class="sp-row__detail">${esc(b.end ? `To ${M.dayMonth(b.end)} · ${M.bleedDays(b)} days` : "End not marked")}</span></span><span class="sp-row__chevron" aria-hidden="true">›</span></button>${editing(b)}`).join("")}</div>` : `<p class="sp-muted">None yet.</p>`}
+      <div class="sp-actions"><a class="button button--ghost" href="${esc(href("history"))}">See what your history says</a></div>`;
+  }
+  function addPast(entries) {
+    let outcome = { added: 0, problems: [] };
+    change((d) => {
+      const r = C().past.addPastBleeds(d, entries, C().newId, new Date());
+      outcome = { added: r.added, problems: r.problems.map((p) => p.message) };
+      return r.data;
+    });
+    pastState.result = outcome;
+    return outcome;
+  }
+
+  function historyView() {
+    const M = C().model;
+    const T = C().content;
+    const H = C().history;
+    const data = S.state.data;
+    const r = H.historyReading(data);
+    const used = M.cycleLength(data);
+    return `${back()}${head("What am I?", "Cycle & Moon · your history")}
+      <section class="sp-card sp-card--gold" data-history><p class="sp-eyebrow sp-gold">Your moon pattern</p>
+        ${r.type ? `<h2>${esc(r.type.headline)}</h2><p>${esc(r.type.explain)}</p>${r.shift ? `<p>${esc(r.shift)}</p>` : ""}` : `<p>Add your past periods and this will show which moon pattern your bleeds lean to.</p>`}
+        <div class="sp-actions"><a class="button button--ghost" href="${esc(href("past"))}">Add past periods</a></div></section>
+      <section class="sp-card"><p class="sp-eyebrow sp-gold">Your rhythm</p>${r.lines.map((l) => `<p>${esc(l)}</p>`).join("")}
+        ${r.spread != null ? `<p class="sp-muted">${esc(`It moves by about ${r.spread} ${r.spread === 1 ? "day" : "days"} either side of the average (the standard deviation).`)}</p>` : ""}
+        <p class="sp-muted">${esc(`Cycle length used for your days and estimates: ${M.lengthLabel(used)}.`)} Change it in <a class="rt-text-link" href="${esc(href("settings"))}">Settings</a>.</p></section>
+      ${
+        r.moons.length
+          ? `<h2 class="sp-label">Each bleed and the moon</h2><nav class="sp-list" aria-label="Each bleed and the moon">${r.moons
+              .slice(0, 12)
+              .map((m) => row(href("log", { date: m.bleed.start }), longDate(m.bleed.start), `${m.phase} · lunar day ${m.lunarDay} · ${M.PATTERN_NAMES[m.pattern]}`))
+              .join("")}</nav>`
+          : ""
+      }
+      <h2 class="sp-label">The four patterns</h2>
+      ${["white", "pink", "red", "purple"].map((p) => `<section class="sp-card"><h3>${esc(T.PATTERN_INFO[p].name)}</h3><p class="sp-caption sp-gold">${esc(T.PATTERN_INFO[p].when)}</p><p>${esc(T.PATTERN_INFO[p].line)}</p></section>`).join("")}
+      <p class="sp-muted">${esc(H.HISTORY_NOTE)}</p><p class="sp-muted">${esc(T.PATTERN_NOTE)}</p>`;
+  }
+
+  function insightsView() {
+    const M = C().model;
+    const Y = C().symptoms;
+    const data = S.state.data;
+    const now = new Date();
+    const today = M.dayKey(now);
+    const season = M.todayView(data, now).season;
+    const insights = Y.symptomInsights(data);
+    const notes = M.notePatterns(data);
+    const flags = Y.redFlags(data, now);
+    const comfort = Y.comfortNow(data, today, season);
+    const recent = data.notes.filter((n) => Y.symptomLine(n)).slice(-7).reverse();
+    return `${back()}${head("Symptoms and insights", "Cycle & Moon")}
+      <div class="sp-actions"><a class="button button--primary" href="${esc(href("log", { date: today }))}">Log today’s symptoms</a></div>
+      ${flags.length ? `<section class="sp-card sp-card--gold" data-flags><p class="sp-eyebrow sp-gold">Worth a word with a doctor</p>${flags.map((f) => `<p>${esc(f)}</p>`).join("")}</section>` : ""}
+      <h2 class="sp-label">What your notes show</h2>
+      <section class="sp-card" data-insights>${insights.map((i) => `<p>${esc(i.text)}<br /><span class="sp-caption">From ${esc(i.basis)}.</span></p>`).join("")}${notes.map((l) => `<p>${esc(l)}</p>`).join("")}
+        ${insights.length ? "" : `<p class="sp-muted">${esc(Y.insightProgress(data))}</p>`}<p class="sp-caption">${esc(Y.INSIGHT_NOTE)}</p></section>
+      <h2 class="sp-label">Comfort, the old ways</h2>
+      <p class="sp-muted">${esc(comfort.from === "recent" ? "For what you’ve logged in the last few days:" : comfort.from === "season" ? `For what your ${M.SEASON_NAMES[season]} usually brings:` : "Log a symptom and comfort for it will show here.")}</p>
+      ${comfort.comforts.map(comfortHtml).join("")}
+      <section class="sp-card"><p>${esc(Y.SEASON_COMFORT[season])}</p></section>
+      <p class="sp-notice">${esc(Y.HERB_SAFETY)}</p>
+      ${recent.length ? `<h2 class="sp-label">Recent days</h2><nav class="sp-list" aria-label="Recent days">${recent.map((n) => row(href("log", { date: n.date }), M.dayMonth(n.date), Y.symptomLine(n))).join("")}</nav>` : ""}
+      <p class="sp-notice">${esc(Y.SYMPTOM_NOT_MEDICAL)}</p>`;
   }
 
   function learnView() {
@@ -270,6 +432,7 @@
     const choices =
       st.phase === "open" && s
         ? `<h2 class="sp-label">Follow</h2><section class="sp-card"><div class="sp-chips" role="group" aria-label="Follow">${chip("My cycle", 'data-mode="cycle"', s.mode === "cycle")}${chip("The moon alone", 'data-mode="moon"', s.mode === "moon")}</div><p class="sp-muted">${esc(T.MOON_ONLY_NOTE)}</p></section>
+      ${s.mode === "cycle" ? lengthSettings(s) : ""}
       ${
         s.mode === "cycle"
           ? `<h2 class="sp-label">About my body</h2><section class="sp-card"><p class="sp-muted">Optional. It changes the wording and when an estimate would be honest: none while pregnant, and a range rather than a day when cycles vary.</p>
@@ -313,6 +476,21 @@
     return `${back()}${head("Settings and privacy", "Cycle & Moon")}${choices}${privacy}
       <h2 class="sp-label">Delete</h2><section class="sp-card"><p>Delete every Cycle &amp; Moon note, setting and shared status, from this browser and from your account. This can’t be undone.</p>
         <div class="sp-actions"><button class="button button--ghost" type="button" data-act="delete-all">Delete all my Cycle &amp; Moon data</button></div></section>`;
+  }
+
+  function lengthSettings(s) {
+    const M = C().model;
+    const L = s.length;
+    const used = M.cycleLength(S.state.data);
+    const lim = M.LENGTH_LIMITS;
+    const stepper = (name, label, value, min, max) =>
+      `<div class="cm-stepper"><span>${esc(label)}</span><button type="button" class="cm-step" data-len="${name}" data-delta="-1" aria-label="${esc(label)}: fewer" ${value <= min ? "disabled" : ""}>−</button><output aria-live="polite" aria-label="${esc(label)}">${value}</output><button type="button" class="cm-step" data-len="${name}" data-delta="1" aria-label="${esc(label)}: more" ${value >= max ? "disabled" : ""}>+</button></div>`;
+    const auto = M.cycleStats(S.state.data).lengths.length >= 2 ? `From your history: ${M.lengthLabel(used)}.` : "With fewer than two cycles logged, 28 days is used until there’s more. Add past periods to give it a history.";
+    return `<h2 class="sp-label">Cycle length</h2><section class="sp-card" data-length>
+      <div class="sp-chips" role="group" aria-label="Cycle length">${chip("Work it out from my history", 'data-length-mode="auto"', L.mode === "auto")}${chip("Exactly", 'data-length-mode="exact"', L.mode === "exact")}${chip("A range", 'data-length-mode="range"', L.mode === "range")}</div>
+      ${L.mode === "exact" ? stepper("exact", "Days", L.exact, lim.min, lim.max) : ""}
+      ${L.mode === "range" ? stepper("min", "Shortest", L.min, lim.min, L.max) + stepper("max", "Longest", L.max, L.min, lim.max) : ""}
+      <p class="sp-muted">${esc(L.mode === "auto" ? auto : `Using ${M.lengthLabel(used)}.`)} It sets today’s cycle day and inner season, when your next bleed may come (a window with a range), and where the seasons fall: the luteal side (inner autumn) is taken as about 14 days, so a longer or shorter cycle mostly changes your spring. All estimates; bodies vary.</p></section>`;
   }
 
   let shareState = null;
@@ -401,10 +579,13 @@
     else if (st.phase === "new") body = `${back("Rituals", "/rituals/")}${head("Cycle & Moon")}${beginView()}`;
     else if (st.phase === "locked") body = `${back("Rituals", "/rituals/")}${head("Cycle & Moon")}${unlockView()}`;
     else if (v === "log") body = logView();
+    else if (v === "past") body = pastView();
+    else if (v === "history") body = historyView();
+    else if (v === "insights") body = insightsView();
     else if (v === "keep") body = keepView();
     else body = `${back("Rituals", "/rituals/")}${head("Cycle & Moon", C().model.QUARTER_NAMES[C().model.moonQuarterOn(C().model.dayKey(new Date()))])}${v === "" ? recoveryHtml() : ""}${homeView()}`;
     root().innerHTML = `${status()}${body}${notMedical()}`;
-    global.document.title = `${v === "log" ? "Log a day" : v === "learn" ? "Inner seasons and moon patterns" : v === "settings" ? "Cycle & Moon settings" : v === "share" ? "Share with my covens" : "Cycle & Moon"} | Salt & Sovereignty`;
+    global.document.title = `${v === "log" ? "Log a day" : v === "past" ? "Past periods" : v === "history" ? "What am I?" : v === "insights" ? "Symptoms and insights" : v === "learn" ? "Inner seasons and moon patterns" : v === "settings" ? "Cycle & Moon settings" : v === "share" ? "Share with my covens" : "Cycle & Moon"} | Salt & Sovereignty`;
   }
 
   async function attempt(work) {
@@ -428,6 +609,11 @@
   function onClick(event) {
     const t = event.target.closest("button, input[type=checkbox]");
     if (!t || !root().contains(t)) return;
+    if (t.dataset.editBleed) {
+      pastState.editing = pastState.editing === t.dataset.editBleed ? null : t.dataset.editBleed;
+      pastState.problem = null;
+      return render();
+    }
     const M = C().model;
     const data = S.state.data;
     const now = new Date();
@@ -447,6 +633,75 @@
       if (!global.confirm("Remove this bleed? Its days and flow are removed from your notes. Your day notes stay.")) return;
       const b = M.bleedOn(data, logDate);
       return b && change((x) => M.removeBleed(x, b.id, now));
+    }
+    if (d.symptom || d.custom != null || d.act === "add-own") {
+      const form = root().querySelector("[data-form=note]");
+      const Y = C().symptoms;
+      let note = noteFromForm(form);
+      if (d.act === "add-own") {
+        const name = form.own.value.trim().slice(0, 60);
+        if (!name || note.custom[name]) return;
+        note = Y.withSymptom(note, name, 1, true);
+      } else {
+        const custom = d.custom != null;
+        const id = custom ? d.custom : d.symptom;
+        note = Y.withSymptom(note, id, Y.nextIntensity((custom ? note.custom : note.symptoms)[id]), custom);
+      }
+      flash = "Kept, encrypted.";
+      return change((x) => M.putNote(x, note, now));
+    }
+    if (d.pick) {
+      const p = pastState.picked;
+      pastState.picked = p.includes(d.pick) ? p.filter((x) => x !== d.pick) : [...p, d.pick].sort();
+      return render();
+    }
+    if (d.unpick) {
+      pastState.picked = pastState.picked.filter((x) => x !== d.unpick);
+      return render();
+    }
+    if (d.month) {
+      const m = pastState.m + Number(d.month);
+      pastState.y += m < 0 ? -1 : m > 11 ? 1 : 0;
+      pastState.m = (m + 12) % 12;
+      return render();
+    }
+    if (d.plength != null) {
+      pastState.length = Number(d.plength);
+      return render();
+    }
+    if (d.order) {
+      pastState.order = d.order;
+      pastState.text = root().querySelector("[data-form=paste]")?.text.value ?? pastState.text;
+      pastState.read = null;
+      return render();
+    }
+    if (d.act === "add-picked") {
+      const r = addPast(pastState.picked.map((k) => C().past.entryWithLength(k, pastState.length || null)));
+      if (r.added) pastState.picked = [];
+      return render();
+    }
+    if (d.act === "add-read" && pastState.read) {
+      const r = addPast(pastState.read.entries);
+      if (r.added) {
+        pastState.read = null;
+        pastState.text = "";
+      }
+      return render();
+    }
+    if (d.act === "remove-past") {
+      if (!global.confirm("Remove this period? Its days and flow are removed from your notes. Your day notes stay.")) return;
+      pastState.editing = null;
+      return change((x) => M.removeBleed(x, d.id, now));
+    }
+    if (d.lengthMode) return setSettings({ length: { ...data.settings.length, mode: d.lengthMode } });
+    if (d.len) {
+      const L = data.settings.length;
+      const lim = M.LENGTH_LIMITS;
+      const v = L[d.len] + Number(d.delta);
+      const lo = d.len === "max" ? L.min : lim.min;
+      const hi = d.len === "min" ? L.max : lim.max;
+      if (v < lo || v > hi) return;
+      return setSettings({ length: { ...L, [d.len]: v } });
     }
     if (d.flow) return change((x) => M.setFlow(x, logDate, d.flow === "none" ? null : d.flow, now));
     if (d.rate) {
@@ -503,6 +758,15 @@
     }
   }
 
+  /** The note as the form stands, with the symptoms already kept for that day. */
+  function noteFromForm(form) {
+    const M = C().model;
+    const date = form.dataset.date;
+    const kept = M.noteOn(S.state.data, date) || M.emptyNote(date);
+    const rate = (n) => Number(form.elements[n].value) || null;
+    return { ...kept, energy: rate("energy"), intuition: rate("intuition"), mood: form.mood.value, body: form.body.value, dreams: form.dreams.value, text: form.text.value };
+  }
+
   function onSubmit(event) {
     const form = event.target.closest("form[data-form]");
     if (!form) return;
@@ -510,10 +774,25 @@
     const kind = form.dataset.form;
     if (kind === "note") {
       const M = C().model;
-      const rate = (n) => Number(form.elements[n].value) || null;
-      const note = { ...M.emptyNote(form.dataset.date), energy: rate("energy"), intuition: rate("intuition"), mood: form.mood.value, body: form.body.value, dreams: form.dreams.value, text: form.text.value };
+      const note = noteFromForm(form);
       S.update((d) => M.putNote(d, note, new Date()));
       flash = "Kept, encrypted.";
+      return render();
+    }
+    if (kind === "paste") {
+      pastState.text = form.text.value;
+      pastState.read = C().past.parsePastList(form.text.value, pastState.order || "dmy", C().model.dayKey(new Date()));
+      return render();
+    }
+    if (kind === "edit-bleed") {
+      let problem = null;
+      change((d) => {
+        const r = C().past.editBleed(d, form.dataset.id, form.start.value, form.end.value || null, new Date());
+        problem = r.problem ? r.problem.message : null;
+        return r.data;
+      });
+      pastState.problem = problem;
+      if (!problem) pastState.editing = null;
       return render();
     }
     if (kind === "protect" || kind === "change") {

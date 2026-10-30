@@ -14,7 +14,14 @@ export type Bleed = {
   updatedAt: string;
 };
 
-/** A day's notes, all optional. Energy and intuition are 1 (low) to 5 (high). */
+/** How strongly a symptom was felt: 1 mild, 2 moderate, 3 strong. */
+export type Intensity = 1 | 2 | 3;
+
+/**
+ * A day's notes, all optional. Energy and intuition are 1 (low) to 5 (high).
+ * `symptoms` holds the common ones by id (symptoms.ts) and `custom` the
+ * person's own, by the name they gave; both were added in content version 2.
+ */
 export type DayNote = {
   date: string;
   energy: number | null;
@@ -23,6 +30,8 @@ export type DayNote = {
   body: string;
   dreams: string;
   text: string;
+  symptoms: Record<string, Intensity>;
+  custom: Record<string, Intensity>;
   updatedAt: string;
 };
 
@@ -35,8 +44,16 @@ export type Situation = 'irregular' | 'hormonal' | 'pregnant' | 'postpartum' | '
 /** 'cycle' follows their bleeds; 'moon' follows the moon alone (for people who don't bleed). */
 export type CycleMode = 'cycle' | 'moon';
 
+/**
+ * How long their cycle is taken to be: worked out from what's logged
+ * ('auto', the default), exactly so many days, or a range. Added in content
+ * version 2.
+ */
+export type CycleLength = { mode: 'auto' | 'exact' | 'range'; exact: number; min: number; max: number };
+
 export type CycleSettings = {
   mode: CycleMode;
+  length: CycleLength;
   situations: Situation[];
   /** The Maiden, Mother, Enchantress and Crone lens. Off unless chosen. */
   archetypes: boolean;
@@ -51,8 +68,13 @@ export type CycleSettings = {
   updatedAt: string;
 };
 
+/**
+ * The content version: 1 was the first release; 2 added symptoms, custom
+ * symptoms and the cycle length setting. A version 1 document opens as
+ * version 2 with those empty (model.ts normalizeData).
+ */
 export type CycleData = {
-  version: 1;
+  version: 2;
   bleeds: Bleed[];
   notes: DayNote[];
   settings: CycleSettings;

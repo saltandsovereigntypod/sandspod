@@ -4,7 +4,7 @@ import { StyleSheet, Text, View } from 'react-native';
 
 import { Button } from '../../../../components/Button';
 import { ChoiceChips, errorText } from '../../../../components/cycle/ui';
-import { Body, Card, confirmAction, Field, Notice, RitualScreen, SectionLabel, Title, ui } from '../../../../components/rituals/ui';
+import { Body, Card, Chip, Chips, confirmAction, Field, Notice, RitualScreen, SectionLabel, Title, ui } from '../../../../components/rituals/ui';
 import { SEASON_INFO } from '../../../../lib/cycle/content';
 import {
   addDays,
@@ -25,7 +25,8 @@ import {
   moonQuarterOn,
 } from '../../../../lib/cycle/model';
 import { cycleId, updateCycle, useCycle } from '../../../../lib/cycle/store';
-import type { DayNote, Flow } from '../../../../lib/cycle/types';
+import { customNames, INTENSITY_NAMES, nextIntensity, SYMPTOMS, withSymptom, type SymptomGroup } from '../../../../lib/cycle/symptoms';
+import type { DayNote, Flow, Intensity } from '../../../../lib/cycle/types';
 import { type } from '../../../../theme';
 
 const FLOWS: { value: Flow | 'none'; label: string }[] = [
@@ -34,6 +35,11 @@ const FLOWS: { value: Flow | 'none'; label: string }[] = [
   { value: 'light', label: 'Light' },
   { value: 'medium', label: 'Medium' },
   { value: 'heavy', label: 'Heavy' },
+];
+const GROUPS: { group: SymptomGroup; label: string }[] = [
+  { group: 'body', label: 'Body' },
+  { group: 'mood', label: 'Mood' },
+  { group: 'other', label: 'Desire and other' },
 ];
 const RATINGS: { value: number; label: string }[] = [
   { value: 0, label: '–' },
@@ -44,8 +50,10 @@ const RATINGS: { value: number; label: string }[] = [
   { value: 5, label: '5 high' },
 ];
 
-// Log one day: a bleed beginning or ending and its flow, and the day's notes
-// (energy, mood, body, dreams, intuition, anything else). All optional.
+// Log one day: a bleed beginning or ending and its flow, symptoms (tap a
+// chip for mild, again for moderate, again for strong, once more to clear;
+// kept at once), and the day's notes (energy, intuition, mood, body, dreams,
+// anything else). All optional.
 export default function CycleLog() {
   const params = useLocalSearchParams<{ date?: string }>();
   const cycle = useCycle();
@@ -54,6 +62,7 @@ export default function CycleLog() {
   const data = cycle.data;
   const [note, setNote] = useState<DayNote>(() => (data && noteOn(data, date)) || emptyNote(date));
   const [saved, setSaved] = useState<string | null>(null);
+  const [own, setOwn] = useState('');
 
   // Another day: its own notes (edits in progress aren't replaced by a sync).
   const go = (next: string) => {
@@ -78,6 +87,16 @@ export default function CycleLog() {
   const quarter = moonQuarterOn(date);
   const label = new Date(`${date}T12:00:00`).toLocaleDateString(undefined, { weekday: 'long', day: 'numeric', month: 'long' });
   const field = (k: keyof DayNote) => (v: string) => setNote({ ...note, [k]: v });
+  // A symptom tapped is kept straight away, with the rest of the note as it stands.
+  const symptom = (id: string, custom = false) => {
+    const level = nextIntensity((custom ? note.custom : note.symptoms)[id]);
+    const next = withSymptom(note, id, level, custom);
+    setNote(next);
+    updateCycle((d) => putNote(d, next, now()));
+    setSaved('Kept, encrypted.');
+  };
+  const chipLabel = (label: string, level: Intensity | undefined) => (level ? `${label} · ${INTENSITY_NAMES[level]}` : label);
+  const owned = [...new Set([...Object.keys(note.custom), ...customNames(data)])];
 
   return (
     <RitualScreen back="Cycle & Moon">
@@ -116,6 +135,41 @@ export default function CycleLog() {
           )}
         </Card>
       )}
+
+      <Card>
+        <SectionLabel>Symptoms</SectionLabel>
+        <Body muted>Tap once for mild, twice for moderate, three times for strong, and once more to clear. Kept as you tap.</Body>
+        {GROUPS.map((g) => (
+          <View key={g.group} style={ui.gapSmall}>
+            <Text style={type.caption}>{g.label}</Text>
+            <Chips>
+              {SYMPTOMS.filter((x) => x.group === g.group).map((x) => (
+                <Chip key={x.id} label={chipLabel(x.label, note.symptoms[x.id])} selected={!!note.symptoms[x.id]} onPress={() => symptom(x.id)} />
+              ))}
+            </Chips>
+          </View>
+        ))}
+        <Text style={type.caption}>Your own</Text>
+        {owned.length > 0 && (
+          <Chips>
+            {owned.map((name) => (
+              <Chip key={name} label={chipLabel(name, note.custom[name])} selected={!!note.custom[name]} onPress={() => symptom(name, true)} />
+            ))}
+          </Chips>
+        )}
+        <Field label="Add a symptom of your own" value={own} onChange={setOwn} placeholder="Jaw ache, itchy eyes…" />
+        <Button
+          label="Add it"
+          variant="outline"
+          disabled={!own.trim() || own.trim().length > 60}
+          onPress={() => {
+            const name = own.trim();
+            setOwn('');
+            if (!note.custom[name]) symptom(name, true);
+          }}
+        />
+        <Button label="Symptoms and insights ›" variant="text" onPress={() => router.push('/rituals/cycle/insights')} />
+      </Card>
 
       <Card>
         <SectionLabel>How the day feels</SectionLabel>

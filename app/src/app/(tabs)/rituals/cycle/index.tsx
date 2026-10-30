@@ -4,9 +4,13 @@ import { ActivityIndicator, Text, View } from 'react-native';
 
 import { Button } from '../../../../components/Button';
 import { CycleWheel } from '../../../../components/cycle/CycleWheel';
-import { errorText, PassphraseInput, passphraseProblem, Progress, RecoveryCard, SuggestionCard } from '../../../../components/cycle/ui';
+import { ReadingCard } from '../../../../components/cycle/parts';
+import { errorText, PassphraseInput, passphraseProblem, Progress, RecoveryCard } from '../../../../components/cycle/ui';
 import { Body, Card, List, Notice, RitualScreen, Row, SectionLabel, Title, tell, ui } from '../../../../components/rituals/ui';
-import { ARCHETYPES, FRAMEWORK_NOTE, NOT_MEDICAL, SEASON_INFO, suggestionFor } from '../../../../lib/cycle/content';
+import { ARCHETYPES, FRAMEWORK_NOTE, NOT_MEDICAL, SEASON_INFO } from '../../../../lib/cycle/content';
+import { historyReading } from '../../../../lib/cycle/history';
+import { exactReading } from '../../../../lib/cycle/readings';
+import { redFlags, symptomInsights } from '../../../../lib/cycle/symptoms';
 import {
   bleedDays,
   bleedMoons,
@@ -180,8 +184,10 @@ function Open({ cycle, now }: { cycle: CycleState; now: Date }) {
   const summary = patternSummary(data);
   const patterns = useMemo(() => notePatterns(data), [data]);
   const moons = useMemo(() => bleedMoons(data), [data]);
+  const reading = exactReading(data, now);
+  const past = useMemo(() => historyReading(data), [data]);
+  const found = useMemo(() => ({ insights: symptomInsights(data), flags: redFlags(data, new Date()) }), [data]);
   const info = SEASON_INFO[view.season];
-  const prompt = info.prompts[now.getDate() % info.prompts.length];
   const s = data.settings;
   const today = dayKey(now);
 
@@ -213,12 +219,13 @@ function Open({ cycle, now }: { cycle: CycleState; now: Date }) {
         <Text style={type.cardTitle}>{view.line}</Text>
         {view.bleeding && <Body>In moon time. Rest counts as practice.</Body>}
         {view.estimate && <Body>{view.estimate.line}</Body>}
-        {s.mode === 'cycle' && !data.bleeds.length && <Body muted>Log when your next bleed begins and the days will count from there. Until then, the moon gives the season.</Body>}
+        {s.mode === 'cycle' && !data.bleeds.length && <Body muted>Add your past periods, or log when your next bleed begins, and the days will count from there. Until then, the moon gives the season.</Body>}
         {s.archetypes && <Body muted>{`${ARCHETYPES[view.season].name} (${ARCHETYPES[view.season].plain}): ${ARCHETYPES[view.season].line}`}</Body>}
         <Button label="Log today" onPress={() => router.push({ pathname: '/rituals/cycle/log', params: { date: today } })} />
+        {s.mode === 'cycle' && data.bleeds.length < 3 && <Button label="Add past periods" variant="outline" onPress={() => router.push('/rituals/cycle/past')} />}
       </Card>
 
-      <SuggestionCard eyebrow="For today" suggestion={suggestionFor(view.season, view.quarter)} />
+      <ReadingCard reading={reading} onWrite={() => router.push({ pathname: '/rituals/cycle/log', params: { date: today } })} />
 
       {view.bleeding && s.altar && (
         <Card>
@@ -232,8 +239,25 @@ function Open({ cycle, now }: { cycle: CycleState; now: Date }) {
         <Text style={[type.eyebrow, ui.gold]}>{seasonTitle(view.season)}</Text>
         <Body>{info.feel}</Body>
         <Body>{info.practice}</Body>
-        <Text style={type.cardTitle}>{prompt}</Text>
-        <Button label="Write about it" variant="text" onPress={() => router.push({ pathname: '/rituals/cycle/log', params: { date: today } })} />
+      </Card>
+
+      {s.mode === 'cycle' && (
+        <Card>
+          <Text style={[type.eyebrow, ui.gold]}>What am I?</Text>
+          <Text style={type.cardTitle}>{past.type ? past.type.headline : 'Add your past periods to find out'}</Text>
+          {past.average != null && <Body>{past.lines[0]}</Body>}
+          <Button label="Your history, read" variant="text" onPress={() => router.push('/rituals/cycle/history')} />
+        </Card>
+      )}
+
+      <Card>
+        <Text style={[type.eyebrow, ui.gold]}>Symptoms and insights</Text>
+        {found.flags.length > 0 && <Body>{found.flags[0]}</Body>}
+        {found.insights.slice(0, 3).map((i) => (
+          <Body key={i.text}>{i.text}</Body>
+        ))}
+        {!found.insights.length && !found.flags.length && <Body muted>Log symptoms on the days you have them, and patterns, comfort and folk remedies for them will show here.</Body>}
+        <Button label="Symptoms, patterns and comfort" variant="text" onPress={() => router.push('/rituals/cycle/insights')} />
       </Card>
 
       <View style={ui.gapSmall}>
@@ -274,10 +298,13 @@ function Open({ cycle, now }: { cycle: CycleState; now: Date }) {
       )}
 
       <List>
-        <Row icon="grimoire" title="Log a day" detail="A bleed, its flow, and how the day feels" onPress={() => router.push({ pathname: '/rituals/cycle/log', params: { date: today } })} />
+        <Row icon="grimoire" title="Log a day" detail="A bleed, its flow, symptoms and how the day feels" onPress={() => router.push({ pathname: '/rituals/cycle/log', params: { date: today } })} />
+        {s.mode === 'cycle' && <Row icon="calendar" title="Past periods" detail="Add many at once, paste a list, or change one" onPress={() => router.push('/rituals/cycle/past')} />}
+        {s.mode === 'cycle' && <Row icon="today" title="What am I?" detail="Your average cycle, its rhythm and your moon pattern" onPress={() => router.push('/rituals/cycle/history')} />}
+        <Row icon="wheel" title="Symptoms and insights" detail="Patterns over your cycles and the moon, and comfort for each" onPress={() => router.push('/rituals/cycle/insights')} />
         <Row icon="wheel" title="Inner seasons and moon patterns" detail="What suits each season, prompts, and the four moon patterns" onPress={() => router.push('/rituals/cycle/learn')} />
         <Row icon="coven" title="Share with my covens" detail="Only “in moon time” or “resting”, if you choose" onPress={() => router.push('/rituals/cycle/share')} />
-        <Row icon="more" title="Settings and privacy" detail="Moon only, reminders, passphrase, delete" last onPress={() => router.push('/rituals/cycle/settings')} />
+        <Row icon="more" title="Settings and privacy" detail="Cycle length, moon only, reminders, passphrase, delete" last onPress={() => router.push('/rituals/cycle/settings')} />
       </List>
     </View>
   );

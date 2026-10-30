@@ -9,7 +9,7 @@
 // windows are rough, and the estimate of the next bleed is only ever "about".
 
 import { moonState, PRINCIPAL_NAMES } from '../moon.ts';
-import type { Bleed, CycleData, CycleSettings, DayNote, Flow, MoonPattern, MoonQuarter, Season, Situation } from './types.ts';
+import type { Bleed, CycleData, CycleLength, CycleSettings, DayNote, Flow, Intensity, MoonPattern, MoonQuarter, Season, Situation } from './types.ts';
 
 const DAY = 86_400_000;
 export const SYNODIC_DAYS = 29.530588861;
@@ -54,8 +54,13 @@ const FLOWS: Flow[] = ['spotting', 'light', 'medium', 'heavy'];
 const SITUATIONS: Situation[] = ['irregular', 'hormonal', 'pregnant', 'postpartum', 'perimenopause'];
 export const REMINDER_AHEAD_CHOICES = [1, 2, 3, 5] as const;
 
+/** The cycle lengths that can be chosen (exactly, or as a range). */
+export const LENGTH_LIMITS = { min: 18, max: 50 } as const;
+export const DEFAULT_LENGTH_SETTING: CycleLength = { mode: 'auto', exact: 28, min: 26, max: 30 };
+
 export const DEFAULT_SETTINGS: CycleSettings = {
   mode: 'cycle',
+  length: DEFAULT_LENGTH_SETTING,
   situations: [],
   archetypes: false,
   today: true,
@@ -66,14 +71,42 @@ export const DEFAULT_SETTINGS: CycleSettings = {
 };
 
 export function emptyData(): CycleData {
-  return { version: 1, bleeds: [], notes: [], settings: { ...DEFAULT_SETTINGS, reminders: { ...DEFAULT_SETTINGS.reminders } }, removed: {} };
+  return { version: 2, bleeds: [], notes: [], settings: { ...DEFAULT_SETTINGS, length: { ...DEFAULT_LENGTH_SETTING }, reminders: { ...DEFAULT_SETTINGS.reminders } }, removed: {} };
 }
 
 const str = (v: unknown, max = 4000) => (typeof v === 'string' ? v.slice(0, max) : '');
 const iso = (v: unknown) => (typeof v === 'string' && !Number.isNaN(Date.parse(v)) ? v : '');
 const rating = (v: unknown) => (typeof v === 'number' && v >= 1 && v <= 5 ? Math.round(v) : null);
+const clampLength = (v: unknown, fallback: number) => (typeof v === 'number' && Number.isFinite(v) ? Math.min(LENGTH_LIMITS.max, Math.max(LENGTH_LIMITS.min, Math.round(v))) : fallback);
+/** A symptom map: names to 1, 2 or 3 (anything else dropped), at most 60 of them. */
+function intensities(v: unknown, nameMax: number): Record<string, Intensity> {
+  const out: Record<string, Intensity> = {};
+  if (!v || typeof v !== 'object' || Array.isArray(v)) return out;
+  for (const [k, x] of Object.entries(v as Record<string, unknown>)) {
+    const name = k.trim().slice(0, nameMax);
+    if (name && (x === 1 || x === 2 || x === 3) && Object.keys(out).length < 60) out[name] = x;
+  }
+  return out;
+}
 
-/** Whatever was stored (or decrypted), as a sound CycleData. Unknown parts are dropped. */
+/** The cycle length setting, sound: a range always has min ≤ max. */
+export function normalizeLength(raw: unknown): CycleLength {
+  const l = (raw && typeof raw === 'object' ? raw : {}) as Record<string, unknown>;
+  const min = clampLength(l.min, DEFAULT_LENGTH_SETTING.min);
+  const max = clampLength(l.max, DEFAULT_LENGTH_SETTING.max);
+  return {
+    mode: l.mode === 'exact' || l.mode === 'range' ? l.mode : 'auto',
+    exact: clampLength(l.exact, DEFAULT_LENGTH_SETTING.exact),
+    min: Math.min(min, max),
+    max: Math.max(min, max),
+  };
+}
+
+/**
+ * Whatever was stored (or decrypted), as a sound CycleData. Unknown parts are
+ * dropped. A version 1 document (the first release) comes back as version 2,
+ * with no symptoms yet and the cycle length worked out from the history.
+ */
 export function normalizeData(raw: unknown): CycleData {
   const out = emptyData();
   if (!raw || typeof raw !== 'object') return out;
@@ -103,6 +136,8 @@ export function normalizeData(raw: unknown): CycleData {
       body: str(x.body, 1000),
       dreams: str(x.dreams),
       text: str(x.text),
+      symptoms: intensities(x.symptoms, 40),
+      custom: intensities(x.custom, 60),
       updatedAt: iso(x.updatedAt),
     });
   }
@@ -110,6 +145,7 @@ export function normalizeData(raw: unknown): CycleData {
   const rem = (s.reminders && typeof s.reminders === 'object' ? s.reminders : {}) as Record<string, unknown>;
   out.settings = {
     mode: s.mode === 'moon' ? 'moon' : 'cycle',
+    length: normalizeLength(s.length),
     situations: Array.isArray(s.situations) ? SITUATIONS.filter((x) => (s.situations as unknown[]).includes(x)) : [],
     archetypes: s.archetypes === true,
     today: s.today !== false,
@@ -133,7 +169,11 @@ export function normalizeData(raw: unknown): CycleData {
 export function mergeData(a: CycleData, b: CycleData): CycleData {
   const removed: Record<string, string> = { ...a.removed };
   for (const [k, v] of Object.entries(b.removed)) if (!removed[k] || removed[k] < v) removed[k] = v;
-  const newer = <T extends { updatedAt: string }>(x: T | undefined, y: T | undefined) => (!x ? y : !y ? x : y.updatedAt > x.updatedAt ? y : x);
+  // Saved at the same moment, the fuller copy wins: an older app or page that
+  // doesn't know symptoms yet drops them when it opens the notes, without
+  // changing when each note was saved, and that copy shouldn't replace this one.
+  const newer = <T extends { updatedAt: string }>(x: T | undefined, y: T | undefined) =>
+    !x ? y : !y ? x : y.updatedAt > x.updatedAt ? y : y.updatedAt === x.updatedAt && richness(y) > richness(x) ? y : x;
   const gone = (key: string, updatedAt: string) => !!removed[key] && removed[key] >= updatedAt;
 
   const bleeds = new Map<string, Bleed>();
@@ -141,12 +181,18 @@ export function mergeData(a: CycleData, b: CycleData): CycleData {
   const notes = new Map<string, DayNote>();
   for (const x of [...a.notes, ...b.notes]) notes.set(x.date, newer(notes.get(x.date), x)!);
   return {
-    version: 1,
+    version: 2,
     bleeds: [...bleeds.values()].filter((x) => !gone(x.id, x.updatedAt)).sort((x, y) => (x.start < y.start ? -1 : 1)),
     notes: [...notes.values()].filter((x) => !gone(`note:${x.date}`, x.updatedAt)).sort((x, y) => (x.date < y.date ? -1 : 1)),
-    settings: b.settings.updatedAt > a.settings.updatedAt ? b.settings : a.settings,
+    settings: newer(a.settings, b.settings)!,
     removed,
   };
+}
+
+/** How much a note or settings holds that only content version 2 knows about (to break a tie in mergeData). */
+function richness(x: object): number {
+  const r = x as Partial<DayNote> & Partial<CycleSettings>;
+  return Object.keys(r.symptoms ?? {}).length + Object.keys(r.custom ?? {}).length + (r.length && r.length.mode !== 'auto' ? 1 : 0);
 }
 
 // ── Changing it ──────────────────────────────────────────────────────────
@@ -202,8 +248,9 @@ export function noteOn(data: CycleData, key: string): DayNote | null {
   return data.notes.find((n) => n.date === key) ?? null;
 }
 
-export const emptyNote = (key: string): DayNote => ({ date: key, energy: null, intuition: null, mood: '', body: '', dreams: '', text: '', updatedAt: '' });
-export const noteIsEmpty = (n: DayNote) => n.energy == null && n.intuition == null && !n.mood.trim() && !n.body.trim() && !n.dreams.trim() && !n.text.trim();
+export const emptyNote = (key: string): DayNote => ({ date: key, energy: null, intuition: null, mood: '', body: '', dreams: '', text: '', symptoms: {}, custom: {}, updatedAt: '' });
+export const noteIsEmpty = (n: DayNote) =>
+  n.energy == null && n.intuition == null && !n.mood.trim() && !n.body.trim() && !n.dreams.trim() && !n.text.trim() && !Object.keys(n.symptoms ?? {}).length && !Object.keys(n.custom ?? {}).length;
 
 /** Keep a day's notes (an empty note is removed). */
 export function putNote(data: CycleData, note: DayNote, now: Date): CycleData {
@@ -251,6 +298,37 @@ export function cycleStats(data: CycleData): CycleStats {
   return { lengths: recent, typical, shortest, longest, varies: longest - shortest > 7 };
 }
 
+export type LengthUsed = {
+  /** The length the days and seasons are laid out over. */
+  typical: number;
+  /** The shortest and longest it may be (the same as typical when exact). */
+  min: number;
+  max: number;
+  /** Where it comes from: their history, their own exact number or range, or the usual 28 with too little logged. */
+  source: 'history' | 'exact' | 'range' | 'default';
+};
+
+/**
+ * The cycle length to use: their exact number or range when they've chosen
+ * one, otherwise worked out from their history (once two cycles are logged;
+ * one cycle is used on its own until then, and 28 days with none).
+ */
+export function cycleLength(data: CycleData, stats = cycleStats(data)): LengthUsed {
+  const l = data.settings.length ?? DEFAULT_LENGTH_SETTING;
+  if (l.mode === 'exact') return { typical: l.exact, min: l.exact, max: l.exact, source: 'exact' };
+  if (l.mode === 'range') return { typical: Math.round((l.min + l.max) / 2), min: l.min, max: l.max, source: 'range' };
+  if (stats.typical == null) return { typical: DEFAULT_LENGTH, min: DEFAULT_LENGTH, max: DEFAULT_LENGTH, source: 'default' };
+  return { typical: stats.typical, min: stats.shortest ?? stats.typical, max: stats.longest ?? stats.typical, source: stats.lengths.length >= 2 ? 'history' : 'default' };
+}
+
+/** "28 days", "27–31 days", or "about 29 days (from your history)", for the screens. */
+export function lengthLabel(used: LengthUsed): string {
+  if (used.source === 'exact') return `exactly ${used.typical} days`;
+  if (used.source === 'range') return `${used.min}–${used.max} days`;
+  if (used.source === 'history') return used.min === used.max ? `about ${used.typical} days, from your history` : `about ${used.typical} days (${used.min}–${used.max}), from your history`;
+  return `${used.typical} days until more is logged`;
+}
+
 /** Cycles that don't keep a steady rhythm, by what they've told us or by what's logged. */
 export function isIrregular(data: CycleData, stats = cycleStats(data)): boolean {
   return stats.varies || data.settings.situations.some((s) => s === 'irregular' || s === 'perimenopause' || s === 'postpartum');
@@ -260,16 +338,29 @@ export function isIrregular(data: CycleData, stats = cycleStats(data)): boolean 
 
 export const SEASONS: Season[] = ['winter', 'spring', 'summer', 'autumn'];
 export const SEASON_NAMES: Record<Season, string> = { winter: 'inner winter', spring: 'inner spring', summer: 'inner summer', autumn: 'inner autumn' };
+/** The phase of the cycle each season stands for, in the usual words (roughly; the follicular phase strictly begins with the bleed). */
+export const PHASE_NAMES: Record<Season, string> = { winter: 'menstrual', spring: 'follicular', summer: 'ovulatory', autumn: 'luteal' };
+
+/**
+ * About how many days the luteal phase (inner autumn and the end of summer)
+ * runs before the next bleed: commonly about 14, so a longer or shorter cycle
+ * mostly changes the follicular side. Very short cycles are scaled down. An
+ * estimate for laying out the seasons, never a fertility window.
+ */
+export function lutealDays(length: number): number {
+  return length >= 24 ? 14 : Math.max(10, Math.round(length * 0.55));
+}
 
 /**
  * The inner season of a cycle day: winter while bleeding, then spring, a
- * week or so of summer about two weeks before the next bleed, and autumn
- * until it comes. Rough on purpose; bodies don't keep to windows.
+ * week or so of summer around the middle (beginning a day before the luteal
+ * phase is taken to start, lutealDays), and autumn until the next bleed.
+ * Rough on purpose; bodies don't keep to windows.
  */
 export function seasonForCycleDay(day: number, length: number, bleedLength: number): Season {
   const winterEnd = Math.max(1, Math.min(10, bleedLength));
   if (day <= winterEnd) return 'winter';
-  const summerStart = Math.max(winterEnd + 2, length - 15);
+  const summerStart = Math.max(winterEnd + 2, length - lutealDays(length) - 1);
   const summerEnd = Math.min(summerStart + 6, Math.max(summerStart, length - 3));
   if (day < summerStart) return 'spring';
   if (day <= summerEnd) return 'summer';
@@ -310,7 +401,7 @@ export function cycleDayOn(data: CycleData, key: string, stats = cycleStats(data
   const day = daysBetween(bleed.start, key) + 1;
   const next = bleeds[i + 1];
   const actual = next ? daysBetween(bleed.start, next.start) : null;
-  const length = actual && actual >= PLAUSIBLE.min && actual <= PLAUSIBLE.max ? actual : (stats.typical ?? DEFAULT_LENGTH);
+  const length = actual && actual >= PLAUSIBLE.min && actual <= PLAUSIBLE.max ? actual : cycleLength(data, stats).typical;
   // Long after the last bleed (a pause, a pregnancy), there's no day to count.
   if (day > Math.max(length + 21, PLAUSIBLE.max)) return null;
   const blen = bleedDays(bleed);
@@ -331,36 +422,62 @@ export function seasonOn(data: CycleData, key: string, stats = cycleStats(data))
 export type Estimate = {
   /** Days from today to the likely start (negative: later than the usual rhythm). */
   daysAway: number;
-  /** When it varies, the span it may fall in, as days from today. */
+  /** When it may fall in a span (a range is set, or the cycles vary), the span as days from today. */
   span: [number, number] | null;
+  /** The likely day, or the first and last days of the span ("YYYY-MM-DD"). */
+  from: string;
+  to: string;
   line: string;
 };
+
+const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+/** "3 November", the same on every device (no locale needed). */
+export function dayMonth(key: string): string {
+  const d = fromKey(key);
+  return d ? `${d.getDate()} ${MONTHS[d.getMonth()]}` : key;
+}
+/** "3 and 7 November", or "30 October and 3 November". */
+function between(a: string, b: string): string {
+  const x = fromKey(a);
+  const y = fromKey(b);
+  if (x && y && x.getMonth() === y.getMonth()) return `${x.getDate()} and ${dayMonth(b)}`;
+  return `${dayMonth(a)} and ${dayMonth(b)}`;
+}
 
 const aboutDays = (n: number) => (n <= 0 ? 'about now' : n === 1 ? 'in about a day' : `in about ${n} days`);
 
 /**
  * A gentle estimate of the next bleed, or null when one wouldn't be honest:
- * following the moon, pregnant, too little logged, after a birth until a
- * rhythm returns, or while bleeding now.
+ * following the moon, pregnant, too little logged (and no length of their
+ * own chosen), after a birth until a rhythm returns, or while bleeding now.
+ * With a range set it's a window ("between 3 and 7 November"); with an
+ * exact length, a day; from their history, a day, or a window when the
+ * cycles vary.
  */
 export function nextBleedEstimate(data: CycleData, now: Date, stats = cycleStats(data)): Estimate | null {
   const s = data.settings;
   if (s.mode !== 'cycle' || s.situations.includes('pregnant')) return null;
-  if (!stats.typical) return null;
-  if (s.situations.includes('postpartum') && stats.lengths.length < 2) return null;
+  const used = cycleLength(data, stats);
+  const chosen = used.source === 'exact' || used.source === 'range';
+  if (!chosen && !stats.typical) return null;
+  if (!chosen && s.situations.includes('postpartum') && stats.lengths.length < 2) return null;
   const bleeds = sortedBleeds(data);
   const last = bleeds[bleeds.length - 1];
+  if (!last) return null;
   const today = dayKey(now);
   const c = cycleDayOn(data, today, stats);
   if (!c || c.bleed.id !== last.id || c.bleeding) return null;
-  const daysAway = stats.typical - (c.day - 1);
-  const wide = isIrregular(data, stats) && stats.shortest != null && stats.longest != null && stats.longest - stats.shortest > 4;
-  const span: [number, number] | null = wide ? [stats.shortest! - (c.day - 1), stats.longest! - (c.day - 1)] : null;
+  const done = c.day - 1;
+  const daysAway = used.typical - done;
+  const wide = used.source === 'range' ? used.max > used.min : !chosen && isIrregular(data, stats) && used.max - used.min > 4;
+  const span: [number, number] | null = wide ? [used.min - done, used.max - done] : null;
+  const from = addDays(today, span ? span[0] : daysAway);
+  const to = addDays(today, span ? span[1] : daysAway);
   let line: string;
-  if (daysAway < -3) line = 'Your bleed may come a little later than your recent rhythm. Cycles shift; if you’re worried, a doctor or nurse can help.';
-  else if (span && span[1] > 0) line = `Your bleed may start sometime ${span[0] <= 0 ? 'from now' : `from about ${span[0]} ${span[0] === 1 ? 'day' : 'days'}`} to about ${span[1]} days from now.`;
-  else line = `Your bleed may start ${aboutDays(daysAway)}.`;
-  return { daysAway, span, line };
+  if ((span ? span[1] : daysAway) < -3) line = 'Your bleed may come a little later than your usual rhythm. Cycles shift; if you’re worried, a doctor or nurse can help.';
+  else if (span && span[1] > 0) line = span[0] <= 0 ? `Your bleed may start any day now, up to about ${dayMonth(to)}.` : `Your bleed may start between ${between(from, to)}.`;
+  else line = daysAway <= 0 ? 'Your bleed may start about now.' : `Your bleed may start ${aboutDays(daysAway)}, around ${dayMonth(from)}.`;
+  return { daysAway, span, from, to, line };
 }
 
 // ── The moon at each bleed ──────────────────────────────────────────────
