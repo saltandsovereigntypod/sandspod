@@ -14,13 +14,43 @@
   const eveningOf = (day) => new Date(day.getFullYear(), day.getMonth(), day.getDate(), P.EVENING_HOUR);
   const fixedDay = R.lifecycle.dateFromKey(params.get("date"));
 
+  // The planetary hours of the chosen day (js/core/astro.js, where the page loads it, and your saved place):
+  // which hour the time falls in, and a planet's hours to pick from (the chips set the time).
+  function planetaryHoursHtml() {
+    const A = global.SaltCore && global.SaltCore.astro;
+    let place = null;
+    try {
+      place = JSON.parse(global.localStorage.getItem("sky.place") || "null");
+    } catch {
+      place = null;
+    }
+    if (!A || !state.night || !place || !Number.isFinite(Number(place.latitude))) return "";
+    const n = state.night;
+    const hours = A.hours.planetaryHours(new Date(n.getFullYear(), n.getMonth(), n.getDate(), 12), { latitude: Number(place.latitude), longitude: Number(place.longitude) });
+    if (!hours) return "";
+    const [h, m] = state.time.split(":").map(Number);
+    let at = new Date(n.getFullYear(), n.getMonth(), n.getDate(), h, m);
+    if (at < hours[0].start) at = new Date(at.getTime() + 86400000);
+    const inHour = hours.find((x) => at >= x.start && at < x.end);
+    const two = (d) => `${String(d.getHours()).padStart(2, "0")}:${String(d.getMinutes()).padStart(2, "0")}`;
+    const planets = ["Sun", "Moon", "Mars", "Mercury", "Jupiter", "Venus", "Saturn"];
+    const pick = state.hourPlanet && planets.includes(state.hourPlanet) ? state.hourPlanet : null;
+    const termHtml = (t) => (global.SaltAstroTerms ? global.SaltAstroTerms.html(t) : esc(t));
+    return `<h2 class="sp-label">Planetary hours that day</h2>
+      ${inHour ? `<p class="sp-caption">${termHtml(`${A.calendar.timeOfDay(at)} falls in the hour of ${inHour.planet}: ${A.cosmicHours.HOUR_SUITS[inHour.planet].short}. The day belongs to ${hours[0].planet}.`)}</p>` : ""}
+      <div class="sp-chips">${planets.map((p) => UI.chip(p, { pressed: pick === p, attrs: `data-hour-planet="${p}" data-key="hour-${p}"` })).join("")}</div>
+      ${pick ? `<div class="sp-chips">${hours.filter((x) => x.planet === pick).map((x) => UI.chip(`${A.calendar.timeOfDay(x.start)}${x.night ? " (night)" : ""}`, { pressed: inHour === x, attrs: `data-time="${two(x.start)}" data-key="hourtime-${two(x.start)}"` })).join("")}</div>` : ""}`;
+  }
+
   const state = {
     templates: [],
     editing: null,
     draft: null,
     intentionKey: params.get("intention") || null,
     night: fixedDay ? eveningOf(fixedDay) : null,
-    time: "21:00",
+    // A time can come with the link (a planetary hour from Cosmic & celestial).
+    time: /^\d{2}:\d{2}$/.test(params.get("time") || "") ? params.get("time") : "21:00",
+    hourPlanet: params.get("hour") || null,
     attach: { kind: "none" },
     picked: [],
     name: "",
@@ -136,6 +166,7 @@
           <h2 class="sp-label" id="rt-when">${esc(`${R.format.dayLabel(state.night, now)} · what time?`)}</h2>
           <div class="sp-chips">${timeChips}</div>
           <div class="sp-field rt-narrow"><label for="rt-time">Or another time</label><input id="rt-time" type="time" step="300" value="${esc(state.time)}" data-key="time-input" /></div>
+          ${planetaryHoursHtml()}
 
           <h2 class="sp-label">Which ritual?</h2>
           <div class="sp-chips">${ritualChips}</div>
@@ -263,6 +294,9 @@
         const days = Number(target.dataset.move);
         const night = state.night;
         setNight(new Date(night.getFullYear(), night.getMonth(), night.getDate() + days));
+      } else if (target.dataset.hourPlanet) {
+        state.hourPlanet = state.hourPlanet === target.dataset.hourPlanet ? null : target.dataset.hourPlanet;
+        render();
       } else if (target.dataset.time) {
         state.time = target.dataset.time;
       } else if (target.dataset.attach) {

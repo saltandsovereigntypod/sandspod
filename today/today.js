@@ -102,6 +102,16 @@
     } catch {
       /* keep what this browser has */
     }
+    chartSettings = state.settings || {};
+  }
+
+  /** Your birth chart's vault (practice/cosmic/astro-store.js), for the line from today's sky to your chart. */
+  async function loadChart(user) {
+    try {
+      if (window.SaltAstroStore) await window.SaltAstroStore.load(user ? user.id : null);
+    } catch {
+      /* the line is left out */
+    }
   }
 
   /** Plans, the ritual under way and the journal: your account's, or this browser's for guests. */
@@ -430,6 +440,25 @@
     );
   }
 
+  /** Astrology terms tappable (js/astro-terms.js) where the page loads them. */
+  const astroText = (text) => (window.SaltAstroTerms ? window.SaltAstroTerms.html(text) : esc(text));
+
+  /** One line from today's sky to your own birth chart (kept privately by practice/cosmic/astro-store.js), when you've entered it. */
+  function chartTodayLine(now) {
+    const A = window.SaltCore && window.SaltCore.astro;
+    const ST = window.SaltAstroStore;
+    const saved = ST && ST.state.phase === "open" ? ST.myChart() : null;
+    if (!A || !saved) return "";
+    try {
+      const chart = A.natal.castChart(saved.input, A.prefs.chartOptionsFrom(chartSettings));
+      const line = chart && A.craftLinks.todayLine(chart, now);
+      return line ? `<p class="sp-caption"><a class="td-link td-gold" href="/practice/cosmic/chart/?tab=transits">Your chart today ›</a></p><p class="sp-caption">${astroText(line.line)}</p>` : "";
+    } catch {
+      return "";
+    }
+  }
+  let chartSettings = {};
+
   /** What today is good for, and what the sky is doing that matters for it. */
   function daySkyCard(m) {
     const { today, sky, here, now } = m;
@@ -438,7 +467,7 @@
     if (here) {
       where =
         `<p class="sp-caption">${esc(T.riseSetLine(C, here))}</p>` +
-        (here.hour ? `<p class="sp-caption td-gold">${esc(`Planetary hour of ${here.hour.planet} until ${C.calendar.timeOfDay(here.hour.end)}`)}</p>` : "");
+        (here.hour ? `<p class="sp-caption"><a class="td-link td-gold" href="/practice/cosmic/hours/?planet=${encodeURIComponent(here.hour.planet)}">${esc(`Planetary hour of ${here.hour.planet} until ${C.calendar.timeOfDay(here.hour.end)}`)} ›</a></p>` : "");
     } else {
       where =
         `<p class="sp-caption">Add your location on the <a class="td-link" href="/today/sky/">Sky page</a> for sunrise, moonrise and planetary hours. It stays in this browser and is never sent anywhere.</p>` +
@@ -446,8 +475,9 @@
     }
     return (
       `<section class="td-card" aria-labelledby="td-sky-label"><h2 class="sp-eyebrow td-gold" id="td-sky-label">Today’s sky</h2>` +
-      `<p class="td-good-for">${esc(today.goodFor)}</p>` +
-      lines.map((line) => `<p class="sp-caption">${esc(line)}</p>`).join("") +
+      `<p class="td-good-for">${astroText(today.goodFor)}</p>` +
+      lines.map((line) => `<p class="sp-caption">${astroText(line)}</p>`).join("") +
+      chartTodayLine(now) +
       where +
       `<a class="button button--ghost" href="/today/sky/">The sky today</a></section>`
     );
@@ -483,6 +513,7 @@
     const row = (label, text) => `<div class="td-corr"><span class="td-corr__label">${esc(label)}</span><span>${esc(text)}</span></div>`;
     return (
       `<section class="td-card" aria-labelledby="td-corr-label"><h2 class="sp-eyebrow td-gold" id="td-corr-label">${esc(`Correspondences · ${planet}`)}</h2>` +
+      `<p class="sp-caption"><a class="td-link td-gold" href="/practice/cosmic/planet/?planet=${encodeURIComponent(c.planet)}">${esc(`${c.planet}: its day, hours, gods and full guide`)} ›</a></p>` +
       row("Colors", c.colors.join(", ")) +
       `<div class="td-corr"><span class="td-corr__label">Crystals</span>${tags(c.crystals)}</div>` +
       `<div class="td-corr"><span class="td-corr__label">Herbs</span>${tags(c.herbs)}</div>` +
@@ -590,7 +621,7 @@
     refreshing = true;
     try {
       state.user = user;
-      await Promise.all([loadSettings(), loadRituals(user), loadDreams(), loadReadings(), loadApothecary(user)]);
+      await Promise.all([loadSettings(), loadRituals(user), loadDreams(), loadReadings(), loadApothecary(user), loadChart(user)]);
     } finally {
       refreshing = false;
     }

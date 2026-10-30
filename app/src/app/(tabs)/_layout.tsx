@@ -1,9 +1,11 @@
 import { Tabs } from 'expo-router/js-tabs';
 
 import { GuestMigrationPrompt } from '../../components/account/GuestMigrationPrompt';
+import { TermSheet } from '../../components/astro/Explain';
 import { TabBar } from '../../components/TabBar';
 import { WelcomeTour } from '../../components/WelcomeTour';
 import { useCandleKeeper } from '../../lib/altar/useCandleKeeper';
+import { useAstroKeeper } from '../../lib/astro/store';
 import { useCraftAccount } from '../../lib/craft/useCraftAccount';
 import { useCycleKeeper } from '../../lib/cycle/store';
 import { useCovenUnreadSync } from '../../lib/covens/unread';
@@ -29,6 +31,8 @@ export default function TabsLayout() {
   // Cycle & Moon's reminders and Today's card are ready from the start (lib/cycle/store.ts).
   const { ready, session } = useSession();
   useCycleKeeper(ready ? (session?.user.id ?? null) : undefined);
+  // The birth-chart vault too, so Today's line from your chart is ready (lib/astro/store.ts).
+  useAstroKeeper(ready ? (session?.user.id ?? null) : undefined);
   return (
     <>
       <Tabs
@@ -44,6 +48,8 @@ export default function TabsLayout() {
       </Tabs>
       <WelcomeTour />
       <GuestMigrationPrompt />
+      {/* The one astrology explanation sheet: any tappable term opens it (components/astro/Explain.tsx). */}
+      <TermSheet />
     </>
   );
 }

@@ -4,6 +4,7 @@ import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 import { Button } from '../../../components/Button';
 import { MoonDisc } from '../../../components/MoonDisc';
+import { PlannerHours } from '../../../components/astro/PlannerHours';
 import { TimeStepper } from '../../../components/rituals/TimeStepper';
 import { Body, Card, Chip, Chips, Field, Notice, RitualScreen, SectionLabel, Title, Toggle, tell, ui } from '../../../components/rituals/ui';
 import { dayRuler, dayRulerLabel, fullDate } from '../../../lib/calendar';
@@ -25,7 +26,7 @@ const TIMES = ['07:00', '12:00', '18:00', '19:00', '20:00', '21:00', '22:00', '2
 type Attach = { kind: 'template'; id: string } | { kind: 'draft' } | { kind: 'none' };
 
 export default function Planner() {
-  const params = useLocalSearchParams<{ intention?: string; date?: string; templateId?: string; fromSpell?: string; planId?: string }>();
+  const params = useLocalSearchParams<{ intention?: string; date?: string; templateId?: string; fromSpell?: string; planId?: string; time?: string; hour?: string }>();
   const rituals = useRituals();
   const calendar = useCalendar();
   const editing = params.planId ? rituals.plans.find((p) => p.id === params.planId) ?? null : null;
@@ -37,7 +38,8 @@ export default function Planner() {
   const [night, setNight] = useState<Date | null>(
     fixedDay ? new Date(fixedDay.getFullYear(), fixedDay.getMonth(), fixedDay.getDate(), EVENING_HOUR) : null,
   );
-  const [time, setTime] = useState('21:00');
+  // A time can come with the link (a planetary hour from Cosmic & celestial).
+  const [time, setTime] = useState(/^\d{2}:\d{2}$/.test(params.time ?? '') ? params.time! : '21:00');
   const [attach, setAttach] = useState<Attach>(
     draft ? { kind: 'draft' } : params.templateId ? { kind: 'template', id: params.templateId } : { kind: 'none' },
   );
@@ -169,6 +171,7 @@ export default function Planner() {
             })}
           </Chips>
           <TimeStepper minutes={timeMinutes(time)} onChange={(minutes) => setTime(timeKey(minutes))} />
+          <PlannerHours night={night} time={time} onPick={setTime} initialPlanet={params.hour} />
 
           <SectionLabel>Which ritual?</SectionLabel>
           <Chips>

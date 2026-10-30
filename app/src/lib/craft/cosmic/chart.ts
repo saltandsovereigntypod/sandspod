@@ -21,6 +21,15 @@ export type ChartInput = {
   utcOffsetMinutes: number;
   /** True when the offset was taken from the phone rather than entered. */
   offsetFromDevice?: boolean;
+  /**
+   * The birthplace's IANA time zone (from the place search), from which the
+   * offset at the birth moment was worked out. Absent on older entries.
+   */
+  zone?: string | null;
+  /** True when the person changed the offset the time zone gave. */
+  offsetOverridden?: boolean;
+  /** The birthplace's country code, from the place search. */
+  country?: string | null;
   latitude?: number | null;
   longitude?: number | null;
   placeLabel?: string | null;

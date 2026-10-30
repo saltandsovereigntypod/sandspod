@@ -12,6 +12,10 @@
    ?moontime=1 (the app's altarId "moon-time"): a moon bowl,
    red candles and a red cord, moonstone and red jasper,
    mugwort and rose (moonTimeAltar in js/core/altar.js).
+
+   A birth chart's natal altar comes with ?natal=<planet> (the
+   app's altarId "natal"): the chart ruler's planetary altar,
+   the pieces of its weekday (planetAltar in js/core/altar.js).
    ========================================================= */
 
 (function initializeDeityShrine(global) {
@@ -27,6 +31,20 @@
     if (!app?.setDocument || !tonight?.moonTimeAltar) return;
     app.setDocument(tonight.moonTimeAltar(new Date()).doc, "Moon-Time Altar");
     app.notice?.("A moon-time altar: a moon bowl, red candles and a red cord, moonstone and red jasper, mugwort and rose. Move, swap or add anything, then Save to keep it.");
+  }
+
+  function setNatal() {
+    const url = new URL(global.location.href);
+    const planet = String(url.searchParams.get("natal") || "");
+    if (!planet) return;
+    url.searchParams.delete("natal");
+    global.history.replaceState(global.history.state, "", `${url.pathname}${url.search}${url.hash}`);
+    const day = ["Sun", "Moon", "Mars", "Mercury", "Jupiter", "Venus", "Saturn"].indexOf(planet);
+    const app = global.AltarApp;
+    const tonight = global.SaltCore?.altar?.tonight;
+    if (day < 0 || !app?.setDocument || !tonight?.planetAltar) return;
+    app.setDocument(tonight.planetAltar(day, new Date()).doc, `${planet} Altar`);
+    app.notice?.(`A natal altar for your chart ruler, ${planet}: its colours, stones, herbs and incense. Move, swap or add anything, then Save to keep it.`);
   }
 
   function setShrine() {
@@ -49,5 +67,5 @@
   }
 
   // After the working altar is restored on load, so the shrine is what's on the stage.
-  global.addEventListener("load", () => global.setTimeout(() => (setShrine(), setMoonTime()), 50), { once: true });
+  global.addEventListener("load", () => global.setTimeout(() => (setShrine(), setMoonTime(), setNatal()), 50), { once: true });
 })(window);

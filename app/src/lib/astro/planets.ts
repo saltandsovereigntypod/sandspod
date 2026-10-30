@@ -8,7 +8,7 @@ import { dateToJulianDay, moonLongitude, SIGNS, sunLongitude, type ZodiacSign } 
 
 export const PLANETS = ['Sun', 'Moon', 'Mercury', 'Venus', 'Mars', 'Jupiter', 'Saturn', 'Uranus', 'Neptune', 'Pluto'] as const;
 export type Planet = (typeof PLANETS)[number];
-type OrbitingPlanet = Exclude<Planet, 'Sun' | 'Moon'>;
+export type OrbitingPlanet = Exclude<Planet, 'Sun' | 'Moon'>;
 
 const RAD = Math.PI / 180;
 const DAY_MS = 86_400_000;
@@ -29,7 +29,7 @@ const ELEMENTS: Record<OrbitingPlanet | 'Earth', [number[], number[]]> = {
 const norm = (deg: number) => ((deg % 360) + 360) % 360;
 
 /** Heliocentric ecliptic position (J2000 axes) in AU. */
-function heliocentric(body: OrbitingPlanet | 'Earth', T: number): [number, number, number] {
+export function heliocentric(body: OrbitingPlanet | 'Earth', T: number): [number, number, number] {
   const [base, rate] = ELEMENTS[body];
   const [a, e, I, L, peri, node] = base.map((value, i) => value + rate[i] * T);
   const M = norm(L - peri) * RAD;

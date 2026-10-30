@@ -241,7 +241,7 @@ import { useLibrary } from '../../lib/library';
 import { setAltarFullScreen } from '../../lib/altarFullScreen';
 import { canTurnScreen, turnScreen } from '../../lib/screenOrientation';
 import { useMySettings } from '../../lib/settings/store';
-import { moonTimeAltar, shrineAltar, tonightAltar } from '../../lib/altar/tonight';
+import { moonTimeAltar, planetAltar, shrineAltar, tonightAltar } from '../../lib/altar/tonight';
 import { TRADITIONAL_LIBRARY } from '../../lib/library/traditionalData';
 import { hiddenTraditions, holidayChoice, holidaysToday } from '../../lib/holidays';
 import { moonState } from '../../lib/moon';
@@ -320,9 +320,9 @@ const NO_OBJECTS: import('../../lib/altar/types').SavedObject[] = [];
  * home. `header` and `overlay` add the coven's own controls (who's here, chat).
  */
 export function AltarEditor({ shared, header, overlay, onBack, whose }: { shared?: SharedAltar; header?: ReactNode; overlay?: ReactNode; onBack?: () => void; whose?: WhoseContext | null } = {}) {
-  const params = useLocalSearchParams<{ altarId: string; from?: string; deity?: string }>();
+  const params = useLocalSearchParams<{ altarId: string; from?: string; deity?: string; planet?: string }>();
   const altarId = shared ? `coven:${shared.key}` : params.altarId;
-  const { from, deity } = params;
+  const { from, deity, planet } = params;
   const store = useAltars();
   const { settings } = useMySettings();
   const { altars, draft, draftSourceId, status, backgrounds, overrides, signedIn } = store;
@@ -427,6 +427,16 @@ export function AltarEditor({ shared, header, overlay, onBack, whose }: { shared
       setNotice(`Set for ${tonight.reason}. Move, swap or add anything, then Save to keep it.`);
       return;
     }
+    if (altarId === 'natal' && planet) {
+      // From a birth chart: the chart ruler's planetary altar (its weekday's pieces). Nothing is saved until Save.
+      const day = ['Sun', 'Moon', 'Mars', 'Mercury', 'Jupiter', 'Venus', 'Saturn'].indexOf(planet);
+      if (day >= 0) {
+        const natal = planetAltar(day, new Date());
+        start(natal.doc, null, `${planet} Altar`);
+        setNotice(`A natal altar for your chart ruler, ${planet}: its colours, stones, herbs and incense. Move, swap or add anything, then Save to keep it.`);
+        return;
+      }
+    }
     if (altarId === 'moon-time') {
       // From Cycle & Moon, while bleeding (when chosen there): a starter altar from the cabinet. Nothing is saved until Save.
       start(moonTimeAltar(new Date()).doc, null, 'Moon-Time Altar');
@@ -454,7 +464,7 @@ export function AltarEditor({ shared, header, overlay, onBack, whose }: { shared
     const altar = altars.find((a) => a.id === altarId);
     if (altar) return start(documentFromAltar(altar), altar.id, altar.name || 'My Altar');
     if (status === 'ready' || status === 'offline' || status === 'error') setMissing(true);
-  }, [altarId, deity, altars, backgrounds, draft, draftSourceId, status, settings, optionEntries, shared]);
+  }, [altarId, deity, planet, altars, backgrounds, draft, draftSourceId, status, settings, optionEntries, shared]);
 
   // A shared altar is saved for the coven as it changes; there's nothing unsaved.
   const dirty = !shared && !!doc && doc !== baseline;

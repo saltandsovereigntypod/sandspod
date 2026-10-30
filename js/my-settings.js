@@ -122,7 +122,15 @@ function getDefaultMySettings() {
 
     // Holiday, tending and planning reminders, quiet hours and the pause, as JSON ("" until first chosen).
     // The app's lib/reminders/prefs.ts reads and writes it; the website's Reminders page too.
-    reminders_v2: ""
+    reminders_v2: "",
+
+    // Astrology (app/src/lib/astro): how much each explanation says ("simple" or "detailed"), and how charts are drawn.
+    astro_explanations: "simple",
+    astro_house_system: "placidus",
+    astro_zodiac: "tropical",
+    astro_nodes: "true",
+    // Aspect orbs as JSON ("" for the defaults): parseOrbs in app/src/lib/astro/aspects.ts.
+    astro_orbs: ""
   };
 }
 

@@ -83,6 +83,14 @@
   }
 
   /** The moon as it is now: phase, sign, its name this month, and any void-of-course time today. */
+  const tx = (text, skip) => (window.SaltAstroTerms ? window.SaltAstroTerms.html(text, skip ? { skip } : {}) : esc(text));
+  function astroChips(ids, label) {
+    const G = window.SaltCore && window.SaltCore.astro && window.SaltCore.astro.glossary;
+    if (!G || !window.SaltAstroTerms) return "";
+    const chips = ids.map((id) => G.term(id)).filter(Boolean).map((e) => `<button type="button" class="sp-chip" data-astro-term="${esc(e.id)}">${esc(e.term)}</button>`);
+    return `<p class="sp-caption">${esc(label)}</p><div class="sp-chips">${chips.join("")}</div>`;
+  }
+
   function moonTonight() {
     const now = new Date();
     const moon = C.moon.moonState(now);
@@ -96,10 +104,10 @@
     const t = C.calendar.timeOfDay;
     return (
       `<div class="td-card"><p class="td-practice-label">Tonight</p>` +
-      `<p>${esc(`${moon.name} in ${C.moon.moonSign(now)}, ${Math.round(moon.illumination * 100)}% lit`)}</p>` +
+      `<p>${tx(`${moon.name} in ${C.moon.moonSign(now)}, ${Math.round(moon.illumination * 100)}% lit`)}</p>` +
       (name ? `<p class="sp-caption">${esc(name)}</p>` : "") +
       (voc.length
-        ? voc.map((v) => `<p class="sp-caption">${esc(`Void of course ${t(v.start)}–${t(v.end)}, until it enters ${v.nextSign}: traditionally a time to finish things, not begin them.`)}</p>`).join("")
+        ? voc.map((v) => `<p class="sp-caption">${tx(`Void of course ${t(v.start)}–${t(v.end)}, until it enters ${v.nextSign}: traditionally a time to finish things, not begin them.`)}</p>`).join("")
         : `<p class="sp-caption">No void-of-course time today.</p>`) +
       `</div>`
     );
@@ -141,8 +149,11 @@
     root.innerHTML =
       back +
       `<header><p class="sp-eyebrow">${esc(page.tradition)}</p><h1>${esc(page.title)}</h1></header>` +
-      `<p class="td-summary">${esc(page.summary)}</p>` +
+      // Moon pages and the Wheel's solar festivals speak astrology; their terms are tappable (js/astro-terms.js).
+      `<p class="td-summary">${page.ref.startsWith("moon-") || page.ref.startsWith("wheel-") ? tx(page.summary, ["venus", "mars", "mercury", "jupiter", "saturn"]) : esc(page.summary)}</p>` +
       (page.ref.startsWith("moon-") ? moonTonight() : "") +
+      (page.ref.startsWith("moon-") ? astroChips(["moon-phases", "lunation", "void-of-course", "eclipse", "moon"], "The astrology behind it") : "") +
+      (page.ref.startsWith("wheel-") ? astroChips(["solstice-equinox", "sun", "cardinal", "fixed", "zodiac"], "The sky behind the Wheel") : "") +
       `<div data-grimoire aria-live="polite">${grimoireHtml || ""}</div>` +
       section("Who is honoured, and why", paras(page.honours)) +
       section("History", paras(page.history)) +
