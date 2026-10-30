@@ -5,7 +5,8 @@
 // how long until its next turn. Modern spiritual meaning-making, not biology.
 // Pure.
 
-import { moonState, upcomingPhases, PRINCIPAL_NAMES, type PhaseName } from '../moon.ts';
+import { MOON_IN_SIGN } from '../astro/meanings.ts';
+import { moonSign, moonState, upcomingPhases, PRINCIPAL_NAMES, type PhaseName } from '../moon.ts';
 import type { PracticeLink } from './content.ts';
 import { cycleDayOn, cycleStats, dayKey, daysBetween, MOON_SEASON, PHASE_NAMES, quarterOf, SEASON_NAMES } from './model.ts';
 import type { CycleData, Season } from './types.ts';
@@ -306,6 +307,8 @@ export type ExactReading = {
   headline: string;
   /** "Waning gibbous, 87% lit · last quarter in 3 days". */
   moonLine: string;
+  /** "The Moon is in Scorpio: deep, intense and private." (astrology terms are made tappable on screen). */
+  signLine: string;
   reading: Reading;
 };
 
@@ -332,6 +335,7 @@ export function exactReading(data: CycleData, now: Date): ExactReading {
     moon: { name: state.name, key, illumination, next },
     headline,
     moonLine: `${state.name}, ${illumination}% lit · ${next.name.toLowerCase()} ${inDays(next.days)}`,
+    signLine: `The Moon is in ${moonSign(now)}: ${MOON_IN_SIGN[moonSign(now)].mood}.`,
     reading: READINGS[season][key],
   };
 }

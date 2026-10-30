@@ -138,13 +138,13 @@ export function randomBytes(n: number): Uint8Array {
 
 // ── Sealing ──────────────────────────────────────────────────────────────
 
-function seal(key: Uint8Array, plain: Uint8Array, aad: Uint8Array): string {
+export function seal(key: Uint8Array, plain: Uint8Array, aad: Uint8Array): string {
   const nonce = randomBytes(24);
   return toBase64(concat(nonce, xchacha20poly1305(key, nonce, aad).encrypt(plain)));
 }
 
 /** Opens what seal made; null if the key is wrong or it was changed. */
-function unseal(key: Uint8Array, sealed: string, aad: Uint8Array): Uint8Array | null {
+export function unseal(key: Uint8Array, sealed: string, aad: Uint8Array): Uint8Array | null {
   const bytes = fromBase64(sealed);
   if (bytes.length < 24 + 16) return null;
   try {
@@ -172,7 +172,7 @@ export function decryptData(dataKey: Uint8Array, sealed: string): CycleData {
 
 export const newDataKey = () => randomBytes(32);
 
-function checkKdf(kdf: KdfParams | null | undefined): KdfParams {
+export function checkKdf(kdf: KdfParams | null | undefined): KdfParams {
   const ok =
     !!kdf &&
     kdf.name === 'scrypt' &&
@@ -239,7 +239,7 @@ export function parseRecovery(text: string): Uint8Array | null {
   return out;
 }
 
-function recoveryWrapKey(recovery: Uint8Array, kdf: KdfParams): Uint8Array {
+export function recoveryWrapKey(recovery: Uint8Array, kdf: KdfParams): Uint8Array {
   return hkdf(sha256, recovery, fromBase64(kdf.salt), RECOVERY_INFO, 32);
 }
 
