@@ -54,6 +54,7 @@ export function astroPage(id: AstroPage): { label: string; app: string; site: st
   const fixed: Record<string, { label: string; app: string; site: string }> = {
     charts: { label: 'Your charts', app: '/rituals/craft/cosmic/charts', site: '/practice/cosmic/charts/' },
     hours: { label: 'Planetary days and hours', app: '/rituals/craft/cosmic/hours', site: '/practice/cosmic/hours/' },
+    timing: { label: 'Find a good time', app: '/rituals/craft/cosmic/timing', site: '/practice/cosmic/timing/' },
     learn: { label: 'The astrology glossary', app: '/rituals/craft/cosmic/learn', site: '/practice/cosmic/learn/' },
     sky: { label: 'The sky today', app: '/today/sky', site: '/today/sky/' },
   };

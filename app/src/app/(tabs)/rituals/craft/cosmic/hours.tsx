@@ -236,6 +236,7 @@ export default function PlanetaryHours() {
 
       <TermChips ids={['planetary-days', 'planetary-hours', 'chaldean-order', 'void-of-course']} />
       <List>
+        <Row icon="calendar" title="Find a good time" detail="The spell timing advisor: the best hours ahead for a working, and why" onPress={() => router.push('/rituals/craft/cosmic/timing' as Href)} />
         <Row icon="calendar" title="The ritual planner" detail="Find the night, then the hour" onPress={() => router.push('/rituals/planner' as Href)} />
         <Row icon="today" title="The sky today" detail="Planets, retrogrades, eclipses and your place" last onPress={() => router.push('/today/sky' as Href)} />
       </List>

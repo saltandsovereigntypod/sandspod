@@ -167,6 +167,15 @@
         <button type="button" class="button button--ghost" data-choose-altar aria-expanded="${view.choosing}"${blocked ? " disabled" : ""}
           title="Choose one of your altars; the ritual runs over it and lights its candles as the steps begin">Begin on an altar</button>
         <a class="button button--ghost" href="/rituals/planner/?premade=${encodeURIComponent(p.id)}${p.intention ? `&intention=${p.intention}` : ""}">Plan a night for it</a>
+        <a class="button button--ghost" href="/practice/cosmic/timing/?${esc(
+          new URLSearchParams({
+            premade: p.id,
+            title: p.title,
+            ...(p.intention ? { intent: p.intention } : {}),
+            ...(p.moon && p.moon.length ? { moon: p.moon.join(",") } : {}),
+            ...(p.weekday !== undefined && p.weekday !== null ? { weekday: String(p.weekday) } : {})
+          }).toString()
+        )}" title="The best times ahead for this working, from the moon and the planets">Find a good time</a>
         ${saveArea}
       </div>
       ${view.active ? `<p class="sp-muted">Finish the ritual that’s under way before beginning another. <a class="rt-text-link" href="/altar/?ritual=1">Continue it</a></p>` : ""}

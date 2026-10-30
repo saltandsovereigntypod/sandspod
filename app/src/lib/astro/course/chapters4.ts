@@ -211,7 +211,7 @@ export const MAGIC: AstroChapter = {
       summary: 'Electional astrology made simple: the Moon, the day, the hour and the planet.',
       minutes: 7,
       terms: ['moon-phases', 'void-of-course', 'planetary-days', 'planetary-hours'],
-      links: [astro('hours', 'Planetary days and hours'), pageLink('planner'), pageLink('moon')],
+      links: [astro('timing', 'Find a good time for a working'), astro('hours', 'Planetary days and hours'), pageLink('planner'), pageLink('moon')],
       body: `## Electional astrology
 
 Choosing a good moment to begin something is called **electional astrology**: electing a time. It is how most witches use astrology day to day. A full election can be elaborate; a good one can be simple.
@@ -230,7 +230,7 @@ Add, if you like: the planet of your aim not retrograde, and not in a hard aspec
 
 You will rarely find a perfect time. Traditional astrologers chose the best time available, not a flawless one. A working done with care at a decent time is better than one never done while waiting for perfection.
 
-> **Try this:** Choose an aim. Use the planetary hours page and the moon page to find the next day and hour that fit, and put it in the ritual planner.`,
+> **Try this:** Choose an aim. Open **Find a good time** (the spell timing advisor), which weighs all five of these for you and shows why, or use the planetary hours page and the moon page to find the next day and hour that fit yourself, and put it in the ritual planner.`,
     },
     {
       id: 'astro-magic-days-hours',

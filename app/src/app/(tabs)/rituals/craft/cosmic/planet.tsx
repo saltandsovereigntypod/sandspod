@@ -11,6 +11,7 @@ import { GUIDE_ORDER, PLANET_GUIDES } from '../../../../../lib/astro/planetGuide
 import { domiciles, EXALTATION, POINT_GLYPH, type Classical } from '../../../../../lib/astro/signs';
 import { shortDate, timeOfDay } from '../../../../../lib/calendar';
 import { nextHourOnItsDay } from '../../../../../lib/craft/cosmic/hours';
+import { intentsForPlanet } from '../../../../../lib/craft/cosmic/timing';
 import { JOURNEY_CATALOG } from '../../../../../lib/journeys/catalog';
 import { findByName } from '../../../../../lib/library/model';
 import { libraryHref } from '../../../../../lib/library';
@@ -76,6 +77,17 @@ export default function PlanetGuideScreen() {
         <SectionLabel>What it suits</SectionLabel>
         <Body>{g.suits}</Body>
         <Body muted>{`Less suited to: ${g.avoid}`}</Body>
+        <Body muted>Find a good time for</Body>
+        <Chips>
+          {intentsForPlanet(planet).map((i) => (
+            <Chip
+              key={i.key}
+              label={i.label}
+              a11yLabel={`Find a good time for ${i.label.toLowerCase()}`}
+              onPress={() => router.push({ pathname: '/rituals/craft/cosmic/timing', params: { intent: i.key } } as unknown as Href)}
+            />
+          ))}
+        </Chips>
       </Card>
 
       <Card>

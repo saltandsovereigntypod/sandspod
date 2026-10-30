@@ -151,6 +151,7 @@
       section("Planets", planets) +
       section("Retrogrades", retro) +
       section("Eclipses", eclipses) +
+      `<div class="sp-actions"><a class="button button--ghost" href="/practice/cosmic/timing/">Find a good time for a working</a></div>` +
       section("Where you are", where + form);
   }
 
