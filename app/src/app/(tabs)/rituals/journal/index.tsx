@@ -22,7 +22,7 @@ export default function Journal() {
   return (
     <RitualScreen back="Rituals" onRefresh={refresh}>
       <Title eyebrow={`${entries.length} ${entries.length === 1 ? 'ritual' : 'rituals'}`}>Journal</Title>
-      {rituals.status === 'offline' && <Notice>Offline · showing the copy saved on this phone</Notice>}
+      {rituals.status === 'offline' && <Notice>Couldn’t refresh just now · showing the copy saved on this phone</Notice>}
       {due.length + dueMade.length > 0 && (
         <>
           <SectionLabel>Did it work?</SectionLabel>

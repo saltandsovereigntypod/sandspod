@@ -96,7 +96,7 @@ export function CovenScreen({
   if (coven.status === 'offline' && !coven.snapshot)
     return frame(
       <Card>
-        <Text style={type.body}>The coven couldn’t be loaded. Check your connection and try again.</Text>
+        <Text style={type.body}>The coven couldn’t be loaded just now. Try again in a moment.</Text>
         <Button label="Try again" variant="outline" onPress={() => void coven.refresh()} />
       </Card>,
     );
@@ -144,7 +144,7 @@ export function CovenScreen({
 
   return frame(
     <>
-      {coven.status === 'offline' && <Notice>Offline · this may be out of date</Notice>}
+      {coven.status === 'offline' && <Notice>Couldn’t refresh just now · this may be out of date</Notice>}
       {coven.perms.site && !coven.perms.member && need !== 'public' && <Notice tone="muted">You’re here as a Salt &amp; Sovereignty moderator.</Notice>}
       {children}
     </>,

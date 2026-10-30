@@ -105,7 +105,7 @@ export default function Grimoire() {
       <FailedChanges />
 
       {status === 'offline' && snapshot && (
-        <Text style={[type.caption, styles.notice]}>Offline · showing the copy saved on this phone</Text>
+        <Text style={[type.caption, styles.notice]}>Couldn’t refresh just now · showing the copy saved on this phone</Text>
       )}
 
       {sync === 'offline' && pendingCount > 0 && (

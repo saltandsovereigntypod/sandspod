@@ -128,7 +128,7 @@ export function CovenProvider({ slug, children }: { slug: string; children: Reac
     void loadNames([...list.map((r) => r.led_by), ...nextSteps.flatMap((s) => [s.assigned_user_id, s.completed_by]), ...nextRsvps.map((r) => r.user_id)]);
   }, [snapshot?.coven.id, loadNames]);
 
-  const refresh = useCallback(async () => {
+  const refresh = useCallback(async (attempt = 0): Promise<void> => {
     try {
       const [snap, mine] = await Promise.all([api.fetchCoven(slug, userId), userId ? api.fetchMe(userId) : Promise.resolve(null)]);
       if (!snap) {
@@ -145,6 +145,12 @@ export function CovenProvider({ slug, children }: { slug: string; children: Reac
       void loadNames([snap.coven.founder_id]);
       setStatus('ready');
     } catch {
+      // A hiccup (a slow answer, a session being renewed) is usually gone a
+      // moment later: try twice more, quietly, before saying it couldn't load.
+      if (typeof attempt === 'number' && attempt < 2) {
+        await new Promise((resolve) => setTimeout(resolve, 1500 * (attempt + 1)));
+        return refresh(attempt + 1);
+      }
       setStatus((prev) => (prev === 'ready' ? prev : 'offline'));
     }
   }, [slug, userId, loadNames]);

@@ -46,7 +46,7 @@ export default function MySubmissions() {
         />
       }
     >
-      {status === 'offline' && data && <Notice>Offline · showing the copy saved on this device</Notice>}
+      {status === 'offline' && data && <Notice>Couldn’t refresh just now · showing the copy saved on this device</Notice>}
       {!data && (status === 'loading' || status === 'idle') && <ActivityIndicator color={colors.gold} style={styles.loading} />}
       {!data && status === 'offline' && (
         <Card>

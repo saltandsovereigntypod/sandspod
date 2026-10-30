@@ -125,7 +125,7 @@ export default function Covens() {
                 <Button label="Try again" variant="outline" onPress={mine.refresh} />
               </Card>
             )}
-            {mine.data && mine.status === 'offline' && <Notice>Offline · showing the copy saved on this device</Notice>}
+            {mine.data && mine.status === 'offline' && <Notice>Couldn’t refresh just now · showing the copy saved on this device</Notice>}
             {mine.data && !mine.data.length && (
               <Card>
                 <Text style={type.cardTitle}>No coven yet</Text>
@@ -209,7 +209,7 @@ export default function Covens() {
           <Section label="Find a coven">
             <Field label="Search" value={query} onChangeText={setQuery} placeholder="Tradition, practice, place…" autoCapitalize="none" returnKeyType="search" />
             <Chips label="Joining" options={FILTERS} value={joining} onChange={setJoining} />
-            {directory.status === 'offline' && directory.data && <Notice>Offline · showing the copy saved on this device</Notice>}
+            {directory.status === 'offline' && directory.data && <Notice>Couldn’t refresh just now · showing the copy saved on this device</Notice>}
             {!directory.data && directory.status !== 'offline' && <ActivityIndicator color={colors.gold} style={styles.loading} />}
             {!directory.data && directory.status === 'offline' && (
               <Card>
