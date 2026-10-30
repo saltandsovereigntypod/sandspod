@@ -114,7 +114,7 @@ function ensureCandleOverlay(candle, className, src) {
 
   const overlay = document.createElement("img");
   overlay.className = className;
-  overlay.src = src;
+  overlay.src = window.SanctuaryAssetCatalog?.displayPath?.(src) || src;
   overlay.alt = "";
   overlay.draggable = false;
   overlay.setAttribute("aria-hidden", "true");

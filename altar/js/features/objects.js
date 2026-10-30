@@ -26,7 +26,8 @@ function getObjectImagePath(object) {
     "img:not(.candle-herb-overlay):not(.candle-oil-overlay)"
   );
 
-  return img ? img.getAttribute("src") : "";
+  // The picture's own .png path, though the altar shows its WebP twin (js/sanctuary-asset-catalog.js).
+  return img ? window.SanctuaryAssetCatalog?.imagePath?.(img) ?? img.getAttribute("src") : "";
 }
 
 const altarUndoStack = [];
@@ -627,7 +628,8 @@ function placeObject(options) {
 
   if (imagePath) {
     const img = document.createElement("img");
-    img.src = imagePath;
+    if (window.SanctuaryAssetCatalog?.showImage) window.SanctuaryAssetCatalog.showImage(img, imagePath);
+    else img.src = imagePath;
     img.alt = label || "altar object";
     img.draggable = false;
     object.appendChild(img);
