@@ -39,6 +39,7 @@
     },
     "android": {
       "package": "com.saltandsovereignty.app",
+      "googleServicesFile": "./google-services.json",
       "adaptiveIcon": {
         "backgroundColor": "#0c1510",
         "foregroundImage": "./assets/android-icon-foreground.png",

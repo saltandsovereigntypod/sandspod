@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "772022028480",
+    "project_id": "salt-and-sovereignty-9d622",
+    "storage_bucket": "salt-and-sovereignty-9d622.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:772022028480:android:e433c9ef8bdf2179c34525",
+        "android_client_info": {
+          "package_name": "com.saltandsovereignty.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAYpmofB0jMDojC-9w_xrp6rJaR5VqS-1Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
