@@ -569,7 +569,14 @@ export function wheelModel(data: CycleData, now: Date): WheelModel {
     if (i > 20 && fraction < 0.2) break;
     const s = seasonOn(data, key, stats);
     const c = data.settings.mode === 'cycle' ? cycleDayOn(data, key, stats) : null;
-    days.push({ key, fraction, season: s.season, bleeding: !!c?.bleeding && daysBetween(key, today) >= 0, byMoon: s.byMoon });
+    let season = s.season;
+    // Days still to come, past the cycle's expected end with no later bleed
+    // logged: the next cycle is expected to have begun, so they show its
+    // inner winter and on, not a never-ending autumn.
+    if (c && !s.byMoon && daysBetween(today, key) > 0 && c.day > c.length) {
+      season = seasonForCycleDay(((c.day - 1) % c.length) + 1, c.length, bleedDays(c.bleed));
+    }
+    days.push({ key, fraction, season, bleeding: !!c?.bleeding && daysBetween(key, today) >= 0, byMoon: s.byMoon });
   }
   return {
     from,

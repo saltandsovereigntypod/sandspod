@@ -16,6 +16,7 @@ import {
   cycleDayOn,
   cycleStats,
   dayKey,
+  daysBetween,
   emptyData,
   endBleed,
   isIrregular,
@@ -177,6 +178,19 @@ test('moon patterns: where in the lunar month a bleed began', () => {
   assert.equal(wheel.bleeds.length, 3);
   assert.ok(wheel.bleeds.every((b) => b.pattern === 'white'));
   assert.equal(wheel.days[0].fraction < 0.1 || wheel.days[0].fraction > 0.95, true);
+});
+
+test('the wheel shows the next inner winter on days after the expected bleed', () => {
+  // A bleed 24 days before "today", 28-day cycles: the coming days pass the
+  // cycle's end, so the days just after it are the next cycle's winter.
+  const now = new Date(2026, 9, 30, 12);
+  const last = addDays(dayKey(now), -23);
+  const data = withBleeds([addDays(last, -56), addDays(last, -28), last]);
+  const wheel = wheelModel(data, now);
+  const future = wheel.days.filter((d) => d.key > dayKey(now));
+  const past28 = future.filter((d) => daysBetween(last, d.key) + 1 > 28);
+  assert.ok(past28.length > 0, 'the lunar month runs past the expected bleed');
+  assert.equal(past28[0].season, 'winter');
 });
 
 test('notes show their patterns by season', () => {
