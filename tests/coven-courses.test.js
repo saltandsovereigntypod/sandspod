@@ -123,12 +123,13 @@ test("the ready-made courses are data of their own, fetched only when chosen", (
   assert.match(read("app/src/lib/covens/courseCatalog.ts"), /\/js\/core\/course-programs\.json/, "the app fetches the same file");
   const catalog = JSON.parse(read("js/core/course-programs.json"));
   const path = (t) => ["seeker", "devotee", "initiate", "elder", "high-priestess"].map((step) => `${t}-${step}`);
-  assert.deepEqual(catalog.programs.map((p) => p.id), [...path("hellenic"), ...path("wheel"), ...path("wheel_south")]);
+  assert.deepEqual(catalog.programs.map((p) => p.id), [...path("hellenic"), ...path("wheel"), ...path("wheel_south"), ...path("wicca")]);
   assert.equal(catalog.label, "Seeker → Devotee → Initiate → Elder → High Priestess");
   assert.deepEqual(catalog.traditions, [
     { id: "hellenic", name: "Hellenic" },
     { id: "wheel", name: "Wheel of the Year" },
     { id: "wheel_south", name: "Wheel of the Year (Southern Hemisphere)" },
+    { id: "wicca", name: "Wicca" },
   ]);
 });
 
