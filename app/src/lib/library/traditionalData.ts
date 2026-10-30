@@ -10758,6 +10758,25 @@ export const TRADITIONAL_LIBRARY: TraditionalLibraryData = {
         "creation"
       ]
     },
+    "cord": {
+      "DisplayName": "Cord",
+      "Purpose": "Knot work, binding and cord cutting: tying something in, or letting something go",
+      "Element": "Spirit",
+      "TraditionallyMadeFrom": "Cotton, wool, linen, hemp, silk or natural twine, often in a colour chosen for the working",
+      "UsedFor": "Cord cutting, knot spells, binding, handfasting, marking out a circle",
+      "BestWith": "A pair of candles, black candle, white candle, salt, boline",
+      "TraditionalWarnings": "Cord cutting is a symbolic act. It can help you mark an ending or loosen a hold something has on you, but it doesn't replace practical steps or support, and it isn't a way to control another person. With real candles, never leave them burning unattended, burn them on a heatproof dish, and keep the cord's loose ends away from anything that could catch.",
+      "Traditions": "Wheel of the Year",
+      "TraditionNotes": "Wheel of the Year: Cords turn up across Wiccan and witchcraft practice: a cord worn from initiation, knots tied along a cord to hold a spell (the witch's ladder), and cords bound round joined hands at a handfasting.\n\nFolk & wider practice: In cord cutting, a cord stands for a tie to a person, a habit or a time in your life. It's tied between two candles, one for you and one for what you're releasing, and the candles burn down until the flame parts it; some cut it with a blade instead, and burn or bury the pieces afterwards. Knot magic is old and widespread, from knots tied to hold the wind to knots untied to release an illness. There's no one right way; the meaning you give it is what carries it.",
+      "tags": [
+        "cord cutting",
+        "release",
+        "endings",
+        "knot magic",
+        "binding",
+        "boundaries"
+      ]
+    },
     "key": {
       "Purpose": "Opening the way, closing doors, thresholds, crossroads work",
       "Element": "Earth",

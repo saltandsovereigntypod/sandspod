@@ -222,19 +222,24 @@ export function ReadingSheet({ visible, altar, onClose, onPlace }: SheetProps) {
   };
   return (
     <Sheet visible={visible} eyebrow="From your readings" title="Tonight’s card or rune" onClose={onClose}>
-      {ready && !tonight ? (
+      {ready && !tonight && earlier.length === 0 ? (
         <EmptyTool text="Draw a card or a rune and keep it in Rituals → Divination; then it can sit on your altar while you sit with it." label="Open Readings" href="/rituals/divination" onClose={onClose} />
-      ) : tonight && t ? (
+      ) : (
         <>
-          <View style={connectStyles.gap}>
-            <Eyebrow>{`${methodLabel(t.method)} · ${fullDate(t.date) ?? t.date}`}</Eyebrow>
-            {!!t.question && <Text style={connectStyles.quote}>{t.question}</Text>}
-            <ChipRow>
-              {t.drawn.map((name) => (
-                <Chip key={name} label={name} symbol="✦" accessibilityLabel={`Set ${name} on the altar`} onPress={() => place(tonight, name)} />
-              ))}
-            </ChipRow>
-          </View>
+          {tonight && t ? (
+            <View style={connectStyles.gap}>
+              <Eyebrow>{`${methodLabel(t.method)} · ${fullDate(t.date) ?? t.date}`}</Eyebrow>
+              {!!t.question && <Text style={connectStyles.quote}>{t.question}</Text>}
+              <ChipRow>
+                {t.drawn.map((name) => (
+                  <Chip key={name} label={name} symbol="✦" accessibilityLabel={`Set ${name} on the altar`} onPress={() => place(tonight, name)} />
+                ))}
+              </ChipRow>
+            </View>
+          ) : ready ? (
+            // Nothing drawn tonight: the earlier readings are still here to choose from.
+            <EmptyTool text="Nothing drawn tonight yet. Draw in Rituals → Divination, or set out a card from an earlier reading below." label="Draw tonight" href="/rituals/divination" onClose={onClose} />
+          ) : null}
           {earlier.length > 0 && (
             <View style={connectStyles.gap}>
               <Eyebrow>Earlier readings</Eyebrow>
@@ -244,7 +249,7 @@ export function ReadingSheet({ visible, altar, onClose, onPlace }: SheetProps) {
             </View>
           )}
         </>
-      ) : null}
+      )}
     </Sheet>
   );
 }

@@ -38,17 +38,32 @@ function RenameForm({ label, onRename }: { label: string; onRename: (label: stri
   );
 }
 
-/** Choose objects to group so they move together (the website's Select → Group). */
-export function GroupSheet({ visible, objects, onClose, onGroup }: { visible: boolean; objects: SavedObject[]; onClose: () => void; onGroup: (indices: number[], name: string) => void }) {
+/**
+ * Choose objects to group so they move together (the website's Select → Group).
+ * From Select mode, what's chosen on the altar comes ticked (`preselected`).
+ */
+export function GroupSheet({
+  visible,
+  objects,
+  preselected,
+  onClose,
+  onGroup,
+}: {
+  visible: boolean;
+  objects: SavedObject[];
+  preselected?: number[];
+  onClose: () => void;
+  onGroup: (indices: number[], name: string) => void;
+}) {
   return (
     <Sheet visible={visible} eyebrow="Group" title="Group things together" onClose={onClose}>
-      {visible && <GroupForm objects={objects} onGroup={onGroup} />}
+      {visible && <GroupForm objects={objects} preselected={preselected} onGroup={onGroup} />}
     </Sheet>
   );
 }
 
-function GroupForm({ objects, onGroup }: { objects: SavedObject[]; onGroup: (indices: number[], name: string) => void }) {
-  const [picked, setPicked] = useState<Set<number>>(new Set());
+function GroupForm({ objects, preselected, onGroup }: { objects: SavedObject[]; preselected?: number[]; onGroup: (indices: number[], name: string) => void }) {
+  const [picked, setPicked] = useState<Set<number>>(() => new Set(preselected ?? []));
   const [name, setName] = useState('');
   const toggle = (index: number) =>
     setPicked((prev) => {

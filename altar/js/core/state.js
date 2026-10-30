@@ -19,6 +19,8 @@ let pendingCandleDressing = null;
 let shouldSaveAfterAuth = false;
 let altarSelectionMode = false;
 let selectedRitualItems = [];
+// Select mode: a press on an object, until it turns out to be a tap (choose it) or a drag (move what's chosen).
+let selectionPress = null;
 let altarGroups = [];
 let activeGroupId = null;
 

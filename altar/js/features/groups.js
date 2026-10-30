@@ -33,9 +33,24 @@ function getGroupObjects(groupId) {
 }
 
 function syncGroupObjectClasses() {
+  // Clear the old marks; the selected object's group is outlined again (updateSelectedGroupVisuals).
   altarStage.querySelectorAll(".altar-object").forEach((object) => {
     object.classList.remove("is-ritual-grouped", "is-group-active");
+    object.classList.toggle("is-ritual-grouped", !!object.dataset.groupId && !!getGroupById(object.dataset.groupId));
   });
+  if (typeof selectedObject !== "undefined" && selectedObject) updateSelectedGroupVisuals(selectedObject);
+}
+
+/** Tell the selection bar (altar-select.js) that what's chosen has changed. */
+function announceRitualSelection() {
+  document.dispatchEvent(new CustomEvent("altar:selection-changed", { detail: { count: selectedRitualItems.length, selecting: altarSelectionMode } }));
+}
+
+/** Members of the object's group (or just the object): choosing one of a group chooses the group. */
+function ritualItemsWith(object) {
+  if (!object) return [];
+  const members = object.dataset.groupId ? getGroupObjects(object.dataset.groupId) : [];
+  return members.includes(object) ? members : [object];
 }
 
 function updateSelectedGroupVisuals(object) {
@@ -70,34 +85,46 @@ function updateGroupIndicator() {
     `Active group: ${activeGroup.name} · ${itemCount} item${itemCount === 1 ? "" : "s"}`;
 }
 
-function toggleRitualSelectionMode() {
+function toggleRitualSelectionMode(start = null) {
   altarSelectionMode = !altarSelectionMode;
   altarStage.classList.toggle("is-selecting-ritual-items", altarSelectionMode);
 
   if (!altarSelectionMode) {
     clearRitualSelection();
-    showAltarToast("Selection cancelled");
     return;
   }
 
   deselectObject();
   clearCandleDressingMode();
-  showAltarToast("Select items");
+  if (start) toggleRitualItem(start);
+  announceRitualSelection();
 }
 
+/** A tap in Select mode: the object (with its group) is chosen, or left out again. */
 function toggleRitualItem(object) {
   if (!object) return;
 
   const alreadySelected = selectedRitualItems.includes(object);
+  const these = ritualItemsWith(object);
 
   if (alreadySelected) {
-    selectedRitualItems = selectedRitualItems.filter((item) => item !== object);
-    object.classList.remove("is-ritual-selected");
-    return;
+    selectedRitualItems = selectedRitualItems.filter((item) => !these.includes(item));
+    these.forEach((item) => item.classList.remove("is-ritual-selected"));
+  } else {
+    these.forEach((item) => {
+      if (!selectedRitualItems.includes(item)) selectedRitualItems.push(item);
+      item.classList.add("is-ritual-selected");
+    });
   }
+  announceRitualSelection();
+}
 
-  selectedRitualItems.push(object);
-  object.classList.add("is-ritual-selected");
+/** Choose these objects (all of them, or none). */
+function setRitualSelection(objects) {
+  selectedRitualItems.forEach((object) => object.classList.remove("is-ritual-selected"));
+  selectedRitualItems = [...new Set(objects)].filter((object) => object && object.isConnected);
+  selectedRitualItems.forEach((object) => object.classList.add("is-ritual-selected"));
+  announceRitualSelection();
 }
 
 function clearRitualSelection() {
@@ -108,6 +135,32 @@ function clearRitualSelection() {
   selectedRitualItems = [];
   altarSelectionMode = false;
   altarStage.classList.remove("is-selecting-ritual-items");
+  announceRitualSelection();
+}
+
+/**
+ * After objects leave the altar: a group left with fewer than two members is
+ * no group at all, and a cord tied to a candle that's gone is untied
+ * (the app's selection.removeObjects).
+ */
+function tidyAfterRemoval(removedIds = []) {
+  const live = new Set([...altarStage.querySelectorAll(".altar-object")].map((o) => o.dataset.altarObjectId).filter(Boolean));
+  altarGroups = altarGroups
+    .map((group) => ({ ...group, objectIds: (Array.isArray(group.objectIds) ? group.objectIds : []).filter((id) => live.has(id)) }))
+    .filter((group) => group.objectIds.length > 1);
+  const kept = new Set(altarGroups.map((group) => group.id));
+  altarStage.querySelectorAll(".altar-object").forEach((object) => {
+    if (object.dataset.groupId && !kept.has(object.dataset.groupId)) object.dataset.groupId = "";
+  });
+  if (activeGroupId && !kept.has(activeGroupId)) activeGroupId = altarGroups[0] ? altarGroups[0].id : null;
+  const cord = window.SaltCore && window.SaltCore.altar && window.SaltCore.altar.cord;
+  if (cord && removedIds.length && window.altarExtraFields && window.altarExtraFields.cords) {
+    const tidied = cord.withoutCordsFor({ objects: [], groups: [], activeGroupId: null, background: "", backgroundName: "", extra: { ...window.altarExtraFields } }, removedIds);
+    window.altarExtraFields = tidied.extra;
+    document.dispatchEvent(new CustomEvent("altar:cords-changed"));
+  }
+  syncGroupObjectClasses();
+  updateGroupIndicator();
 }
 
 function chooseActiveGroup() {
@@ -144,52 +197,81 @@ function chooseActiveGroup() {
   return selectedGroup;
 }
 
-function groupSelectedRitualItems() {
-  if (selectedRitualItems.length === 0) {
-    showAltarToast("Select items first");
+/**
+ * Group what's chosen so it moves together (the app's editor.groupObjects):
+ * named in a small sheet unless a name is given. They stay chosen.
+ */
+function groupSelectedRitualItems(name) {
+  if (selectedRitualItems.length < 2) {
+    showAltarToast("Choose at least two things to group");
     return;
   }
 
-  const groupName =
-    window.prompt("Name this group:", "Ritual Working") || "Ritual Working";
+  if (typeof name !== "string") {
+    const B = window.AltarApp;
+    if (!B || !B.openSheet) {
+      groupSelectedRitualItems(window.prompt("Name this group:", "Ritual Working") || "Ritual Working");
+      return;
+    }
+    const count = selectedRitualItems.length;
+    B.openSheet({
+      eyebrow: "Group",
+      title: "Group things together",
+      html: `<p class="app-caption">Grouped things move, turn and resize together. A working, a spell or a shrine within the altar.</p>
+        <label class="app-field"><span>Group name</span><input data-group-name placeholder="Ritual Working" maxlength="60"></label>
+        <button type="button" class="app-button" data-group-go>Group ${count} things</button>`,
+      onMount(body, dialog, close) {
+        const go = () => {
+          const value = body.querySelector("[data-group-name]").value;
+          close();
+          if (typeof pushAltarUndoSnapshot === "function") pushAltarUndoSnapshot();
+          groupSelectedRitualItems(value || "Ritual Working");
+        };
+        body.querySelector("[data-group-go]").addEventListener("click", go);
+        body.querySelector("[data-group-name]").addEventListener("keydown", (event) => { if (event.key === "Enter") go(); });
+      }
+    });
+    return;
+  }
 
-  const groupId = crypto.randomUUID ? crypto.randomUUID() : String(Date.now());
-
-  const objectIds = selectedRitualItems.map((object) => {
+  const groupId = `group-${crypto.randomUUID ? crypto.randomUUID() : String(Date.now())}`;
+  const chosen = [...selectedRitualItems];
+  const objectIds = chosen.map((object) => {
     const objectId = ensureObjectId(object);
-
     object.dataset.groupId = groupId;
-    object.classList.remove("is-ritual-selected");
-
     return objectId;
   });
 
-  const newGroup = {
+  // Things already in another group move to this one; a group left with one member is no group.
+  altarGroups = altarGroups
+    .map((group) => ({ ...group, objectIds: (Array.isArray(group.objectIds) ? group.objectIds : []).filter((id) => !objectIds.includes(id)) }))
+    .filter((group) => group.objectIds.length > 1);
+  const live = new Set(altarGroups.map((group) => group.id));
+  altarStage.querySelectorAll(".altar-object").forEach((object) => {
+    if (object.dataset.groupId && object.dataset.groupId !== groupId && !live.has(object.dataset.groupId)) object.dataset.groupId = "";
+  });
+
+  altarGroups.push({
     id: groupId,
-    name: groupName.trim() || "Ritual Working",
+    name: name.trim() || "Ritual Working",
     createdAt: new Date().toISOString(),
     objectIds
-  };
-
-  altarGroups.push(newGroup);
+  });
   activeGroupId = groupId;
-
-  selectedRitualItems = [];
-  altarSelectionMode = false;
-  altarStage.classList.remove("is-selecting-ritual-items");
 
   syncGroupObjectClasses();
   updateGroupIndicator();
   saveWorkingAltarDraft();
-  showAltarToast("Group created");
+  announceRitualSelection();
+  if (window.AltarApp && window.AltarApp.notice) window.AltarApp.notice("Grouped. They move together now; select one to see the group.");
 }
 
 function ungroupCurrentItems(groupId = "") {
   const activeGroup = groupId ? getGroupById(groupId) : chooseActiveGroup();
   if (!activeGroup) return;
 
-  getGroupObjects(activeGroup.id).forEach((object) => {
-    delete object.dataset.groupId;
+  altarStage.querySelectorAll(".altar-object").forEach((object) => {
+    if (object.dataset.groupId === activeGroup.id) object.dataset.groupId = "";
   });
 
   altarGroups = altarGroups.filter((group) => group.id !== activeGroup.id);
@@ -198,7 +280,8 @@ function ungroupCurrentItems(groupId = "") {
   syncGroupObjectClasses();
   updateGroupIndicator();
   saveWorkingAltarDraft();
-  showAltarToast("Group removed");
+  announceRitualSelection();
+  showAltarToast("Ungrouped");
 }
 
 function altarObjectToRitualItem(object) {
@@ -301,8 +384,10 @@ async function sendAltarToGrimoire() {
    ========================================================= */
 
 function openGroupCreationChoiceModal() {
+  // Nothing chosen yet: start choosing, and say how.
   if (selectedRitualItems.length === 0) {
-    showAltarToast("Select items first");
+    if (!altarSelectionMode) toggleRitualSelectionMode();
+    if (window.AltarApp && window.AltarApp.notice) window.AltarApp.notice("Tap the things to group on the altar, then Group.");
     return;
   }
 

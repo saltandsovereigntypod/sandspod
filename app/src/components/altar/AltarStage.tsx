@@ -13,6 +13,7 @@ import type { MomentKind } from '../../lib/altar/charge';
 import type { Snap } from '../../lib/altar/arrange';
 import { CandleMarks, CandlePicture, candleGeometry, drawsBurnedDown } from './CandleMarks';
 import { ChargeAura, Moment, SnapGuide } from './StageEffects';
+import { CordLayer } from './CordLayer';
 import { FlameFire, HAS_FIRE } from './FlameFire';
 import { HAS_LIT, LitPicture } from './LitPicture';
 import { HAS_SMOKE, SmokeFire } from './SmokeFire';
@@ -68,6 +69,12 @@ type Props = {
   highlightCandles?: boolean;
   /** "Find mine": these objects (by altarObjectId) are lit up. */
   highlightKeys?: string[];
+  /** Select mode: taps choose and unchoose (onSelect), and dragging moves without selecting. */
+  selecting?: boolean;
+  /** What's chosen in Select mode, drawn with a solid outline. */
+  chosen?: number[];
+  /** Press and hold an object: start choosing several, with this one. */
+  onLongPress?: (index: number) => void;
   onSelect: (index: number | null) => void;
   onGestureStart: (index: number) => void;
   onMove: (index: number, cx: number, cy: number) => void;
@@ -107,6 +114,9 @@ type Active =
 
 export function AltarStage(props: Props) {
   const { doc, width, viewport, selected, highlightCandles, highlightKeys } = props;
+  const chosen = useMemo(() => new Set(props.chosen ?? []), [props.chosen]);
+  // The rest of the selected object's group, outlined softly: they move with it.
+  const mates = selected != null && !props.selecting ? doc.objects[selected]?.groupId : undefined;
   const height = width / STAGE_ASPECT;
   const stageWidth = width * viewport.zoom;
   const stageHeight = height * viewport.zoom;
@@ -142,7 +152,8 @@ export function AltarStage(props: Props) {
       const box = displayBox(object);
       active.current = { kind: 'object', index, cx: box.cx, cy: box.cy, size: box.size, rotation: rotationOf(object) };
       latest.current.onGestureStart(index);
-      if (latest.current.selected !== index) latest.current.onSelect(index);
+      // In Select mode a drag moves what's chosen; only a tap chooses.
+      if (!latest.current.selecting && latest.current.selected !== index) latest.current.onSelect(index);
     };
     // Pan, pinch and rotation run together; the shared state resets when the
     // last of them lets go.
@@ -200,6 +211,7 @@ export function AltarStage(props: Props) {
       .runOnJS(true)
       .onStart((e) => {
         started('pinch');
+        if (latest.current.selecting) return;
         const sel = latest.current.selected;
         const index = sel ?? find(e.focalX, e.focalY);
         if (index == null) return;
@@ -217,6 +229,7 @@ export function AltarStage(props: Props) {
       .runOnJS(true)
       .onStart((e) => {
         started('rotation');
+        if (latest.current.selecting) return;
         const sel = latest.current.selected;
         const index = sel ?? find(e.anchorX, e.anchorY);
         if (index == null) return;
@@ -230,7 +243,18 @@ export function AltarStage(props: Props) {
       })
       .onFinalize(end('rotation'));
 
-    return Gesture.Race(Gesture.Simultaneous(pan, pinch, rotation), tap);
+    // Press and hold something to start choosing several.
+    const hold = Gesture.LongPress()
+      .runOnJS(true)
+      .minDuration(450)
+      .maxDistance(10)
+      // eslint-disable-next-line react-hooks/refs -- runs when the finger is held, not while rendering
+      .onStart((e) => {
+        const index = find(e.x, e.y);
+        if (index != null) latest.current.onLongPress?.(index);
+      });
+
+    return Gesture.Race(Gesture.Simultaneous(pan, pinch, rotation), hold, tap);
   }, []);
 
   // Re-render when a downloaded image's size becomes known (it sets the box height).
@@ -259,7 +283,7 @@ export function AltarStage(props: Props) {
         accessibilityRole="image"
         accessibilityLabel={`Your altar${doc.backgroundName ? `, ${doc.backgroundName}` : ''}, with ${doc.objects.length} ${
           doc.objects.length === 1 ? 'object' : 'objects'
-        }${sky?.label ? `, in ${sky.label}` : ''}. Drag an object to move it; pinch to resize and twist to rotate. Every action is also in the panel below.`}
+        }${sky?.label ? `, in ${sky.label}` : ''}${props.selecting ? `, ${chosen.size} chosen` : ''}. Drag an object to move it; pinch to resize and twist to rotate; press and hold to choose several. Every action is also in the panel below.`}
       >
         <View
           style={{
@@ -289,8 +313,13 @@ export function AltarStage(props: Props) {
               key={`${doc.objects[index].altarObjectId || 'obj'}-${index}`}
               object={doc.objects[index]}
               stageWidth={stageWidth}
-              selected={selected === index}
-              highlighted={(!!highlightCandles && isCandle(doc.objects[index])) || (!!highlightKeys?.length && highlightKeys.includes(String(doc.objects[index].altarObjectId || '')))}
+              selected={props.selecting ? chosen.has(index) : selected === index}
+              highlighted={
+                (!!highlightCandles && isCandle(doc.objects[index])) ||
+                (!!highlightKeys?.length && highlightKeys.includes(String(doc.objects[index].altarObjectId || ''))) ||
+                (!!mates && doc.objects[index].groupId === mates)
+              }
+              chosen={!!props.selecting && chosen.has(index)}
               ratioVersion={ratioVersion}
               charge={charges[String(doc.objects[index].altarObjectId)] ?? 0}
               now={isCandle(doc.objects[index]) || isIncense(doc.objects[index]) || aging[String(doc.objects[index].altarObjectId)] ? now : 0}
@@ -298,6 +327,7 @@ export function AltarStage(props: Props) {
               lightReach={lighting.reach}
             />
           ))}
+          <CordLayer doc={doc} stageWidth={stageWidth} stageHeight={stageHeight} />
           </Animated.View>
 
           {!!sky?.darkness && <NightVeil objects={doc.objects} stageWidth={stageWidth} now={now} darkness={sky.darkness} />}
@@ -327,6 +357,7 @@ const AltarObjectView = memo(function AltarObjectView({
   stageWidth,
   selected,
   highlighted,
+  chosen,
   charge,
   now,
   lights,
@@ -336,6 +367,8 @@ const AltarObjectView = memo(function AltarObjectView({
   stageWidth: number;
   selected: boolean;
   highlighted: boolean;
+  /** Chosen in Select mode: a solid outline and a tick. */
+  chosen?: boolean;
   ratioVersion: number;
   charge: number;
   now: number;
@@ -358,7 +391,12 @@ const AltarObjectView = memo(function AltarObjectView({
       ]}
     >
       <AltarObjectArt object={object} width={rect.width} height={rect.height} charge={charge} now={now} lights={lights} lightReach={lightReach} />
-      {(selected || highlighted) && <View style={[styles.outline, highlighted && !selected && styles.outlineSoft]} />}
+      {(selected || highlighted) && <View style={[styles.outline, highlighted && !selected && styles.outlineSoft, chosen && styles.outlineChosen]} />}
+      {chosen && (
+        <View style={styles.tick}>
+          <Text style={styles.tickText}>✓</Text>
+        </View>
+      )}
     </View>
   );
 });
@@ -1148,6 +1186,19 @@ const styles = StyleSheet.create({
     borderRadius: 6,
   },
   outlineSoft: { borderColor: 'rgba(226,195,109,0.55)' },
+  outlineChosen: { borderStyle: 'solid', borderWidth: 2, backgroundColor: 'rgba(226,195,109,0.10)' },
+  tick: {
+    position: 'absolute',
+    top: -9,
+    right: -9,
+    width: 18,
+    height: 18,
+    borderRadius: 9,
+    backgroundColor: colors.gold,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  tickText: { color: colors.night, fontSize: 11, lineHeight: 13, fontFamily: fonts.bodySemi },
   spentImage: Platform.OS === 'ios' ? { opacity: 0.45 } : { opacity: 0.6, filter: 'grayscale(1)' },
   spentLabel: {
     position: 'absolute',

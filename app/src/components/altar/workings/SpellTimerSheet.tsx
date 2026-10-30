@@ -7,7 +7,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import Svg, { Circle } from 'react-native-svg';
 
 import { Button } from '../../Button';
-import { addEntry, updateEntry, useCraft } from '../../../lib/craft/store';
+import { addEntry, removeEntry, updateEntry, useCraft } from '../../../lib/craft/store';
 import { lookBackChoices, suggestedWhen, type LookBackWhen } from '../../../lib/rituals/lookBack';
 import { localDateKey } from '../../../lib/rituals/lifecycle';
 import { saveJournal } from '../../../lib/rituals/store';
@@ -55,6 +55,9 @@ function Ring({ progress, label }: { progress: number; label: string }) {
 export function SpellTimerSheet({ visible, altar, objectUid, objectLabel, onClose }: Props) {
   const { entries } = useCraft<SpellEntry>(SPELLS_COLLECTION);
   const [starting, setStarting] = useState(false);
+  // Said after a spell closes (its card is gone by then), and which closed spell is being taken off the list.
+  const [said, setSaid] = useState('');
+  const [removing, setRemoving] = useState<string | null>(null);
   const now = new Date();
   const list = spellsForAltar(entries, altar.id, now).filter((e) => !objectUid || e.data.objectUid === objectUid || !e.data.objectUid);
   const open = list.filter((e) => !e.data.closedAt);
@@ -62,8 +65,9 @@ export function SpellTimerSheet({ visible, altar, objectUid, objectLabel, onClos
 
   return (
     <Sheet visible={visible} eyebrow="Spells over days" title={objectLabel ? `With ${objectLabel}` : 'Spells on this altar'} onClose={onClose}>
+      {!!said && <Text style={type.caption} accessibilityLiveRegion="polite">{said}</Text>}
       {open.map((e) => (
-        <SpellCard key={e.id} id={e.id} spell={e.data} />
+        <SpellCard key={e.id} id={e.id} spell={e.data} onClosed={setSaid} />
       ))}
       {open.length === 0 && !starting && <Text style={type.body}>Some workings take days: a candle burned a little each evening, a jar tended for a moon. Start one and the altar will keep count.</Text>}
       {starting ? (
@@ -83,6 +87,23 @@ export function SpellTimerSheet({ visible, altar, objectUid, objectLabel, onClos
             <View key={e.id} style={sheetStyles.card}>
               <Text style={sheetStyles.value}>{e.data.title}</Text>
               {e.data.reflection ? <Text style={type.caption}>“{e.data.reflection}”</Text> : null}
+              <ChipRow>
+                {removing === e.id ? (
+                  <>
+                    <Chip
+                      label="Take it off the list"
+                      tone="danger"
+                      onPress={() => {
+                        setRemoving(null);
+                        void removeEntry(SPELLS_COLLECTION, e.id);
+                      }}
+                    />
+                    <Chip label="Keep it" onPress={() => setRemoving(null)} />
+                  </>
+                ) : (
+                  <Chip label="Remove" accessibilityLabel={`Remove ${e.data.title} from this list`} onPress={() => setRemoving(e.id)} />
+                )}
+              </ChipRow>
             </View>
           ))}
         </View>
@@ -91,7 +112,7 @@ export function SpellTimerSheet({ visible, altar, objectUid, objectLabel, onClos
   );
 }
 
-function SpellCard({ id, spell }: { id: string; spell: SpellEntry }) {
+function SpellCard({ id, spell, onClosed }: { id: string; spell: SpellEntry; onClosed: (said: string) => void }) {
   const [note, setNote] = useState('');
   const [reflection, setReflection] = useState('');
   const [closing, setClosing] = useState(false);
@@ -100,16 +121,20 @@ function SpellCard({ id, spell }: { id: string; spell: SpellEntry }) {
   // Closing a spell can keep it in the ritual journal, to ask later whether it worked.
   const working = { title: spell.title, intention: spell.intention ?? null, moon_phase: null, ritual_date: localDateKey(now) };
   const [lookBack, setLookBack] = useState<LookBackWhen | null>(() => suggestedWhen(working));
-  const [problem, setProblem] = useState('');
   const close = async () => {
     const closed = closeSpell(spell, reflection, new Date());
-    await updateEntry(SPELLS_COLLECTION, id, closed);
-    if (!lookBack) return;
-    try {
-      await saveJournal({ session: null, answers: spellJournalAnswers(closed, new Date()), lookBack });
-    } catch {
-      setProblem('The spell is closed, but it couldn’t be added to your journal to look back on.');
+    // Into the journal first: once closed, this card leaves the list.
+    let said = `“${spell.title}” is closed.`;
+    if (lookBack) {
+      try {
+        await saveJournal({ session: null, answers: spellJournalAnswers(closed, new Date()), lookBack });
+        said = `“${spell.title}” is closed and kept in your ritual journal; you’ll be asked later whether it worked.`;
+      } catch {
+        said = `“${spell.title}” is closed, but it couldn’t be added to your journal to look back on.`;
+      }
     }
+    await updateEntry(SPELLS_COLLECTION, id, closed);
+    onClosed(said);
   };
   return (
     <View style={sheetStyles.card}>
@@ -149,10 +174,9 @@ function SpellCard({ id, spell }: { id: string; spell: SpellEntry }) {
           <Button label="Close the spell" onPress={() => void close()} />
         </>
       )}
-      {problem ? <Text style={type.caption}>{problem}</Text> : null}
-      {today.status !== 'complete' && !closing && (
+      {today.status !== 'complete' && (
         <ChipRow>
-          <Chip label="End it early" onPress={() => setClosing(true)} />
+          {closing ? <Chip label="Keep going" accessibilityLabel="Don’t end it; keep the spell going" onPress={() => setClosing(false)} /> : <Chip label="End it early" onPress={() => setClosing(true)} />}
         </ChipRow>
       )}
     </View>

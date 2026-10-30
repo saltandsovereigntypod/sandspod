@@ -137,9 +137,12 @@
     } catch { /* still placed; it saves with the altar */ }
     return false;
   }
-  function placeWorking(object) {
+  function placeWorking(object, kept = true) {
     B().addSaved(object);
-    notice(`${B().shortLabel(object.label, "It")} is on your altar and saved to My Apothecary.`);
+    // Said honestly: when My Apothecary couldn't be reached, it's kept with the altar instead.
+    notice(kept
+      ? `${B().shortLabel(object.label, "It")} is on your altar and saved to My Apothecary.`
+      : `${B().shortLabel(object.label, "It")} is on your altar. My Apothecary couldn’t be reached just now, so it’s kept with this altar; save the altar to keep it.`);
   }
 
   // ── Spell jar ───────────────────────────────────────────────────────────
@@ -206,10 +209,10 @@
         b.textContent = "Placing…";
         const at = nowIso();
         const item = J.jarItem(jar, at);
-        await keepInApothecary(item);
+        const kept = await keepInApothecary(item);
         const result = J.jarObject(jar, B().doc().objects, at, center(), item);
         sheet.close();
-        placeWorking(result.object);
+        placeWorking(result.object, kept !== false);
       }
     });
     draw();
@@ -297,10 +300,10 @@
         b.textContent = "Tying…";
         const at = nowIso();
         const item = S.sachetItem(bag, at);
-        await keepInApothecary(item);
+        const kept = await keepInApothecary(item);
         const result = S.sachetObject(bag, B().doc().objects, at, center(), item);
         sheet.close();
-        placeWorking(result.object);
+        placeWorking(result.object, kept !== false);
         return;
       } else return;
       draw();
@@ -353,6 +356,8 @@
     const objectLabel = object ? B().shortLabel(object.dataset.label) : "";
     let starting = false;
     let closing = new Set();
+    let removing = "";
+    let said = "";
     let start = { kind: "seven-day-candle", title: "", days: "7", intention: "" };
     const sheet = B().openSheet({ eyebrow: "Spells over days", title: objectLabel ? `With ${objectLabel}` : "Spells on this altar", html: `<p class="app-caption">Loading…</p>` });
     let entries = [];
@@ -371,7 +376,7 @@
         return `<div class="app-row" data-spell="${esc(e.id)}"><div style="display:flex;gap:10px;align-items:center">${ring(SP.spellProgress(e.data), `${e.data.title}: ${today.label}`)}<div><span class="app-row__title">${esc(e.data.title)}</span><p class="app-caption">${esc(today.label)}</p></div></div>
           ${today.waited ? `<p class="app-caption">${esc(today.waited)}</p>` : ""}<p>${esc(today.instruction)}</p>
           ${today.status === "tend" ? `<label class="app-field"><span>A note on today, optional</span><input data-note maxlength="280" placeholder="How it felt, what you noticed…"></label><button type="button" class="app-button" data-tend>Tended today</button>` : ""}
-          ${ending ? `<label class="app-field"><span>Closing reflection</span><textarea data-reflection maxlength="1000" placeholder="How did it go? What changed?"></textarea></label><button type="button" class="app-button" data-close-spell>Close the spell</button>` : `<button type="button" class="app-chip" data-end>End it early</button>`}
+          ${ending ? `<label class="app-field"><span>Closing reflection</span><textarea data-reflection maxlength="1000" placeholder="How did it go? What changed?"></textarea></label><button type="button" class="app-button" data-close-spell>Close the spell</button>${today.status !== "complete" ? `<button type="button" class="app-chip" data-keep-going aria-label="Don’t end it; keep the spell going">Keep going</button>` : ""}` : `<button type="button" class="app-chip" data-end>End it early</button>`}
         </div>`;
       }).join("");
       const info = SP.SPELL_KINDS[start.kind];
@@ -382,9 +387,9 @@
         <label class="app-field"><span>What it’s for</span><input data-intention maxlength="160" placeholder="Steady work, a calmer home…" value="${esc(start.intention)}"></label>
         <p class="app-caption">Miss a day and it simply waits for you; nothing breaks.</p>
         <div class="app-chips" style="justify-content:flex-start"><button type="button" class="app-button app-button--outline" data-not-now>Not now</button><button type="button" class="app-button" data-begin>Begin today</button></div></div>`;
-      sheet.setBody(`${cards}${!open.length && !starting ? `<p>Some workings take days: a candle burned a little each evening, a jar tended for a moon. Start one and the altar will keep count.</p>` : ""}
+      sheet.setBody(`${said ? `<p class="app-caption" role="status">${esc(said)}</p>` : ""}${cards}${!open.length && !starting ? `<p>Some workings take days: a candle burned a little each evening, a jar tended for a moon. Start one and the altar will keep count.</p>` : ""}
         ${starting ? startForm : `<button type="button" class="app-button${open.length ? " app-button--outline" : ""}" data-start>Start a spell</button>`}
-        ${closed.length ? `${label("Closed")}${closed.map((e) => `<div class="app-row"><span class="app-row__title">${esc(e.data.title)}</span>${e.data.reflection ? `<p class="app-caption">“${esc(e.data.reflection)}”</p>` : ""}</div>`).join("")}` : ""}`);
+        ${closed.length ? `${label("Closed")}${closed.map((e) => `<div class="app-row" data-closed-spell="${esc(e.id)}"><span class="app-row__title">${esc(e.data.title)}</span>${e.data.reflection ? `<p class="app-caption">“${esc(e.data.reflection)}”</p>` : ""}${removing === e.id ? `<div class="app-chips" style="justify-content:flex-start"><button type="button" class="app-chip app-chip--danger" data-remove-yes>Take it off the list</button><button type="button" class="app-chip" data-remove-no>Keep it</button></div>` : `<div class="app-chips" style="justify-content:flex-start"><button type="button" class="app-chip" data-remove aria-label="Remove ${esc(e.data.title)} from this list">Remove</button></div>`}</div>`).join("")}` : ""}`);
       ["title", "intention", "days"].forEach((key) => sheet.body.querySelector(`[data-${key}]`)?.addEventListener("input", (e) => { start[key] = key === "days" ? e.target.value.replace(/[^0-9]/g, "") : e.target.value; }));
     };
     sheet.body.addEventListener("click", async (event) => {
@@ -406,9 +411,20 @@
           await global.SaltCraft.update(SPELLS, entry.id, SP.tickSpell(entry.data, new Date(), card.querySelector("[data-note]")?.value || ""));
           await reload();
         } else if (entry && b.hasAttribute("data-end")) closing.add(entry.id);
+        else if (entry && b.hasAttribute("data-keep-going")) closing.delete(entry.id);
         else if (entry && b.hasAttribute("data-close-spell")) {
           await global.SaltCraft.update(SPELLS, entry.id, SP.closeSpell(entry.data, card.querySelector("[data-reflection]")?.value || "", new Date()));
+          said = `“${entry.data.title}” is closed.`;
           await reload();
+        } else if (b.closest("[data-closed-spell]")) {
+          const id = b.closest("[data-closed-spell]").dataset.closedSpell;
+          if (b.hasAttribute("data-remove")) removing = id;
+          else if (b.hasAttribute("data-remove-no")) removing = "";
+          else if (b.hasAttribute("data-remove-yes")) {
+            removing = "";
+            await global.SaltCraft.remove(SPELLS, id);
+            await reload();
+          } else return;
         } else return;
       } catch {
         notice("Couldn’t save that. Please try again.");

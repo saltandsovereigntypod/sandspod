@@ -19,6 +19,7 @@ export type MoreAction =
   | 'layouts'
   | 'tonight'
   | 'ritual'
+  | 'cord'
   | 'ancestor'
   | 'stone'
   | 'plant'
@@ -30,6 +31,7 @@ const WORKINGS: Row[] = [
   { id: 'ritual', symbol: '✶', title: 'Begin a ritual here', line: 'A working from the book or one of your templates, its steps over the altar.', needsSave: true },
   { id: 'jar', symbol: '⚱', title: 'Spell jar', line: 'Build a jar in layers, a word spoken with each, and seal it with wax.' },
   { id: 'sachet', symbol: '❦', title: 'Sachet or charm bag', line: 'Fill it, tie it with knots, carry it, and feed it on its day.' },
+  { id: 'cord', symbol: '➰', title: 'Cord cutting', line: 'A cord tied between two candles burns through when they burn down to it.' },
   { id: 'spell', symbol: '◔', title: 'Spell over days', line: 'A seven-day candle, nine nights, a moon’s jar: the altar keeps count.', needsSave: true },
   { id: 'scry', symbol: '◉', title: 'Scrying bowl', line: 'A quiet, timed sit with dark water, then a few words on what came.', needsSave: true },
   { id: 'gratitude', symbol: '❂', title: 'Gratitude bowl', line: 'A bead for each thing you’re thankful for, filling through the moon.', needsSave: true },

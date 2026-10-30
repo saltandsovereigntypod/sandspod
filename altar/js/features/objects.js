@@ -96,6 +96,8 @@ function captureAltarSnapshot() {
     backgroundName: altarStage.dataset.backgroundName || "",
     groups: Array.isArray(altarGroups) ? JSON.parse(JSON.stringify(altarGroups)) : [],
     activeGroupId,
+    // The altar's other fields (a cord tied between candles), so Undo takes them back too.
+    extra: JSON.parse(JSON.stringify(window.altarExtraFields || {})),
     objects
   };
 }
@@ -131,6 +133,7 @@ function restoreAltarSnapshot(snapshot) {
 
   altarGroups = Array.isArray(snapshot.groups) ? JSON.parse(JSON.stringify(snapshot.groups)) : [];
   activeGroupId = snapshot.activeGroupId || null;
+  if (snapshot.extra && typeof snapshot.extra === "object") window.altarExtraFields = JSON.parse(JSON.stringify(snapshot.extra));
 
   highestLayer = 10;
 
@@ -159,6 +162,8 @@ function restoreAltarSnapshot(snapshot) {
   updateGroupIndicator();
   syncGroupObjectClasses();
   updateEmptyMessage();
+  if (typeof clearRitualSelection === "function" && altarSelectionMode) setRitualSelection([]);
+  document.dispatchEvent(new CustomEvent("altar:cords-changed"));
 }
 
 function undoAltarChange() {
@@ -219,6 +224,47 @@ function keepObjectInsideStage(object) {
 
   object.style.left = `${x}px`;
   object.style.top = `${y}px`;
+}
+
+/** Where an object may move to (px), as the stage allows it: [minX, maxX, minY, maxY] for its centre. */
+function objectMoveBounds(object) {
+  const scale = Number(object.dataset.scale || 1);
+  const visualWidth = object.offsetWidth * scale;
+  const visualHeight = object.offsetHeight * scale;
+  if (object.dataset.type === "cloth") {
+    return [-visualWidth * 0.75, altarStage.clientWidth - visualWidth * 0.25, -visualHeight * 0.75, altarStage.clientHeight - visualHeight * 0.25];
+  }
+  return [visualWidth / 2, altarStage.clientWidth - visualWidth / 2, visualHeight / 2, altarStage.clientHeight - visualHeight / 2];
+}
+
+/**
+ * Move these objects together by (dx, dy) px, the move shortened so every one
+ * stays on the stage and they keep their places to one another (the app's
+ * selection.moveTogether). Locked ones stay put.
+ */
+function moveObjectsTogether(objects, dx, dy) {
+  const moving = [...new Set(objects)].filter((object) => object && object.dataset.locked !== "true");
+  if (!moving.length) return;
+  let loX = -Infinity, hiX = Infinity, loY = -Infinity, hiY = Infinity;
+  moving.forEach((object) => {
+    const [minX, maxX, minY, maxY] = objectMoveBounds(object);
+    const x = parseFloat(object.style.left) || 0;
+    const y = parseFloat(object.style.top) || 0;
+    loX = Math.max(loX, Math.min(0, minX - x));
+    hiX = Math.min(hiX, Math.max(0, maxX - x));
+    loY = Math.max(loY, Math.min(0, minY - y));
+    hiY = Math.min(hiY, Math.max(0, maxY - y));
+  });
+  const mx = loX > hiX ? 0 : Math.max(loX, Math.min(hiX, dx));
+  const my = loY > hiY ? 0 : Math.max(loY, Math.min(hiY, dy));
+  if (!mx && !my) return;
+  moving.forEach((object) => {
+    object.style.left = `${(parseFloat(object.style.left) || 0) + mx}px`;
+    object.style.top = `${(parseFloat(object.style.top) || 0) + my}px`;
+    updateObjectPositionPercent(object);
+  });
+  renderLighting();
+  document.dispatchEvent(new CustomEvent("altar:objects-moved"));
 }
 
 function resizeObject(object, amount) {
@@ -321,7 +367,9 @@ function makeDraggable(object) {
     }
 
     if (altarSelectionMode) {
-      toggleRitualItem(object);
+      // A tap chooses it (or leaves it out); a drag moves everything chosen with it.
+      selectionPress = { object, pointerId: event.pointerId, x: event.clientX, y: event.clientY, lastX: event.clientX, lastY: event.clientY, moved: false, snapshot: captureAltarSnapshot() };
+      object.setPointerCapture?.(event.pointerId);
       return;
     }
 
@@ -344,6 +392,16 @@ function makeDraggable(object) {
   });
 
   object.addEventListener("pointermove", (event) => {
+    if (selectionPress && selectionPress.object === object && selectionPress.pointerId === event.pointerId) {
+      if (!selectionPress.moved && Math.hypot(event.clientX - selectionPress.x, event.clientY - selectionPress.y) < 6) return;
+      selectionPress.moved = true;
+      // Dragging something chosen moves all that's chosen; something not chosen moves alone (with its group).
+      const together = selectedRitualItems.includes(object) ? selectedRitualItems : (typeof ritualItemsWith === "function" ? ritualItemsWith(object) : [object]);
+      moveObjectsTogether(together, event.clientX - selectionPress.lastX, event.clientY - selectionPress.lastY);
+      selectionPress.lastX = event.clientX;
+      selectionPress.lastY = event.clientY;
+      return;
+    }
     if (activeObject !== object || object.dataset.locked === "true") return;
 
     const stageRect = altarStage.getBoundingClientRect();
@@ -381,31 +439,34 @@ function makeDraggable(object) {
     const deltaX = x - oldX;
     const deltaY = y - oldY;
 
+    // A group moves as one, kept whole on the stage, so its members keep their places to one another.
+    const groupObjects = object.dataset.groupId ? getGroupObjects(object.dataset.groupId) : [];
+    if (groupObjects.length > 1 && groupObjects.includes(object)) {
+      moveObjectsTogether(groupObjects, deltaX, deltaY);
+      return;
+    }
+
     object.style.left = `${x}px`;
     object.style.top = `${y}px`;
 
     updateObjectPositionPercent(object);
     renderLighting();
-
-    if (object.dataset.groupId) {
-      const groupObjects = getGroupObjects(object.dataset.groupId);
-
-      groupObjects.forEach((groupObject) => {
-        if (groupObject === object) return;
-
-        const groupX = parseFloat(groupObject.style.left) || 0;
-        const groupY = parseFloat(groupObject.style.top) || 0;
-
-        groupObject.style.left = `${groupX + deltaX}px`;
-        groupObject.style.top = `${groupY + deltaY}px`;
-
-        updateObjectPositionPercent(groupObject);
-        keepObjectInsideStage(groupObject);
-      });
-    }
+    document.dispatchEvent(new CustomEvent("altar:objects-moved"));
   });
 
   object.addEventListener("pointerup", (event) => {
+    if (selectionPress && selectionPress.object === object) {
+      const press = selectionPress;
+      selectionPress = null;
+      if (object.hasPointerCapture?.(event.pointerId)) object.releasePointerCapture(event.pointerId);
+      if (!press.moved) {
+        toggleRitualItem(object);
+        return;
+      }
+      pushAltarUndoSnapshot(press.snapshot);
+      saveWorkingAltarDraft();
+      return;
+    }
     object.classList.remove("is-dragging");
 
     if (dragStartSnapshot) {
@@ -420,6 +481,14 @@ function makeDraggable(object) {
   });
 
   object.addEventListener("pointercancel", (event) => {
+    if (selectionPress && selectionPress.object === object) {
+      if (selectionPress.moved) {
+        pushAltarUndoSnapshot(selectionPress.snapshot);
+        saveWorkingAltarDraft();
+      }
+      selectionPress = null;
+      return;
+    }
     object.classList.remove("is-dragging");
 
     if (dragStartSnapshot) {
@@ -446,6 +515,7 @@ function makeDraggable(object) {
   });
 
   object.addEventListener("dblclick", () => {
+    if (altarSelectionMode) return;
     deleteObject(object);
   });
 }
@@ -624,11 +694,39 @@ function deleteObject(object) {
     extinguishCandleObject(object, "removed_from_altar", { showSummary: false });
   }
   stopFlame(object);
+  const removedId = object.dataset.altarObjectId || "";
   object.remove();
+  if (typeof tidyAfterRemoval === "function") tidyAfterRemoval(removedId ? [removedId] : []);
   deselectObject();
   renderLighting();
   updateEmptyMessage();
   saveWorkingAltarDraft();
+}
+
+/**
+ * Take several things off the altar as one step (one undo): the app's
+ * selection.removeObjects. Returns how many went.
+ */
+function deleteObjects(objects) {
+  const going = [...new Set(objects)].filter((object) => object && object.isConnected);
+  if (!going.length) return 0;
+  pushAltarUndoSnapshot();
+  const ids = [];
+  going.forEach((object) => {
+    if (object === selectedObject) clearCandleDressingMode();
+    if (object.dataset.type === "candle" && object.dataset.lit === "true" && typeof extinguishCandleObject === "function") {
+      extinguishCandleObject(object, "removed_from_altar", { showSummary: false });
+    }
+    stopFlame(object);
+    if (object.dataset.altarObjectId) ids.push(object.dataset.altarObjectId);
+    object.remove();
+  });
+  if (typeof tidyAfterRemoval === "function") tidyAfterRemoval(ids);
+  deselectObject();
+  renderLighting();
+  updateEmptyMessage();
+  saveWorkingAltarDraft();
+  return going.length;
 }
 
 function duplicateObject(object) {

@@ -45,7 +45,8 @@ import { JarVisual } from './JarVisual';
 
 export const JAR_INTENTIONS = ['Money', 'Love', 'Protection', 'Healing', 'Calm', 'Clarity', 'Courage', 'Cleansing', 'A sweeter home'];
 
-export type PlacedWorking = { object: SavedObject; item: ApothecaryItem };
+/** `kept`: false when My Apothecary couldn't be reached (it's on the altar all the same, and saves with it). */
+export type PlacedWorking = { object: SavedObject; item: ApothecaryItem; kept?: boolean };
 
 type Props = {
   visible: boolean;
@@ -91,14 +92,16 @@ function JarBuilder({ altar, onPlace, center }: Props) {
     setBusy(true);
     const now = nowIso();
     let item = startItemLookBack(jarItem(jar, now), lookBack.pick, new Date(now), lookBack.custom);
+    let kept = true;
     try {
       item = await saveApothecary(userId, item, null);
     } catch {
       // Kept on the altar even if My Apothecary can't be reached; it saves with the altar.
+      kept = false;
     }
     const result = jarObject(jar, altar.objects, now, center, item);
     setBusy(false);
-    onPlace(result);
+    onPlace({ ...result, kept });
   };
 
   return (
