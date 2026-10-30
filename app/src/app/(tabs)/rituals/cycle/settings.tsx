@@ -3,10 +3,11 @@ import { useState } from 'react';
 import { Platform, Text, View } from 'react-native';
 
 import { Button } from '../../../../components/Button';
+import { Stepper } from '../../../../components/cycle/parts';
 import { ChoiceChips, errorText, PassphraseInput, passphraseProblem, Progress, RecoveryCard } from '../../../../components/cycle/ui';
 import { Body, Card, Chip, Chips, confirmAction, Notice, RitualScreen, SectionLabel, tell, Title, Toggle, ui } from '../../../../components/rituals/ui';
 import { MOON_ONLY_NOTE } from '../../../../lib/cycle/content';
-import { changeSettings, REMINDER_AHEAD_CHOICES } from '../../../../lib/cycle/model';
+import { changeSettings, cycleLength, cycleStats, LENGTH_LIMITS, lengthLabel, REMINDER_AHEAD_CHOICES } from '../../../../lib/cycle/model';
 import {
   changePassphrase,
   deleteAllCycleData,
@@ -62,8 +63,36 @@ export default function CycleSettingsScreen() {
             <Body muted>{MOON_ONLY_NOTE}</Body>
           </Card>
 
-          {s.mode === 'cycle' && (
+          {s.mode === 'cycle' && cycle.data && (
             <>
+              <SectionLabel>Cycle length</SectionLabel>
+              <Card>
+                <ChoiceChips
+                  options={[
+                    { value: 'auto', label: 'Work it out from my history' },
+                    { value: 'exact', label: 'Exactly' },
+                    { value: 'range', label: 'A range' },
+                  ]}
+                  value={s.length.mode}
+                  onChange={(mode) => set({ length: { ...s.length, mode } })}
+                />
+                {s.length.mode === 'exact' && <Stepper label="Days" value={s.length.exact} min={LENGTH_LIMITS.min} max={LENGTH_LIMITS.max} onChange={(exact) => set({ length: { ...s.length, exact } })} />}
+                {s.length.mode === 'range' && (
+                  <>
+                    <Stepper label="Shortest" value={s.length.min} min={LENGTH_LIMITS.min} max={s.length.max} onChange={(min) => set({ length: { ...s.length, min } })} />
+                    <Stepper label="Longest" value={s.length.max} min={s.length.min} max={LENGTH_LIMITS.max} onChange={(max) => set({ length: { ...s.length, max } })} />
+                  </>
+                )}
+                <Body muted>
+                  {s.length.mode === 'auto'
+                    ? cycleStats(cycle.data).lengths.length >= 2
+                      ? `From your history: ${lengthLabel(cycleLength(cycle.data))}.`
+                      : 'With fewer than two cycles logged, 28 days is used until there’s more. Add past periods to give it a history.'
+                    : `Using ${lengthLabel(cycleLength(cycle.data))}.`}{' '}
+                  It sets today’s cycle day and inner season, when your next bleed may come (a window with a range), and where the seasons fall: the luteal side (inner autumn) is taken as about 14 days, so a longer or shorter cycle mostly changes your spring. All estimates; bodies vary.
+                </Body>
+              </Card>
+
               <SectionLabel>About my body</SectionLabel>
               <Card>
                 <Body muted>Optional. It changes the wording and when an estimate would be honest: none while pregnant, and a range rather than a day when cycles vary.</Body>

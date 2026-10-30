@@ -85,7 +85,8 @@ test('cycle maths: a steady 28-day rhythm, the day, and a gentle estimate', () =
   assert.equal(c.season, 'winter');
   const est = nextBleedEstimate(data, at(addDays(last, 24)))!;
   assert.equal(est.daysAway, 4);
-  assert.equal(est.line, 'Your bleed may start in about 4 days.');
+  assert.equal(est.line, 'Your bleed may start in about 4 days, around 21 September.');
+  assert.equal(est.from, '2026-09-21');
   assert.equal(est.span, null);
   // While bleeding there's nothing to estimate.
   assert.equal(nextBleedEstimate(data, at(addDays(last, 1))), null);
@@ -118,7 +119,7 @@ test('irregular cycles: a range instead of a day, and long gaps left out', () =>
   const last = data.bleeds[data.bleeds.length - 1].start;
   const est = nextBleedEstimate(data, at(addDays(last, 9)))!;
   assert.ok(est.span);
-  assert.match(est.line, /^Your bleed may start sometime from about \d+ days to about \d+ days from now\.$/);
+  assert.match(est.line, /^Your bleed may start between \d+ (\w+ )?and \d+ \w+\.$/);
   // Told they're irregular, even a steady log is read gently; told they're pregnant, no estimate at all.
   const told = changeSettings(withBleeds(every('2026-06-01', [28, 28])), { situations: ['pregnant'] }, new Date());
   assert.equal(nextBleedEstimate(told, at('2026-07-10')), null);
@@ -127,7 +128,7 @@ test('irregular cycles: a range instead of a day, and long gaps left out', () =>
   assert.equal(nextBleedEstimate(after, at('2026-07-10')), null);
   // Much later than usual: no countdown, a gentle word instead.
   const late = withBleeds(every('2026-06-01', [28]));
-  assert.match(nextBleedEstimate(late, at('2026-08-05'))!.line, /later than your recent rhythm/);
+  assert.match(nextBleedEstimate(late, at('2026-08-05'))!.line, /later than your usual rhythm/);
   // Long after the last bleed, no day is counted.
   assert.equal(cycleDayOn(late, '2026-12-01'), null);
 });
