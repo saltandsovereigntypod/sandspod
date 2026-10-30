@@ -112,7 +112,7 @@ export const fetchDirectory = () =>
   run<Coven[]>(supabase.from('covens').select(COVEN_FIELDS).eq('status', 'active').eq('visibility', 'listed').order('created_at', { ascending: false }).limit(500));
 
 export async function fetchMyCovens(userId: string): Promise<Coven[]> {
-  const rows = await run<{ covens: Coven | null }[]>(supabase.from('coven_members').select(`covens(${COVEN_FIELDS})`).eq('user_id', userId).eq('status', 'active'));
+  const rows = await run<{ covens: Coven | null }[]>(supabase.from('coven_members').select(`covens!coven_members_coven_id_fkey(${COVEN_FIELDS})`).eq('user_id', userId).eq('status', 'active'));
   return rows.map((r) => r.covens).filter((c): c is Coven => !!c);
 }
 
@@ -124,7 +124,7 @@ export async function fetchMyPendingApplications(userId: string): Promise<(Pick<
 /** Your covens with your place in each (membership and the coven's positions), for planning reminders. */
 export async function fetchMyStandings(userId: string): Promise<{ coven: Coven; membership: Member; ranks: Rank[] }[]> {
   const rows = await run<(Member & { covens: Coven | null })[]>(
-    supabase.from('coven_members').select(`coven_id,user_id,rank_id,status,muted_until,joined_at,covens(${COVEN_FIELDS})`).eq('user_id', userId).eq('status', 'active'),
+    supabase.from('coven_members').select(`coven_id,user_id,rank_id,status,muted_until,joined_at,covens!coven_members_coven_id_fkey(${COVEN_FIELDS})`).eq('user_id', userId).eq('status', 'active'),
   );
   const mine = rows.filter((r) => !!r.covens);
   if (!mine.length) return [];
