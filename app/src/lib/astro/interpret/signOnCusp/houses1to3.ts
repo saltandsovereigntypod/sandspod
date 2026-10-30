@@ -48,7 +48,7 @@ export const CUSP_1: Record<ZodiacSign, Interpretation> = {
   },
   Sagittarius: {
     simple: "Sagittarius on the first cusp gives an open, adventurous and optimistic way of meeting the world.",
-    detailed: "You approach life as a journey, often with humour and frankness, and you need room to roam. Jupiter rules your Ascendant, so Jupiter's sign and house show where your life finds its meaning and luck.",
+    detailed: "You approach life as a journey, often with humour and frankness, and you need room to roam. Jupiter rules your Ascendant, so Jupiter's sign and house show where your life finds its meaning and luck. People often meet you laughing, and you may look as if you are about to set off somewhere.",
     magic: "Luck and travel blessings suit you on Thursdays; Turquoise and a sprig of Sage make a lucky personal charm.",
   },
   Capricorn: {
@@ -81,7 +81,7 @@ export const CUSP_2: Record<ZodiacSign, Interpretation> = {
   },
   Gemini: {
     simple: "Gemini on the second cusp: you earn through words, ideas and variety, often from more than one source.",
-    detailed: "Income may come through writing, teaching, sales, trade or several jobs at once. You value information and connection. Mercury rules your second house, so its place shows where your wits earn.",
+    detailed: "Income may come through writing, teaching, sales, trade or several jobs at once. You value information and connection. Mercury rules your second house, so its place shows where your wits earn. You may keep money in several pots and change how you earn more than once; a simple record keeps it from scattering.",
     magic: "Written prosperity petitions on Wednesdays suit you; Citrine and basil help.",
   },
   Cancer: {
@@ -101,7 +101,7 @@ export const CUSP_2: Record<ZodiacSign, Interpretation> = {
   },
   Libra: {
     simple: "Libra on the second cusp: you earn through partnership, beauty and good relations.",
-    detailed: "Money may come through design, art, law, clients or a partner, and you value fairness and beauty. Venus rules your second house, so its place shows where money and harmony meet.",
+    detailed: "Money may come through design, art, law, clients or a partner, and you value fairness and beauty. Venus rules your second house, so its place shows where money and harmony meet. Spending on beauty, clothes and gifts comes easily, and money matters can affect your relationships, so fairness about who pays matters to you.",
     magic: "Honey-sweetened money spells on Fridays suit you; Rose Quartz and Green Aventurine together help.",
   },
   Scorpio: {
@@ -116,7 +116,7 @@ export const CUSP_2: Record<ZodiacSign, Interpretation> = {
   },
   Capricorn: {
     simple: "Capricorn on the second cusp: you build wealth slowly and carefully, often through long-term work.",
-    detailed: "You save, plan and earn through steady effort and expertise. Security matters a great deal. Saturn rules your second house, so its place shows where your resources are built.",
+    detailed: "You save, plan and earn through steady effort and expertise. Security matters a great deal. Saturn rules your second house, so its place shows where your resources are built. You may have known lean times early and learned thrift that served you well. Wealth often grows in the second half of life.",
     magic: "A Saturday money jar fed patiently suits you; Pyrite and cypress support lasting wealth.",
   },
   Aquarius: {
@@ -126,7 +126,7 @@ export const CUSP_2: Record<ZodiacSign, Interpretation> = {
   },
   Pisces: {
     simple: "Pisces on the second cusp: money and values are fluid, generous and sometimes unclear.",
-    detailed: "Income may come through art, healing or spiritual work, and you may give freely. Clear records protect you. Jupiter and Neptune rule your second house; their places show where your money flows.",
+    detailed: "Income may come through art, healing or spiritual work, and you may give freely. Clear records protect you. Jupiter and Neptune rule your second house; their places show where your money flows. You may undervalue your gifts or give them away; learning to charge fairly for inspired work is part of the path.",
     magic: "Prosperity spells with clarity built in suit you; Amethyst and Green Aventurine together help.",
   },
 };
@@ -134,7 +134,7 @@ export const CUSP_2: Record<ZodiacSign, Interpretation> = {
 export const CUSP_3: Record<ZodiacSign, Interpretation> = {
   Aries: {
     simple: "Aries on the third cusp: you think fast, speak bluntly and learn by doing.",
-    detailed: "Conversation is lively and sometimes combative, and you rush about your neighbourhood. Siblings may be competitive. Mars rules your third house, so its place shows where your words have force.",
+    detailed: "Conversation is lively and sometimes combative, and you rush about your neighbourhood. Siblings may be competitive. Mars rules your third house, so its place shows where your words have force. You may drive fast, walk fast and finish other people's sentences, and arguments with brothers or sisters may have sharpened your wit.",
     magic: "Courage-to-speak spells on Tuesdays suit you; Carnelian at the throat helps.",
   },
   Taurus: {
@@ -144,22 +144,22 @@ export const CUSP_3: Record<ZodiacSign, Interpretation> = {
   },
   Gemini: {
     simple: "Gemini on the third cusp: your mind is quick, curious and endlessly busy.",
-    detailed: "Gemini is at home here. You love talk, books and short trips, and you may write or teach. Mercury rules your third house, so its place shows how your mind travels.",
+    detailed: "Gemini is at home here. You love talk, books and short trips, and you may write or teach. Mercury rules your third house, so its place shows how your mind travels. Many people with this cusp are gifted writers, translators, teachers or simply the best-informed person on the street. Siblings may be close in age and in mind.",
     magic: "Letter spells and divination on Wednesdays suit you; Citrine and peppermint help.",
   },
   Cancer: {
     simple: "Cancer on the third cusp: you think with feeling and remember everything.",
-    detailed: "Your mind is shaped by memory and mood, and family talk matters. Siblings may feel like parents, or need you as one. The Moon rules your third house, so its place shows where your mind finds safety.",
+    detailed: "Your mind is shaped by memory and mood, and family talk matters. Siblings may feel like parents, or need you as one. The Moon rules your third house, so its place shows where your mind finds safety. Letters, family stories and conversations at the kitchen table are where your mind feels at home.",
     magic: "A moon journal and family stories as spells suit you; Moonstone helps.",
   },
   Leo: {
     simple: "Leo on the third cusp: you speak with warmth and flair and love to tell a story.",
-    detailed: "Your communication is dramatic, generous and confident. You may teach, perform or write creatively. The Sun rules your third house, so its place shows where your words shine.",
+    detailed: "Your communication is dramatic, generous and confident. You may teach, perform or write creatively. The Sun rules your third house, so its place shows where your words shine. School may have been a stage, and you may still remember a teacher who believed in you. You learn best when you can show what you know.",
     magic: "Spoken confidence charms on Sundays suit you; Sunstone helps.",
   },
   Virgo: {
     simple: "Virgo on the third cusp: you think precisely and communicate carefully.",
-    detailed: "You notice detail, edit well and learn methodically. Worry can loop in the mind. Mercury rules your third house, so its place shows how your careful mind works.",
+    detailed: "You notice detail, edit well and learn methodically. Worry can loop in the mind. Mercury rules your third house, so its place shows how your careful mind works. You may be the family's note-taker or editor, and you notice errors on menus and signs whether you want to or not. Lists calm you.",
     magic: "Carefully worded petitions and study blessings on Wednesdays suit you; Fluorite helps.",
   },
   Libra: {
@@ -169,27 +169,27 @@ export const CUSP_3: Record<ZodiacSign, Interpretation> = {
   },
   Scorpio: {
     simple: "Scorpio on the third cusp: your mind is deep, private and searching.",
-    detailed: "You say less than you know, and your words cut to the truth. Siblings may hold secrets or intensity. Mars and Pluto rule your third house; their places show where your mind digs.",
+    detailed: "You say less than you know, and your words cut to the truth. Siblings may hold secrets or intensity. Mars and Pluto rule your third house; their places show where your mind digs. Gossip does not interest you; secrets do. You may be drawn to research, puzzles and the psychology of the people around you.",
     magic: "Written banishings and scrying suit you; Obsidian helps.",
   },
   Sagittarius: {
     simple: "Sagittarius on the third cusp: you think big and speak frankly.",
-    detailed: "You love ideas, travel and big conversations, and you may talk in principles rather than details. Jupiter rules your third house, so its place shows where your mind finds meaning.",
+    detailed: "You love ideas, travel and big conversations, and you may talk in principles rather than details. Jupiter rules your third house, so its place shows where your mind finds meaning. You may live far from siblings, or treat your own neighbourhood as somewhere to explore. Learning languages can come easily.",
     magic: "Bibliomancy and travel blessings on Thursdays suit you; Turquoise helps.",
   },
   Capricorn: {
     simple: "Capricorn on the third cusp: you think carefully and speak with authority.",
-    detailed: "Your communication is structured and serious, and early learning may have been hard work. Saturn rules your third house, so its place shows where your mind builds.",
+    detailed: "Your communication is structured and serious, and early learning may have been hard work. Saturn rules your third house, so its place shows where your mind builds. You may have been the serious child, or had a sibling to look after. Over time your words gain weight and people listen.",
     magic: "A daily writing practice as ritual on Saturdays suits you; Onyx helps.",
   },
   Aquarius: {
     simple: "Aquarius on the third cusp: your mind is original and independent.",
-    detailed: "You think in systems and ideas, and your communication can be unusual. Saturn and Uranus rule your third house; their places show where your mind breaks new ground.",
+    detailed: "You think in systems and ideas, and your communication can be unusual. Saturn and Uranus rule your third house; their places show where your mind breaks new ground. You may have learned differently at school, or found your own way through books and machines. Neighbours may become a community you organise.",
     magic: "Digital sigils and new divination methods suit you; Labradorite helps.",
   },
   Pisces: {
     simple: "Pisces on the third cusp: your mind is intuitive, poetic and imaginative.",
-    detailed: "You think in images and feelings, and details can slip. You may write poetry or music. Jupiter and Neptune rule your third house; their places show where your mind dreams.",
+    detailed: "You think in images and feelings, and details can slip. You may write poetry or music. Jupiter and Neptune rule your third house; their places show where your mind dreams. School may have felt like a dream you drifted through, and yet you remember stories, songs and images others forget.",
     magic: "Automatic writing and dream journals suit you; Amethyst helps.",
   },
 };

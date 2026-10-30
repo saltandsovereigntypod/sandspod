@@ -29,7 +29,7 @@ const HOUSES = Array.from({ length: 12 }, (_, i) => i + 1);
 function checkReading(label: string, r: Interpretation | null | undefined) {
   assert.ok(r, `${label}: missing`);
   assert.ok(r.simple.trim().length >= 40, `${label}: simple is too short`);
-  assert.ok(r.detailed.trim().length >= 100, `${label}: detailed is too short`);
+  assert.ok(r.detailed.trim().length >= 200, `${label}: detailed is too short`);
   assert.ok(r.magic.trim().length >= 40, `${label}: magic is too short`);
   const all = [r.simple, r.detailed, r.magic, r.shadow ?? ''].join(' ');
   assert.ok(!/!/.test(all), `${label}: exclamation mark`);

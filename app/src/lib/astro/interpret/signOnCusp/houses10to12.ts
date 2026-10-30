@@ -105,7 +105,7 @@ export const CUSP_11: Record<ZodiacSign, Interpretation> = {
   },
   Scorpio: {
     simple: "Scorpio on the eleventh cusp: friendships are few, deep and loyal.",
-    detailed: "You trust slowly, keep friends for life and may be drawn to powerful or secret groups. Betrayal by a friend cuts deep. Mars and Pluto rule your eleventh house; their places show how you bond.",
+    detailed: "You trust slowly, keep friends for life and may be drawn to powerful or secret groups. Betrayal by a friend cuts deep. Mars and Pluto rule your eleventh house; their places show how you bond. The friends you have, you would go to the underworld for, and they know it.",
     magic: "Protective group magic suits you; Obsidian and an oath of friendship sealed with care.",
   },
   Sagittarius: {
@@ -115,12 +115,12 @@ export const CUSP_11: Record<ZodiacSign, Interpretation> = {
   },
   Capricorn: {
     simple: "Capricorn on the eleventh cusp: friendships are serious and long-term.",
-    detailed: "You may have older friends, professional networks and roles in established groups. Friendships deepen over decades. Saturn rules your eleventh house, so its place shows how you build community.",
+    detailed: "You may have older friends, professional networks and roles in established groups. Friendships deepen over decades. Saturn rules your eleventh house, so its place shows how you build community. Your friendships often begin at work and outlast the job.",
     magic: "Structured group ritual suits you; Onyx and a yearly rite with old friends.",
   },
   Aquarius: {
     simple: "Aquarius on the eleventh cusp: you are a natural member of communities and causes.",
-    detailed: "Aquarius is at home on this cusp. Friends are unusual and groups progressive, and your hopes are for humanity. Saturn and Uranus rule your eleventh house; their places show your vision.",
+    detailed: "Aquarius is at home on this cusp. Friends are unusual and groups progressive, and your hopes are for humanity. Saturn and Uranus rule your eleventh house; their places show your vision. You may find your people online or in movements long before you find them nearby.",
     magic: "Group sigils and coven work suit you; Amethyst.",
   },
   Pisces: {
@@ -143,7 +143,7 @@ export const CUSP_12: Record<ZodiacSign, Interpretation> = {
   },
   Gemini: {
     simple: "Gemini on the twelfth cusp: a busy hidden mind and private thoughts.",
-    detailed: "You may keep thoughts to yourself, write in secret, or have a mind that will not quiet at night. Journaling helps empty it. Mercury rules your twelfth house, so its place shows your hidden mind.",
+    detailed: "You may keep thoughts to yourself, write in secret, or have a mind that will not quiet at night. Journaling helps empty it. Mercury rules your twelfth house, so its place shows your hidden mind. Writing in the early hours can be the quiet that settles you.",
     magic: "Secret journals and dreamwork suit you; Fluorite under the pillow quiets a mind that talks all night.",
   },
   Cancer: {
@@ -153,12 +153,12 @@ export const CUSP_12: Record<ZodiacSign, Interpretation> = {
   },
   Leo: {
     simple: "Leo on the twelfth cusp: hidden pride and a private creative life.",
-    detailed: "You may hide your light, create in secret, or need recognition you do not admit. Solitary creative work restores you. The Sun rules your twelfth house, so its place shows where hidden light waits.",
+    detailed: "You may hide your light, create in secret, or need recognition you do not admit. Solitary creative work restores you. The Sun rules your twelfth house, so its place shows where hidden light waits. Hidden generosity, given anonymously, can be deeply healing for you.",
     magic: "Private creative devotion suits you: something made only for the gods or for yourself, on a Sunday, with Sunstone beside it.",
   },
   Virgo: {
     simple: "Virgo on the twelfth cusp: hidden worries and quiet service.",
-    detailed: "You may keep anxieties private or serve behind the scenes, in hospitals or quiet places. Small routines in solitude calm you. Mercury rules your twelfth house, so its place shows where worry hides.",
+    detailed: "You may keep anxieties private or serve behind the scenes, in hospitals or quiet places. Small routines in solitude calm you. Mercury rules your twelfth house, so its place shows where worry hides. Small acts of unseen care are a spiritual practice for you.",
     magic: "Releasing worries at the waning Moon suits you: write them, fold them away from you and bury them, with Amazonite to hold the calm.",
   },
   Libra: {
@@ -168,7 +168,7 @@ export const CUSP_12: Record<ZodiacSign, Interpretation> = {
   },
   Scorpio: {
     simple: "Scorpio on the twelfth cusp: hidden depths and private power.",
-    detailed: "You may hide your intensity behind cheerfulness and carry secrets well. Deep solitude and shadow work restore you. Mars and Pluto rule your twelfth house; their places show hidden strength.",
+    detailed: "You may hide your intensity behind cheerfulness and carry secrets well. Deep solitude and shadow work restore you. Mars and Pluto rule your twelfth house; their places show hidden strength. Old griefs may surface in dreams, asking to be faced.",
     magic: "Shadow work in private suits you, best at the dark Moon with a journal and Obsidian, and always closed by grounding.",
   },
   Sagittarius: {
@@ -183,7 +183,7 @@ export const CUSP_12: Record<ZodiacSign, Interpretation> = {
   },
   Aquarius: {
     simple: "Aquarius on the twelfth cusp: hidden rebellion and private originality.",
-    detailed: "You may keep your strangeness private or feel an outsider inside. Unusual spiritual practice in solitude restores you. Saturn and Uranus rule your twelfth house; their places show hidden freedom.",
+    detailed: "You may keep your strangeness private or feel an outsider inside. Unusual spiritual practice in solitude restores you. Saturn and Uranus rule your twelfth house; their places show hidden freedom. You may find peace in solitary study of the stars or of strange subjects.",
     magic: "Private sigil work suits you, made and charged alone and kept secret; Labradorite guards the inner spark.",
   },
   Pisces: {

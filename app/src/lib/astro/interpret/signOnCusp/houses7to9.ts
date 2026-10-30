@@ -154,12 +154,12 @@ export const CUSP_9: Record<ZodiacSign, Interpretation> = {
   },
   Leo: {
     simple: "Leo on the ninth cusp: your faith is warm, generous and proud.",
-    detailed: "You may teach or preach with flair, love the drama of ritual, and travel for joy. Belief is something you live loudly. The Sun rules your ninth house, so its place shows where your faith shines.",
+    detailed: "You may teach or preach with flair, love the drama of ritual, and travel for joy. Belief is something you live loudly. The Sun rules your ninth house, so its place shows where your faith shines. Faith for you is a celebration, and pilgrimage can feel like a festival.",
     magic: "Solar devotion at the solstices suits you; Sunstone, and Apollo as a fitting patron.",
   },
   Virgo: {
     simple: "Virgo on the ninth cusp: your faith is practical and discerning.",
-    detailed: "You test beliefs carefully and may study health, herbs or service as a spiritual path. You prefer practice to doctrine. Mercury rules your ninth house, so its place shows how you seek.",
+    detailed: "You test beliefs carefully and may study health, herbs or service as a spiritual path. You prefer practice to doctrine. Mercury rules your ninth house, so its place shows how you seek. You may study one subject to the bottom rather than many on the surface, and teach it carefully.",
     magic: "Herbal study as devotion suits you; Amazonite and a grimoire of tested practice.",
   },
   Libra: {
@@ -179,7 +179,7 @@ export const CUSP_9: Record<ZodiacSign, Interpretation> = {
   },
   Capricorn: {
     simple: "Capricorn on the ninth cusp: your faith is serious, traditional and earned.",
-    detailed: "You build beliefs slowly and may study law, history or old traditions. Higher education may come later or with effort. Saturn rules your ninth house, so its place shows how your faith is built.",
+    detailed: "You build beliefs slowly and may study law, history or old traditions. Higher education may come later or with effort. Saturn rules your ninth house, so its place shows how your faith is built. You may find the religion of your ancestors again after years away.",
     magic: "Disciplined devotion suits you; Onyx and a daily reading of a sacred text.",
   },
   Aquarius: {
