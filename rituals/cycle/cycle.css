@@ -1,0 +1,17 @@
+/* Cycle & Moon (rituals/cycle/): the wheel, the passphrase progress and a few small layouts. */
+.cm-wheel { display: grid; justify-items: center; gap: 10px; margin: 0; }
+.cm-wheel svg { max-width: 100%; height: auto; }
+.cm-legend { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px 14px; font-size: 0.85rem; color: var(--muted); }
+.cm-legend span { display: inline-flex; align-items: center; gap: 6px; }
+.cm-legend i { display: inline-block; width: 12px; height: 12px; border-radius: 50%; }
+.cm-legend i.cm-today { border: 2px solid var(--cream); box-sizing: border-box; }
+.cm-progress { display: grid; gap: 6px; }
+.cm-track { height: 8px; border-radius: 4px; background: rgba(28, 46, 34, 0.9); overflow: hidden; }
+.cm-bar { height: 8px; width: 4%; background: var(--gold); transition: width 0.2s ease; }
+.cm-check { display: flex; gap: 10px; align-items: flex-start; padding: 8px 0; cursor: pointer; }
+.cm-check input { margin-top: 4px; width: 20px; height: 20px; flex: none; accent-color: var(--gold); }
+.cm-recovery { font-size: 1.15rem; letter-spacing: 0.06em; font-weight: 600; color: var(--cream); word-break: break-word; user-select: all; }
+.cm-days { display: flex; justify-content: space-between; gap: 12px; }
+.cm-stack { display: grid; gap: 12px; }
+.cm-note { margin-top: 24px; }
+.td-cycle .sp-actions { margin-top: 6px; }

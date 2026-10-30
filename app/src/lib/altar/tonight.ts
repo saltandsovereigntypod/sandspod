@@ -531,3 +531,33 @@ export function shrineAltar(key: string, name: string, record: Record<string, un
     labels,
   };
 }
+
+// ── The moon-time altar ──────────────────────────────────────────────────
+
+/**
+ * A moon-time altar for the days of bleeding (Cycle & Moon, when chosen): a
+ * moon bowl of water at the centre, red candles either side with a silver
+ * pair behind, a red cord in front, moonstone and red jasper, mugwort and
+ * rose. Everything comes from the cabinet and can be moved or swapped.
+ */
+export function moonTimeAltar(date: Date): TonightAltar {
+  const parts: [Pick, Slot][] = [
+    [['offerings:bowl-of-water', 'standard'], { ...SLOTS.focal, scale: 1.2 }],
+    [c('silver', 'taper'), SLOTS.outerL],
+    [c('silver', 'taper'), SLOTS.outerR],
+    [c('red', 'pillar'), SLOTS.candleL],
+    [c('red', 'pillar'), SLOTS.candleR],
+    [herb('mugwort', 'incense'), SLOTS.incense],
+    [herb('rose'), SLOTS.herb],
+    [tool('red-cord'), SLOTS.offering],
+    [stone('moonstone', 'tumbled'), SLOTS.crystalL],
+    [stone('red-jasper', 'tumbled'), SLOTS.crystalR],
+  ];
+  const background = builtInBackgrounds.find((b) => b.id === 'celestial');
+  const { objects, labels } = placed(parts, SURFACES[background?.id ?? 'forest-altar'] ?? SURFACES['forest-altar'], date.toISOString());
+  return {
+    doc: { background: background?.background ?? '', backgroundName: background?.name ?? '', groups: [], activeGroupId: null, objects, extra: {} },
+    reason: 'your moon time',
+    labels,
+  };
+}

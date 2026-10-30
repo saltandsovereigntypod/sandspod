@@ -5,10 +5,12 @@ import { TabBar } from '../../components/TabBar';
 import { WelcomeTour } from '../../components/WelcomeTour';
 import { useCandleKeeper } from '../../lib/altar/useCandleKeeper';
 import { useCraftAccount } from '../../lib/craft/useCraftAccount';
+import { useCycleKeeper } from '../../lib/cycle/store';
 import { useCovenUnreadSync } from '../../lib/covens/unread';
 import { useCovenRequestsSync } from '../../lib/covens/requestsBadge';
 import { useCovenInvitationsSync } from '../../lib/covens/invitationsBadge';
 import { useReminderKeeper } from '../../lib/reminders/useReminderKeeper';
+import { useSession } from '../../lib/session';
 import { useTendReminderKeeper } from '../../lib/tend/store';
 import { useAltarWidgetSync } from '../../lib/altarWidgetSync';
 import { useWidgetSync } from '../../lib/widgetSync';
@@ -24,6 +26,9 @@ export default function TabsLayout() {
   useCovenInvitationsSync();
   useReminderKeeper();
   useTendReminderKeeper();
+  // Cycle & Moon's reminders and Today's card are ready from the start (lib/cycle/store.ts).
+  const { ready, session } = useSession();
+  useCycleKeeper(ready ? (session?.user.id ?? null) : undefined);
   return (
     <>
       <Tabs

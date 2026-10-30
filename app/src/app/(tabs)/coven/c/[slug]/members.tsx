@@ -11,6 +11,8 @@ import { Pill, Pills, useReport } from '../../../../../components/covens/ui';
 import { Card, Chips, MenuList, MenuRow, Notice, Section } from '../../../../../components/more/ui';
 import * as api from '../../../../../lib/covens/api';
 import { useCoven } from '../../../../../lib/covens/CovenContext';
+import { statusLabel, type MoonStatus } from '../../../../../lib/cycle/status';
+import { covenStatuses } from '../../../../../lib/cycle/store';
 import { ENROLLMENT_STATUS, type Enrollment, type Program } from '../../../../../lib/covens/programs';
 import { actsOn, errorMessage, grantableRanks, unsignedAgreements, type Member, type Signature } from '../../../../../lib/covens/model';
 import { seesRecord, type RecordSettings } from '../../../../../lib/covens/record';
@@ -49,6 +51,8 @@ export default function Members() {
   const [stepTo, setStepTo] = useState('');
   // Their training, as far as you may see it (their mentor, those who keep progress, the head).
   const [training, setTraining] = useState<{ enrollments: Enrollment[]; programs: Program[] } | null>(null);
+  // "In moon time" and the like, shared by members with this coven or with you (Cycle & Moon); none unless they chose to.
+  const [moons, setMoons] = useState<Map<string, MoonStatus>>(new Map());
 
   const load = useCallback(async () => {
     if (!covenId) return;
@@ -68,6 +72,9 @@ export default function Members() {
   useEffect(() => {
     if (covenId) void api.fetchRecordSettings(covenId).then(setRecordSettings).catch(() => {});
   }, [covenId]);
+  useEffect(() => {
+    if (covenId && perms.member) void covenStatuses(covenId).then(setMoons).catch(() => {});
+  }, [covenId, perms.member]);
   useEffect(() => {
     if (covenId && perms.member) {
       void Promise.all([api.fetchEnrollments(covenId), api.fetchPrograms(covenId)])
@@ -178,6 +185,7 @@ export default function Members() {
                 {m.user_id === founder && <Pill label="Founder" tone="gold" />}
                 {rank && <Pill label={rank.name} />}
                 {here.has(m.user_id) && <Pill label="Here now" />}
+                {moons.has(m.user_id) && <Pill label={`☾ ${statusLabel(moons.get(m.user_id))}`} />}
                 {!!visitingFrom(m) && <Pill label="Visiting from a daughter coven" />}
                 {paused && <Pill label="Paused" tone="warn" />}
                 {needsToSign(m.user_id) && <Pill label="Needs to sign" tone="warn" />}

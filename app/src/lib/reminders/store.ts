@@ -23,7 +23,7 @@ import { syncSkyCalendar } from './calendarStore';
 import { applySchedule, permissionState, remindersSupported, requestPermission, type PermissionState } from './notifier';
 import { anyPlanned, planReminders, type CovenSource } from './plan';
 import { PREFS_KEY, readPrefs, type ReminderPrefs } from './prefs';
-import { anyReminders, DEFAULT_SETTINGS, normalizeSettings, type ReminderSettings } from './schedule';
+import { anyReminders, DEFAULT_SETTINGS, normalizeSettings, type Reminder, type ReminderSettings } from './schedule';
 import { EMPTY_SOURCES, type TendingSources } from './sources';
 import type { TendRecord } from '../tend/model';
 
@@ -43,6 +43,8 @@ type RemindersState = {
   covens: CovenSource[];
   /** Your To tend list's choices, for the reminders asked of it. */
   tend: TendRecord[];
+  /** Cycle & Moon's notes, when chosen there (cycle/store.ts). */
+  cycle: Omit<Reminder, 'kind'>[];
 };
 
 let state: RemindersState = {
@@ -54,6 +56,7 @@ let state: RemindersState = {
   sources: EMPTY_SOURCES,
   covens: [],
   tend: [],
+  cycle: [],
 };
 const listeners = new Set<() => void>();
 let started = false;
@@ -63,6 +66,7 @@ let syncing: Promise<void> = Promise.resolve();
 let sourcesKey = '';
 let covensKey = '';
 let tendKey = '';
+let cycleKey = '';
 
 function set(patch: Partial<RemindersState>) {
   state = { ...state, ...patch };
@@ -98,6 +102,7 @@ export function syncReminders(): Promise<void> {
         sources: state.sources,
         covens: state.covens,
         tend: state.tend,
+        cycle: state.cycle,
         place: place ? { latitude: place.latitude, longitude: place.longitude } : null,
         now: new Date(),
       });
@@ -208,6 +213,27 @@ export function setTendSources(records: TendRecord[]) {
   tendKey = key;
   set({ tend: asked });
   void syncReminders();
+}
+
+/** Cycle & Moon's notes to ring (none when its reminders are off, or it's locked); reschedules when they change. */
+export function setCycleReminders(list: Omit<Reminder, 'kind'>[]) {
+  const key = JSON.stringify(list.map((r) => [r.key, r.at.getTime(), r.body]));
+  if (key === cycleKey) return;
+  cycleKey = key;
+  set({ cycle: list });
+  void syncReminders();
+}
+
+/** After Cycle & Moon's reminders are turned on: ask for notifications if they aren't allowed yet. */
+export async function askForCycleReminders(): Promise<PermissionState> {
+  await start();
+  let permission = state.permission;
+  if (remindersSupported && permission !== 'granted') {
+    permission = await requestPermission();
+    set({ permission });
+  }
+  await syncReminders();
+  return permission;
 }
 
 /** After a reminder is asked for on the To tend list: ask for notifications if they aren't allowed yet. */

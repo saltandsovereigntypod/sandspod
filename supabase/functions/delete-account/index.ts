@@ -9,7 +9,10 @@ const defaultOrigins = [
 ];
 const allowedOrigins = new Set([...(Deno.env.get("ACCOUNT_DELETE_ALLOWED_ORIGINS") || "").split(",").map((value) => value.trim()).filter(Boolean), ...defaultOrigins]);
 const childTables = ["push_tokens", "coven_chat_settings", "coven_conversation_members", "coven_altar_editors", "coven_program_stage_passes", "coven_program_progress", "coven_program_enrollments", "coven_program_assignments", "coven_mentors", "coven_grants", "coven_petition_tendings", "coven_petitions", "coven_ritual_rsvps", "coven_ritual_step_marks", "coven_messages", "coven_signatures", "coven_applications", "coven_advancement_requests", "coven_members", "ritual_links", "ritual_session_steps", "ritual_template_steps", "grimoire_page_links", "grimoire_blocks", "library_relations", "object_instance_events", "community_submission_messages"];
-const parentTables = ["craft_entries", "ritual_plans", "user_rituals", "ritual_sessions", "ritual_templates", "grimoire_pages", "grimoire_sections", "grimoire_books", "object_instances", "living_library_entries", "apothecary_items", "saved_altars", "custom_altar_backgrounds", "custom_cabinet_items", "custom_cabinet_image_overrides", "user_settings", "coven_profiles"];
+const parentTables = ["craft_entries", "ritual_plans", "user_rituals", "ritual_sessions", "ritual_templates", "grimoire_pages", "grimoire_sections", "grimoire_books", "object_instances", "living_library_entries", "apothecary_items", "saved_altars", "custom_altar_backgrounds", "custom_cabinet_items", "custom_cabinet_image_overrides", "user_settings", "coven_profiles", "cycle_moon_status", "cycle_moon_vault"];
+// Cycle & Moon (20261117000000_cycle_moon.sql) may not be applied yet where this runs: a missing table there has nothing to delete.
+const optionalTables = new Set(["cycle_moon_status", "cycle_moon_vault"]);
+const missingTable = (error: { code?: string } | null) => error?.code === "42P01" || error?.code === "PGRST205";
 
 function response(origin: string, status: number, body: Record<string, unknown>) {
   const cors: Record<string, string> = origin ? { "access-control-allow-origin": origin, "access-control-allow-headers": "authorization, content-type, apikey, x-client-info", "access-control-allow-methods": "POST, OPTIONS", "vary": "Origin" } : {};
@@ -73,7 +76,7 @@ Deno.serve(async (request) => {
 
     for (const table of [...childTables, ...parentTables]) {
       const { error } = await admin.from(table).delete().eq("user_id", userId);
-      if (error) throw new Error(`${table}_cleanup_failed`);
+      if (error && !(optionalTables.has(table) && missingTable(error))) throw new Error(`${table}_cleanup_failed`);
       completed.push(table);
     }
     // Anyone they mentored is left without a mentor until the coven chooses another.
