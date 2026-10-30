@@ -230,7 +230,7 @@ async function commit(data: AstroData) {
   if (state.synced) schedulePush();
 }
 
-/** The old plain-text "cosmic.chart" entry: moved into the vault, then deleted from the account. */
+/** The old plain-text "cosmic.chart" entry: copied into the vault, and deleted from the account once the vault is kept there too. */
 async function importLegacy() {
   if (state.phase === 'locked') return;
   try {
@@ -241,7 +241,11 @@ async function importLegacy() {
       const chart: SavedChart = { id: old.id, name: 'Me', relation: 'me', input: { ...(old.data as ChartInput) }, updatedAt: new Date().toISOString() };
       await commit(mergeAstroData(state.data, { version: 1, charts: [chart], removed: [] }));
     }
-    // Blank the entry before deleting it: deletes are soft, and the birth details shouldn't stay behind in plain form.
+    // Only once the chart is kept with the account (encrypted) is the old copy
+    // removed: kept on one device only, deleting it would lose the chart on
+    // every other device. Blank the entry before deleting it: deletes are
+    // soft, and the birth details shouldn't stay behind in plain form.
+    if (!state.synced) return;
     for (const e of entries) {
       await updateEntry(CHART, e.id, {});
       await removeEntry(CHART, e.id);

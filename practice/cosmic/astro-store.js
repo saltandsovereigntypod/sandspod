@@ -206,6 +206,9 @@
         const chart = { id: old.id, name: "Me", relation: "me", input: { ...old.data }, updatedAt: new Date().toISOString() };
         commit(V().mergeAstroData(state.data, { version: 1, charts: [chart], removed: [] }));
       }
+      // Only once the chart is kept with the account (encrypted) is the old
+      // copy removed; kept on one device only, deleting it would lose it elsewhere.
+      if (!state.synced) return;
       for (const e of entries) {
         await global.SaltCraft.update("cosmic.chart", e.id, {});
         await global.SaltCraft.remove("cosmic.chart", e.id);
