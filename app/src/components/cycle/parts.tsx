@@ -11,6 +11,7 @@ import { MONTH_TITLES, WEEKDAY_LETTERS, type CalendarDay } from '../../lib/cycle
 import type { Comfort } from '../../lib/cycle/symptoms';
 import { colors, fonts, touch, type } from '../../theme';
 import { Button } from '../Button';
+import { TermText } from '../astro/Explain';
 import { Card, Chip, Chips } from '../rituals/ui';
 import { practiceHref } from './ui';
 
@@ -22,6 +23,7 @@ export function ReadingCard({ reading, onWrite }: { reading: ExactReading; onWri
       <Text style={[type.eyebrow, styles.gold]}>Today’s reading</Text>
       <Text style={type.cardTitle}>{reading.headline}</Text>
       <Text style={type.caption}>{reading.moonLine}</Text>
+      <TermText style={type.caption} text={reading.signLine} />
       <Text style={[type.body, styles.title]}>{r.title}</Text>
       <Text style={type.body}>{r.line}</Text>
       <Text style={type.body}>{r.practice}</Text>

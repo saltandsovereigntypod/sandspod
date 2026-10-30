@@ -59,6 +59,27 @@ export function nextHoursOf(planet: HourPlanet, now: Date, place: Place, count =
   return out.sort((a, b) => a.start.getTime() - b.start.getTime()).slice(0, count);
 }
 
+/**
+ * The next hour of `planet` on its own day (a Venus hour on a Friday, a
+ * Saturn hour on a Saturday): the strongest time the old books give for its
+ * work. The current one counts if it's still running. Up to two weeks ahead.
+ */
+export function nextHourOnItsDay(planet: HourPlanet, now: Date, place: Place): PlanetaryHour | null {
+  for (let k = 0; k < 15; k++) {
+    const hours = planetaryHours(new Date(now.getTime() + k * DAY), place);
+    if (!hours || hours[0].planet !== planet) continue;
+    const hit = hours.find((h) => h.planet === planet && h.end.getTime() > now.getTime());
+    if (hit) return hit;
+  }
+  return null;
+}
+
+/** "2026-11-06" and "15:12" for a moment in local time (what a ritual plan stores). */
+export function planFields(at: Date): { date: string; time: string } {
+  const p = (n: number) => String(n).padStart(2, '0');
+  return { date: `${at.getFullYear()}-${p(at.getMonth() + 1)}-${p(at.getDate())}`, time: `${p(at.getHours())}:${p(at.getMinutes())}` };
+}
+
 /** Void-of-course spells that overlap the local day [dayStart, dayStart + 24h). */
 export function vocForDay(dayStart: Date): VoidOfCourse[] {
   const end = dayStart.getTime() + DAY;

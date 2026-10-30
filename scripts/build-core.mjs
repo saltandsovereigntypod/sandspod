@@ -9,7 +9,7 @@
 // window.SaltCore.<name>. The output is committed, so the site stays buildless.
 
 import { execFileSync } from 'node:child_process';
-import { readdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { copyFileSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -75,6 +75,13 @@ for (const name of entries) {
   );
   linkShared(join(root, `js/core/${name}.js`));
   console.log(`js/core/${name}.js`);
+}
+
+// The world-cities list for the birth-chart place search (GeoNames, CC BY
+// 4.0), the app's own copy, fetched by the website only when someone searches.
+if (!only.length || only.includes('astro')) {
+  copyFileSync(join(root, 'app/src/lib/astro/data/cities.json'), join(root, 'js/core/cities.json'));
+  console.log('js/core/cities.json');
 }
 
 // The ready-made coven programs (every course lesson) as data the app and the

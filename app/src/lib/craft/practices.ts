@@ -23,8 +23,9 @@ export const CRAFT_TOOLS: Record<PracticeId, CraftTool[]> = {
     { title: 'Ancestors', detail: 'Your beloved dead and their days' },
   ],
   cosmic: [
-    { title: 'My chart', detail: 'Your sun, moon and rising, and what touches them today' },
-    { title: 'Planetary hours', detail: 'Today’s hours and the void-of-course moon' },
+    { title: 'My chart', detail: 'Your birth chart drawn and explained, and what touches it today' },
+    { title: 'Planetary hours', detail: 'The days and hours of the seven planets where you are' },
+    { title: 'Learn astrology', detail: 'Every term explained, simply or in depth' },
   ],
   crystal: [
     { title: 'My stones', detail: 'Your collection, and when each was last cleansed' },

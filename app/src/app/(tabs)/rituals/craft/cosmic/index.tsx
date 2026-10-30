@@ -2,36 +2,32 @@ import { router, type Href } from 'expo-router';
 import { useMemo } from 'react';
 import { Text, View } from 'react-native';
 
+import { TermText } from '../../../../../components/astro/Explain';
+import { useCharts } from '../../../../../components/astro/useCharts';
 import { Body, Card, List, RitualScreen, Row, SectionLabel, Title, ui } from '../../../../../components/rituals/ui';
+import { todayLine } from '../../../../../lib/astro/craftLinks';
 import { currentHour } from '../../../../../lib/astro/hours';
+import { bigThreeLine } from '../../../../../lib/astro/natal';
 import { timeOfDay } from '../../../../../lib/calendar';
-import { natalChart, natalOf, type ChartInput } from '../../../../../lib/craft/cosmic/chart';
-import { CHART } from '../../../../../lib/craft/cosmic/collections';
 import { HOUR_SUITS } from '../../../../../lib/craft/cosmic/hours';
 import { CRAFT_TOOLS } from '../../../../../lib/craft/practices';
-import { useCraft } from '../../../../../lib/craft/store';
 import { usePlace } from '../../../../../lib/location';
 import { PRACTICES } from '../../../../../lib/rituals/premade';
 import { type } from '../../../../../theme';
 
-const ROUTES = ['/rituals/craft/cosmic/chart', '/rituals/craft/cosmic/hours'];
+const ROUTES = ['/rituals/craft/cosmic/chart', '/rituals/craft/cosmic/hours', '/rituals/craft/cosmic/learn'];
 
-// Cosmic & celestial practice: your chart, and the hours of the day.
+// Cosmic & celestial practice: your charts, the planetary days and hours, and learning astrology.
 export default function CosmicPractice() {
   const about = PRACTICES.find((p) => p.id === 'cosmic')?.about;
   const tools = CRAFT_TOOLS.cosmic;
-  const { entries } = useCraft<ChartInput>(CHART);
-  const chart = useMemo(() => (entries[0] ? natalChart(entries[0].data) : null), [entries]);
+  const { mine, charts } = useCharts();
+  const chart = mine?.chart ?? null;
   const place = usePlace();
-  const now = new Date();
+  const now = useMemo(() => new Date(), []);
   const hour = place ? currentHour(now, place) : null;
-
-  const bigThree = chart
-    ? [`Sun ${natalOf(chart, 'Sun').sign}`, `Moon ${natalOf(chart, 'Moon').sign}`, chart.ascendant ? `${chart.ascendant.sign} rising` : null]
-        .filter(Boolean)
-        .join(' · ')
-    : null;
-  const details = [bigThree, hour ? `${hour.planet} hour until ${timeOfDay(hour.end)}` : null];
+  const line = useMemo(() => (chart ? todayLine(chart, now) : null), [chart, now]);
+  const details = [chart ? bigThreeLine(chart) : null, hour ? `${hour.planet} hour until ${timeOfDay(hour.end)}` : null, null];
 
   return (
     <RitualScreen back="Craft tools">
@@ -41,8 +37,17 @@ export default function CosmicPractice() {
       {hour && (
         <Card accent>
           <SectionLabel>This hour</SectionLabel>
-          <Text style={type.cardTitle}>{`The hour of ${hour.planet}`}</Text>
+          <TermText style={type.cardTitle} text={`The hour of ${hour.planet}`} />
           <Body muted>{`Until ${timeOfDay(hour.end)}. Good for ${HOUR_SUITS[hour.planet].short}.`}</Body>
+        </Card>
+      )}
+      {line && (
+        <Card>
+          <SectionLabel>The sky on your chart today</SectionLabel>
+          <TermText style={type.body} text={line.line} />
+          <Text style={type.caption} onPress={() => router.push({ pathname: '/rituals/craft/cosmic/chart', params: { tab: 'transits' } } as unknown as Href)}>
+            All your transits ›
+          </Text>
         </Card>
       )}
 
@@ -50,15 +55,15 @@ export default function CosmicPractice() {
         <SectionLabel>Tools</SectionLabel>
         <List>
           {tools.map((tool, i) => (
-            <Row
-              key={tool.title}
-              icon={i === 0 ? 'wheel' : 'calendar'}
-              title={tool.title}
-              detail={details[i] ?? tool.detail}
-              last={i === tools.length - 1}
-              onPress={() => router.push(ROUTES[i] as Href)}
-            />
+            <Row key={tool.title} icon={i === 1 ? 'calendar' : 'wheel'} title={tool.title} detail={details[i] ?? tool.detail} onPress={() => router.push(ROUTES[i] as Href)} />
           ))}
+          <Row
+            icon="wheel"
+            title="All charts"
+            detail={charts.length ? `${charts.length} kept, privately · synastry` : 'Yours and others’, kept privately'}
+            last
+            onPress={() => router.push('/rituals/craft/cosmic/charts' as Href)}
+          />
         </List>
       </View>
 

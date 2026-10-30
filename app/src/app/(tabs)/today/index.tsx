@@ -33,6 +33,11 @@ import { holidayChoice, type Holiday } from '../../../lib/holidays';
 import { findByName, todayLibraryHref, useLibrary } from '../../../lib/library';
 import { usePlace } from '../../../lib/location';
 import { placeSky, skyNow, type PlaceSky, type Sky } from '../../../lib/sky';
+import { TermText } from '../../../components/astro/Explain';
+import { todayLine } from '../../../lib/astro/craftLinks';
+import { castChart } from '../../../lib/astro/natal';
+import { chartOptionsFrom } from '../../../lib/astro/prefs';
+import { myChart, useAstro } from '../../../lib/astro/store';
 import { primaryTradition } from '../../../lib/traditionDay';
 import { useMySettings } from '../../../lib/settings/store';
 import { todaySettings } from '../../../lib/library/traditions';
@@ -593,12 +598,11 @@ function DaySky({ today, sky, here, now }: { today: TodayModel; sky: Sky; here: 
   return (
     <View style={styles.card}>
       <Text style={[type.eyebrow, styles.gold]}>Today’s sky</Text>
-      <Text style={styles.goodFor}>{today.goodFor}</Text>
+      <TermText style={styles.goodFor} text={today.goodFor} />
       {lines.map((line) => (
-        <Text key={line} style={type.caption}>
-          {line}
-        </Text>
+        <TermText key={line} style={type.caption} text={line} />
       ))}
+      <ChartToday now={now} />
       {here ? (
         <>
           <Text style={type.caption}>
@@ -612,7 +616,11 @@ function DaySky({ today, sky, here, now }: { today: TodayModel; sky: Sky; here: 
               .join(' · ')}
           </Text>
           {here.hour && (
-            <Text style={[type.caption, styles.gold]}>{`Planetary hour of ${here.hour.planet} until ${timeOfDay(here.hour.end)}`}</Text>
+            <Text
+              style={[type.caption, styles.gold]}
+              accessibilityRole="link"
+              onPress={() => router.navigate({ pathname: '/rituals/craft/cosmic/hours', params: { planet: here.hour!.planet } } as never)}
+            >{`Planetary hour of ${here.hour.planet} until ${timeOfDay(here.hour.end)} ›`}</Text>
           )}
         </>
       ) : (
@@ -622,6 +630,29 @@ function DaySky({ today, sky, here, now }: { today: TodayModel; sky: Sky; here: 
       )}
       <Button label="The sky today" variant="outline" onPress={() => router.navigate('/today/sky')} />
     </View>
+  );
+}
+
+/** One line from today's sky to your own birth chart (kept privately in lib/astro/store), when you've entered it. */
+function ChartToday({ now }: { now: Date }) {
+  const astro = useAstro();
+  const { settings } = useMySettings();
+  const saved = myChart(astro.data);
+  const hour = Math.floor(now.getTime() / 3_600_000);
+  const line = useMemo(
+    () => {
+      const chart = saved ? castChart(saved.input, chartOptionsFrom(settings)) : null;
+      return chart ? todayLine(chart, now) : null;
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- once an hour, and when the chart or settings change
+    [saved, settings, hour],
+  );
+  if (!saved || !line) return null;
+  return (
+    <Pressable accessibilityRole="link" accessibilityHint="Opens your transits" onPress={() => router.navigate({ pathname: '/rituals/craft/cosmic/chart', params: { tab: 'transits' } } as never)}>
+      <Text style={[type.caption, styles.gold]}>Your chart today</Text>
+      <TermText style={type.caption} text={line.line} />
+    </Pressable>
   );
 }
 
@@ -642,6 +673,11 @@ function CorrespondencesCard({ today }: { today: TodayModel }) {
   return (
     <View style={styles.card}>
       <Text style={[type.eyebrow, styles.gold]}>{`Correspondences · ${c.planet === 'Sun' || c.planet === 'Moon' ? `the ${c.planet}` : c.planet}`}</Text>
+      <Text
+        style={[type.caption, styles.gold]}
+        accessibilityRole="link"
+        onPress={() => router.navigate({ pathname: '/rituals/craft/cosmic/planet', params: { planet: c.planet } } as never)}
+      >{`${c.planet}: its day, hours, gods and full guide ›`}</Text>
       <CorrRow label="Colors" text={c.colors.join(', ')} />
       <View style={styles.corrRow}>
         <Text style={styles.corrLabel}>Crystals</Text>

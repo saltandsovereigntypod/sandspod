@@ -47,7 +47,7 @@
     </section>`;
   const chipLinks = (links) => (links.length ? `<div class="sp-chips">${links.map((l) => `<a class="sp-chip" href="${esc(linkHref(l))}">${esc(l.label)} ›</a>`).join("")}</div>` : "");
   const readingHtml = (r, date) => `<section class="sp-card sp-card--gold" data-reading>
-      <p class="sp-eyebrow sp-gold">Today’s reading</p><h2>${esc(r.headline)}</h2><p class="sp-caption">${esc(r.moonLine)}</p>
+      <p class="sp-eyebrow sp-gold">Today’s reading</p><h2>${esc(r.headline)}</h2><p class="sp-caption">${esc(r.moonLine)}</p>${r.signLine ? `<p class="sp-caption">${window.SaltAstroTerms ? window.SaltAstroTerms.html(r.signLine) : esc(r.signLine)}</p>` : ""}
       <h3>${esc(r.reading.title)}</h3><p>${esc(r.reading.line)}</p><p>${esc(r.reading.practice)}</p>${chipLinks(r.reading.links)}
       <p class="sp-caption">To write about</p><h3>${esc(r.reading.prompt)}</h3>
       <p><a class="rt-text-link" href="${esc(href("log", { date }))}">Write about it</a></p></section>`;

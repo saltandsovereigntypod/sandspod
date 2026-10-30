@@ -5,7 +5,8 @@ import { StyleSheet, Text, View } from 'react-native';
 import { Button } from '../../../components/Button';
 import { Card, MoreScreen, Section } from '../../../components/more/ui';
 import { eclipseMeaning, MOON_IN_SIGN, planetInSign, PHASE_GOOD_FOR, VOID_OF_COURSE_MEANING } from '../../../lib/astro/meanings';
-import { retrogradesBetween } from '../../../lib/astro/planets';
+import { retrogradePeriods } from '../../../lib/astro/forecast';
+import { openTerm, TermChips, TermText } from '../../../components/astro/Explain';
 import { dateFrom, relativeDay, timeOfDay } from '../../../lib/calendar';
 import { usePlace } from '../../../lib/location';
 import { settingsHref } from '../../../lib/settings/links';
@@ -26,7 +27,7 @@ export default function SkyScreen() {
   const year = useMemo(
     () =>
       RETRO_PLANETS.flatMap((planet) =>
-        retrogradesBetween(planet, now, new Date(now.getTime() + 365 * 86_400_000)).map((r) => ({ planet, ...r })),
+        retrogradePeriods(planet, now, new Date(now.getTime() + 365 * 86_400_000)).map((r) => ({ ...r, planet })),
       ).sort((a, b) => a.start.getTime() - b.start.getTime()),
     [now],
   );
@@ -35,18 +36,18 @@ export default function SkyScreen() {
     <MoreScreen title="The sky today" eyebrow="Astrology" back="/today" backLabel="Back to Today">
       <Section label="Sun and Moon">
         <Card>
-          <Text style={type.cardTitle}>{`Sun in ${sky.sunSign}`}</Text>
-          <Text style={type.body}>{`${sky.sunSign} season${sky.sunSignEnds ? `, until ${D(sky.sunSignEnds)}` : ''}: ${sky.sunSeason}.`}</Text>
+          <TermText style={type.cardTitle} text={`Sun in ${sky.sunSign}`} />
+          <TermText style={type.body} skip={['sun']} text={`${sky.sunSign} season${sky.sunSignEnds ? `, until ${D(sky.sunSignEnds)}` : ''}: ${sky.sunSeason}.`} />
         </Card>
         <Card>
-          <Text style={type.cardTitle}>{`${moon.name} in ${moonSign}`}</Text>
-          <Text style={type.body}>{`The Moon in ${moonSign} feels ${MOON_IN_SIGN[moonSign].mood}. Good for ${MOON_IN_SIGN[moonSign].goodFor}. The ${moon.name.toLowerCase()} is good for ${PHASE_GOOD_FOR[moon.name]}.`}</Text>
+          <TermText style={type.cardTitle} text={`${moon.name} in ${moonSign}`} />
+          <TermText style={type.body} text={`The Moon in ${moonSign} feels ${MOON_IN_SIGN[moonSign].mood}. Good for ${MOON_IN_SIGN[moonSign].goodFor}. The ${moon.name.toLowerCase()} is good for ${PHASE_GOOD_FOR[moon.name]}.`} />
           <Text style={[type.caption, sky.vocNow && styles.gold]}>
             {sky.vocNow
               ? `Void of course now, until ${relativeDay(now, sky.voc.end)} at ${timeOfDay(sky.voc.end)}, when it enters ${sky.voc.nextSign}.`
               : `Next void of course: ${D(sky.voc.start)} ${timeOfDay(sky.voc.start)} until ${timeOfDay(sky.voc.end)}, then into ${sky.voc.nextSign}.`}
           </Text>
-          <Text style={type.caption}>{VOID_OF_COURSE_MEANING}</Text>
+          <TermText style={type.caption} text={VOID_OF_COURSE_MEANING} />
         </Card>
       </Section>
 
@@ -57,10 +58,10 @@ export default function SkyScreen() {
             .map((p) => (
               <View key={p.planet} style={styles.row} accessible accessibilityLabel={`${p.planet} at ${p.degree} degrees ${p.sign}${p.retrograde ? ', retrograde' : ''}`}>
                 <View style={styles.rowHead}>
-                  <Text style={styles.planet}>{p.planet}</Text>
+                  <Text style={styles.planet} onPress={() => openTerm(p.planet.toLowerCase())} accessibilityRole="link">{p.planet}</Text>
                   <Text style={styles.position}>{`${p.degree}° ${p.sign}${p.retrograde ? ' ℞' : ''}`}</Text>
                 </View>
-                <Text style={type.caption}>{planetInSign(p.planet, p.sign)}</Text>
+                <TermText style={type.caption} skip={[p.planet.toLowerCase()]} text={planetInSign(p.planet, p.sign)} />
                 {p.nextSign && <Text style={type.caption}>{`Enters ${p.nextSign.sign} ${D(p.nextSign.date)}`}</Text>}
               </View>
             ))}
@@ -71,9 +72,7 @@ export default function SkyScreen() {
         {sky.retrogrades.length === 0 && <Text style={type.caption}>No planet is retrograde right now.</Text>}
         {sky.retrogrades.map((r) => (
           <Card key={r.planet}>
-            <Text style={type.cardTitle}>
-              {r.when === 'now' ? `${r.planet} retrograde until ${D(r.date)}` : `${r.planet} turns retrograde ${D(r.date)}`}
-            </Text>
+            <TermText style={type.cardTitle} text={r.when === 'now' ? `${r.planet} retrograde until ${D(r.date)}` : `${r.planet} turns retrograde ${D(r.date)}`} />
             {!!r.meaning && <Text style={type.caption}>{r.meaning}</Text>}
           </Card>
         ))}
@@ -82,9 +81,10 @@ export default function SkyScreen() {
             <Text style={type.eyebrow}>The year ahead</Text>
             {year.map((r) => (
               <Text key={`${r.planet}-${r.start.getTime()}`} style={type.caption}>
-                {`${r.planet}: ${D(r.start)} – ${D(r.end)}`}
+                {`${r.planet}: ${D(r.start)} – ${D(r.end)} (shadow ${D(r.shadowStart)} – ${D(r.shadowEnd)})`}
               </Text>
             ))}
+            <TermText style={type.caption} text="The shadow period runs from when the planet first reaches the degree where it will turn direct, to when it passes the degree where it turned retrograde." />
           </View>
         )}
       </Section>
@@ -94,11 +94,14 @@ export default function SkyScreen() {
         {sky.eclipses.map((e) => (
           <Card key={e.date.toISOString()}>
             <Text style={type.eyebrow}>{D(e.date)}</Text>
-            <Text style={type.cardTitle}>{eclipseLabel(e)}</Text>
-            <Text style={type.caption}>{eclipseMeaning(e.type, e.kind)}</Text>
+            <TermText style={type.cardTitle} text={eclipseLabel(e)} />
+            <TermText style={type.caption} text={eclipseMeaning(e.type, e.kind)} />
           </Card>
         ))}
       </Section>
+
+      <TermChips ids={['zodiac', 'retrograde', 'shadow-period', 'void-of-course', 'eclipse', 'planetary-hours', 'natal-chart']} label="Learn the words" />
+      <Button label="Your birth chart" variant="outline" onPress={() => router.push('/rituals/craft/cosmic/chart')} />
 
       <Section label="Where you are">
         {here ? (
@@ -119,7 +122,7 @@ export default function SkyScreen() {
             </Card>
             {here.hours ? (
               <View style={styles.list}>
-                <Text style={type.eyebrow}>Planetary hours</Text>
+                <Text style={type.eyebrow} onPress={() => router.push('/rituals/craft/cosmic/hours')} accessibilityRole="link">Planetary hours ›</Text>
                 {here.hours.map((h) => {
                   const current = now.getTime() >= h.start.getTime() && now.getTime() < h.end.getTime();
                   return (

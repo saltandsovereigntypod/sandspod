@@ -32,14 +32,17 @@
   const sky = C.sky.skyNow(now);
   const moon = C.moon.moonState(now);
   const moonSign = sky.planets.find((p) => p.planet === "Moon").sign;
+  // With js/core/astro.js, each retrograde comes with its shadow period, as in the app.
+  const AF = window.SaltCore && window.SaltCore.astro && window.SaltCore.astro.forecast;
   const year = RETRO_PLANETS.flatMap((planet) =>
-    C.planets.retrogradesBetween(planet, now, new Date(now.getTime() + 365 * 86400000)).map((r) => ({ planet, ...r }))
+    (AF ? AF.retrogradePeriods(planet, now, new Date(now.getTime() + 365 * 86400000)) : C.planets.retrogradesBetween(planet, now, new Date(now.getTime() + 365 * 86400000))).map((r) => ({ ...r, planet }))
   ).sort((a, b) => a.start.getTime() - b.start.getTime());
 
   let place = T.readPlace(storage);
   let message = "";
   const draft = { latitude: "", longitude: "" };
 
+  const tx = (text) => (window.SaltAstroTerms ? window.SaltAstroTerms.html(text) : esc(text));
   const section = (label, body) => `<section class="sp-section"><h2 class="sp-label">${esc(label)}</h2>${body}</section>`;
   const card = (body) => `<div class="td-card">${body}</div>`;
 
@@ -47,18 +50,18 @@
     const here = place ? C.sky.placeSky(now, place) : null;
     const sunMoon =
       card(
-        `<h3 class="td-card__title">${esc(`Sun in ${sky.sunSign}`)}</h3>` +
-          `<p>${esc(`${sky.sunSign} season${sky.sunSignEnds ? `, until ${D(sky.sunSignEnds)}` : ""}: ${sky.sunSeason}.`)}</p>`
+        `<h3 class="td-card__title">${tx(`Sun in ${sky.sunSign}`)}</h3>` +
+          `<p>${tx(`${sky.sunSign} season${sky.sunSignEnds ? `, until ${D(sky.sunSignEnds)}` : ""}: ${sky.sunSeason}.`)}</p>`
       ) +
       card(
-        `<h3 class="td-card__title">${esc(`${moon.name} in ${moonSign}`)}</h3>` +
-          `<p>${esc(`The Moon in ${moonSign} feels ${M.MOON_IN_SIGN[moonSign].mood}. Good for ${M.MOON_IN_SIGN[moonSign].goodFor}. The ${moon.name.toLowerCase()} is good for ${M.PHASE_GOOD_FOR[moon.name]}.`)}</p>` +
+        `<h3 class="td-card__title">${tx(`${moon.name} in ${moonSign}`)}</h3>` +
+          `<p>${tx(`The Moon in ${moonSign} feels ${M.MOON_IN_SIGN[moonSign].mood}. Good for ${M.MOON_IN_SIGN[moonSign].goodFor}. The ${moon.name.toLowerCase()} is good for ${M.PHASE_GOOD_FOR[moon.name]}.`)}</p>` +
           `<p class="sp-caption${sky.vocNow ? " td-gold" : ""}">${esc(
             sky.vocNow
               ? `Void of course now, until ${C.calendar.relativeDay(now, sky.voc.end)} at ${t(sky.voc.end)}, when it enters ${sky.voc.nextSign}.`
               : `Next void of course: ${D(sky.voc.start)} ${t(sky.voc.start)} until ${t(sky.voc.end)}, then into ${sky.voc.nextSign}.`
           )}</p>` +
-          `<p class="sp-caption">${esc(M.VOID_OF_COURSE_MEANING)}</p>`
+          `<p class="sp-caption">${tx(M.VOID_OF_COURSE_MEANING)}</p>`
       );
 
     const planets =
@@ -69,7 +72,7 @@
           (p) =>
             `<div class="td-planet"><div class="td-planet__head"><h3 class="td-planet__name">${esc(p.planet)}</h3>` +
             `<span class="td-planet__pos"><span aria-hidden="true">${esc(`${p.degree}° ${p.sign}${p.retrograde ? " ℞" : ""}`)}</span><span class="sr-only">${esc(`${p.degree} degrees ${p.sign}${p.retrograde ? ", retrograde" : ""}`)}</span></span></div>` +
-            `<p class="sp-caption">${esc(M.planetInSign(p.planet, p.sign))}</p>` +
+            `<p class="sp-caption">${tx(M.planetInSign(p.planet, p.sign))}</p>` +
             (p.nextSign ? `<p class="sp-caption">${esc(`Enters ${p.nextSign.sign} ${D(p.nextSign.date)}`)}</p>` : "") +
             `</div>`
         )
@@ -81,14 +84,15 @@
       sky.retrogrades
         .map((r) =>
           card(
-            `<h3 class="td-card__title">${esc(r.when === "now" ? `${r.planet} retrograde until ${D(r.date)}` : `${r.planet} turns retrograde ${D(r.date)}`)}</h3>` +
+            `<h3 class="td-card__title">${tx(r.when === "now" ? `${r.planet} retrograde until ${D(r.date)}` : `${r.planet} turns retrograde ${D(r.date)}`)}</h3>` +
               (r.meaning ? `<p class="sp-caption">${esc(r.meaning)}</p>` : "")
           )
         )
         .join("") +
       (year.length
         ? `<div class="td-planets"><p class="sp-eyebrow" style="color:var(--muted)">The year ahead</p>` +
-          year.map((r) => `<p class="sp-caption">${esc(`${r.planet}: ${D(r.start)} – ${D(r.end)}`)}</p>`).join("") +
+          year.map((r) => `<p class="sp-caption">${esc(`${r.planet}: ${D(r.start)} – ${D(r.end)}${r.shadowStart ? ` (shadow ${D(r.shadowStart)} – ${D(r.shadowEnd)})` : ""}`)}</p>`).join("") +
+          (AF ? `<p class="sp-caption">${tx("The shadow period runs from when the planet first reaches the degree where it will turn direct, to when it passes the degree where it turned retrograde.")}</p>` : "") +
           `</div>`
         : "");
 
@@ -97,8 +101,8 @@
       sky.eclipses
         .map((e) =>
           card(
-            `<p class="sp-eyebrow" style="color:var(--muted)">${esc(D(e.date))}</p><h3 class="td-card__title">${esc(C.sky.eclipseLabel(e))}</h3>` +
-              `<p class="sp-caption">${esc(M.eclipseMeaning(e.type, e.kind))}</p>`
+            `<p class="sp-eyebrow" style="color:var(--muted)">${esc(D(e.date))}</p><h3 class="td-card__title">${tx(C.sky.eclipseLabel(e))}</h3>` +
+              `<p class="sp-caption">${tx(M.eclipseMeaning(e.type, e.kind))}</p>`
           )
         )
         .join("");

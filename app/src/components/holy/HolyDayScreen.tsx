@@ -4,6 +4,7 @@ import { StyleSheet, Text, View } from 'react-native';
 
 import { Button } from '../../components/Button';
 import { Card, MoreScreen, Paragraphs, Section, Tags } from '../../components/more/ui';
+import { TermChips, TermText } from '../astro/Explain';
 import { ResearchFooter } from '../../components/ResearchNote';
 import { MOON_CALENDAR } from '../../lib/calendars/moon';
 import { timeOfDay } from '../../lib/calendar';
@@ -50,8 +51,15 @@ export function HolyDayScreen({ back = '/today', backLabel = 'Back to Today' }: 
 
   return (
     <MoreScreen title={page.title} eyebrow={page.tradition} back={back} backLabel={backLabel}>
-      <Text style={styles.summary}>{page.summary}</Text>
+      {/* Moon pages and the Wheel's solar festivals speak astrology; their terms are tappable. */}
+      {page.ref.startsWith('moon-') || page.ref.startsWith('wheel-') ? (
+        <TermText style={styles.summary} text={page.summary} skip={['venus', 'mars', 'mercury', 'jupiter', 'saturn']} />
+      ) : (
+        <Text style={styles.summary}>{page.summary}</Text>
+      )}
+      {page.ref.startsWith('wheel-') && <TermChips ids={['solstice-equinox', 'sun', 'cardinal', 'fixed', 'zodiac']} label="The sky behind the Wheel" />}
       {page.ref.startsWith('moon-') && <MoonTonight />}
+      {page.ref.startsWith('moon-') && <TermChips ids={['moon-phases', 'lunation', 'void-of-course', 'eclipse', 'moon']} label="The astrology behind it" />}
       <KeepInGrimoire ref_={page.ref} />
 
       <Section label="Who is honoured, and why">
@@ -152,11 +160,11 @@ function MoonTonight() {
   return (
     <Card>
       <Text style={styles.label}>Tonight</Text>
-      <Text style={type.body}>{`${moon.name} in ${moonSign(now)}, ${Math.round(moon.illumination * 100)}% lit`}</Text>
+      <TermText style={type.body} text={`${moon.name} in ${moonSign(now)}, ${Math.round(moon.illumination * 100)}% lit`} />
       {!!name && <Text style={type.caption}>{name}</Text>}
       {voc.length > 0 ? (
         voc.map((v, i) => (
-          <Text key={i} style={type.caption}>{`Void of course ${timeOfDay(v.start)}–${timeOfDay(v.end)}, until it enters ${v.nextSign}: traditionally a time to finish things, not begin them.`}</Text>
+          <TermText key={i} style={type.caption} text={`Void of course ${timeOfDay(v.start)}–${timeOfDay(v.end)}, until it enters ${v.nextSign}: traditionally a time to finish things, not begin them.`} />
         ))
       ) : (
         <Text style={type.caption}>No void-of-course time today.</Text>

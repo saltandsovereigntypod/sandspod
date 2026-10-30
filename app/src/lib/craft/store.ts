@@ -164,6 +164,13 @@ export function useCraft<T>(collection: string): { entries: CraftEntry<T>[]; rea
   return { entries, ready: list !== null };
 }
 
+/** A collection's entries once, after a sync with the account when signed in (outside React). */
+export async function listEntriesOnce<T>(collection: string): Promise<CraftEntry<T>[]> {
+  if (userId) await syncCollection(collection);
+  const list = await load(collection);
+  return list.filter((e) => !e.deletedAt && (!e.syncedTo || !userId || e.syncedTo === userId)) as CraftEntry<T>[];
+}
+
 /** For tests: forget everything held in memory. */
 export function _resetCraftCache() {
   cache.clear();

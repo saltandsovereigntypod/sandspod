@@ -456,6 +456,17 @@ export function tonightAltar(
   };
 }
 
+/**
+ * A starter altar for one of the seven planets: the altar of its weekday
+ * (0 = the Sun's Sunday … 6 = Saturn's Saturday), with no holiday or moon
+ * added. The birth chart's "natal altar" opens this for the chart ruler.
+ */
+export function planetAltar(dayIndex: number, date: Date): TonightAltar {
+  const day = ((Math.round(dayIndex) % 7) + 7) % 7;
+  const on = new Date(date.getFullYear(), date.getMonth(), date.getDate() + ((day - date.getDay() + 7) % 7), 12);
+  return tonightAltar(on, [], '', []);
+}
+
 // ── A shrine for a deity ─────────────────────────────────────────────────
 
 /** Library deity keys whose statue goes by another id in the cabinet. */

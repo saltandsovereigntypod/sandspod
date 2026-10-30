@@ -1,0 +1,70 @@
+/* Astrology on the website: tappable terms, the explanation dialog, the
+   Simple · Detailed switch, and the chart and hour wheels (js/astro-terms.js,
+   practice/cosmic/). Matches the app's components/astro. */
+
+.astro-term {
+  display: inline;
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  color: var(--gold);
+  text-decoration: underline dotted rgba(226, 195, 109, 0.55);
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+.astro-term:hover { color: #e2c36d; }
+.astro-term:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; border-radius: 3px; }
+
+.astro-level { display: inline-flex; border: 1px solid rgba(226, 195, 109, 0.4); border-radius: 999px; overflow: hidden; }
+.astro-level button { min-height: 40px; min-width: 92px; padding: 0 14px; border: 0; background: none; color: var(--cream); font: inherit; cursor: pointer; }
+.astro-level button[aria-pressed="true"] { background: #e2c36d; color: #102118; font-weight: 600; }
+.astro-level button:focus-visible { outline: 2px solid var(--gold); outline-offset: -2px; }
+
+.astro-dialog {
+  width: min(560px, calc(100vw - 32px));
+  max-height: min(86vh, 900px);
+  padding: 0;
+  border: 1px solid rgba(226, 195, 109, 0.35);
+  border-radius: 20px;
+  background: #142219;
+  color: var(--cream);
+  box-shadow: var(--shadow);
+}
+.astro-dialog::backdrop { background: rgba(3, 8, 5, 0.6); }
+.astro-dialog__body { display: grid; gap: 14px; padding: 18px 20px 22px; line-height: 1.55; }
+.astro-dialog__body p { margin: 0; }
+.astro-dialog__head { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; }
+.astro-dialog__head h2 { margin: 2px 0 0; font-family: "Cormorant Garamond", serif; font-size: 1.7rem; }
+.astro-part { display: grid; gap: 4px; }
+.astro-part__head { font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase; color: #e2c36d; font-weight: 600; }
+.astro-link { color: #e2c36d; font-weight: 600; min-height: 44px; display: inline-flex; align-items: center; }
+
+.astro-wheel { width: 100%; max-width: 460px; height: auto; display: block; margin: 0 auto; }
+.astro-wheel .wheel-btn { cursor: pointer; }
+.astro-wheel .wheel-btn:focus { outline: none; }
+.astro-wheel .wheel-btn:focus-visible text { fill: #fff8df; }
+.astro-wheel .wheel-btn:focus-visible path, .astro-wheel .wheel-btn:focus-visible circle { stroke: #fff8df; stroke-width: 2; }
+.astro-wheel text { font-family: "Source Serif 4", "Segoe UI Symbol", "Apple Symbols", serif; pointer-events: none; }
+
+.astro-rows { display: grid; gap: 6px; }
+.astro-row {
+  display: flex; align-items: center; gap: 12px; width: 100%; min-height: 52px; padding: 8px 12px;
+  border: 0; border-radius: 16px; background: #142219; color: var(--cream); font: inherit; text-align: left; cursor: pointer;
+}
+.astro-row:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+.astro-row__glyph { width: 28px; font-size: 1.25rem; color: #e2c36d; text-align: center; flex: none; }
+.astro-row__text { display: grid; gap: 2px; }
+.astro-row__title { font-family: "Cormorant Garamond", serif; font-size: 1.2rem; }
+.astro-row__detail { font-size: 0.85rem; color: var(--muted); }
+
+.astro-grid { display: grid; gap: 0; justify-content: start; }
+.astro-grid__row { display: flex; }
+.astro-grid__cell { width: 28px; height: 28px; display: inline-flex; align-items: center; justify-content: center; border: 1px solid rgba(244, 236, 216, 0.08); background: none; color: var(--cream); font: inherit; font-size: 0.85rem; padding: 0; }
+.astro-grid__cell--head { background: #1c2e22; }
+button.astro-grid__cell { cursor: pointer; }
+.astro-bar { display: grid; gap: 4px; }
+.astro-bar__track { height: 8px; border-radius: 4px; background: #1c2e22; overflow: hidden; }
+.astro-bar__fill { height: 8px; border-radius: 4px; background: #e2c36d; }
+.astro-magic { border-left: 2px solid rgba(226, 195, 109, 0.4); padding-left: 12px; display: grid; gap: 4px; }
+.astro-wheel-wrap { display: grid; justify-items: center; }
