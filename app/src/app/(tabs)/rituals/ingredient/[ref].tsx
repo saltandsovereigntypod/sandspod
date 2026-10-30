@@ -61,7 +61,12 @@ export default function Ingredient() {
         </Card>
       )}
 
-      <Button label="Build a spell" variant="outline" onPress={() => router.push('/rituals/spell')} />
+      <Button
+        label="Use in a spell"
+        variant="outline"
+        accessibilityHint="Opens the spell builder with this already chosen"
+        onPress={() => router.push({ pathname: '/rituals/spell', params: { add: item.ref, ...(goodFor[0] ? { intention: goodFor[0].key } : {}) } })}
+      />
     </RitualScreen>
   );
 }

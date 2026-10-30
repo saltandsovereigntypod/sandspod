@@ -84,7 +84,7 @@
         <nav class="sp-list" aria-label="Do">
           ${UI.row({ href: "/altar/?ritual=1", title: "Begin a ritual", detail: "From one of your templates, or a quiet working of your own" })}
           ${UI.row({ href: "/rituals/planner/", title: "Plan a ritual", detail: "The moon phase and weekday for your intention" })}
-          ${UI.row({ href: "/rituals/spell/", title: "Build a spell", detail: "Ingredients from the Library, steps to follow" })}
+          ${UI.row({ href: "/rituals/spell/", title: "Build a spell", detail: "Purpose, form, Library ingredients, timing and words" })}
           ${UI.row({ href: "/practice/", title: "Cycle, astrology, divination and more", detail: "Now under Craft, at the top · with the sigil maker and tools for every path" })}
         </nav>
       </section>`;

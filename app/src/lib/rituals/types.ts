@@ -200,6 +200,8 @@ export type TemplateDraft = {
   kind: 'template' | 'spell';
   /** Where it was copied from (Community Rituals), kept in the template's metadata as "from". */
   from?: Record<string, unknown> | null;
+  /** The spell builder's choices (lib/rituals/spellcraft/spec.ts), kept in the template's metadata as "spell". */
+  spell?: Record<string, unknown> | null;
 };
 
 export type StepDraft = {

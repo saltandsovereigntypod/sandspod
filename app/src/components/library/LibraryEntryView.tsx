@@ -18,6 +18,14 @@ import { colors, fonts, radius, type } from '../../theme';
 import { ConnectedTo, LibraryJourney, RelationshipManager } from './LibraryConnections';
 import { DeityYours } from './DeityYours';
 
+/** The spell builder with this Library entry chosen, for the kinds a spell can use. */
+function spellHref(entry: LibraryEntry): Href | null {
+  const ref = entry.traditionalRef ?? '';
+  const [, kind, key] = /^traditional\/(herb|crystal|candle|deity)\/(.+)$/.exec(ref) ?? [];
+  if (!kind || !key) return null;
+  return { pathname: '/rituals/spell', params: kind === 'deity' ? { deity: key } : { add: ref } } as Href;
+}
+
 type Props = {
   entryId: string;
   back: Href;
@@ -54,6 +62,8 @@ export function LibraryEntryView({ entryId, back, backLabel, hrefFor, editHref }
   const record = entry.myPractice ? ritualRecord(entry.type, entry.myPractice) : null;
   // Plants, resins and stones whose sourcing raises real concerns.
   const sourcing = sourcingForEntry(entry);
+  // Herbs, stones, candle colours and deities open the spell builder with them chosen.
+  const spellLink = spellHref(entry);
 
   const openByName = (name: string) => {
     const target = findByName(entries, name);
@@ -108,6 +118,15 @@ export function LibraryEntryView({ entryId, back, backLabel, hrefFor, editHref }
           variant="outline"
           accessibilityHint={`Opens ${journey.title}: study, practice and a rite of self-dedication`}
           onPress={() => router.push({ pathname: '/rituals/journeys/[id]', params: { id: journey.id } } as Href)}
+        />
+      )}
+
+      {!!spellLink && (
+        <Button
+          label="Use in a spell"
+          variant="outline"
+          accessibilityHint={`Opens the spell builder with ${entry.name} already chosen`}
+          onPress={() => router.push(spellLink)}
         />
       )}
 

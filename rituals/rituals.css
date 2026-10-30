@@ -120,3 +120,11 @@ a.sp-chip { display: inline-flex; align-items: center; }
 .rt-check-row { display: flex; gap: 10px; align-items: flex-start; }
 .rt-check-row input { margin-top: 4px; }
 [data-share-form] { display: grid; gap: 16px; }
+
+/* The spell builder's "Print": only the spell itself, as plain text. */
+.sb-print { display: none; }
+@media print {
+  body * { visibility: hidden; }
+  .sb-print, .sb-print * { visibility: visible; }
+  .sb-print { display: block; position: absolute; inset: 0 auto auto 0; width: 100%; white-space: pre-wrap; font: 12pt/1.5 Georgia, serif; color: #000; background: #fff; }
+}

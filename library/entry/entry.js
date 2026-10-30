@@ -106,6 +106,7 @@
       ${factsHtml(model.facts)}
       <div data-sourcing></div>
       ${model.type === "deity" ? `<section class="lb-deity" aria-label="${esc(`${model.name} in your practice`)}" data-deity-yours="${esc(model.deityKey || "")}" data-deity-name="${esc(model.name)}"></section>` : ""}
+      ${model.spellHref ? `<div class="sp-actions"><a class="button button--ghost" href="${esc(model.spellHref)}" title="${esc(`Opens the spell builder with ${model.name} already chosen`)}">Use in a spell</a></div>` : ""}
       ${edit}
       ${record}
       ${model.empty ? `<div class="sp-card"><p>Nothing to show here with your current Living Library settings.</p></div>` : ""}

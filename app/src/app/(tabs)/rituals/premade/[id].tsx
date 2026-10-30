@@ -128,6 +128,12 @@ export default function PremadeView() {
         {!!rituals.active && <Body muted>Finish the ritual that’s under way before beginning another.</Body>}
         <Button label="Plan a night for it" variant="outline" onPress={plan} />
         <Button label="Find a good time" variant="outline" accessibilityHint="The best times ahead for this working, from the moon and the planets" onPress={findTime} />
+        <Button
+          label="Adapt this in the builder"
+          variant="outline"
+          accessibilityHint="Opens it in the spell builder: change its form, ingredients, words and steps, and keep it as your own"
+          onPress={() => router.push({ pathname: '/rituals/spell', params: { premade: premade.id } })}
+        />
         {session ? (
           <Button label={busy === 'save' ? 'Saving…' : 'Save a copy to my templates'} variant="outline" disabled={!!busy} onPress={save} />
         ) : (

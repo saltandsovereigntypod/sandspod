@@ -117,6 +117,14 @@ export default function TemplateView() {
         ingredients={ingredients}
       />
 
+      {template.metadata?.kind === 'spell' && (
+        <Button
+          label="Open in the spell builder"
+          variant="outline"
+          accessibilityHint="Change its form, ingredients, deities, timing, words and steps"
+          onPress={() => router.push({ pathname: '/rituals/spell', params: { templateId: template.id } })}
+        />
+      )}
       <Button
         label="Edit template"
         variant="outline"

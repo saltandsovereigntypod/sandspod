@@ -88,6 +88,12 @@ export default function PlanetGuideScreen() {
             />
           ))}
         </Chips>
+        <Button
+          label={`Build a spell for ${g.day}`}
+          variant="outline"
+          accessibilityHint={`Opens the spell builder set for ${planet}: its day, colours, herbs, stones and gods`}
+          onPress={() => router.push({ pathname: '/rituals/spell', params: { planet, ...(intentsForPlanet(planet)[0] ? { intent: intentsForPlanet(planet)[0].key } : {}) } } as unknown as Href)}
+        />
       </Card>
 
       <Card>

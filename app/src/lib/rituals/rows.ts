@@ -104,6 +104,7 @@ export function templatePayload(
   if (draft.kind === 'spell') metadata.kind = 'spell';
   if (draft.ingredients.length) metadata.ingredients = draft.ingredients;
   if (draft.from) metadata.from = draft.from;
+  if (draft.spell) metadata.spell = draft.spell;
 
   return {
     template: {

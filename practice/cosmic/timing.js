@@ -158,7 +158,9 @@
           advice
             ? h.section(
                 `The best times in ${SPAN_WORDS[st.days]}`,
-                advice.windows.length ? advice.windows.map((w, n) => windowCard(w, n === 0)).join("") : h.muted("Nothing stands out in this span. Try a longer one, or turn a factor down.")
+                (advice.windows.length ? advice.windows.map((w, n) => windowCard(w, n === 0)).join("") : h.muted("Nothing stands out in this span. Try a longer one, or turn a factor down.")) +
+                  // Not already timing a spell or plan: build one for this intent (app: timing.tsx).
+                  (!q("fromSpell") && !q("templateId") && !q("planId") ? h.actions([h.button(`Build a spell for ${i.label.toLowerCase()}`, { variant: "text", href: `/rituals/spell/?intent=${encodeURIComponent(i.key)}` })]) : "")
               )
             : "",
           h.section(

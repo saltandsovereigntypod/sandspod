@@ -1039,7 +1039,13 @@
           window.SaltCore.timing
             ? `${h.muted("Find a good time for")}${h.chips(window.SaltCore.timing.timing.intentsForPlanet(planet).map((i) => `<a class="sp-chip" href="/practice/cosmic/timing/?intent=${encodeURIComponent(i.key)}" aria-label="${esc(`Find a good time for ${i.label.toLowerCase()}`)}">${esc(i.label)}</a>`))}`
             : ""
-        }`
+        }${h.actions([
+          // The spell builder, set for this planet's day (app: planet.tsx "Build a spell for …").
+          h.button(`Build a spell for ${g.day}`, {
+            variant: "ghost",
+            href: `/rituals/spell/?planet=${encodeURIComponent(planet)}${window.SaltCore.timing && window.SaltCore.timing.timing.intentsForPlanet(planet)[0] ? `&intent=${encodeURIComponent(window.SaltCore.timing.timing.intentsForPlanet(planet)[0].key)}` : ""}`
+          })
+        ])}`
       ),
       h.card(
         `${h.label("Correspondences")}${h.p(`Metal: ${g.metal}`)}${h.p(`Colours: ${g.colours.join(", ")}`)}${h.p(`Incense: ${g.incense.join(", ")}`)}${h.p(`Number and square: ${g.square}`)}${h.p(`Angel: ${g.angel.name} (${g.angel.source}). Intelligence: ${g.intelligence} (Agrippa).`)}${h.label("Herbs")}${h.chips(g.herbs.map(chip))}${h.label("Stones")}${h.chips(g.stones.map(chip))}${fromLibrary.length ? `${h.label(`Everything in the Living Library under ${planet}`)}${h.chips(fromLibrary.slice(0, 24).map(chip))}` : ""}`

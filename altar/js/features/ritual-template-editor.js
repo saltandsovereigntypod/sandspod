@@ -233,6 +233,7 @@ function renderRitualTemplateForm(template = null) {
         <button class="ritual-template-action-button is-primary" type="submit">
           ${template ? "Save Changes" : "Save Ritual Template"}
         </button>
+        ${template && template.metadata && template.metadata.kind === "spell" ? `<a class="ritual-template-action-button" href="/rituals/spell/?templateId=${encodeURIComponent(template.id)}">Open in the spell builder</a>` : ""}
         ${template ? `<a class="ritual-template-action-button" href="/rituals/community/?share=1&template=${encodeURIComponent(template.id)}">Share with the community</a>` : ""}
         ${template ? `<button class="ritual-template-action-button is-danger" type="button" data-archive-ritual-template="${template.id}">Archive Template</button>` : ""}
       </div>
