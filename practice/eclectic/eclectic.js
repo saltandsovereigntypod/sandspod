@@ -32,7 +32,7 @@
     const picks = C.sampler(new Date());
     const workings = premade.PREMADE.filter((p) => p.practices.includes("eclectic"));
     return [
-      kit.back(kit.href.hub, "Craft tools"),
+      kit.back(kit.href.hub, "Craft"),
       kit.head({ eyebrow: "Craft tools", title: "Eclectic", lede: about }),
       kit.section(
         "Tools",

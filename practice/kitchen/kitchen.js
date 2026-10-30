@@ -29,7 +29,7 @@
     const guide = H.TIDE_GUIDES[H.homeTide(new Date())];
     const paths = { "Pantry correspondences": "pantry", "Simmer pot": "simmer", "Home by the moon": "moon", "Kitchen spell book": "spells" };
     return [
-      kit.back(kit.href.hub, "Craft tools"),
+      kit.back(kit.href.hub, "Craft"),
       kit.head({ eyebrow: "Craft tools", title: practice?.name ?? "Kitchen & hearth", lede: practice?.about }),
       kit.card(kit.p(guide.summary), { gold: true, label: `In the house tonight · ${guide.label}` }),
       kit.section("Tools", kit.list(practices.CRAFT_TOOLS.kitchen.map((t) => kit.row({ url: kit.href.tool("kitchen", paths[t.title]), title: t.title, detail: t.detail }))), { id: "tools" }),

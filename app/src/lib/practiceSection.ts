@@ -1,16 +1,21 @@
-// Which half of the Practice tab (Grimoire or Rituals) was used last, so the
-// tab reopens it. Kept in memory and on the device; nothing breaks without it.
+// Which of the Practice tab's three sections (Grimoire, Rituals or Craft) was
+// used last, so the tab reopens it. Kept in memory and on the device; nothing
+// breaks without it. Which section a screen belongs to is in
+// practiceSections.ts (pure, and tested).
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-export type PracticeSection = 'grimoire' | 'rituals';
+import { asPracticeSection, type PracticeSection } from './practiceSections';
+
+export type { PracticeSection } from './practiceSections';
 
 const KEY = 'saltPracticeSection';
 let last: PracticeSection = 'grimoire';
 
 AsyncStorage.getItem(KEY)
   .then((value) => {
-    if (value === 'grimoire' || value === 'rituals') last = value;
+    const stored = asPracticeSection(value);
+    if (stored) last = stored;
   })
   .catch(() => {});
 

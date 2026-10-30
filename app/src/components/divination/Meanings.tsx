@@ -16,8 +16,9 @@ import { colors, fonts, type } from '../../theme';
  * Card meanings: Tarot, Runes, Ogham and the oracle decks as sibling
  * drop-downs, each card or stave a row with its picture or letter and its
  * three words, opening its page. Searching opens the ones that match.
- * The Grimoire shows it under Traditional Information; Rituals → Divination
- * shows it as "Card meanings", opening each page inside Rituals (`inRituals`).
+ * The Grimoire shows it under Traditional Information; Craft → Divination
+ * shows it as "Card meanings", opening each page inside the Rituals stack, where
+ * Craft's screens live (`inRituals`).
  */
 export function DivinationMeanings({
   groups,

@@ -19,7 +19,7 @@ export default function EclecticPractice() {
   const workings = useMemo(() => PREMADE.filter((p) => p.practices.includes('eclectic')), []);
 
   return (
-    <RitualScreen back="Craft tools">
+    <RitualScreen back="Craft">
       <Title eyebrow="Craft tools">Eclectic</Title>
       {!!about && <Body muted>{about}</Body>}
 
@@ -37,7 +37,7 @@ export default function EclecticPractice() {
             />
           ))}
         </List>
-        <Body muted>The sigil maker belongs to every practice, so it’s on the Rituals home too.</Body>
+        <Body muted>The sigil maker belongs to every practice, so it’s on the Craft home too.</Body>
       </View>
 
       <View style={ui.gapSmall}>

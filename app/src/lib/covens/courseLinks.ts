@@ -51,7 +51,7 @@ export const COURSE_PAGES: Record<string, Place> = {
   cycle: { label: 'Cycle & Moon', app: '/rituals/cycle', site: '/rituals/cycle/' },
   patron: { label: 'Your deities (patron settings)', app: '/more/settings/deities', site: '/more/settings/deities/' },
   altar: { label: 'Your altar', app: '/altar', site: '/altar/' },
-  practice: { label: 'Practice tools', app: '/rituals/craft', site: '/practice/' },
+  practice: { label: 'Craft: cycle, astrology, divination and tools for every path', app: '/rituals/craft', site: '/practice/' },
   'green-season': { label: 'The green witch’s season', app: '/rituals/craft/green/season', site: '/practice/green/season/' },
   'folk-calendar': { label: 'The folk calendar', app: '/rituals/craft/folk/calendar', site: '/practice/folk/calendar/' },
   ancestors: { label: 'Your ancestors', app: '/rituals/craft/hedge/ancestors', site: '/practice/hedge/ancestors/' },

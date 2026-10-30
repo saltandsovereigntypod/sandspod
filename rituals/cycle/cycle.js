@@ -1,5 +1,5 @@
 /*
- * Practice → Rituals → Cycle & Moon on the website, as the app has it
+ * Practice → Craft → Cycle & Moon on the website (its address stays /rituals/cycle/), as the app has it
  * (app/src/app/(tabs)/rituals/cycle/): the tool itself with today's exact
  * reading, then ?view=log (a day, with symptoms), past (past periods: a
  * calendar, a pasted list, editing), history (What am I?), insights

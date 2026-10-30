@@ -51,7 +51,8 @@ test("Cycle & Moon keeps to its own storage, its own words and the private remin
   assert.match(fs.readFileSync("today/today.js", "utf8"), /data-cycle-today/);
   assert.match(fs.readFileSync("today/cycle-today.js", "utf8"), /cycleMoon\.key\./);
   // Practice → Rituals links it, and help can take you there.
-  assert.match(fs.readFileSync("rituals/js/home.js", "utf8"), /\/rituals\/cycle\//);
+  // Cycle & Moon is on the Craft home (Practice → Craft), at its old address.
+  assert.match(fs.readFileSync("practice/hub.js", "utf8"), /\/rituals\/cycle\//);
   const notes = require("../help/web-notes.js");
   assert.equal(notes.siteHref("/rituals/cycle"), "/rituals/cycle/");
   assert.equal(notes.siteHref("/rituals/cycle/settings"), "/rituals/cycle/?view=settings");

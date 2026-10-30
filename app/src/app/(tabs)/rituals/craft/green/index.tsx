@@ -28,7 +28,7 @@ export default function GreenPractice() {
   ];
 
   return (
-    <RitualScreen back="Craft tools">
+    <RitualScreen back="Craft">
       <Title eyebrow="Craft tools">Green</Title>
       {!!about && <Body muted>{about}</Body>}
 

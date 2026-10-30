@@ -36,7 +36,7 @@
     const paths = ["moon", "season", "garden"];
     const details = [`${M.QUARTERS[night.quarter].short} · ${night.phase}`, null, growing ? `${kit.plural(growing, "plant", "plants")} growing` : null];
     return [
-      kit.back(kit.href.hub, "Craft tools"),
+      kit.back(kit.href.hub, "Craft"),
       kit.head({ eyebrow: "Craft tools", title: "Green", lede: about }),
       kit.card(`${kit.big(M.QUARTERS[night.quarter].headline)}${kit.muted(`${night.phase}, moon in ${night.sign}`)}`, { gold: true, label: "Tonight in the garden" }),
       kit.section("Tools", kit.list(practices.CRAFT_TOOLS.green.map((t, i) => kit.row({ url: kit.href.tool("green", paths[i]), title: t.title, detail: details[i] ?? t.detail }))), { id: "tools" }),

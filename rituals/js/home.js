@@ -1,4 +1,5 @@
-/* Rituals home (app: rituals/index.tsx). */
+/* Rituals home (app: rituals/index.tsx): ritual work. The tools that aren't
+ * rituals are on the Craft home (/practice/, practice/hub.js). */
 (function (global) {
   "use strict";
 
@@ -84,10 +85,7 @@
           ${UI.row({ href: "/altar/?ritual=1", title: "Begin a ritual", detail: "From one of your templates, or a quiet working of your own" })}
           ${UI.row({ href: "/rituals/planner/", title: "Plan a ritual", detail: "The moon phase and weekday for your intention" })}
           ${UI.row({ href: "/rituals/spell/", title: "Build a spell", detail: "Ingredients from the Library, steps to follow" })}
-          ${UI.row({ href: "/sigil/", title: "Sigil maker", detail: "An intent made into one mark, from its letters or a planetary square" })}
-          ${UI.row({ href: "/divination/", title: "Divination", detail: "Draw cards, runes or ogham · your readings, decks and card meanings" })}
-          ${UI.row({ href: "/rituals/cycle/", title: "Cycle & Moon", detail: "Your cycle beside the moon, or the moon alone · private and encrypted" })}
-          ${UI.row({ href: "/practice/cosmic/chart/", title: "Astrology", detail: "Your birth chart, today’s transits and planetary hours · private and encrypted" })}
+          ${UI.row({ href: "/practice/", title: "Cycle, astrology, divination and more", detail: "Now under Craft, at the top · with the sigil maker and tools for every path" })}
         </nav>
       </section>`;
     const learnList = `
@@ -96,9 +94,7 @@
         <nav class="sp-list" aria-label="Learn">
           ${UI.row({ href: "/rituals/premade/", title: "Workings library", detail: `${R.premade.PREMADE.length} premade rituals and spells for every practice and path` })}
           ${UI.row({ href: "/rituals/community/", title: "Community Rituals", detail: "Rituals and spells the community has shared · search, add to yours or do once" })}
-          ${UI.row({ href: "/practice/cosmic/learn/", title: "Learn astrology", detail: "Every planet, sign, house and aspect explained · simply or in depth" })}
           ${UI.row({ href: "/rituals/journeys/", title: "Dedication journeys", detail: "Study, practice and a rite of self-dedication, for each path and god" })}
-          ${UI.row({ href: "/practice/", title: "Craft tools", detail: "Tools for your craft: garden, hearth, dreams, stars, stones, tides and more" })}
         </nav>
       </section>`;
 

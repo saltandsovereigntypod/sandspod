@@ -52,14 +52,14 @@ test("the old Hedge and Eclectic addresses send people on, keeping the query", (
   }
 });
 
-test("links point to the new pages, and they sit under Practice → Rituals", () => {
+test("links point to the new pages, and they sit under Practice → Craft", () => {
   assert.match(read("practice/hedge/hedge.js"), /readings: "\/divination\/"/);
   assert.match(read("today/today.js"), /\/divination\/draw\/\?spread=daily/);
   assert.match(read("grimoire/js/ui/modals.js"), /\/sigil\/\?from=grimoire/);
-  assert.match(read("rituals/js/home.js"), /href: "\/sigil\/"/);
+  assert.match(read("practice/hub.js"), /url: "\/sigil\/"/);
   assert.match(read("js/my-sanctuary.js"), /href="\/divination\/"/);
   assert.equal(SiteNav.activeTab("/divination/draw/"), "practice");
-  assert.equal(SiteNav.practiceSection("/divination/draw/"), "rituals");
+  assert.equal(SiteNav.practiceSection("/divination/draw/"), "craft");
   assert.equal(SiteNav.activeTab("/sigil/"), "practice");
-  assert.equal(SiteNav.practiceSection("/sigil/"), "rituals");
+  assert.equal(SiteNav.practiceSection("/sigil/"), "craft");
 });

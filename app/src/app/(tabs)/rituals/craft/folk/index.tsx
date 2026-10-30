@@ -35,7 +35,7 @@ export default function FolkPractice() {
   ];
 
   return (
-    <RitualScreen back="Craft tools">
+    <RitualScreen back="Craft">
       <Title eyebrow="Craft tools">Traditional & folk</Title>
       {!!about && <Body muted>{about}</Body>}
 

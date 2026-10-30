@@ -2,7 +2,9 @@
 // guide) uses, so a rename happens once. Labels only: no route or stored key
 // depends on them.
 
-/** The Craft hub (rituals/craft): a page of tools for each kind of practice. */
+/** Practice's third section (rituals/craft): the tools that aren't rituals. */
+export const CRAFT = 'Craft';
+/** On the Craft home, a page of tools for each kind of practice (rituals/craft/<practice>). */
 export const CRAFT_TOOLS = 'Craft tools';
 /** Settings → the kinds of practice you keep (the `my_practice` setting). */
 export const YOUR_CRAFTS = 'Your crafts';

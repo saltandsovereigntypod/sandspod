@@ -1,25 +1,22 @@
-// The Grimoire | Rituals switch at the top of the Practice tab's two halves.
-// Each half is its own route, so choosing one navigates there.
+// The Grimoire | Rituals | Craft switch at the top of the Practice tab's three
+// homes. Grimoire is its own route; Rituals and Craft share the Rituals stack
+// (lib/practiceSections.ts), so choosing one navigates there.
 
 import { router, type Href } from 'expo-router';
 
-import { rememberPracticeSection, type PracticeSection } from '../lib/practiceSection';
+import { rememberPracticeSection } from '../lib/practiceSection';
+import { PRACTICE_SECTIONS, type PracticeSection } from '../lib/practiceSections';
 import { SegmentedSwitch } from './SegmentedSwitch';
-
-const SECTIONS: { key: PracticeSection; label: string; href: Href }[] = [
-  { key: 'grimoire', label: 'Grimoire', href: '/grimoire' },
-  { key: 'rituals', label: 'Rituals', href: '/rituals' },
-];
 
 export function PracticeSwitch({ current }: { current: PracticeSection }) {
   return (
     <SegmentedSwitch
       label="Practice"
-      options={SECTIONS}
+      options={PRACTICE_SECTIONS}
       value={current}
       onChange={(key) => {
         rememberPracticeSection(key);
-        router.navigate(SECTIONS.find((s) => s.key === key)!.href);
+        router.navigate(PRACTICE_SECTIONS.find((s) => s.key === key)!.href as Href);
       }}
     />
   );

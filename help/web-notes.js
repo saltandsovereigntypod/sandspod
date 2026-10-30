@@ -11,7 +11,7 @@
     "getting-started": "On the website, the same tabs sit in the bar at the top of the page on a computer and along the bottom on a phone: Today, Altar, Practice, Coven and More, with the podcast under the logo. Where a step says tap, click.",
     altar: "On the website, the Altar is its own page (Altar in the bar). Most tools are there under the same names; a few, like turning the phone sideways or the home screen widget, belong to the app alone.",
     grimoire: "On the website, the Grimoire opens your own book with the Living Library shelves beside it. Anyone can read the Living Library itself under More → Living Library.",
-    rituals: "On the website, Practice → Rituals holds the same planner, premade book, journal and Your moon. A ritual can also be run at the altar’s Ritual Companion.",
+    rituals: "On the website, Practice → Rituals holds the same planner, premade book, journal and Your moon, and Practice → Craft the same Cycle & Moon, astrology, divination and craft tools. A ritual can also be run at the altar’s Ritual Companion.",
     covens: "On the website, covens are under Coven in the bar, with the same pages, altars, messages and programs. Where a step says tap, click.",
     widgets: "Widgets live on a phone’s home screen, so they’re only in the app.",
   };
@@ -85,7 +85,7 @@
     "covens-share-daughters": "Open your coven and choose the Daughter covens tab, then Share with your daughter covens. In a daughter coven, From your mother coven is on the same tab.",
     "covens-successor": "Open your coven and choose the Manage tab: Leadership is near the foot. Elders find The head can’t be reached under My standing.",
     "covens-rituals": "Open your coven and choose the Rituals tab. A ritual’s page says which altar it’s held at; those who lead choose another and who may tend it at each step.",
-    "cycle-moon": "On the website, open Practice → Rituals and choose Cycle & Moon under Do. The same notes open here once you enter your Cycle & Moon passphrase; tick Remember it on this device if this is your own computer. Today shows the same small card.",
+    "cycle-moon": "On the website, open Practice → Craft and choose Cycle & Moon under Body & moon. The same notes open here once you enter your Cycle & Moon passphrase; tick Remember it on this device if this is your own computer. Today shows the same small card.",
     "cycle-moon-private": "On the website, your notes are encrypted in the browser before they’re sent. Remember it on this device keeps the key in this browser; leave it off on a shared computer and the key is kept only until you close the tab. Keep it in this browser only works like Keep it on this phone.",
     "cycle-moon-past": "On the website, open Cycle & Moon and choose Past periods. The calendar and the pasted list work the same way, and what you add shows in the app too.",
     "cycle-moon-history": "On the website, open Cycle & Moon and choose What am I?.",

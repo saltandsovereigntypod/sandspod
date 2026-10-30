@@ -32,7 +32,7 @@ export default function CrystalPractice() {
   ];
 
   return (
-    <RitualScreen back="Craft tools">
+    <RitualScreen back="Craft">
       <Title eyebrow="Craft tools">Crystal</Title>
       {!!about && <Body muted>{about}</Body>}
 

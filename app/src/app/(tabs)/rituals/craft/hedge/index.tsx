@@ -51,7 +51,7 @@ export default function HedgePractice() {
   ].sort((a, b) => a.inDays - b.inDays);
 
   return (
-    <RitualScreen back="Craft tools">
+    <RitualScreen back="Craft">
       <Title eyebrow="Craft tools">Hedge</Title>
       {!!about && <Body muted>{about}</Body>}
 
@@ -84,7 +84,7 @@ export default function HedgePractice() {
             onPress={() => router.push('/rituals/divination/draw' as Href)}
           />
         </List>
-        <Body muted>Readings and draws belong to every practice, so they live under Divination on the Rituals home too.</Body>
+        <Body muted>Readings and draws belong to every practice, so they live under Divination on the Craft home too.</Body>
       </View>
 
       {due.length > 0 && (

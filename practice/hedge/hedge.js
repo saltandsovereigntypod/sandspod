@@ -120,7 +120,7 @@
     const paths = [url.dreams, url.readings, url.ancestors];
     const coming = comingForTheDead(anniversaries, days, now);
     return [
-      kit.back(kit.href.hub, "Craft tools"),
+      kit.back(kit.href.hub, "Craft"),
       kit.head({ eyebrow: "Craft tools", title: "Hedge", lede: about }),
       kit.card(
         `${kit.big(`${tonight.moonPhase} in ${tonight.moonSign}`)}${kit.muted(
@@ -161,9 +161,9 @@
     const repeats = R.frequentDraws(readings, 6);
     const used = R.METHODS.filter((m) => readings.some((e) => e.data.method === m.id));
     return [
-      kit.back("/rituals/", "Rituals"),
+      kit.back("/practice/", "Craft"),
       kit.head({ eyebrow: readings.length ? kit.plural(readings.length, "reading", "readings") : "For every practice", title: "Divination" }),
-      // The Divination hub, as the app's Rituals → Divination: Draw · Readings · Decks · Card meanings.
+      // The Divination hub, as the app's Craft → Divination: Draw · Readings · Decks · Card meanings.
       kit.list([
         kit.row({ url: url.draw(), title: "Draw cards, runes or ogham", detail: "A card for the day, the Celtic Cross and many more spreads, or one of your own" }),
         kit.row({ url: url.readingEdit(), title: "Log a reading", detail: "One you did by hand: what you asked, what came up" }),

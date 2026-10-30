@@ -255,7 +255,7 @@ Candle magic is one of the simplest and most popular forms of working. The candl
 
 ## Directing into a sigil
 
-A **sigil** is a symbol made to stand for a purpose. The best-known modern method was developed by the English artist and occultist Austin Osman Spare in the early twentieth century: you write your purpose as a sentence, remove repeated letters, and combine the rest into an abstract design. (The app has a sigil maker: on the Rituals home, under Do, tap "Sigil maker".)
+A **sigil** is a symbol made to stand for a purpose. The best-known modern method was developed by the English artist and occultist Austin Osman Spare in the early twentieth century: you write your purpose as a sentence, remove repeated letters, and combine the rest into an abstract design. (The app has a sigil maker: open Practice → Craft and, under "Divination & sigils", tap "Sigil maker".)
 
 1. Make your sigil on paper.
 2. Ground and centre. Raise energy while gazing at it.

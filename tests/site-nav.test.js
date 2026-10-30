@@ -2,9 +2,43 @@ const test = require("node:test");
 const assert = require("node:assert/strict");
 const SiteNav = require("../js/site-nav.js");
 
-test("the main bar has the app's tabs: Practice holds the Grimoire and Rituals", () => {
+test("the main bar has the app's tabs: Practice holds the Grimoire, Rituals and Craft", () => {
   assert.deepEqual(SiteNav.TABS.map((tab) => tab.label), ["Today", "Altar", "Practice", "Coven", "More"]);
-  assert.deepEqual(SiteNav.PRACTICE.map((tab) => tab.label), ["Grimoire", "Rituals"]);
+  assert.deepEqual(SiteNav.PRACTICE.map((tab) => tab.label), ["Grimoire", "Rituals", "Craft"]);
+  assert.deepEqual(SiteNav.PRACTICE.map((tab) => tab.href), ["/grimoire/", "/rituals/", "/practice/"]);
+});
+
+test("Craft lights up on the tools that aren't rituals, each at its old address", () => {
+  for (const path of ["/practice/", "/practice/index.html", "/practice/cosmic/", "/practice/cosmic/chart/", "/practice/cosmic/learn/", "/practice/green/garden/", "/practice/hedge/dreams/", "/rituals/cycle/", "/divination/", "/divination/draw/", "/divination/reading/", "/sigil/"]) {
+    assert.equal(SiteNav.practiceSection(path), "craft", path);
+    assert.equal(SiteNav.activeTab(path), "practice", path);
+  }
+  for (const path of ["/rituals/", "/rituals/premade/", "/rituals/planner/", "/rituals/spell/", "/rituals/community/", "/rituals/journeys/", "/rituals/journal/", "/rituals/journal/insights/"]) {
+    assert.equal(SiteNav.practiceSection(path), "rituals", path);
+  }
+  assert.equal(SiteNav.practiceSection("/altar/", "?ritual=1"), "rituals");
+  // Back with nowhere to go back to lands on the section's home.
+  assert.equal(SiteNav.fallbackHref({ pathname: "/practice/cosmic/chart/", search: "" }), "/practice/");
+  assert.equal(SiteNav.fallbackHref({ pathname: "/rituals/cycle/", search: "" }), "/practice/");
+  assert.equal(SiteNav.fallbackHref({ pathname: "/rituals/premade/", search: "" }), "/rituals/");
+});
+
+test("the Practice tab returns to whichever of the three was used last", () => {
+  const values = new Map();
+  const before = Object.getOwnPropertyDescriptor(globalThis, "localStorage");
+  Object.defineProperty(globalThis, "localStorage", { configurable: true, value: { getItem: (k) => (values.has(k) ? values.get(k) : null), setItem: (k, v) => values.set(k, String(v)) } });
+  try {
+    assert.equal(SiteNav.rememberedPractice(), "grimoire");
+    for (const key of ["rituals", "craft", "grimoire"]) {
+      values.set("saltPracticeSection", key);
+      assert.equal(SiteNav.rememberedPractice(), key);
+    }
+    values.set("saltPracticeSection", "nonsense");
+    assert.equal(SiteNav.rememberedPractice(), "grimoire");
+  } finally {
+    if (before) Object.defineProperty(globalThis, "localStorage", before);
+    else delete globalThis.localStorage;
+  }
 });
 
 test("each page lights up its own tab", () => {

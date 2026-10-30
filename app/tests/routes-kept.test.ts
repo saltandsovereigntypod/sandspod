@@ -56,11 +56,33 @@ test('the Rituals home is grouped Do / Learn / Record, without Reminders or "Pla
   assert.doesNotMatch(home, /\/rituals\/reminders|title="Reminders"/);
   assert.doesNotMatch(home, /Plan a night|Divination &amp; sigils/);
   assert.match(home, /<NextWorking now=\{now\} variant="rituals" \/>/);
-  // Build a spell and the Sigil maker sit together, and Divination is one row.
-  assert.ok(home.indexOf('title="Sigil maker"') - home.indexOf('title="Build a spell"') < 300);
-  assert.equal(home.match(/\/rituals\/divination/g)?.length, 1);
-  assert.doesNotMatch(src('app/(tabs)/rituals/craft/index.tsx'), /rituals\/journeys/, 'Journeys left the Craft hub');
+  // The tools that aren't rituals moved to Craft; Rituals points there once.
+  for (const tool of ['/rituals/divination', '/rituals/cycle', '/rituals/sigil', '/rituals/craft/cosmic', 'CRAFT_TOOLS']) {
+    assert.ok(!home.includes(tool), `${tool} is on the Craft home now`);
+  }
+  assert.equal(home.match(/'\/rituals\/craft'/g)?.length, 1);
+  assert.match(home, /title="Dedication journeys"/, 'Dedication journeys stay under Rituals');
+  assert.match(home, /\/rituals\/premade/);
+  assert.match(home, /\/rituals\/community/);
+  assert.match(home, /\/rituals\/spell/);
   assert.match(src('app/(tabs)/today/index.tsx'), /<NextWorking now=\{now\} variant="today" \/>/);
+});
+
+test('the Craft home (Practice → Craft) holds the tools that aren’t rituals, at their old addresses', () => {
+  const craft = src('app/(tabs)/rituals/craft/index.tsx');
+  assert.match(craft, /<PracticeSwitch current="craft" \/>/);
+  assert.match(src('app/(tabs)/rituals/index.tsx'), /<PracticeSwitch current="rituals" \/>/);
+  const at = (label: string) => craft.indexOf(`<SectionLabel>${label}</SectionLabel>`);
+  assert.ok(at('Body & moon') > 0 && at('Body & moon') < at('The sky') && at('The sky') < at('Divination & sigils'), 'Body & moon, The sky, then Divination & sigils');
+  assert.ok(craft.indexOf('by path') > at('Divination & sigils'), 'then the Craft tools by path');
+  for (const href of ['/rituals/cycle', '/rituals/craft/cosmic', '/rituals/craft/cosmic/hours', '/rituals/craft/cosmic/learn', '/rituals/divination', '/rituals/divination/draw', '/rituals/divination/meanings', '/rituals/sigil', '/rituals/settings/practice']) {
+    assert.ok(craft.includes(`'${href}'`), `Craft opens ${href}`);
+    // Settings pages open through rituals/settings/[page].
+    assert.ok(screen(href) || href.startsWith('/rituals/settings/'), `no screen at ${href}`);
+  }
+  // Dedication journeys stay under Rituals; Craft only points to them.
+  assert.match(craft, /title="Dedication journeys"\s+detail="On Rituals/);
+  assert.match(src('app/(tabs)/rituals/craft/solitary/index.tsx'), /\/rituals\/journeys/);
 });
 
 test('the names', () => {
