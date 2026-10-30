@@ -14,6 +14,9 @@
 // add its id to COURSE_TRADITIONS.
 
 import type { CourseDoc, CourseModule, CourseStage, CourseTask, Quiz } from './types.ts';
+import { mergeCourseLinks, type CourseLink } from '../courseLinks.ts';
+import { LESSON_LINKS } from './links.ts';
+import { namedLink } from './linkTargets.ts';
 
 import coreWelcome from './core/welcome.ts';
 import coreEnergy from './core/energy.ts';
@@ -44,7 +47,36 @@ import hellenicDedication from './hellenic/dedication.ts';
 import hellenicElder from './hellenic/elder.ts';
 import hellenicHighPriestess from './hellenic/high-priestess.ts';
 
-export type { CourseDoc, CourseModule, CourseStage, CourseTask, Quiz } from './types.ts';
+import wheelTradition from './wheel/tradition.ts';
+import wheelRitual from './wheel/ritual.ts';
+import wheelDevotion from './wheel/devotion.ts';
+import wheelLore from './wheel/lore.ts';
+import wheelInitiation from './wheel/initiation.ts';
+import wheelSeeker from './wheel/seeker.ts';
+import wheelDedication from './wheel/dedication.ts';
+import wheelElder from './wheel/elder.ts';
+import wheelHighPriestess from './wheel/high-priestess.ts';
+
+export type { CourseDoc, CourseLink, CourseModule, CourseStage, CourseTask, Quiz } from './types.ts';
+
+/** The eclectic Wheel's modules. */
+const WHEEL: CourseModule[] = [wheelTradition, wheelRitual, wheelDevotion, wheelLore, wheelInitiation, wheelSeeker, wheelDedication, wheelElder, wheelHighPriestess];
+
+/**
+ * The southern Wheel (holidays.ts 'wheel_south'): the same lessons and tests,
+ * written hemisphere-neutral, with each festival step keeping the southern
+ * calendar's day ('wheel/imbolc' → 'wheel_south/imbolc', which falls in August).
+ */
+export function southernWheel(m: CourseModule): CourseModule {
+  return {
+    ...m,
+    id: m.id.replace(/^wheel-/, 'wheel_south-'),
+    stages: m.stages.map((s) => ({
+      ...s,
+      tasks: s.tasks.map((t) => (t.holiday?.startsWith('wheel/') ? { ...t, holiday: `wheel_south/${t.holiday.slice('wheel/'.length)}` } : t)),
+    })),
+  };
+}
 
 export const MODULES: CourseModule[] = [
   coreWelcome,
@@ -74,10 +106,16 @@ export const MODULES: CourseModule[] = [
   hellenicDedication,
   hellenicElder,
   hellenicHighPriestess,
+  ...WHEEL,
+  ...WHEEL.map(southernWheel),
 ];
 
-/** Traditions with modules of their own (Hellenic first; the rest as they're written). */
-export const COURSE_TRADITIONS: { id: string; name: string }[] = [{ id: 'hellenic', name: 'Hellenic' }];
+/** Traditions with modules of their own (Hellenic first, then the eclectic Wheel, north and south; the rest as they're written). */
+export const COURSE_TRADITIONS: { id: string; name: string }[] = [
+  { id: 'hellenic', name: 'Hellenic' },
+  { id: 'wheel', name: 'Wheel of the Year' },
+  { id: 'wheel_south', name: 'Wheel of the Year (Southern Hemisphere)' },
+];
 
 /** Written: it has something to teach (placeholders have no stages). */
 export const isWritten = (m: CourseModule | undefined): boolean => !!m && m.stages.length > 0;
@@ -207,6 +245,20 @@ export function moduleIndex(modules: CourseModule[] = MODULES) {
 
 const clone = <T>(v: T): T => JSON.parse(JSON.stringify(v)) as T;
 
+/**
+ * Everything a step links to: its own links, its holy day's page, and its
+ * lessons' links (written on the lesson, or kept for the older lessons in
+ * links.ts), once each.
+ */
+export function taskLinks(t: CourseTask, docs: CourseDoc[]): CourseLink[] {
+  const holiday: CourseLink[] = t.holiday ? [{ kind: 'holy', id: t.holiday }] : [];
+  return mergeCourseLinks(
+    t.links,
+    holiday,
+    ...docs.map((d) => mergeCourseLinks(d.links, LESSON_LINKS[d.id])),
+  ).map(namedLink);
+}
+
 /** One program of a tradition's path, or null when none of its modules is written yet. */
 export function composeProgram(tradition: string, step: PathStep, modules: CourseModule[] = MODULES, traditionName = tradition): CourseProgram | null {
   const index = moduleIndex(modules);
@@ -223,7 +275,7 @@ export function composeProgram(tradition: string, step: PathStep, modules: Cours
         own.forEach((id) => docs.set(id, index.docs.get(id)!));
         const quiz = t.quiz && index.quizzes.has(t.quiz) ? t.quiz : null;
         if (quiz) quizzes.set(quiz, index.quizzes.get(quiz)!);
-        return { ...clone(t), docs: own, quiz };
+        return { ...clone(t), docs: own, quiz, links: taskLinks(t, own.map((id) => index.docs.get(id)!)) };
       }),
     })),
   );

@@ -63,6 +63,8 @@ export * as lesson from '../../app/src/lib/covens/lesson.ts';
 export * as quiz from '../../app/src/lib/covens/quiz.ts';
 export * as training from '../../app/src/lib/covens/training.ts';
 export * as courseCopy from '../../app/src/lib/covens/courseCopy.ts';
+// A course step's links into the Sanctuary ([[go:…]] in its resources): the buttons and where they open.
+export * as courseLinks from '../../app/src/lib/covens/courseLinks.ts';
 export * as trainingNotes from '../../supabase/functions/coven-notify/training.ts';
 // Waiting lists for full positions: who is in line and the words
 // (covens/coven/queue.js), and the phone notes (coven-notify's queue.ts).

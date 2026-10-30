@@ -8,6 +8,10 @@
 // the coven's head, against a rubric). Every step of a program can carry
 // lessons and a test, and has its own conversation with the trainee.
 
+import type { CourseLink } from '../courseLinks.ts';
+
+export type { CourseLink };
+
 /**
  * A lesson: a document the trainee reads.
  *
@@ -33,6 +37,13 @@ export type CourseDoc = {
   /** About how long it takes to read and try, in minutes. */
   minutes: number;
   body: string;
+  /**
+   * Where the lesson's subject lives in the rest of the Sanctuary: its holy
+   * days, Library entries, ready-made rituals, journeys, spreads, seasonal
+   * objects, guides and tools (courseLinks.ts). Lesson bodies hold no links
+   * themselves; these are shown as buttons on every step that uses the lesson.
+   */
+  links?: CourseLink[];
 };
 
 export type QuestionType =
@@ -99,6 +110,14 @@ export type CourseTask = {
   docs?: string[];
   /** The test for this task (a Quiz id). */
   quiz?: string | null;
+  /** Where in the Sanctuary this step's work is done or explained (with its lessons' links, shown as buttons). */
+  links?: CourseLink[];
+  /**
+   * What someone practising alone does instead, when the step needs a coven
+   * (a rite with others, a mentor's meeting), for a solitary path built on
+   * the same courses. Left out when the step is the same alone.
+   */
+  solitary?: string;
 };
 
 export type CourseStage = {

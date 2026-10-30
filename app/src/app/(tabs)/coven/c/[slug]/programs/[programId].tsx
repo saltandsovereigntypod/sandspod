@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { ActivityIndicator, Alert, Pressable, StyleSheet, Text, View } from 'react-native';
 
 import { Button } from '../../../../../../components/Button';
+import { CourseLinks } from '../../../../../../components/covens/CourseLinks';
 import { CovenScreen } from '../../../../../../components/covens/CovenScreen';
 import { ProgressBar } from '../../../../../../components/covens/programs';
 import { PracticeLog, TaskLessons, TestCard, ThreadRow } from '../../../../../../components/covens/training';
@@ -33,6 +34,7 @@ import {
 } from '../../../../../../lib/covens/programs';
 import { docsForTask, logsSessions, threadKey, unreadMap } from '../../../../../../lib/covens/training';
 import { usePrograms, type ProgramData } from '../../../../../../lib/covens/usePrograms';
+import { withoutCourseLinks } from '../../../../../../lib/covens/courseLinks';
 import { studyLinks, withoutStudyLinks } from '../../../../../../lib/grimoire/coven';
 import { colors, fonts, radius, type } from '../../../../../../theme';
 
@@ -281,11 +283,12 @@ function TaskRow({
         </View>
       </View>
       {!later && <Words text={task.instructions} />}
-      {!later && !!withoutStudyLinks(task.resources) && <Text style={type.caption}>Resources: {withoutStudyLinks(task.resources)}</Text>}
+      {!later && !!withoutCourseLinks(withoutStudyLinks(task.resources)) && <Text style={type.caption}>Resources: {withoutCourseLinks(withoutStudyLinks(task.resources))}</Text>}
       {!later &&
         studyLinks(task.resources).map((link) => (
           <Button key={link.id} label={`Study: ${link.title}`} variant="outline" onPress={() => router.push(`/coven/c/${coven.slug}/book/${link.id}` as Href)} />
         ))}
+      {!later && <CourseLinks resources={task.resources} covenSlug={coven.slug} />}
       {!later && <TaskLessons docs={docs} reads={data.reads} person={enrollment.user_id} enrollmentId={enrollment.id} taskId={task.id} />}
       {!!task.quiz_id && <TestCard task={task} enrollment={enrollment} attempts={data.attempts} self={self} later={later} />}
       {!later && sessions && <PracticeLog task={task} row={row} enrollment={enrollment} canWork={canWork} onChanged={onChanged} />}

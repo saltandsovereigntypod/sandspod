@@ -8,6 +8,7 @@
 
 import type { Award, CourseProgram, PathKey } from './courses/index.ts';
 import type { ProgramTemplate } from './programs.ts';
+import { courseLinkMarker, type CourseLink } from './courseLinks.ts';
 
 type RankLike = { id: string; name: string; level: number; can_manage?: boolean | null };
 
@@ -40,6 +41,17 @@ const chunk = <T>(list: T[], size: number): T[][] => {
   for (let i = 0; i < list.length; i += size) out.push(list.slice(i, i + size));
   return out;
 };
+
+/** A step's links as its resources: [[go:…]] markers, one a line, as many as the column's 4000 characters hold. */
+export function linkResources(links: CourseLink[] | null | undefined): string | null {
+  let out = '';
+  for (const link of links ?? []) {
+    const line = courseLinkMarker(link);
+    if (out.length + line.length + 1 > 4000) break;
+    out += (out ? '\n' : '') + line;
+  }
+  return out || null;
+}
 
 /**
  * What to send, in order: lessons and tests in small batches (lessons are
@@ -74,7 +86,8 @@ export function copyPlan(program: CourseProgram, awardRankId: string | null) {
       title: t.title.trim().slice(0, 160),
       kind: t.kind,
       instructions: t.instructions?.trim() || null,
-      resources: null,
+      // Where the step's work lives in the Sanctuary, as [[go:…]] links the step shows as buttons.
+      resources: linkResources(t.links),
       times: t.times || 1,
       response: t.response,
       checked_by: t.checked_by,

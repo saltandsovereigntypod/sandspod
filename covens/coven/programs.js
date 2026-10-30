@@ -40,12 +40,29 @@
   const link = (extra) => `${helpers.covenHref("programs")}${extra ? `&${extra}` : ""}`;
   // Study material: pages of the coven's Book a task links to ([[book:<id>|Title]], SaltCore.grimoire.coven).
   const GC = () => global.SaltCore?.grimoire?.coven;
-  const studyText = (text) => (GC() ? GC().withoutStudyLinks(text) : String(text || ""));
+  // Course links: where a step's work lives in the Sanctuary ([[go:<kind>:<id>|Label]], SaltCore.covens.courseLinks).
+  const CL = () => global.SaltCore?.covens?.courseLinks;
+  const studyText = (text) => {
+    const plain = GC() ? GC().withoutStudyLinks(text) : String(text || "");
+    return CL() ? CL().withoutCourseLinks(plain) : plain;
+  };
+  const courseButtons = (text) => {
+    if (!CL()) return "";
+    const links = CL()
+      .courseLinks(text)
+      .map((l) => ({ label: CL().courseLinkLabel(l), href: CL().courseLinkSiteHref(l, (tab) => helpers.covenHref(tab)), tab: l.kind === "coven" ? CL().COVEN_PAGES[l.id]?.tab : null }))
+      .filter((l) => l.href);
+    return links.length
+      ? `<div class="cv-course-links"><p class="sp-caption">Find it in the Sanctuary</p><div class="sp-actions">${links.map((l) => `<a class="button button--ghost button--small" href="${esc(l.href)}"${l.tab ? ` data-tab="${esc(l.tab)}"` : ""}>${esc(l.label)}</a>`).join("")}</div></div>`
+      : "";
+  };
   const studyButtons = (text) => {
     const links = GC() ? GC().studyLinks(text) : [];
-    return links.length
-      ? `<div class="sp-actions">${links.map((l) => `<a class="button button--ghost button--small" href="${esc(`${helpers.covenHref("book")}&page=${encodeURIComponent(l.id)}`)}" data-tab="book">Study: ${esc(l.title)}</a>`).join("")}</div>`
-      : "";
+    return (
+      (links.length
+        ? `<div class="sp-actions">${links.map((l) => `<a class="button button--ghost button--small" href="${esc(`${helpers.covenHref("book")}&page=${encodeURIComponent(l.id)}`)}" data-tab="book">Study: ${esc(l.title)}</a>`).join("")}</div>`
+        : "") + courseButtons(text)
+    );
   };
   let studyPages = null;
   if (typeof document !== "undefined") {
