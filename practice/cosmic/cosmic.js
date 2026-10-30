@@ -94,7 +94,7 @@
     return h.card(
       `${eyebrow ? `<p class="sp-eyebrow">${esc(eyebrow)}</p>` : ""}${h.cardTitle(title)}
       <div data-explain-body="${id}" data-simple="${esc(body("simple"))}" data-detailed="${esc(body("detailed"))}">${body(level)}</div>
-      ${reading ? `<div class="astro-magic"><p class="astro-part__head">In the craft</p>${ptx(reading.magic, "", terms)}</div>` : ""}
+      ${reading ? `<div class="astro-magic"><p class="astro-part__head">In the craft</p>${ptx(reading.magic, "", terms)}${T && T.linksHtml ? T.linksHtml(reading.links) : ""}</div>` : ""}
       ${extra}
       ${reading || entry ? `<div class="astro-level" role="group" aria-label="How much to explain ${esc(title)}" data-explain-switch="${id}">${["simple", "detailed"].map((l) => `<button type="button" data-action="explain" data-card="${id}" data-level="${l}" aria-pressed="${level === l}">${l === "simple" ? "Simple" : "Detailed"}</button>`).join("")}</div>` : ""}
       ${termChips(terms)}`
