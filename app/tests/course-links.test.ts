@@ -164,7 +164,7 @@ test('a copied step keeps its links within the resources column, and the step re
 
 test('every tradition with courses offers all five programs, with links on most steps', () => {
   const programs = coursePrograms();
-  for (const t of ['hellenic', 'wheel', 'wheel_south', 'wicca']) {
+  for (const t of ['hellenic', 'wheel', 'wheel_south', 'wicca', 'celtic']) {
     const mine = programs.filter((p) => p.tradition === t);
     assert.deepEqual(mine.map((p) => p.path), ['seeker', 'devotee', 'initiate', 'elder', 'high-priestess'], t);
     for (const p of mine) {

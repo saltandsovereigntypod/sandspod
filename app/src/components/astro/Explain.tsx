@@ -208,6 +208,7 @@ export function ExplainCard({
         <View style={styles.magic}>
           <Text style={styles.detailHead}>In the craft</Text>
           <TermText text={reading.magic} style={type.body} skip={terms} />
+          {!!reading.links?.length && <TermLinks links={reading.links} />}
         </View>
       )}
       {children}
@@ -233,6 +234,8 @@ function TermLinks({ links }: { links: TermLink[] }) {
     if (link.kind === 'planet-guide') return { pathname: '/rituals/craft/cosmic/planet', params: { planet: link.planet } } as unknown as Href;
     if (link.kind === 'moon-phase') return { pathname: '/today/holy/[ref]', params: { ref: holyRef(PHASE_REF[link.phase]) } };
     if (link.kind === 'tool') return TOOL_HREF[link.tool] as Href;
+    if (link.kind === 'premade') return { pathname: '/rituals/premade/[id]', params: { id: link.id } } as unknown as Href;
+    if (link.kind === 'journey') return { pathname: '/rituals/journeys/[id]', params: { id: link.id } } as unknown as Href;
     const found = findByName(entries, link.name);
     return found ? libraryHref(found) : null;
   };

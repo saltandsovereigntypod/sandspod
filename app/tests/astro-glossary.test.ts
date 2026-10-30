@@ -85,7 +85,7 @@ test('the Sun, Moon and Ascendant are written in all twelve signs, and the twelv
   assert.equal(keys.aspect('Saturn', 'square', 'Sun'), 'Sun|square|Saturn');
 });
 
-test('the composer reads a whole chart, with "coming soon" for what isn’t written', () => {
+test('the composer reads a whole chart, never blank', () => {
   const chart = castChart({ date: '1990-06-15', time: '14:30', utcOffsetMinutes: 60, latitude: 51.5, longitude: -0.13 })!;
   const sections = composeReading(chart);
   const ids = sections.map((s) => s.id);
@@ -94,10 +94,9 @@ test('the composer reads a whole chart, with "coming soon" for what isn’t writ
   assert.equal(big.pieces.length, 3);
   assert.ok(big.pieces.every((p) => p.status === 'ready'));
   const soon = sections.flatMap((s) => s.pieces).filter((p) => p.status === 'coming-soon');
-  assert.ok(soon.length > 0);
   for (const p of soon) assert.ok(p.status === 'coming-soon' && p.sketch.length > 10 && p.terms.length > 0, p.title);
   const progress = readingProgress(sections);
-  assert.ok(progress.ready >= 15 && progress.ready < progress.total);
+  assert.ok(progress.ready >= 15 && progress.ready <= progress.total);
   // Without a time: no rising, no houses section, still never blank.
   const noTime = composeReading(castChart({ date: '1990-06-15', time: '', utcOffsetMinutes: 60 })!);
   assert.equal(noTime.find((s) => s.id === 'big-three')!.pieces.length, 2);

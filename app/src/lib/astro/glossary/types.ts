@@ -46,7 +46,11 @@ export type TermLink =
   | { kind: 'planet-guide'; planet: string; label?: string }
   | { kind: 'moon-phase'; phase: 'new' | 'firstQuarter' | 'full' | 'lastQuarter'; label?: string }
   | { kind: 'library'; name: string; label?: string }
-  | { kind: 'tool'; tool: 'hours' | 'chart' | 'sky' | 'learn' | 'charts'; label?: string };
+  | { kind: 'tool'; tool: 'hours' | 'chart' | 'sky' | 'learn' | 'charts'; label?: string }
+  /** A premade ritual or spell, by its id (lib/rituals/premade). */
+  | { kind: 'premade'; id: string; label: string }
+  /** A dedication journey, by its id (lib/journeys/catalog.ts). */
+  | { kind: 'journey'; id: string; label: string };
 
 export type GlossaryEntry = {
   id: string;

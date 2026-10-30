@@ -67,6 +67,16 @@ import wiccaDedication from './wicca/dedication.ts';
 import wiccaElder from './wicca/elder.ts';
 import wiccaHighPriestess from './wicca/high-priestess.ts';
 
+import celticTradition from './celtic/tradition.ts';
+import celticRitual from './celtic/ritual.ts';
+import celticDevotion from './celtic/devotion.ts';
+import celticLore from './celtic/lore.ts';
+import celticInitiation from './celtic/initiation.ts';
+import celticSeeker from './celtic/seeker.ts';
+import celticDedication from './celtic/dedication.ts';
+import celticElder from './celtic/elder.ts';
+import celticHighPriestess from './celtic/high-priestess.ts';
+
 export type { CourseDoc, CourseLink, CourseModule, CourseStage, CourseTask, Quiz } from './types.ts';
 
 /** The eclectic Wheel's modules. */
@@ -129,14 +139,27 @@ export const MODULES: CourseModule[] = [
   wiccaDedication,
   wiccaElder,
   wiccaHighPriestess,
+  // The Celtic set keeps the Gaelic fire festivals (holidays.ts 'celtic'); its
+  // festival steps also give the Wheel's lesson on the same festival for its
+  // wider history.
+  celticTradition,
+  celticRitual,
+  celticDevotion,
+  celticLore,
+  celticInitiation,
+  celticSeeker,
+  celticDedication,
+  celticElder,
+  celticHighPriestess,
 ];
 
-/** Traditions with modules of their own (Hellenic first, then the eclectic Wheel, north and south, then Wicca; the rest as they're written). */
+/** Traditions with modules of their own (Hellenic first, then the eclectic Wheel, north and south, then Wicca and the Celtic tradition; the rest as they're written). */
 export const COURSE_TRADITIONS: { id: string; name: string }[] = [
   { id: 'hellenic', name: 'Hellenic' },
   { id: 'wheel', name: 'Wheel of the Year' },
   { id: 'wheel_south', name: 'Wheel of the Year (Southern Hemisphere)' },
   { id: 'wicca', name: 'Wicca' },
+  { id: 'celtic', name: 'Celtic' },
 ];
 
 /** Written: it has something to teach (placeholders have no stages). */

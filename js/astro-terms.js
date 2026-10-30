@@ -87,6 +87,8 @@
     if (link.kind === "planet-guide") return `/practice/cosmic/planet/?planet=${encodeURIComponent(link.planet)}`;
     if (link.kind === "moon-phase") return `/today/holy/?ref=${encodeURIComponent(PHASE_REF[link.phase])}`;
     if (link.kind === "tool") return TOOL[link.tool];
+    if (link.kind === "premade") return `/rituals/premade/?id=${encodeURIComponent(link.id)}`;
+    if (link.kind === "journey") return `/rituals/journeys/?id=${encodeURIComponent(link.id)}`;
     if (link.kind === "library") {
       const lib = global.TraditionalLibrary?.deity || {};
       const hit = Object.entries({ ...(global.TraditionalLibrary?.herb || {}), ...(global.TraditionalLibrary?.crystal || {}), ...lib }).find(([, v]) => v && v.DisplayName === link.name);
@@ -95,6 +97,17 @@
       return `/library/entry/?entity=${encodeURIComponent(`traditional/${type}/${hit[0]}`)}`;
     }
     return null;
+  }
+
+  /** Links (planet guides, the Living Library, rituals, journeys) as anchors; ones that can't be resolved are left out. */
+  function linksHtml(list) {
+    return (list || [])
+      .map((l) => {
+        const href = linkHref(l);
+        const label = l.label || (l.kind === "planet-guide" ? `${l.planet}: the full guide` : l.kind === "library" ? `${l.name} in the Living Library` : "Open");
+        return href ? `<a class="astro-link" href="${esc(href)}">${esc(label)} ›</a>` : "";
+      })
+      .join("");
   }
 
   let dialog = null;
@@ -122,13 +135,7 @@
     const entry = openId && a.glossary.term(openId);
     if (!entry) return;
     const lv = own || level;
-    const links = (entry.links || [])
-      .map((l) => {
-        const href = linkHref(l);
-        const label = l.label || (l.kind === "planet-guide" ? `${l.planet}: the full guide` : l.kind === "library" ? `${l.name} in the Living Library` : "Open");
-        return href ? `<a class="astro-link" href="${esc(href)}">${esc(label)} ›</a>` : "";
-      })
-      .join("");
+    const links = linksHtml(entry.links);
     const related = (entry.related || [])
       .map((id) => a.glossary.term(id))
       .filter(Boolean)
@@ -179,6 +186,7 @@
     html,
     open,
     detailHtml,
+    linksHtml,
     levelSwitch,
     get level() {
       return level;

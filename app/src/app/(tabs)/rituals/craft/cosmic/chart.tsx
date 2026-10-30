@@ -12,7 +12,7 @@ import { aspectDef, PATTERN_LABEL, type AspectHit } from '../../../../../lib/ast
 import { deitiesForChart, natalAltarPlanet, personalAllies, transitLineFor } from '../../../../../lib/astro/craftLinks';
 import { progressionsFor, retrogradePeriods, retroPhaseAt, returnChart, transitHouses, transitsTo } from '../../../../../lib/astro/forecast';
 import { termIdFor } from '../../../../../lib/astro/glossary';
-import { composeReading, ordinalHouse, readingProgress } from '../../../../../lib/astro/interpret/compose';
+import { composeReading, ordinalHouse, progressedPieces, readingProgress, returnPieces, type ReadingPiece } from '../../../../../lib/astro/interpret/compose';
 import { bigThreeLine, formatDegree, positionOf, type Chart, type Position } from '../../../../../lib/astro/natal';
 import { POINT_GLYPH, type ChartPointName } from '../../../../../lib/astro/signs';
 import { shortDate, timeOfDay } from '../../../../../lib/calendar';
@@ -348,21 +348,25 @@ function Reading({ chart }: { chart: Chart }) {
         <View key={s.id} style={ui.gapSmall}>
           <SectionLabel>{s.title}</SectionLabel>
           {!!s.intro && <TermText style={type.body} text={s.intro} />}
-          {s.pieces.map((p) =>
-            p.status === 'ready' ? (
-              <ExplainCard key={p.title} title={p.title} reading={p.reading} terms={p.terms} />
-            ) : (
-              <Card key={p.title}>
-                <Text style={type.cardTitle}>{p.title}</Text>
-                <TermText style={type.body} text={p.sketch} />
-                <Text style={type.caption}>Full reading coming soon.</Text>
-                <TermChips ids={p.terms} />
-              </Card>
-            ),
-          )}
+          {s.pieces.map((p) => (
+            <PieceView key={p.title} piece={p} />
+          ))}
         </View>
       ))}
     </View>
+  );
+}
+
+function PieceView({ piece: p }: { piece: ReadingPiece }) {
+  return p.status === 'ready' ? (
+    <ExplainCard title={p.title} reading={p.reading} terms={p.terms} />
+  ) : (
+    <Card>
+      <Text style={type.cardTitle}>{p.title}</Text>
+      <TermText style={type.body} text={p.sketch} />
+      <Text style={type.caption}>Full reading coming soon.</Text>
+      <TermChips ids={p.terms} />
+    </Card>
   );
 }
 
@@ -479,6 +483,9 @@ function Returns({ chart }: { chart: Chart }) {
             <ChartWheel chart={r.chart} size={size} noAspects onTap={(t) => (t.kind === 'sign' ? openTerm(termIdFor(t.sign)) : t.kind === 'point' ? openTerm(termIdFor(t.point)) : t.kind === 'house' ? openTerm(`house-${t.house}`) : null)} />
           </View>
           <Body muted>{`Cast for ${r.placeLabel ?? (chart.placeKnown ? 'the birthplace' : 'no place (no houses)')}. Times are in this device’s time zone.`}</Body>
+          {returnPieces(r).map((p) => (
+            <PieceView key={p.title} piece={p} />
+          ))}
         </Card>
       ))}
       <TermChips ids={['returns', 'solar-return', 'lunar-return']} />
@@ -499,6 +506,9 @@ function Progressions({ chart }: { chart: Chart }) {
         {m.nextSign && <TermText style={type.body} text={`It enters ${m.nextSign.sign} around ${shortDate(m.nextSign.date)} ${m.nextSign.date.getFullYear()}: a new emotional chapter, about every two and a half years.`} />}
         <TermText style={type.body} text={`Progressed lunar phase: ${p.phase} (${Math.round(p.phaseAngle)}° from the progressed Sun), part of a thirty-year cycle.`} />
       </Card>
+      {progressedPieces(p).map((piece) => (
+        <PieceView key={piece.title} piece={piece} />
+      ))}
       {p.ascendant && p.midheaven && <TermText style={type.body} text={`By solar arc, the progressed Ascendant is in ${p.ascendant.sign} and the progressed Midheaven in ${p.midheaven.sign}.`} />}
       {p.changedSign.length > 0 && (
         <Card>

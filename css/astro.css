@@ -68,3 +68,23 @@ button.astro-grid__cell { cursor: pointer; }
 .astro-bar__fill { height: 8px; border-radius: 4px; background: #e2c36d; }
 .astro-magic { border-left: 2px solid rgba(226, 195, 109, 0.4); padding-left: 12px; display: grid; gap: 4px; }
 .astro-wheel-wrap { display: grid; justify-items: center; }
+
+/* Learn astrology, the course (practice/cosmic/course.js) */
+.astro-course-bar { height: 6px; border-radius: 3px; background: rgba(255, 255, 255, 0.08); overflow: hidden; margin: 10px 0 14px; }
+.astro-course-bar span { display: block; height: 100%; background: #e2c36d; }
+.astro-course-link { text-decoration: none; }
+.astro-lesson { display: grid; gap: 4px; line-height: 1.6; }
+.astro-lesson .ls-h2, .astro-lesson .ls-h1 { margin-top: 1.2em; }
+.astro-lesson .ls-h3 { color: #e2c36d; margin-top: 1em; }
+.astro-lesson .ls-list { padding-left: 1.4em; display: grid; gap: 4px; }
+.astro-lesson .ls-callout { border-left: 3px solid rgba(226, 195, 109, 0.4); background: rgba(226, 195, 109, 0.06); border-radius: 12px; padding: 10px 14px; margin: 12px 0; }
+.astro-lesson .ls-callout p { margin: 6px 0; }
+.astro-lesson .ls-callout__label { text-transform: uppercase; letter-spacing: 0.08em; font-size: 0.78rem; color: #e2c36d; }
+.astro-lesson .ls-callout--safety { border-left-color: rgba(243, 160, 110, 0.85); background: rgba(243, 160, 110, 0.08); }
+.astro-lesson .ls-callout--safety .ls-callout__label { color: #f3c29a; }
+.astro-lesson .ls-divider { border: none; border-top: 1px solid rgba(255, 255, 255, 0.12); margin: 18px 0; }
+.astro-quiz__q { border: 0; display: grid; gap: 8px; }
+.astro-quiz__q legend { padding: 0; }
+.astro-quiz__option { display: flex; gap: 10px; align-items: center; min-height: 44px; padding: 6px 12px; border-radius: 12px; background: rgba(255, 255, 255, 0.04); cursor: pointer; }
+.astro-quiz__option.is-on { outline: 2px solid rgba(226, 195, 109, 0.6); }
+.astro-quiz__right { color: #e2c36d; }

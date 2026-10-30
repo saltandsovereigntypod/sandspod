@@ -111,7 +111,7 @@ test("every page loads the bundle, the shared kit and its practice script", () =
       else if (d.name === "index.html") pages.push(full);
     });
   for (const practice of ["cosmic", "crystal", "elemental", "sea", "folk"]) walk(path.join(root, "practice", practice));
-  assert.equal(pages.length, 28);
+  assert.equal(pages.length, 29);
   for (const page of pages) {
     const html = fs.readFileSync(page, "utf8");
     const practice = path.relative(path.join(root, "practice"), page).split(path.sep)[0];
