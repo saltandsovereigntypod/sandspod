@@ -91,6 +91,7 @@ export default function Templates() {
 
       <List>
         <Row icon="grimoire" title="Workings library" detail="Begin one of the premade workings, or copy it to change" onPress={() => router.push('/rituals/premade')} />
+        <Row icon="coven" title="Community Rituals" detail="Begin or keep one the community has shared" onPress={() => router.push('/rituals/community')} />
         <Row icon="altar" title="Build a spell" detail="Choose ingredients and words, and we'll lay out the steps" last onPress={() => router.push('/rituals/spell')} />
       </List>
     </RitualScreen>

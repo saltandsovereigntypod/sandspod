@@ -8,6 +8,7 @@ import { ContributionList, MyContribution, Participation } from '../../../../../
 import { ApologyNote } from '../../../../../../components/covens/Record';
 import { MeetingScreen } from '../../../../../../components/covens/meeting/MeetingScreen';
 import { SendNotice } from '../../../../../../components/covens/SendNotice';
+import { KeepRitual } from '../../../../../../components/covens/KeepRitual';
 import { PrepList, RecordCard, StepLines, TurnBox, VoteBox } from '../../../../../../components/covens/builder/LiveParts';
 import { Pill, Pills, Spoken, Words } from '../../../../../../components/covens/ui';
 import { Card, Chips, Notice, Section } from '../../../../../../components/more/ui';
@@ -651,6 +652,7 @@ function RitualScreen() {
           );
         })}
       </Section>
+      {!live && <KeepRitual ritual={ritual} steps={steps} />}
     </CovenScreen>
   );
 }

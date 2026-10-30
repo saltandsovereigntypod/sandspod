@@ -9,7 +9,8 @@ import { Body, Card, Chip, Chips, RitualScreen, SectionLabel, Title, confirmActi
 import { journalDetail } from '../../../../lib/rituals/format';
 import { readLookBack } from '../../../../lib/rituals/lookBack';
 import { journalConnections } from '../../../../lib/rituals/plans';
-import { deleteJournal, useRituals } from '../../../../lib/rituals/store';
+import { draftFromSession } from '../../../../lib/rituals/lifecycle';
+import { deleteJournal, findSession, saveTemplate, useRituals } from '../../../../lib/rituals/store';
 import type { JournalRow } from '../../../../lib/rituals/types';
 
 const SECTIONS: [string, keyof JournalRow][] = [
@@ -48,6 +49,22 @@ export default function JournalEntry() {
   const altarItems = ((entry.altar_snapshot as { objects?: { label?: string }[] })?.objects ?? [])
     .map((o) => o.label)
     .filter((label): label is string => !!label);
+
+  // A ritual done without a template (a premade, a spell, one shared by the
+  // community) can be kept as one, its steps as they were.
+  const keepAsTemplate = async () => {
+    try {
+      const session = entry.session_id ? await findSession(entry.session_id) : null;
+      if (!session?.session_steps.length) {
+        tell('Nothing to keep', 'This ritual had no steps to keep as a template.');
+        return;
+      }
+      const saved = await saveTemplate({ ...draftFromSession(session), title: entry.title || session.title || 'Untitled Ritual' });
+      router.push({ pathname: '/rituals/templates/[id]', params: { id: saved.id } });
+    } catch (e) {
+      tell("Couldn't keep it", e instanceof Error ? e.message : 'Please try again.');
+    }
+  };
 
   const remove = async () => {
     const ok = await confirmAction('Delete this ritual?', 'It is removed from your journal here and on the website. This can’t be undone.', 'Delete');
@@ -113,6 +130,9 @@ export default function JournalEntry() {
         <Button label="Edit reflections" variant="outline" onPress={() => router.push({ pathname: '/rituals/journal/new', params: { id: entry.id } })} />
         {!!links.templateId && (
           <Button label="Plan it again" variant="outline" onPress={() => router.push({ pathname: '/rituals/planner', params: { templateId: links.templateId } })} />
+        )}
+        {!links.templateId && !!entry.session_id && !!rituals.userId && (
+          <Button label="Keep it as a template" variant="outline" accessibilityHint="Saves its steps as one of your templates, to do again or share" onPress={keepAsTemplate} />
         )}
         <Button label="Delete this ritual" variant="text" onPress={remove} />
       </View>

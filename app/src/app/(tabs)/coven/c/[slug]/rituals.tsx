@@ -65,6 +65,12 @@ export default function Rituals() {
           <Button label="Plan a meeting" variant="outline" onPress={() => router.push(`${covenHref(coven.slug, 'ritual/plan')}?kind=meeting` as never)} />
         </Section>
       )}
+      {(coven.perms.member || coven.perms.site) && (
+        <Section label="The coven’s templates">
+          <Text style={type.caption}>Rites and meetings the coven keeps to plan from. Save a copy to your own rituals{canPlan ? ', or share one with the community' : ''}.</Text>
+          <Button label="The coven’s templates" variant="outline" onPress={() => router.push(covenHref(coven.slug, 'ritual/templates'))} />
+        </Section>
+      )}
       {(coven.perms.notices || coven.perms.site) && (
         <Section label="Gathering notifications">
           <Text style={type.caption}>Who hears on their phone when a rite or meeting goes on the calendar, moves, or comes off it.</Text>

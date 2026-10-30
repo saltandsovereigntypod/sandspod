@@ -187,7 +187,20 @@
       ${state.perms.lead || state.perms.site ? section("Drafts", groups.drafts) : ""}
       ${section("Past rituals", groups.past)}
       ${state.rituals.length ? "" : `<p class="sp-empty">The coven hasn’t planned a ritual yet.${state.perms.lead ? " Plan the first one, and give each step to the people who will lead it." : ""}</p>`}
-      ${(state.perms.notices || state.perms.site) && !(state.perms.manage || state.perms.site) ? `<details class="sp-section" data-notice-rules><summary>Gathering notifications</summary><div data-notice-rules-body></div></details>` : ""}`;
+      ${(state.perms.notices || state.perms.site) && !(state.perms.manage || state.perms.site) ? `<details class="sp-section" data-notice-rules><summary>Gathering notifications</summary><div data-notice-rules-body></div></details>` : ""}
+      ${state.perms.member || state.perms.site ? `<details class="sp-section" data-coven-templates><summary>The coven’s templates</summary><div data-coven-templates-body><p class="sp-caption">Opening…</p></div></details>` : ""}`;
+    // The coven's own templates: a copy for your rituals, and (for those who lead its rituals) sharing with the community.
+    pane.querySelector("[data-coven-templates]")?.addEventListener("toggle", async (event) => {
+      const body = event.currentTarget.querySelector("[data-coven-templates-body]");
+      if (!event.currentTarget.open || body.dataset.loaded) return;
+      body.dataset.loaded = "1";
+      const items = (await D.ritualLibrary(state.coven.id).catch(() => [])).filter((l) => l.kind === "template");
+      const covenId = encodeURIComponent(state.coven.id);
+      body.innerHTML = `<p class="sp-caption">Rites and meetings the coven keeps to plan from. Save a copy to your own rituals${leaderNow() ? ", or share one with the community" : ""}.</p>
+        ${items.length ? items.map((l) => `<div class="sp-row"><span class="sp-row__text"><span class="sp-row__title">${esc(l.title)}</span></span>
+          <a class="button button--ghost button--small" href="/rituals/community/?keep=coven&coven=${covenId}&item=${encodeURIComponent(l.id)}">Save to my templates</a>
+          ${leaderNow() ? `<a class="button button--ghost button--small" href="/rituals/community/?share=1&coven=${covenId}&item=${encodeURIComponent(l.id)}">Share with the community</a>` : ""}</div>`).join("") : `<p class="sp-caption">The coven hasn’t kept a template yet.</p>`}`;
+    });
     const rulesBox = pane.querySelector("[data-notice-rules]");
     rulesBox?.addEventListener("toggle", () => {
       if (rulesBox.open && !rulesBox.dataset.loaded) {
@@ -644,7 +657,17 @@
         ${steers ? `<form data-record-notes><div class="sp-field"><label for="rec-notes">${kind === "meeting" ? "Minutes and notes" : "Notes and reflection"}</label><textarea id="rec-notes" name="notes" maxlength="8000" placeholder="What happened, what was felt, what to remember">${esc(record.notes || "")}</textarea></div>
           <div class="sp-actions"><button class="button button--ghost button--small" type="submit">Save the notes</button></div></form>` : record.notes ? `<div class="cv-doc">${prose(record.notes)}</div>` : ""}
         ${me() && record.attendees.includes(me()) ? `<p class="sp-caption">A copy is in your grimoire, under Coven rites.</p>` : ""}${statusLine()}</section>` : ""}
-      ${canBook ? bookButtons(ritual, record) : ""}`;
+      ${canBook ? bookButtons(ritual, record) : ""}
+      ${keepHtml(ritual)}`;
+  }
+
+  /** Keep it: your own copy (any member), or one of the coven's templates (those who lead its rituals). As the app's KeepRitual. */
+  function keepHtml(ritual) {
+    if (!stepsOf(ritual).length || ritual.status === "live" || !(state.perms.member || state.perms.site) || !me()) return "";
+    return `<section class="sp-section" aria-label="Keep it"><h3>Keep it</h3>
+      <p class="sp-caption">Keep its steps to do again: as your own ritual, or as one of the coven’s templates to plan from.</p>
+      <div class="sp-actions"><a class="button button--ghost button--small" href="/rituals/community/?keep=coven&coven=${encodeURIComponent(state.coven.id)}&ritual=${encodeURIComponent(ritual.id)}">Save to my templates</a>
+      ${leaderNow() ? `<button class="button button--ghost button--small" type="button" data-keep-coven-template>Keep as one of the coven’s templates</button>` : ""}</div>${statusLine()}</section>`;
   }
 
   function bookButtons(ritual, record) {
@@ -871,6 +894,16 @@
       event.preventDefault();
       const form = event.currentTarget;
       if (await UI.busy(form, statusOf(form), () => D.setRecordNotes(ritual.id, form.elements.notes.value), { done: "Saved." })) again();
+    });
+    pane.querySelector("[data-keep-coven-template]")?.addEventListener("click", async (event) => {
+      const button = event.currentTarget;
+      const plan = planOf(ritual);
+      const body = { kind: kindOf(ritual), intention: ritual.intention || "", description: ritual.description || "", occasion: ritual.occasion || "", occasion_name: ritual.occasion_name || "", plan, steps: builderSteps(ritual).map(B().libraryStep) };
+      const kept = await UI.busy(button, statusOf(button), () => D.saveRitualLibrary(state.coven.id, null, "template", ritual.title, body));
+      if (kept?.id) {
+        button.outerHTML = `<a class="button button--ghost button--small" href="/rituals/community/?share=1&coven=${encodeURIComponent(state.coven.id)}&item=${encodeURIComponent(kept.id)}">Share with the community</a>`;
+        UI.setStatus(pane.querySelector("[aria-label='Keep it'] [data-status]"), `“${ritual.title}” is kept with the coven’s templates.`);
+      }
     });
     pane.querySelectorAll("[data-to-book]").forEach((button) =>
       button.addEventListener("click", async () => {
