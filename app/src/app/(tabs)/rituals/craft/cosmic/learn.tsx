@@ -19,7 +19,10 @@ export default function Learn() {
 
   return (
     <RitualScreen back="Cosmic & celestial">
-      <Title eyebrow="Cosmic & celestial">Learn astrology</Title>
+      <Title eyebrow="Cosmic & celestial">Astrology glossary</Title>
+      <Pressable accessibilityRole="link" onPress={() => router.push('/rituals/craft/cosmic/course')} style={styles.link}>
+        <Text style={styles.linkText}>New to astrology? Take the course, from the very beginning ›</Text>
+      </Pressable>
       <TermText
         style={type.body}
         text="Everything in a birth chart, explained from the beginning. Start with The basics, then the planets, signs and houses; every underlined word anywhere in the app opens its own explanation."

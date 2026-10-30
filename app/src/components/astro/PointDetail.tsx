@@ -7,7 +7,7 @@ import { Text, View } from 'react-native';
 import { aspectDef, type AspectHit } from '../../lib/astro/aspects';
 import { term, termIdFor } from '../../lib/astro/glossary';
 import { ordinalHouse } from '../../lib/astro/interpret/compose';
-import { aspectReading, houseMeaning, inHouse, inSign } from '../../lib/astro/interpret/registry';
+import { aspectReading, houseMeaning, inHouse, inSign, transitReading } from '../../lib/astro/interpret/registry';
 import { PLANET_RULES, SIGN_STYLE } from '../../lib/astro/meanings';
 import { formatDegree, positionOf, type Chart, type Position } from '../../lib/astro/natal';
 import { decanOf, DIGNITY_LABEL, MODERN_RULER, SIGNS, TRADITIONAL_RULER } from '../../lib/astro/signs';
@@ -75,7 +75,7 @@ export function HouseDetail({ house, chart }: { house: number; chart: Chart }) {
 
 export function AspectDetail({ aspect: a, transit }: { aspect: AspectHit; transit?: boolean }) {
   const def = aspectDef(a.aspect);
-  const reading = transit ? null : aspectReading(a.a, a.aspect, a.b);
+  const reading = transit ? transitReading(a.a, a.aspect, a.b) : aspectReading(a.a, a.aspect, a.b);
   const tone = def.tone === 'soft' ? 'an easy flow between them' : def.tone === 'hard' ? 'friction that asks for effort and grows strength' : def.tone === 'blend' ? 'the two acting as one' : 'a subtle link';
   return (
     <ExplainCard

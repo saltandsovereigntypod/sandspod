@@ -31,7 +31,7 @@
 //    * TRANSIT_READINGS     interpret/transits.ts       key: `${transiting}|${aspect}|${natal}` e.g. 'Saturn|conjunction|Moon'
 //    * PATTERN_READINGS     interpret/patterns.ts       key: pattern name ('grand-trine', 't-square', ...)
 //    * ELEMENT_READINGS     interpret/balance.ts        keys: 'dominant|fire', 'missing|water', 'dominant|cardinal' ...
-//    * RULER_READINGS       interpret/ruler.ts          key: `${ruler}|house|${n}` (the chart ruler in a house)
+//    * RULER_READINGS       interpret/ruler.ts          key: `${ruler}|house|${n}` (the chart ruler in a house), `${ruler}|ruler`
 //    Body names are exactly as in lib/astro/signs.ts ChartPointName:
 //    'Sun' ... 'Pluto', 'Chiron', 'North Node', 'South Node', 'Lilith',
 //    'Part of Fortune', 'Ascendant', 'Midheaven'. Signs are 'Aries' ... 'Pisces'.
@@ -43,6 +43,11 @@
 //
 // 4. A "Learn Astrology" course can use the same Interpretation shape and the
 //    glossary (lib/astro/glossary.ts); see LessonSeed below for the planned shape.
+//    (Built: lib/astro/course/, in the coven courses' lesson and quiz format.)
+//
+// Phase 2 wrote the aspects, points (Part of Fortune, Midheaven), transits and
+// life cycles, returns, the progressed Moon, patterns, balance and the chart
+// ruler; app/tests/astro-interpret.test.ts checks they are complete.
 
 import type { AspectName, PatternName } from '../aspects.ts';
 import type { ChartPointName, ZodiacSign } from '../signs.ts';
@@ -87,9 +92,22 @@ export const keys = {
   pattern: (name: PatternName) => name,
   balance: (kind: 'dominant' | 'missing', what: string) => `${kind}|${what}`,
   rulerInHouse: (ruler: ChartPointName, house: number) => `${ruler}|house|${house}`,
+  /** The chart ruler itself, whichever house it is in: 'Mars|ruler'. */
+  chartRuler: (ruler: ChartPointName) => `${ruler}|ruler`,
 };
 
 export type InterpretationTable = Record<string, Interpretation>;
+
+/** Join a short closing paragraph (a line of advice) onto the one before it. */
+export function tidyParagraphs(text: string): string {
+  const parts = text.split('\n\n');
+  const out: string[] = [];
+  for (const p of parts) {
+    if (out.length && p.length < 60) out[out.length - 1] = `${out[out.length - 1]} ${p}`;
+    else out.push(p);
+  }
+  return out.join('\n\n');
+}
 
 /** A planned lesson in the Learn Astrology course (for the next builder). */
 export type LessonSeed = {
