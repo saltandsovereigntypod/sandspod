@@ -4,6 +4,7 @@ import { Text, View } from 'react-native';
 
 import { Button } from '../../../../../../components/Button';
 import { SupportLink } from '../../../../../../components/SupportLink';
+import { AncestorJournalLink, AncestorPhoto } from '../../../../../../components/journals/screens';
 import { Body, Card, RitualScreen, SectionLabel, Title, tell, ui } from '../../../../../../components/rituals/ui';
 import { relativeDay } from '../../../../../../lib/calendar';
 import { ANCESTORS, anniversaryWords, candleDraft, formatPartial, normalizeAncestor, upcomingAnniversaries } from '../../../../../../lib/craft/hedge/ancestors';
@@ -48,7 +49,17 @@ export default function AncestorPage() {
   return (
     <RitualScreen back="Ancestors">
       <Title eyebrow={person.relation || 'Remembered'}>{person.name || 'Unnamed'}</Title>
-      {(!!born || !!died) && <Body muted>{[born ? `Born ${born}` : null, died ? `Died ${died}` : null].filter(Boolean).join(' · ')}</Body>}
+      <AncestorPhoto id={raw.id} name={person.name} />
+      {(!!born || !!died || !!person.bornPlace || !!person.diedPlace) && (
+        <Body muted>
+          {[
+            born || person.bornPlace ? `Born ${[born, person.bornPlace].filter(Boolean).join(', ')}` : null,
+            died || person.diedPlace ? `Died ${[died, person.diedPlace].filter(Boolean).join(', ')}` : null,
+          ]
+            .filter(Boolean)
+            .join(' · ')}
+        </Body>
+      )}
 
       <Card accent>
         <Text style={type.cardTitle}>Light a candle for them</Text>
@@ -79,6 +90,7 @@ export default function AncestorPage() {
         </View>
       )}
 
+      <AncestorJournalLink person={raw.id} label={`Your journal about ${person.name || 'them'}`} />
       <Button label="Edit" variant="outline" onPress={() => router.push(`/rituals/craft/hedge/ancestors/edit?id=${raw.id}` as Href)} />
       <SupportLink />
     </RitualScreen>

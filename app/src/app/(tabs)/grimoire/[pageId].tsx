@@ -5,6 +5,7 @@ import { Platform } from 'react-native';
 import { Button } from '../../../components/Button';
 import { Sheet } from '../../../components/altar/Sheet';
 import { GrimoirePageScreen } from '../../../components/grimoire/PageScreen';
+import { JournalBacklinks } from '../../../components/journals/screens';
 import { MenuList, MenuRow } from '../../../components/more/ui';
 import { SHARE_CHOICES, type ShareChoice } from '../../../lib/grimoire/share';
 
@@ -27,12 +28,15 @@ export default function GrimoirePage() {
       <GrimoirePageScreen
         pageId={String(pageId ?? '')}
         extras={(page) => (
-          <Button
-            label="Share…"
-            variant="outline"
-            accessibilityHint="Suggest this page to a coven, or make an offering of it"
-            onPress={() => setSharing(page.id)}
-          />
+          <>
+            <Button
+              label="Share…"
+              variant="outline"
+              accessibilityHint="Suggest this page to a coven, or make an offering of it"
+              onPress={() => setSharing(page.id)}
+            />
+            <JournalBacklinks type="page" id={page.id} title={page.title || 'Untitled page'} />
+          </>
         )}
       />
       {/* Kept mounted and hidden, as iOS sheets must be. */}

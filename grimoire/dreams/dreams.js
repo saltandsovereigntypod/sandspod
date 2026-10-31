@@ -32,11 +32,19 @@
   // Readings drawn for a dream (Dream reading, hedge.readings with linkedTo), shown on its page and in the patterns.
   let readings = [];
   let loaded = false;
+  let journalLinks = [];
+  let settingsNow = {};
 
   async function load() {
     const [d, r] = await Promise.all([kit.entries(D.DREAMS), R && L ? kit.entries(R.READINGS) : []]);
     dreams = d.map((e) => ({ ...e, data: D.normalizeDream(e.data) }));
     readings = R ? r.map((e) => ({ ...e, data: R.normalizeReading(e.data) })) : [];
+    // Journal entries that link to a dream (grimoire/journals/journals.js).
+    if (core.journals && view === "grimoire-dream") {
+      const J = core.journals;
+      const lists = await Promise.all(J.JOURNALS.map((j) => kit.entries(j.collection)));
+      journalLinks = J.JOURNALS.map((j, i) => ({ kind: j.kind, entries: lists[i].map((e) => ({ id: e.id, createdAt: e.createdAt, data: J.normalizeEntry(e.data) })) }));
+    }
     loaded = true;
   }
 
@@ -61,6 +69,21 @@
           : kit.muted("Three cards for a dream that stays with you: what it shows, what it stirs in you, and what it asks of you.")
       }${kit.actions([kit.button({ label: "Read this dream", url: `/divination/draw/${L.drawQuery(link)}`, ghost: true })])}`,
       { id: "readings" }
+    );
+  }
+  /** The journal entries that link to this dream, and a way to write one that does (the app's JournalBacklinks). */
+  function dreamJournalsHtml(entry) {
+    const J = core.journals;
+    if (!J) return "";
+    const byKind = Object.fromEntries(journalLinks.map((x) => [x.kind, x.entries]));
+    const found = J.linkingTo(byKind, "dream", entry.id);
+    const param = { dream: entry.id, dreamTitle: entry.data.title || "Untitled dream" };
+    return kit.section(
+      "In your journals",
+      `${found.length ? kit.list(found.map(({ kind, entry: e }) => kit.row({ url: J.journalWebRoutes(kind, J.journalPlace(settingsNow, kind)).entry(e.id), title: J.entryTitle(kind, e.data), detail: `${J.journalDef(kind).title} · ${fullDate(e.data.date)}` }))) : ""}${kit.actions(
+        J.JOURNALS.map((j) => kit.button({ label: `Write in ${j.title}`, url: J.journalWebRoutes(j.kind, J.journalPlace(settingsNow, j.kind)).write(param), ghost: true, small: true }))
+      )}`,
+      { id: "journals" }
     );
   }
   const notFound = (backHtml, title, text) => [backHtml, kit.head({ title }), kit.p(loaded ? text : "Opening…")].join("");
@@ -134,6 +157,7 @@
         : "",
       kit.actions([kit.button({ label: "Edit", url: url.dreamEdit(entry.id), ghost: true })]),
       dreamReadingsHtml(entry),
+      dreamJournalsHtml(entry),
       supportLink()
     ].join("");
   }
@@ -392,6 +416,7 @@
 
   kit.start(async (who) => {
     user = who;
+    settingsNow = await kit.settings();
     await load();
     draw();
   });

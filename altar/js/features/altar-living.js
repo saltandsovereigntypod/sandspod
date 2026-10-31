@@ -133,7 +133,9 @@
     });
     if (moonCharge) out.push(caption(`Charged under the ${moonCharge.moon || "moon"}, ${B().dateShort(moonCharge.at)}, sitting here.`));
     if (relationship) {
-      out.push(block("Your relationship", caption(relationship.summary) + (relationship.reason ? caption(`Here for ${relationship.reason}.`) : "") + relationship.feasts.map((f) => caption(`${f.date.toLocaleDateString(undefined, { weekday: "short", day: "numeric", month: "short" })} · ${f.name}${f.tradition ? ` (${f.tradition})` : ""}`)).join("")));
+      out.push(block("Your relationship", caption(relationship.summary) + (relationship.reason ? caption(`Here for ${relationship.reason}.`) : "") + relationship.feasts.map((f) => caption(`${f.date.toLocaleDateString(undefined, { weekday: "short", day: "numeric", month: "short" })} · ${f.name}${f.tradition ? ` (${f.tradition})` : ""}`)).join("") +
+        // Their log in the deity journal (grimoire/journals/journals.js), as the app's "Deity journal" chip.
+        chips([{ label: "Deity journal", symbol: "✎", href: `/grimoire/journals/edit/?j=devotion&deity=${encodeURIComponent(String(saved.deity || "").toLowerCase().replace(/_/g, "-"))}&deityName=${encodeURIComponent(label)}`, hint: `Write about an offering or prayer for ${label} in your deity journal` }])));
     }
     if (deityAging) {
       out.push(block(`Your offering · ${core.offerings.freshnessWord(deityAging.fresh)}`, caption(core.offerings.freshnessLine(deityAging.kind, deityAging.fresh)) + chips([

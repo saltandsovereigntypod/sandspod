@@ -99,7 +99,9 @@
       </section>`;
 
     // Spell jars, sachets and the rest, with whether they worked (the journal's moon page keeps them).
-    const apothecaryRow = UI.row({ href: "/rituals/journal/insights/#did-it-work-made", title: "Apothecary", detail: "Jars & sachets, and whether they worked" });
+    const apothecaryRow = UI.row({ href: "/rituals/journal/insights/#did-it-work-made", title: "Apothecary", detail: "Jars & sachets, and whether they worked" })
+      // The practice journals (grimoire/journals/journals.js), wherever each lives.
+      + UI.row({ href: "/rituals/journals/", title: "Journals", detail: "Shadow work, Deity & spirit, Ancestors, and Omens & signs" });
     const journalList = entries.length
       ? `<div class="sp-list">${entries
           .slice(0, 5)

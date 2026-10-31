@@ -321,6 +321,24 @@ function createMySanctuaryPanel() {
             Show my dream journal as a Dreams section in my Book of Shadows
           </label>
 
+          <p class="my-sanctuary-help">Each practice journal can be a section of your Book of Shadows or a journal of its own, beside your ritual journal. Moving one keeps every entry.</p>
+          ${[
+            ["journal_shadow_place", "Shadow work journal"],
+            ["journal_devotion_place", "Deity &amp; spirit journal"],
+            ["journal_ancestors_place", "Ancestor journal"],
+            ["journal_omens_place", "Omens &amp; signs journal"]
+          ]
+            .map(
+              ([name, label]) => `<label>
+            ${label}
+            <select name="${name}">
+              <option value="grimoire">In my Book of Shadows</option>
+              <option value="journal">Its own journal</option>
+            </select>
+          </label>`
+            )
+            .join("")}
+
           <label>
             Book of Shadows Page Font
             <select name="grimoire_page_font">

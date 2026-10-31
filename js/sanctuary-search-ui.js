@@ -112,6 +112,13 @@
     }))]));
     // Dreams, the Grimoire's built-in section (craft_entries `hedge.dreams`, as the app keeps them).
     if (global.SaltCraft?.list) tasks.push(global.SaltCraft.list("hedge.dreams").then((records) => ["dreams", records.map((entry) => global.SanctuarySearch.createDreamResult(entry)).filter(Boolean)]));
+    // The practice journals (craft_entries `journal.<kind>`, as the app keeps them).
+    if (global.SaltCraft?.list) {
+      tasks.push(
+        Promise.all(["shadow", "devotion", "ancestors", "omens"].map((kind) => global.SaltCraft.list(`journal.${kind}`).then((records) => records.map((entry) => global.SanctuarySearch.createJournalResult(kind, entry)))))
+          .then((lists) => ["journals", lists.flat().filter(Boolean)])
+      );
+    }
     const activeSession = global.getStoredActiveRitualSession?.();
     if (activeSession?.id) tasks.push(Promise.resolve(["ritual-sessions", [{
       id: activeSession.id, group: "rituals", type: "ritual-session", title: activeSession.title || "Active Ritual",
@@ -178,6 +185,7 @@
       if (key === "library") return Boolean(global.Library);
       if (key === "pages") return Boolean(global.SanctuarySearchPageSource || location.pathname.includes("grimoire"));
       if (key === "dreams") return Boolean(global.SaltCraft);
+      if (key === "journals") return Boolean(global.SaltCraft);
       if (key === "divination") return Boolean(global.SaltCore?.["divination-library"]);
       if (key === "rituals") return typeof global.getMyRituals === "function";
       if (key === "templates") return typeof global.getRitualTemplates === "function";

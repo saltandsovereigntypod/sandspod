@@ -78,6 +78,8 @@
     };
     shelf("myPractice", "[data-my-practice-shelf]");
     shelf("dreams", "[data-dreams-shelf]");
+    // The practice journals kept in the Grimoire (grimoire/js/ui/journals.js).
+    toc.querySelectorAll("[data-journal-shelf]").forEach((el) => found.set(el.dataset.journalShelf, el));
     shelf("traditional", "[data-traditional-library-shelf]");
     toc.querySelectorAll(".book-toc-section").forEach((el) => {
       const toggle = el.querySelector(":scope > .book-section-row [data-toggle-section]");
@@ -95,7 +97,7 @@
     return el.querySelector(":scope > .book-section-pages");
   }
 
-  const SHELF_TITLES = { myPractice: "My Practice", dreams: "Dreams", traditional: "Traditional Information" };
+  const SHELF_TITLES = { myPractice: "My Practice", dreams: "Dreams", shadowJournal: "Shadow work", devotionJournal: "Deity & spirit", ancestorJournal: "Ancestors", omenJournal: "Omens & signs", traditional: "Traditional Information" };
 
   function parts(found) {
     const L = G().layout;
@@ -103,7 +105,7 @@
     return L.personalParts({
       sections: sectionList,
       loose: found.has("pages"),
-      shelves: ["myPractice", "dreams", "traditional"].filter((k) => found.has(k)).map((key) => ({ key, title: SHELF_TITLES[key] }))
+      shelves: ["myPractice", "dreams", "shadowJournal", "devotionJournal", "ancestorJournal", "omenJournal", "traditional"].filter((k) => found.has(k)).map((key) => ({ key, title: SHELF_TITLES[key] }))
     });
   }
 

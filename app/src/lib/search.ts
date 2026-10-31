@@ -8,8 +8,9 @@ import type { LibraryEntry } from './library/types.ts';
 import { methodLabel, sortReadings, type ReadingEntry } from './craft/hedge/readings.ts';
 import { searchDreams, sortDreams, type DreamEntry } from './craft/hedge/dreams.ts';
 import type { JournalRow, TemplateRow } from './rituals/types.ts';
+import { dayLabel, entryTitle, journalDef, searchEntries, sortEntries, type JournalEntry, type JournalKind } from './journals/journals.ts';
 
-export type SearchKind = 'library' | 'page' | 'journal' | 'template' | 'reading' | 'dream';
+export type SearchKind = 'library' | 'page' | 'journal' | 'template' | 'reading' | 'dream' | 'practiceJournal';
 
 export type SearchHit = { kind: SearchKind; id: string; title: string; detail: string };
 
@@ -23,6 +24,8 @@ export type SearchSources = {
   readings?: ReadingEntry[];
   /** Dreams (craft collection `hedge.dreams`), normalised. */
   dreams?: DreamEntry[];
+  /** The practice journals (lib/journals), normalised; a hit's id is "<kind>/<entry id>". */
+  journals?: { kind: JournalKind; entries: JournalEntry[] }[];
 };
 
 /** Rich text as plain words (the grimoire stores some blocks as HTML). */
@@ -72,7 +75,7 @@ const JOURNAL_FIELDS: (keyof JournalRow)[] = [
 /** Everything matching `query`, grouped by where it lives; titles that match come first. */
 export function searchEverything(sources: SearchSources, query: string, perKind = 8): Record<SearchKind, SearchHit[]> {
   const needle = query.trim().toLowerCase();
-  const empty = { library: [], page: [], journal: [], template: [], reading: [], dream: [] };
+  const empty = { library: [], page: [], journal: [], template: [], reading: [], dream: [], practiceJournal: [] };
   if (needle.length < 2) return empty;
   const byTitle = (a: SearchHit & { titled: boolean }, b: SearchHit & { titled: boolean }) => Number(b.titled) - Number(a.titled);
   const finish = (hits: (SearchHit & { titled: boolean })[]) =>
@@ -144,5 +147,17 @@ export function searchEverything(sources: SearchSources, query: string, perKind 
     }),
   );
 
-  return { library, page: pages, journal, template: templates, reading: readings, dream: dreams };
+  // The practice journals: shadow work, deity & spirit, ancestors, omens & signs.
+  const practiceJournal = finish(
+    (sources.journals ?? []).flatMap(({ kind, entries }) =>
+      sortEntries(searchEntries(kind, entries, query)).map((entry) => {
+        const title = entryTitle(kind, entry.data);
+        const titled = title.toLowerCase().includes(needle);
+        const body = titled ? null : firstMatch([entry.data.text, entry.data.what, entry.data.meaning, entry.data.trigger, entry.data.pattern, entry.data.integration, entry.data.prayer, entry.data.recipe, entry.data.tags.join(', ')], needle);
+        return { kind: 'practiceJournal' as const, id: `${kind}/${entry.id}`, title, detail: body ?? `${journalDef(kind).title} · ${dayLabel(entry.data.date)}`, titled };
+      }),
+    ),
+  );
+
+  return { library, page: pages, journal, template: templates, reading: readings, dream: dreams, practiceJournal };
 }

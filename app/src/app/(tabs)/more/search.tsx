@@ -5,6 +5,9 @@ import { StyleSheet, Text, TextInput } from 'react-native';
 import { MenuList, MenuRow, MoreScreen, Section } from '../../../components/more/ui';
 import { useGrimoire } from '../../../lib/grimoire/store';
 import { DREAMS, normalizeDream } from '../../../lib/craft/hedge/dreams';
+import { useJournal } from '../../../components/journals/shared';
+import { journalPlace, journalRoutes, type JournalKind } from '../../../lib/journals/journals';
+import { cachedSettings } from '../../../lib/settings/store';
 import { normalizeReading, READINGS } from '../../../lib/craft/hedge/readings';
 import { useCraft } from '../../../lib/craft/store';
 import { libraryHref, useLibrary } from '../../../lib/library';
@@ -19,6 +22,7 @@ const GROUPS: { kind: SearchKind; label: string }[] = [
   { kind: 'template', label: 'Ritual templates' },
   { kind: 'reading', label: 'Divination readings' },
   { kind: 'dream', label: 'Dreams' },
+  { kind: 'practiceJournal', label: 'Your journals' },
 ];
 
 // Results open inside the More tab, so Back comes straight back to the search.
@@ -34,6 +38,11 @@ function hrefFor(hit: SearchHit): Href {
       return { pathname: '/more/reading/[id]', params: { id: hit.id } };
     case 'dream':
       return { pathname: '/more/dream/[id]', params: { id: hit.id } };
+    case 'practiceJournal': {
+      // "<kind>/<id>": opened where that journal lives.
+      const [kind, id] = hit.id.split('/');
+      return journalRoutes(kind as JournalKind, journalPlace(cachedSettings(), kind as JournalKind)).entry(id) as Href;
+    }
     default:
       return { pathname: '/more/templates/[id]', params: { id: hit.id } };
   }
@@ -50,14 +59,27 @@ export default function Search() {
   const { entries: dreamRows } = useCraft<unknown>(DREAMS);
   const readings = useMemo(() => readingRows.map((e) => ({ ...e, data: normalizeReading(e.data) })), [readingRows]);
   const dreams = useMemo(() => dreamRows.map((e) => ({ ...e, data: normalizeDream(e.data) })), [dreamRows]);
+  const shadow = useJournal('shadow').list;
+  const devotion = useJournal('devotion').list;
+  const ancestors = useJournal('ancestors').list;
+  const omens = useJournal('omens').list;
+  const journals = useMemo(
+    () => [
+      { kind: 'shadow' as const, entries: shadow },
+      { kind: 'devotion' as const, entries: devotion },
+      { kind: 'ancestors' as const, entries: ancestors },
+      { kind: 'omens' as const, entries: omens },
+    ],
+    [shadow, devotion, ancestors, omens],
+  );
 
   const hits = useMemo(
     () =>
       searchEverything(
-        { library: entries, pages: snapshot?.pages ?? [], blocks: snapshot?.blocks ?? [], journal, templates, readings, dreams },
+        { library: entries, pages: snapshot?.pages ?? [], blocks: snapshot?.blocks ?? [], journal, templates, readings, dreams, journals },
         deferred,
       ),
-    [entries, snapshot, journal, templates, readings, dreams, deferred],
+    [entries, snapshot, journal, templates, readings, dreams, journals, deferred],
   );
   const total = GROUPS.reduce((sum, g) => sum + hits[g.kind].length, 0);
   const searching = deferred.trim().length >= 2;
