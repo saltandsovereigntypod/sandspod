@@ -48,7 +48,14 @@ export async function enableCovenPush(): Promise<PushResult> {
     if (!permission.granted) return { ok: false, reason: 'denied' };
     const projectId = Constants.expoConfig?.extra?.eas?.projectId ?? Constants.easConfig?.projectId;
     const token = (await Notifications.getExpoPushTokenAsync({ projectId })).data;
-    const { error } = await supabase.rpc('register_push_token', { p_token: token, p_platform: Platform.OS });
+    let timeZone: string | null = null;
+    try {
+      timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone || null;
+    } catch {
+      timeZone = null;
+    }
+    // This phone's time zone, so a gathering's note reads in the reader's own time.
+    const { error } = await supabase.rpc('register_push_token', { p_token: token, p_platform: Platform.OS, p_time_zone: timeZone });
     if (error) return { ok: false, reason: 'offline' };
     await AsyncStorage.setItem(TOKEN_KEY, token).catch(() => {});
     return { ok: true };

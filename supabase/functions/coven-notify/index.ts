@@ -668,9 +668,10 @@ async function covenGathering(admin: SupabaseClient, caller: SupabaseClient, sen
   const listeners = recipients.filter((u) => wantsGathering(saved.get(u) ?? null, covenId, now));
   let delivered = 0;
   if (listeners.length) {
-    const { data: tokens } = await admin.from("push_tokens").select("token,user_id").in("user_id", listeners);
+    const { data: tokens } = await admin.from("push_tokens").select("token,user_id,time_zone").in("user_id", listeners);
     if (tokens?.length) {
-      const note = gatheringNote({
+      // Each phone reads the time in its own time zone when it told us one; else the coven's.
+      const noteFor = (zone: string | null) => gatheringNote({
         event: what.event,
         kind: ritual.kind,
         title: ritual.title,
@@ -679,11 +680,13 @@ async function covenGathering(admin: SupabaseClient, caller: SupabaseClient, sen
         ritualId: id,
         scheduledFor: ritual.scheduled_for,
         previous: what.previous,
-        zones: { coven: validZone(coven.timezone) ? coven.timezone : null, planner: plannerZone || null },
+        zones: { coven: validZone(zone) ? zone : validZone(coven.timezone) ? coven.timezone : null, planner: plannerZone || null },
         now,
         note: manual?.note,
       });
-      const notes: Push[] = tokens.map((t) => ({
+      const notes: Push[] = tokens.map((t) => {
+        const note = noteFor((t as { time_zone?: string | null }).time_zone ?? null);
+        return {
         to: t.token,
         title: note.title,
         body: note.body,
@@ -691,7 +694,8 @@ async function covenGathering(admin: SupabaseClient, caller: SupabaseClient, sen
         channelId: "coven-gatherings",
         threadId: `gatherings:${covenId}`,
         data: { source: "coven-gathering", url: note.url, covenId, ritualId: id, event: what.event },
-      }));
+        };
+      });
       delivered = await push(admin, notes);
     }
   }
