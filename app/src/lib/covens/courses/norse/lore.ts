@@ -213,7 +213,7 @@ Several sagas mention a **dísablót,** a sacrifice to the dísir:
 - In **Ynglinga saga,** the Swedish king **Aðils** rides his horse round the hall at Uppsala during the dísablót. The horse stumbles, he falls, strikes his head on a stone and dies.
 - In **Egils saga,** a dísablót is held at a farm in western Norway, in autumn, with a great feast and heavy drinking; the young Egil, insulted, kills a man there.
 - In **Víga-Glúms saga,** a feast for the dísir is held at **Winter Nights,** in mid-October.
-- In **Hervarar saga,** a princess named Álfhildr reddens the hörgr at a dísablót at night, and is carried off by the hero Starkaðr.
+- In **Hervarar saga,** a princess named Álfhildr reddens the hörgr at a dísablót at night, and is carried off by Starkaðr Áludrengr, grandfather of the more famous Starkaðr.
 
 So in the sagas the dísablót falls at different times: autumn, Winter Nights, or unstated. It seems to have been a household or local feast, held when it suited, often led by women.
 
@@ -361,7 +361,7 @@ The Nordic countries have some of the richest midsummer customs in Europe, mostl
 
 - **Jónsmessa** in Iceland, when dew was said to heal and some rolled naked in it;
 - **Midsommar** in Sweden, kept on the Friday between 19 and 25 June, with a leafy pole raised and danced around, flower wreaths, new potatoes, herring and strawberries; the pole probably came from Germany in later centuries;
-- **Sankthans** in Norway and Denmark, with great bonfires; in Denmark a witch figure is burned on the fire, a custom that grew up in the twentieth century;
+- **Sankthans** in Norway and Denmark, with great bonfires; in Denmark a witch figure is burned on the fire, a custom that probably came from Germany and only became common in the twentieth century;
 - **Juhannus** in Finland, with lakeside fires and birch boughs at the door;
 - seven or nine kinds of flowers laid under the pillow to dream of a future love.
 

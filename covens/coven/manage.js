@@ -383,6 +383,7 @@
           <p class="sp-caption">Reviewers can raise members to positions below their own that carry no powers. Only leaders give positions with powers.</p>
           ${[...state.ranks].sort((a, b) => b.level - a.level).map(rankForm).join("")}${rankForm({ level: 1 })}</section>
         ${questionsForm(coven)}
+        <div data-coven-tradition-holder></div>
         ${calendarForm(coven)}
         <div data-coven-counting-holder></div>
         <section class="sp-section"><h2>Gathering notifications</h2><div data-notice-rules></div></section>
@@ -494,6 +495,8 @@
       // How the coven counts its days (covens/coven/moon-calendar.js).
       global.CovenMoonCalendar?.form(pane.querySelector("[data-coven-counting-holder]"), coven);
       const calendar = pane.querySelector("[data-calendar]");
+      // The coven's tradition, which puts the calendars that suit it first (covens/coven/tradition.js).
+      global.CovenTradition?.form(pane.querySelector("[data-coven-tradition-holder]"), coven, calendar);
       const customList = calendar.querySelector("[data-custom-list]");
       calendar.addEventListener("click", (event) => {
         if (event.target.closest("[data-remove-custom]")) event.target.closest("[data-custom]").remove();

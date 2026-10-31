@@ -32,3 +32,7 @@ export * as reminderSources from '../../app/src/lib/reminders/sources.ts';
 export * as tendModel from '../../app/src/lib/tend/model.ts';
 export * as reminderCovens from '../../app/src/lib/reminders/covens.ts';
 export * as altarSnapshot from '../../app/src/lib/altar/snapshot.ts';
+// The coven's tradition, for its members' premade workings and calendars (js/coven-paths.js).
+export * as covenTradition from '../../app/src/lib/covens/covenTradition.ts';
+// The seasons of the year, counted as chosen (Settings → Location & hemisphere).
+export * as seasons from '../../app/src/lib/seasons.ts';

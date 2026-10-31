@@ -880,7 +880,7 @@ export const JOURNEY_CATALOG: JourneyLike[] = [
     "paths": [
       "wheel"
     ],
-    "title": "The Wheel of the Year: A Year and a Day",
+    "title": "The Wheel of the Year Path",
     "summary": "A year and a day keeping the eight seasonal festivals as an eclectic Pagan path: their real histories, old and new, the seasons where you actually live, and a dedication to the turning year and your own land."
   },
   {
@@ -889,7 +889,7 @@ export const JOURNEY_CATALOG: JourneyLike[] = [
     "paths": [
       "wicca"
     ],
-    "title": "Wicca: A Year and a Day",
+    "title": "The Wiccan Path",
     "summary": "A solitary year of study and practice in modern Wicca, from its real history to the circle, the moons and the sabbats, ending in a self-dedication to the Goddess and the God."
   }
 ];

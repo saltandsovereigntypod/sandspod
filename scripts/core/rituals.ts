@@ -26,3 +26,5 @@ export * as calendarEvent from '../../app/src/lib/reminders/calendarEvent.ts';
 // A reading drawn before a working, beside its "Did it work?" (hedge.readings linkedTo).
 export * as linked from '../../app/src/lib/divination/linked.ts';
 export * as readings from '../../app/src/lib/craft/hedge/readings.ts';
+// The coven's tradition, for its members' premade workings and calendars (js/coven-paths.js).
+export * as covenTradition from '../../app/src/lib/covens/covenTradition.ts';

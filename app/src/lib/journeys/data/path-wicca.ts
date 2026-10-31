@@ -17,7 +17,7 @@ export const JOURNEY: Journey = {
   id: 'path-wicca',
   kind: 'path',
   paths: ['wicca'],
-  title: 'Wicca: A Year and a Day',
+  title: 'The Wiccan Path',
   summary:
     'A solitary year of study and practice in modern Wicca, from its real history to the circle, the moons and the sabbats, ending in a self-dedication to the Goddess and the God.',
   welcome: `This is a year and a day of learning and practising Wicca on your own, at your own pace. You will read about where Wicca came from, keep the full moons and the eight sabbats, build an altar, start a Book of Shadows, and at the end decide whether to dedicate yourself to the path.

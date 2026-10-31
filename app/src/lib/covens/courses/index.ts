@@ -87,26 +87,29 @@ import norseDedication from './norse/dedication.ts';
 import norseElder from './norse/elder.ts';
 import norseHighPriestess from './norse/high-priestess.ts';
 
+import { southernModule, southernRenames } from './southern.ts';
+
 export type { CourseDoc, CourseLink, CourseModule, CourseStage, CourseTask, Quiz } from './types.ts';
 
 /** The eclectic Wheel's modules. */
 const WHEEL: CourseModule[] = [wheelTradition, wheelRitual, wheelDevotion, wheelLore, wheelInitiation, wheelSeeker, wheelDedication, wheelElder, wheelHighPriestess];
 
+/** Wicca's modules. */
+const WICCA: CourseModule[] = [wiccaTradition, wiccaRitual, wiccaDevotion, wiccaLore, wiccaInitiation, wiccaSeeker, wiccaDedication, wiccaElder, wiccaHighPriestess];
+
+// The southern sets (southern.ts): the lessons and tests whose dates read
+// differently in the south, with their southern ids.
+const SOUTH_RENAMES = new Map([...southernRenames(WHEEL, 'wheel', 'wheel_south'), ...southernRenames(WICCA, 'wicca', 'wicca_south')]);
+
 /**
  * The southern Wheel (holidays.ts 'wheel_south'): the same lessons and tests,
- * written hemisphere-neutral, with each festival step keeping the southern
- * calendar's day ('wheel/imbolc' → 'wheel_south/imbolc', which falls in August).
+ * with each festival step keeping the southern calendar's day ('wheel/imbolc'
+ * → 'wheel_south/imbolc', which falls in August) and the southern dates first.
  */
-export function southernWheel(m: CourseModule): CourseModule {
-  return {
-    ...m,
-    id: m.id.replace(/^wheel-/, 'wheel_south-'),
-    stages: m.stages.map((s) => ({
-      ...s,
-      tasks: s.tasks.map((t) => (t.holiday?.startsWith('wheel/') ? { ...t, holiday: `wheel_south/${t.holiday.slice('wheel/'.length)}` } : t)),
-    })),
-  };
-}
+export const southernWheel = (m: CourseModule): CourseModule => southernModule(m, 'wheel', 'wheel_south', SOUTH_RENAMES);
+
+/** Southern-hemisphere Wicca: Wicca's lessons on the southern Wheel's days, the same way. */
+export const southernWicca = (m: CourseModule): CourseModule => southernModule(m, 'wicca', 'wicca_south', SOUTH_RENAMES);
 
 export const MODULES: CourseModule[] = [
   coreWelcome,
@@ -140,15 +143,9 @@ export const MODULES: CourseModule[] = [
   ...WHEEL.map(southernWheel),
   // Wicca keeps the Wheel's festivals (holidays.ts 'wheel'); its sabbat steps
   // also give the Wheel's lesson on each festival for its history.
-  wiccaTradition,
-  wiccaRitual,
-  wiccaDevotion,
-  wiccaLore,
-  wiccaInitiation,
-  wiccaSeeker,
-  wiccaDedication,
-  wiccaElder,
-  wiccaHighPriestess,
+  ...WICCA,
+  // Southern-hemisphere Wicca keeps the southern Wheel's days ('wheel_south').
+  ...WICCA.map(southernWicca),
   // The Celtic set keeps the Gaelic fire festivals (holidays.ts 'celtic'); its
   // festival steps also give the Wheel's lesson on the same festival for its
   // wider history.
@@ -181,6 +178,7 @@ export const COURSE_TRADITIONS: { id: string; name: string }[] = [
   { id: 'wheel', name: 'Wheel of the Year' },
   { id: 'wheel_south', name: 'Wheel of the Year (Southern Hemisphere)' },
   { id: 'wicca', name: 'Wicca' },
+  { id: 'wicca_south', name: 'Wicca (Southern Hemisphere)' },
   { id: 'celtic', name: 'Celtic' },
   { id: 'norse', name: 'Norse & Heathen' },
 ];

@@ -6,6 +6,7 @@
 import type { Ingredient, StepDraft, TemplateDraft } from '../../rituals/types.ts';
 import type { PremadeIntention } from '../../rituals/premade/types.ts';
 import { libraryHerbName, pantryItem } from './pantry.ts';
+import { seasonOfYear, type SeasonCounting } from '../../seasons.ts';
 
 export type Season = 'spring' | 'summer' | 'autumn' | 'winter';
 export const SEASONS: { key: Season; label: string }[] = [
@@ -255,14 +256,15 @@ export const simmerPot = (id: string | null | undefined): SimmerPot | null => (i
 
 export type SeasonGuess = { season: Season; hemisphere: 'north' | 'south'; /** No latitude was known, so northern was assumed. */ assumed: boolean };
 
-/** Meteorological seasons (whole months), flipped for the southern hemisphere. */
-export function seasonAt(date: Date, latitude: number | null | undefined): SeasonGuess {
+/**
+ * The season now, flipped for the southern hemisphere: counted as chosen
+ * (lib/seasons.ts, Settings → Location & hemisphere), by whole months unless
+ * told otherwise.
+ */
+export function seasonAt(date: Date, latitude: number | null | undefined, counting: SeasonCounting = 'meteorological'): SeasonGuess {
   const known = typeof latitude === 'number' && Number.isFinite(latitude);
   const hemisphere = known && latitude! < 0 ? 'south' : 'north';
-  const month = date.getMonth(); // 0 = January
-  const north: Season = month <= 1 || month === 11 ? 'winter' : month <= 4 ? 'spring' : month <= 7 ? 'summer' : 'autumn';
-  const flip: Record<Season, Season> = { winter: 'summer', spring: 'autumn', summer: 'winter', autumn: 'spring' };
-  return { season: hemisphere === 'south' ? flip[north] : north, hemisphere, assumed: !known };
+  return { season: seasonOfYear(date, hemisphere, counting), hemisphere, assumed: !known };
 }
 
 /** The best two or three blends for an intention and season, best first. */

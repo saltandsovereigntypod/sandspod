@@ -307,6 +307,8 @@ export type ExactReading = {
   headline: string;
   /** "Waning gibbous, 87% lit · last quarter in 3 days". */
   moonLine: string;
+  /** The same without the phase's name, under a headline that already gives it: "87% lit · last quarter in 3 days". */
+  moonDetail: string;
   /** "The Moon is in Scorpio: deep, intense and private." (astrology terms are made tappable on screen). */
   signLine: string;
   reading: Reading;
@@ -335,7 +337,21 @@ export function exactReading(data: CycleData, now: Date): ExactReading {
     moon: { name: state.name, key, illumination, next },
     headline,
     moonLine: `${state.name}, ${illumination}% lit · ${next.name.toLowerCase()} ${inDays(next.days)}`,
+    moonDetail: `${illumination}% lit · ${next.name.toLowerCase()} ${inDays(next.days)}`,
     signLine: `The Moon is in ${moonSign(now)}: ${MOON_IN_SIGN[moonSign(now)].mood}.`,
     reading: READINGS[season][key],
   };
+}
+
+/**
+ * Cycle & Moon's one card for today: the reading's headline, which already
+ * says the cycle day, the inner season and the moon's phase, with the moon's
+ * day added when following the moon alone ("Moon day 12 · inner spring by the
+ * moon · waxing gibbous moon"), so nothing from todayView's line is lost and
+ * nothing is said twice.
+ */
+export function homeHeadline(view: { line: string; byMoon: boolean }, reading: Pick<ExactReading, 'headline' | 'byMoon'>): string {
+  if (!view.byMoon || !reading.byMoon) return reading.headline;
+  const day = view.line.split(' · ')[0];
+  return `${day} · ${reading.headline.charAt(0).toLowerCase()}${reading.headline.slice(1)}`;
 }

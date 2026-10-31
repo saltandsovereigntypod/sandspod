@@ -6,6 +6,7 @@
 // with the website as SaltCore.covens.courseCopy. Pure (the course data
 // itself is passed in, so it can load on its own).
 
+import { calendarsForTradition, covenTraditionOf } from './covenTradition.ts';
 import type { Award, CourseProgram, PathKey } from './courses/index.ts';
 import type { ProgramTemplate } from './programs.ts';
 import { courseLinkMarker, type CourseLink } from './courseLinks.ts';
@@ -107,20 +108,21 @@ export type PathGroup = { tradition: string; name: string; programs: CourseProgr
 
 /**
  * Ready-made programs for the chooser: each tradition the courses cover as
- * one path (the coven's own calendars first), and the database's older
- * templates for the traditions not yet written.
+ * one path (the coven's own tradition first, then those of its calendars),
+ * and the database's older templates for the traditions not yet written.
  */
-export function chooser(courses: CourseProgram[], templates: ProgramTemplate[], coven: { practice_traditions?: string[] | null } | null | undefined, names: Record<string, string> = {}) {
-  const mine = new Set(coven?.practice_traditions ?? []);
+export function chooser(courses: CourseProgram[], templates: ProgramTemplate[], coven: { practice_traditions?: string[] | null; course_tradition?: string | null } | null | undefined, names: Record<string, string> = {}) {
+  const own = covenTraditionOf(coven?.course_tradition);
+  const mine = new Set([...(coven?.practice_traditions ?? []), ...calendarsForTradition(own)]);
   const covered = new Set(courses.map((p) => p.tradition));
   const paths: PathGroup[] = [...covered]
     .map((t) => ({
       tradition: t,
       name: names[t] ?? courses.find((p) => p.tradition === t)?.title.split(':')[0] ?? t,
       programs: courses.filter((p) => p.tradition === t).sort((a, b) => a.position - b.position),
-      suggested: mine.has(t),
+      suggested: t === own || mine.has(t),
     }))
-    .sort((a, b) => Number(b.suggested) - Number(a.suggested) || a.name.localeCompare(b.name));
+    .sort((a, b) => Number(b.tradition === own) - Number(a.tradition === own) || Number(b.suggested) - Number(a.suggested) || a.name.localeCompare(b.name));
   const older = [...templates].filter((t) => !t.tradition || !covered.has(t.tradition)).sort((a, b) => a.position - b.position);
   return {
     paths,

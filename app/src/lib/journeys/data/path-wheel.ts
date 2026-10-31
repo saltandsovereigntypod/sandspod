@@ -18,7 +18,7 @@ export const JOURNEY: Journey = {
   id: 'path-wheel',
   kind: 'path',
   paths: ['wheel'],
-  title: 'The Wheel of the Year: A Year and a Day',
+  title: 'The Wheel of the Year Path',
   summary:
     'A year and a day keeping the eight seasonal festivals as an eclectic Pagan path: their real histories, old and new, the seasons where you actually live, and a dedication to the turning year and your own land.',
   welcome: `This journey is for anyone who wants to live by the turning of the year: eclectic Pagans, nature-centred witches, Druid-leaning folk, people with or without gods. It follows the eight festivals of the modern Wheel of the Year, Samhain, Yule, Imbolc, the spring equinox, Beltane, midsummer, Lammas and the autumn equinox, for a year and a day, with the full moons as the month's heartbeat.

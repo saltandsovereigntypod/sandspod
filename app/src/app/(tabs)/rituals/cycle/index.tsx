@@ -9,7 +9,7 @@ import { errorText, PassphraseInput, passphraseProblem, Progress, RecoveryCard }
 import { Body, Card, List, Notice, RitualScreen, Row, SectionLabel, Title, tell, ui } from '../../../../components/rituals/ui';
 import { ARCHETYPES, FRAMEWORK_NOTE, NOT_MEDICAL, SEASON_INFO } from '../../../../lib/cycle/content';
 import { historyReading } from '../../../../lib/cycle/history';
-import { exactReading } from '../../../../lib/cycle/readings';
+import { exactReading, homeHeadline } from '../../../../lib/cycle/readings';
 import { redFlags, symptomInsights } from '../../../../lib/cycle/symptoms';
 import {
   bleedDays,
@@ -32,8 +32,11 @@ import {
   useCycle,
   type CycleState,
 } from '../../../../lib/cycle/store';
-import { moonState } from '../../../../lib/moon';
 import { useSession } from '../../../../lib/session';
+import { hemisphereOf } from '../../../../lib/calendars';
+import { usePlace } from '../../../../lib/location';
+import { seasonCounting, seasonLine } from '../../../../lib/seasons';
+import { useMySettings } from '../../../../lib/settings/store';
 import { type } from '../../../../theme';
 
 const SYNC_LINE: Record<CycleState['sync'], string> = {
@@ -51,12 +54,11 @@ const SYNC_LINE: Record<CycleState['sync'], string> = {
 export default function CycleHome() {
   const cycle = useCycle();
   const now = new Date();
-  const moon = moonState(now);
   const [recovery, setRecovery] = useState<string | null>(null);
 
   return (
     <RitualScreen back="Back" onRefresh={refreshCycle}>
-      <Title eyebrow={moon.name}>Cycle &amp; Moon</Title>
+      <Title eyebrow="Craft">Cycle &amp; Moon</Title>
       {cycle.phase === 'loading' && <ActivityIndicator />}
       {cycle.phase === 'new' && <Begin onRecovery={setRecovery} />}
       {cycle.phase === 'locked' && <Unlock />}
@@ -190,6 +192,9 @@ function Open({ cycle, now }: { cycle: CycleState; now: Date }) {
   const info = SEASON_INFO[view.season];
   const s = data.settings;
   const today = dayKey(now);
+  const { settings } = useMySettings();
+  const place = usePlace();
+  const yearSeason = seasonLine(now, hemisphereOf(settings, place), seasonCounting(settings));
 
   return (
     <View style={ui.gap}>
@@ -214,18 +219,15 @@ function Open({ cycle, now }: { cycle: CycleState; now: Date }) {
         </Card>
       )}
 
-      <Card accent>
-        <Text style={[type.eyebrow, ui.gold]}>Today</Text>
-        <Text style={type.cardTitle}>{view.line}</Text>
+      {/* One card for today: the reading's headline holds the day, season and moon (homeHeadline). */}
+      <ReadingCard reading={reading} headline={homeHeadline(view, reading)} onWrite={() => router.push({ pathname: '/rituals/cycle/log', params: { date: today } })}>
         {view.bleeding && <Body>In moon time. Rest counts as practice.</Body>}
         {view.estimate && <Body>{view.estimate.line}</Body>}
         {s.mode === 'cycle' && !data.bleeds.length && <Body muted>Add your past periods, or log when your next bleed begins, and the days will count from there. Until then, the moon gives the season.</Body>}
         {s.archetypes && <Body muted>{`${ARCHETYPES[view.season].name} (${ARCHETYPES[view.season].plain}): ${ARCHETYPES[view.season].line}`}</Body>}
         <Button label="Log today" onPress={() => router.push({ pathname: '/rituals/cycle/log', params: { date: today } })} />
         {s.mode === 'cycle' && data.bleeds.length < 3 && <Button label="Add past periods" variant="outline" onPress={() => router.push('/rituals/cycle/past')} />}
-      </Card>
-
-      <ReadingCard reading={reading} onWrite={() => router.push({ pathname: '/rituals/cycle/log', params: { date: today } })} />
+      </ReadingCard>
 
       {view.bleeding && s.altar && (
         <Card>
@@ -239,6 +241,8 @@ function Open({ cycle, now }: { cycle: CycleState; now: Date }) {
         <Text style={[type.eyebrow, ui.gold]}>{seasonTitle(view.season)}</Text>
         <Body>{info.feel}</Body>
         <Body>{info.practice}</Body>
+        {/* The season of the year outside, beside the inner one, counted as chosen (lib/seasons.ts). */}
+        <Body muted>{`Outside: ${yearSeason}`}</Body>
       </Card>
 
       {s.mode === 'cycle' && (

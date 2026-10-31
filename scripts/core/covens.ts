@@ -9,6 +9,7 @@ export * as holidays from '../../app/src/lib/holidays.ts';
 // the date), and taking it for your own Settings: covens/coven/moon-calendar.js.
 export * as calendars from '../../app/src/lib/calendars/index.ts';
 export * as moonCalendar from '../../app/src/lib/covens/moonCalendar.ts';
+export * as covenTradition from '../../app/src/lib/covens/covenTradition.ts';
 export * as today from '../../app/src/lib/covens/today.ts';
 export * as thread from '../../app/src/lib/covens/thread.ts';
 export * as unreadCount from '../../app/src/lib/covens/unreadCount.ts';

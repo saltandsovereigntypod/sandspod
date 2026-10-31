@@ -18,6 +18,10 @@ import type { ChartPointName } from '../signs.ts';
 import { LIGHT_PAIRS } from './aspectData/lights.ts';
 import { MOON_PAIRS } from './aspectData/moon.ts';
 import { OUTER_PAIRS } from './aspectData/outer.ts';
+import { JUPITER_DEEPER } from './aspectData/outerDeeperJupiter.ts';
+import { NEPTUNE_ON_DEEPER } from './aspectData/outerDeeperNeptuneOn.ts';
+import { SATURN_URANUS_DEEPER } from './aspectData/outerDeeperSaturnUranus.ts';
+import type { PairDeeper } from './aspectData/outerDeeperTypes.ts';
 import { PERSONAL_PAIRS } from './aspectData/personal.ts';
 import { MAJOR_ASPECTS, type MajorAspect, type PairSeed } from './aspectData/types.ts';
 import { VENUS_MARS_PAIRS } from './aspectData/venusMars.ts';
@@ -30,6 +34,9 @@ export const ASPECT_BODIES: ChartPointName[] = BODY_ORDER.filter((b) => !['South
 
 /** Every pair's seed, keyed 'A|B' in BODY_ORDER. */
 export const ASPECT_PAIRS: Record<string, PairSeed> = { ...LIGHT_PAIRS, ...MOON_PAIRS, ...PERSONAL_PAIRS, ...VENUS_MARS_PAIRS, ...OUTER_PAIRS };
+
+/** A further paragraph per aspect and a further craft line for the slower pairs, Chiron, the North Node and the angles. */
+export const OUTER_DEEPER: Record<string, PairDeeper> = { ...JUPITER_DEEPER, ...SATURN_URANUS_DEEPER, ...NEPTUNE_ON_DEEPER };
 
 /** What each body stands for, added to a reading whose own paragraph is short. */
 export const BODY_NOTE: Partial<Record<ChartPointName, string>> = {
@@ -135,15 +142,17 @@ function build(): InterpretationTable {
       for (const aspect of MAJOR_ASPECTS) {
         const own = seed[aspect];
         if (!own) continue;
-        const [simple, detailed] = own;
-        const short = detailed.length < SHORT;
+        const [simple, written] = own;
+        const deeper = OUTER_DEEPER[`${a}|${b}`];
+        const detailed = deeper?.[aspect] ? `${written}\n\n${deeper[aspect]}` : written;
+        const short = written.length < SHORT;
         const notes = short ? [BODY_NOTE[a], BODY_NOTE[b]].filter(Boolean).join(' ') : '';
         const generation = SLOW.has(a) && SLOW.has(b) ?`\n\n${GENERATION}` : '';
         const ownMagic = seed.magic.length < 160 ? ` ${[BODY_MAGIC[a], BODY_MAGIC[b]].filter(Boolean).join(' ')}` : '';
         out[keys.aspect(a, aspect, b)] = {
           simple: simple.length < 80 ? `${simple} ${LINK[aspect](BODY_WORDS[a]!, BODY_WORDS[b]!)}` : simple,
           detailed: `${tidyParagraphs(detailed)}\n\n${seed.core}${notes ? ` ${notes}` : ''} ${ASPECT_TEACHING[aspect]}${generation}`,
-          magic: `${seed.magic}${ownMagic} ${ASPECT_MAGIC[aspect]}`,
+          magic: `${seed.magic}${ownMagic}${deeper ? ` ${deeper.magic}` : ''} ${ASPECT_MAGIC[aspect]}`,
         };
       }
     }

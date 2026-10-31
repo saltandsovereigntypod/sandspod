@@ -82,6 +82,14 @@ async function renderJournalShelves() {
   hub.innerHTML = `<a class="book-page-link traditional-library-entity-link" href="/grimoire/journals/">Journals: shadow work, deity &amp; spirit, ancestors, omens &amp; signs</a>`;
   if (after) after.insertAdjacentElement("afterend", hub);
   else grimoireShelf.prepend(hub);
+
+  // Hearth & land, as the app's Grimoire row "Kitchen witchery & the land" (beside the Living Library there).
+  grimoireShelf.querySelector("[data-hearth-hub]")?.remove();
+  const hearth = document.createElement("p");
+  hearth.className = "book-section-empty";
+  hearth.setAttribute("data-hearth-hub", "");
+  hearth.innerHTML = `<a class="book-page-link traditional-library-entity-link" href="/practice/hearth/">Kitchen witchery &amp; the land: recipes with intent, your land journal and harvests</a>`;
+  hub.insertAdjacentElement("afterend", hearth);
 }
 
 /** Under a page of your book: the journal entries that link to it, and a way to write one that does. */

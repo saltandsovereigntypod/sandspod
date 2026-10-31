@@ -42,7 +42,18 @@ export default function Design() {
       live = false;
     };
   }, [designing]);
-  const choice = chooser(course?.programs ?? [], data.templates, coven.snapshot?.coven, course?.names ?? {});
+  // The coven's tradition (covenTradition.ts) puts its own course set first.
+  const designFor = coven.snapshot?.coven.id;
+  const [tradition, setTradition] = useState<string | null>(null);
+  useEffect(() => {
+    if (!designing || !designFor) return;
+    let live = true;
+    api.fetchCovenTradition(designFor).then((t) => live && setTradition(t));
+    return () => {
+      live = false;
+    };
+  }, [designing, designFor]);
+  const choice = chooser(course?.programs ?? [], data.templates, coven.snapshot ? { ...coven.snapshot.coven, course_tradition: tradition } : null, course?.names ?? {});
   const suggested = choice.suggestedTemplates;
   const others = choice.otherTemplates;
   const [copying, setCopying] = useState<string | null>(null);

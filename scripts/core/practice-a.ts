@@ -37,3 +37,5 @@ export * as journeyLookup from '../../app/src/lib/journeys/lookup.ts';
 export * as journeyProgress from '../../app/src/lib/journeys/progress.ts';
 export * as hours from '../../app/src/lib/astro/hours.ts';
 export * as deipnon from '../../app/src/lib/deipnon.ts';
+// How the seasons are counted, for the simmer pots (Settings → Location & hemisphere).
+export * as seasons from '../../app/src/lib/seasons.ts';

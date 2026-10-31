@@ -77,7 +77,7 @@ A solitary blót is the same rite with one person: hallow your space, state your
       title: 'Sumbel: the horn, the rounds and the weight of words',
       summary: 'The sumbel in Beowulf and the sagas, the bragarfull and the vow made over it, how a modern sumbel runs (rounds to the gods, the ancestors and heroes, and boasts and oaths), the horn-bearer, and how to keep it safe and welcoming for people who don’t drink.',
       minutes: 16,
-      links: [seasonal('drinking-horn'), ritual('folk-havamal-reflection'), deity('bragi'), deity('odin'), holy('norse/thorrablot'), coven('rituals')],
+      links: [ritual('folk-sumbel'), ritual('folk-havamal-reflection'), deity('bragi'), deity('odin'), holy('norse/thorrablot'), coven('rituals')],
       body: `## What sumbel is
 
 **Sumbel** (Old Norse **sumbl,** Old English **symbel**) is a feast of drinking in which a cup or horn is passed in order, and the words spoken over it matter. Where the blót is a gift to the gods, the sumbel is a gathering of people in the presence of the gods and the dead, building bonds through words: praise, memory, boasts and promises.
@@ -86,7 +86,7 @@ A solitary blót is the same rite with one person: hallow your space, state your
 
 The most vivid picture is in the Old English poem **Beowulf,** probably composed between the eighth and tenth centuries. In King Hrothgar's hall, Heorot, the queen **Wealhtheow** carries the cup round in order of rank, greeting the king, the warriors and the guest. Beowulf, taking the cup, makes a formal boast of what he will do: fight the monster Grendel or die. Earlier, the warrior Unferth challenges his reputation, and Beowulf answers with an account of his deeds. Words spoken at symbel bind the speaker.
 
-In the Norse sources, the **bragarfull,** "the chief's cup" or "the best cup", is drunk at feasts, and over it men made vows. In **Ynglinga saga,** King Ingjald, at the funeral feast for his father, stands, drinks the bragarfull and vows to double his kingdom, and then burns his guests in the hall. The vow over the cup, **heitstrenging,** appears in other sagas too, often with grim results: a vow made in drink was still a vow.
+In the Norse sources, the **bragarfull,** "the chief's cup" or "the best cup", is drunk at feasts, and over it men made vows. In **Ynglinga saga,** King Ingjald, at the funeral feast for his father, stands, drinks the bragarfull and vows to enlarge his kingdom by half towards every quarter or die, and then burns six of his guests, kings all, in the hall. The vow over the cup, **heitstrenging,** appears in other sagas too, often with grim results: a vow made in drink was still a vow.
 
 Note what the sources do and don't say. They show cups passed in order, a woman bearing the cup, vows and boasts and toasts to gods and the dead. They do not describe a fixed sequence of three rounds. That is modern.
 
@@ -390,7 +390,7 @@ A household **altar** or **vé** for a Heathen can be very simple: a shelf with 
           checked_by: 'mentor',
           minutes: 120,
           docs: ['norse-ritual-sumbel'],
-          links: [coven('rituals'), seasonal('drinking-horn')],
+          links: [coven('rituals'), ritual('folk-sumbel')],
           solitary: 'Keep a quiet sumbel at your hearth: three toasts said aloud, to a god, to someone who has died, and a small, specific promise for the season, written down in your book. Or join an open online sumbel run by an inclusive Heathen group.',
         },
         {

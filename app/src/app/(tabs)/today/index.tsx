@@ -30,7 +30,7 @@ import { useWorkshop } from '../../../lib/altar/workshop';
 import { useRituals } from '../../../lib/rituals/store';
 import { Field, Tags } from '../../../components/more/ui';
 import { dateFrom, daysBetween, shortDate, timeOfDay } from '../../../lib/calendar';
-import { calendarEventsBetween, calendarSettingsKey, todayLines } from '../../../lib/calendars';
+import { calendarEventsBetween, calendarSettingsKey, hemisphereOf, todayLines } from '../../../lib/calendars';
 import { holidayChoice, type Holiday } from '../../../lib/holidays';
 import { findByName, todayLibraryHref, useLibrary } from '../../../lib/library';
 import { usePlace } from '../../../lib/location';
@@ -59,6 +59,8 @@ import { keepsSouthernWheel, seasonalSpreads } from '../../../lib/divination/sea
 import { deityLines } from '../../../lib/patron';
 import { hasHolyPage, holyRef, moonRef, principalRef } from '../../../lib/holy';
 import { forYou, forYouContext, myPractices } from '../../../lib/rituals/premade';
+import { seasonCounting, seasonLine } from '../../../lib/seasons';
+import { useCovenPaths } from '../../../lib/covens/useCovenTraditions';
 import type { Place } from '../../../lib/astro/rise';
 import { colors, fonts, radius, space, type } from '../../../theme';
 
@@ -238,7 +240,7 @@ export default function Today() {
         </>
       ) : (
         <>
-          <DaySky today={today} sky={sky} here={here} now={clock} />
+          <DaySky today={today} sky={sky} here={here} now={clock} season={seasonLine(clock, hemisphereOf(settings, place), seasonCounting(settings))} />
           <CorrespondencesCard today={today} />
 
           <View style={styles.horizon}>
@@ -315,6 +317,7 @@ function PracticeCard({ settings, place, now }: { settings: SettingsLike; place:
   const practices = myPractices(settings);
   const tick = now.getTime(); // Today’s clock ticks each quarter hour
   const kept = practices.join(',');
+  const covenPaths = useCovenPaths();
   const lines = useMemo(
     () => practiceToday(practices, now, { place, choice: holidayChoice(settings) }),
     // eslint-disable-next-line react-hooks/exhaustive-deps -- recomputed as the clock ticks, and when the practices or place change
@@ -327,9 +330,9 @@ function PracticeCard({ settings, place, now }: { settings: SettingsLike; place:
     [kept, tick, place?.latitude, settings?.calendar_traditions],
   );
   const working = useMemo(
-    () => forYou(forYouContext(settings, now), undefined, 1)[0] ?? null,
+    () => forYou(forYouContext(settings, now, covenPaths), undefined, 1)[0] ?? null,
     // eslint-disable-next-line react-hooks/exhaustive-deps -- as above
-    [kept, tick, settings?.calendar_traditions, settings?.library_path],
+    [kept, tick, settings?.calendar_traditions, settings?.library_path, covenPaths],
   );
 
   const deities = useMemo(
@@ -620,7 +623,7 @@ function openHoliday(id: string) {
 const PERSONAL = ['Mercury', 'Venus', 'Mars'];
 
 /** What today is good for, and what the sky is doing that matters for it. */
-function DaySky({ today, sky, here, now }: { today: TodayModel; sky: Sky; here: PlaceSky | null; now: Date }) {
+function DaySky({ today, sky, here, now, season }: { today: TodayModel; sky: Sky; here: PlaceSky | null; now: Date; season: string }) {
   const lines: string[] = [];
   if (sky.vocNow) {
     lines.push(`Moon void of course until ${relativeTime(now, sky.voc.end)}: rest and finish things rather than begin.`);
@@ -635,6 +638,8 @@ function DaySky({ today, sky, here, now }: { today: TodayModel; sky: Sky; here: 
     );
   }
   lines.push(`${sky.sunSign} season${sky.sunSignEnds ? ` until ${dateFrom(now, sky.sunSignEnds)}` : ''}: ${sky.sunSeason}.`);
+  // The season of the year, counted as chosen in Settings → Location & hemisphere (lib/seasons.ts).
+  lines.push(season);
 
   return (
     <View style={styles.card}>

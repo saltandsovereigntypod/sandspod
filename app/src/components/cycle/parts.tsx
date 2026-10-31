@@ -4,6 +4,7 @@
 // (rituals/cycle/cycle.js).
 
 import { router } from 'expo-router';
+import type { ReactNode } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 import type { ExactReading } from '../../lib/cycle/readings';
@@ -16,14 +17,21 @@ import { Card, Chip, Chips } from '../rituals/ui';
 import { practiceHref } from './ui';
 
 /** Today's exact reading: the line, the moon, what the two suggest, a practice with its links and a prompt. */
-export function ReadingCard({ reading, onWrite }: { reading: ExactReading; onWrite: () => void }) {
+/**
+ * Today's reading. Given a `headline` (Cycle & Moon's home, homeHeadline) it is
+ * the one card for today: the headline names the phase, so the moon's line
+ * leaves it out, and `children` (moon time, the next bleed, Log today) come
+ * before the reading itself.
+ */
+export function ReadingCard({ reading, onWrite, headline, children }: { reading: ExactReading; onWrite: () => void; headline?: string; children?: ReactNode }) {
   const r = reading.reading;
   return (
     <Card accent>
-      <Text style={[type.eyebrow, styles.gold]}>Today’s reading</Text>
-      <Text style={type.cardTitle}>{reading.headline}</Text>
-      <Text style={type.caption}>{reading.moonLine}</Text>
+      <Text style={[type.eyebrow, styles.gold]}>{headline ? 'Today' : 'Today’s reading'}</Text>
+      <Text style={type.cardTitle}>{headline ?? reading.headline}</Text>
+      <Text style={type.caption}>{headline ? reading.moonDetail : reading.moonLine}</Text>
       <TermText style={type.caption} text={reading.signLine} />
+      {children}
       <Text style={[type.body, styles.title]}>{r.title}</Text>
       <Text style={type.body}>{r.line}</Text>
       <Text style={type.body}>{r.practice}</Text>

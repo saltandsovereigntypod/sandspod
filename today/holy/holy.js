@@ -163,6 +163,7 @@
       `<p class="td-summary">${page.ref.startsWith("moon-") || page.ref.startsWith("wheel-") ? tx(page.summary, ["venus", "mars", "mercury", "jupiter", "saturn"]) : esc(page.summary)}</p>` +
       (page.ref.startsWith("moon-") ? moonTonight() : "") +
       (page.ref.startsWith("moon-") ? astroChips(["moon-phases", "lunation", "void-of-course", "eclipse", "moon"], "The astrology behind it") : "") +
+      `<p class="sp-caption" data-festival-season data-ref="${esc(page.ref)}" data-name="${esc(page.title)}" hidden></p>` +
       (page.ref.startsWith("wheel-") ? astroChips(["solstice-equinox", "sun", "cardinal", "fixed", "zodiac"], "The sky behind the Wheel") : "") +
       journalLinks(page.ref) +
       `<div data-grimoire aria-live="polite">${grimoireHtml || ""}</div>` +
@@ -246,6 +247,7 @@
   }
 
   render("");
+  window.SaltYearSeason?.fill(root, C && C.seasons);
   if (window.SaltPage) {
     window.SaltPage.ready().then(keepInGrimoire);
     window.SaltPage.onUserChange((user) => keepInGrimoire(user));
