@@ -77,6 +77,16 @@ import celticDedication from './celtic/dedication.ts';
 import celticElder from './celtic/elder.ts';
 import celticHighPriestess from './celtic/high-priestess.ts';
 
+import norseTradition from './norse/tradition.ts';
+import norseRitual from './norse/ritual.ts';
+import norseDevotion from './norse/devotion.ts';
+import norseLore from './norse/lore.ts';
+import norseInitiation from './norse/initiation.ts';
+import norseSeeker from './norse/seeker.ts';
+import norseDedication from './norse/dedication.ts';
+import norseElder from './norse/elder.ts';
+import norseHighPriestess from './norse/high-priestess.ts';
+
 export type { CourseDoc, CourseLink, CourseModule, CourseStage, CourseTask, Quiz } from './types.ts';
 
 /** The eclectic Wheel's modules. */
@@ -151,15 +161,28 @@ export const MODULES: CourseModule[] = [
   celticDedication,
   celticElder,
   celticHighPriestess,
+  // The Norse & Heathen set keeps the Norse year (holidays.ts 'norse'); its
+  // Midsummer, autumn and Yule steps also give the Wheel's lesson on the same
+  // season for its wider history.
+  norseTradition,
+  norseRitual,
+  norseDevotion,
+  norseLore,
+  norseInitiation,
+  norseSeeker,
+  norseDedication,
+  norseElder,
+  norseHighPriestess,
 ];
 
-/** Traditions with modules of their own (Hellenic first, then the eclectic Wheel, north and south, then Wicca and the Celtic tradition; the rest as they're written). */
+/** Traditions with modules of their own (Hellenic first, then the eclectic Wheel, north and south, then Wicca, the Celtic tradition and the Norse & Heathen; the rest as they're written). */
 export const COURSE_TRADITIONS: { id: string; name: string }[] = [
   { id: 'hellenic', name: 'Hellenic' },
   { id: 'wheel', name: 'Wheel of the Year' },
   { id: 'wheel_south', name: 'Wheel of the Year (Southern Hemisphere)' },
   { id: 'wicca', name: 'Wicca' },
   { id: 'celtic', name: 'Celtic' },
+  { id: 'norse', name: 'Norse & Heathen' },
 ];
 
 /** Written: it has something to teach (placeholders have no stages). */
