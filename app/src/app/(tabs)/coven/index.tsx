@@ -147,8 +147,7 @@ export default function Covens() {
 
             {session && (
               <MenuList>
-                <MenuRow label="Mentorship" detail="Your mentors and mentees, and the directory (adults only)" icon="journey" onPress={() => router.push('/coven/mentorship' as Href)} />
-                <MenuRow label="Rituals together" detail="Do a ritual live with your coven or friends" icon="moon" last onPress={() => router.push('/rituals/together' as Href)} />
+                <MenuRow label="Mentorship" detail="Your mentors and mentees, and the directory (adults only)" icon="journey" last onPress={() => router.push('/coven/mentorship' as Href)} />
               </MenuList>
             )}
 
