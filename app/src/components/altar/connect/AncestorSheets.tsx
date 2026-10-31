@@ -10,6 +10,8 @@ import { Text, View } from 'react-native';
 import { Button } from '../../Button';
 import { ANCESTORS, normalizeAncestor, type Ancestor, type AncestorEntry } from '../../../lib/craft/hedge/ancestors';
 import { useCraft } from '../../../lib/craft/store';
+import { journalPlace, journalRoutes } from '../../../lib/journals/journals';
+import { useMySettings } from '../../../lib/settings/store';
 import { ancestorOf, ancestorPanel, ancestorRite, MEMORIAL_COLORS, MEMORIAL_FORMS, memorialObject, shrineChoices } from '../../../lib/altar/connect/ancestor';
 import { isCandle, isLit } from '../../../lib/altar/livingState';
 import type { SavedObject } from '../../../lib/altar/types';
@@ -112,6 +114,7 @@ export function AncestorPanelSection({ object, onLight, onBeginRite, altarId }: 
   const { entries } = useCraft<Ancestor>(ANCESTORS);
   const entry = link ? (entries.find((e) => e.id === link.id) as AncestorEntry | undefined) : undefined;
   const panel = useMemo(() => (entry ? ancestorPanel(entry, new Date()) : null), [entry]);
+  const { settings } = useMySettings();
   if (!link) return null;
   if (!panel || !entry) {
     return (
@@ -138,6 +141,7 @@ export function AncestorPanelSection({ object, onLight, onBeginRite, altarId }: 
         {isCandle(object) && <Chip label={lit ? 'Their candle is lit' : 'Light a candle for them'} symbol="🜂" disabled={lit} onPress={onLight} />}
         {onBeginRite && <Chip label="Begin the candle rite" symbol="❦" onPress={() => onBeginRite(ancestorRite(entry, altarId))} />}
         <Chip label="Their page" onPress={() => router.push(`/rituals/craft/hedge/ancestors/${entry.id}` as Href)} />
+        <Chip label="Write about them" onPress={() => router.push(journalRoutes('ancestors', journalPlace(settings, 'ancestors')).write({ person: entry.id, about: 'offering' }) as Href)} />
       </ChipRow>
     </PanelSection>
   );

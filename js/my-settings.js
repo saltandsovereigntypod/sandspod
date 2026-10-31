@@ -16,6 +16,11 @@ function getDefaultMySettings() {
     
     grimoire_page_font: "classic-serif",
     grimoire_show_dreams: true,
+    // Where each practice journal lives: "grimoire" or "journal" (app/src/lib/journals/journals.ts).
+    journal_shadow_place: "grimoire",
+    journal_devotion_place: "grimoire",
+    journal_ancestors_place: "grimoire",
+    journal_omens_place: "grimoire",
     // The Grimoire home as arranged (order, hidden, names, open, page sort), as JSON ("" until first arranged).
     // The app's lib/grimoire/layout.ts and the website's grimoire/js/ui/layout.js read and write it.
     grimoire_layout: "",

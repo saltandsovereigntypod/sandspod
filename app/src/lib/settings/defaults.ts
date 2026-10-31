@@ -97,6 +97,11 @@ export function defaultSettings(): Settings {
     default_mundane_mode: false,
     grimoire_page_font: 'classic-serif',
     grimoire_show_dreams: true,
+    // Where each practice journal lives: 'grimoire' (a section of it) or 'journal' (its own, under Rituals → Journal): lib/journals.
+    journal_shadow_place: 'grimoire',
+    journal_devotion_place: 'grimoire',
+    journal_ancestors_place: 'grimoire',
+    journal_omens_place: 'grimoire',
     // The Grimoire home as you've arranged it, as JSON ('' until first arranged): lib/grimoire/layout.ts.
     grimoire_layout: '',
     tarot_deck: 'rws',

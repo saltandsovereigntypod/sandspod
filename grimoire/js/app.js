@@ -1005,6 +1005,8 @@ async function renderLivingLibraryShelves() {
   await renderMyPracticeShelf();
   // Dreams, the built-in section after My Practice (grimoire/js/ui/dreams.js).
   if (typeof renderDreamsShelf === "function") await renderDreamsShelf();
+  // The practice journals kept in the Grimoire, after Dreams (grimoire/js/ui/journals.js).
+  if (typeof renderJournalShelves === "function") await renderJournalShelves();
   await renderTraditionalLibraryShelf();
   // Tarot, Runes and Ogham inside Traditional Information (grimoire/js/ui/divination.js).
   if (typeof renderDivinationShelf === "function") renderDivinationShelf();

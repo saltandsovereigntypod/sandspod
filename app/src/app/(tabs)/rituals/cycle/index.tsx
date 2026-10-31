@@ -304,6 +304,7 @@ function Open({ cycle, now }: { cycle: CycleState; now: Date }) {
         <Row icon="wheel" title="Symptoms and insights" detail="Patterns over your cycles and the moon, and comfort for each" onPress={() => router.push('/rituals/cycle/insights')} />
         <Row icon="wheel" title="Inner seasons and moon patterns" detail="What suits each season, prompts, and the four moon patterns" onPress={() => router.push('/rituals/cycle/learn')} />
         <Row icon="calendar" title="The moon on the land" detail="Your land journal reads the moon on every day you note" onPress={() => router.push('/rituals/craft/hearth/land')} />
+        <Row icon="grimoire" title="Shadow work journal" detail="Gentle prompts, with the moon and its season noted as you write" onPress={() => router.push('/grimoire/journals/shadow')} />
         <Row icon="coven" title="Share with my covens" detail="Only “in moon time” or “resting”, if you choose" onPress={() => router.push('/rituals/cycle/share')} />
         <Row icon="more" title="Settings and privacy" detail="Cycle length, moon only, reminders, passphrase, delete" last onPress={() => router.push('/rituals/cycle/settings')} />
       </List>

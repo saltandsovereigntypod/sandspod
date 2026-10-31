@@ -78,6 +78,19 @@
     if (focus) SW.focus(root, "td-tabs");
   }
 
+  /** The omens and your people, for Today's journal prompt (craft_entries, as the app keeps them). */
+  async function loadJournals() {
+    if (!window.SaltCraft || !C.journals) return;
+    try {
+      const [omens, people] = await Promise.all([window.SaltCraft.list("journal.omens"), window.SaltCraft.list(C.ancestors.ANCESTORS)]);
+      state.omens = omens.map((e) => ({ id: e.id, createdAt: e.createdAt, data: C.journals.normalizeEntry(e.data) }));
+      state.people = people.map((e) => ({ id: e.id, createdAt: e.createdAt, data: C.ancestors.normalizeAncestor(e.data) }));
+    } catch {
+      state.omens = [];
+      state.people = [];
+    }
+  }
+
   async function loadDreams() {
     if (!window.SaltCraft || !C.dreams) return;
     try {
@@ -231,6 +244,7 @@
           lookBackCard(m) +
           dreamCard(m) +
           deipnonCard(m) +
+          journalCard(m) +
           cardOfTheDay(m) +
           `<div class="sp-actions"><a class="button button--ghost" href="${esc(T.siteHref({ pathname: "/altar/[altarId]", params: { altarId: "tonight" } }))}">Set tonight’s altar</a></div>` +
           `<section class="td-prompt" aria-label="Reflect"><p class="sp-eyebrow td-gold">Reflect</p><p class="td-prompt__text">${esc(today.prompt)}</p></section>` +
@@ -400,6 +414,33 @@
   function hearthRow(practices, now, settings) {
     const line = window.SaltHearthLinks?.todayLine(practices, now, { place: state.place, choice: C.holidays.holidayChoice(settings) });
     return line ? practiceRow(line.label, line.line, line.detail, line.href, false) : "";
+  }
+
+  /** A gentle journal prompt, when there's a reason for one (the app's JournalToday). */
+  function journalCard(m) {
+    const J = C.journals;
+    if (!J) return "";
+    const { now, settings } = m;
+    const omens = state.omens || [];
+    const due = J.omensToCheck(omens, now).map((e) => ({ id: e.id, title: J.entryTitle("omens", e.data) }));
+    const festival = C.ancestors.ancestorDays(C.holidays.holidayChoice(settings), now, 0).find((d) => d.inDays === 0)?.name || null;
+    const anniversary = C.ancestors.upcomingAnniversaries(state.people || [], now, 0)[0];
+    const deipnon = C.deipnon && C.deipnon.deipnonToday(now, settings) ? "Hekate’s Deipnon" : null;
+    const holy = C.patron.deityLines(settings, now).find((l) => l.holyToday);
+    const prompt = J.todayJournalPrompt(now, {
+      omensDue: due,
+      ancestorDay: festival || (anniversary ? `${anniversary.name}’s day` : deipnon),
+      deityDay: holy ? { name: holy.line, key: holy.deity.key || "" } : null
+    });
+    if (!prompt) return "";
+    const routes = J.journalWebRoutes(prompt.kind, J.journalPlace(settings, prompt.kind));
+    const href = prompt.kind === "omens" ? routes.list : routes.write(prompt.params || {});
+    return (
+      `<section class="td-card" aria-labelledby="td-journal-label"><p class="sp-eyebrow td-gold">A journal prompt</p>` +
+      `<h2 class="td-card__title" id="td-journal-label">${esc(prompt.title)}</h2>` +
+      `<p>${esc(prompt.line)}</p>` +
+      `<div class="sp-actions"><a class="button button--ghost" href="${esc(href)}">${esc(prompt.action)}</a></div></section>`
+    );
   }
 
   /** For your practice: a line from each practice kept, your deities, and a working that suits tonight. */
@@ -628,7 +669,7 @@
     refreshing = true;
     try {
       state.user = user;
-      await Promise.all([loadSettings(), loadRituals(user), loadDreams(), loadReadings(), loadApothecary(user), loadChart(user)]);
+      await Promise.all([loadSettings(), loadRituals(user), loadDreams(), loadJournals(), loadReadings(), loadApothecary(user), loadChart(user)]);
     } finally {
       refreshing = false;
     }

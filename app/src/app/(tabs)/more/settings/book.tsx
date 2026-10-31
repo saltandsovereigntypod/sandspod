@@ -1,5 +1,6 @@
 import { Chips, MenuList, Section, SwitchRow } from '../../../../components/more/ui';
 import { SettingsForm } from '../../../../components/more/SettingsForm';
+import { JOURNALS, journalPlace, PLACE_OPTIONS, type JournalPlace } from '../../../../lib/journals/journals';
 import { PAGE_FONT_OPTIONS } from '../../../../lib/settings/defaults';
 
 type Font = (typeof PAGE_FONT_OPTIONS)[number]['value'];
@@ -30,6 +31,12 @@ export default function BookSettings() {
               last
             />
           </MenuList>
+          {/* Each journal can be a section of the Grimoire or one of its own; moving it keeps every entry. */}
+          {JOURNALS.map((j) => (
+            <Section key={j.kind} label={`${j.title} journal`}>
+              <Chips<JournalPlace> label={`Where your ${j.title.toLowerCase()} journal lives`} options={PLACE_OPTIONS} value={journalPlace(draft, j.kind)} onChange={(v) => set(j.setting, v)} />
+            </Section>
+          ))}
           <Section label="Page font">
             <Chips
               label="Page font"

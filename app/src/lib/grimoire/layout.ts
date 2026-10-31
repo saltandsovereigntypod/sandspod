@@ -204,7 +204,7 @@ export function personalParts(input: { sections: SectionLike[]; loose: boolean; 
   const parts: HomePart[] = [];
   if (input.loose) parts.push({ key: 'pages', title: 'Pages' });
   for (const s of [...input.sections].sort(byOrder)) parts.push({ key: sectionKey(s.id), title: s.title, closedByDefault: s.is_collapsed === true });
-  const order = ['myPractice', 'dreams', 'myPath', 'traditional'];
+  const order = ['myPractice', 'dreams', 'shadowJournal', 'devotionJournal', 'ancestorJournal', 'omenJournal', 'myPath', 'traditional'];
   const shelves = [...input.shelves].sort((a, b) => order.indexOf(a.key) - order.indexOf(b.key));
   for (const shelf of shelves) parts.push({ key: shelf.key, title: shelf.title, closedByDefault: shelf.key === 'traditional' });
   return parts;

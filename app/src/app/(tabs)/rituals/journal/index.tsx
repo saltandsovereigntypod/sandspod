@@ -10,6 +10,9 @@ import { journalDetail } from '../../../../lib/rituals/format';
 import { dueLookBacks, readLookBack } from '../../../../lib/rituals/lookBack';
 import { sortJournal } from '../../../../lib/rituals/plans';
 import { refresh, useRituals } from '../../../../lib/rituals/store';
+import { useJournal } from '../../../../components/journals/shared';
+import { JOURNALS, journalPlace, journalRoutes, shelfLine, type JournalKind } from '../../../../lib/journals/journals';
+import { useMySettings } from '../../../../lib/settings/store';
 
 export default function Journal() {
   const rituals = useRituals();
@@ -79,8 +82,38 @@ export default function Journal() {
           />
         </List>
       )}
+      <OtherJournals />
       {entries.length > 0 && <Button label="Your moon: patterns in your practice" onPress={() => router.push('/rituals/journal/insights')} />}
       <Button label="Record a ritual" variant="outline" onPress={() => router.push('/rituals/journal/new')} />
     </RitualScreen>
+  );
+}
+
+/** The other journals: each opens where it lives (here, or in the Grimoire). */
+function OtherJournals() {
+  return (
+    <>
+      <SectionLabel>Your other journals</SectionLabel>
+      <List>
+        {JOURNALS.map((j) => (
+          <JournalRow key={j.kind} kind={j.kind} />
+        ))}
+        <Row icon="grimoire" title="Dreams" detail="In your Grimoire" last onPress={() => router.push('/grimoire/dreams')} />
+      </List>
+    </>
+  );
+}
+
+function JournalRow({ kind }: { kind: JournalKind }) {
+  const { settings } = useMySettings();
+  const { def, list } = useJournal(kind);
+  const place = journalPlace(settings, kind);
+  return (
+    <Row
+      icon="grimoire"
+      title={def.title}
+      detail={`${place === 'grimoire' ? 'In your Grimoire · ' : ''}${shelfLine(kind, list)}`}
+      onPress={() => router.push(journalRoutes(kind, place).list as never)}
+    />
   );
 }

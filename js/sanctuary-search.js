@@ -3,6 +3,7 @@
     library: "Living Library",
     pages: "Book of Shadows",
     dreams: "Dreams",
+    journals: "Your journals",
     divination: "Divination",
     rituals: "Rituals",
     templates: "Ritual Templates",
@@ -62,6 +63,23 @@
       action: item.action || null,
       destination: item.destination || { kind: "place-apothecary-item", itemId: item.id, href: `/altar/?placeApothecaryItem=${encodeURIComponent(item.id)}` },
       timestamp: item.updatedAt || item.updated_at || item.createdAt || item.created_at
+    });
+  }
+
+  const JOURNAL_TITLES = { shadow: "Shadow work", devotion: "Deity & spirit", ancestors: "Ancestors", omens: "Omens & signs" };
+
+  /** A practice journal entry (craft_entries `journal.<kind>`) as a result, opened on /grimoire/journals/. */
+  function createJournalResult(kind, entry = {}) {
+    const d = entry.data || {};
+    const first = (s) => String(s || "").trim().split(/\n/)[0].slice(0, 60);
+    const title = d.title || (kind === "devotion" ? d.deityName : kind === "omens" ? first(d.what) : first(d.text)) || JOURNAL_TITLES[kind] || "Journal entry";
+    return createResult({
+      id: `${kind}/${entry.id}`, group: "journals", source: "journals", type: "journal", title,
+      subtitle: [JOURNAL_TITLES[kind], d.date, d.moonPhase].filter(Boolean).join(" · "),
+      aliases: Array.isArray(d.tags) ? d.tags : [],
+      fields: [d.text, d.feelings, d.trigger, d.pattern, d.integration, d.deityName, d.offered, d.signs, d.prayer, d.recipe, d.what, d.where, d.meaning, d.outcomeNote, d.tags],
+      href: `/grimoire/journals/entry/?j=${encodeURIComponent(kind)}&id=${encodeURIComponent(entry.id || "")}`,
+      timestamp: entry.updatedAt || entry.createdAt
     });
   }
 
@@ -185,7 +203,7 @@
     return Boolean(isOpen) && requestId === currentRequestId;
   }
 
-  const api = { GROUP_LABELS, buildIndex, updateSource, getIndex, search, rankRecords, groupResults, resolveDestination, getRecent, isCurrentRequest, createResult, createApothecaryResult, createDreamResult, createDivinationResults };
+  const api = { GROUP_LABELS, buildIndex, updateSource, getIndex, search, rankRecords, groupResults, resolveDestination, getRecent, isCurrentRequest, createResult, createApothecaryResult, createDreamResult, createJournalResult, createDivinationResults };
   global.SanctuarySearch = api;
   if (typeof module !== "undefined" && module.exports) module.exports = api;
 })(typeof window !== "undefined" ? window : globalThis);

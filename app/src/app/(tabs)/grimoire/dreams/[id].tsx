@@ -8,6 +8,7 @@ import { LinkedReadings } from '../../../../components/divination/Linked';
 import { DreamShell } from '../../../../components/grimoire/dreams';
 import { MoonDisc } from '../../../../components/MoonDisc';
 import { SupportLink } from '../../../../components/SupportLink';
+import { JournalBacklinks } from '../../../../components/journals/screens';
 import { MOON_IN_SIGN } from '../../../../lib/astro/meanings';
 import { fullDate } from '../../../../lib/calendar';
 import { symbolReference } from '../../../../lib/craft/hedge/dreamSymbols';
@@ -115,6 +116,7 @@ export default function DreamPage() {
         drawLabel="Read this dream"
         empty="Three cards for a dream that stays with you: what it shows, what it stirs in you, and what it asks of you."
       />
+      <JournalBacklinks type="dream" id={entry.id} title={d.title || 'Untitled dream'} />
       <SupportLink />
     </DreamShell>
   );

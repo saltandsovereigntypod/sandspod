@@ -18,6 +18,8 @@ import { moonSign, moonState } from '../../lib/moon';
 import { premadeById } from '../../lib/rituals/premade';
 import { useSession } from '../../lib/session';
 import { colors, fonts, type } from '../../theme';
+import { ANCESTOR_HOLIDAYS } from '../../lib/craft/hedge/ancestors';
+import { AncestorJournalLink, JournalDoor } from '../journals/screens';
 
 // A holy day or a moon phase, opened from Today: what it is, who is honoured,
 // what we know, how to keep it, a working, and its correspondences. Signed in,
@@ -62,6 +64,8 @@ export function HolyDayScreen({ back = '/today', backLabel = 'Back to Today' }: 
       {page.ref.startsWith('wheel-') && <TermChips ids={['solstice-equinox', 'sun', 'cardinal', 'fixed', 'zodiac']} label="The sky behind the Wheel" />}
       {page.ref.startsWith('moon-') && <MoonTonight />}
       {page.ref.startsWith('moon-') && <TermChips ids={['moon-phases', 'lunation', 'void-of-course', 'eclipse', 'moon']} label="The astrology behind it" />}
+      {(ANCESTOR_HOLIDAYS.includes(page.ref) || page.ref === 'hellenic_monthly-deipnon') && <AncestorJournalLink label="Your ancestor journal" />}
+      {(page.ref === 'moon-dark' || page.ref.startsWith('moon-waning')) && <JournalDoor kind="shadow" detail="Gentle prompts for the waning and dark moon" />}
       <KeepInGrimoire ref_={page.ref} />
 
       <Section label="Who is honoured, and why">

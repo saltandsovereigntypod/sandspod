@@ -209,6 +209,7 @@
         ${row(href("insights"), "Symptoms and insights", "Patterns over your cycles and the moon, and comfort for each")}
         ${row(href("learn"), "Inner seasons and moon patterns", "What suits each season, prompts, and the four moon patterns")}
         ${row("/practice/hearth/land/", "The moon on the land", "Your land journal reads the moon on every day you note")}
+        ${row("/grimoire/journals/journal/?j=shadow", "Shadow work journal", "Gentle prompts, with the moon and its season noted as you write")}
         ${row(href("share"), "Share with my covens", "Only “in moon time” or “resting”, if you choose")}
         ${row(href("settings"), "Settings and privacy", "Cycle length, moon only, reminders, passphrase, delete")}
       </nav>`;

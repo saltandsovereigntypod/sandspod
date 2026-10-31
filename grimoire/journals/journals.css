@@ -1,0 +1,22 @@
+/* The practice journals (/grimoire/journals/… and /rituals/journals/…): the
+   Dreams page dress (grimoire/dreams/dreams.css), and a photo from an
+   ancestor frame beside a name. */
+
+.jr-photo {
+  display: block;
+  width: 96px;
+  max-width: 40%;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  border-radius: 0.5rem;
+  margin-bottom: 0.75rem;
+  border: 1px solid rgba(185, 160, 93, 0.35);
+}
+
+.jr-photo--aged {
+  filter: sepia(0.62) saturate(0.72) brightness(0.96);
+}
+
+.gd-dreams a.sp-chip {
+  text-decoration: none;
+}

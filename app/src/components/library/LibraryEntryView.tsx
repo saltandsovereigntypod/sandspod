@@ -33,6 +33,7 @@ function spellHref(entry: LibraryEntry): Href | null {
   if (!kind || !key) return null;
   return { pathname: '/rituals/spell', params: kind === 'deity' ? { deity: key } : { add: ref } } as Href;
 }
+import { DeityJournalLink } from '../journals/screens';
 
 type Props = {
   entryId: string;
@@ -119,6 +120,7 @@ export function LibraryEntryView({ entryId, back, backLabel, hrefFor, editHref }
       )}
 
       {entry.type === 'deity' && <DeityYours entry={entry} />}
+      {entry.type === 'deity' && <DeityJournalLink deityKey={entry.id.split(':').pop() ?? ''} name={entry.name} />}
 
       {!!journey && (
         <Button

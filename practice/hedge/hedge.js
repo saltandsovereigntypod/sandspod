@@ -376,6 +376,7 @@
       !people.length
         ? kit.card(kit.p("Add the people you remember. Dates can be as much as you know, even a year alone. Their birth and death days will be here when they come round, with a candle to light for them."))
         : kit.section("Remembered", kit.list(people.map((p) => kit.row({ url: url.person(p.id), title: p.data.name || "Unnamed", detail: kit.join([p.data.relation, A.lifespan(p.data)]) || null }))), { id: "remembered" }),
+      kit.list([kit.row({ url: "/grimoire/journals/journal/?j=ancestors", title: "Ancestor journal", detail: "Offerings, dreams of them, family recipes and stories" })]),
       kit.list([kit.row({ url: kit.href.premade("hedge-ancestor-candle-evening"), title: "Ancestor Altar & Candle Evening", detail: "A longer evening with all your dead" })]),
       kit.list([
         kit.row({
@@ -401,7 +402,9 @@
     return [
       back,
       kit.head({ eyebrow: person.relation || "Remembered", title: person.name || "Unnamed" }),
-      born || died ? kit.muted(kit.join([born ? `Born ${born}` : null, died ? `Died ${died}` : null])) : "",
+      born || died || person.bornPlace || person.diedPlace
+        ? kit.muted(kit.join([born || person.bornPlace ? `Born ${kit.join([born, person.bornPlace], ", ")}` : null, died || person.diedPlace ? `Died ${kit.join([died, person.diedPlace], ", ")}` : null]))
+        : "",
       kit.card(
         `<h2 class="pr-big">Light a candle for them</h2>${kit.p("A short guided rite of about ten minutes: light a candle, say their name, remember, and tell them what you need to.")}${kit.actions([
           kit.button({ label: "Light a candle", act: "candle", primary: true })
@@ -411,6 +414,11 @@
       days.length ? kit.section("Their days", days.map((a) => kit.p(`${A.anniversaryWords(a)}: ${calendar.relativeDay(now, a.date)}`)).join(""), { id: "days" }) : "",
       person.loved ? kit.section("What they loved", kit.p(person.loved), { id: "loved" }) : "",
       person.memory ? kit.section("A memory", kit.p(person.memory), { id: "memory" }) : "",
+      // Their entries in the ancestor journal (grimoire/journals/journals.js).
+      kit.list([
+        kit.row({ url: `/grimoire/journals/journal/?j=ancestors&person=${encodeURIComponent(entry.id)}`, title: `Your journal about ${person.name || "them"}`, detail: "Offerings, dreams of them, family recipes and stories" }),
+        kit.row({ url: `/grimoire/journals/edit/?j=ancestors&person=${encodeURIComponent(entry.id)}`, title: "Write in your ancestor journal", detail: "About them" })
+      ]),
       kit.actions([kit.button({ label: "Edit", url: url.personEdit(entry.id), ghost: true })]),
       supportLink()
     ].join("");
@@ -461,7 +469,9 @@
         placeholder: "Grandmother, great-uncle, teacher, friend"
       })}</div>`,
       `<div data-boxes="born">${dateBoxes("born", "Born", personForm.born)}</div>`,
+      kit.field({ id: "bornPlace", label: "Where they were born", value: p.bornPlace || "", input: "person-field", placeholder: "A town, a county, a farm, a country" }),
       `<div data-boxes="died">${dateBoxes("died", "Died", personForm.died)}</div>`,
+      kit.field({ id: "diedPlace", label: "Where they died, or rest", value: p.diedPlace || "", input: "person-field", placeholder: "A town, a churchyard, the sea" }),
       kit.muted("Put in as much as you know. A year alone is fine; a day and month bring their anniversary round each year."),
       `<div class="sp-section">${kit.field({
         id: "loved",
@@ -1559,6 +1569,8 @@
         relation: p.relation.trim(),
         loved: p.loved.trim(),
         memory: p.memory.trim(),
+        bornPlace: (p.bornPlace || "").trim(),
+        diedPlace: (p.diedPlace || "").trim(),
         born: A.partialDate(personForm.born.day, personForm.born.month, personForm.born.year),
         died: A.partialDate(personForm.died.day, personForm.died.month, personForm.died.year)
       };

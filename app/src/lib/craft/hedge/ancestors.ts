@@ -17,6 +17,9 @@ export type Ancestor = {
   relation: string;
   born: PartialDate;
   died: PartialDate;
+  /** Where they were born and where they died, as much as you know ("Cork", "a farm near Ludlow"). */
+  bornPlace?: string;
+  diedPlace?: string;
   /** What they loved, and what you offer them. */
   loved: string;
   memory: string;
@@ -26,7 +29,7 @@ export type AncestorEntry = { id: string; createdAt: string; data: Ancestor };
 
 export const emptyDate = (): PartialDate => ({ year: null, month: null, day: null });
 
-export const blankAncestor = (): Ancestor => ({ name: '', relation: '', born: emptyDate(), died: emptyDate(), loved: '', memory: '' });
+export const blankAncestor = (): Ancestor => ({ name: '', relation: '', born: emptyDate(), died: emptyDate(), bornPlace: '', diedPlace: '', loved: '', memory: '' });
 
 const DAYS_IN_MONTH = [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
 
@@ -58,7 +61,7 @@ export function normalizeDate(raw: unknown): PartialDate {
 export function normalizeAncestor(raw: unknown): Ancestor {
   const r = (raw && typeof raw === 'object' ? raw : {}) as Partial<Ancestor>;
   const str = (v: unknown) => (typeof v === 'string' ? v : '');
-  return { name: str(r.name), relation: str(r.relation), born: normalizeDate(r.born), died: normalizeDate(r.died), loved: str(r.loved), memory: str(r.memory) };
+  return { name: str(r.name), relation: str(r.relation), born: normalizeDate(r.born), died: normalizeDate(r.died), bornPlace: str(r.bornPlace), diedPlace: str(r.diedPlace), loved: str(r.loved), memory: str(r.memory) };
 }
 
 const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];

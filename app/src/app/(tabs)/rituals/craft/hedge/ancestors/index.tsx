@@ -4,6 +4,7 @@ import { Text, View } from 'react-native';
 
 import { Button } from '../../../../../../components/Button';
 import { SupportLink } from '../../../../../../components/SupportLink';
+import { AncestorJournalLink } from '../../../../../../components/journals/screens';
 import { Body, Card, List, RitualScreen, Row, SectionLabel, Title, ui } from '../../../../../../components/rituals/ui';
 import { longDate, relativeDay } from '../../../../../../lib/calendar';
 import { ANCESTORS, ancestorDays, anniversaryWords, lifespan, normalizeAncestor, upcomingAnniversaries } from '../../../../../../lib/craft/hedge/ancestors';
@@ -81,6 +82,7 @@ export default function Ancestors() {
         </View>
       )}
 
+      <AncestorJournalLink />
       <List>
         <Row
           icon="rituals"

@@ -51,9 +51,12 @@ function renderReader() {
 
         ${currentPage.page_type === "apothecary" ? renderApothecaryReaderPage() : ""}
         ${renderReadablePageLinks()}
+        <div data-journal-backlinks></div>
       </div>
     </section>
   `;
+  // Journal entries that link to this page (grimoire/js/ui/journals.js).
+  if (typeof hydrateJournalBacklinks === "function") hydrateJournalBacklinks(currentPage);
 }
 
 function getCurrentPageMetadata() {

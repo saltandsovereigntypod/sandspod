@@ -901,7 +901,9 @@
           // An ancestor frame is linked to them too, but only a candle is lit.
           candle ? { label: lit ? "Their candle is lit" : "Light a candle for them", symbol: "🜂", action: "light", disabled: lit } : null,
           { label: "Begin the candle rite", symbol: "❦", action: "ancestor-rite", data: { id: entry.id }, hint: `Begin the candle rite for ${panel.name || "them"} on this altar` },
-          { label: "Their page", href: PAGES.ancestor(entry.id), hint: `${panel.name || "Their"} page in Ancestors` }
+          { label: "Their page", href: PAGES.ancestor(entry.id), hint: `${panel.name || "Their"} page in Ancestors` },
+          // The ancestor journal (grimoire/journals/journals.js), as the app's "Write about them".
+          { label: "Write about them", href: `/grimoire/journals/edit/?j=ancestors&about=offering&person=${encodeURIComponent(entry.id)}`, hint: `Write about ${panel.name || "them"} in your ancestor journal` }
         ])}`));
       }
     }
