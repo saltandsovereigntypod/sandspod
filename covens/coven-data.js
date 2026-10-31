@@ -180,6 +180,18 @@
       const { error } = await db().from("covens").update({ moon_calendar: moon }).eq("id", id);
       if (error) throw new Error(/moon_calendar/.test(error.message) ? "The coven’s calendars are saved, but its moon calendar can’t be saved until the site’s next update." : error.message);
     },
+    // The coven's tradition (covens.course_tradition, SaltCore.covens.covenTradition), or null when
+    // none is set or it can't be read (before 20261119000000_coven_tradition.sql the column is missing).
+    async fetchCovenTradition(id) {
+      const { data, error } = await db().from("covens").select("course_tradition").eq("id", id).maybeSingle();
+      if (error || !data) return null;
+      return global.SaltCore?.covens?.covenTradition?.covenTraditionOf(data.course_tradition) ?? null;
+    },
+    async saveCovenTradition(id, tradition) {
+      const value = global.SaltCore?.covens?.covenTradition?.covenTraditionOf(tradition) ?? null;
+      const { error } = await db().from("covens").update({ course_tradition: value }).eq("id", id);
+      if (error) throw new Error(/course_tradition/.test(error.message) ? "The coven’s tradition can’t be saved until the site’s next update." : error.message);
+    },
     ranks: (covenId) => run(db().from("coven_ranks").select("*").eq("coven_id", covenId).order("level", { ascending: true })),
     saveRank: (rank) => (rank.id ? run(db().from("coven_ranks").update(rank).eq("id", rank.id).select().single()) : run(db().from("coven_ranks").insert(rank).select().single())),
     deleteRank: (id) => run(db().from("coven_ranks").delete().eq("id", id)),

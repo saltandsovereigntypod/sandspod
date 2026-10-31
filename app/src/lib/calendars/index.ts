@@ -22,6 +22,7 @@
 
 import type { Holiday } from '../holidays.ts';
 import { pathName } from '../library/traditions.ts';
+import { hemisphereFrom } from '../seasons.ts';
 import { MOON_CALENDAR } from './moon.ts';
 import { TRADITIONAL_CALENDARS } from './registry.ts';
 import type { CalendarChoice, CalendarContext, CalendarDate, CalendarDef, CalendarEvent, CalendarId, CalendarMark, CalendarOption, Confidence, Place } from './types.ts';
@@ -133,11 +134,7 @@ export function choiceViews(settings: SettingsLike, id: string): ChoiceView[] {
  * of the Year chosen on its own, else north.
  */
 export function hemisphereOf(settings: SettingsLike, place: Place | null): 'north' | 'south' {
-  const chosen = settings?.[HEMISPHERE_KEY];
-  if (chosen === 'north' || chosen === 'south') return chosen;
-  if (place && Number.isFinite(place.latitude)) return place.latitude < 0 ? 'south' : 'north';
-  const traditions = typeof settings?.calendar_traditions === 'string' ? settings.calendar_traditions.split(',').map((t) => t.trim()) : [];
-  return traditions.includes('wheel_south') && !traditions.includes('wheel') ? 'south' : 'north';
+  return hemisphereFrom(settings, place?.latitude);
 }
 
 export function calendarContext(settings: SettingsLike, place: Place | null, id: string): CalendarContext {
@@ -263,12 +260,14 @@ export function calendarSettingsKey(settings: SettingsLike): string {
 
 /**
  * The calendars for the "Also show" list: those of the person's own path
- * first (by My path), then the rest in registry order. When the moon leads it
- * is left out, as it is already shown.
+ * first (by My path), then those of your covens' tradition (covenPaths, from
+ * covens/covenTradition.ts), then the rest in registry order. When the moon
+ * leads it is left out, as it is already shown.
  */
-export function calendarsForSettings(settings: SettingsLike, path: string[]): CalendarDef[] {
+export function calendarsForSettings(settings: SettingsLike, path: string[], covenPaths: string[] = []): CalendarDef[] {
   const list = CALENDARS.filter((c) => !(primaryCalendar(settings) === 'moon' && c.id === 'moon'));
-  const onPath = (c: CalendarDef) => (c.path && path.includes(c.path) ? path.indexOf(c.path) : -1);
+  const order = [...new Set([...path, ...covenPaths])];
+  const onPath = (c: CalendarDef) => (c.path && order.includes(c.path) ? order.indexOf(c.path) : -1);
   return [...list.filter((c) => onPath(c) >= 0).sort((a, b) => onPath(a) - onPath(b)), ...list.filter((c) => onPath(c) < 0)];
 }
 

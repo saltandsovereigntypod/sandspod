@@ -50,13 +50,16 @@
   async function renderBook() {
     const main = UI.root();
     const settings = await S.settings();
-    const ctx = PM.forYouContext(settings, new Date());
+    // Your covens' tradition counts too, after your own path (js/coven-paths.js).
+    const covenPaths = (await global.SaltCovenPaths?.load(R).catch(() => [])) || [];
+    const ctx = PM.forYouContext(settings, new Date(), covenPaths);
     const suggested = PM.forYou(ctx);
     if (PM.PRACTICES.some((p) => p.id === params.get("practice"))) filter.practice = params.get("practice");
 
     const practices = [...PM.PRACTICES.filter((p) => ctx.practices.includes(p.id)), ...PM.PRACTICES.filter((p) => !ctx.practices.includes(p.id))];
     const pathIds = [...new Set(PM.PREMADE.flatMap((p) => p.paths))];
-    const paths = [...pathIds.filter((id) => ctx.paths.includes(id)), ...pathIds.filter((id) => !ctx.paths.includes(id))];
+    const first = [...ctx.paths, ...(ctx.covenPaths || [])];
+    const paths = [...pathIds.filter((id) => first.includes(id)), ...pathIds.filter((id) => !first.includes(id))];
 
     main.innerHTML = `
       ${UI.header({

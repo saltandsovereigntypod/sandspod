@@ -47,3 +47,7 @@ export * as journals from '../../app/src/lib/journals/journals.ts';
 export * as ancestors from '../../app/src/lib/craft/hedge/ancestors.ts';
 // Today's two tabs (Today | Sky & Lore) and which a link lands on.
 export * as screenTabs from '../../app/src/lib/screenTabs.ts';
+// The coven's tradition, for its members' premade workings and calendars (js/coven-paths.js).
+export * as covenTradition from '../../app/src/lib/covens/covenTradition.ts';
+// The seasons of the year, counted as chosen (Settings → Location & hemisphere).
+export * as seasons from '../../app/src/lib/seasons.ts';

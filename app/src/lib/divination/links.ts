@@ -50,6 +50,13 @@ export const divinationReadingRoute = (ref: DivinationRef, deck?: string | null)
 /** Where an entry's page is in the website's Book of Shadows. */
 export const divinationWebPath = (ref: DivinationRef, deck?: string | null) => `/grimoire/?divination=${ref.kind}/${encodeURIComponent(ref.id)}${deckQuery(ref, deck, '&')}`;
 
+/** The website's page of every rune's meaning (/divination/runes/), at this rune when one is named; null for anything but a rune. */
+export function runeMeaningsHref(name?: string | null): string | null {
+  if (!name) return '/divination/runes/';
+  const ref = refForDrawn(name);
+  return ref?.kind === 'runes' ? `/divination/runes/#${encodeURIComponent(ref.id)}` : null;
+}
+
 /** The website's "Read more" link for a drawn card or stave (in the deck it was drawn with, for tarot), or null. */
 export function readMoreHref(name: string, deck?: string | null): string | null {
   const ref = refForDrawn(name);

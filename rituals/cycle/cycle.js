@@ -46,8 +46,9 @@
       <div class="sp-chips">${s.links.map((l) => `<a class="sp-chip" href="${esc(linkHref(l))}">${esc(l.label)} ›</a>`).join("")}</div>
     </section>`;
   const chipLinks = (links) => (links.length ? `<div class="sp-chips">${links.map((l) => `<a class="sp-chip" href="${esc(linkHref(l))}">${esc(l.label)} ›</a>`).join("")}</div>` : "");
-  const readingHtml = (r, date) => `<section class="sp-card sp-card--gold" data-reading>
-      <p class="sp-eyebrow sp-gold">Today’s reading</p><h2>${esc(r.headline)}</h2><p class="sp-caption">${esc(r.moonLine)}</p>${r.signLine ? `<p class="sp-caption">${window.SaltAstroTerms ? window.SaltAstroTerms.html(r.signLine) : esc(r.signLine)}</p>` : ""}
+  // Given a headline (the home's one card for today, readings.homeHeadline) the moon's line leaves out the phase the headline names, and `extra` comes before the reading.
+  const readingHtml = (r, date, headline = "", extra = "") => `<section class="sp-card sp-card--gold" data-reading${headline ? " data-today" : ""}>
+      <p class="sp-eyebrow sp-gold">${headline ? "Today" : "Today’s reading"}</p><h2>${esc(headline || r.headline)}</h2><p class="sp-caption">${esc(headline ? r.moonDetail : r.moonLine)}</p>${r.signLine ? `<p class="sp-caption">${window.SaltAstroTerms ? window.SaltAstroTerms.html(r.signLine) : esc(r.signLine)}</p>` : ""}${extra}
       <h3>${esc(r.reading.title)}</h3><p>${esc(r.reading.line)}</p><p>${esc(r.reading.practice)}</p>${chipLinks(r.reading.links)}
       <p class="sp-caption">To write about</p><h3>${esc(r.reading.prompt)}</h3>
       <p><a class="rt-text-link" href="${esc(href("log", { date }))}">Write about it</a></p></section>`;
@@ -177,17 +178,14 @@
     return `<p class="sp-caption" data-sync>${esc(SYNC_LINE[S.state.sync] || "")}</p>
       ${S.state.error ? `<p class="sp-notice">${esc(S.state.error)}</p>` : ""}
       ${S.state.guestCopy ? `<section class="sp-card"><p>You kept Cycle &amp; Moon notes in this browser before signing in. Bring them into your account’s notes?</p><div class="sp-actions"><button class="button button--ghost" type="button" data-act="guest">Bring them in</button></div></section>` : ""}
-      <section class="sp-card sp-card--gold" data-today>
-        <p class="sp-eyebrow sp-gold">Today</p><h2>${esc(v.line)}</h2>
+      ${readingHtml(reading, today, C().readings.homeHeadline(v, reading), `
         ${v.bleeding ? "<p>In moon time. Rest counts as practice.</p>" : ""}
         ${v.estimate ? `<p>${esc(v.estimate.line)}</p>` : ""}
         ${s.mode === "cycle" && !data.bleeds.length ? `<p class="sp-muted">Add your past periods, or log when your next bleed begins, and the days will count from there. Until then, the moon gives the season.</p>` : ""}
         ${s.archetypes ? `<p class="sp-muted">${esc(`${a.name} (${a.plain}): ${a.line}`)}</p>` : ""}
-        <div class="sp-actions"><a class="button button--primary" href="${esc(href("log", { date: today }))}">Log today</a>${s.mode === "cycle" && data.bleeds.length < 3 ? `<a class="button button--ghost" href="${esc(href("past"))}">Add past periods</a>` : ""}</div>
-      </section>
-      ${readingHtml(reading, today)}
+        <div class="sp-actions"><a class="button button--primary" href="${esc(href("log", { date: today }))}">Log today</a>${s.mode === "cycle" && data.bleeds.length < 3 ? `<a class="button button--ghost" href="${esc(href("past"))}">Add past periods</a>` : ""}</div>`)}
       ${v.bleeding && s.altar ? `<section class="sp-card"><h3>Your moon-time altar</h3><p>A moon bowl of water, red candles and a red cord, moonstone and red jasper, mugwort and rose. Set it out while you bleed, put it away when you’re done.</p><div class="sp-actions"><a class="button button--ghost" href="/altar/?moontime=1">Set out the moon-time altar</a></div></section>` : ""}
-      <section class="sp-card"><p class="sp-eyebrow sp-gold">${esc(M.seasonTitle(v.season))}</p><p>${esc(info.feel)}</p><p>${esc(info.practice)}</p></section>
+      <section class="sp-card"><p class="sp-eyebrow sp-gold">${esc(M.seasonTitle(v.season))}</p><p>${esc(info.feel)}</p><p>${esc(info.practice)}</p><p class="sp-muted" data-year-season data-prefix="Outside: " hidden></p></section>
       ${s.mode === "cycle" ? `<section class="sp-card" data-whatami><p class="sp-eyebrow sp-gold">What am I?</p><h3>${esc(past.type ? past.type.headline : "Add your past periods to find out")}</h3>${past.average != null ? `<p>${esc(past.lines[0])}</p>` : ""}<p><a class="rt-text-link" href="${esc(href("history"))}">Your history, read</a></p></section>` : ""}
       <section class="sp-card" data-insights-card><p class="sp-eyebrow sp-gold">Symptoms and insights</p>${flags.length ? `<p>${esc(flags[0])}</p>` : ""}${insights.slice(0, 3).map((i) => `<p>${esc(i.text)}</p>`).join("")}
         ${!insights.length && !flags.length ? `<p class="sp-muted">Log symptoms on the days you have them, and patterns, comfort and folk remedies for them will show here.</p>` : ""}<p><a class="rt-text-link" href="${esc(href("insights"))}">Symptoms, patterns and comfort</a></p></section>
@@ -585,8 +583,9 @@
     else if (v === "history") body = historyView();
     else if (v === "insights") body = insightsView();
     else if (v === "keep") body = keepView();
-    else body = `${back("Rituals", "/rituals/")}${head("Cycle & Moon", C().model.QUARTER_NAMES[C().model.moonQuarterOn(C().model.dayKey(new Date()))])}${v === "" ? recoveryHtml() : ""}${homeView()}`;
+    else body = `${back("Rituals", "/rituals/")}${head("Cycle & Moon", "Craft")}${v === "" ? recoveryHtml() : ""}${homeView()}`;
     root().innerHTML = `${status()}${body}${notMedical()}`;
+    global.SaltYearSeason?.fill(root(), C().seasons);
     global.document.title = `${v === "log" ? "Log a day" : v === "past" ? "Past periods" : v === "history" ? "What am I?" : v === "insights" ? "Symptoms and insights" : v === "learn" ? "Inner seasons and moon patterns" : v === "settings" ? "Cycle & Moon settings" : v === "share" ? "Share with my covens" : "Cycle & Moon"} | Salt & Sovereignty`;
   }
 

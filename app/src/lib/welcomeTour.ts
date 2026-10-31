@@ -7,7 +7,7 @@ import type { IconName } from '../components/Icon';
 import type { MoreIconName } from '../components/more/MoreIcon';
 
 /** Bumped when the tour changes, so everyone sees the new one once. */
-export const TOUR_SEEN_KEY = 'welcome.tour.v2';
+export const TOUR_SEEN_KEY = 'welcome.tour.v3';
 
 /** The moon drawn as a disc, a tab icon, or one of More's icons. */
 export type TourIcon = 'moon' | { tab: IconName } | { more: MoreIconName };
@@ -38,7 +38,7 @@ export const TOUR_PAGES: TourPage[] = [
   {
     icon: { tab: 'rituals' },
     title: 'Rituals by the moon',
-    body: 'In Practice → Rituals, begin a premade ritual or spell, or plan your own for the right night and run it step by step. Journal it afterwards, and on the day you chose it asks: did it work?',
+    body: 'In Practice → Rituals, begin a premade ritual or spell, make your own in the spell builder, or plan one for the right night and run it step by step. Your journals keep it afterwards, and on the day you chose it asks: did it work?',
   },
   {
     icon: { tab: 'wheel' },
@@ -53,7 +53,7 @@ export const TOUR_PAGES: TourPage[] = [
   {
     icon: { more: 'journey' },
     title: 'Your practice, your path',
-    body: 'Practice → Craft keeps Cycle & Moon, your birth chart and the Craft tools for green, kitchen, hedge, cosmic, crystal, sea and folk craft. Dedication journeys (under Rituals), patron deities and the Closed & living traditions guide help you walk a path with care.',
+    body: 'Practice → Craft keeps Cycle & Moon, astrology from your birth chart, the timing advisor for choosing the night, Hearth & land, and the Craft tools for green, kitchen, hedge, cosmic, crystal, sea and folk craft. Dedication journeys (under Rituals), patron deities and the Closed & living traditions guide help you walk a path with care.',
   },
   {
     icon: { tab: 'calendar' },

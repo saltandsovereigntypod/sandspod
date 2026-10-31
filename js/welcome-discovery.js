@@ -2,9 +2,9 @@
   const DAILY_REFLECTION_KEY = "saltAndSovereigntyDailyThresholdReflection";
   const DESTINATION_KEY = "saltAndSovereigntySanctuaryDestination";
   // Bumped when a guide changes, so everyone sees the new one once. The
-  // welcome mirrors the app's tour (app/src/lib/welcomeTour.ts TOUR_SEEN_KEY "welcome.tour.v2").
+  // welcome mirrors the app's tour (app/src/lib/welcomeTour.ts TOUR_SEEN_KEY "welcome.tour.v3").
   const GUIDE_VERSION = "1.3.0";
-  const GUIDE_VERSIONS = { altar: GUIDE_VERSION, grimoire: GUIDE_VERSION, welcome: "2" };
+  const GUIDE_VERSIONS = { altar: GUIDE_VERSION, grimoire: GUIDE_VERSION, welcome: "3" };
   const GUIDE_KEYS = {
     altar: "saltAndSovereigntyAltarGuideVersion",
     grimoire: "saltAndSovereigntyGrimoireGuideVersion",
@@ -36,10 +36,10 @@
         ["Your altar, piece by piece", "On the Altar, open the Cabinet’s drawers for candles, herbs, crystals, tools, deities, vessels, natural finds and offerings. Click anything you place to learn its correspondences. In My Altars, your own altars are under Personal and the ones you tend with your covens under Coven."],
         ["An altar that keeps time", "Candles and incense burn in real time, offerings freshen and fade, and pots for your real houseplants ask for water. Before a festival you keep, the Seasonal drawer brings its things to the top."],
         ["Workings at the altar", "Build a spell jar or a sachet, fold a petition under a candle, or keep a spell over days. “Set tonight’s altar” on Today starts one for you."],
-        ["Rituals by the moon", "In Practice → Rituals, begin a premade ritual or spell, or plan your own for the right night and run it step by step. Journal it afterwards, and on the day you chose it asks: did it work?"],
+        ["Rituals by the moon", "In Practice → Rituals, begin a premade ritual or spell, make your own in the spell builder, or plan one for the right night and run it step by step. Your journals keep it afterwards, and on the day you chose it asks: did it work?"],
         ["Cards, runes and sigils", "Practice → Craft → Divination draws tarot, runes, ogham, Lenormand, Kipper or a deck of your own in a spread laid out in its shape, and you can come back to the reading later. The sigil maker turns an intent into one mark, and both are open to every practice."],
         ["Your Grimoire", "Practice → Grimoire keeps your pages, with the Living Library as a section of it: herbs, crystals, deities and candle colours with their traditional lore. Your dreams live there too, with pages for the holidays and moons."],
-        ["Your practice, your path", "Practice → Craft keeps Cycle & Moon, your birth chart and the Craft tools for green, kitchen, hedge, cosmic, crystal, sea and folk craft. Dedication journeys (under Rituals), patron deities and the Closed & living traditions guide help you walk a path with care."],
+        ["Your practice, your path", "Practice → Craft keeps Cycle & Moon, astrology from your birth chart, the timing advisor for choosing the night, Hearth & land, and the Craft tools for green, kitchen, hedge, cosmic, crystal, sea and folk craft. Dedication journeys (under Rituals), patron deities and the Closed & living traditions guide help you walk a path with care."],
         ["Calendars and reminders", "Keep the holidays of the calendars you follow, count your days by the moon, and show old calendars such as the Athenian or the Roman. Reminders turn the moon, your plans, the holidays you choose, tending and ritual planning into calendar events."],
         ["Practise with a coven", "Find or found a coven under Coven. Tend its altars together, talk in its messages, hold rites as a circle, and walk its initiation and training."],
         ["Yours on every screen", "Sign in and your altars, Grimoire, rituals and settings stay in step with the Salt & Sovereignty app. As a guest, everything stays in this browser."],

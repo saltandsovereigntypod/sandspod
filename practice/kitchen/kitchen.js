@@ -222,11 +222,12 @@
 
   // ------------------------------------------------------------------ simmer pot
 
-  const pot = { intention: planner.intentionByKey(params.get("intention"))?.key ?? "peace", picked: null, placeMessage: "" };
+  // counting: how the seasons are counted, from Settings → Location & hemisphere (the app's lib/seasons.ts).
+  const pot = { intention: planner.intentionByKey(params.get("intention"))?.key ?? "peace", picked: null, placeMessage: "", counting: "meteorological" };
 
   function simmerView() {
     const place = kit.readPlace();
-    const guess = S.seasonAt(new Date(), place?.latitude);
+    const guess = S.seasonAt(new Date(), place?.latitude, pot.counting);
     const season = pot.picked ?? guess.season;
     const pots = S.suggestSimmer(pot.intention, season);
     const label = planner.intentionByKey(pot.intention)?.label ?? "Peace & rest";
@@ -370,6 +371,7 @@
 
   kit.start(async (who) => {
     user = who;
+    if (view === "kitchen-simmer" && core.seasons) pot.counting = core.seasons.seasonCounting(await kit.settings());
     if (view === "kitchen-moon") {
       ticks.entries = await kit.entries(COLLECTION);
       ticks.ready = true;

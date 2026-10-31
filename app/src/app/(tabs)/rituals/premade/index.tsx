@@ -6,6 +6,7 @@ import { Body, Card, Chip, Chips, Field, List, RitualScreen, Row, SectionLabel, 
 import { pathName } from '../../../../lib/library/traditions';
 import { INTENTIONS } from '../../../../lib/rituals/planner';
 import { filterPremade, forYou, forYouContext, PRACTICES, practiceName, PREMADE, type Premade } from '../../../../lib/rituals/premade';
+import { useCovenPaths } from '../../../../lib/covens/useCovenTraditions';
 import { useMySettings } from '../../../../lib/settings/store';
 import { type } from '../../../../theme';
 
@@ -21,7 +22,9 @@ function premadeDetail(p: Premade): string {
 
 export default function PremadeBook() {
   const { settings } = useMySettings();
-  const ctx = useMemo(() => forYouContext(settings, new Date()), [settings]);
+  // Your covens' tradition counts too, after your own path.
+  const covenPaths = useCovenPaths();
+  const ctx = useMemo(() => forYouContext(settings, new Date(), covenPaths), [settings, covenPaths]);
   const suggested = useMemo(() => forYou(ctx), [ctx]);
   const [query, setQuery] = useState('');
   const params = useLocalSearchParams<{ practice?: string }>();
@@ -34,8 +37,9 @@ export default function PremadeBook() {
   const practices = [...PRACTICES.filter((p) => ctx.practices.includes(p.id)), ...PRACTICES.filter((p) => !ctx.practices.includes(p.id))];
   const paths = useMemo(() => {
     const ids = [...new Set(PREMADE.flatMap((p) => p.paths))];
-    return [...ids.filter((id) => ctx.paths.includes(id)), ...ids.filter((id) => !ctx.paths.includes(id))];
-  }, [ctx.paths]);
+    const first = [...ctx.paths, ...(ctx.covenPaths ?? [])];
+    return [...ids.filter((id) => first.includes(id)), ...ids.filter((id) => !first.includes(id))];
+  }, [ctx.paths, ctx.covenPaths]);
   const filtering = !!(query.trim() || practice || intention || kind || path);
   const shown = useMemo(() => filterPremade(PREMADE, { query, practice, intention, kind, path }), [query, practice, intention, kind, path]);
 

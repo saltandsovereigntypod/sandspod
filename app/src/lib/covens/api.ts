@@ -3,6 +3,7 @@
 // decide who may do what; these only ask.
 
 import { supabase } from '../supabase';
+import { covenTraditionOf } from './covenTradition';
 import type { Assignment, Enrollment, Grant, Mentorship, Program, ProgramStage, ProgramTask, ProgramTemplate, StagePass, stagesPayload, TaskProgress } from './programs';
 import type {
   Advancement,
@@ -845,6 +846,30 @@ export async function saveCovenCounting(covenId: string, calendars: string[], mo
   await run(supabase.from('covens').update({ practice_calendars: calendars }).eq('id', covenId).select('id').single());
   const { error } = await supabase.from('covens').update({ moon_calendar: moon }).eq('id', covenId);
   if (error) throw new Error(/moon_calendar/.test(error.message) ? 'The coven’s calendars are saved, but its moon calendar can’t be saved until the site’s next update.' : error.message);
+}
+
+/**
+ * The coven's tradition (covens.course_tradition, covenTradition.ts), or null
+ * when none is set or it can't be read: before 20261119000000_coven_tradition.sql
+ * is applied the column is missing, and the coven reads as having said nothing.
+ */
+export async function fetchCovenTradition(covenId: string): Promise<string | null> {
+  const { data, error } = await supabase.from('covens').select('course_tradition').eq('id', covenId).maybeSingle();
+  if (error || !data) return null;
+  return covenTraditionOf((data as { course_tradition?: unknown }).course_tradition);
+}
+
+/** Save the coven's tradition (null for none). */
+export async function saveCovenTradition(covenId: string, tradition: string | null): Promise<void> {
+  const { error } = await supabase.from('covens').update({ course_tradition: covenTraditionOf(tradition) }).eq('id', covenId);
+  if (error) throw new Error(/course_tradition/.test(error.message) ? 'The coven’s tradition can’t be saved until the site’s next update.' : error.message);
+}
+
+/** The traditions of the covens you belong to (none when they can't be read). */
+export async function fetchMyCovenTraditions(userId: string): Promise<string[]> {
+  const { data, error } = await supabase.from('coven_members').select('covens!coven_members_coven_id_fkey(course_tradition)').eq('user_id', userId).eq('status', 'active');
+  if (error || !data) return [];
+  return (data as unknown as { covens: { course_tradition?: unknown } | null }[]).map((r) => covenTraditionOf(r.covens?.course_tradition)).filter((t): t is string => !!t);
 }
 
 

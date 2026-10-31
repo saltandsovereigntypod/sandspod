@@ -163,12 +163,13 @@
     return [
       kit.back("/practice/", "Craft"),
       kit.head({ eyebrow: readings.length ? kit.plural(readings.length, "reading", "readings") : "For every practice", title: "Divination" }),
-      // The Divination hub, as the app's Craft → Divination: Draw · Readings · Decks · Card meanings.
+      // The Divination hub, as the app's Craft → Divination: Draw · Readings · Decks · Card meanings · Rune meanings.
       kit.list([
         kit.row({ url: url.draw(), title: "Draw cards, runes or ogham", detail: "A card for the day, the Celtic Cross and many more spreads, or one of your own" }),
         kit.row({ url: url.readingEdit(), title: "Log a reading", detail: "One you did by hand: what you asked, what came up" }),
         kit.row({ url: url.decks, title: "Your oracle decks", detail: "Make a deck of your own, and draw from it" }),
         kit.row({ url: "/grimoire/", title: "Card meanings", detail: "Tarot, runes, ogham, Lenormand and Kipper, in your Grimoire under Traditional Information" }),
+        kit.row({ url: "/divination/runes/", title: "Rune meanings", detail: "The twenty-four runes and the blank rune, every page on one" }),
         kit.row({ url: url.spreadEdit(), title: "Make a spread", detail: "Lay out positions of your own" })
       ]),
       `<h2 class="sp-label">Your readings</h2>`,
@@ -390,6 +391,21 @@
     ].join("");
   }
 
+  // Their photo from an ancestor frame on one of your altars, as the app's AncestorPhoto
+  // (components/journals/screens.tsx; journals.framesFor). Signed in only: altars are read from your account.
+  let altars = [];
+  async function loadAltars() {
+    if (view !== "hedge-ancestor" || !user?.id || !global.db || !core.journals) return;
+    const res = await global.db.from("saved_altars").select("id,name,altar_data").eq("user_id", user.id);
+    altars = res.error ? [] : res.data || [];
+  }
+  function photoHtml(personId, name) {
+    const photo = core.journals ? core.journals.framesFor(altars, personId)[0] : null;
+    if (!photo) return "";
+    const style = `display:block;width:96px;max-width:40%;aspect-ratio:4/5;object-fit:cover;border-radius:0.5rem;border:1px solid rgba(185,160,93,0.35);${photo.aged ? "filter:sepia(0.62) saturate(0.72) brightness(0.96);" : ""}`;
+    return `<div class="pr-ancestor-photo"><img src="${kit.esc(photo.photo)}" alt="${kit.esc(`A photo of ${name || "them"}`)}" style="${style}" />${kit.muted(`From the ancestor frame on ${photo.altarName}.`)}</div>`;
+  }
+
   function ancestorView() {
     const back = kit.back(url.ancestors, "Ancestors");
     const entry = people.find((e) => e.id === id);
@@ -402,6 +418,7 @@
     return [
       back,
       kit.head({ eyebrow: person.relation || "Remembered", title: person.name || "Unnamed" }),
+      photoHtml(entry.id, person.name),
       born || died || person.bornPlace || person.diedPlace
         ? kit.muted(kit.join([born || person.bornPlace ? `Born ${kit.join([born, person.bornPlace], ", ")}` : null, died || person.diedPlace ? `Died ${kit.join([died, person.diedPlace], ", ")}` : null]))
         : "",
@@ -634,11 +651,13 @@
     const place = spread.positions.length > 1 ? Dv.draw.placeOf(spread, d, i) : null;
     // Its page in the Book of Shadows' Traditional Information, unless that's turned off (none for a card of your own).
     const more = settings.library_traditional_enabled !== false && !m.own ? Dv.links?.readMoreHref(m.name, tarotDeck) : null;
+    // A rune drawn opens on the page of every rune's meaning too (/divination/runes/).
+    const runes = !m.own && Dv.links?.runeMeaningsHref ? Dv.links.runeMeaningsHref(m.name) : null;
     return kit.card(
       `${place ? kit.muted(place.about) : ""}<p class="dv-meaning__name">${m.glyph ? `<span class="dv-glyph" aria-hidden="true">${kit.esc(m.glyph)}</span>  ` : ""}${kit.esc(
         itemName(m)
       )}</p>${deckLines.map((line) => kit.muted(line)).join("")}${m.gloss ? kit.muted(m.gloss) : ""}${m.meaning.keywords ? `<p class="dv-meaning__words">${kit.esc(m.meaning.keywords)}</p>` : ""}${kit.p(m.meaning.text)}${
-        more ? `<p class="dv-meaning__more"><a href="${kit.esc(more)}" target="_blank" rel="noopener">Read more</a></p>` : ""
+        more ? `<p class="dv-meaning__more"><a href="${kit.esc(more)}" target="_blank" rel="noopener">Read more</a>${runes ? ` · <a href="${kit.esc(runes)}">All rune meanings</a>` : ""}</p>` : runes ? `<p class="dv-meaning__more"><a href="${kit.esc(runes)}">All rune meanings</a></p>` : ""
       }`,
       { gold: true, label: place ? `${i + 1} · ${place.name}` : spread.label }
     );
@@ -1617,6 +1636,7 @@
     user = who;
     settings = await kit.settings();
     await load();
+    await loadAltars().catch(() => {});
     if (view === "hedge-draw" && Dv) decideDraft();
     draw();
   });

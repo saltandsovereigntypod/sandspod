@@ -456,7 +456,7 @@
       );
     }
     const lines = C.practiceDay.practiceToday(practices, now, { place: state.place, choice: C.holidays.holidayChoice(settings) });
-    const working = C.premade.forYou(C.premade.forYouContext(settings, now), undefined, 1)[0] || null;
+    const working = C.premade.forYou(C.premade.forYouContext(settings, now, window.SaltCovenPaths?.cached() || []), undefined, 1)[0] || null;
     return (
       `<section class="td-card td-card--working" aria-labelledby="td-practice-label"><h2 class="sp-eyebrow td-gold" id="td-practice-label">For your practice</h2>` +
       deities.map((line) => practiceRow(line.label, line.line, line.detail, T.siteHref(line.href), line.holyToday)).join("") +
@@ -510,7 +510,8 @@
   /** What today is good for, and what the sky is doing that matters for it. */
   function daySkyCard(m) {
     const { today, sky, here, now } = m;
-    const lines = T.daySkyLines(C, sky, now);
+    const settings = state.settings || {};
+    const lines = T.daySkyLines(C, sky, now, C.seasons ? C.seasons.seasonLine(now, C.calendars.hemisphereOf(settings, state.place), C.seasons.seasonCounting(settings)) : "");
     let where;
     if (here) {
       where =
@@ -669,7 +670,7 @@
     refreshing = true;
     try {
       state.user = user;
-      await Promise.all([loadSettings(), loadRituals(user), loadDreams(), loadJournals(), loadReadings(), loadApothecary(user), loadChart(user)]);
+      await Promise.all([loadSettings(), loadRituals(user), loadDreams(), loadJournals(), loadReadings(), loadApothecary(user), loadChart(user), window.SaltCovenPaths?.load(C).catch(() => [])]);
     } finally {
       refreshing = false;
     }

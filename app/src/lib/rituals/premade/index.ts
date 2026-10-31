@@ -47,9 +47,11 @@ export type ForYouContext = {
   /** The deities kept as patron or dedicated (names), and the words of their domains. */
   deities?: string[];
   domains?: string;
+  /** The paths of the covens you belong to (covens/covenTradition.ts pathsForCovens): their workings come next after your own path's. */
+  covenPaths?: string[];
 };
 
-export function forYouContext(settings: SettingsLike, now: Date): ForYouContext {
+export function forYouContext(settings: SettingsLike, now: Date, covenPaths: string[] = []): ForYouContext {
   const soon = new Date(now.getTime() + 14 * 86_400_000);
   const holidays = holidaysBetween(now, soon, holidayChoice(settings)).map((h) => h.id);
   return {
@@ -59,6 +61,7 @@ export function forYouContext(settings: SettingsLike, now: Date): ForYouContext 
     weekday: now.getDay(),
     holidays: [...new Set(holidays)],
     ...deityContext(settings),
+    ...(covenPaths.length ? { covenPaths } : {}),
   };
 }
 
@@ -91,7 +94,7 @@ export function fitScore(p: Premade, ctx: ForYouContext): number {
   let score = 0;
   const practiceHits = p.practices.filter((id) => ctx.practices.includes(id)).length;
   score += practiceHits ? 3 + practiceHits : 0;
-  if (p.paths.length) score += p.paths.some((id) => ctx.paths.includes(id)) ? 4 : ctx.paths.length ? -2 : -1;
+  if (p.paths.length) score += p.paths.some((id) => ctx.paths.includes(id)) ? 4 : p.paths.some((id) => ctx.covenPaths?.includes(id)) ? 3 : ctx.paths.length ? -2 : -1;
   if (p.moon?.some((m) => ctx.moon.includes(m))) score += 3;
   else if (p.moon?.length && !p.moon.includes('blue') && !p.moon.includes('eclipse')) score -= 1;
   if (p.weekday === ctx.weekday) score += 2;

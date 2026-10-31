@@ -8,7 +8,7 @@
 // Modern practice marked as modern. British spelling.
 
 import type { CourseModule } from '../types';
-import { closed, coven, deity, holy, journey, page, ritual, seasonal } from '../linkHelpers.ts';
+import { closed, coven, deity, holy, journey, page, ritual } from '../linkHelpers.ts';
 
 export default {
   id: 'norse-elder',
@@ -19,7 +19,7 @@ export default {
       title: 'Gothi, gythia and host: leading as a Heathen elder',
       summary: 'What the goði was in Iceland and what the gothi and gythia are in modern Heathenry, the Hávamál’s verses on guests and hosts, and how an elder leads blót and sumbel well: preparing, speaking, caring for every guest, and stepping back.',
       minutes: 16,
-      links: [ritual('folk-havamal-reflection'), ritual('folk-simple-blot'), seasonal('drinking-horn'), coven('ritual-builder'), coven('rituals'), holy('norse/thorrablot'), deity('heimdall')],
+      links: [ritual('folk-havamal-reflection'), ritual('folk-simple-blot'), ritual('folk-sumbel'), coven('ritual-builder'), coven('rituals'), holy('norse/thorrablot'), deity('heimdall')],
       body: `## The goði in Iceland
 
 In medieval Iceland, a **goði** (plural goðar) was a chieftain. The word is related to "god", and the role combined religion, law and politics. Iceland had no king; instead, the goðar held **goðorð,** chieftaincies, which were a kind of property that could be bought, sold, shared or inherited. Each free farmer attached himself to a goði of his choice, and could change if he was unhappy. At the Althing the goðar sat in the law council and named judges.
@@ -399,7 +399,7 @@ Every elder has them. Ask newer members, especially those different from you, ho
           checked_by: 'manager',
           minutes: 120,
           docs: ['norse-elder-gothi-and-gythia'],
-          links: [seasonal('drinking-horn'), coven('rituals')],
+          links: [ritual('folk-sumbel'), coven('rituals')],
           solitary: 'Host a sumbel for friends or family, or an online sumbel for solitary Heathens, with every drink choice welcomed and the rounds kept short. Write how it went.',
         },
         {

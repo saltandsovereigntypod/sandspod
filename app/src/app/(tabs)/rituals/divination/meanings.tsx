@@ -1,4 +1,4 @@
-import { router } from 'expo-router';
+import { router, useLocalSearchParams } from 'expo-router';
 import { useMemo, useState } from 'react';
 
 import { Button } from '../../../../components/Button';
@@ -10,11 +10,13 @@ import { useMySettings } from '../../../../lib/settings/store';
 
 // Card meanings, from Craft → Divination: the same tarot, rune, ogham and
 // oracle pages your Grimoire keeps under Traditional Information, opened here
-// so Back comes back to Divination.
+// so Back comes back to Divination. `?kind=runes` opens with that group open
+// (Rune meanings, from Divination and the Norse & Heathen course).
 export default function CardMeanings() {
   const { settings } = useMySettings();
   const [query, setQuery] = useState('');
-  const [opened, setOpened] = useState<Set<string>>(new Set());
+  const { kind } = useLocalSearchParams<{ kind?: string }>();
+  const [opened, setOpened] = useState<Set<string>>(new Set(kind ? [`traditional:divination:${kind}`] : []));
   const groups = useMemo(() => divinationGroups(query), [query]);
   const searching = query.trim().length > 0;
   const toggle = (key: string) =>
@@ -27,7 +29,7 @@ export default function CardMeanings() {
 
   return (
     <RitualScreen back="Divination">
-      <Title eyebrow="Divination">Card meanings</Title>
+      <Title eyebrow="Divination">{kind === 'runes' ? 'Rune meanings' : 'Card meanings'}</Title>
       <Body muted>Every card, rune and stave, with its three words and its page. Your Grimoire keeps them too, under Traditional Information.</Body>
       <Field label="Search card meanings" value={query} onChange={setQuery} placeholder="The Star, Fehu, a word like change" />
       {searching && !groups.length ? (

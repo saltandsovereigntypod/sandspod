@@ -176,7 +176,7 @@
   }
 
   /** What the sky is doing that matters today: void of course, personal retrogrades, the sun's season. */
-  function daySkyLines(C, sky, now) {
+  function daySkyLines(C, sky, now, season = "") {
     const cal = C.calendar;
     const lines = [];
     if (sky.vocNow) {
@@ -193,6 +193,8 @@
       );
     }
     lines.push(`${sky.sunSign} season${sky.sunSignEnds ? ` until ${cal.dateFrom(now, sky.sunSignEnds)}` : ""}: ${sky.sunSeason}.`);
+    // The season of the year, counted as chosen in Settings → Location & hemisphere (app lib/seasons.ts).
+    if (season) lines.push(season);
     return lines;
   }
 

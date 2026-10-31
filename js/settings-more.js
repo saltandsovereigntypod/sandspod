@@ -183,7 +183,22 @@
         "Hemisphere",
         `${chips("hemisphere", HEMISPHERE_OPTIONS, hemisphere, "Hemisphere")}
         <p class="settings-more-detail">${esc(`Seasons, the Wheel and moon names follow the ${K.hemisphereOf(settings, place)}ern hemisphere${hemisphere === "auto" ? (place ? ", from your place" : "; add your place, or choose Northern or Southern here") : ""}.`)}</p>`,
-      )}`;
+      )}
+      ${seasonsHtml(settings, G, place)}`;
+  }
+
+  // How the seasons of the year are counted (the app's lib/seasons.ts, `season_count_by`).
+  function seasonsHtml(settings, G, place) {
+    const Z = G.seasons;
+    if (!Z) return "";
+    const counting = Z.seasonCounting(settings);
+    const options = Z.SEASON_COUNTINGS.map((c) => ({ value: c.value, label: c.label }));
+    return group(
+      "Seasons",
+      `${chips("seasonCount", options, counting, "Count the seasons by")}
+        <p class="settings-more-detail">${esc(Z.SEASON_COUNTINGS.find((c) => c.value === counting).about)}</p>
+        <p class="settings-more-detail">${esc(`Now: ${Z.seasonLine(new Date(), G.calendars.hemisphereOf(settings, place), counting)} Today’s sky, the Wheel’s festival pages, Cycle & Moon and the kitchen’s simmer pots count them this way.`)}</p>`,
+    );
   }
 
   // Whether you're counted in your covens' Paths in the coven (the app's
@@ -245,7 +260,8 @@
     const place = readPlace();
     const lead = K.primaryCalendar(settings);
     const shown = new Set(K.shownCalendars(settings));
-    const list = K.calendarsForSettings(settings, G.traditions.myPath(settings).traditions);
+    // Your path's calendars first, then your covens' tradition's (js/coven-paths.js).
+    const list = K.calendarsForSettings(settings, G.traditions.myPath(settings).traditions, global.SaltCovenPaths?.cached() || []);
     const hemisphere = settings[K.HEMISPHERE_KEY] || "auto";
     const lines = K.todayLines(new Date(), settings, place);
     // Options that follow another calendar (the moon's year begun as the Attic
@@ -399,6 +415,7 @@
     const doc = panels.practice?.ownerDocument || global.document;
     addStyles(doc);
     let settings = (await storedSettings().catch(() => null)) || {};
+    await global.SaltCovenPaths?.load(G).catch(() => []);
     const ui = { open: new Set(), form: {} };
 
     const targets = {
@@ -522,6 +539,7 @@
         }
         if (chipGroup === "count") return save({ [G.calendars.COUNT_KEY]: value }, "calendar");
         if (chipGroup === "hemisphere") return save({ [G.calendars.HEMISPHERE_KEY]: value }, "location");
+        if (chipGroup === "seasonCount") return save({ [G.seasons.SEASON_COUNT_KEY]: value }, "location");
         if (chipGroup === "primary") return save({ calendar_primary: value }, "calendar");
         if (chipGroup === "todayShow") return save({ today_show: value }, "today");
         if (chipGroup === "todayLayout") return save({ today_layout: value }, "today");

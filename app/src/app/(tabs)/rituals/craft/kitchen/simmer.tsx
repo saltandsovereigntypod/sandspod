@@ -9,12 +9,17 @@ import { ritualsLibraryHref } from '../../../../../lib/library';
 import { usePlace } from '../../../../../lib/location';
 import { INTENTIONS, intentionByKey } from '../../../../../lib/rituals/planner';
 import { startRitual, useRituals } from '../../../../../lib/rituals/store';
+import { seasonCounting } from '../../../../../lib/seasons';
+import { useMySettings } from '../../../../../lib/settings/store';
 import { colors, type } from '../../../../../theme';
 
 export default function SimmerPotScreen() {
   const params = useLocalSearchParams<{ intention?: string }>();
   const place = usePlace();
-  const guess = useMemo(() => seasonAt(new Date(), place?.latitude), [place?.latitude]);
+  // Counted as chosen in Settings → Location & hemisphere (lib/seasons.ts).
+  const { settings } = useMySettings();
+  const counting = seasonCounting(settings);
+  const guess = useMemo(() => seasonAt(new Date(), place?.latitude, counting), [place?.latitude, counting]);
   const [intention, setIntention] = useState<string>(intentionByKey(params.intention)?.key ?? 'peace');
   const [picked, setPicked] = useState<Season | null>(null);
   const season = picked ?? guess.season;
