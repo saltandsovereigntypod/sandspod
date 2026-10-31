@@ -209,7 +209,7 @@
           ? `<div data-invitations>${invitationsHtml()}</div>
             <div data-coven-today>${global.CovenToday?.html?.() || ""}</div>
             <div data-mine>${mineHtml()}</div>
-            <p class="sp-actions"><a class="button button--ghost" href="${esc(href("/covens/mentorship/"))}">Mentorship</a><a class="button button--ghost" href="${esc(href("/rituals/together/"))}">Rituals together</a></p>
+            <p class="sp-actions"><a class="button button--ghost" href="${esc(href("/covens/mentorship/"))}">Mentorship</a></p>
             ${moderation ? `<div class="sp-actions">${moderation}</div>` : ""}`
           : UI.signInCard("see the covens you belong to")
         : `<p>Find witches to practise with: covens with their own creed, rules and ways, a gathering to talk in and an altar you tend together. Covens are for adults (18+) and follow the <a href="${esc(href("/covens/guidelines/"))}">community guidelines</a>.</p>

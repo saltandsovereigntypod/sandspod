@@ -114,7 +114,7 @@ export default function RitualsHome() {
           <Row
             icon="coven"
             title="Rituals together"
-            detail="Do a ritual live with your coven or friends, from wherever each of you is"
+            detail="Do a ritual live with friends or anyone you invite, from wherever each of you is"
             onPress={() => router.push('/rituals/together')}
           />
           <Row
