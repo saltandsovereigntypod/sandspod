@@ -43,6 +43,7 @@ import { useMySettings } from '../../../lib/settings/store';
 import { todaySettings } from '../../../lib/library/traditions';
 import { buildToday, type HorizonItem, type TodayModel } from '../../../lib/today';
 import { practiceToday } from '../../../lib/craft/today';
+import { hearthToday } from '../../../lib/craft/hearth/today';
 import { DREAMS, morningDreamPrompt, normalizeDream, quickDream } from '../../../lib/craft/hedge/dreams';
 import { addEntry, useCraft } from '../../../lib/craft/store';
 import { DREAM_ROUTES } from '../../../lib/grimoire/dreams';
@@ -310,6 +311,12 @@ function PracticeCard({ settings, place, now }: { settings: SettingsLike; place:
     // eslint-disable-next-line react-hooks/exhaustive-deps -- recomputed as the clock ticks, and when the practices or place change
     [kept, tick, place?.latitude, place?.longitude, settings?.calendar_traditions],
   );
+  // Hearth & land's seasonal nudge: a festival food that's near, or what's in the hedgerow.
+  const hearth = useMemo(
+    () => hearthToday(practices, now, { place, choice: holidayChoice(settings) }),
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- as above
+    [kept, tick, place?.latitude, settings?.calendar_traditions],
+  );
   const working = useMemo(
     () => forYou(forYouContext(settings, now), undefined, 1)[0] ?? null,
     // eslint-disable-next-line react-hooks/exhaustive-deps -- as above
@@ -365,6 +372,21 @@ function PracticeCard({ settings, place, now }: { settings: SettingsLike; place:
           <Icon name="chevron" size={16} color={colors.gold} />
         </Pressable>
       ))}
+      {hearth && (
+        <Pressable
+          accessibilityRole="link"
+          accessibilityLabel={`${hearth.label}: ${hearth.line}`}
+          onPress={() => router.navigate(hearth.href as never)}
+          style={styles.practiceRow}
+        >
+          <View style={styles.practiceText}>
+            <Text style={styles.practiceLabel}>{hearth.label}</Text>
+            <Text style={type.body}>{hearth.line}</Text>
+            {!!hearth.detail && <Text style={type.caption}>{hearth.detail}</Text>}
+          </View>
+          <Icon name="chevron" size={16} color={colors.gold} />
+        </Pressable>
+      )}
       {working && (
         <Pressable
           accessibilityRole="link"

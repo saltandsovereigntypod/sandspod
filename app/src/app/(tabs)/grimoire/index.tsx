@@ -380,8 +380,14 @@ function LibraryLink() {
         label="Living Library"
         detail="Search herbs, crystals, candles, deities and your My Practice notes"
         icon="library"
-        last
         onPress={() => router.push('/grimoire/library')}
+      />
+      <MenuRow
+        label="Kitchen witchery & the land"
+        detail="Recipes with intent, your land journal and harvests · keep a recipe here as a page"
+        icon="moon"
+        last
+        onPress={() => router.push('/rituals/craft/hearth')}
       />
     </MenuList>
   );

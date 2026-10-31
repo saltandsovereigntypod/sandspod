@@ -67,6 +67,15 @@
         ]),
         { id: "divination" }
       ),
+      kit.section(
+        "Hearth & land",
+        kit.list([
+          kit.row({ url: "/practice/hearth/land/", title: "Land journal", detail: "Your places through the year: frosts, birdsong, blooms, water, offerings · this time last year" }),
+          kit.row({ url: "/practice/hearth/forage/", title: "Foraging & garden", detail: "What grows where, what to gather this month, and your harvests · safety first" }),
+          kit.row({ url: "/practice/hearth/recipes/", title: "Kitchen witchery", detail: "Recipes with intent, festival foods and offerings, kept in your Grimoire" })
+        ]),
+        { id: "hearth" }
+      ),
       kit.section("Craft tools by path", paths, { id: "paths" }),
       kit.details(
         "Choose your crafts",

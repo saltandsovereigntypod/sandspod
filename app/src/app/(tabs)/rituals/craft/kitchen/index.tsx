@@ -52,6 +52,12 @@ export default function KitchenPractice() {
 
       <List>
         <Row
+          icon="rituals"
+          title="Kitchen witchery"
+          detail="Hearth & land · recipes with intent, festival foods and offerings, kept in your Grimoire"
+          onPress={() => router.push('/rituals/craft/hearth/recipes' as Href)}
+        />
+        <Row
           icon="wheel"
           title="Premade workings"
           detail="Every ritual and spell, filter by Kitchen & hearth"

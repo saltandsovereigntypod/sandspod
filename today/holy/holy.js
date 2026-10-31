@@ -160,6 +160,7 @@
       (page.respect ? `<div class="sp-card sp-card--gold"><p class="td-practice-label">With respect</p>${paras(page.respect)}</div>` : "") +
       (page.celebrate.length ? section("Keeping it today", `<ul class="td-bullets">${page.celebrate.map((l) => `<li>${esc(l)}</li>`).join("")}</ul>`) : "") +
       working +
+      `<div data-hearth-kitchen></div>` +
       (groups.some(([, items]) => items?.length)
         ? section(
             "Correspondences",
@@ -173,6 +174,8 @@
       section("What we don’t", paras(page.knowAndDont.unknown)) +
       (page.sources.length ? section("Sources", `<ul class="td-sources">${page.sources.map((s) => `<li>${source(s)}</li>`).join("")}</ul>`) : "") +
       (window.ResearchNote ? window.ResearchNote.footerHtml(page.title, page.tradition || "Holy day") : "");
+    // Kitchen witchery's recipes for the day (js/hearth-links.js), yours and the starters.
+    window.SaltHearthLinks?.mountHoly(root.querySelector("[data-hearth-kitchen]"), page.ref);
   }
 
   function setGrimoire(html) {
