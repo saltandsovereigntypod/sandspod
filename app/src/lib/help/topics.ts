@@ -1708,6 +1708,25 @@ export const HELP: HelpSection[] = [
         keywords: ['tarot meanings', 'card meaning', 'rune meaning', 'ogham meaning', 'futhark', 'major arcana', 'minor arcana', 'lenormand meanings', 'kipper meanings', 'playing card insert'],
       },
       {
+        id: 'grimoire-year-review',
+        title: 'Look back over your year',
+        summary: 'Your year in review gathers a year of your practice by your own new year, with questions to write a year-end page.',
+        steps: [
+          'Open Practice → Grimoire and tap "Your year in review". Around your year’s turn, Today shows it too.',
+          'Read the year: rituals journaled and planned, whether your workings worked, the full and new moons and holidays you kept, your readings and the cards that came most, new Grimoire pages and dreams, journeys and courses, offerings, changes at your altars and coven gatherings.',
+          'Tap "‹ The year before" to look further back.',
+          'Under "Reflect", tap "Write a year-end page in my Grimoire" for a page with the questions and room to answer, under "Year in review".',
+          'Under "Where your year begins", choose "As my calendar counts it", "1 January", "Samhain" or "The moon’s new year".',
+        ],
+        tips: [
+          'Only you see it. "A card to share" holds counts only, never your questions, cards, dreams, workings or Cycle & Moon, and nothing leaves your device unless you share or copy it.',
+          'Cycle & Moon shows only when you keep it and it is open on this device.',
+          'A moon or holiday counts as met when a ritual, a reading or an offering falls on it, or the day either side.',
+        ],
+        href: '/grimoire/year',
+        keywords: ['year in review', 'year review', 'look back', 'samhain', 'new year', 'reflection', 'year end', 'wrapped', 'statistics'],
+      },
+      {
         id: 'grimoire-new-entry',
         title: 'Add your own notes to a herb, crystal or deity',
         summary: 'The "New Library note" button adds a My Practice entry to the Living Library.',
@@ -2542,6 +2561,24 @@ export const HELP: HelpSection[] = [
         ],
         href: '/rituals/divination',
         keywords: ['tarot', 'runes', 'oracle', 'pendulum', 'divination log', 'look back'],
+      },
+      {
+        id: 'divination-patterns',
+        title: 'See the patterns in your readings',
+        summary: 'Your patterns shows what your own draw log says over time.',
+        steps: [
+          'Open Practice → Craft, tap "Divination", then "Your patterns". Today, a card’s page and your year in review link there too.',
+          'Choose "All time", "Past year", "Past 90 days" or "Past 30 days".',
+          'Read the cards drawn most (tap one for its page, in the deck you drew it with most), your tarot decks, suits and elements, the runes’ aettir, the ogham’s aicmí and Lenormand’s playing suits, and how many cards came reversed.',
+          'Under "Around your questions", see the cards that came more than once for a kind of question, or for a dream, a working or a deity.',
+          'See your readings by the moon’s phase and by the day and its planet, your streaks, and "Cards you haven’t met yet", each a tap from its page.',
+        ],
+        tips: [
+          'Only you see it; it is worked out from your readings and nothing is stored.',
+          'The elements beside the tarot suits are the Golden Dawn’s, the usual modern reading; some readers swap Wands and Swords.',
+        ],
+        href: '/rituals/divination/patterns',
+        keywords: ['patterns', 'statistics', 'most drawn', 'tarot stats', 'reversals', 'suits', 'elements', 'streak', 'cards not drawn'],
       },
       {
         id: 'practice-sigil',

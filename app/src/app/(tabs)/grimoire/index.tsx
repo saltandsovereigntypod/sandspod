@@ -391,6 +391,7 @@ function LibraryLink() {
         icon="library"
         onPress={() => router.push('/grimoire/library')}
       />
+      <MenuRow label="Your year in review" detail="Your rituals, moons, holidays, dreams and cards over the year, and a page to reflect on it" icon="journey" onPress={() => router.push('/grimoire/year')} />
       <MenuRow
         label="Kitchen witchery & the land"
         detail="Recipes with intent, your land journal and harvests · keep a recipe here as a page"

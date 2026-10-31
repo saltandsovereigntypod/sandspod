@@ -25,6 +25,7 @@ function getDefaultMySettings() {
     // The app's lib/grimoire/layout.ts and the website's grimoire/js/ui/layout.js read and write it.
     grimoire_layout: "",
     tarot_deck: "rws",
+    year_review_start: "calendar",
 
     sync_traditional_library_to_grimoire: false,
 

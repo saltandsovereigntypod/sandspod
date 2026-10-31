@@ -95,6 +95,8 @@
     "cycle-moon-history": "On the website, open Cycle & Moon and choose What am I?.",
     "cycle-moon-symptoms": "On the website, open Cycle & Moon and choose Log today for symptoms (tap a symptom, then tap again for stronger), and Symptoms and insights for patterns and comfort.",
     "cycle-moon-share": "On the website, open Cycle & Moon and choose Share with my covens. Members see the moon and your words beside your name under the coven’s Members tab.",
+    "divination-patterns": "On the website, open Practice → Craft → Divination and choose Your patterns. Choose a card or stave for its page in your Grimoire.",
+    "grimoire-year-review": "On the website, open the Grimoire at /grimoire/year/, or choose Your year in review on the Grimoire’s cover. Cycle & Moon is included only when it is open in this browser. The share card’s words are copied for you to paste.",
     "community-browse": "Open More, then Community Grimoire.",
     "community-offer": "Open More, then Offer to the Sanctuary.",
     "community-my-submissions": "Open More, then My Submissions.",
@@ -179,7 +181,7 @@
     if (divination) {
       const page = divination[1] || "";
       if (!page) return "/divination/";
-      return ["draw", "edit", "spread"].includes(page) ? `/divination/${page}/` : `/divination/reading/?id=${encodeURIComponent(decodeURIComponent(page))}`;
+      return ["draw", "edit", "spread", "patterns"].includes(page) ? `/divination/${page}/` : `/divination/reading/?id=${encodeURIComponent(decodeURIComponent(page))}`;
     }
     if (path === "/rituals/sigil") return "/sigil/";
     if (path === "/rituals/craft") return "/practice/";

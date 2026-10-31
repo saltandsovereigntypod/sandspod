@@ -47,3 +47,5 @@ export * as journals from '../../app/src/lib/journals/journals.ts';
 export * as ancestors from '../../app/src/lib/craft/hedge/ancestors.ts';
 // Today's two tabs (Today | Sky & Lore) and which a link lands on.
 export * as screenTabs from '../../app/src/lib/screenTabs.ts';
+// Your year in review around your year's turn (Grimoire → Your year in review), by your own new year.
+export * as yearSpan from '../../app/src/lib/grimoire/yearSpan.ts';
