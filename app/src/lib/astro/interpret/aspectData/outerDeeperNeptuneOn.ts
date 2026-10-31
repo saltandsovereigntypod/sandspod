@@ -1,0 +1,127 @@
+// Further paragraphs for the aspects of Neptune, Pluto, Chiron, the North
+// Node and the angles to one another. See ./outerDeeperTypes.ts.
+
+import type { PairDeeper } from './outerDeeperTypes.ts';
+
+const RARE_NP = "No one living was born with it: Neptune and Pluto take nearly five centuries to go round their cycle together, and this aspect has not formed for well over a century. Read it, if you meet it in an old chart, as a theme of an age rather than of a person.";
+
+export const NEPTUNE_ON_DEEPER: Record<string, PairDeeper> = {
+  "Neptune|Pluto": {
+    conjunction: "The last conjunction fell in the early 1890s, at the start of the age of psychology, cinema and the great modern movements in religion and art, and the one before it at the end of the fourteenth century. It marks a long turning of collective dreams and powers. No one alive has it natally; it belongs to the deep background of history.",
+    sextile: "Almost everyone born from the 1940s to the present day has this sextile, so on its own it describes a long era rather than a person: an age in which depth psychology, spiritual seeking and mass imagination have shaped ordinary life. It becomes personal when it touches your Sun, Moon, a personal planet or an angle, giving a quiet gift for working with the unconscious, collective images and the healing of deep patterns.",
+    square: RARE_NP,
+    trine: `${RARE_NP} The trine is remembered as a theme of easy flow between collective dream and deep change.`,
+    opposition: `${RARE_NP} The opposition, last formed in the seventeenth century, is read as a tension between collective ideals and the hard realities of power.`,
+    magic: "For deep collective healing, many work at the dark moon with sea water, a black candle and a written prayer for the world as well as the self.",
+  },
+  "Neptune|Chiron": {
+    conjunction: "Neptune with Chiron joins compassion with the wound: you may feel others' pain as your own and be drawn to heal through art, music, prayer or care. The wound may involve loss, confusion, addiction in the family or a sense of being lost. The healing is a compassion with boundaries, so that you can stay with suffering without drowning in it.",
+    sextile: "Compassion and healing help each other, and you may have a gift for music, art or spiritual care that soothes others. Use it deliberately, with rest and boundaries, and it becomes a vocation that heals you as well as those you serve.",
+    square: "The wound and the dream may clash: you may seek healing in escape, or idealise healers who later disappoint. Grief may feel boundless. The growth is grounded healing: real help, real rest, and a clear sense of what is yours to carry.",
+    trine: "Healing and compassion flow together, and you may be a natural healer through art, music, prayer or simple presence. The gift is easy; give it a form, and look after your own sensitivity so that you can keep giving.",
+    opposition: "Wounds and healing may come through others: partners or friends who need rescue, or who rescue you. You may lose yourself in someone else's pain. The growth is compassion with clear eyes, for others and for yourself.",
+    magic: "Float a green candle on a bowl of water at the full moon and pour the water on the earth afterwards, for gentle healing.",
+  },
+  "Neptune|North Node": {
+    conjunction: "Your path in life asks for faith, compassion and imagination, and you may be called to art, healing or spiritual work. Direction may feel unclear for a long time, and then suddenly obvious. The care is drifting. Trust the inner pull, and give it a practical form.",
+    sextile: "Imagination and intuition support your direction. Dreams, art and spiritual practice open doors, often quietly. Keep a dream journal and act on the clearest images; they tend to point the way.",
+    square: "Confusion or illusion may test your path: false starts, misleading guides or the pull of escape. You may lose your way for a while. The growth is discernment, and a daily practice that keeps your feet on the ground.",
+    trine: "Inspiration flows into your path, and you may be guided by intuition in ways that later make sense. Art and faith help you grow. Trust the inner pull, and check the practical details as you go.",
+    opposition: "Old habits of escape, rescue or self-sacrifice may pull against your growth. You may drift back into dreaming when life asks for action. Let go of them gently, and choose a clearer, more grounded path.",
+    magic: "At a new moon, ask for a dream of direction with Amethyst under the pillow, and write the dream down before you speak.",
+  },
+  "Neptune|Ascendant": {
+    conjunction: "Neptune rising gives a soft, elusive or glamorous presence; people see in you what they long to see. You may be sensitive to atmospheres, substances and other people's moods. The care is losing your shape. The gift is a presence that soothes, inspires and carries art or spirit naturally.",
+    sextile: "Your manner is gentle and intuitive, and people find you easy to confide in. You may have a feel for art, music or healing. Use the gift with good boundaries, and it becomes a quiet strength.",
+    square: "You may feel unclear about who you are, or be misunderstood, as people project onto you. Substances and atmospheres may affect you strongly. The growth is a clear daily practice of coming back to yourself.",
+    trine: "Grace and intuition flow into your presence, and you meet life with compassion and imagination. People may find you calming. Use the gift in art, care or spiritual work, and look after your energy.",
+    opposition: "With Neptune near the Descendant, partners may be idealised, artistic, spiritual or in need of rescue. Disappointment can follow when the dream meets the real. The growth is love with clear eyes and fair exchange.",
+    magic: "Each morning, wash your face in water with a pinch of salt and say your own name, as a shield for a soft self.",
+  },
+  "Neptune|Midheaven": {
+    conjunction: "Neptune at the top of the chart gives a career in the arts, healing, film, charity or spiritual work, and a public image that can be glamorous, vague or misunderstood. The care is drifting or scandal. The gift is a public life that inspires.",
+    sextile: "Imagination supports your career, and art, healing, film, charity or service can open doors. You may find your work through intuition. Give the dream a plan, and it becomes a vocation.",
+    square: "Career direction may be unclear, or your public image confused, and you may drift between paths. A parent's influence may have been vague or idealised. The growth is clarity of aim, and work that serves a real need.",
+    trine: "Career and inspiration flow together, and you may be known for vision, compassion or artistry. Work that serves something larger suits you. Use the gift steadily and it becomes a life's work.",
+    opposition: "With Neptune near the IC, home may have been dreamy, spiritual or confused, and this shapes your public life. You may long for a spiritual home. The growth is clear foundations, a home with walls and a soft heart.",
+    magic: "At noon, write the dream of your work and its first practical step; burn the dream and keep the step.",
+  },
+  "Pluto|Chiron": {
+    conjunction: "Pluto with Chiron is a generational meeting that marks a deep collective wound and a call to transform it; the two met in the early 1940s and again around 1999 and 2000. Personally, if it touches a personal point, you may carry a deep wound that becomes a source of great healing power, and be drawn to trauma work, research or the occult.",
+    sextile: "Depth and healing help each other, and you may be gifted in therapy, trauma work, research or any healing that goes to the root rather than the surface. You can sit with what others find unbearable. Use the gift carefully, with supervision and rest, and it becomes a vocation.",
+    square: "The wound and power may clash: you may feel powerless around an old hurt, or use control to keep from feeling it. Patterns of harm may echo across generations. The growth is facing the wound with support, so that the power held in it is returned to you.",
+    trine: "Healing and transformation flow together, and you may help others through deep change with unusual calm. Crises tend to deepen rather than break you. Use the gift in work that asks for courage, and look after yourself as well as you look after others.",
+    opposition: "Deep wounds and deep healing may both come through others: people who hurt you badly, and people who help you rebuild. The growth is reclaiming your own power to heal, so that no one else holds the key to your recovery.",
+    magic: "At the dark moon, wrap Yarrow and a pomegranate seed in green cloth and bury it, for deep healing.",
+  },
+  "Pluto|North Node": {
+    conjunction: "Your path in life asks for transformation, depth and the brave use of power. You may go through profound changes that set your direction, and each ending clears the way for the next stage. The care is fear of the change your growth requires. Go through it; you come out stronger and truer.",
+    sextile: "Depth and transformation support your direction. Research, therapy, inner work and honest facing of the past all open doors. Use them deliberately; each layer of truth you meet moves you further along your path.",
+    square: "Power struggles or crises may test your path, and you may feel at times that events beyond your control are reshaping your life. Each one, faced with courage, moves you forward. Ask what the crisis is asking you to give up.",
+    trine: "Transformation flows into your path, and deep changes tend to carry you where you need to go. You may be good at turning endings into beginnings. Trust the process, and give yourself time to grieve what each change takes.",
+    opposition: "Old habits of control, crisis or secrecy may pull against your growth. You may recreate intensity because it is familiar. Let those habits go, and allow a calmer kind of change to lead you forward.",
+    magic: "At the dark moon after an eclipse, burn a written list of what you are ready to release.",
+  },
+  "Pluto|Ascendant": {
+    conjunction: "Pluto rising gives an intense, powerful and private presence. People sense depth in you before you speak, and you may go through several dramatic reinventions. The care is control and intimidation. The gift is a fearless presence that helps others face what they fear.",
+    sextile: "Your manner carries quiet power and insight, and people may trust you with their secrets. You meet life with a certain depth. Use the gift to help others through change, and to read situations truly.",
+    square: "You may feel that your power is blocked or watched, or meet life with suspicion and guardedness. Early experiences may have taught you to hide. The growth is trust, and letting yourself be seen without armour.",
+    trine: "Depth flows into your presence, and you meet life with courage and insight. You may regenerate quickly after setbacks. Use the gift for work that needs nerve, and for helping others face what frightens them.",
+    opposition: "With Pluto near the Descendant, powerful or intense partners may transform you, and relationships may be where you meet power and control. The growth is equality: neither ruling nor being ruled, and honest power on both sides.",
+    magic: "At the dark moon, hold Obsidian before a mirror and name the self you are becoming.",
+  },
+  "Pluto|Midheaven": {
+    conjunction: "Pluto at the top of the chart gives a career involving power, crisis or transformation, and a public image that can be magnetic or controversial. You may rebuild your career after a fall. The gift is the power to transform institutions.",
+    sextile: "Depth supports your career, and research, psychology, finance, medicine or investigation can open doors. You may have a gift for working behind the scenes with real influence. Use it with integrity.",
+    square: "Power struggles at work may test you: clashes with authority, crises in your field or a fall and a rebuilding. Family pressures may also weigh on career. Keep your integrity, and let each crisis show you what you truly want.",
+    trine: "Career and transformation flow together, and you may hold influence with less struggle than most. You may be called to work that changes people or institutions. Use the gift responsibly, and it lasts.",
+    opposition: "With Pluto near the IC, family power, secrets or crises may shape your career and your sense of self. The roots run deep. The growth is healing the family pattern so that your public life is not driven by old fears.",
+    magic: "At noon at the dark moon, burn a statement of how you will use power in your work.",
+  },
+  "Chiron|North Node": {
+    conjunction: "Your path in life runs through healing: what hurt you becomes the work you are here to do. You may be drawn to teach, counsel or heal from experience. The care is staying in the wound. Let it become wisdom.",
+    sextile: "Healing supports your direction in life, and what you learn from pain opens doors for you. You may be drawn to teach, mentor or counsel. Share what you have learned from hurt; it is part of your path.",
+    square: "Old wounds may test your path, flaring up just when you try to move forward. These are invitations to heal, not signs to stop. Face them with support, and move on lighter.",
+    trine: "Healing and growth flow together, and your wounds and your path seem to fit. You may find that helping others helps you grow. Use the gift with care for yourself.",
+    opposition: "Old habits of rescuing others, or of staying in the wound, may pull against your own growth. You may give your healing away before you have had it. Turn some of the care inward.",
+    magic: "At a new moon, light a green candle and name the healing you will carry forward.",
+  },
+  "Chiron|Ascendant": {
+    conjunction: "Chiron rising gives a visible wound or difference, and a presence that heals by being honest about it. You may have felt wrong in your body or face early, through illness, accident or teasing. The gift is helping others accept themselves simply by being visibly yourself, without apology.",
+    sextile: "Your manner carries gentle healing, and people may feel safe with you. You meet life with sensitivity to others' pain. Use the gift in care, teaching or simply in how you treat people.",
+    square: "The wound may show in how you meet the world: shyness, self-consciousness or a sense of being judged. You may hide or overcompensate. Be kind to yourself, and let your presence soften over time.",
+    trine: "Healing flows into your presence, and you may have a natural gift for putting others at ease. Your own wounds have made you gentle. Use the gift in care, counselling or teaching.",
+    opposition: "With Chiron near the Descendant, wounds and healing come through partners. You may be drawn to wounded people or to healers. Heal yourself too, so that relationships are equal rather than a cure.",
+    magic: "Stand before a mirror at sunrise with a green candle and speak one kind sentence to yourself.",
+  },
+  "Chiron|Midheaven": {
+    conjunction: "Chiron at the top of the chart gives a vocation of healing and a public life shaped by the wound. You may be known for what you have survived, or work to heal the very thing that hurt you. The care is fear of being seen; the gift is a calling that helps many.",
+    sextile: "Healing supports your career, and you may find work in health, teaching, counselling or advocacy. Share what you know from experience; it opens doors.",
+    square: "Career wounds may test you: setbacks, a sense of failure or a parent's expectations. Heal them, and let your work grow from the healing rather than from the fear.",
+    trine: "Career and healing flow together, and your public role may naturally include care, teaching or advocacy. Use the gift and it becomes your calling.",
+    opposition: "With Chiron near the IC, family wounds may shape your career and your sense of belonging. Heal the roots, and your public life can stand on firmer ground.",
+    magic: "At noon, write the healing work you will do and keep it under a green candle.",
+  },
+  "North Node|Ascendant": {
+    conjunction: "The North Node on the Ascendant asks you to grow into yourself: independence, self-direction and your own path. The South Node on the Descendant shows an old habit of living through others.",
+    sextile: "Your manner supports your growth, and how you meet people opens the doors you need. You may find your path through first impressions and new beginnings. Use the gift by putting yourself forward.",
+    square: "Your growth may require changing how you meet the world: dropping an old manner or mask that no longer fits. It can feel exposing. Let yourself be seen in a new way.",
+    trine: "Growth flows easily into your presence, and the way you meet life tends to move you forward. People help you on your path. Trust your instincts about new beginnings.",
+    opposition: "The North Node on the Descendant asks you to grow through partnership, cooperation and listening, after an old habit of going it alone. The South Node on the Ascendant shows a self-reliance that is now a comfort zone. Let others in.",
+    magic: "At a new moon, wear something new as a charm for your path.",
+  },
+  "North Node|Midheaven": {
+    conjunction: "The North Node at the top of the chart asks you to grow through career, public life and responsibility. You may be called to step into roles of authority or visibility. The South Node at the IC shows a pull back towards home and private comfort. Step out.",
+    sextile: "Career supports your growth, and work in the world opens doors on your path. Use opportunities to take on responsibility and be seen.",
+    square: "Your growth may require balancing home and career in a new way, and neither alone may feel right. Let the tension teach you what each part of life needs.",
+    trine: "Career and growth flow together, and your public life tends to carry you forward. Trust the openings and take on the roles offered.",
+    opposition: "The North Node at the IC asks you to grow through home, family and inner life, after an old habit of defining yourself by work and status. Come home; the growth is there.",
+    magic: "At noon at a new moon, write a vocational aim.",
+  },
+  "Ascendant|Midheaven": {
+    sextile: "How far the Midheaven sits from the Ascendant depends on your birthplace's latitude and the signs that were rising: near the tropics it stays close to ninety degrees, and further north or south it swings wider or narrower. A sextile is a narrow upper chart, so the matters of the tenth house sit close to the self. How you meet people and how you are seen in public run into each other easily, and a first impression can become a reputation. Let your work look like you.",
+    square: "A square between the angles is the most usual shape, especially for births nearer the equator, and it sets self and vocation at a clear right angle: who you are and what you are for in the world are distinct questions, each needing its own answer. Many with it find that their public role grows out of a personal struggle to know themselves. Work on both, and let each check the other.",
+    trine: "A trine between the angles opens the upper chart wide, which happens more often at higher latitudes and with certain signs rising. Self and calling flow together, and the work you do in public can feel like a natural expression of who you are. The risk is assuming the fit without testing it; ask from time to time whether the role still matches the person.",
+    magic: "At sunrise and at noon on the same day, light a candle for yourself and one for your calling, and let them burn together for an hour that evening.",
+  },
+};

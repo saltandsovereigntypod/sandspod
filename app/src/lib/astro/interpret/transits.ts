@@ -14,6 +14,8 @@ import type { ProgressedPhase } from '../forecast.ts';
 import type { ChartPointName, ZodiacSign } from '../signs.ts';
 import { BODY_WORDS } from './aspects.ts';
 import { TRANSIT_SEEDS, type TransitGroup } from './transitData.ts';
+import { TRANSIT_DEEPER_A } from './transitDeeperA.ts';
+import { TRANSIT_DEEPER_B } from './transitDeeperB.ts';
 import { keys, tidyParagraphs, type Interpretation, type InterpretationTable } from './types.ts';
 
 export const TRANSITING_BODIES: ChartPointName[] = ['Jupiter', 'Saturn', 'Uranus', 'Neptune', 'Pluto', 'Chiron', 'North Node'];
@@ -160,6 +162,10 @@ export const CYCLE_READINGS: InterpretationTable = {
   },
 };
 
+/** A further paragraph per group and a further craft line for each seed (transitDeeperA/B.ts). */
+export const TRANSIT_DEEPER = { ...TRANSIT_DEEPER_A, ...TRANSIT_DEEPER_B };
+const GROUP_INDEX: Record<TransitGroup, 0 | 1 | 2> = { conjunction: 0, hard: 1, soft: 2 };
+
 function build(): InterpretationTable {
   const out: InterpretationTable = {};
   for (const t of TRANSITING_BODIES)
@@ -167,11 +173,14 @@ function build(): InterpretationTable {
       const seed = TRANSIT_SEEDS[`${t}|${n}`];
       if (!seed) continue;
       for (const aspect of TRANSIT_ASPECTS) {
-        const [simple, detailed] = seed[GROUP[aspect]];
+        const [simple, written] = seed[GROUP[aspect]];
+        const deeper = TRANSIT_DEEPER[`${t}|${n}`];
+        const extra = deeper?.[GROUP_INDEX[GROUP[aspect]]];
+        const detailed = extra ? `${written}\n\n${extra}` : written;
         out[keys.transit(t, aspect, n)] = {
           simple: `${simple}${simple.length < 60 ? ` Transiting ${t} is working on ${BODY_WORDS[n]}.` : ''}${ASPECT_SIMPLE[aspect]}`,
           detailed: `${tidyParagraphs(detailed)}\n\n${seed.core} ${TRANSIT_TARGET_NOTE[n]} ${ASPECT_LINE[aspect]}\n\n${TRANSIT_VOICE[t]}`,
-          magic: `${seed.magic} ${TRANSIT_MAGIC[t]} ${ASPECT_TIMING[aspect]}`,
+          magic: `${seed.magic}${deeper ? ` ${deeper[3]}` : ''} ${TRANSIT_MAGIC[t]} ${ASPECT_TIMING[aspect]}`,
         };
       }
     }

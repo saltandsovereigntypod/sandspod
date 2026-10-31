@@ -265,7 +265,7 @@ Bealtaine customs are above all about **protecting** the household, the herds an
 
 ## Scotland and the Beltane bannock
 
-In the Highlands a special **Bealltainn bannock** was baked. Thomas Pennant, describing a Beltane gathering in Perthshire in his Tour in Scotland (1769), tells of a caudle of eggs, butter, oatmeal and milk poured on the ground, and of oatcakes with nine knobs, each broken off and thrown over the shoulder with words given to a protector of the herds or to a creature that might harm them, asking it to spare the flocks. Other accounts tell of a cake divided by lot, with one piece blackened, and its taker made to leap the fire.
+In the Highlands a special **Bealltainn bannock** was baked. Thomas Pennant, describing the herdsmen's Bel-tien of the Highlands while travelling through Perthshire (A Tour in Scotland, 1769, published 1771), tells of a caudle of eggs, butter, oatmeal and milk, some of it spilled on the ground as a libation, and of oatcakes raised with nine square knobs, each broken off and thrown over the shoulder with words given to a protector of the herds or to a creature that might harm them, asking it to spare the flocks. Other accounts tell of a cake divided by lot, with one piece blackened, and its taker made to leap the fire.
 
 ## Wales and Man
 
@@ -333,7 +333,7 @@ MacNeill's work is careful and widely respected, but her reconstruction of a sin
 - **The first fruits:** the first new potatoes dug and eaten with ceremony, a sheaf brought to the table, bread from the new grain.
 - **Teltown marriages:** a folk tradition said that couples could be joined at Teltown for a year and a day and part by walking away from each other. It is a nineteenth-century folk memory, not a recorded ancient law.
 
-In **Scotland**, Lammas fairs were held, and in **Man** people climbed hills on the first Sunday of August, Laa Luanys. In **Wales**, Gŵyl Awst was kept with gatherings on hills in some places, and Lammas with bread.
+In **Scotland**, Lammas fairs were held, and in **Man** people climbed hills such as Snaefell and South Barrule for Laa Luanys, kept from the eighteenth century on the first Sunday of August rather than on the first of the month. In **Wales**, Gŵyl Awst was kept with gatherings on hills in some places, and Lammas with bread.
 
 ## Respect
 

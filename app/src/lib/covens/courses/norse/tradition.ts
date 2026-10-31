@@ -217,7 +217,7 @@ None of this means Snorri is useless. He had access to poems now lost, he quotes
 
 Interest in the old Germanic gods grew in the nineteenth century with **Romanticism:** poets, painters and scholars such as Jacob Grimm looked to the past for the soul of their nations, and Richard Wagner put the gods on the opera stage. Much of this was beautiful, and some of it was learned. It was also bound up with nationalism.
 
-In Germany and Austria around 1900 this turned into the **völkisch** movement, which mixed Germanic myth with ideas of racial purity. **Guido von List** invented "Armanen" runes and a secret priesthood; groups such as the **Germanische Glaubens-Gemeinschaft,** founded in 1907, tried to make a Germanic religion. These ideas fed into Nazism. The Nazis took up runes and Germanic imagery for their own ends, and some leaders, especially Heinrich Himmler, were drawn to an invented Germanic mysticism. It is important to know this history, because its symbols and ideas still circulate, and because it shows what happens when a religion is made to serve a theory of race.
+In Germany and Austria around 1900 this turned into the **völkisch** movement, which mixed Germanic myth with ideas of racial purity. **Guido von List** invented "Armanen" runes and a secret priesthood; groups such as Ludwig Fahrenkrog's **Germanische Glaubens-Gemeinschaft,** which took that name in 1913 (its roots go back to about 1907), tried to make a Germanic religion. These ideas fed into Nazism. The Nazis took up runes and Germanic imagery for their own ends, and some leaders, especially Heinrich Himmler, were drawn to an invented Germanic mysticism. It is important to know this history, because its symbols and ideas still circulate, and because it shows what happens when a religion is made to serve a theory of race.
 
 ## A new start
 
@@ -307,7 +307,7 @@ So this coven, like most of organised Heathenry, holds that the gods call whom t
 
 In 2016 the **Asatru Folk Assembly,** an American folkish organisation, published a statement affirming that its membership was based on ancestry and opposing same-sex and transgender identities. In response, Heathen groups published **Declaration 127,** stating that they would not associate with that organisation. Many groups from around the world signed it.
 
-It is named after verse 127 of the **Hávamál,** in which Odin advises, in one common translation: "where you recognise evil, speak out against it, and give no truce to your enemies." The declaration became a public sign of where much of Heathenry stands. Civil-rights monitors have since listed the Asatru Folk Assembly as a hate group.
+It is named after verse 127 of the **Hávamál,** in which Odin advises, in one common translation: "where you recognise evil, speak out against it, and give no truce to your enemies." The declaration became a public sign of where much of Heathenry stands. Civil-rights monitors have since listed the Asatru Folk Assembly as a hate group: the Southern Poverty Law Center has done so since its count for 2017.
 
 ## Symbols to recognise
 
