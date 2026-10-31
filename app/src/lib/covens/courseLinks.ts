@@ -47,6 +47,7 @@ export const COURSE_PAGES: Record<string, Place> = {
   journal: { label: 'Your ritual journal', app: '/rituals/journal', site: '/rituals/journal/' },
   journeys: { label: 'Dedication journeys', app: '/rituals/journeys', site: '/rituals/journeys/' },
   divination: { label: 'Divination', app: '/rituals/divination', site: '/divination/' },
+  runes: { label: 'Rune meanings', app: '/rituals/divination/meanings?kind=runes', site: '/divination/runes/' },
   'community-rituals': { label: 'Community Rituals', app: '/rituals/community', site: '/rituals/community/' },
   cycle: { label: 'Cycle & Moon', app: '/rituals/cycle', site: '/rituals/cycle/' },
   patron: { label: 'Your deities (patron settings)', app: '/more/settings/deities', site: '/more/settings/deities/' },

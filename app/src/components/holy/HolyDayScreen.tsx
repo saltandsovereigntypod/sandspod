@@ -17,6 +17,8 @@ import { findByName, todayLibraryHref, useLibrary } from '../../lib/library';
 import { moonSign, moonState } from '../../lib/moon';
 import { premadeById } from '../../lib/rituals/premade';
 import { useSession } from '../../lib/session';
+import { festivalSeasonLine, seasonCounting } from '../../lib/seasons';
+import { useMySettings } from '../../lib/settings/store';
 import { colors, fonts, type } from '../../theme';
 import { ANCESTOR_HOLIDAYS } from '../../lib/craft/hedge/ancestors';
 import { AncestorJournalLink, JournalDoor } from '../journals/screens';
@@ -61,6 +63,7 @@ export function HolyDayScreen({ back = '/today', backLabel = 'Back to Today' }: 
       ) : (
         <Text style={styles.summary}>{page.summary}</Text>
       )}
+      <FestivalSeason holyRef={page.ref} name={page.title} />
       {page.ref.startsWith('wheel-') && <TermChips ids={['solstice-equinox', 'sun', 'cardinal', 'fixed', 'zodiac']} label="The sky behind the Wheel" />}
       {page.ref.startsWith('moon-') && <MoonTonight />}
       {page.ref.startsWith('moon-') && <TermChips ids={['moon-phases', 'lunation', 'void-of-course', 'eclipse', 'moon']} label="The astrology behind it" />}
@@ -154,6 +157,13 @@ export function HolyDayScreen({ back = '/today', backLabel = 'Back to Today' }: 
 }
 
 /** Kitchen witchery's recipes for this day (Hearth & land), yours and the starters. */
+/** Where a festival of the Wheel or the Gaelic year falls in its season, counted as chosen (lib/seasons.ts). */
+function FestivalSeason({ holyRef, name }: { holyRef: string; name: string }) {
+  const { settings } = useMySettings();
+  const line = festivalSeasonLine(holyRef, name, seasonCounting(settings));
+  return line ? <Text style={type.caption}>{line}</Text> : null;
+}
+
 function FromTheKitchen({ holyRef }: { holyRef: string }) {
   const mine = useCraft<unknown>(RECIPES).entries;
   const recipes = useMemo(() => recipesForHoly(holyRef, allRecipes(mine)), [holyRef, mine]);

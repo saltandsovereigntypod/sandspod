@@ -5,7 +5,7 @@ import { test } from 'node:test';
 import { onReplayTour, replayWelcomeTour, TOUR_PAGES, TOUR_SEEN_KEY } from '../src/lib/welcomeTour.ts';
 
 test('the welcome tour: one calm page per main feature, ending at How to', () => {
-  assert.equal(TOUR_SEEN_KEY, 'welcome.tour.v2');
+  assert.equal(TOUR_SEEN_KEY, 'welcome.tour.v3');
   assert.ok(TOUR_PAGES.length >= 8 && TOUR_PAGES.length <= 12, `${TOUR_PAGES.length} pages`);
   assert.equal(new Set(TOUR_PAGES.map((p) => p.title)).size, TOUR_PAGES.length, 'titles are unique');
   for (const page of TOUR_PAGES) {
@@ -16,12 +16,19 @@ test('the welcome tour: one calm page per main feature, ending at How to', () =>
     assert.doesNotMatch(page.body + page.title, /!/, `${page.title}: no exclamation marks`);
   }
   const all = TOUR_PAGES.map((p) => `${p.title} ${p.body}`).join(' ');
-  for (const feature of ['Today', 'cabinet', 'Seasonal', 'houseplants', 'offerings', 'spell jar', 'petition', 'tonight’s altar', 'widget', 'did it work', 'tarot', 'runes', 'ogham', 'sigil', 'Grimoire', 'Living Library', 'dreams', 'Craft tools', 'Dedication journeys', 'patron', 'Closed & living traditions', 'calendars', 'Reminders', 'coven', 'website', 'guest']) {
+  for (const feature of ['Today', 'cabinet', 'Seasonal', 'houseplants', 'offerings', 'spell jar', 'petition', 'tonight’s altar', 'widget', 'did it work', 'tarot', 'runes', 'ogham', 'sigil', 'Grimoire', 'Living Library', 'dreams', 'Craft tools', 'Craft', 'astrology', 'timing advisor', 'spell builder', 'journals', 'Hearth & land', 'Cycle & Moon', 'Dedication journeys', 'patron', 'Closed & living traditions', 'calendars', 'Reminders', 'coven', 'website', 'guest']) {
     assert.ok(all.toLowerCase().includes(feature.toLowerCase()), `the tour mentions ${feature}`);
   }
   // The last page sends people to the guide by its real name on the More screen.
   assert.match(TOUR_PAGES[TOUR_PAGES.length - 1].body, /More → How to use the app/);
   assert.match(readFileSync('src/app/(tabs)/more/index.tsx', 'utf8'), /label="How to use the app"/);
+});
+
+test('the website’s welcome is bumped with the app’s tour, so everyone sees the new one once', () => {
+  const site = readFileSync('../js/welcome-discovery.js', 'utf8');
+  assert.match(site, new RegExp(`TOUR_SEEN_KEY "${TOUR_SEEN_KEY.replace(/\./g, '\\.')}"`));
+  assert.match(site, new RegExp(`welcome: "${TOUR_SEEN_KEY.split('.v')[1]}"`));
+  for (const page of TOUR_PAGES.filter((p) => /Rituals by the moon|Your practice, your path/.test(p.title))) assert.ok(site.includes(page.body), `${page.title} reads the same on the website`);
 });
 
 test('the tour can be replayed while one is listening', () => {

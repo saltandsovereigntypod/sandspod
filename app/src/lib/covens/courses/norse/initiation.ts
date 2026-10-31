@@ -21,7 +21,7 @@ export default {
       title: 'The runes: letters, inscriptions and the rune poems',
       summary: 'What runes are and where they come from: the Elder Futhark, the Younger Futhark and the English futhorc, the inscriptions from combs to runestones, Odin’s winning of the runes in the Hávamál, the rune poems and their limits, and what rune magic looks like in the sources.',
       minutes: 17,
-      links: [spread('one-rune'), spread('three-runes'), deity('odin'), journey('deity-odin'), page('divination'), herb('yew'), herb('rowan')],
+      links: [page('runes'), spread('one-rune'), spread('three-runes'), deity('odin'), journey('deity-odin'), page('divination'), herb('yew'), herb('rowan')],
       body: `## What runes are
 
 **Runes** are the letters of the old Germanic peoples, used for writing their languages before, and for a long time alongside, the Latin alphabet. The word **rún** in Old Norse, and **rūn** in Old English, also means a secret, a mystery or a whispered counsel. So runes were letters, and also something more.
@@ -89,7 +89,7 @@ Many Heathens make their own set of runes, as a devotional act: carving them on 
       title: 'Reading the runes: what is old, what is modern, and the app’s draws',
       summary: 'What the sources do and don’t say of rune divination (Tacitus’s lots, the sagas’ omens), the modern systems (von List and the völkisch movement, Blum and the blank rune, later Heathen writers), how to read with care, and how to use the app’s rune draws and spreads.',
       minutes: 16,
-      links: [spread('one-rune'), spread('three-runes'), spread('five-rune-cross'), spread('nine-rune-cast'), spread('nine-worlds'), ritual('folk-jol-rune-casting'), page('divination'), closed()],
+      links: [page('runes'), spread('one-rune'), spread('three-runes'), spread('five-rune-cross'), spread('nine-rune-cast'), spread('nine-worlds'), ritual('folk-jol-rune-casting'), page('divination'), closed()],
       body: `## Did the Norse read runes?
 
 This is one of the most common questions, and the honest answer is: **we don't know, and the evidence is thin.**
@@ -451,7 +451,7 @@ Trance and spirit work can be powerful and unsettling. This course does not teac
           checked_by: 'self',
           minutes: 15,
           docs: ['norse-initiation-reading-the-runes'],
-          links: [spread('one-rune'), page('journal')],
+          links: [spread('one-rune'), page('runes'), page('journal')],
         },
         {
           title: 'Carve your runes',

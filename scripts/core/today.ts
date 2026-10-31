@@ -49,3 +49,7 @@ export * as ancestors from '../../app/src/lib/craft/hedge/ancestors.ts';
 export * as screenTabs from '../../app/src/lib/screenTabs.ts';
 // Your year in review around your year's turn (Grimoire → Your year in review), by your own new year.
 export * as yearSpan from '../../app/src/lib/grimoire/yearSpan.ts';
+// The coven's tradition, for its members' premade workings and calendars (js/coven-paths.js).
+export * as covenTradition from '../../app/src/lib/covens/covenTradition.ts';
+// The seasons of the year, counted as chosen (Settings → Location & hemisphere).
+export * as seasons from '../../app/src/lib/seasons.ts';

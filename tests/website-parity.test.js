@@ -239,8 +239,8 @@ test("the website's welcome has a page for each page of the app's tour, in the s
     assert.doesNotMatch(body, /\b(tap|phone|widget|swipe)\b/i, "written for the website");
     assert.doesNotMatch(body, /!/);
   }
-  assert.match(tour, /TOUR_SEEN_KEY = 'welcome\.tour\.v2'/, "bump the website's welcome version with the app's");
-  assert.equal(W.GUIDE_VERSIONS.welcome, "2");
+  assert.match(tour, /TOUR_SEEN_KEY = 'welcome\.tour\.v3'/, "bump the website's welcome version with the app's");
+  assert.equal(W.GUIDE_VERSIONS.welcome, "3");
 });
 
 test("the welcome opens once on Today, survives blocked storage, and can be watched again from How to", () => {

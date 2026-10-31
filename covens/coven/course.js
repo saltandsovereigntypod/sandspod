@@ -795,7 +795,9 @@
     }
     const courses = catalog.programs;
     const names = catalog.names;
-    const choice = CC.chooser(courses, ctx.data.templates, ctx.state.coven, names);
+    // The coven's tradition (covens/coven/tradition.js) puts its own course set first.
+    const tradition = (await global.CovenTradition?.get(ctx.state.coven.id)) || null;
+    const choice = CC.chooser(courses, ctx.data.templates, { ...ctx.state.coven, course_tradition: tradition }, names);
     const ranks = ctx.state.ranks || [];
     const canAward = ctx.state.perms.manage || ctx.state.perms.site;
     const chosen = {};

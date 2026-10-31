@@ -14,3 +14,5 @@ export * as vault from '../../app/src/lib/cycle/vault.ts';
 export * as status from '../../app/src/lib/cycle/status.ts';
 export * as holyOps from '../../app/src/lib/grimoire/holyOps.ts';
 export { newId } from '../../app/src/lib/grimoire/ids.ts';
+// The seasons of the year, counted as chosen (Settings → Location & hemisphere).
+export * as seasons from '../../app/src/lib/seasons.ts';

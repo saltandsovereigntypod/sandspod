@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
 import { Button } from '../../../../../../components/Button';
@@ -10,6 +10,7 @@ import { useCoven } from '../../../../../../lib/covens/CovenContext';
 import { errorMessage, slugify, type Coven } from '../../../../../../lib/covens/model';
 import { parseCustomHolidays } from '../../../../../../lib/holidays';
 import { CALENDAR_TRADITIONS } from '../../../../../../lib/covens/programs';
+import { calendarsForTradition, COVEN_TRADITIONS, matchingFirst } from '../../../../../../lib/covens/covenTradition';
 import { type } from '../../../../../../theme';
 
 const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
@@ -18,6 +19,8 @@ type Day = { name: string; month: number; day: number; meaning: string };
 // The coven's practice calendar: the same holiday choices as a person's
 // Settings → Calendar. Shown on the coven's page and members' Today, used to
 // suggest dates for rites, and to suggest the ready-made programs for it.
+// Above it, the coven's tradition (covenTradition.ts): its course set, holiday
+// calendars, premade workings and calendars are suggested first.
 // Below it, how the coven counts its days: the moon's months and the
 // calendars it shows beside the date (CovenCountingForm).
 export default function ManageCalendar() {
@@ -34,6 +37,8 @@ function CalendarForm({ info }: { info: Coven }) {
   const [opened, setOpened] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
+  const [tradition, setTradition] = useState<string | null>(null);
+  const suits = calendarsForTradition(tradition);
 
   const toggle = (list: string[], value: string, on: boolean) => (on ? [...new Set([...list, value])] : list.filter((v) => v !== value));
   const save = async () => {
@@ -54,14 +59,15 @@ function CalendarForm({ info }: { info: Coven }) {
 
   return (
     <>
+      <CovenTraditionForm covenId={info.id} onChange={setTradition} />
       <Text style={type.caption}>The holidays the coven keeps, as members choose theirs in Settings → Calendar. They show on the coven’s page and on members’ Today, rites can be planned for them, and the ready-made programs for these calendars are suggested first.</Text>
-      {CALENDAR_TRADITIONS.map((t) => {
+      {matchingFirst(CALENDAR_TRADITIONS, (t) => suits.includes(t.id)).map((t) => {
         const on = traditions.includes(t.id);
         const chosen = t.holidays.filter((h) => picked.includes(`${t.id}/${h.id}`)).length;
         return (
           <Card key={t.id}>
             <CheckRow label={t.name} value={on} onChange={(v) => setTraditions((list) => toggle(list, t.id, v))}>
-              <Text style={type.caption}>{t.description}</Text>
+              <Text style={type.caption}>{suits.includes(t.id) ? `Suits the coven’s tradition. ${t.description}` : t.description}</Text>
             </CheckRow>
             {on && (
               <>
@@ -100,6 +106,46 @@ function CalendarForm({ info }: { info: Coven }) {
       <CovenCountingForm info={info} />
       <View style={styles.space} />
     </>
+  );
+}
+
+/** The coven's tradition: one of the course sets, saved on its own (covens.course_tradition). */
+function CovenTraditionForm({ covenId, onChange }: { covenId: string; onChange: (tradition: string | null) => void }) {
+  const [value, setValue] = useState<string>('');
+  const [busy, setBusy] = useState(false);
+  const [message, setMessage] = useState<string | null>(null);
+  useEffect(() => {
+    let live = true;
+    api.fetchCovenTradition(covenId).then((t) => {
+      if (!live) return;
+      setValue(t ?? '');
+      onChange(t);
+    });
+    return () => {
+      live = false;
+    };
+  }, [covenId, onChange]);
+  const save = async () => {
+    setBusy(true);
+    setMessage(null);
+    try {
+      await api.saveCovenTradition(covenId, value || null);
+      onChange(value || null);
+      setMessage('Saved.');
+    } catch (e) {
+      setMessage(errorMessage(e));
+    }
+    setBusy(false);
+  };
+  return (
+    <Section label="The coven’s tradition">
+      <Card>
+        <Text style={type.caption}>Its course set, holiday calendars, premade rituals and calendars are suggested first, to those who design programs here and to every member. Nothing is hidden or chosen for anyone.</Text>
+        <Chips label="Tradition" options={[{ value: '', label: 'Not said' }, ...COVEN_TRADITIONS.map((t) => ({ value: t.id, label: t.name }))]} value={value} onChange={setValue} />
+        <Button label={busy ? 'Saving…' : 'Save the tradition'} variant="outline" onPress={save} disabled={busy} />
+        {message && <Notice>{message}</Notice>}
+      </Card>
+    </Section>
   );
 }
 

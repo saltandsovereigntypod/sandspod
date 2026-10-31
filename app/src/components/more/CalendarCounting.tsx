@@ -23,6 +23,7 @@ import {
   withShown,
   type CalendarDef,
 } from '../../lib/calendars';
+import { useCovenPaths } from '../../lib/covens/useCovenTraditions';
 import { myPath } from '../../lib/library/traditions';
 import { usePlace } from '../../lib/location';
 import type { Settings } from '../../lib/settings/defaults';
@@ -116,7 +117,8 @@ export function CalendarCounting({ draft, set, hemisphere: showHemisphere = true
   const lead = primaryCalendar(draft);
   const shown = new Set<string>(shownCalendars(draft));
   const path = myPath(draft).traditions;
-  const list = calendarsForSettings(draft, path);
+  // Your path's calendars first, then your covens' tradition's.
+  const list = calendarsForSettings(draft, path, useCovenPaths());
   const hemisphere = (draft[HEMISPHERE_KEY] as string) || 'auto';
   const lines = useMemo(() => todayLines(new Date(), draft, place), [draft, place]);
   const leadLine = lines.find((l) => l.lead);
