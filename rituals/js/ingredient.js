@@ -42,7 +42,7 @@
       ${item.tip ? `<section class="sp-card" aria-labelledby="rt-tip"><h2 class="sp-label" id="rt-tip">A beginning</h2><p>${esc(item.tip)}</p></section>` : ""}
       ${item.caution ? `<section class="sp-card" aria-labelledby="rt-care"><h2 class="sp-label" id="rt-care">With care</h2><p>${esc(item.caution)}</p></section>` : ""}
       <div class="sp-actions">
-        <a class="button button--ghost" href="/rituals/spell/">Build a spell</a>
+        <a class="button button--ghost" href="/rituals/spell/?${esc(new URLSearchParams({ add: item.ref, ...(goodFor[0] ? { intention: goodFor[0].key } : {}) }).toString())}" title="Opens the spell builder with this already chosen">Use in a spell</a>
         <a class="button button--ghost" href="${L.libraryHref(item.ref)}">The full entry in the Library</a>
       </div>`;
   }

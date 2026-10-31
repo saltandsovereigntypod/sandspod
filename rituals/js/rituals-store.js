@@ -305,21 +305,33 @@
 
   /**
    * Save a spell or premade working as one of your templates, as the app's
-   * saveTemplate does. Needs an account. Only ever adds a new template here.
+   * saveTemplate does. Needs an account. Adds a new template, unless
+   * `replace` is set and the draft has an id: then that template of yours is
+   * updated in place (the spell builder's "Save changes"), its steps replaced
+   * as a whole as the app does, and its other metadata kept.
    */
-  async function saveTemplate(draft) {
+  async function saveTemplate(draft, { replace = false } = {}) {
     const account = user();
     if (!account || !db()) throw new Error("Sign in to keep ritual templates.");
     const R = core();
-    const id = R.lifecycle.uuid();
-    const { template, steps } = R.rows.templatePayload({ ...draft, id: null }, {
+    const updating = replace && !!draft.id;
+    const id = updating ? draft.id : R.lifecycle.uuid();
+    const { template, steps } = R.rows.templatePayload(updating ? draft : { ...draft, id: null }, {
       userId: account.id,
       id,
       stepIds: draft.steps.map(() => R.lifecycle.uuid())
     });
-    template.metadata = { ...template.metadata, app: "web" };
-    const saved = throwIf(await db().from("ritual_templates").insert(template).select("*").single());
-    const row = saved.data;
+    let row;
+    if (updating) {
+      const before = throwIf(await db().from("ritual_templates").select("metadata,grimoire_page_id").eq("id", id).eq("user_id", account.id).single()).data || {};
+      template.metadata = { ...(before.metadata || {}), ...template.metadata, app: "web" };
+      template.grimoire_page_id = template.grimoire_page_id || before.grimoire_page_id || null;
+      row = throwIf(await db().from("ritual_templates").update(template).eq("id", id).eq("user_id", account.id).select("*").single()).data;
+      throwIf(await db().from("ritual_template_steps").delete().eq("template_id", id).eq("user_id", account.id));
+    } else {
+      template.metadata = { ...template.metadata, app: "web" };
+      row = throwIf(await db().from("ritual_templates").insert(template).select("*").single()).data;
+    }
 
     const pageId = await ensureTemplatePage(account.id, row);
     if (pageId !== row.grimoire_page_id) {
@@ -329,7 +341,11 @@
     if (steps.length) throwIf(await db().from("ritual_template_steps").insert(steps));
 
     const links = R.rows.templateLinks(row.id, account.id, draft.ingredients || []);
-    if (links.length) await db().from("ritual_links").insert(links);
+    if (links.length) {
+      const known = updating ? throwIf(await db().from("ritual_links").select("*").eq("template_id", row.id).eq("user_id", account.id)).data || [] : [];
+      const fresh = R.rows.uniqueLinks(links, known);
+      if (fresh.length) await db().from("ritual_links").insert(fresh);
+    }
     await db()
       .from("living_library_entries")
       .upsert(R.rows.templateLibraryEntry(row, account.id, new Date()), { onConflict: "user_id,entity_id" });

@@ -152,6 +152,12 @@
       image: entry.image && /^https?:\/\//.test(entry.image) ? entry.image : null,
       intro: core.entryIntro(entry),
       facts,
+      // Herbs, stones, candle colours and deities open the spell builder with them chosen (app: LibraryEntryView "Use in a spell").
+      spellHref: (() => {
+        const m = String(entry.traditionalRef || "").match(/^traditional\/(herb|crystal|candle|deity)\/(.+)$/);
+        if (!m) return null;
+        return `/rituals/spell/?${m[1] === "deity" ? `deity=${encodeURIComponent(m[2])}` : `add=${encodeURIComponent(entry.traditionalRef)}`}`;
+      })(),
       deityKey: entry.type === "deity" ? (String(entry.traditionalRef || "").match(/^traditional\/deity\/([^/]+)$/) || [])[1] || null : null,
       record: record
         ? {

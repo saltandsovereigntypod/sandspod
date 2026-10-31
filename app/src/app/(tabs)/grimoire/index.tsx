@@ -98,6 +98,7 @@ export default function Grimoire() {
       <View style={styles.actions}>
         <Button label="New page" onPress={() => router.push('/grimoire/new-page')} style={styles.action} />
         <Button label={NEW_LIBRARY_NOTE} variant="outline" onPress={() => router.push('/grimoire/practice')} style={styles.action} />
+        <Button label="Build a spell" variant="outline" accessibilityHint="The spell builder: kept spells get a page here" onPress={() => router.push('/rituals/spell')} style={styles.action} />
       </View>
 
       <LibraryLink />

@@ -186,6 +186,14 @@ export default function SpellTiming() {
             {advice.windows.map((w, i) => (
               <WindowCard key={w.start.toISOString()} window={w} now={now} best={i === 0} onPlan={() => plan(w)} planLabel={params.planId ? 'Move the plan to then' : 'Plan it then'} />
             ))}
+            {!params.fromSpell && !params.templateId && !params.planId && (
+              <Button
+                label={`Build a spell for ${intent.label.toLowerCase()}`}
+                variant="text"
+                accessibilityHint="Opens the spell builder for this intent, with Library suggestions"
+                onPress={() => router.push({ pathname: '/rituals/spell', params: { intent: intent.key } } as unknown as Href)}
+              />
+            )}
           </View>
         </>
       )}

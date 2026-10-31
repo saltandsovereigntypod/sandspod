@@ -544,6 +544,8 @@ export function draftFromTemplate(template: TemplateRow | null): TemplateDraft {
     ingredients,
     kind: template.metadata?.kind === 'spell' ? 'spell' : 'template',
     ...(template.metadata?.from && typeof template.metadata.from === 'object' ? { from: template.metadata.from as Record<string, unknown> } : {}),
+    // The spell builder's choices travel with it, so editing here never loses them.
+    ...(template.metadata?.spell && typeof template.metadata.spell === 'object' ? { spell: template.metadata.spell as Record<string, unknown> } : {}),
   };
 }
 
