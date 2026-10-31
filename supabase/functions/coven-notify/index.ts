@@ -7,6 +7,7 @@ import { FRESH_MINUTES } from "./requests.ts";
 import { openedNote, wantsPosition } from "./positions.ts";
 import { trainingNote, wantsTraining } from "./training.ts";
 import { promotedNote, proposedNote, queuedNote, type QueueSource } from "./queue.ts";
+import { checkinNote, liveNote, mentorMessageNote, mentorshipNote, wantsTogether, type MentorshipEvent, type Note as TogetherNote } from "./together.ts";
 
 // Phone notifications for covens: a new message, a new application or
 // request to advance, and the answer to one; a personal invitation, and its
@@ -109,6 +110,18 @@ import { promotedNote, proposedNote, queuedNote, type QueueSource } from "./queu
 // Circle."). Once each (the entry's *_notified_at), and only for those whose
 // "Coven requests" choices want it (requests.ts wantsNotice: 'new' for the
 // leaders, 'answer' for the member). Never to someone who has blocked the caller.
+//
+// Rituals together and mentorship (supabase/migrations/20261120000000_rituals_together_mentorship.sql;
+// the notes' words and choices in together.ts). Each once (together_notices),
+// while fresh, never to anyone who has blocked the caller, and only for those
+// whose Reminders choices want it (`together.live`, `together.mentorship`):
+// { live_ritual_id }: called by the host who just began a ritual together
+// from a coven gathering; tells those the gathering is open to (coven_ritual_open_to).
+// { mentorship_id, event: 'asked' | 'paired' | 'accepted' | 'declined' | 'ended' }:
+// called by whoever just did it, as the pairing's row shows; tells the other
+// of the pair (both, when a coven's leader paired them).
+// { mentorship_message_id } and { mentorship_checkin_id }: called by the
+// writer; tells the other of the pair.
 
 const EXPO_PUSH = "https://exp.host/--/api/v2/push/send";
 
@@ -154,8 +167,15 @@ Deno.serve(async (request) => {
   let rankId = "";
   let queueId = "";
   let queueEvent: "queued" | "proposed" | "promoted" = "queued";
+  let together: { kind: "live" | "mentorship" | "mentorship_message" | "mentorship_checkin"; id: string; event: string } | null = null;
   try {
     const payload = (await request.json()) || {};
+    if (payload.live_ritual_id) together = { kind: "live", id: String(payload.live_ritual_id), event: "started" };
+    else if (payload.mentorship_message_id) together = { kind: "mentorship_message", id: String(payload.mentorship_message_id), event: "new" };
+    else if (payload.mentorship_checkin_id) together = { kind: "mentorship_checkin", id: String(payload.mentorship_checkin_id), event: "new" };
+    else if (payload.mentorship_id && ["asked", "paired", "accepted", "declined", "ended"].includes(payload.event)) {
+      together = { kind: "mentorship", id: String(payload.mentorship_id), event: payload.event };
+    }
     messageId = String(payload.message_id || "");
     if (payload.lineage_coven_id) lineageCoven = String(payload.lineage_coven_id);
     if (payload.leadership_coven_id) leadershipCoven = String(payload.leadership_coven_id);
@@ -183,6 +203,10 @@ Deno.serve(async (request) => {
   }
   const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
   const admin = createClient(url, service, { auth: { persistSession: false } });
+  if (together) {
+    if (!UUID.test(together.id)) return reply(400, { error: "bad_request" });
+    return togetherNote(admin, sender, together.kind, together.id, together.event);
+  }
   if (lineageCoven || leadershipCoven) {
     if (!UUID.test(lineageCoven || leadershipCoven)) return reply(400, { error: "bad_request" });
     let sent = 0;
@@ -1015,5 +1039,84 @@ async function positionQueue(admin: SupabaseClient, sender: string, id: string, 
     threadId: `queue:${q.coven_id}`,
     data: { source: `coven-queue-${event}`, url: note.url, covenId: q.coven_id, rankId: q.rank_id, queueId: id },
   }));
+  return reply(200, { sent: await push(admin, notes) });
+}
+
+/** Rituals together and mentorship: check the caller did what the note is about, claim it once, then ring those who want it. */
+async function togetherNote(admin: SupabaseClient, caller: string, kind: "live" | "mentorship" | "mentorship_message" | "mentorship_checkin", id: string, event: string) {
+  const { data: profile } = await admin.from("coven_profiles").select("display_name").eq("user_id", caller).maybeSingle();
+  const who = profile?.display_name || "Someone";
+  let recipients: string[] = [];
+  let pref: "live" | "mentorship" = "mentorship";
+  let source = "mentorship";
+  let channelId = "coven-requests";
+  let notesFor: (user: string) => TogetherNote;
+
+  if (kind === "live") {
+    const { data: live } = await admin.from("live_rituals").select("id,host_id,coven_id,coven_ritual_id,title,status,created_at").eq("id", id).maybeSingle();
+    if (!live || live.host_id !== caller || !live.coven_id || !live.coven_ritual_id || live.status === "ended") return reply(404, { error: "not_found" });
+    if (!isFresh(live.created_at)) return reply(409, { error: "too_old" });
+    const [{ data: coven }, { data: members }] = await Promise.all([
+      admin.from("covens").select("name,status").eq("id", live.coven_id).single(),
+      admin.from("coven_members").select("user_id").eq("coven_id", live.coven_id).eq("status", "active").limit(500),
+    ]);
+    if (!coven || coven.status !== "active") return reply(404, { error: "not_found" });
+    const others = (members || []).map((m) => m.user_id as string).filter((u) => u !== caller);
+    const open: string[] = [];
+    for (let i = 0; i < others.length; i += 20) {
+      const batch = others.slice(i, i + 20);
+      const answers = await Promise.all(batch.map((u) => admin.rpc("coven_ritual_open_to", { p_ritual: live.coven_ritual_id, p_user: u })));
+      batch.forEach((u, j) => answers[j].data === true && open.push(u));
+    }
+    recipients = open;
+    pref = "live";
+    source = "together-live";
+    channelId = "coven-messages";
+    notesFor = () => liveNote({ title: live.title, who, covenName: coven.name, liveId: live.id });
+  } else if (kind === "mentorship") {
+    const { data: m } = await admin.from("mentorships").select("*").eq("id", id).maybeSingle();
+    if (!m) return reply(404, { error: "not_found" });
+    const pair = [m.mentor_id as string, m.mentee_id as string];
+    const party = pair.includes(caller);
+    const ok =
+      (event === "asked" && m.proposed_by === caller && !m.paired_by && m.status === "proposed" && isFresh(m.created_at)) ||
+      (event === "paired" && m.paired_by === caller && m.status === "proposed" && isFresh(m.created_at)) ||
+      (event === "accepted" && party && m.status === "active" && isFresh(m.started_at)) ||
+      ((event === "declined" || event === "ended") && m.ended_by === caller && m.status === (event === "declined" ? "declined" : "ended") && isFresh(m.ended_at));
+    if (!ok) return reply(404, { error: "not_found" });
+    recipients = pair.filter((u) => u !== caller);
+    let covenName: string | null = null;
+    if (m.coven_id) covenName = (await admin.from("covens").select("name").eq("id", m.coven_id).maybeSingle()).data?.name ?? null;
+    notesFor = (user) => mentorshipNote({ event: event as MentorshipEvent, who, role: user === m.mentor_id ? "mentor" : "mentee", mentorshipId: m.id, covenName });
+  } else {
+    const table = kind === "mentorship_message" ? "mentorship_messages" : "mentorship_checkins";
+    const { data: row } = await admin.from(table).select("id,mentorship_id,user_id,body,created_at").eq("id", id).maybeSingle();
+    if (!row || row.user_id !== caller) return reply(404, { error: "not_found" });
+    if (!isFresh(row.created_at)) return reply(409, { error: "too_old" });
+    const { data: m } = await admin.from("mentorships").select("id,mentor_id,mentee_id,status").eq("id", row.mentorship_id).maybeSingle();
+    if (!m || m.status !== "active") return reply(404, { error: "not_found" });
+    recipients = [m.mentor_id, m.mentee_id].filter((u: string) => u !== caller);
+    if (kind === "mentorship_message") channelId = "coven-messages";
+    notesFor = () => (kind === "mentorship_message" ? mentorMessageNote({ who, body: row.body, mentorshipId: m.id }) : checkinNote({ who, mentorshipId: m.id }));
+  }
+
+  const { error: claim } = await admin.from("together_notices").insert({ kind, ref: id, event });
+  if (claim?.code === "23505") return reply(409, { error: "already_sent" });
+  if (!recipients.length) return reply(200, { sent: 0 });
+
+  const [{ data: blocks }, { data: settings }] = await Promise.all([
+    admin.from("user_blocks").select("blocker_id").eq("blocked_id", caller).in("blocker_id", recipients),
+    admin.from("user_settings").select("user_id,reminders:settings->>reminders_v2").in("user_id", recipients),
+  ]);
+  const blocking = new Set((blocks || []).map((b) => b.blocker_id as string));
+  const saved = new Map(((settings || []) as { user_id: string; reminders: string | null }[]).map((r) => [r.user_id, r.reminders]));
+  const now = new Date();
+  const listeners = recipients.filter((u) => !blocking.has(u) && wantsTogether(saved.get(u) ?? null, pref, now));
+  if (!listeners.length) return reply(200, { sent: 0 });
+  const { data: tokens } = await admin.from("push_tokens").select("token,user_id").in("user_id", listeners);
+  const notes: Push[] = (tokens || []).map((t) => {
+    const note = notesFor(t.user_id as string);
+    return { to: t.token, title: note.title, body: note.body, sound: "default", channelId, threadId: `${source}:${id}`, data: { source, url: note.url } };
+  });
   return reply(200, { sent: await push(admin, notes) });
 }

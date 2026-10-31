@@ -167,6 +167,7 @@
 
       <div class="sp-actions rt-actions">
         <button type="button" class="button button--primary" data-begin${blocked ? " disabled" : ""}>${view.busy === "begin" ? "Beginning…" : "Begin this ritual"}</button>
+        <button type="button" class="button button--ghost" data-begin-together title="Do it live with your coven or friends, each from where you are">Begin together</button>
         <button type="button" class="button button--ghost" data-choose-altar aria-expanded="${view.choosing}"${blocked ? " disabled" : ""}
           title="Choose one of your altars; the ritual runs over it and lights its candles as the steps begin">Begin on an altar</button>
         <a class="button button--ghost" href="/rituals/planner/?premade=${encodeURIComponent(p.id)}${p.intention ? `&intention=${p.intention}` : ""}">Plan a night for it</a>
@@ -218,6 +219,16 @@
       </section>`;
   }
 
+  /** Rituals together: hand this working's steps to /rituals/together/ (sessionStorage "together.start"). */
+  function beginTogether(draft, source) {
+    try {
+      global.sessionStorage.setItem("together.start", JSON.stringify({ kind: "draft", draft, source }));
+    } catch {
+      // Storage blocked: the page explains there's nothing to begin.
+    }
+    global.location.href = "/rituals/together/?start=1";
+  }
+
   async function beginWorking(altarId) {
     const p = view.premade;
     view.busy = "begin";
@@ -259,6 +270,7 @@
       const button = event.target.closest("button");
       if (!button || button.disabled) return;
       if (button.hasAttribute("data-begin")) beginWorking(null);
+      else if (button.hasAttribute("data-begin-together")) beginTogether(PM.premadeDraft(view.premade), { kind: "premade", ref: view.premade.id });
       else if (button.hasAttribute("data-save")) saveCopy();
       else if (button.hasAttribute("data-choose-altar")) {
         view.choosing = !view.choosing;

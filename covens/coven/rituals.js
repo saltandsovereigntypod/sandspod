@@ -35,6 +35,31 @@
   let altars = null;
 
   const params = () => new URLSearchParams(global.location.search);
+  /**
+   * Together from afar: this gathering's rituals together under way (anyone
+   * it's for can join), and Begin together for those who lead it, which hands
+   * its steps to /rituals/together/ (as the app's GatheringTogether).
+   */
+  async function togetherSection(holder, ritual, steps, leader) {
+    if (!holder || !global.db) return;
+    const { data } = await global.db.from("live_rituals").select("id,title,status,current_step,steps,updated_at,coven_ritual_id").eq("coven_ritual_id", ritual.id).neq("status", "ended");
+    const open = (data || []).filter((l) => Date.now() - new Date(l.updated_at).getTime() < 12 * 3600000);
+    const canBegin = leader && steps.length && ritual.status !== "cancelled";
+    if (!open.length && !canBegin) return;
+    const line = (l) => (l.status === "gathering" ? "Gathering" : l.status === "closing" ? "The ending" : `Step ${l.current_step + 1} of ${(l.steps || []).length}`);
+    holder.innerHTML = `<section class="sp-section"><h3 class="sp-label">Together from afar</h3>
+      ${open.map((l) => `<p>${esc(l.title)} · ${esc(line(l))} <a class="button button--ghost button--small" href="/rituals/together/?id=${esc(l.id)}">Join the ritual together</a></p>`).join("")}
+      ${canBegin ? `<p class="sp-caption">Do this rite live with members wherever they are: everyone follows the same step as you lead, lights a candle together and closes it together.</p><div class="sp-actions"><button type="button" class="button button--ghost" data-begin-together>Begin together</button></div>` : ""}</section>`;
+    holder.querySelector("[data-begin-together]")?.addEventListener("click", () => {
+      try {
+        global.sessionStorage.setItem("together.start", JSON.stringify({ kind: "gathering", ritual: { id: ritual.id, coven_id: ritual.coven_id, title: ritual.title, intention: ritual.intention }, steps, slug: state.coven.slug }));
+      } catch {
+        // Storage blocked: the page explains there's nothing to begin.
+      }
+      global.location.href = "/rituals/together/?start=1";
+    });
+  }
+
   const ritualHref = (id, extra = "") => `${api.covenHref("rituals")}&ritual=${encodeURIComponent(id)}${extra}`;
   const editHref = (id) => `${api.covenHref("rituals")}&edit=${encodeURIComponent(id || "new")}`;
   const stepsOf = (ritual) => L.orderSteps(state.ritualSteps, ritual.id);
@@ -721,6 +746,7 @@
       ${aheadHtml(ritual, steps)}
       ${ritual.status === "live" ? nowCard(ritual, steps) : ""}
       ${afterHtml(ritual)}
+      ${ritual.status === "live" ? "" : `<div data-together></div>`}
       ${["cancelled", "done"].includes(ritual.status) ? "" : altarSection(ritual)}
       ${leader && ritual.status !== "live" ? `<div class="sp-actions">
           ${ritual.status !== "cancelled" ? `<button class="button button--primary" type="button" data-start ${steps.length ? "" : "disabled"}>${ritual.status === "done" ? "Perform it again" : "Begin the ritual"}</button>` : ""}
@@ -821,6 +847,7 @@
       if (await UI.confirmAction("End the ritual now?", "Steps not yet reached are left undone.", "End it")) act(button, () => D.goToStep(ritual.id, null));
     });
     pane.querySelector("[data-start]")?.addEventListener("click", (event) => act(event.currentTarget, () => D.startRitual(ritual.id)));
+    togetherSection(pane.querySelector("[data-together]"), ritual, steps, leader);
     pane.querySelectorAll("[data-status-to]").forEach((button) =>
       button.addEventListener("click", async () => {
         const to = button.dataset.statusTo;

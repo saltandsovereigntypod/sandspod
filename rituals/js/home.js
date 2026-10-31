@@ -94,6 +94,7 @@
         <nav class="sp-list" aria-label="Learn">
           ${UI.row({ href: "/rituals/premade/", title: "Workings library", detail: `${R.premade.PREMADE.length} premade rituals and spells for every practice and path` })}
           ${UI.row({ href: "/rituals/community/", title: "Community Rituals", detail: "Rituals and spells the community has shared · search, add to yours or do once" })}
+          ${UI.row({ href: "/rituals/together/", title: "Rituals together", detail: "Do a ritual live with your coven or friends, from wherever each of you is" })}
           ${UI.row({ href: "/rituals/journeys/", title: "Dedication journeys", detail: "Study, practice and a rite of self-dedication, for each path and god" })}
           ${UI.row({ href: "/rituals/year/", title: "A Year and a Day", detail: "Thirteen moons of study and practice alone, ending in a self-dedication" })}
         </nav>

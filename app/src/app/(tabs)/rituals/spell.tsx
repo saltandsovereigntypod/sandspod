@@ -5,6 +5,8 @@ import { Share, StyleSheet, Text, View } from 'react-native';
 
 import { Button } from '../../../components/Button';
 import { AltarChoiceSheet, useBeginOnAltar } from '../../../components/altar/connect/BeginOnAltar';
+import { BeginTogetherButton } from '../../../components/together/BeginTogether';
+import { startFromDraft } from '../../../lib/together/live';
 import { IngredientCheck } from '../../../components/altar/connect/IngredientCheck';
 import { Body, Card, Chip, Chips, Expander, Field, Notice, RitualScreen, SectionLabel, Title, tell, ui } from '../../../components/rituals/ui';
 import { templateNeeds, type Pantry } from '../../../lib/altar/connect/ingredients';
@@ -521,6 +523,7 @@ export default function SpellBuilder() {
       <Card>
         <View style={ui.actions}>
           <Button label={busy ? 'One moment…' : 'Begin now'} disabled={busy || !!rituals.active} onPress={begin} />
+          <BeginTogetherButton disabled={busy} start={() => startFromDraft(draft, { kind: 'spell', ref: saved?.id ?? null })} />
           {saved && (
             <Button label={onAltar.busy ? 'Beginning…' : 'Begin on an altar'} variant="outline" disabled={busy || onAltar.busy || !!rituals.active} onPress={() => setChoosingAltar(true)} />
           )}

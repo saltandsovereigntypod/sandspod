@@ -139,7 +139,10 @@ export function useReminderTaps() {
         data?.source === 'coven-invitation-accepted' ||
         data?.source === 'coven-position' ||
         // a message on a step of a coven program (opens the step)
-        data?.source === 'coven-training';
+        data?.source === 'coven-training' ||
+        // a ritual together begun (opens it), and anything about a mentorship (opens the pairing)
+        data?.source === 'together-live' ||
+        data?.source === 'mentorship';
       if ((data?.source === SOURCE || data?.source === STEP_SOURCE || covenNote) && typeof data.url === 'string') router.push(data.url as Href);
     };
     try {
