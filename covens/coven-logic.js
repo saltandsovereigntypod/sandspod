@@ -323,7 +323,11 @@
     const text = String(error?.message || error || "");
     if (/row-level security|permission denied/i.test(text)) return "You don’t have permission to do that here.";
     if (/duplicate key|already exists/i.test(text)) return "That already exists.";
-    if (/violates check constraint/i.test(text)) return "Something in that form is too long or not allowed.";
+    if (/violates check constraint/i.test(text)) {
+      const field = /_(title|description|intention|instructions|spoken_text|body|note|name|occasion_name|section|altar_label)_check/i.exec(text)?.[1];
+      const words = { title: "A title", description: "The description", intention: "The intention", instructions: "A step’s instructions", spoken_text: "A step’s words", body: "The text", note: "The note", name: "The name", occasion_name: "The occasion", section: "A section name", altar_label: "An altar label" };
+      return field ? `${words[field.toLowerCase()] || "Something in that form"} is too long. Shorten it and try again.` : "Something in that form is too long or not allowed.";
+    }
     if (/Failed to fetch|NetworkError|network/i.test(text)) return "You seem to be offline. Please try again.";
     return text || "That didn’t work. Please try again.";
   }

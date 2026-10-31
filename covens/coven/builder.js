@@ -271,7 +271,7 @@
       <div class="sp-card">
         <div class="sp-field"><label for="bd-title">${m.kind === "meeting" ? "The meeting" : "The rite"}</label><input id="bd-title" maxlength="120" data-bind="title" value="${esc(f.title)}" placeholder="${m.kind === "meeting" ? "Autumn business meeting" : "Full moon rite"}" /></div>
         <div class="sp-field"><label for="bd-int">Intention (optional)</label><input id="bd-int" maxlength="500" data-bind="intention" value="${esc(f.intention)}" /></div>
-        <div class="sp-field"><label for="bd-desc">What members should know or bring (optional)</label><textarea id="bd-desc" maxlength="4000" data-bind="description">${esc(f.description)}</textarea></div>
+        <div class="sp-field"><label for="bd-desc">What members should know or bring (optional)</label><textarea id="bd-desc" maxlength="12000" data-bind="description">${esc(f.description)}</textarea></div>
         <p class="sp-label">Kind of gathering</p>
         <div class="sp-chips">${B().GATHERING_KINDS.map((k) => chip(k.label, "set-kind", attr({ kind: k.value }), m.kind === k.value)).join("")}</div>
       </div>

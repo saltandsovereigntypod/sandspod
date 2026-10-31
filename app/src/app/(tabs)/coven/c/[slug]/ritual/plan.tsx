@@ -527,7 +527,7 @@ export default function PlanRitual() {
         <Card>
           <Field label={kind === 'meeting' ? 'The meeting' : 'The rite'} value={title} onChangeText={setTitle} maxLength={120} placeholder={kind === 'meeting' ? 'Autumn business meeting' : 'Full moon rite'} />
           <Field label="Intention (optional)" value={intention} onChangeText={setIntention} maxLength={500} />
-          <Field label="What members should know or bring (optional)" value={description} onChangeText={setDescription} multiline maxLength={4000} />
+          <Field label="What members should know or bring (optional)" value={description} onChangeText={setDescription} multiline maxLength={12000} />
           <Chips label="Kind of gathering" options={GATHERING_KINDS} value={kind} onChange={setKind} />
         </Card>
         <Card>
