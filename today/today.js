@@ -396,6 +396,12 @@
     );
   }
 
+  /** Hearth & land's seasonal nudge (js/hearth-links.js): a festival food that's near, or what's in the hedgerow. */
+  function hearthRow(practices, now, settings) {
+    const line = window.SaltHearthLinks?.todayLine(practices, now, { place: state.place, choice: C.holidays.holidayChoice(settings) });
+    return line ? practiceRow(line.label, line.line, line.detail, line.href, false) : "";
+  }
+
   /** For your practice: a line from each practice kept, your deities, and a working that suits tonight. */
   function practiceCard(m) {
     const { settings, now } = m;
@@ -414,6 +420,7 @@
       `<section class="td-card td-card--working" aria-labelledby="td-practice-label"><h2 class="sp-eyebrow td-gold" id="td-practice-label">For your practice</h2>` +
       deities.map((line) => practiceRow(line.label, line.line, line.detail, T.siteHref(line.href), line.holyToday)).join("") +
       lines.map((line) => practiceRow(line.label, line.line, line.detail, T.siteHref(line.href), false)).join("") +
+      hearthRow(practices, now, settings) +
       (working
         ? practiceRow("A working for tonight", working.title, working.summary, T.siteHref({ pathname: "/rituals/premade/[id]", params: { id: working.id } }), false)
         : "") +

@@ -112,6 +112,7 @@
       ${layers}
       ${connections}
       <div data-journey></div>
+      <div data-hearth-herb></div>
       ${model.tags.length ? section("Tags", chipsHtml(model.tags.map((label) => ({ label, href: null }))), { plain: true }) : ""}
       ${user ? "" : `<p class="sp-caption">Sign in to keep your own My Practice notes for this entry in your Book of Shadows.</p>`}
       ${global.ResearchNote ? global.ResearchNote.footerHtml(model.name, model.category || "Living Library") : ""}`;
@@ -183,6 +184,9 @@
     global.SaltDeityYours?.hydrate(root.querySelector("[data-deity-yours]"));
     addSourcing(view, token);
     addJourney(entry, token);
+    // Hearth & land for a herb or tree: foraging, the garden, your land journal and recipes (js/hearth-links.js).
+    const herbRef = String(entry.traditionalRef || "").split("/");
+    if (herbRef[1] === "herb" && herbRef[2] && !herbRef[2].includes(".")) global.SaltHearthLinks?.mountHerb(root.querySelector("[data-hearth-herb]"), herbRef[2]);
   }
 
   const ready = global.SaltPage?.ready ? global.SaltPage.ready() : Promise.resolve(null);

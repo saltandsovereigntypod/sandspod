@@ -33,7 +33,10 @@
       kit.head({ eyebrow: "Craft tools", title: practice?.name ?? "Kitchen & hearth", lede: practice?.about }),
       kit.card(kit.p(guide.summary), { gold: true, label: `In the house tonight · ${guide.label}` }),
       kit.section("Tools", kit.list(practices.CRAFT_TOOLS.kitchen.map((t) => kit.row({ url: kit.href.tool("kitchen", paths[t.title]), title: t.title, detail: t.detail }))), { id: "tools" }),
-      kit.list([kit.row({ url: kit.href.premadeList("kitchen"), title: "Premade workings", detail: "Every ritual and spell, filter by Kitchen & hearth" })])
+      kit.list([
+        kit.row({ url: "/practice/hearth/recipes/", title: "Kitchen witchery", detail: "Hearth & land · recipes with intent, festival foods and offerings, kept in your Grimoire" }),
+        kit.row({ url: kit.href.premadeList("kitchen"), title: "Premade workings", detail: "Every ritual and spell, filter by Kitchen & hearth" })
+      ])
     ].join("");
   }
 

@@ -40,6 +40,10 @@
       kit.head({ eyebrow: "Craft tools", title: "Green", lede: about }),
       kit.card(`${kit.big(M.QUARTERS[night.quarter].headline)}${kit.muted(`${night.phase}, moon in ${night.sign}`)}`, { gold: true, label: "Tonight in the garden" }),
       kit.section("Tools", kit.list(practices.CRAFT_TOOLS.green.map((t, i) => kit.row({ url: kit.href.tool("green", paths[i]), title: t.title, detail: details[i] ?? t.detail }))), { id: "tools" }),
+      kit.list([
+        kit.row({ url: "/practice/hearth/forage/", title: "Foraging & garden", detail: "Hearth & land · what grows where, the hedgerow this month, and your harvests" }),
+        kit.row({ url: "/practice/hearth/land/", title: "Land journal", detail: "Hearth & land · frosts, blooms and birdsong on your places, year on year" })
+      ]),
       kit.landCard(),
       kit.list([kit.row({ url: kit.href.premadeList("green"), title: "Green workings", detail: "Premade rituals and spells; filter by Green" })])
     ].join("");
