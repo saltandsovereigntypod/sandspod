@@ -86,7 +86,7 @@ A solitary blót is the same rite with one person: hallow your space, state your
 
 The most vivid picture is in the Old English poem **Beowulf,** probably composed between the eighth and tenth centuries. In King Hrothgar's hall, Heorot, the queen **Wealhtheow** carries the cup round in order of rank, greeting the king, the warriors and the guest. Beowulf, taking the cup, makes a formal boast of what he will do: fight the monster Grendel or die. Earlier, the warrior Unferth challenges his reputation, and Beowulf answers with an account of his deeds. Words spoken at symbel bind the speaker.
 
-In the Norse sources, the **bragarfull,** "the chief's cup" or "the best cup", is drunk at feasts, and over it men made vows. In **Ynglinga saga,** King Ingjald, at the funeral feast for his father, stands, drinks the bragarfull and vows to double his kingdom, and then burns his guests in the hall. The vow over the cup, **heitstrenging,** appears in other sagas too, often with grim results: a vow made in drink was still a vow.
+In the Norse sources, the **bragarfull,** "the chief's cup" or "the best cup", is drunk at feasts, and over it men made vows. In **Ynglinga saga,** King Ingjald, at the funeral feast for his father, stands, drinks the bragarfull and vows to enlarge his kingdom by half towards every quarter or die, and then burns six of his guests, kings all, in the hall. The vow over the cup, **heitstrenging,** appears in other sagas too, often with grim results: a vow made in drink was still a vow.
 
 Note what the sources do and don't say. They show cups passed in order, a woman bearing the cup, vows and boasts and toasts to gods and the dead. They do not describe a fixed sequence of three rounds. That is modern.
 

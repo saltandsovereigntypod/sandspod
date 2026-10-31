@@ -157,7 +157,7 @@ export const STARTER_RECIPES: StarterRecipe[] = [
     allergens: ['gluten', 'dairy', 'egg'],
     safety: '',
     about:
-      'Souling is a real English and Welsh custom: from the Middle Ages into the twentieth century, poor people and children went door to door around All Souls (2 November), singing for small spiced cakes in return for prayers for the household’s dead. Recipes were never fixed and varied by place; this one is a modern version of the usual spiced, currant-studded cake. The rhyme is our own, after the souling songs.',
+      'Souling is a real English and Welsh custom: recorded from at least the late sixteenth century (and probably older) into the twentieth, poor people and children went door to door around All Souls (2 November), singing for small spiced cakes in return for prayers for the household’s dead. Recipes were never fixed and varied by place; this one is a modern version of the usual spiced, currant-studded cake. The rhyme is our own, after the souling songs.',
     notes: '',
   },
   {
@@ -220,7 +220,7 @@ export const STARTER_RECIPES: StarterRecipe[] = [
     allergens: ['gluten', 'honey'],
     safety: '',
     about:
-      'Lammas comes from the Old English hlafmæsse, “loaf mass”: in early medieval England bread from the first-ripe grain was brought to church to be blessed on 1 August. The shaped sheaf loaf is a much later baker’s tradition, and this is a modern recipe.',
+      'Lammas comes from the Old English hlafmæsse, “loaf mass”: in early medieval England bread from the first-ripe grain is thought to have been brought to church to be blessed on 1 August, though the early sources say little beyond the name. The shaped sheaf loaf is a much later baker’s tradition, and this is a modern recipe.',
     notes: '',
   },
   {

@@ -212,7 +212,7 @@ If your ancestors belonged to a living religion, you may honour them in ways the
       links: [journey('deity-odin'), journey('deity-thor'), journey('deity-freyja'), journey('deity-freyr'), journey('deity-frigg'), journey('deity-tyr'), journey('deity-skadi'), journey('deity-idunn'), journey('deity-baldur'), journey('deity-loki'), deity('loki'), page('patron'), page('journeys'), crystal('amber')],
       body: `## Relationship, not transaction
 
-Heathenry speaks of the gods as powers you have a relationship with, like an honoured elder, a lord or a friend. The **Hávamál** puts it in the language of gifts: "a gift always looks for a gift." It also warns: "better not to ask than to over-sacrifice; a gift always looks for a return" (verse 145, in one translation). Give, and expect a relationship, not a vending machine. Don't give more than you can, and don't give in order to get.
+Heathenry speaks of the gods as powers you have a relationship with, like an honoured elder, a lord or a friend. The **Hávamál** puts it in the language of gifts: a friend should "repay gift with gift" (verse 42). It also warns: "better not to ask than to over-sacrifice; a gift always looks for a return" (verse 145, in one translation). Give, and expect a relationship, not a vending machine. Don't give more than you can, and don't give in order to get.
 
 ## The fulltrúi
 

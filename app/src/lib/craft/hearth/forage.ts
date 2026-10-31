@@ -57,7 +57,7 @@ export const FORAGE_RULES: { title: string; text: string }[] = [
   },
   {
     title: 'Know the law and ask permission',
-    text: 'Laws differ from place to place, so check yours. In Britain it is against the law to uproot any wild plant without the landowner’s permission, and some species are protected outright; many parks, nature reserves and protected sites don’t allow picking at all. Elsewhere, public land often has its own rules. Ask the landowner before you gather on private land.',
+    text: 'Laws differ from place to place, so check yours. In Britain it is against the law to uproot any wild plant without the permission of the landowner or occupier (the Wildlife and Countryside Act 1981, as amended), and some species are protected outright; many parks, nature reserves and protected sites don’t allow picking at all. Elsewhere, public land often has its own rules. Ask the landowner before you gather on private land.',
   },
   {
     title: 'Choose clean ground',
@@ -506,7 +506,7 @@ export const FORAGE_PLANTS: ForagePlant[] = [
       { name: 'Savin and other ornamental junipers', danger: 'toxic', tell: 'Scale-like leaves; common in gardens.' },
     ],
     use: 'cook',
-    care: 'Wild juniper is declining in Britain and protected in places. Buy dried berries rather than gathering.',
+    care: 'Wild juniper is declining in Britain, is a priority species for conservation, and grows on protected sites in many places. Buy dried berries rather than gathering.',
     caution: 'Avoid in pregnancy and with kidney trouble.',
   },
 ];

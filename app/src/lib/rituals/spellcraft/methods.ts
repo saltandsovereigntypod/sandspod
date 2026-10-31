@@ -78,7 +78,7 @@ export const SPELL_METHODS: SpellMethod[] = [
     hazards: [],
     wordsHint: 'A line to say with each knot',
     history:
-      'Tying winds, cures and bindings into knots is old and widespread in folk magic. Rhyming nine-knot charms are a modern Wiccan custom.',
+      'Tying winds, cures and bindings into knots is old and widespread in folk magic. Rhyming nine-knot charms ("By knot of one...") are modern, spread by Wiccan and witchcraft books from the later twentieth century; no older source for them is known.',
   },
   {
     key: 'sigil',

@@ -8,12 +8,15 @@ import assert from 'node:assert/strict';
 import { test } from 'node:test';
 
 import type { TermLink } from '../src/lib/astro/glossary.ts';
+import { ASPECT_READINGS } from '../src/lib/astro/interpret/aspects.ts';
+import { OUTER_PAIRS } from '../src/lib/astro/interpret/aspectData/outer.ts';
 import { composeReading } from '../src/lib/astro/interpret/compose.ts';
 import { BODY_LINKS, HOUSE_LINKS, LIBRARY_DEITIES, LIBRARY_HERBS_AND_STONES, libraryMentions } from '../src/lib/astro/interpret/links.ts';
 import { PLANET_IN_HOUSE, PLANET_IN_HOUSE_BY_BODY } from '../src/lib/astro/interpret/planetInHouse.ts';
 import { PLANET_IN_SIGN, PLANET_IN_SIGN_BY_BODY } from '../src/lib/astro/interpret/planetInSign.ts';
 import { coverage, inHouse, inSign, signOnCusp } from '../src/lib/astro/interpret/registry.ts';
 import { SIGN_ON_CUSP } from '../src/lib/astro/interpret/signOnCusp.ts';
+import { TRANSIT_READINGS } from '../src/lib/astro/interpret/transits.ts';
 import type { Interpretation } from '../src/lib/astro/interpret/types.ts';
 import { castChart } from '../src/lib/astro/natal.ts';
 import { PLANET_GUIDES } from '../src/lib/astro/planetGuides.ts';
@@ -61,6 +64,35 @@ test('every sign is written on every house cusp', () => {
   assert.equal(c['Planet in sign'], 144);
   assert.equal(c['Planet in house'], 168);
   assert.equal(c['Sign on cusp'], 144);
+});
+
+test('the slower bodies, points, cusps, outer aspects and transits keep their depth', () => {
+  // Minimums for the groups deepened to match the Sun, Moon and personal
+  // readings: a Detailed of several paragraphs and a fuller craft line.
+  const atLeast = (label: string, r: Interpretation | null | undefined, detailed: number, magic: number) => {
+    assert.ok(r, `${label}: missing`);
+    assert.ok(r.detailed.length >= detailed, `${label}: detailed ${r.detailed.length} < ${detailed}`);
+    assert.ok(r.magic.length >= magic, `${label}: magic ${r.magic.length} < ${magic}`);
+  };
+  const deep: ChartPointName[] = ['Mars', 'Jupiter', 'Saturn', 'Uranus', 'Neptune', 'Pluto', 'Chiron', 'North Node', 'South Node', 'Lilith'];
+  for (const body of deep) for (const house of HOUSES) atLeast(`${body} in house ${house}`, inHouse(body, house), 550, 190);
+  for (const house of HOUSES) for (const sign of SIGNS) atLeast(`${sign} on cusp ${house}`, signOnCusp(house, sign), 450, 130);
+  let outer = 0;
+  for (const [key, r] of Object.entries(ASPECT_READINGS)) {
+    const [a, , b] = key.split('|');
+    if (!OUTER_PAIRS[`${a}|${b}`]) continue;
+    atLeast(`aspect ${key}`, r, 600, 350);
+    outer++;
+  }
+  assert.equal(outer, 178);
+  let transits = 0;
+  for (const [key, r] of Object.entries(TRANSIT_READINGS)) {
+    const [t, , n] = key.split('|');
+    if (t === n) continue;
+    atLeast(`transit ${key}`, r, 550, 220);
+    transits++;
+  }
+  assert.equal(transits, 245);
 });
 
 test('no two readings share a text', () => {
