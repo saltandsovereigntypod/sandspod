@@ -217,15 +217,48 @@ async function renderDivinationPage(kind, id, { deck: drawnWith } = {}) {
                 .join("")
             : `<p class="book-section-empty">Traditional Information is turned off in your Living Library settings, so this page is hidden.</p>`
         }
+        <section class="book-library-layer divination-yours" data-divination-yours hidden aria-live="polite"></section>
         ${showTraditional && typeof window !== "undefined" && window.ResearchNote ? window.ResearchNote.footerHtml(entry.name, page.eyebrow) : ""}
       </div>
     </section>
   `;
+  showDivinationHistory(core, entry.name);
 
   // Mark the open row in the contents.
   document.querySelectorAll("[data-divination-entry]").forEach((row) => {
     row.classList.toggle("is-active", row.dataset.divinationEntry === `${entry.kind}/${entry.id}`);
   });
+}
+
+/**
+ * "In your readings" on a card's page: how often you've drawn it, the last
+ * reading it came in and Your patterns (the app's YourDraws). Read from
+ * `hedge.readings`; nothing shows until it has come at least once.
+ */
+async function showDivinationHistory(core, name) {
+  const box = document.querySelector("[data-divination-yours]");
+  if (!box || !core.cardHistory || !window.SaltCraft) return;
+  let list = [];
+  try {
+    list = await window.SaltCraft.list("hedge.readings");
+  } catch {
+    return;
+  }
+  const readings = list.map((e) => {
+    const d = e.data && typeof e.data === "object" ? e.data : {};
+    return { ...e, data: { ...d, date: String(d.date || ""), drawn: Array.isArray(d.drawn) ? d.drawn.filter((x) => typeof x === "string") : [], cameUp: String(d.cameUp || "") } };
+  });
+  const history = core.cardHistory(readings, name);
+  const line = core.cardHistoryLine(history);
+  if (!line || !box.isConnected) return;
+  // "October 16, 2026", as the app's fullDate says it.
+  const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(history.last?.date || "");
+  const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+  if (m && history.last) history.last.date = `${months[Number(m[2]) - 1]} ${Number(m[3])}, ${m[1]}`;
+  box.innerHTML = `<h2>In your readings</h2><p>${escapeHtml(line)}</p><p>${
+    history.last ? `<a href="/divination/reading/?id=${encodeURIComponent(history.last.id)}">Last on ${escapeHtml(history.last.date)} ›</a> · ` : ""
+  }<a href="/divination/patterns/">Your patterns ›</a></p>`;
+  box.hidden = false;
 }
 
 if (typeof document !== "undefined")

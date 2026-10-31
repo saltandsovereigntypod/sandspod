@@ -10,3 +10,5 @@ export * from '../../app/src/lib/divination/library.ts';
 // leading with that deck's own reading.
 export * as decks from '../../app/src/lib/divination/decks.ts';
 export * as deckMeanings from '../../app/src/lib/divination/deckMeanings/index.ts';
+// A card's own history in your readings, for "In your readings" on its page.
+export { cardHistory, cardHistoryLine } from '../../app/src/lib/divination/patterns.ts';

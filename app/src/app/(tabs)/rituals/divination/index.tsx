@@ -53,6 +53,7 @@ export default function Readings() {
         <Row icon="grimoire" title="Log a reading" detail="One you did by hand: what you asked, what came up" onPress={() => router.push('/rituals/divination/edit' as Href)} />
         <Row icon="wheel" title="Your oracle decks" detail="Make a deck of your own, and draw from it" onPress={() => router.push('/rituals/divination/decks' as Href)} />
         <Row icon="grimoire" title="Card meanings" detail="Tarot, runes, ogham, Lenormand and Kipper, as in your Grimoire" onPress={() => router.push('/rituals/divination/meanings' as Href)} />
+        <Row icon="calendar" title="Your patterns" detail="The cards you draw most, by suit, moon and day, and the ones you haven’t met yet" onPress={() => router.push('/rituals/divination/patterns' as Href)} />
         <Row icon="altar" title="Make a spread" detail="Lay out positions of your own" last onPress={() => router.push('/rituals/divination/spread' as Href)} />
       </List>
       <SectionLabel>Your readings</SectionLabel>
@@ -106,6 +107,7 @@ export default function Readings() {
                   <Chip key={r.name} label={`${r.name} · ${r.count}`} a11yLabel={`${r.name}, in ${r.count} readings. Search for it`} onPress={() => setQuery(r.name)} />
                 ))}
               </Chips>
+              <Row icon="calendar" title="All your patterns" last onPress={() => router.push('/rituals/divination/patterns' as Href)} />
             </View>
           )}
 

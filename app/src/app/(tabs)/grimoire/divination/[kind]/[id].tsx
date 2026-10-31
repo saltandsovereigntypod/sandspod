@@ -5,6 +5,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import { OghamStave, RuneStone } from '../../../../../components/divination/Faces';
 import { KipperFace, LenormandArt } from '../../../../../components/divination/oracle/OracleFaces';
 import { ResearchFooter } from '../../../../../components/ResearchNote';
+import { YourDraws } from '../../../../../components/divination/YourDraws';
 import { Card, Chips, MoreScreen, Notice, Section } from '../../../../../components/more/ui';
 import { deckMeaning, deckPage, readingSource, RWS_TRADITION } from '../../../../../lib/divination/deckMeanings';
 import { chosenDeck, deckCardTitle, deckInfo, deckPictureLabel, isDeckId, TAROT_DECKS, type DeckId } from '../../../../../lib/divination/decks';
@@ -114,6 +115,7 @@ export default function DivinationEntryPage() {
               </View>
             ))}
           </Card>
+          <YourDraws name={entry.name} />
           <ResearchFooter page={entry.name} kind={page.eyebrow} />
         </>
       )}

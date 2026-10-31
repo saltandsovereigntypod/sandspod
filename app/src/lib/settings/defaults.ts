@@ -105,6 +105,8 @@ export function defaultSettings(): Settings {
     // The Grimoire home as you've arranged it, as JSON ('' until first arranged): lib/grimoire/layout.ts.
     grimoire_layout: '',
     tarot_deck: 'rws',
+    // Where Year in review begins the year (lib/grimoire/yearSpan.ts): 'calendar', 'january', 'samhain' or 'moon'.
+    year_review_start: 'calendar',
     sync_traditional_library_to_grimoire: false,
     library_layer_order: 'myPractice,traditional,community',
     ...layerFlags('myPractice'),
