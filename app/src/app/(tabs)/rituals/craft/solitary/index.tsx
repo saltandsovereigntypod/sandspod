@@ -54,6 +54,12 @@ export default function SolitaryPractice() {
 
       <List>
         <Row
+          icon="calendar"
+          title="A Year and a Day"
+          detail="On Rituals · thirteen moons of study and practice alone, ending in a self-dedication"
+          onPress={() => router.push('/rituals/year')}
+        />
+        <Row
           icon="wheel"
           title="Dedication journeys"
           detail="On Rituals · study, practice and a rite of self-dedication to a path or a god"

@@ -136,6 +136,7 @@
     const chosen = G.myPractices(settings);
     return `<p class="my-sanctuary-intro">What kind of witch you are, alongside My path (the traditions you keep). Choose as many as fit. Rituals &amp; spells puts workings for your practice first, and your path (Living Library) adds the traditions you keep.</p>
       ${group("How you practise", G.PRACTICES.map((p) => check(`data-practice="${esc(p.id)}"`, p.name, p.about, chosen.includes(p.id))).join(""))}
+      ${chosen.includes("solitary") ? `<p class="settings-more-detail">Practising alone? <a href="/rituals/year/">A Year and a Day</a>: thirteen moons of study and practice, ending in a self-dedication (Practice → Rituals).</p>` : ""}
       <p class="settings-more-detail">Your deities are under My deities, what to draw under Divination, and whether covens count you under Covens &amp; privacy.</p>`;
   }
 

@@ -240,6 +240,7 @@
           workingCard(m) +
           `<div data-coven-today>${window.CovenToday?.html?.() || ""}</div>` +
           `<div data-tend-today>${window.TendToday?.html?.() || ""}</div>` +
+          `<div data-year-today>${window.YearToday?.html?.() || ""}</div>` +
           `<div data-cycle-today>${window.CycleToday?.html?.() || ""}</div>` +
           yearTurnCard(m) +
           lookBackCard(m) +

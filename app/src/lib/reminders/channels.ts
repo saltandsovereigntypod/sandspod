@@ -11,7 +11,7 @@ export const CHANNELS: Channel[] = [
   { id: 'holiday-reminders', name: 'Holidays and sacred days', description: 'Holidays from your calendars, Hekate’s Deipnon and your deities’ sacred days.' },
   { id: 'tending-reminders', name: 'Tending', description: 'Plants, altars, offerings, crystals and candles, and what you tend from your list.', quiet: true },
   { id: 'planning-reminders', name: 'Ritual planning and coven rites', description: 'Time to plan a ritual for a holiday, and your covens’ rites.' },
-  { id: 'practice-reminders', name: 'Daily practice', description: 'Morning and evening devotion, and the dream journal.', quiet: true },
+  { id: 'practice-reminders', name: 'Daily practice', description: 'Morning and evening devotion, the dream journal and A Year and a Day.', quiet: true },
   { id: 'summary-reminders', name: 'The day’s reminders together', description: 'One note for a busy day, in place of many.' },
   // Worded discreetly, and hidden on the lock screen (notifier.ts), since anyone nearby might see it.
   { id: 'private-reminders', name: 'Private notes', description: 'Cycle & Moon, only if you turn its reminders on. Hidden on the lock screen.', quiet: true, private: true },
@@ -34,6 +34,7 @@ const BY_KIND: Record<ReminderKind, string> = {
   coven: 'planning-reminders',
   devotion: 'practice-reminders',
   dream: 'practice-reminders',
+  year: 'practice-reminders',
   summary: 'summary-reminders',
   cycle: 'private-reminders',
 };

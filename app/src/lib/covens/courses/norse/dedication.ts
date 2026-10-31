@@ -383,7 +383,7 @@ When the term comes round, look back over your year. Read the page you wrote bef
           checked_by: 'mentor',
           minutes: 45,
           docs: ['norse-dedication-the-rite'],
-          links: [coven('rituals')],
+          links: [coven('rituals'), page('year-and-a-day')],
           solitary: 'Write out your own self-dedication rite in full, using the solitary shape in the lesson and the app’s Self-Dedication to Your Path, and choose the holy day, moon or day you will keep it on. Read it through aloud once beforehand.',
         },
         {

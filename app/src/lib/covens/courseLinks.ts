@@ -55,6 +55,9 @@ export const COURSE_PAGES: Record<string, Place> = {
   'green-season': { label: 'The green witch’s season', app: '/rituals/craft/green/season', site: '/practice/green/season/' },
   'folk-calendar': { label: 'The folk calendar', app: '/rituals/craft/folk/calendar', site: '/practice/folk/calendar/' },
   ancestors: { label: 'Your ancestors', app: '/rituals/craft/hedge/ancestors', site: '/practice/hedge/ancestors/' },
+  devotion: { label: 'Daily devotion', app: '/rituals/craft/solitary/devotion', site: '/practice/solitary/devotion/' },
+  timing: { label: 'The timing advisor', app: '/rituals/craft/cosmic/timing', site: '/practice/cosmic/timing/' },
+  'year-and-a-day': { label: 'A Year and a Day: a year of study alone, ending in self-dedication', app: '/rituals/year', site: '/rituals/year/' },
 };
 
 /** The parts of the coven a step may open (the app's /coven/c/<slug>/<page>, the website's &tab=<tab>). */
