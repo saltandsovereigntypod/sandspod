@@ -158,6 +158,8 @@ export type ReminderKind =
   | 'coven'
   | 'tend'
   | 'cycle'
+  /** A Year and a Day: each moon's beginning and reflection, and the day of dedication. */
+  | 'year'
   | 'summary';
 
 export type Reminder = {

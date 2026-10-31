@@ -1,0 +1,28 @@
+/* A Year and a Day (/rituals/year/): the few things the Craft pages' styles don't have. */
+.yr-bar {
+  height: 6px;
+  border-radius: 3px;
+  background: rgba(202, 191, 157, 0.18);
+  overflow: hidden;
+  margin: 0.6rem 0;
+}
+.yr-bar span {
+  display: block;
+  height: 100%;
+  border-radius: 3px;
+  background: var(--gold, #c9a45c);
+}
+/* The lesson reader, as covens/covens.css draws a coven's lessons (lesson.ts toHtml). */
+.yr-lesson .ls-h1,
+.yr-lesson .ls-h2 { margin-top: 1.4em; }
+.yr-lesson .ls-h3 { color: var(--gold); margin-top: 1.1em; }
+.yr-lesson .ls-list { padding-left: 1.4em; display: grid; gap: 4px; }
+.yr-lesson .ls-callout { border-left: 3px solid rgba(226, 195, 109, 0.4); background: rgba(226, 195, 109, 0.06); border-radius: 12px; padding: 10px 14px; margin: 12px 0; }
+.yr-lesson .ls-callout p { margin: 6px 0; }
+.yr-lesson .ls-callout__label { text-transform: uppercase; letter-spacing: 0.08em; font-size: 0.78rem; color: var(--gold); }
+.yr-lesson .ls-callout--safety { border-left-color: rgba(243, 160, 110, 0.85); background: rgba(243, 160, 110, 0.08); }
+.yr-lesson .ls-callout--safety .ls-callout__label { color: #f3c29a; }
+.yr-lesson .ls-divider { border: none; border-top: 1px solid var(--line); margin: 18px 0; }
+.yr-lesson {
+  overflow-wrap: anywhere;
+}

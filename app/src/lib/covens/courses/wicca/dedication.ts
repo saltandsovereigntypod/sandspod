@@ -547,7 +547,7 @@ If your coven offers initiation, it is usually at least a year and a day away, a
           checked_by: 'mentor',
           minutes: 45,
           docs: ['wicca-dedication-the-rite'],
-          links: [coven('rituals')],
+          links: [coven('rituals'), page('year-and-a-day')],
           solitary: 'Write out your own self-dedication rite in full, using the solitary shape in the lesson and the app’s Solitary Self-Dedication, and choose the moon or sabbat you will keep it at. Read it through aloud once beforehand.',
         },
         {

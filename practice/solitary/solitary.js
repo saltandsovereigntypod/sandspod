@@ -101,6 +101,7 @@
         kit.card(`${kit.p(prompt.title)}${kit.muted(words || "Waiting for you, whenever you’re ready.")}`, { gold: true, label: evening ? "This evening" : "This morning" }),
         kit.section("Tools", kit.list(practices.CRAFT_TOOLS.solitary.map((t) => kit.row({ url: kit.href.tool("solitary", "devotion"), title: t.title, detail: t.detail }))), { id: "tools" }),
         kit.list([
+          kit.row({ url: "/rituals/year/", title: "A Year and a Day", detail: "On Rituals · thirteen moons of study and practice alone, ending in a self-dedication" }),
           kit.row({ url: "/rituals/journeys/", title: "Dedication journeys", detail: "On Rituals · study, practice and a rite of self-dedication to a path or a god" }),
           kit.row({ url: kit.href.premadeList("solitary"), title: "Premade workings", detail: "Every ritual and spell, filter by Solitary" })
         ])

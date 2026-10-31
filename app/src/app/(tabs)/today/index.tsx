@@ -44,6 +44,7 @@ import { primaryTradition } from '../../../lib/traditionDay';
 import { useMySettings } from '../../../lib/settings/store';
 import { todaySettings } from '../../../lib/library/traditions';
 import { buildToday, type HorizonItem, type TodayModel } from '../../../lib/today';
+import { YearToday } from '../../../components/year/YearToday';
 import { practiceToday } from '../../../lib/craft/today';
 import { hearthToday } from '../../../lib/craft/hearth/today';
 import { DREAMS, morningDreamPrompt, normalizeDream, quickDream } from '../../../lib/craft/hedge/dreams';
@@ -202,6 +203,8 @@ export default function Today() {
           <CovenToday />
 
           <TendToday />
+
+          <YearToday />
 
           <CycleToday />
 

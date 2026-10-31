@@ -146,7 +146,7 @@
       ${body("A dedication is a promise you make yourself, to a path or to a god, after a season of learning and practice. It isn’t an initiation: in most traditions initiation is given by a coven, lineage or teacher, and nothing here stands in for that.")}
       ${body("Go at your own pace. Pause whenever you need; a journey waits for you, and nothing is ever failed.", true)}
       ${yours.length ? section("Your journeys", list(yours)) : ""}
-      ${list([row("Patron deities", "What a patron is, how to know if one is calling you, and how to answer", L.href.patron())])}
+      ${list([row("A Year and a Day", "Practising alone? Thirteen moons of lessons and practice, ending in your path’s dedication rite", "/rituals/year/"), row("Patron deities", "What a patron is, how to know if one is calling you, and how to answer", L.href.patron())])}
       <div class="sp-field"><label for="jr-search">Search journeys</label><input id="jr-search" type="search" placeholder="A path or a god: Norse, Hekate, hearth…" autocomplete="off" data-journey-search /></div>
       <div class="jr-results" data-journey-results>${homeLists("")}</div>
       ${!mine.length ? body("Choose your path in Settings → Living Library → My path to put its journeys first.", true) : ""}`

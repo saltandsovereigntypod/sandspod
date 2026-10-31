@@ -1,6 +1,7 @@
+import { router } from 'expo-router';
 import { Text } from 'react-native';
 
-import { MenuList, Section, SwitchRow } from '../../../../components/more/ui';
+import { MenuList, MenuRow, Section, SwitchRow } from '../../../../components/more/ui';
 import { SettingsForm } from '../../../../components/more/SettingsForm';
 import { myPractices, PRACTICES, practicesValue } from '../../../../lib/rituals/premade';
 import { type } from '../../../../theme';
@@ -35,6 +36,17 @@ export default function PracticeSettings() {
                 ))}
               </MenuList>
             </Section>
+            {chosen.includes('solitary') && (
+              <MenuList>
+                <MenuRow
+                  label="A Year and a Day"
+                  detail="Practising alone? Thirteen moons of study and practice, ending in a self-dedication (Practice → Rituals)"
+                  icon="moon"
+                  last
+                  onPress={() => router.push('/rituals/year')}
+                />
+              </MenuList>
+            )}
             <Text style={type.caption}>Which kinds of draw Divination offers is now in Settings → Divination, and whether covens count you in their paths in Settings → Covens & privacy.</Text>
           </>
         );

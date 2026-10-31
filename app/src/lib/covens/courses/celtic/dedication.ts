@@ -488,7 +488,7 @@ None of this is required. It is what many dedicants find themselves wanting to d
           checked_by: 'mentor',
           minutes: 45,
           docs: ['celtic-dedication-the-rite'],
-          links: [coven('rituals')],
+          links: [coven('rituals'), page('year-and-a-day')],
           solitary: 'Write out your own self-dedication rite in full, using the solitary shape in the lesson and the app’s Solitary Self-Dedication, and choose the festival, moon or day you will keep it on. Read it through aloud once beforehand.',
         },
         {

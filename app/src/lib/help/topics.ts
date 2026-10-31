@@ -2266,6 +2266,28 @@ export const HELP: HelpSection[] = [
         keywords: ['dedication', 'self-dedication', 'path', 'deity journey', 'hekate', 'norse'],
       },
       {
+        id: 'year-and-a-day',
+        title: 'Follow A Year and a Day alone',
+        summary: 'Thirteen moons of study and practice for someone practising alone, ending in a self-dedication if you choose it.',
+        steps: [
+          'Open Practice → Rituals and tap "A Year and a Day" (it is also on Dedication journeys, the Solitary page and the Grimoire).',
+          'Choose your track: Eclectic, or a tradition’s lens: Wicca, Celtic, Norse & Heathen or Hellenic.',
+          'Choose when to begin: today, the next new moon, a coming festival of your calendar, or a day you type in. Tap "Begin my year and a day".',
+          'Open a moon to see what to read (lessons from the courses), what to practise (with the festivals and the moon’s rite that fall in it), its reflection and its self-checks.',
+          'Tap a lesson to read it, then "I’ve read this". Turn on "Done" under each practice when you have kept it.',
+          'Write the moon’s reflection and tick the self-checks that are true for you. They are private and never graded.',
+          'On the day of dedication, a year and a day after you began, open "The day of dedication" for the rite, then tap "I have made my dedication" once you have kept it.',
+        ],
+        tips: [
+          'Today shows where you are ("Moon 3 of 13") while your year is under way.',
+          'Turn on "Remind me" for a note when each moon begins, a nudge to reflect before it ends, and the day itself. On the website they come as a calendar file.',
+          'You can read ahead, fall behind, move your first day or change your track; nothing is locked or failed.',
+          'Your progress syncs with your account, so it is the same in the app and on the website.',
+        ],
+        href: '/rituals/year',
+        keywords: ['year and a day', 'solitary', 'thirteen moons', '13 moons', 'self-dedication', 'course', 'study alone', 'dedicant', 'wicca', 'heathen'],
+      },
+      {
         id: 'journeys-patron',
         title: 'Read the guide to patron deities',
         summary: 'What a patron is, how to know if one is calling you, and how to answer.',

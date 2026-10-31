@@ -45,6 +45,8 @@ type RemindersState = {
   tend: TendRecord[];
   /** Cycle & Moon's notes, when chosen there (cycle/store.ts). */
   cycle: Omit<Reminder, 'kind'>[];
+  /** A Year and a Day's notes, when its reminders are on (yearday/store.ts). */
+  year: Omit<Reminder, 'kind'>[];
 };
 
 let state: RemindersState = {
@@ -57,6 +59,7 @@ let state: RemindersState = {
   covens: [],
   tend: [],
   cycle: [],
+  year: [],
 };
 const listeners = new Set<() => void>();
 let started = false;
@@ -67,6 +70,7 @@ let sourcesKey = '';
 let covensKey = '';
 let tendKey = '';
 let cycleKey = '';
+let yearKey = '';
 
 function set(patch: Partial<RemindersState>) {
   state = { ...state, ...patch };
@@ -103,6 +107,7 @@ export function syncReminders(): Promise<void> {
         covens: state.covens,
         tend: state.tend,
         cycle: state.cycle,
+        year: state.year,
         place: place ? { latitude: place.latitude, longitude: place.longitude } : null,
         now: new Date(),
       });
@@ -224,6 +229,15 @@ export function setCycleReminders(list: Omit<Reminder, 'kind'>[]) {
   void syncReminders();
 }
 
+/** A Year and a Day's notes to ring (none when its reminders are off); reschedules when they change. */
+export function setYearReminders(list: Omit<Reminder, 'kind'>[]) {
+  const key = JSON.stringify(list.map((r) => [r.key, r.at.getTime(), r.title]));
+  if (key === yearKey) return;
+  yearKey = key;
+  set({ year: list });
+  void syncReminders();
+}
+
 /** After Cycle & Moon's reminders are turned on: ask for notifications if they aren't allowed yet. */
 export async function askForCycleReminders(): Promise<PermissionState> {
   await start();
@@ -294,3 +308,6 @@ export function useReminders(): RemindersState {
   }, []);
   return useSyncExternalStore(subscribe, snapshot, snapshot);
 }
+
+/** After A Year and a Day's reminders are turned on: ask for notifications if they aren't allowed yet. */
+export const askForYearReminders = askForCycleReminders;
