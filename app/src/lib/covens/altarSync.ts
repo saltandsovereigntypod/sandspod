@@ -19,6 +19,7 @@ import { supabase } from '../supabase';
 import { diff, documentFromRows, keyed, keyOf, sceneFromAltar, sceneOf, sortAltars, withObject, withScene, type AltarAccess, type AltarEditor, type Change, type CovenAltar, type Scene } from './altarDoc';
 import type { CovenAltarsInput } from './altarsAcross';
 import * as api from './api';
+import { joinChannel, type SharedChannel } from './sharedChannel';
 import { permissions, standing, unsignedAgreements, type CovenDocument, type Signature } from './model';
 
 export * from './altarDoc';
@@ -214,7 +215,7 @@ export function useCovenAltar(altarId: string, me: { userId: string; name: strin
   const latest = useRef<AltarDocument | null>(null);
   const altarRef = useRef<CovenAltar | null>(null);
   const accessRef = useRef<AltarAccess | null>(null);
-  const channelRef = useRef<ReturnType<typeof supabase.channel> | null>(null);
+  const channelRef = useRef<SharedChannel | null>(null);
   const timers = useRef<{ send: ReturnType<typeof setTimeout> | null; write: ReturnType<typeof setTimeout> | null }>({ send: null, write: null });
   const userId = me?.userId ?? '';
   useEffect(() => {
@@ -287,49 +288,64 @@ export function useCovenAltar(altarId: string, me: { userId: string; name: strin
   useEffect(() => {
     if (!altarId || !userId || !altar?.coven_id) return;
     const covenId = altar.coven_id;
-    const channel = supabase.channel(`coven-altar:${altarId}`, { config: { presence: { key: userId }, broadcast: { self: false } } });
-    channelRef.current = channel;
-    channel.on('postgres_changes' as never, { event: '*', schema: 'public', table: 'coven_altar_objects', filter: `altar_id=eq.${altarId}` } as never, (payload: { eventType: string; new: ObjectRow; old: Partial<ObjectRow> }) => {
-      if (payload.eventType === 'DELETE') return;
-      positions.current.set(payload.new.object_key, payload.new.position);
-      if (payload.new.updated_by === userId) return;
-      receive(payload.new.object_key, payload.new.data);
-    });
-    // Deletes can't be filtered; ones for other altars are ignored.
-    channel.on('postgres_changes' as never, { event: 'DELETE', schema: 'public', table: 'coven_altar_objects' } as never, (payload: { old: Partial<ObjectRow> }) => {
-      if (payload.old.altar_id !== altarId || !payload.old.object_key) return;
-      positions.current.delete(payload.old.object_key);
-      receive(payload.old.object_key, null);
-    });
-    channel.on('postgres_changes' as never, { event: 'UPDATE', schema: 'public', table: 'coven_altars', filter: `id=eq.${altarId}` } as never, (payload: { new: CovenAltar }) => {
-      setAltar(payload.new);
-      void checkAccess();
-      if (payload.new.updated_by !== userId) receiveScene(sceneFromAltar(payload.new));
-    });
-    // Deleted by its keeper while you're here (deletes can't be filtered either).
-    channel.on('postgres_changes' as never, { event: 'DELETE', schema: 'public', table: 'coven_altars' } as never, (payload: { old: Partial<CovenAltar> }) => {
-      if (payload.old.id === altarId) setMissing(true);
-    });
-    for (const table of ['coven_rituals', 'coven_ritual_steps', 'coven_altar_editors', 'coven_members']) {
-      channel.on('postgres_changes' as never, { event: '*', schema: 'public', table, filter: `coven_id=eq.${covenId}` } as never, () => void checkAccess());
-    }
-    channel.on('broadcast', { event: 'change' }, ({ payload }: { payload: Wire }) => {
-      if (!payload || payload.from === userId) return;
-      if (payload.scene) receiveScene(payload.scene);
-      else if (payload.key) receive(payload.key, payload.data ?? null);
-    });
-    channel.on('presence', { event: 'sync' }, () => {
-      const state = channel.presenceState() as Record<string, Presence[]>;
-      setHere(Object.values(state).map((list) => list[0]).filter(Boolean));
-    });
-    channel.subscribe((status) => {
-      if (status === 'SUBSCRIBED') void channel.track({ user_id: userId, name: me?.name ?? 'A member' });
-      // Coming back after a dropped connection: catch up with what happened meanwhile.
-      if (status === 'SUBSCRIBED' && latest.current) void load(true);
-    });
+    // Shared (sharedChannel.ts): the same altar open twice in the stack (ritual,
+    // altar, ritual, altar) uses one channel; opening it twice closed the app.
+    const shared = joinChannel(
+      `coven-altar:${altarId}`,
+      { presence: { key: userId }, broadcast: { self: false } },
+      (channel, emit) => {
+        channel.on('postgres_changes' as never, { event: '*', schema: 'public', table: 'coven_altar_objects', filter: `altar_id=eq.${altarId}` } as never, (payload: unknown) => emit('object', payload));
+        // Deletes can't be filtered; ones for other altars are ignored.
+        channel.on('postgres_changes' as never, { event: 'DELETE', schema: 'public', table: 'coven_altar_objects' } as never, (payload: unknown) => emit('objectGone', payload));
+        channel.on('postgres_changes' as never, { event: 'UPDATE', schema: 'public', table: 'coven_altars', filter: `id=eq.${altarId}` } as never, (payload: unknown) => emit('altar', payload));
+        // Deleted by its keeper while you're here (deletes can't be filtered either).
+        channel.on('postgres_changes' as never, { event: 'DELETE', schema: 'public', table: 'coven_altars' } as never, (payload: unknown) => emit('altarGone', payload));
+        for (const table of ['coven_rituals', 'coven_ritual_steps', 'coven_altar_editors', 'coven_members']) {
+          channel.on('postgres_changes' as never, { event: '*', schema: 'public', table, filter: `coven_id=eq.${covenId}` } as never, () => emit('access', null));
+        }
+        channel.on('broadcast', { event: 'change' }, ({ payload }: { payload: Wire }) => emit('broadcast', payload));
+      },
+      (event, raw) => {
+        if (event === 'object') {
+          const payload = raw as { eventType: string; new: ObjectRow };
+          if (payload.eventType === 'DELETE' || !payload.new) return;
+          positions.current.set(payload.new.object_key, payload.new.position);
+          if (payload.new.updated_by === userId) return;
+          receive(payload.new.object_key, payload.new.data);
+        } else if (event === 'objectGone') {
+          const old = (raw as { old?: Partial<ObjectRow> }).old;
+          if (!old || old.altar_id !== altarId || !old.object_key) return;
+          positions.current.delete(old.object_key);
+          receive(old.object_key, null);
+        } else if (event === 'altar') {
+          const next = (raw as { new?: CovenAltar }).new;
+          if (!next) return;
+          setAltar(next);
+          void checkAccess();
+          if (next.updated_by !== userId) receiveScene(sceneFromAltar(next));
+        } else if (event === 'altarGone') {
+          if ((raw as { old?: Partial<CovenAltar> }).old?.id === altarId) setMissing(true);
+        } else if (event === 'access') void checkAccess();
+        else if (event === 'broadcast') {
+          const payload = raw as Wire | null;
+          if (!payload || payload.from === userId) return;
+          if (payload.scene) receiveScene(payload.scene);
+          else if (payload.key) receive(payload.key, payload.data ?? null);
+        } else if (event === 'presence') {
+          const state = shared.presence() as Record<string, Presence[]>;
+          const next = Object.values(state).map((list) => list[0]).filter(Boolean);
+          setHere((prev) => (prev.length === next.length && prev.every((p, i) => p.user_id === next[i].user_id && p.name === next[i].name) ? prev : next));
+        } else if (event === 'status' && raw === 'SUBSCRIBED' && latest.current) {
+          // Coming back after a dropped connection: catch up with what happened meanwhile.
+          void load(true);
+        }
+      },
+    );
+    shared.track({ user_id: userId, name: me?.name ?? 'A member' });
+    channelRef.current = shared;
     return () => {
-      channelRef.current = null;
-      void supabase.removeChannel(channel);
+      if (channelRef.current === shared) channelRef.current = null;
+      shared.leave();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps -- one channel per altar; the name only labels you
   }, [altarId, userId, altar?.coven_id, receive, receiveScene, checkAccess, load]);
@@ -342,7 +358,7 @@ export function useCovenAltar(altarId: string, me: { userId: string; name: strin
     if (!channel) return;
     for (const change of changes) {
       const payload: Wire = change.kind === 'scene' ? { from: userId, scene: change.scene } : { from: userId, key: change.key, data: change.data };
-      void channel.send({ type: 'broadcast', event: 'change', payload });
+      channel.send('change', payload);
     }
   }, [userId]);
 

@@ -4,6 +4,7 @@
 
 import { supabase } from '../supabase';
 import { covenTraditionOf } from './covenTradition';
+import { joinChannel } from './sharedChannel';
 import type { Assignment, Enrollment, Grant, Mentorship, Program, ProgramStage, ProgramTask, ProgramTemplate, StagePass, stagesPayload, TaskProgress } from './programs';
 import type {
   Advancement,
@@ -926,34 +927,43 @@ export function listen(
   onChange: (change: LiveChange) => void,
   onPresence: (people: { user_id: string; name: string; place?: string }[]) => void,
 ): { track: (place: string) => void; stop: () => void } {
-  const channel = supabase.channel(`coven:${covenId}`, { config: { presence: { key: me.userId } } });
+  // Shared (sharedChannel.ts): two of this coven's screens open at once mustn't open the channel twice.
+  type Payload = { eventType: LiveChange['eventType']; new: Record<string, unknown>; old: Record<string, unknown> };
   const tables: LiveTable[] = ['coven_messages', 'coven_altar_items', 'coven_rituals', 'coven_ritual_steps', 'coven_ritual_rsvps', 'coven_ritual_step_marks', 'coven_petitions'];
-  for (const table of tables) {
-    channel.on('postgres_changes' as never, { event: '*', schema: 'public', table, filter: `coven_id=eq.${covenId}` } as never, (payload: { eventType: LiveChange['eventType']; new: Record<string, unknown>; old: Record<string, unknown> }) =>
-      onChange({ table, eventType: payload.eventType, new: payload.new ?? {}, old: payload.old ?? {} }),
-    );
-  }
-  // Deletes can't be filtered by coven; ids the app doesn't hold are ignored.
-  for (const table of ['coven_altar_items', 'coven_rituals', 'coven_ritual_steps'] as LiveTable[]) {
-    channel.on('postgres_changes' as never, { event: 'DELETE', schema: 'public', table } as never, (payload: { new: Record<string, unknown>; old: Record<string, unknown> }) =>
-      onChange({ table, eventType: 'DELETE', new: {}, old: payload.old ?? {} }),
-    );
-  }
-  channel.on('presence', { event: 'sync' }, () => {
-    const state = channel.presenceState() as Record<string, { user_id: string; name: string; place?: string }[]>;
-    onPresence(Object.values(state).map((list) => list[0]).filter(Boolean));
-  });
   let place = 'coven';
-  channel.subscribe((status) => {
-    if (status === 'SUBSCRIBED') void channel.track({ user_id: me.userId, name: me.name, place });
-  });
+  const shared = joinChannel(
+    `coven:${covenId}`,
+    { presence: { key: me.userId } },
+    (channel, emit) => {
+      for (const table of tables) {
+        channel.on('postgres_changes' as never, { event: '*', schema: 'public', table, filter: `coven_id=eq.${covenId}` } as never, (payload: Payload) =>
+          emit('change', { table, eventType: payload.eventType, new: payload.new ?? {}, old: payload.old ?? {} } satisfies LiveChange),
+        );
+      }
+      // Deletes can't be filtered by coven; ids the app doesn't hold are ignored.
+      for (const table of ['coven_altar_items', 'coven_rituals', 'coven_ritual_steps'] as LiveTable[]) {
+        channel.on('postgres_changes' as never, { event: 'DELETE', schema: 'public', table } as never, (payload: Payload) =>
+          emit('change', { table, eventType: 'DELETE', new: {}, old: payload.old ?? {} } satisfies LiveChange),
+        );
+      }
+    },
+    (event, payload) => {
+      if (event === 'change') onChange(payload as LiveChange);
+      else if (event === 'presence') {
+        const state = shared.presence() as Record<string, { user_id: string; name: string; place?: string }[]>;
+        onPresence(Object.values(state).map((list) => list[0]).filter(Boolean));
+      }
+    },
+  );
+  shared.track({ user_id: me.userId, name: me.name, place });
   return {
     track(next: string) {
+      if (next === place) return;
       place = next;
-      void channel.track({ user_id: me.userId, name: me.name, place }).catch(() => {});
+      shared.track({ user_id: me.userId, name: me.name, place });
     },
     stop() {
-      void supabase.removeChannel(channel);
+      shared.leave();
     },
   };
 }
