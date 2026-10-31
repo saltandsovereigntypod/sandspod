@@ -4,6 +4,9 @@ import { StyleSheet, Text, View } from 'react-native';
 
 import { Button } from '../../../../components/Button';
 import { AltarChoiceSheet, useBeginOnAltar } from '../../../../components/altar/connect/BeginOnAltar';
+import { BeginTogetherButton } from '../../../../components/together/BeginTogether';
+import { draftFromTemplate } from '../../../../lib/rituals/lifecycle';
+import { startFromDraft } from '../../../../lib/together/live';
 import { Connections } from '../../../../components/rituals/Connections';
 import { Body, Card, RitualScreen, SectionLabel, Title, tell, ui } from '../../../../components/rituals/ui';
 import { templateCredit } from '../../../../lib/rituals/community';
@@ -63,6 +66,10 @@ export default function TemplateView() {
 
       <View style={ui.actions}>
         <Button label={starting ? 'Beginning…' : 'Begin this ritual'} disabled={starting || !!rituals.active} onPress={begin} />
+        <BeginTogetherButton
+          disabled={!steps.length}
+          start={() => startFromDraft(draftFromTemplate(template), { kind: template.metadata?.spell ? 'spell' : 'template', ref: template.id })}
+        />
         <Button
           label={onAltar.busy ? 'Beginning…' : 'Begin on an altar'}
           variant="outline"

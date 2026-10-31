@@ -177,9 +177,11 @@ test('nothing on reads as Nothing', () => {
   prefs = setPositionsFor(prefs, 'c1', false);
   const [row] = covenNotifyRows([{ id: 'c1', slug: 'a', name: 'A' }], { ...prefs, requests: { ...prefs.requests, answers: false } }, { c1: { notify_coven: false, notify_direct: false } });
   assert.equal(row.summary, 'Nothing');
-  assert.equal(wantsCovenPush([row], { ...prefs, requests: { ...prefs.requests, answers: false }, invitations: { on: false, accepted: false }, training: { on: false } }), false);
+  assert.equal(wantsCovenPush([row], { ...prefs, requests: { ...prefs.requests, answers: false }, invitations: { on: false, accepted: false }, training: { on: false }, together: { live: false, mentorship: false } }), false);
+  // Rituals together and mentorship are reason enough too.
+  assert.equal(wantsCovenPush([row], { ...prefs, requests: { ...prefs.requests, answers: false }, invitations: { on: false, accepted: false }, training: { on: false }, together: { live: false, mentorship: true } }), true);
   // Training messages are reason enough too.
-  assert.equal(wantsCovenPush([row], { ...prefs, requests: { ...prefs.requests, answers: false }, invitations: { on: false, accepted: false } }), true);
+  assert.equal(wantsCovenPush([row], { ...prefs, requests: { ...prefs.requests, answers: false }, invitations: { on: false, accepted: false }, together: { live: false, mentorship: false } }), true);
   // Invitations to you are reason enough to sign the phone up.
   assert.equal(wantsCovenPush([row], { ...prefs, requests: { ...prefs.requests, answers: false } }), true);
 });

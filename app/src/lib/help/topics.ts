@@ -3421,6 +3421,41 @@ export const HELP: HelpSection[] = [
         keywords: ['my covens', 'my coven', 'unread', 'next gathering', 'position', 'rank', 'application waiting'],
       },
       {
+        id: 'covens-together',
+        title: 'Do a ritual together, live',
+        summary: 'Run a ritual with your coven or friends from different places: everyone sees the same step as the leader moves on.',
+        steps: [
+          'Open a ready-made working, one of your saved rituals or spells, or a coven gathering, and tap "Begin together".',
+          'Tap "Open the ritual for others to join". Share the link, or, for a coven gathering, everyone it is for can join from its page.',
+          'As host, tap "Light the candle together", then "Begin the ritual" and "Next step". "Pass the lead" lets someone else lead; "Take the lead back" returns it.',
+          'At the end each person taps "It is done", and can keep a note in their own ritual journal.',
+        ],
+        tips: [
+          'Text only: no camera or microphone. Turn on "Quiet mode" to hide the chat, or, as host, "Quiet for everyone".',
+          'The host can ask someone to leave. You can report or block anyone, and you won’t see messages from people you’ve blocked.',
+          'Rituals together use your community profile (18+).',
+        ],
+        href: '/rituals/together',
+        keywords: ['ritual together', 'live ritual', 'group ritual', 'remote', 'distance', 'online ritual', 'shared ritual', 'invite link', 'candle together'],
+      },
+      {
+        id: 'covens-mentorship',
+        title: 'Find a mentor, or mentor someone',
+        summary: 'Pair an experienced witch with someone learning: a private conversation, shared goals and reading, and check-ins. Adults only, on both sides.',
+        steps: [
+          'Open the Coven tab and tap "Mentorship".',
+          'Set up your mentorship profile: what you offer or look for, traditions and topics, and whether to show in the open directory or to your covens. Confirm you are 18 or older and agree to the boundaries.',
+          'Under "Directory", choose "Find a mentor" or "Find someone to mentor", filter by tradition and topics, and ask with a short note.',
+          'When you both say yes, the pairing opens: add goals and a reading list linked to journeys, lessons and pages, check in, and write to each other.',
+        ],
+        tips: [
+          'In a coven, Members → "Mentorship" shows its members who mentor or are looking. Those who run its programs can suggest a pairing; it begins only if both say yes, and they see only that it exists, never what is said.',
+          'Either of you can end it at any time. Blocking someone ends any mentorship between you.',
+        ],
+        href: '/coven/mentorship',
+        keywords: ['mentor', 'mentee', 'mentorship', 'teacher', 'student', 'guidance', 'apprentice', 'learn from'],
+      },
+      {
         id: 'covens-join',
         title: 'Find and join a coven',
         summary: 'Covens are for adults; each has its own creed, rules and way of joining.',

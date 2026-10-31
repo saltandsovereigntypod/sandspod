@@ -8,6 +8,7 @@ import { ContributionList, MyContribution, Participation } from '../../../../../
 import { ApologyNote } from '../../../../../../components/covens/Record';
 import { MeetingScreen } from '../../../../../../components/covens/meeting/MeetingScreen';
 import { SendNotice } from '../../../../../../components/covens/SendNotice';
+import { GatheringTogether } from '../../../../../../components/together/GatheringTogether';
 import { KeepRitual } from '../../../../../../components/covens/KeepRitual';
 import { PrepList, RecordCard, StepLines, TurnBox, VoteBox } from '../../../../../../components/covens/builder/LiveParts';
 import { Pill, Pills, Spoken, Words } from '../../../../../../components/covens/ui';
@@ -605,6 +606,7 @@ function RitualScreen() {
         </View>
       )}
       {ritual.status === 'scheduled' && <SendNotice ritual={ritual} />}
+      {!live && <GatheringTogether ritual={ritual} steps={steps} covenSlug={coven.slug} canLead={canLead} />}
       {canLead && (live || ritual.status === 'scheduled' || ritual.status === 'draft') && (
         <View style={styles.lead}>
           {!live && <Button label="Start the ritual" onPress={() => void act(() => api.startRitual(ritual.id))} disabled={busy || !steps.length} />}

@@ -5,6 +5,8 @@ import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { Button } from '../../../../components/Button';
 import { SupportLink } from '../../../../components/SupportLink';
 import { AltarChoiceSheet, useBeginOnAltar } from '../../../../components/altar/connect/BeginOnAltar';
+import { BeginTogetherButton } from '../../../../components/together/BeginTogether';
+import { startFromDraft } from '../../../../lib/together/live';
 import { IngredientCheck } from '../../../../components/altar/connect/IngredientCheck';
 import { premadeNeeds } from '../../../../lib/altar/connect/ingredients';
 import { Body, Card, RitualScreen, SectionLabel, Title, tell, ui } from '../../../../components/rituals/ui';
@@ -118,6 +120,7 @@ export default function PremadeView() {
 
       <View style={ui.actions}>
         <Button label={busy === 'begin' ? 'Beginning…' : 'Begin this ritual'} disabled={!!busy || !!rituals.active} onPress={begin} />
+        <BeginTogetherButton start={() => startFromDraft(premadeDraft(premade), { kind: 'premade', ref: premade.id })} />
         <Button
           label={onAltar.busy ? 'Beginning…' : 'Begin on an altar'}
           variant="outline"

@@ -263,6 +263,7 @@
       const blocked = state.busy || !!state.active;
       return `<div class="sp-actions">
           ${button(state.busy ? "One moment…" : "Begin now", `data-begin${blocked ? " disabled" : ""}`, "primary")}
+          ${button("Begin together", `data-begin-together${state.busy ? " disabled" : ""}`)}
           ${button("Plan a night for it", "data-plan")}
           ${account ? button(state.busy ? "Saving…" : saved ? "Save changes" : "Keep in my Grimoire", `data-keep${state.busy ? " disabled" : ""}`) : ""}
           ${button("Print", "data-print")}
@@ -422,6 +423,13 @@
         const list = [...steps(), { ...R.lifecycle.blankStep(), title: "A step of my own" }];
         state.editing = list.length - 1;
         setSteps(list);
+      } else if (el.hasAttribute("data-begin-together")) {
+        try {
+          global.sessionStorage.setItem("together.start", JSON.stringify({ kind: "draft", draft: draft(), source: { kind: "spell", ref: state.saved ? state.saved.id : null } }));
+        } catch {
+          // Storage blocked: the page explains there's nothing to begin.
+        }
+        global.location.href = "/rituals/together/?start=1";
       } else if (el.hasAttribute("data-reset-steps")) {
         state.editing = null;
         setSteps(null);
