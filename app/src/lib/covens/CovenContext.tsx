@@ -256,7 +256,8 @@ export function CovenProvider({ slug, children }: { slug: string; children: Reac
             break;
         }
       },
-      setPresence,
+      // A presence sync that changes nothing (someone re-sending where they are) leaves the screens alone.
+      (people) => setPresence((prev) => (samePresence(prev, people) ? prev : people)),
     );
     liveRef.current = live;
     return () => {
@@ -289,6 +290,11 @@ export function CovenProvider({ slug, children }: { slug: string; children: Reac
     const list = await api.fetchMarks(ritualId).catch(() => [] as StepMark[]);
     setMarks((prev) => [...prev.filter((m) => m.ritual_id !== ritualId), ...list]);
   }, []);
+
+  // Stable, so screens that say where you are (ritual, altar) don't run again on
+  // every change; a new function each time made them re-send presence, whose
+  // sync changed the value again: a loop that kept phones busy and hot.
+  const track = useCallback((place: string) => liveRef.current?.track(place), []);
 
   const value = useMemo<CovenState>(
     () => ({
@@ -336,9 +342,9 @@ export function CovenProvider({ slug, children }: { slug: string; children: Reac
       trainingUnread,
       refreshPrograms,
       presence,
-      track: (place) => liveRef.current?.track(place),
+      track,
     }),
-    [slug, status, snapshot, me, lineage, refreshLineage, perms, unsigned, stand, userId, names, loadNames, refresh, rituals, steps, rsvps, marks, refreshRituals, loadMarks, messages, loadMessages, onMessage, altar, loadAltar, petitionsVersion, grants, mentors, waitingForMe, trainingUnread, refreshPrograms, presence],
+    [slug, status, snapshot, me, lineage, refreshLineage, perms, unsigned, stand, userId, names, loadNames, refresh, rituals, steps, rsvps, marks, refreshRituals, loadMarks, messages, loadMessages, onMessage, altar, loadAltar, petitionsVersion, grants, mentors, waitingForMe, trainingUnread, refreshPrograms, presence, track],
   );
 
   return <Context.Provider value={value}>{children}</Context.Provider>;
@@ -348,4 +354,12 @@ export function useCoven(): CovenState {
   const value = useContext(Context);
   if (!value) throw new Error('useCoven must be used inside CovenProvider');
   return value;
+}
+
+const presenceKey = (p: Presence) => `${p.user_id}\u0000${p.name}\u0000${p.place ?? ''}`;
+/** The same people in the same places (order aside). */
+function samePresence(a: Presence[], b: Presence[]): boolean {
+  if (a.length !== b.length) return false;
+  const keys = new Set(a.map(presenceKey));
+  return b.every((p) => keys.has(presenceKey(p)));
 }

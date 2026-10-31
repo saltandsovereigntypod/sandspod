@@ -86,3 +86,28 @@ export function chatPanelFrame(width: number, height: number): { side: 'bottom' 
   if (w >= 720 || w > h * 1.2) return { side: 'right', width: Math.round(Math.min(400, Math.max(300, w * 0.4))), height: h };
   return { side: 'bottom', width: w, height: Math.round(Math.min(520, Math.max(280, h * 0.55))) };
 }
+
+// ─── The rite under way ─────────────────────────────────────────────────
+
+type LiveRitualRow = { id: string; status: string; kind?: string | null; current_step_id?: string | null; altar_id?: string | null };
+
+/**
+ * The rite to show in the "Ritual" window over a coven altar: one under way
+ * with a step in progress (a meeting has its own screen). The one the altar
+ * says is under way here first, then one held at this altar, then any other.
+ */
+export function liveRitualFor<T extends LiveRitualRow>(rituals: T[], altarId: string, preferId?: string | null): T | null {
+  const live = rituals.filter((r) => r.status === 'live' && !!r.current_step_id && r.kind !== 'meeting');
+  return live.find((r) => !!preferId && r.id === preferId) ?? live.find((r) => r.altar_id === altarId) ?? live[0] ?? null;
+}
+
+/** How the step is taken: together, or in turn, and whose turn it is now. */
+export function turnLine(step: { turn_mode?: string | null; turn_order?: string[] | null; turn_at?: number | null }, me: string | null, nameOf: (id: string) => string): string {
+  if (step.turn_mode !== 'in_turn') return 'Taken together.';
+  const order = step.turn_order ?? [];
+  if (!order.length) return 'Taken in turn.';
+  const at = step.turn_at ?? 0;
+  const now = order[at];
+  if (!now) return 'Taken in turn; everyone has had theirs.';
+  return `Taken in turn: ${now === me ? 'your turn now' : `${nameOf(now)}’s turn now`} (${at + 1} of ${order.length}).`;
+}

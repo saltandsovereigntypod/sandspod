@@ -19,6 +19,7 @@ import {
   type StepContribution,
 } from '../../lib/covens/contributions';
 import { andList } from '../../lib/covens/picker';
+import { TAROT_DECK } from '../../lib/divination/tarot';
 import { type } from '../../theme';
 import { Button } from '../Button';
 import { CheckRow, Field, Notice } from '../more/ui';
@@ -111,6 +112,18 @@ export function MyContribution({
               onAdd={(entry) => setChosen((list) => [...list, stepItemOf(entry as ItemEntry)].slice(0, 6))}
               onRemove={(key) => setChosen((list) => list.filter((i) => i.key !== key))}
               placeholder="A candle in your colour, bread, a flower…"
+            />
+          )}
+          {kind.id === 'card' && (
+            <Button
+              label="Draw a card from the deck"
+              variant="outline"
+              onPress={() => {
+                // One card from the full tarot deck, upright or reversed, written into the note.
+                const card = TAROT_DECK[Math.floor(Math.random() * TAROT_DECK.length)];
+                const reversed = Math.random() < 0.5;
+                setBody(`${card.name}${reversed ? ' (reversed)' : ''}: ${(reversed ? card.reversed : card.upright).keywords}`);
+              }}
             />
           )}
           <Field
