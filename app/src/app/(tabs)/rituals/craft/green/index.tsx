@@ -54,6 +54,11 @@ export default function GreenPractice() {
         </List>
       </View>
 
+      <List>
+        <Row icon="wheel" title="Foraging & garden" detail="Hearth & land · what grows where, the hedgerow this month, and your harvests" onPress={() => router.push('/rituals/craft/hearth/forage' as Href)} />
+        <Row icon="grimoire" title="Land journal" detail="Hearth & land · frosts, blooms and birdsong on your places, year on year" last onPress={() => router.push('/rituals/craft/hearth/land' as Href)} />
+      </List>
+
       <LandCard />
 
       <List>

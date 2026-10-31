@@ -6,6 +6,8 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Button } from '../../../components/Button';
 import { DivinationMeanings } from '../../../components/divination/Meanings';
 import { DreamList, DreamRow } from '../../../components/grimoire/dreams';
+import { JournalShelfBody, useJournalMatches } from '../../../components/journals/screens';
+import { grimoireJournals, journalByShelf, type JournalKind } from '../../../lib/journals/journals';
 import { CustomiseBar, Disclosure, HomePartFrame, PageList, SectionPicker, SmallButton, SortAndFilter, SortNote } from '../../../components/grimoire/Home';
 import { MundaneToggle, useMundaneMode } from '../../../components/grimoire/presentation';
 import { FailedChanges } from '../../../components/grimoire/SaveStatus';
@@ -64,6 +66,7 @@ export default function Grimoire() {
         </View>
         <LibraryLink />
         <GuestDreams />
+        <JournalsLink />
       </Shell>
     );
   }
@@ -102,6 +105,7 @@ export default function Grimoire() {
       </View>
 
       <LibraryLink />
+      <JournalsLink />
 
       <FailedChanges />
 
@@ -168,6 +172,8 @@ function ArrangedHome({ mundane }: { mundane: boolean }) {
   const builtIn = [
     ...allShelves.map((s) => ({ key: s.key, title: s.title })),
     ...(dreamsOn ? [{ key: DREAMS_SHELF.key, title: DREAMS_SHELF.title }] : []),
+    // The practice journals kept in the Grimoire (the rest live under Rituals → Journal).
+    ...grimoireJournals(settings).map((j) => ({ key: j.shelfKey, title: j.title })),
     ...(traditionalOn && !allShelves.some((s) => s.key === 'traditional') ? [{ key: 'traditional', title: 'Traditional Information' }] : []),
   ];
   const loose = pages.filter((p) => !p.section_id || !known.has(p.section_id));
@@ -248,6 +254,9 @@ function ArrangedHome({ mundane }: { mundane: boolean }) {
         </HomePartFrame>
       );
     }
+
+    const journal = journalByShelf(item.key);
+    if (journal) return <JournalShelf key={item.key} kind={journal.kind} frame={frame} item={item} query={query} />;
 
     const holdsDivination = item.key === 'traditional' && divination.length > 0;
     if (!shelf && !holdsDivination) return null;
@@ -380,9 +389,36 @@ function LibraryLink() {
         label="Living Library"
         detail="Search herbs, crystals, candles, deities and your My Practice notes"
         icon="library"
-        last
         onPress={() => router.push('/grimoire/library')}
       />
+      <MenuRow
+        label="Kitchen witchery & the land"
+        detail="Recipes with intent, your land journal and harvests · keep a recipe here as a page"
+        icon="moon"
+        last
+        onPress={() => router.push('/rituals/craft/hearth')}
+      />
+    </MenuList>
+  );
+}
+
+/** A practice journal as a section of the Grimoire; searching shows the entries that match. */
+function JournalShelf({ kind, frame, item, query }: { kind: JournalKind; frame: Omit<React.ComponentProps<typeof HomePartFrame>, 'children' | 'count'>; item: HomeItem; query: string }) {
+  const searching = query.trim().length > 0;
+  const { count, matches } = useJournalMatches(kind, query);
+  if (searching && !matches) return null;
+  return (
+    <HomePartFrame {...frame} item={searching ? { ...item, open: true } : item} count={searching ? matches : count}>
+      <JournalShelfBody kind={kind} query={query} />
+    </HomePartFrame>
+  );
+}
+
+/** The four practice journals, wherever each is kept. */
+function JournalsLink() {
+  return (
+    <MenuList>
+      <MenuRow label="Journals" detail="Shadow work, Deity & spirit, Ancestors, and Omens & signs" icon="moon" last onPress={() => router.push('/grimoire/journals' as Href)} />
     </MenuList>
   );
 }

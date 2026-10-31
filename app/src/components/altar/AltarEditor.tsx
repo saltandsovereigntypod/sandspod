@@ -1,4 +1,5 @@
 import { router, useFocusEffect, useLocalSearchParams } from 'expo-router';
+import { journalPlace, journalRoutes } from '../../lib/journals/journals';
 import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 import {
   ActivityIndicator,
@@ -73,7 +74,7 @@ import { attunementOf } from '../../lib/altar/attunement';
 import { chargeDetail, chargeLine, chargeOf, MOMENT_MS, MOMENT_WORDS, momentFor, recordCharge, recordCleanse } from '../../lib/altar/charge';
 import { applyMoves, placementWisdom } from '../../lib/altar/reading/layouts';
 import { tonightTheme, whyThisPiece } from '../../lib/altar/reading/tonightExplained';
-import { deityRelationship } from '../../lib/altar/relationship';
+import { deityKeyOf, deityName, deityRelationship } from '../../lib/altar/relationship';
 import type { TonightAltar } from '../../lib/altar/tonight';
 import { nightCandle, waxLook } from '../../lib/altar/wax';
 import { feedingDue, feedingLine, sachetStateOf } from '../../lib/altar/workings/sachet';
@@ -240,7 +241,7 @@ import type { CabinetForm, CabinetItem } from '../../lib/altar/types';
 import { useLibrary } from '../../lib/library';
 import { setAltarFullScreen } from '../../lib/altarFullScreen';
 import { canTurnScreen, turnScreen } from '../../lib/screenOrientation';
-import { useMySettings } from '../../lib/settings/store';
+import { cachedSettings, useMySettings } from '../../lib/settings/store';
 import { moonTimeAltar, planetAltar, shrineAltar, tonightAltar } from '../../lib/altar/tonight';
 import { TRADITIONAL_LIBRARY } from '../../lib/library/traditionalData';
 import { hiddenTraditions, holidayChoice, holidaysToday } from '../../lib/holidays';
@@ -2672,6 +2673,12 @@ function ObjectPanel({
           <Chip label="Offering" symbol="❀" onPress={() => act.deity('offering')} />
           <Chip label="Reason for presence" symbol="☉" onPress={() => act.deity('reason')} />
           {Platform.OS !== 'web' && <Chip label="Widget offering" symbol="▣" onPress={() => act.deity('widget')} />}
+          <Chip
+            label="Deity journal"
+            symbol="✎"
+            accessibilityLabel="Write about this offering or prayer in your deity journal"
+            onPress={() => router.push(journalRoutes('devotion', journalPlace(cachedSettings(), 'devotion')).write({ deity: deityKeyOf(object), deityName: deityName(object) }) as never)}
+          />
         </ChipRow>
       )}
       {relationship && (

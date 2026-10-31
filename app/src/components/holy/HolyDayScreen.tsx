@@ -9,6 +9,8 @@ import { ResearchFooter } from '../../components/ResearchNote';
 import { MOON_CALENDAR } from '../../lib/calendars/moon';
 import { timeOfDay } from '../../lib/calendar';
 import { vocForDay } from '../../lib/craft/cosmic/hours';
+import { allRecipes, RECIPES, recipesForHoly } from '../../lib/craft/hearth/recipes';
+import { useCraft } from '../../lib/craft/store';
 import { useGrimoire } from '../../lib/grimoire/store';
 import { findHolyGrimoirePage, grimoireSection, holyBlocks, holyPage } from '../../lib/holy';
 import { findByName, todayLibraryHref, useLibrary } from '../../lib/library';
@@ -16,6 +18,8 @@ import { moonSign, moonState } from '../../lib/moon';
 import { premadeById } from '../../lib/rituals/premade';
 import { useSession } from '../../lib/session';
 import { colors, fonts, type } from '../../theme';
+import { ANCESTOR_HOLIDAYS } from '../../lib/craft/hedge/ancestors';
+import { AncestorJournalLink, JournalDoor } from '../journals/screens';
 
 // A holy day or a moon phase, opened from Today: what it is, who is honoured,
 // what we know, how to keep it, a working, and its correspondences. Signed in,
@@ -60,6 +64,8 @@ export function HolyDayScreen({ back = '/today', backLabel = 'Back to Today' }: 
       {page.ref.startsWith('wheel-') && <TermChips ids={['solstice-equinox', 'sun', 'cardinal', 'fixed', 'zodiac']} label="The sky behind the Wheel" />}
       {page.ref.startsWith('moon-') && <MoonTonight />}
       {page.ref.startsWith('moon-') && <TermChips ids={['moon-phases', 'lunation', 'void-of-course', 'eclipse', 'moon']} label="The astrology behind it" />}
+      {(ANCESTOR_HOLIDAYS.includes(page.ref) || page.ref === 'hellenic_monthly-deipnon') && <AncestorJournalLink label="Your ancestor journal" />}
+      {(page.ref === 'moon-dark' || page.ref.startsWith('moon-waning')) && <JournalDoor kind="shadow" detail="Gentle prompts for the waning and dark moon" />}
       <KeepInGrimoire ref_={page.ref} />
 
       <Section label="Who is honoured, and why">
@@ -109,6 +115,8 @@ export function HolyDayScreen({ back = '/today', backLabel = 'Back to Today' }: 
         </Section>
       )}
 
+      <FromTheKitchen holyRef={page.ref} />
+
       {groups.some(([, items]) => items?.length) && (
         <Section label="Correspondences">
           {groups.map(([label, items]) =>
@@ -142,6 +150,29 @@ export function HolyDayScreen({ back = '/today', backLabel = 'Back to Today' }: 
 
       <ResearchFooter page={page.title} kind={page.tradition || 'Holy day'} />
     </MoreScreen>
+  );
+}
+
+/** Kitchen witchery's recipes for this day (Hearth & land), yours and the starters. */
+function FromTheKitchen({ holyRef }: { holyRef: string }) {
+  const mine = useCraft<unknown>(RECIPES).entries;
+  const recipes = useMemo(() => recipesForHoly(holyRef, allRecipes(mine)), [holyRef, mine]);
+  if (!recipes.length) return null;
+  return (
+    <Section label="From the kitchen">
+      <Card>
+        {recipes.map((r) => (
+          <Button
+            key={r.id}
+            label={r.recipe.title}
+            variant="text"
+            accessibilityHint="Opens the recipe in Kitchen witchery"
+            onPress={() => router.push(`/rituals/craft/hearth/recipes/recipe?id=${encodeURIComponent(r.id)}` as Href)}
+          />
+        ))}
+        <Text style={type.caption}>Recipes to cook for the day with intent, each marked traditional or modern.</Text>
+      </Card>
+    </Section>
   );
 }
 

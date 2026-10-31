@@ -67,6 +67,8 @@ function Form({ existing }: { existing: CraftEntry<unknown> | null }) {
       relation: person.relation.trim(),
       loved: person.loved.trim(),
       memory: person.memory.trim(),
+      bornPlace: (person.bornPlace ?? '').trim(),
+      diedPlace: (person.diedPlace ?? '').trim(),
       born: partialDate(born.day, born.month, born.year),
       died: partialDate(died.day, died.month, died.year),
     };
@@ -105,7 +107,9 @@ function Form({ existing }: { existing: CraftEntry<unknown> | null }) {
       </View>
 
       <DateBoxes label="Born" value={born} onChange={setBorn} />
+      <Field label="Where they were born" value={person.bornPlace ?? ''} onChange={(bornPlace) => set({ bornPlace })} placeholder="A town, a county, a farm, a country" />
       <DateBoxes label="Died" value={died} onChange={setDied} />
+      <Field label="Where they died, or rest" value={person.diedPlace ?? ''} onChange={(diedPlace) => set({ diedPlace })} placeholder="A town, a churchyard, the sea" />
       <Body muted>Put in as much as you know. A year alone is fine; a day and month bring their anniversary round each year.</Body>
 
       <View style={ui.gap}>

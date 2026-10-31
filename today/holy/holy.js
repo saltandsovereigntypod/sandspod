@@ -113,6 +113,16 @@
     );
   }
 
+  // Days for the dead (app/src/lib/craft/hedge/ancestors.ts ANCESTOR_HOLIDAYS, and the Deipnon) open the
+  // ancestor journal; the waning and dark moon, the shadow work journal (grimoire/journals/journals.js).
+  const ANCESTOR_REFS = ["wheel-samhain", "wheel_south-samhain", "celtic-samhain_gaelic", "slavic-dziady", "christian-all_hallows_eve", "christian-all_souls", "roman-parentalia", "roman-lemuria", "hellenic-anthesteria", "norse-vetrnaetur", "norse-disablot", "hellenic_monthly-deipnon"];
+  function journalLinks(ref) {
+    const row = (href, title, detail) => `<a class="sp-row" href="${esc(href)}"><span class="sp-row__text"><span class="sp-row__title">${esc(title)}</span><span class="sp-row__detail">${esc(detail)}</span></span><span class="sp-row__chevron" aria-hidden="true">›</span></a>`;
+    if (ANCESTOR_REFS.includes(ref)) return `<div class="sp-list">${row("/grimoire/journals/journal/?j=ancestors", "Your ancestor journal", "Offerings, dreams of them, family recipes and stories")}${row("/grimoire/journals/edit/?j=ancestors&about=offering", "Write in your ancestor journal", "An offering, a dream, a recipe or a story")}</div>`;
+    if (ref === "moon-dark" || ref.startsWith("moon-waning")) return `<div class="sp-list">${row("/grimoire/journals/journal/?j=shadow", "Shadow work journal", "Gentle prompts for the waning and dark moon")}</div>`;
+    return "";
+  }
+
   function render(grimoireHtml) {
     const c = page.correspondences || {};
     const groups = [
@@ -154,12 +164,14 @@
       (page.ref.startsWith("moon-") ? moonTonight() : "") +
       (page.ref.startsWith("moon-") ? astroChips(["moon-phases", "lunation", "void-of-course", "eclipse", "moon"], "The astrology behind it") : "") +
       (page.ref.startsWith("wheel-") ? astroChips(["solstice-equinox", "sun", "cardinal", "fixed", "zodiac"], "The sky behind the Wheel") : "") +
+      journalLinks(page.ref) +
       `<div data-grimoire aria-live="polite">${grimoireHtml || ""}</div>` +
       section("Who is honoured, and why", paras(page.honours)) +
       section("History", paras(page.history)) +
       (page.respect ? `<div class="sp-card sp-card--gold"><p class="td-practice-label">With respect</p>${paras(page.respect)}</div>` : "") +
       (page.celebrate.length ? section("Keeping it today", `<ul class="td-bullets">${page.celebrate.map((l) => `<li>${esc(l)}</li>`).join("")}</ul>`) : "") +
       working +
+      `<div data-hearth-kitchen></div>` +
       (groups.some(([, items]) => items?.length)
         ? section(
             "Correspondences",
@@ -173,6 +185,8 @@
       section("What we don’t", paras(page.knowAndDont.unknown)) +
       (page.sources.length ? section("Sources", `<ul class="td-sources">${page.sources.map((s) => `<li>${source(s)}</li>`).join("")}</ul>`) : "") +
       (window.ResearchNote ? window.ResearchNote.footerHtml(page.title, page.tradition || "Holy day") : "");
+    // Kitchen witchery's recipes for the day (js/hearth-links.js), yours and the starters.
+    window.SaltHearthLinks?.mountHoly(root.querySelector("[data-hearth-kitchen]"), page.ref);
   }
 
   function setGrimoire(html) {

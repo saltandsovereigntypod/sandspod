@@ -17,6 +17,14 @@ import { useMySettings } from '../../lib/settings/store';
 import { colors, fonts, radius, type } from '../../theme';
 import { ConnectedTo, LibraryJourney, RelationshipManager } from './LibraryConnections';
 import { DeityYours } from './DeityYours';
+import { HerbHearth } from '../craft/hearth';
+
+/** A herb or tree's Traditional Library key ("elder"), from its own id or the entry it was made from. */
+const herbKeyOf = (entry: LibraryEntry): string | null => {
+  const ref = entry.traditionalRef?.split('/') ?? [];
+  const key = ref[1] === 'herb' ? ref[2] : entry.id.startsWith('traditional:herb:') ? entry.id.split(':')[2] : null;
+  return key && !key.includes('.') ? key : null;
+};
 
 /** The spell builder with this Library entry chosen, for the kinds a spell can use. */
 function spellHref(entry: LibraryEntry): Href | null {
@@ -25,6 +33,7 @@ function spellHref(entry: LibraryEntry): Href | null {
   if (!kind || !key) return null;
   return { pathname: '/rituals/spell', params: kind === 'deity' ? { deity: key } : { add: ref } } as Href;
 }
+import { DeityJournalLink } from '../journals/screens';
 
 type Props = {
   entryId: string;
@@ -111,6 +120,7 @@ export function LibraryEntryView({ entryId, back, backLabel, hrefFor, editHref }
       )}
 
       {entry.type === 'deity' && <DeityYours entry={entry} />}
+      {entry.type === 'deity' && <DeityJournalLink deityKey={entry.id.split(':').pop() ?? ''} name={entry.name} />}
 
       {!!journey && (
         <Button
@@ -191,6 +201,8 @@ export function LibraryEntryView({ entryId, back, backLabel, hrefFor, editHref }
       />
 
       <LibraryJourney entry={entry} entries={entries} relations={relations} hrefFor={hrefFor} />
+
+      {entry.type === 'herb' && !!herbKeyOf(entry) && <HerbHearth herb={herbKeyOf(entry)!} />}
 
       {entry.tags.length > 0 && (
         <Section label="Tags">

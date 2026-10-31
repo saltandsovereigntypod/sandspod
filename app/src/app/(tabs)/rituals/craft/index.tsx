@@ -111,6 +111,15 @@ export default function CraftHome() {
       </View>
 
       <View style={ui.gapSmall}>
+        <SectionLabel>Hearth & land</SectionLabel>
+        <List>
+          <Row icon="wheel" title="Land journal" detail="Your places through the year: frosts, birdsong, blooms, water, offerings · this time last year" onPress={go('/rituals/craft/hearth/land')} />
+          <Row icon="wheel" title="Foraging & garden" detail="What grows where, what to gather this month, and your harvests · safety first" onPress={go('/rituals/craft/hearth/forage')} />
+          <Row icon="rituals" title="Kitchen witchery" detail="Recipes with intent, festival foods and offerings, kept in your Grimoire" last onPress={go('/rituals/craft/hearth/recipes')} />
+        </List>
+      </View>
+
+      <View style={ui.gapSmall}>
         <SectionLabel>{`${CRAFT_TOOLS_TITLE} by path`}</SectionLabel>
         {chosen.length ? (
           <>

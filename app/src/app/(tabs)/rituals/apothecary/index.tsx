@@ -96,6 +96,16 @@ export default function ApothecaryLookBacks() {
           )}
         </>
       )}
+
+      <List>
+        <Row
+          icon="grimoire"
+          title="Your harvests and store cupboard"
+          detail="What you’ve gathered and dried, ready to make into something"
+          last
+          onPress={() => router.push('/rituals/craft/hearth/forage/harvests')}
+        />
+      </List>
     </RitualScreen>
   );
 }

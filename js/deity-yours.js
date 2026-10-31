@@ -32,6 +32,12 @@
     return loading;
   }
 
+  /** Their log in the deity journal (grimoire/journals/journals.js), wherever that journal lives. */
+  function journalHref(settings, deity) {
+    const base = settings.journal_devotion_place === "journal" ? "/rituals/journals/" : "/grimoire/journals/";
+    return `${base}journal/?j=devotion&deity=${encodeURIComponent(deity.key || `name:${String(deity.name).toLowerCase()}`)}`;
+  }
+
   /** The card's markup: pure, for a deity { key, name } and the settings. */
   function markup(core, settings, deity) {
     const M = core.mine;
@@ -46,6 +52,7 @@
       <div class="deity-yours__actions">
         ${deity.key ? `<a class="button button--small button--ghost" href="/altar/?shrine=${encodeURIComponent(deity.key)}" aria-describedby="deity-yours-shrine-hint">${esc(`Set a shrine for ${deity.name}`)}</a>` : ""}
         <a class="button button--small button--ghost" href="/more/settings/deities/">${mine ? "My deities" : "Add to My deities"}</a>
+        <a class="button button--small button--ghost" href="${esc(journalHref(settings, deity))}">${esc(`Your journal with ${deity.name}`)}</a>
         ${journey ? `<a class="button button--small button--ghost" href="/rituals/journeys/?id=${encodeURIComponent(journey.id)}" aria-label="${esc(`Begin a dedication journey: ${journey.title}. Study, practice and a rite of self-dedication`)}">Begin a dedication journey</a>` : ""}
       </div>
       ${deity.key ? `<p class="deity-yours__hint" id="deity-yours-shrine-hint">Opens a starter altar with their colours, plants and stones, and their statue where there is one.</p>` : ""}
