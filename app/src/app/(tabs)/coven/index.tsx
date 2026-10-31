@@ -145,6 +145,13 @@ export default function Covens() {
               </Section>
             )}
 
+            {session && (
+              <MenuList>
+                <MenuRow label="Mentorship" detail="Your mentors and mentees, and the directory (adults only)" icon="journey" onPress={() => router.push('/coven/mentorship' as Href)} />
+                <MenuRow label="Rituals together" detail="Do a ritual live with your coven or friends" icon="moon" last onPress={() => router.push('/rituals/together' as Href)} />
+              </MenuList>
+            )}
+
             {pending.length > 0 && (
               <Section label="Waiting to hear back">
                 <MenuList>
@@ -185,7 +192,8 @@ export default function Covens() {
                   icon="account"
                   onPress={() => router.push('/coven/profile' as Href)}
                 />
-                <MenuRow label="Found a coven" detail="Lead a coven of your own" icon="offer" last onPress={() => router.push('/coven/new' as Href)} />
+                <MenuRow label="Found a coven" detail="Lead a coven of your own" icon="offer" onPress={() => router.push('/coven/new' as Href)} />
+                <MenuRow label="Mentorship" detail="Find a mentor or offer to mentor (adults only)" icon="journey" last onPress={() => router.push('/coven/mentorship' as Href)} />
               </MenuList>
               {moderation}
             </Section>

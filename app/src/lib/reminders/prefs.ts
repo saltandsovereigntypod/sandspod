@@ -91,6 +91,13 @@ export type ReminderPrefs = {
    */
   invitations: { on: boolean; accepted: boolean };
   /**
+   * Rituals together and mentorship, sent to your phone (supabase/functions/coven-notify
+   * together.ts): a ritual together begun from one of your coven's gatherings
+   * (`live`), and your mentorships: being asked or paired, the answer, a
+   * message, a check-in, the pairing ending (`mentorship`). Both on unless turned off.
+   */
+  together: { live: boolean; mentorship: boolean };
+  /**
    * Positions opening in your covens, sent to your phone (supabase/functions/coven-notify
    * positions.ts): a coven's leaders open a position for applications and
    * choose to tell you. On, unless turned off for all or for a coven in `off`.
@@ -137,6 +144,7 @@ export const DEFAULT_PREFS: ReminderPrefs = {
   requests: { on: true, off: [], answers: true },
   gatherings: { on: true, off: [] },
   invitations: { on: true, accepted: true },
+  together: { live: true, mentorship: true },
   positions: { on: true, off: [] },
   training: { on: true },
 };
@@ -182,6 +190,7 @@ export function normalizePrefs(input: unknown): ReminderPrefs {
   const r = obj(raw.requests);
   const g = obj(raw.gatherings);
   const inv = obj(raw.invitations);
+  const tog = obj(raw.together);
   const pos = obj(raw.positions);
   const tr = obj(raw.training);
 
@@ -256,6 +265,7 @@ export function normalizePrefs(input: unknown): ReminderPrefs {
     requests: { on: bool(r.on, d.requests.on), off: strings(r.off), answers: bool(r.answers, d.requests.answers) },
     gatherings: { on: bool(g.on, d.gatherings.on), off: strings(g.off) },
     invitations: { on: bool(inv.on, d.invitations.on), accepted: bool(inv.accepted, d.invitations.accepted) },
+    together: { live: bool(tog.live, d.together.live), mentorship: bool(tog.mentorship, d.together.mentorship) },
     positions: { on: bool(pos.on, d.positions.on), off: strings(pos.off) },
     training: { on: bool(tr.on, d.training.on) },
   };

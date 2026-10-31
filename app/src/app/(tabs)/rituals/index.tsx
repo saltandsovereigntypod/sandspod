@@ -112,6 +112,12 @@ export default function RitualsHome() {
             onPress={() => router.push('/rituals/community')}
           />
           <Row
+            icon="coven"
+            title="Rituals together"
+            detail="Do a ritual live with your coven or friends, from wherever each of you is"
+            onPress={() => router.push('/rituals/together')}
+          />
+          <Row
             icon="wheel"
             title="Dedication journeys"
             detail="Study, practice and a rite of self-dedication to a path or a god"

@@ -1,0 +1,18 @@
+/* Rituals together and mentorship (rituals/together/, covens/mentorship/). */
+.tg-candle { display: flex; align-items: center; gap: 0.8rem; }
+.tg-flame { flex: none; width: 14px; height: 22px; border-radius: 999px; background: var(--color-surface-raised, #1c2e22); }
+.tg-flame.is-lit { background: #e2c36d; box-shadow: 0 0 14px rgba(226, 195, 109, 0.8); }
+.tg-people { list-style: none; margin: 0; padding: 0; }
+.tg-people li { display: flex; flex-wrap: wrap; align-items: center; gap: 0.4rem; padding: 0.45rem 0; border-bottom: 1px solid rgba(244, 236, 216, 0.12); }
+.tg-people .tg-name { flex: 1 1 8rem; min-width: 0; overflow-wrap: anywhere; }
+.tg-pill { font-size: 0.8rem; padding: 0.1rem 0.55rem; border-radius: 999px; border: 1px solid rgba(226, 195, 109, 0.4); }
+.tg-link { background: none; border: 0; padding: 0.2rem 0.3rem; color: inherit; text-decoration: underline; cursor: pointer; font: inherit; font-size: 0.9rem; }
+.tg-chat { display: grid; gap: 0.5rem; }
+.tg-message { padding: 0.55rem 0.75rem; border-radius: 14px; background: rgba(244, 236, 216, 0.06); overflow-wrap: anywhere; }
+.tg-message.is-mine { margin-left: 2rem; background: rgba(226, 195, 109, 0.1); }
+.tg-message strong { display: block; font-size: 0.85rem; color: #e2c36d; }
+.tg-chips { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+.tg-chip { border: 1px solid rgba(226, 195, 109, 0.35); border-radius: 999px; padding: 0.35rem 0.8rem; background: none; color: inherit; font: inherit; font-size: 0.9rem; cursor: pointer; }
+.tg-chip[aria-pressed="true"] { background: #e2c36d; color: #102118; border-color: #e2c36d; }
+.tg-item { padding: 0.4rem 0; }
+.tg-step { overflow-wrap: anywhere; }

@@ -98,7 +98,7 @@
       };
 
       const formerCount = members.length - active.length;
-      pane.innerHTML = `${keepsRecord ? `<p class="sp-caption"><a href="${esc(recordHref())}" data-tab="record">Members’ record</a>: who has been taking part and who hasn’t.</p>` : ""}${state.perms.member ? `<p class="sp-caption">Your own standing is under <a href="${esc(covenHref("path"))}" data-tab="path">My standing</a>.</p>` : ""}
+      pane.innerHTML = `${keepsRecord ? `<p class="sp-caption"><a href="${esc(recordHref())}" data-tab="record">Members’ record</a>: who has been taking part and who hasn’t.</p>` : ""}${state.perms.member ? `<p class="sp-caption">Your own standing is under <a href="${esc(covenHref("path"))}" data-tab="path">My standing</a>.</p>` : ""}${state.perms.member ? `<p class="sp-caption"><a href="${esc(UI.href(`/covens/mentorship/?coven=${encodeURIComponent(state.coven.slug)}`))}">Mentorship</a>: mentors in the coven, asking for one, and pairings (adults only).</p>` : ""}
         ${LU ? LU.headsAboveHtml(state) : ""}
         <section class="sp-section"><h2>${active.length} member${active.length === 1 ? "" : "s"}</h2>${active.map(row).join("")}</section>
         ${formerCount && (perms.moderate || perms.site) ? `<details class="sp-details"><summary>Former members (${formerCount})</summary><div class="sp-list">${members

@@ -302,6 +302,24 @@ export function CovensSection({ prefs, update, userId }: Props & { userId: strin
             }}
           />
           <Toggle
+            label="Rituals together"
+            detail="Someone in your coven begins one of its gatherings as a ritual together"
+            value={prefs.together.live}
+            onChange={(on) => {
+              update(withChange(prefs, 'together.live', on));
+              andDevice(on);
+            }}
+          />
+          <Toggle
+            label="Mentorship"
+            detail="Being asked or paired, the answer, messages and check-ins from your mentor or mentee"
+            value={prefs.together.mentorship}
+            onChange={(on) => {
+              update(withChange(prefs, 'together.mentorship', on));
+              andDevice(on);
+            }}
+          />
+          <Toggle
             label="Training messages"
             detail="A message on a step of your training, from your mentor or the coven’s leaders, or from someone you mentor"
             value={prefs.training.on}
