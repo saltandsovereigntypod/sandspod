@@ -380,8 +380,14 @@ function LibraryLink() {
         label="Living Library"
         detail="Search herbs, crystals, candles, deities and your My Practice notes"
         icon="library"
-        last
         onPress={() => router.push('/grimoire/library')}
+      />
+      <MenuRow
+        label="A Year and a Day"
+        detail="Thirteen moons of study alone: readings, practice, your reflections and a self-dedication"
+        icon="moon"
+        last
+        onPress={() => router.push('/rituals/year')}
       />
     </MenuList>
   );

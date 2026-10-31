@@ -60,6 +60,8 @@ export type PlanInput = {
   tend?: TendRecord[];
   /** Cycle & Moon's notes (cycle/reminders.ts), when chosen there: the phone only, never the website's calendar file. */
   cycle?: Omit<Reminder, 'kind'>[];
+  /** A Year and a Day's notes (yearday/schedule.ts yearReminders), when its reminders are on. */
+  year?: Omit<Reminder, 'kind'>[];
   place?: Place | null;
   now: Date;
   horizonDays?: number;
@@ -466,6 +468,7 @@ const PRIORITY: Record<ReminderKind, number> = {
   candle: 2,
   tend: 2,
   cycle: 3,
+  year: 2,
   devotion: 1,
   dream: 1,
 };
@@ -583,7 +586,8 @@ export function planReminders(input: PlanInput, options: { cap?: number; gather?
   // Sacred days, offerings and watering now come from the prefs (and the Deipnon with the holidays), so the older switches don't ring them twice.
   const device = buildSchedule({ ...input.legacy, sacredDays: false, offerings: false, watering: false }, input.plans ?? [], now, horizonDays, [], input.lookBacks ?? [], [], [], [], Infinity);
   const cycle = settle((input.cycle ?? []).map((r): Reminder => ({ ...r, kind: 'cycle' })), prefs, now, horizonDays);
-  let list = [...settle(device, prefs, now, horizonDays), ...calendarReminders({ ...input, prefs, horizonDays }), ...cycle];
+  const year = settle((input.year ?? []).map((r): Reminder => ({ ...r, kind: 'year' })), prefs, now, horizonDays);
+  let list = [...settle(device, prefs, now, horizonDays), ...calendarReminders({ ...input, prefs, horizonDays }), ...cycle, ...year];
   if (options.gather !== false && prefs.bundle.on) list = gather(list, prefs.bundle.max);
   return choose(list, options.cap ?? MAX_REMINDERS, now);
 }

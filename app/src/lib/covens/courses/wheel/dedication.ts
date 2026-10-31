@@ -557,6 +557,7 @@ There's no hurry. Some dedicants spend a year or more simply living the path bef
           checked_by: 'mentor',
           minutes: 45,
           docs: ['wheel-dedication-the-rite'],
+          links: [page('year-and-a-day')],
           solitary: 'Write out your own dedication rite in full, using the shape in the lesson, and choose the festival you will keep it at. Read it through aloud once beforehand.',
         },
         {

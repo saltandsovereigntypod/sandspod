@@ -115,8 +115,14 @@ export default function RitualsHome() {
             icon="wheel"
             title="Dedication journeys"
             detail="Study, practice and a rite of self-dedication to a path or a god"
-            last
             onPress={() => router.push('/rituals/journeys')}
+          />
+          <Row
+            icon="calendar"
+            title="A Year and a Day"
+            detail="Thirteen moons of study and practice alone, ending in a self-dedication"
+            last
+            onPress={() => router.push('/rituals/year')}
           />
         </List>
       </View>

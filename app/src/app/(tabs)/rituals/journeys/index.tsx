@@ -76,6 +76,12 @@ export default function JourneysHome() {
 
       <List>
         <Row
+          title="A Year and a Day"
+          detail="Practising alone? Thirteen moons of lessons and practice, ending in your path’s dedication rite"
+          icon="calendar"
+          onPress={() => router.push('/rituals/year')}
+        />
+        <Row
           title="Patron deities"
           detail="What a patron is, how to know if one is calling you, and how to answer"
           icon="grimoire"

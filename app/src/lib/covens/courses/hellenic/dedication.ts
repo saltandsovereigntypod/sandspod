@@ -555,6 +555,7 @@ You can keep Hestia's flame and honour the Greek gods on your own, or in another
           checked_by: 'mentor',
           minutes: 45,
           docs: ['hellenic-dedication-the-rite'],
+          links: [{ kind: 'page', id: 'year-and-a-day' }],
         },
         {
           title: 'Take the test',
