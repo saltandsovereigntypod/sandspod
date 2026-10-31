@@ -72,7 +72,7 @@
     if (path.startsWith("/practice/") || path.startsWith("/rituals/cycle/") || path.startsWith("/divination/") || path.startsWith("/sigil/")) return "craft";
     // Rituals holds ritual work: the planner, premade book, spells, community rituals, journeys and the journal.
     if (path.startsWith("/rituals/")) return "rituals";
-    if (path === "/grimoire/" || path.startsWith("/grimoire/dreams/")) return "grimoire";
+    if (path === "/grimoire/" || path.startsWith("/grimoire/dreams/") || path.startsWith("/grimoire/year/")) return "grimoire";
     return null;
   }
 

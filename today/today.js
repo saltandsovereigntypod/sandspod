@@ -228,6 +228,7 @@
           `<div data-coven-today>${window.CovenToday?.html?.() || ""}</div>` +
           `<div data-tend-today>${window.TendToday?.html?.() || ""}</div>` +
           `<div data-cycle-today>${window.CycleToday?.html?.() || ""}</div>` +
+          yearTurnCard(m) +
           lookBackCard(m) +
           dreamCard(m) +
           deipnonCard(m) +
@@ -421,6 +422,19 @@
     );
   }
 
+  /** Your year in review around your year's turn, by your own new year (the app's YearTurnToday). */
+  function yearTurnCard(m) {
+    const turn = C.yearSpan ? C.yearSpan.yearTurn(m.now, state.settings || {}, state.place) : null;
+    if (!turn) return "";
+    return (
+      `<a class="sp-card td-covens" href="/grimoire/year/?start=${encodeURIComponent(turn.span.startKey)}" aria-label="${esc(`${turn.line} Opens your year in review.`)}">` +
+      `<p class="sp-eyebrow td-gold">Your year in review</p><p>${esc(turn.line)}</p><p class="sp-caption td-gold">${esc(turn.span.label)} ›</p></a>`
+    );
+  }
+
+  /** "Your divination patterns ›", under the card for the day, once there are a few readings (MIN_READINGS in divination/patterns.ts). */
+  const patternsLink = () => ((state.readings || []).length >= 3 ? `<a class="td-last sp-caption td-gold" href="/divination/patterns/">Your divination patterns ›</a>` : "");
+
   /** A card for the day: one to draw, or the one kept today (the app's CardOfTheDay). Turned off in Today's calendar settings. */
   function cardOfTheDay(m) {
     if (!C.daily.drawOnToday(state.settings)) return "";
@@ -432,11 +446,11 @@
           time.why
         )}: <span class="td-gold">${esc(time.label)}</span> ›</span></a>`
       : "";
-    if (!kept) return `<a class="td-last sp-caption td-gold" href="/divination/draw/?spread=daily">Draw a card for the day ›</a>${seasonal}`;
+    if (!kept) return `<a class="td-last sp-caption td-gold" href="/divination/draw/?spread=daily">Draw a card for the day ›</a>${seasonal}${patternsLink()}`;
     const name = C.daily.todaysCardLabel(kept);
     return (
       `<a class="td-last sp-caption" href="/divination/reading/?id=${encodeURIComponent(kept.id)}" aria-label="${esc(`Today’s card: ${name}. Opens the reading.`)}">` +
-      `<span>Today’s card: <span class="td-gold">${esc(name)}</span> ›</span></a>${seasonal}`
+      `<span>Today’s card: <span class="td-gold">${esc(name)}</span> ›</span></a>${seasonal}${patternsLink()}`
     );
   }
 

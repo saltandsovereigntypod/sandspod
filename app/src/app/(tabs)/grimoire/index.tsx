@@ -380,9 +380,9 @@ function LibraryLink() {
         label="Living Library"
         detail="Search herbs, crystals, candles, deities and your My Practice notes"
         icon="library"
-        last
         onPress={() => router.push('/grimoire/library')}
       />
+      <MenuRow label="Your year in review" detail="Your rituals, moons, holidays, dreams and cards over the year, and a page to reflect on it" icon="journey" last onPress={() => router.push('/grimoire/year')} />
     </MenuList>
   );
 }

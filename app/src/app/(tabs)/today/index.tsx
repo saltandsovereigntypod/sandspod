@@ -6,6 +6,7 @@ import { Button } from '../../../components/Button';
 import { CovenToday } from '../../../components/covens/CovenToday';
 import { TendToday } from '../../../components/tend/TendToday';
 import { CycleToday } from '../../../components/cycle/CycleToday';
+import { YearTurnToday } from '../../../components/grimoire/YearTurnToday';
 import { CalendarLineList, LeadCalendarLine } from '../../../components/CalendarLines';
 import { Icon } from '../../../components/Icon';
 import { MoonDisc } from '../../../components/MoonDisc';
@@ -49,6 +50,7 @@ import { DREAM_ROUTES } from '../../../lib/grimoire/dreams';
 import { dreamPromptOnToday } from '../../../lib/settings/links';
 import { normalizeReading, READINGS } from '../../../lib/craft/hedge/readings';
 import { drawOnToday, todaysCard, todaysCardLabel } from '../../../lib/divination/daily';
+import { MIN_READINGS } from '../../../lib/divination/patterns';
 import { deipnonToday } from '../../../lib/deipnon';
 import { keepsSouthernWheel, seasonalSpreads } from '../../../lib/divination/seasonal';
 import { deityLines } from '../../../lib/patron';
@@ -200,6 +202,8 @@ export default function Today() {
           <TendToday />
 
           <CycleToday />
+
+          <YearTurnToday now={now} settings={mySettings as Record<string, unknown> | null} />
 
           <LookBackDue journal={rituals.journal} now={now} />
 
@@ -493,6 +497,16 @@ function CardOfTheDay({ now, south }: { now: Date; south: boolean }) {
             <Text style={styles.gold}>{seasonal.label}</Text>
             {' ›'}
           </Text>
+        </Pressable>
+      )}
+      {entries.length >= MIN_READINGS && (
+        <Pressable
+          accessibilityRole="link"
+          accessibilityLabel="Your divination patterns: the cards you draw most, by suit, moon and day"
+          onPress={() => router.navigate('/rituals/divination/patterns')}
+          style={({ pressed }) => [styles.lastTime, pressed && { opacity: 0.7 }]}
+        >
+          <Text style={[type.caption, styles.gold]}>Your divination patterns ›</Text>
         </Pressable>
       )}
     </>

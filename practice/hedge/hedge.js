@@ -169,6 +169,7 @@
         kit.row({ url: url.readingEdit(), title: "Log a reading", detail: "One you did by hand: what you asked, what came up" }),
         kit.row({ url: url.decks, title: "Your oracle decks", detail: "Make a deck of your own, and draw from it" }),
         kit.row({ url: "/grimoire/", title: "Card meanings", detail: "Tarot, runes, ogham, Lenormand and Kipper, in your Grimoire under Traditional Information" }),
+        kit.row({ url: "/divination/patterns/", title: "Your patterns", detail: "The cards you draw most, by suit, moon and day, and the ones you haven’t met yet" }),
         kit.row({ url: url.spreadEdit(), title: "Make a spread", detail: "Lay out positions of your own" })
       ]),
       `<h2 class="sp-label">Your readings</h2>`,
@@ -199,7 +200,8 @@
             repeats.length
               ? kit.section(
                   "Turning up again",
-                  kit.chips(repeats.map((r) => kit.chip({ label: `${r.name} · ${r.count}`, act: "search-for", value: r.name, a11y: `${r.name}, in ${r.count} readings. Search for it` }))),
+                  kit.chips(repeats.map((r) => kit.chip({ label: `${r.name} · ${r.count}`, act: "search-for", value: r.name, a11y: `${r.name}, in ${r.count} readings. Search for it` }))) +
+                    kit.list([kit.row({ url: "/divination/patterns/", title: "All your patterns" })]),
                   { id: "repeats" }
                 )
               : "",

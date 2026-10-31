@@ -44,3 +44,5 @@ export * as seasonal from '../../app/src/lib/divination/seasonal.ts';
 export * as deipnon from '../../app/src/lib/deipnon.ts';
 // Today's two tabs (Today | Sky & Lore) and which a link lands on.
 export * as screenTabs from '../../app/src/lib/screenTabs.ts';
+// Your year in review around your year's turn (Grimoire → Your year in review), by your own new year.
+export * as yearSpan from '../../app/src/lib/grimoire/yearSpan.ts';
