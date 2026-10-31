@@ -93,7 +93,7 @@ export function TurnBox({
       {!t.done && <Text style={type.cardTitle}>{mine ? 'Your turn' : `${nameOf(t.current!)}’s turn`}</Text>}
       {!t.done && !!t.next && <Text style={type.caption}>Next: {t.next === me ? 'you' : nameOf(t.next)}</Text>}
       <View style={styles.row}>
-        {mine && !t.done && <Button label="I’ve done mine" onPress={onDone} disabled={busy} />}
+        {mine && !t.done && <Button label="I’ve done my part (pass to the next person)" onPress={onDone} disabled={busy} />}
         {steers && !t.done && !mine && <Button label="Next person" variant="outline" onPress={onSkip} disabled={busy} />}
         {steers && <Button label="Start the turns again" variant="text" onPress={onRestart} disabled={busy} />}
       </View>

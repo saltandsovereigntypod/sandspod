@@ -357,15 +357,28 @@ export function LiveStepCard({ live, atAltar = false }: { live: LiveRitual; atAl
               : 'During this step, the altar is tended by whoever the step belongs to.'}
       </Text>
       {sharedAction && doneOnAltar && <Text style={type.caption}>You’ve done this on the altar.</Text>}
-      {(mine || canLead) && (
-        <Button
-          label={`${mine ? 'I’ve finished this step' : 'Finish this step'}${at === steps.length - 1 ? ' and close the ritual' : ''}`}
-          variant={showAltarButton ? 'outline' : 'primary'}
-          onPress={() => void act(() => api.finishStep(current.id))}
-          disabled={busy}
-        />
-      )}
-      {!mine && !canLead && <Text style={type.caption}>Follow along; the ritual moves on when this step is finished.</Text>}
+      {(() => {
+        // "Your part" (above: your turn, card, words, candle) is separate from
+        // finishing the step, which moves everyone on. A whole-coven step is
+        // moved on by those who lead, so members don't end it for everyone.
+        const shared = who.kind !== 'person' || inTurn;
+        const last = at === steps.length - 1;
+        const canFinish = canLead || (mine && !shared);
+        if (canFinish) {
+          return (
+            <>
+              <Text style={type.caption}>{last ? 'This closes the ritual for everyone.' : 'This ends the step for everyone and moves the whole circle to the next step.'}</Text>
+              <Button
+                label={last ? 'Finish and close the ritual for everyone' : 'Finish this step for everyone'}
+                variant={showAltarButton ? 'outline' : 'primary'}
+                onPress={() => void act(() => api.finishStep(current.id))}
+                disabled={busy}
+              />
+            </>
+          );
+        }
+        return <Text style={type.caption}>{mine ? 'Do your part above. When everyone has, the leader moves the circle to the next step.' : 'Follow along; the leader moves the circle on when this step is finished.'}</Text>;
+      })()}
     </Card>
   );
 }
