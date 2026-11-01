@@ -1,4 +1,3 @@
-import { Platform } from 'react-native';
 // Design tokens carried over from the website's witchcore palette
 // (css/styles.css) and the approved app mockups.
 
@@ -79,6 +78,16 @@ const baseType = {
 } as const;
 
 type TypeStyles = typeof baseType;
+/** iPhone or iPad. Read lazily so plain-Node tests (no React Native) still load the theme. */
+const IS_IOS: boolean = (() => {
+  try {
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
+    return require('react-native').Platform.OS === 'ios';
+  } catch {
+    return false;
+  }
+})();
+
 let shaped: { prefs: AccessibilityPrefs; styles: TypeStyles } | null = null;
 
 /**
@@ -87,8 +96,8 @@ let shaped: { prefs: AccessibilityPrefs; styles: TypeStyles } | null = null;
  * (Source Serif's own spacing is close to ours) so nothing is ever cut off.
  */
 export function fitLines<T extends object>(style: T): T {
-  if (Platform.OS !== 'ios' || !('lineHeight' in style)) return style;
-  const { lineHeight: _drop, ...rest } = style as T & { lineHeight?: number }; // eslint-disable-line @typescript-eslint/no-unused-vars
+  if (!IS_IOS || !('lineHeight' in style)) return style;
+  const { lineHeight: _drop, ...rest } = style as T & { lineHeight?: number };
   return rest as T;
 }
 
