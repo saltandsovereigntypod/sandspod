@@ -13,7 +13,7 @@ import type { Journey, StageKind } from '../../lib/journeys';
 import { nextStepLine, type NextStep } from '../../lib/journeys/progress';
 import { blankAnswers } from '../../lib/rituals/lifecycle';
 import { saveJournal } from '../../lib/rituals/store';
-import { colors, fonts, radius, type } from '../../theme';
+import { colors, fonts, radius, type, fitLines } from '../../theme';
 
 export const journeyHref = (id: string): Href => ({ pathname: '/rituals/journeys/[id]', params: { id } }) as Href;
 export const stageHref = (journeyId: string, stage: number): Href =>
@@ -203,10 +203,10 @@ export function JournalPrompt({ prompt, title, intention }: { prompt: string; ti
 }
 
 export const journeyStyles = StyleSheet.create({
-  reading: { fontFamily: fonts.body, fontSize: 17, lineHeight: 27, color: colors.cream },
+  reading: fitLines({ fontFamily: fonts.body, fontSize: 17, lineHeight: 27, color: colors.cream }),
   heading: { fontFamily: fonts.display, fontSize: 25, lineHeight: 29, color: colors.cream },
-  link: { fontFamily: fonts.body, fontSize: 15, lineHeight: 22, color: colors.gold, textDecorationLine: 'underline' },
-  bullet: { fontFamily: fonts.body, fontSize: 15, lineHeight: 22, color: colors.parchment },
+  link: fitLines({ fontFamily: fonts.body, fontSize: 15, lineHeight: 22, color: colors.gold, textDecorationLine: 'underline' as const }),
+  bullet: fitLines({ fontFamily: fonts.body, fontSize: 15, lineHeight: 22, color: colors.parchment }),
 });
 
 const styles = StyleSheet.create({
@@ -214,5 +214,5 @@ const styles = StyleSheet.create({
   fill: { height: 6, borderRadius: radius.chip, backgroundColor: colors.gold },
   reading: journeyStyles.reading,
   prompt: { gap: 6, paddingVertical: 4 },
-  question: { fontFamily: fonts.displayItalic, fontSize: 20, lineHeight: 26, color: colors.parchment },
+  question: fitLines({ fontFamily: fonts.displayItalic, fontSize: 20, lineHeight: 26, color: colors.parchment }),
 });

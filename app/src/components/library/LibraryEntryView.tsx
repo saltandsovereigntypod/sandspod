@@ -14,7 +14,7 @@ import type { LibraryField } from '../../lib/library/types';
 import { LAYER_LABELS, type Layer } from '../../lib/settings/defaults';
 import { useSession } from '../../lib/session';
 import { useMySettings } from '../../lib/settings/store';
-import { colors, fonts, radius, type } from '../../theme';
+import { colors, fonts, radius, type, fitLines } from '../../theme';
 import { ConnectedTo, LibraryJourney, RelationshipManager } from './LibraryConnections';
 import { DeityYours } from './DeityYours';
 import { HerbHearth } from '../craft/hearth';
@@ -234,7 +234,7 @@ function layerData(entry: LibraryEntry, layer: Layer): Record<string, unknown> |
 
 const styles = StyleSheet.create({
   image: { width: '100%', aspectRatio: 4 / 3, borderRadius: radius.card, backgroundColor: colors.surface },
-  intro: { fontFamily: fonts.displayItalic, fontSize: 21, lineHeight: 27, color: colors.parchment },
+  intro: fitLines({ fontFamily: fonts.displayItalic, fontSize: 21, lineHeight: 27, color: colors.parchment }),
   facts: { flexDirection: 'row', flexWrap: 'wrap', gap: 10 },
   fact: {
     minWidth: 120,

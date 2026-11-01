@@ -1,3 +1,4 @@
+import { Platform } from 'react-native';
 // Design tokens carried over from the website's witchcore palette
 // (css/styles.css) and the approved app mockups.
 
@@ -80,12 +81,23 @@ const baseType = {
 type TypeStyles = typeof baseType;
 let shaped: { prefs: AccessibilityPrefs; styles: TypeStyles } | null = null;
 
+/**
+ * On iPhone a fixed lineHeight can leave a long paragraph measured taller than
+ * it is drawn, so its last line is clipped mid-word. Let iOS space lines itself
+ * (Source Serif's own spacing is close to ours) so nothing is ever cut off.
+ */
+export function fitLines<T extends object>(style: T): T {
+  if (Platform.OS !== 'ios' || !('lineHeight' in style)) return style;
+  const { lineHeight: _drop, ...rest } = style as T & { lineHeight?: number }; // eslint-disable-line @typescript-eslint/no-unused-vars
+  return rest as T;
+}
+
 /** The text styles with Settings → Accessibility applied (text size, spacing, font, contrast). */
 function typeStyles(): TypeStyles {
   const prefs = currentAccessibility();
   if (shaped?.prefs !== prefs) {
     const styles = Object.fromEntries(
-      Object.entries(baseType).map(([key, style]) => [key, accessibleTextStyle(style, prefs)]),
+      Object.entries(baseType).map(([key, style]) => [key, fitLines(accessibleTextStyle(style, prefs))]),
     ) as unknown as TypeStyles;
     shaped = { prefs, styles };
   }

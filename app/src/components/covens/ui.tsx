@@ -14,7 +14,7 @@ import { ALTAR_ARTWORK } from '../../lib/altar/artworkData';
 import { imageRatio } from '../../lib/altar/geometry';
 import * as api from '../../lib/covens/api';
 import { candleState, errorMessage, REPORT_REASONS, type AltarItem, type ReportReason } from '../../lib/covens/model';
-import { colors, fonts, radius, type } from '../../theme';
+import { colors, fonts, radius, type, fitLines } from '../../theme';
 
 export function Pill({ label, tone }: { label: string; tone?: 'gold' | 'warn' }) {
   return (
@@ -242,7 +242,7 @@ const styles = StyleSheet.create({
   words: { gap: 8 },
   cream: { color: colors.cream },
   spoken: { borderLeftWidth: 2, borderLeftColor: colors.gold, paddingLeft: 12 },
-  spokenText: { fontFamily: fonts.displayItalic, fontSize: 20, lineHeight: 27 },
+  spokenText: fitLines({ fontFamily: fonts.displayItalic, fontSize: 20, lineHeight: 27 }),
   gap: { gap: 12 },
   stage: { width: '100%', aspectRatio: ASPECT, borderRadius: 18, overflow: 'hidden', borderWidth: 1, borderColor: colors.goldLine, backgroundColor: '#15130d' },
   empty: { position: 'absolute', top: 0, right: 0, bottom: 0, left: 0, alignItems: 'center', justifyContent: 'center' },
