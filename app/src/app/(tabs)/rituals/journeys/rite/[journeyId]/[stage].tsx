@@ -5,7 +5,7 @@ import { StyleSheet, Text, View } from 'react-native';
 
 import { Button } from '../../../../../../components/Button';
 import { SupportLink } from '../../../../../../components/SupportLink';
-import { ongoingHref, Paragraphs, STAGE_WORDS } from '../../../../../../components/journeys/parts';
+import { JourneyWaiting, ongoingHref, Paragraphs, STAGE_WORDS } from '../../../../../../components/journeys/parts';
 import { Body, Card, confirmAction, RitualScreen, SectionLabel, Title, tell, ui } from '../../../../../../components/rituals/ui';
 import { fullDate } from '../../../../../../lib/calendar';
 import { enterOngoing, journeyStatus, riteBegun, riteDone, riteDraft } from '../../../../../../lib/journeys/progress';
@@ -16,12 +16,13 @@ import { colors, fonts, radius, type } from '../../../../../../theme';
 // A stage's rite, to read through first and then begin as a guided ritual.
 export default function RiteView() {
   const { journeyId, stage: raw } = useLocalSearchParams<{ journeyId: string; stage: string }>();
-  const { journey, progress, change } = useJourney(journeyId);
+  const { journey, progress, change, textState, retry } = useJourney(journeyId);
   const rituals = useRituals();
   const [busy, setBusy] = useState(false);
   const stage = journey?.stages[Number(raw)];
   const rite = stage?.rite;
 
+  if (!journey && textState !== 'missing') return <JourneyWaiting state={textState} retry={retry} back="Journey" />;
   if (!journey || !stage || !rite) {
     return (
       <RitualScreen back="Journey">

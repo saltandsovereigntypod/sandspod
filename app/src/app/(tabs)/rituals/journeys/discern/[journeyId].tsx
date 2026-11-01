@@ -4,7 +4,7 @@ import { Text, View } from 'react-native';
 
 import { Button } from '../../../../../components/Button';
 import { SupportLink } from '../../../../../components/SupportLink';
-import { journeyHref, journeyStyles, Paragraphs, stageHref } from '../../../../../components/journeys/parts';
+import { journeyHref, journeyStyles, JourneyWaiting, Paragraphs, stageHref } from '../../../../../components/journeys/parts';
 import { Body, Card, Field, RitualScreen, SectionLabel, Title, tell, ui } from '../../../../../components/rituals/ui';
 import { shortDate } from '../../../../../lib/calendar';
 import { decide, journeyStatus, resumeJourney, type DecisionKind, type JourneyProgress } from '../../../../../lib/journeys/progress';
@@ -43,7 +43,7 @@ const CHOICES: { kind: DecisionKind; title: string; body: string; action: string
 // Discernment: honest questions with room to write, then a choice, any of which is a good one.
 export default function Discern() {
   const { journeyId } = useLocalSearchParams<{ journeyId: string }>();
-  const { journey, progress, change } = useJourney(journeyId);
+  const { journey, progress, change, textState, retry } = useJourney(journeyId);
   // Typing starts from the saved answers and is kept here until saved.
   const [draft, setDraft] = useState<Record<string, string> | null>(null);
   const answers = draft ?? progress?.answers ?? {};
@@ -54,6 +54,7 @@ export default function Discern() {
   const at = journey ? journey.stages.findIndex((s) => s.kind === 'discernment') : -1;
   const stage = journey && at >= 0 ? journey.stages[at] : null;
 
+  if (!journey && textState !== 'missing') return <JourneyWaiting state={textState} retry={retry} back="Journey" />;
   if (!journey || !stage) {
     return (
       <RitualScreen back="Journey">

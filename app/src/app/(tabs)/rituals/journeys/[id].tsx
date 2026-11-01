@@ -5,16 +5,7 @@ import { Text, View } from 'react-native';
 import { Button } from '../../../../components/Button';
 import { LinkedReadings } from '../../../../components/divination/Linked';
 import { ResearchFooter } from '../../../../components/ResearchNote';
-import {
-  journeyStyles,
-  lengthWords,
-  ongoingHref,
-  Paragraphs,
-  ProgressBar,
-  STAGE_WORDS,
-  stageHref,
-  StepCard,
-} from '../../../../components/journeys/parts';
+import { journeyStyles, JourneyWaiting, lengthWords, ongoingHref, Paragraphs, ProgressBar, STAGE_WORDS, stageHref, StepCard } from '../../../../components/journeys/parts';
 import { Body, Card, confirmAction, Expander, List, RitualScreen, Row, SectionLabel, Title, tell, ui } from '../../../../components/rituals/ui';
 import { shortDate } from '../../../../lib/calendar';
 import { deityLink } from '../../../../lib/divination/linked';
@@ -36,7 +27,7 @@ import { type } from '../../../../theme';
 
 export default function JourneyOverview() {
   const { id } = useLocalSearchParams<{ id: string }>();
-  const { journey, progress, change } = useJourney(id);
+  const { journey, progress, change, textState, retry } = useJourney(id);
   const cadence = useCadence();
   const [busy, setBusy] = useState(false);
   const now = new Date();
@@ -50,6 +41,7 @@ export default function JourneyOverview() {
       })
     : [];
 
+  if (!journey && textState !== 'missing') return <JourneyWaiting state={textState} retry={retry} back="Dedication journeys" />;
   if (!journey) {
     return (
       <RitualScreen back="Dedication journeys">

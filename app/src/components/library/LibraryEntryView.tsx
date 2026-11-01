@@ -5,7 +5,8 @@ import { Image, StyleSheet, Text, View } from 'react-native';
 import { Button } from '../Button';
 import { ResearchFooter } from '../ResearchNote';
 import { Card, MoreScreen, RichText, Section, Tags } from '../more/ui';
-import { journeyForDeityRef } from '../../lib/journeys';
+import { JOURNEY_CATALOG } from '../../lib/journeys/catalog';
+import { journeyForDeityRefIn } from '../../lib/journeys/lookup';
 import { correspondences, entryIntro, findByName, useLibrary, type LibraryEntry } from '../../lib/library';
 import { sourcingForEntry } from '../../lib/library/closed';
 import { layerFields, visibleLayers } from '../../lib/library/model';
@@ -14,7 +15,7 @@ import type { LibraryField } from '../../lib/library/types';
 import { LAYER_LABELS, type Layer } from '../../lib/settings/defaults';
 import { useSession } from '../../lib/session';
 import { useMySettings } from '../../lib/settings/store';
-import { colors, fonts, radius, type } from '../../theme';
+import { colors, fonts, radius, type, fitLines } from '../../theme';
 import { ConnectedTo, LibraryJourney, RelationshipManager } from './LibraryConnections';
 import { DeityYours } from './DeityYours';
 import { HerbHearth } from '../craft/hearth';
@@ -66,7 +67,7 @@ export function LibraryEntryView({ entryId, back, backLabel, hrefFor, editHref }
     .map((layer) => ({ layer, fields: layerFields(layerData(entry, layer), layer, settings, entry.layout) }))
     .filter(({ fields }) => fields.length > 0);
   // A deity with a dedication journey links to it.
-  const journey = entry.type === 'deity' ? journeyForDeityRef(entry.traditionalRef ?? entry.id) : null;
+  const journey = entry.type === 'deity' ? journeyForDeityRefIn(JOURNEY_CATALOG, entry.traditionalRef ?? entry.id) : null;
   // Rituals and ritual templates read as a record of the working, as on the website.
   const record = entry.myPractice ? ritualRecord(entry.type, entry.myPractice) : null;
   // Plants, resins and stones whose sourcing raises real concerns.
@@ -234,7 +235,7 @@ function layerData(entry: LibraryEntry, layer: Layer): Record<string, unknown> |
 
 const styles = StyleSheet.create({
   image: { width: '100%', aspectRatio: 4 / 3, borderRadius: radius.card, backgroundColor: colors.surface },
-  intro: { fontFamily: fonts.displayItalic, fontSize: 21, lineHeight: 27, color: colors.parchment },
+  intro: fitLines({ fontFamily: fonts.displayItalic, fontSize: 21, lineHeight: 27, color: colors.parchment }),
   facts: { flexDirection: 'row', flexWrap: 'wrap', gap: 10 },
   fact: {
     minWidth: 120,

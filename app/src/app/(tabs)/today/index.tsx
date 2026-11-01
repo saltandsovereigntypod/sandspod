@@ -200,6 +200,17 @@ export default function Today() {
           </View>
           {side && reminderButton}
 
+          <View style={styles.horizon}>
+            <Text style={type.eyebrow}>On the horizon</Text>
+            <View style={styles.tiles}>
+              {today.horizon.map((item) => (
+                <HorizonTile key={item.title} item={item} />
+              ))}
+            </View>
+            <Text style={[type.caption, styles.center]}>{today.nextSyzygyLine}</Text>
+            {today.eclipseLine && <Text style={[type.caption, styles.center, styles.gold]}>{today.eclipseLine}</Text>}
+          </View>
+
           <NextWorking now={now} variant="today" />
 
           <CovenToday />
@@ -242,17 +253,6 @@ export default function Today() {
         <>
           <DaySky today={today} sky={sky} here={here} now={clock} season={seasonLine(clock, hemisphereOf(settings, place), seasonCounting(settings))} />
           <CorrespondencesCard today={today} />
-
-          <View style={styles.horizon}>
-            <Text style={type.eyebrow}>On the horizon</Text>
-            <View style={styles.tiles}>
-              {today.horizon.map((item) => (
-                <HorizonTile key={item.title} item={item} />
-              ))}
-            </View>
-            <Text style={[type.caption, styles.center]}>{today.nextSyzygyLine}</Text>
-            {today.eclipseLine && <Text style={[type.caption, styles.center, styles.gold]}>{today.eclipseLine}</Text>}
-          </View>
 
           <PracticeCard settings={settings} place={place} now={clock} />
         </>

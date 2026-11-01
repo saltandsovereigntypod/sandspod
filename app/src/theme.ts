@@ -78,14 +78,35 @@ const baseType = {
 } as const;
 
 type TypeStyles = typeof baseType;
+/** iPhone or iPad. Read lazily so plain-Node tests (no React Native) still load the theme. */
+const IS_IOS: boolean = (() => {
+  try {
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
+    return require('react-native').Platform.OS === 'ios';
+  } catch {
+    return false;
+  }
+})();
+
 let shaped: { prefs: AccessibilityPrefs; styles: TypeStyles } | null = null;
+
+/**
+ * On iPhone a fixed lineHeight can leave a long paragraph measured taller than
+ * it is drawn, so its last line is clipped mid-word. Let iOS space lines itself
+ * (Source Serif's own spacing is close to ours) so nothing is ever cut off.
+ */
+export function fitLines<T extends object>(style: T): T {
+  if (!IS_IOS || !('lineHeight' in style)) return style;
+  const { lineHeight: _drop, ...rest } = style as T & { lineHeight?: number };
+  return rest as T;
+}
 
 /** The text styles with Settings → Accessibility applied (text size, spacing, font, contrast). */
 function typeStyles(): TypeStyles {
   const prefs = currentAccessibility();
   if (shaped?.prefs !== prefs) {
     const styles = Object.fromEntries(
-      Object.entries(baseType).map(([key, style]) => [key, accessibleTextStyle(style, prefs)]),
+      Object.entries(baseType).map(([key, style]) => [key, fitLines(accessibleTextStyle(style, prefs))]),
     ) as unknown as TypeStyles;
     shaped = { prefs, styles };
   }

@@ -39,7 +39,7 @@ export default function TodaySettings() {
                   onChange={(v) => set('today_layout', v)}
                 />
               )}
-              <Text style={type.caption}>On the horizon, under Sky & Lore, always shows the next moon phase and the next holiday.</Text>
+              <Text style={type.caption}>On the horizon, on Today, always shows the next moon phase and the next holiday.</Text>
             </Section>
             <Section label="Also on Today">
               <MenuList>

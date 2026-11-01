@@ -1,10 +1,11 @@
 /*
  * Today, as the app's Today tab has it (app/src/app/(tabs)/today/index.tsx),
  * in two tabs (js/segmented-switch.js). "Today": the date and the other
- * calendars, the moon and the day's holidays, your next working, your covens,
- * what wants tending, Did it work?, last night's dream, the Deipnon, a card
- * for the day, Set tonight's altar, Reflect and Last time. "Sky & Lore": the
- * day's sky, correspondences, On the horizon and For your practice. The last
+ * calendars, the moon and the day's holidays, On the horizon (the next moon
+ * phase and holiday), your next working, your covens, what wants tending, Did
+ * it work?, last night's dream, the Deipnon, a card for the day, Set tonight's
+ * altar, Reflect and Last time. "Sky & Lore": the day's sky, correspondences
+ * and For your practice. The last
  * tab used is kept in this browser; a link with ?tab= or ?section= (or a
  * section's #name) opens the tab holding it. Everything is worked out by the
  * app's own logic (js/core/today.js); the place stays in this browser and is
@@ -237,6 +238,7 @@
       state.tab === "today"
         ? header +
           panels +
+          horizonSection(today) +
           workingCard(m) +
           `<div data-coven-today>${window.CovenToday?.html?.() || ""}</div>` +
           `<div data-tend-today>${window.TendToday?.html?.() || ""}</div>` +
@@ -252,7 +254,7 @@
           `<section class="td-prompt" aria-label="Reflect"><p class="sp-eyebrow td-gold">Reflect</p><p class="td-prompt__text">${esc(today.prompt)}</p></section>` +
           lastTimeLine(m) +
           `<p class="td-customise"><a class="td-gold" href="/?sanctuary=settings&amp;settings=today">Customise Today ›</a></p>`
-        : daySkyCard(m) + correspondencesCard(today) + horizonSection(today) + practiceCard(m);
+        : daySkyCard(m) + correspondencesCard(today) + practiceCard(m);
 
     root.innerHTML =
       `<h1 class="sr-only">Today</h1>` +

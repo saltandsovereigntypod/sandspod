@@ -7,7 +7,7 @@ import { Term, TermText } from '../../../../../components/astro/Explain';
 import { Body, Card, Chip, Chips, confirmAction, Expander, Field, Notice, RitualScreen, SectionLabel, Title, Toggle, ui } from '../../../../../components/rituals/ui';
 import { offsetForBirth, offsetLabel, offsetNote } from '../../../../../lib/astro/birth';
 import { placeLabel, PLACES_CREDIT, searchPlaces, type Place } from '../../../../../lib/astro/places';
-import { cityData } from '../../../../../lib/astro/placesData';
+import { useCityData } from '../../../../../lib/astro/placesData';
 import { deleteChart, saveChart, useAstro } from '../../../../../lib/astro/store';
 import { localMeanTimeOffset, zonesWork } from '../../../../../lib/astro/time';
 import type { SavedChart } from '../../../../../lib/astro/vault';
@@ -66,7 +66,9 @@ function ChartForm({ existing, startAsMe }: { existing: SavedChart | null; start
   const [saving, setSaving] = useState(false);
 
   const zonesOk = useMemo(() => zonesWork(), []);
-  const results = useMemo(() => (query.trim().length >= 2 ? searchPlaces(cityData(), query, 8) : []), [query]);
+  // The towns list comes from the website the first time the search is used, then stays on the phone.
+  const cities = useCityData(query.trim().length > 0);
+  const results = useMemo(() => (query.trim().length >= 2 && cities.data ? searchPlaces(cities.data, query, 8) : []), [query, cities.data]);
   const validDate = parseDate(date);
   const validTime = noTime ? null : parseTime(time);
   const fromZone = useMemo(
@@ -182,7 +184,14 @@ function ChartForm({ existing, startAsMe }: { existing: SavedChart | null; start
                 <Text style={type.caption}>{[p.region, p.country].filter(Boolean).join(', ')}</Text>
               </Pressable>
             ))}
-            {query.trim().length >= 2 && results.length === 0 && <Body muted>No town by that name in the list (towns of 15,000 people or more). Try the nearest larger town, or enter the coordinates.</Body>}
+            {query.trim().length >= 2 && cities.state === 'loading' && <Body muted>Fetching the list of towns…</Body>}
+            {query.trim().length >= 2 && cities.state === 'offline' && (
+              <>
+                <Body muted>The list of towns is fetched from the website the first time you search, then kept on this phone. Connect to the internet and try again, or enter the coordinates.</Body>
+                <Button label="Try again" variant="text" onPress={cities.retry} />
+              </>
+            )}
+            {query.trim().length >= 2 && cities.state === 'ready' && results.length === 0 && <Body muted>No town by that name in the list (towns of 15,000 people or more). Try the nearest larger town, or enter the coordinates.</Body>}
             <Expander title="Enter coordinates instead">
               <Field label="Latitude" value={lat} onChange={setLat} placeholder="e.g. 51.51 (south is negative)" />
               <Field label="Longitude" value={lon} onChange={setLon} placeholder="e.g. -0.13 (west is negative)" />

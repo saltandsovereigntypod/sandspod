@@ -3,9 +3,9 @@ import { Text, View } from 'react-native';
 
 import { Button } from '../../../../../../components/Button';
 import { SupportLink } from '../../../../../../components/SupportLink';
-import { JournalPrompt, journeyStyles, lessonHref, Paragraphs, STAGE_WORDS } from '../../../../../../components/journeys/parts';
+import { JournalPrompt, journeyStyles, JourneyWaiting, lessonHref, Paragraphs, STAGE_WORDS } from '../../../../../../components/journeys/parts';
 import { Body, Card, List, RitualScreen, Row, SectionLabel, Title, ui } from '../../../../../../components/rituals/ui';
-import { findLesson, nextLesson } from '../../../../../../lib/journeys';
+import { findLesson, nextLesson } from '../../../../../../lib/journeys/lookup';
 import { journeyStatus, markRead, markUnread } from '../../../../../../lib/journeys/progress';
 import { startJourney, useJourney } from '../../../../../../lib/journeys/store';
 import { ritualsLibraryHref } from '../../../../../../lib/library';
@@ -22,9 +22,10 @@ function libraryLink(ref: string) {
 // A calm reading view: the lesson, what the evidence shows, how people practise it, and questions to sit with.
 export default function LessonView() {
   const { journeyId, lessonId } = useLocalSearchParams<{ journeyId: string; lessonId: string }>();
-  const { journey, progress, change } = useJourney(journeyId);
+  const { journey, progress, change, textState, retry } = useJourney(journeyId);
   const found = findLesson(journey, lessonId);
 
+  if (!journey && textState !== 'missing') return <JourneyWaiting state={textState} retry={retry} back="Journey" />;
   if (!journey || !found) {
     return (
       <RitualScreen back="Journey">

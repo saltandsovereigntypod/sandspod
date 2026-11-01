@@ -8,7 +8,7 @@ import { addEntry, updateEntry, useCraft, type CraftEntry } from '../craft/store
 import { holidayChoice, hiddenTraditions } from '../holidays';
 import { findSession, useRituals } from '../rituals/store';
 import { useMySettings } from '../settings/store';
-import { journeyById } from './index';
+import { useJourneyText, type JourneyTextState } from './texts';
 import {
   journeyStatus,
   newProgress,
@@ -52,6 +52,10 @@ export type JourneyHandle = {
   entry: ProgressEntry | null;
   progress: JourneyProgress | null;
   ready: boolean;
+  /** Whether the journey's text is here yet ('offline' when it couldn't be fetched). */
+  textState: JourneyTextState;
+  /** Try fetching the text again. */
+  retry: () => void;
   /** Change the progress (no-op before the journey is begun). */
   change: (fn: (p: JourneyProgress) => JourneyProgress) => Promise<void>;
 };
@@ -62,7 +66,7 @@ export type JourneyHandle = {
  * for the dedication, that's the day of dedication.
  */
 export function useJourney(journeyId: string | null | undefined): JourneyHandle {
-  const journey = journeyById(journeyId);
+  const { journey, state: textState, retry } = useJourneyText(journeyId);
   const { entries, ready } = useJourneyProgress();
   const rituals = useRituals();
   const entry = journey ? progressFor(entries, journey.id) : null;
@@ -105,5 +109,5 @@ export function useJourney(journeyId: string | null | undefined): JourneyHandle 
     // eslint-disable-next-line react-hooks/exhaustive-deps -- the keys stand in for the lists they summarise
   }, [entry?.id, waitingKey, activeId, journalKey]);
 
-  return { journey, entry, progress, ready, change };
+  return { journey, entry, progress, ready, change, textState, retry };
 }

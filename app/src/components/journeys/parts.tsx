@@ -7,13 +7,14 @@ import { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
 import { Button } from '../Button';
-import { Body, Card, Field, tell, ui } from '../rituals/ui';
+import { Body, Card, Field, RitualScreen, tell, Title, ui } from '../rituals/ui';
 import { shortDate } from '../../lib/calendar';
 import type { Journey, StageKind } from '../../lib/journeys';
+import type { JourneyTextState } from '../../lib/journeys/texts';
 import { nextStepLine, type NextStep } from '../../lib/journeys/progress';
 import { blankAnswers } from '../../lib/rituals/lifecycle';
 import { saveJournal } from '../../lib/rituals/store';
-import { colors, fonts, radius, type } from '../../theme';
+import { colors, fonts, radius, type, fitLines } from '../../theme';
 
 export const journeyHref = (id: string): Href => ({ pathname: '/rituals/journeys/[id]', params: { id } }) as Href;
 export const stageHref = (journeyId: string, stage: number): Href =>
@@ -26,6 +27,26 @@ export const riteHref = (journeyId: string, stage: number): Href =>
   ({ pathname: '/rituals/journeys/rite/[journeyId]/[stage]', params: { journeyId, stage: String(stage) } }) as Href;
 export const discernHref = (journeyId: string): Href => ({ pathname: '/rituals/journeys/discern/[journeyId]', params: { journeyId } }) as Href;
 export const ongoingHref = (journeyId: string): Href => ({ pathname: '/rituals/journeys/ongoing/[journeyId]', params: { journeyId } }) as Href;
+
+/**
+ * While a journey's text is loading, or when it couldn't be fetched: each
+ * journey comes from the website the first time it's opened, then stays on
+ * the phone. Null once it's here (or there's no such journey).
+ */
+export function JourneyWaiting({ state, retry, back }: { state: JourneyTextState; retry: () => void; back: string }) {
+  if (state === 'ready' || state === 'missing') return null;
+  return (
+    <RitualScreen back={back}>
+      <Title>{state === 'loading' ? 'Opening the journey…' : 'Not on this phone yet'}</Title>
+      {state === 'offline' && (
+        <>
+          <Body>Each journey is fetched from the website the first time you open it, then kept on this phone so it works offline. Connect to the internet and try again.</Body>
+          <Button label="Try again" onPress={retry} />
+        </>
+      )}
+    </RitualScreen>
+  );
+}
 
 export const STAGE_WORDS: Record<StageKind, string> = {
   threshold: 'Threshold',
@@ -203,10 +224,10 @@ export function JournalPrompt({ prompt, title, intention }: { prompt: string; ti
 }
 
 export const journeyStyles = StyleSheet.create({
-  reading: { fontFamily: fonts.body, fontSize: 17, lineHeight: 27, color: colors.cream },
+  reading: fitLines({ fontFamily: fonts.body, fontSize: 17, lineHeight: 27, color: colors.cream }),
   heading: { fontFamily: fonts.display, fontSize: 25, lineHeight: 29, color: colors.cream },
-  link: { fontFamily: fonts.body, fontSize: 15, lineHeight: 22, color: colors.gold, textDecorationLine: 'underline' },
-  bullet: { fontFamily: fonts.body, fontSize: 15, lineHeight: 22, color: colors.parchment },
+  link: fitLines({ fontFamily: fonts.body, fontSize: 15, lineHeight: 22, color: colors.gold, textDecorationLine: 'underline' as const }),
+  bullet: fitLines({ fontFamily: fonts.body, fontSize: 15, lineHeight: 22, color: colors.parchment }),
 });
 
 const styles = StyleSheet.create({
@@ -214,5 +235,5 @@ const styles = StyleSheet.create({
   fill: { height: 6, borderRadius: radius.chip, backgroundColor: colors.gold },
   reading: journeyStyles.reading,
   prompt: { gap: 6, paddingVertical: 4 },
-  question: { fontFamily: fonts.displayItalic, fontSize: 20, lineHeight: 26, color: colors.parchment },
+  question: fitLines({ fontFamily: fonts.displayItalic, fontSize: 20, lineHeight: 26, color: colors.parchment }),
 });
