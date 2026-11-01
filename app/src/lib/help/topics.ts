@@ -2939,7 +2939,9 @@ export const HELP: HelpSection[] = [
           'Choose how far ahead: the next week, month or three months.',
           '"Right now" says how this hour measures up; "Good enough now" means there is little to gain by waiting.',
           'Each time below shows the moon, a score and its main reasons. Tap "Why" for every factor and what it added or took away.',
-          'Tap "Plan it then" to open the planner at that day and time, with the reminder your planner reminders give. From a plan, "Move the plan to then" changes its time.',
+          'Tap "Set a ritual for then" on a time. "Build a new ritual for then" opens the ritual builder with the time and its reasons at the top; saving keeps the ritual in your Grimoire and sets it for then, so it shows under Practice → Rituals with your ritual reminders.',
+          'Or tap one of your own rituals to set it for that time straight away, or, if you lead rituals in a coven, "Plan it with" the coven to open its ritual builder with the date, time and intention filled in. "Just pick the time in the planner" opens the planner instead.',
+          'Opened from a plan, the spell builder or one of your rituals, it hands the time back instead: "Plan it then", or "Move the plan to then" to change a plan’s time.',
           'Under "Weigh the factors", turn the moon phase, Moon sign, void-of-course Moon, planetary day and hour, retrogrades, your festivals, your deities and your chart up, down or off, and choose whether to include the small hours.',
         ],
         tips: [

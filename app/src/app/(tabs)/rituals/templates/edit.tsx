@@ -1,10 +1,15 @@
 import { router, useLocalSearchParams } from 'expo-router';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
 import { Button } from '../../../../components/Button';
 import { Card, Chip, Chips, Field, Notice, RitualScreen, SectionLabel, SignInCard, Title, confirmAction, tell, ui } from '../../../../components/rituals/ui';
+import { anyIntent } from '../../../../lib/craft/cosmic/timing';
 import { useGrimoire } from '../../../../lib/grimoire/store';
+import { savePlanWithCalendar } from '../../../../lib/reminders/calendarStore';
+import { askForRitualReminders } from '../../../../lib/reminders/store';
+import { clockTime, dayLabel } from '../../../../lib/rituals/format';
+import { planFor, readSetFor, type SetForParams } from '../../../../lib/rituals/setFor';
 import { CANDLE_ACTIONS, candleAction, withCandleAction } from '../../../../lib/rituals/automation';
 import { blankStep, draftFromTemplate, validateDraft } from '../../../../lib/rituals/lifecycle';
 import { archiveTemplate, saveTemplate, useRituals } from '../../../../lib/rituals/store';
@@ -13,19 +18,26 @@ import { useSession } from '../../../../lib/session';
 import { colors, radius, type } from '../../../../theme';
 
 export default function TemplateEditor() {
-  const { id } = useLocalSearchParams<{ id?: string }>();
+  const params = useLocalSearchParams<{ id?: string } & SetForParams>();
+  const { id } = params;
+  // Opened from "Find a good time": saving also sets the ritual for that time.
+  const { setDate: atDate, setTime: atTime, setHour: atHour, setIntent: atIntent, setWhy: atWhy } = params;
+  const setFor = id ? null : readSetFor({ setDate: atDate, setTime: atTime, setHour: atHour, setIntent: atIntent, setWhy: atWhy });
+  const setIntent = anyIntent(setFor?.intent);
   const { session } = useSession();
   const rituals = useRituals();
   const grimoire = useGrimoire();
   const existing = id ? rituals.templates.find((t) => t.id === id) ?? null : null;
-  const [draft, setDraft] = useState<TemplateDraft>(() => draftFromTemplate(existing));
+  const [draft, setDraft] = useState<TemplateDraft>(() => {
+    const fresh = draftFromTemplate(existing);
+    return setIntent && !fresh.intention ? { ...fresh, intention: setIntent.label } : fresh;
+  });
   const [saving, setSaving] = useState(false);
   const [problem, setProblem] = useState<string | null>(null);
 
   // Opened before the templates finished loading: fill the form once they arrive.
-  useEffect(() => {
-    if (existing && !draft.id) setDraft(draftFromTemplate(existing));
-  }, [existing, draft.id]);
+  // (Set while drawing, once: the filled draft has the template's id.)
+  if (existing && !draft.id) setDraft(draftFromTemplate(existing));
 
   if (!session) {
     return (
@@ -55,6 +67,13 @@ export default function TemplateEditor() {
     try {
       const saved = await saveTemplate(draft);
       void grimoire.refresh();
+      if (setFor) {
+        const planned = planFor(setFor, saved, setIntent ? { label: setIntent.label, plannerKey: setIntent.plannerKey } : null);
+        await savePlanWithCalendar(planned);
+        void askForRitualReminders();
+        router.replace({ pathname: '/rituals/plan/[id]', params: { id: planned.id } });
+        return;
+      }
       // Editing was opened from the template itself: go back to it rather than opening it twice.
       if (existing && router.canGoBack()) router.back();
       else router.replace({ pathname: '/rituals/templates/[id]', params: { id: saved.id } });
@@ -77,9 +96,19 @@ export default function TemplateEditor() {
     }
   };
 
+  const setForDay = setFor ? new Date(`${setFor.date}T${setFor.time}:00`) : null;
+  const setForWhen = setForDay ? dayLabel(setForDay) : null;
+  const setForLabel = setForDay ? `${setForWhen} · ${clockTime(setForDay)}` : null;
   return (
     <RitualScreen back={existing ? existing.title : 'Templates'}>
-      <Title eyebrow="Grimoire">{existing ? 'Edit template' : 'New template'}</Title>
+      <Title eyebrow="Grimoire">{existing ? 'Edit template' : setFor ? 'Build the ritual' : 'New template'}</Title>
+      {setForLabel && (
+        <Card accent>
+          <SectionLabel>{`Set for ${setForLabel}`}</SectionLabel>
+          {!!setFor?.why && <Text style={type.body}>{setFor.why}</Text>}
+          <Text style={type.caption}>Chosen in Find a good time. Saving keeps the ritual in your Grimoire and sets it for then, with your ritual reminders.</Text>
+        </Card>
+      )}
 
       <Card>
         <SectionLabel>The ritual</SectionLabel>
@@ -185,7 +214,7 @@ export default function TemplateEditor() {
 
       {!!problem && <Notice>{problem}</Notice>}
       <View style={ui.actions}>
-        <Button label={saving ? 'Saving into your Grimoire…' : existing ? 'Save changes' : 'Save template'} disabled={saving} onPress={save} />
+        <Button label={saving ? 'Saving into your Grimoire…' : existing ? 'Save changes' : setForWhen ? `Save and set it for ${setForWhen.toLowerCase()}` : 'Save template'} disabled={saving} onPress={save} />
         {!!existing && <Button label="Archive template" variant="text" onPress={archive} />}
       </View>
     </RitualScreen>

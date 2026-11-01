@@ -52,7 +52,10 @@ import { fromFields, occasionSuggestions, stepsFromTemplate, suggestionTime, toF
 import { covenHolidaysBetween } from '../../../../../../lib/covens/programs';
 import { buildScript } from '../../../../../../lib/covens/script';
 import { draftFromTemplate, RITUAL_TEMPLATES } from '../../../../../../lib/covens/templates';
+import { anyIntent } from '../../../../../../lib/craft/cosmic/timing';
 import { confirmAction } from '../../../../../../lib/grimoire/confirm';
+import { clockTime, dayLabel } from '../../../../../../lib/rituals/format';
+import { readSetFor, type SetForParams } from '../../../../../../lib/rituals/setFor';
 import { useRituals } from '../../../../../../lib/rituals/store';
 import { colors, radius, type } from '../../../../../../theme';
 
@@ -71,7 +74,13 @@ type View_ = 'start' | 'outline' | 'details' | 'roles' | 'sections' | 'prep' | '
 // For those who lead the coven's rituals; putting rites on the calendar is
 // for those the coven's head allows.
 export default function PlanRitual() {
-  const { id, kind: kindParam } = useLocalSearchParams<{ id?: string; kind?: string }>();
+  const params = useLocalSearchParams<{ id?: string; kind?: string } & SetForParams>();
+  const { id, kind: kindParam } = params;
+  // A time chosen in "Find a good time" dates a new rite (never one being edited).
+  const { setDate: atDate, setTime: atTime, setHour: atHour, setIntent: atIntent, setWhy: atWhy } = params;
+  const setFor = id ? null : readSetFor({ setDate: atDate, setTime: atTime, setHour: atHour, setIntent: atIntent, setWhy: atWhy });
+  const setForDay = setFor ? new Date(`${setFor.date}T${setFor.time}:00`) : null;
+  const setForLabel = setForDay ? `${dayLabel(setForDay)} · ${clockTime(setForDay)}` : null;
   const coven = useCoven();
   const ritual = id ? coven.rituals.find((r) => r.id === id) ?? null : null;
   const covenId = coven.snapshot?.coven.id;
@@ -89,12 +98,12 @@ export default function PlanRitual() {
   const [plan, setPlan] = useState<RitualPlan>(() => cleanPlan(ritual?.plan, initialKind));
   const [steps, setSteps] = useState<BuilderStep[]>(() => (ritual ? orderBySections(orderSteps(coven.steps, ritual.id).map((s) => builderStepFrom(s, cleanPlan(ritual.plan, initialKind))), cleanPlan(ritual.plan, initialKind).sections) : []));
   const [title, setTitle] = useState(ritual?.title ?? '');
-  const [intention, setIntention] = useState(ritual?.intention ?? '');
+  const [intention, setIntention] = useState(ritual?.intention ?? anyIntent(setFor?.intent)?.label ?? '');
   const [description, setDescription] = useState(ritual?.description ?? '');
   const [occasion, setOccasion] = useState<string>(ritual?.occasion ?? '');
   const [occasionName, setOccasionName] = useState(ritual?.occasion_name ?? '');
-  const [date, setDate] = useState(toFields(ritual?.scheduled_for).date);
-  const [time, setTime] = useState(toFields(ritual?.scheduled_for).time);
+  const [date, setDate] = useState(setFor?.date ?? toFields(ritual?.scheduled_for).date);
+  const [time, setTime] = useState(setFor?.time ?? toFields(ritual?.scheduled_for).time);
   const [view, setView] = useState<View_>(ritual ? 'outline' : 'start');
   const [people, setPeople] = useState<Candidate[] | null>(null);
   const [busy, setBusy] = useState(false);
@@ -287,6 +296,13 @@ export default function PlanRitual() {
     const copies = coven.rituals.filter((r) => (r.kind ?? 'rite') === kind).slice(0, 12);
     return (
       <CovenScreen title="Plan a gathering" {...backTo}>
+        {setForLabel && setFor && (
+          <Card>
+            <Text style={type.cardTitle}>{`For ${setForLabel}`}</Text>
+            {!!setFor.why && <Text style={type.body}>{setFor.why}</Text>}
+            <Text style={type.caption}>Chosen in Find a good time. The date and time are filled in; change them under Details.</Text>
+          </Card>
+        )}
         <Chips label="What kind of gathering" options={GATHERING_KINDS} value={kind} onChange={(k) => { setKind(k); setPlan(blankPlan(k)); }} />
         <Text style={type.caption}>{GATHERING_KINDS.find((k) => k.value === kind)?.detail}</Text>
         <Button label={kind === 'meeting' ? 'Start with an empty agenda' : 'Start with an empty outline'} variant="outline" onPress={() => begin({ kind, plan: blankPlan(kind), steps: [] })} />
