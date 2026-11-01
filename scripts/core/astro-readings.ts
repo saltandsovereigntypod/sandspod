@@ -8,3 +8,4 @@
 // need the sky, the Moon and the hours load js/core/astro.js alone.
 export * as interpret from '../../app/src/lib/astro/interpret/registry.ts';
 export * as compose from '../../app/src/lib/astro/interpret/compose.ts';
+export * as plain from '../../app/src/lib/astro/interpret/plainWords.ts';
