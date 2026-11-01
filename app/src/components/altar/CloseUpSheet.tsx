@@ -5,7 +5,6 @@
 // can be seen without zooming the altar. The same drawing as the stage
 // (AltarObjectArt), only bigger, with a few words on what you're seeing.
 
-import { useEffect, useState } from 'react';
 import { Image, StyleSheet, Text, useWindowDimensions, View } from 'react-native';
 import Svg, { Defs, Ellipse, RadialGradient, Stop } from 'react-native-svg';
 
@@ -17,6 +16,7 @@ import { incenseLife, isIncense } from '../../lib/altar/incense';
 import { carvingsOf, dressingsOf, isCandle } from '../../lib/altar/livingState';
 import { freshnessLine, offeringFreshness } from '../../lib/altar/offerings';
 import type { SavedObject } from '../../lib/altar/types';
+import { useTicker } from '../../lib/altar/useTicker';
 import { burnedDownLine, burnProgress, meltLine, waxLook } from '../../lib/altar/wax';
 import { carvingLine } from '../../lib/altar/workings/dressing';
 import { colors, fonts, radius, type } from '../../theme';
@@ -35,16 +35,8 @@ type Props = {
 };
 
 export function CloseUpSheet({ visible, object, label, background, charge, onClose }: Props) {
-  const [now, setNow] = useState(() => Date.now());
-  useEffect(() => {
-    if (!visible) return;
-    const opened = setTimeout(() => setNow(Date.now()), 0);
-    const timer = setInterval(() => setNow(Date.now()), 20_000);
-    return () => {
-      clearTimeout(opened);
-      clearInterval(timer);
-    };
-  }, [visible]);
+  // The altar's shared clock, while the close-up is open.
+  const now = useTicker(20_000, visible);
   const window = useWindowDimensions();
   if (!object) return null;
 
