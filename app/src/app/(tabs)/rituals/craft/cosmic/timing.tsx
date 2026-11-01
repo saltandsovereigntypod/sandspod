@@ -1,5 +1,5 @@
 import { router, useLocalSearchParams, usePathname, type Href } from 'expo-router';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState, type ReactNode } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
 import { Button } from '../../../../../components/Button';
@@ -28,7 +28,13 @@ import {
   type TimingAdvice,
   type TimingWindow,
 } from '../../../../../lib/craft/cosmic/timing';
+import * as covenApi from '../../../../../lib/covens/api';
+import { permissions, type Coven } from '../../../../../lib/covens/model';
 import { usePlace } from '../../../../../lib/location';
+import { askForRitualReminders } from '../../../../../lib/reminders/store';
+import { savePlanWithCalendar } from '../../../../../lib/reminders/calendarStore';
+import { planFor, setForParams, type SetFor } from '../../../../../lib/rituals/setFor';
+import { useSession } from '../../../../../lib/session';
 import { useRituals } from '../../../../../lib/rituals/store';
 import { useMySettings } from '../../../../../lib/settings/store';
 import { settingsHref } from '../../../../../lib/settings/links';
@@ -56,7 +62,9 @@ const LEVELS: FactorLevel[] = [0, 1, 2, 3];
 // the reasons for each (lib/craft/cosmic/timing.ts). Its factors can be
 // weighed or turned off; your festivals, deities and (when your charts are
 // open) your own chart count too. Choosing a time opens the planner with
-// it filled in. The website's twin is /practice/cosmic/timing/.
+// it filled in, or (opened on its own) sets a ritual for it: one built
+// there and then, one of yours, or one planned with a coven you lead
+// (lib/rituals/setFor.ts). The website's twin is /practice/cosmic/timing/.
 export default function SpellTiming() {
   const params = useLocalSearchParams<Params>();
   const pathname = usePathname();
@@ -65,6 +73,34 @@ export default function SpellTiming() {
   const astro = useAstro();
   const rituals = useRituals();
   const editing = params.planId ? (rituals.plans.find((p) => p.id === params.planId) ?? null) : null;
+  const { session } = useSession();
+  const userId = session?.user.id ?? null;
+  // Opened from a plan, a template or the spell builder: the time goes back to that. Otherwise a time becomes a set ritual here.
+  const attached = !!(params.planId || params.templateId || params.fromSpell);
+  const [setting, setSetting] = useState<string | null>(null);
+  const [leads, setLeads] = useState<Coven[]>([]);
+  useEffect(() => {
+    if (!userId || attached) return;
+    let live = true;
+    covenApi
+      .fetchMyStandings(userId)
+      .then((list) => {
+        if (!live) return;
+        setLeads(
+          list
+            .filter(({ coven, membership, ranks }) => {
+              if (coven.status !== 'active') return false;
+              const p = permissions({ coven, membership, ranks, userId });
+              return p.lead || p.schedule;
+            })
+            .map((s) => s.coven),
+        );
+      })
+      .catch(() => {});
+    return () => {
+      live = false;
+    };
+  }, [userId, attached]);
 
   // What it's for: chosen here, or else from the link or the plan being moved.
   const [chosen, setIntentKey] = useState<string | null | undefined>(undefined);
@@ -120,6 +156,17 @@ export default function SpellTiming() {
         ...(params.fromSpell ? { fromSpell: params.fromSpell } : {}),
       },
     } as unknown as Href);
+  };
+
+  const setFor = (w: TimingWindow): SetFor => ({ ...windowPlanFields(w, new Date()), hour: w.hourPlanet ?? null, intent: intent?.key ?? null, why: w.why });
+  const build = (w: TimingWindow) => router.push({ pathname: '/rituals/templates/edit', params: setForParams(setFor(w)) } as unknown as Href);
+  const withCoven = (w: TimingWindow, coven: Coven) =>
+    router.push({ pathname: '/coven/c/[slug]/ritual/plan', params: { slug: coven.slug, ...setForParams(setFor(w)) } } as unknown as Href);
+  const setMine = async (w: TimingWindow, template: { id: string; title: string; intention?: string | null }) => {
+    const planned = planFor(setFor(w), template, intent ? { label: intent.label, plannerKey: intent.plannerKey } : null);
+    await savePlanWithCalendar(planned);
+    void askForRitualReminders();
+    router.push({ pathname: '/rituals/plan/[id]', params: { id: planned.id } } as unknown as Href);
   };
 
   const what = params.title || editing?.title || null;
@@ -184,7 +231,38 @@ export default function SpellTiming() {
             {working && <Body muted>Working it out again…</Body>}
             {advice.windows.length === 0 && <Body muted>Nothing stands out in this span. Try a longer one, or turn a factor down.</Body>}
             {advice.windows.map((w, i) => (
-              <WindowCard key={w.start.toISOString()} window={w} now={now} best={i === 0} onPlan={() => plan(w)} planLabel={params.planId ? 'Move the plan to then' : 'Plan it then'} />
+              <WindowCard
+                key={w.start.toISOString()}
+                window={w}
+                now={now}
+                best={i === 0}
+                onPlan={() => (attached ? plan(w) : setSetting(setting === w.start.toISOString() ? null : w.start.toISOString()))}
+                planLabel={params.planId ? 'Move the plan to then' : attached ? 'Plan it then' : setting === w.start.toISOString() ? 'Close' : 'Set a ritual for then'}
+              >
+                {!attached && setting === w.start.toISOString() && (
+                  <View style={ui.gapSmall}>
+                    <SectionLabel>Your own ritual</SectionLabel>
+                    <Button label="Build a new ritual for then" onPress={() => build(w)} accessibilityHint="Opens the ritual builder; saving it sets it for this time" />
+                    {rituals.templates.length > 0 ? (
+                      <>
+                        <Body muted>Or set one of your rituals for then:</Body>
+                        <Chips>
+                          {rituals.templates.map((t) => (
+                            <Chip key={t.id} label={t.title} onPress={() => void setMine(w, t)} a11yLabel={`Set ${t.title} for then`} />
+                          ))}
+                        </Chips>
+                      </>
+                    ) : (
+                      <Body muted>Rituals you build and keep show here, ready to set for a time.</Body>
+                    )}
+                    {leads.length > 0 && <SectionLabel>With your coven</SectionLabel>}
+                    {leads.map((c) => (
+                      <Button key={c.id} label={`Plan it with ${c.name}`} variant="outline" onPress={() => withCoven(w, c)} accessibilityHint="Opens the coven ritual builder dated for this time" />
+                    ))}
+                    <Button label="Just pick the time in the planner" variant="text" onPress={() => plan(w)} />
+                  </View>
+                )}
+              </WindowCard>
             ))}
             {!params.fromSpell && !params.templateId && !params.planId && (
               <Button
@@ -257,7 +335,7 @@ export default function SpellTiming() {
   );
 }
 
-function WindowCard({ window: w, now, best, onPlan, planLabel }: { window: TimingWindow; now: Date; best: boolean; onPlan: () => void; planLabel: string }) {
+function WindowCard({ window: w, now, best, onPlan, planLabel, children }: { window: TimingWindow; now: Date; best: boolean; onPlan: () => void; planLabel: string; children?: ReactNode }) {
   return (
     <Card accent={best}>
       <View style={styles.head}>
@@ -271,7 +349,8 @@ function WindowCard({ window: w, now, best, onPlan, planLabel }: { window: Timin
       <Expander title="Why">
         <Parts window={w} />
       </Expander>
-      <Button label={planLabel} variant="outline" onPress={onPlan} />
+      <Button label={planLabel} variant={children ? 'text' : 'outline'} onPress={onPlan} />
+      {children}
     </Card>
   );
 }
