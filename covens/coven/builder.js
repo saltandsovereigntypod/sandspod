@@ -74,18 +74,21 @@
     const kind = ritual ? (ritual.kind === "meeting" ? "meeting" : "rite") : options.kind === "meeting" ? "meeting" : "rite";
     const plan = B().cleanPlan(ritual?.plan, kind);
     const saved = ritual ? L.orderSteps(state.ritualSteps, ritual.id) : [];
+    // A time chosen in Find a good time (rituals/js/set-ritual.js) fills a NEW ritual only.
+    const chosen = !ritual && global.SaltSetRitual ? global.SaltSetRitual.read(global.location.search) : null;
     m = {
+      chosen,
       ritual,
       kind,
       plan,
       steps: B().orderBySections(saved.map((s) => B().builderStepFrom(s, plan)), plan.sections),
       fields: {
         title: ritual?.title || "",
-        intention: ritual?.intention || "",
+        intention: ritual?.intention || chosen?.label || "",
         description: ritual?.description || "",
         occasion: ritual?.occasion || "",
         occasion_name: ritual?.occasion_name || "",
-        when: L.toLocalInput(ritual?.scheduled_for)
+        when: ritual ? L.toLocalInput(ritual.scheduled_for) : chosen ? `${chosen.date}T${chosen.time}` : ""
       },
       view: ritual ? "outline" : "start",
       previewMode: "script",
@@ -189,12 +192,18 @@
     mount();
   }
 
+  function chosenLine() {
+    const c = m.chosen;
+    return c && !m.ritual ? `<p class="sp-caption">${esc(`Chosen in Find a good time: ${global.SaltSetRitual.whenText(c)}${c.why ? ` · ${c.why}` : ""}`)}</p>` : "";
+  }
+
   function startHtml() {
     const ready = T().RITUAL_TEMPLATES.filter((t) => t.kind === m.kind);
     const copies = ctx.state.rituals.filter((r) => (r.kind || "rite") === m.kind).slice(0, 12);
     const row = (label, detail, act, attrs) => `<button type="button" class="sp-row cv-row-button" data-act="${act}" ${attrs}><span class="sp-row__text"><span class="sp-row__title">${esc(label)}</span>${detail ? `<span class="sp-row__detail">${esc(detail)}</span>` : ""}</span><span class="sp-row__chevron" aria-hidden="true">›</span></button>`;
     return `<p><a class="sp-back" href="${esc(ctx.backHref)}" data-tab="rituals">← All rituals</a></p>
       <h2>Plan a gathering</h2>
+      ${chosenLine()}
       <div class="sp-chips" role="group" aria-label="What kind of gathering">${B().GATHERING_KINDS.map((k) => chip(k.label, "kind", attr({ kind: k.value }), m.kind === k.value)).join("")}</div>
       <p class="sp-caption">${esc(B().GATHERING_KINDS.find((k) => k.value === m.kind).detail)}</p>
       <div class="sp-actions">${btn(m.kind === "meeting" ? "Start with an empty agenda" : "Start with an empty outline", "blank", "", "button--ghost")}</div>
@@ -228,6 +237,7 @@
     const after = [m.plan.afterwards.hold_hours ? `Altar left for ${m.plan.afterwards.hold_hours} hours` : "", m.plan.afterwards.notes ? "Notes" : "", m.plan.afterwards.follow_up ? "A follow-up" : ""].filter(Boolean).join(" · ") || "Nothing set";
     return `<p><a class="sp-back" href="${esc(ctx.backHref)}" data-tab="rituals">← ${m.ritual ? "Back to the ritual" : "All rituals"}</a></p>
       <h2>${m.ritual ? `Edit ${m.kind === "meeting" ? "the meeting" : "the rite"}` : m.kind === "meeting" ? "Plan a meeting" : "Plan a rite"}</h2>
+      ${chosenLine()}
       <nav class="sp-list" aria-label="About it">
         ${summaryRow(m.fields.title.trim() || "Name it", when, "details")}
         ${m.kind === "meeting" ? summaryRow("Who it’s for, and how it runs", `${m.audience.length ? P().assigneesLabel(m.audience, ctx.state.ranks, nameOf) : "Everyone in the coven"} · chair, secretary, chat, minutes`, "meeting") : ""}
@@ -1142,7 +1152,8 @@
     m.plan = next.plan;
     m.steps = B().orderBySections(next.steps, next.plan.sections);
     if (next.title !== undefined) m.fields.title = next.title;
-    if (next.intention) m.fields.intention = next.intention;
+    // The intention chosen in Find a good time stays, unless it was cleared.
+    if (next.intention && !(m.chosen && m.fields.intention)) m.fields.intention = next.intention;
     if (next.description) m.fields.description = next.description;
     if (next.occasion !== undefined) m.fields.occasion = next.occasion;
     if (next.occasionName !== undefined) m.fields.occasion_name = next.occasionName;
