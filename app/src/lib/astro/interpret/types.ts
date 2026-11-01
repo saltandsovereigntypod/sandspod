@@ -59,12 +59,18 @@
 
 import type { AspectName, PatternName } from '../aspects.ts';
 import type { TermLink } from '../glossary/types.ts';
-import type { ChartPointName, ZodiacSign } from '../signs.ts';
+import type { ChartPointName, Classical, ZodiacSign } from '../signs.ts';
 
 export type Interpretation = {
   simple: string;
   detailed: string;
   magic: string;
+  /**
+   * A fuller craft text for the Detailed level (workings, timing, offerings,
+   * correspondences); the cards show it in place of `magic` when Detailed is
+   * chosen. Left out, both levels show `magic`.
+   */
+  magicDetailed?: string;
   /** The harder side, said kindly. */
   shadow?: string;
   /** Where a traditional meaning comes from. */
@@ -84,9 +90,15 @@ export type HouseMeaning = {
   keywords: string[];
   kind: 'angular' | 'succedent' | 'cadent';
   naturalSign: ZodiacSign;
+  /** The planet that rejoices in this house (its "joy"), where there is one. */
+  joy?: Classical;
   simple: string;
+  /** Several paragraphs: traditional and modern meanings, the house in a life, its kind, how cusp, ruler and planets colour it. */
   detailed: string;
+  /** The short craft line (Simple). */
   magic: string;
+  /** The fuller craft text (Detailed). */
+  craft: string;
 };
 
 /** The order bodies are written in aspect keys (the faster first). */

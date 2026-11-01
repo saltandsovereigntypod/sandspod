@@ -109,7 +109,7 @@ function build(): InterpretationTable {
     const r = RULERS[planet]!;
     out[keys.chartRuler(planet)] = {
       simple: r.simple,
-      detailed: `${r.detailed}\n\nThe chart ruler is the planet that rules your rising sign (${r.rising}). Hellenistic astrologers called it the ruler of the Hour, and read its condition (its sign, house, speed and aspects) as the condition of the whole life.`,
+      detailed: `${r.detailed}\n\nThe chart ruler is the planet that rules your rising sign (${r.rising}). Ancient astrologers called it the ruler of the Hour, and read its condition (its sign, house, speed and aspects) as the condition of the whole life.`,
       magic: r.magic,
     };
     for (const h of HOUSE_MEANINGS) {

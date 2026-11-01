@@ -121,7 +121,7 @@ const key = (l: TermLink) => JSON.stringify([l.kind, 'id' in l ? l.id : 'name' i
 /** A reading with its links: the given ones first, then what its magic names (at most `max`). */
 function withLinks(reading: Interpretation | null, lead: TermLink[], tail: TermLink[], max = 8): Interpretation | null {
   if (!reading) return null;
-  const library: TermLink[] = libraryMentions(reading.magic).slice(0, 5).map((name) => ({ kind: 'library', name }));
+  const library: TermLink[] = libraryMentions(`${reading.magic} ${reading.magicDetailed ?? ''}`).slice(0, 5).map((name) => ({ kind: 'library', name }));
   const out: TermLink[] = [];
   for (const l of [...(reading.links ?? []), ...lead, ...library, ...tail]) if (!out.some((o) => key(o) === key(l))) out.push(l);
   return { ...reading, links: out.slice(0, max) };
@@ -137,3 +137,18 @@ export const linkInHouse = (reading: Interpretation | null, body: ChartPointName
 
 export const linkCusp = (reading: Interpretation | null, house: number, sign: ZodiacSign): Interpretation | null =>
   withLinks(reading, [guide(TRADITIONAL_RULER[sign])], [HOUSE_LINKS[house]]);
+
+/**
+ * A house card: the cusp ruler's guide and the house's own planets (the ruler
+ * of its natural sign, the planet in its joy), the Library entries its craft
+ * names, the house's premade working and the planetary hours.
+ */
+export const linkHouse = (reading: Interpretation, house: number, cuspSign: ZodiacSign | null, allies: Classical[]): Interpretation => {
+  const own: TermLink[] = [
+    ...[...new Set([...(cuspSign ? [TRADITIONAL_RULER[cuspSign]] : []), ...allies])].map(guide),
+    HOUSE_LINKS[house],
+    { kind: 'tool', tool: 'hours', label: 'Planetary hours: when to work' },
+  ];
+  // The house's own links first, then what its craft names, then the cusp sign's links.
+  return withLinks({ ...reading, links: own }, [], reading.links ?? [], 10)!;
+};

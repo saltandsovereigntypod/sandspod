@@ -170,7 +170,7 @@ As seen from Earth, the Moon travels through the same band of constellations as 
 
 In astrological magic, the Moon’s sign colours the mood of those days and suits certain workings. For example, the app describes the Moon in Taurus as steady and grounded, good for money and home blessings; the Moon in Gemini as curious and talkative, good for study and communication; the Moon in Scorpio as deep and intense, good for protection and transformation.
 
-This comes from Hellenistic and later Western astrology, which is a long and learned tradition. It is also a tradition with no scientific support for its predictions. Use it, if you choose, as one more layer of symbolism, like a correspondence. Many excellent practitioners never consider it at all.
+This comes from Hellenistic astrology (the Greek-speaking astrology of the late ancient Mediterranean, not Hellenic religion) and later Western astrology, which is a long and learned tradition. It is also a tradition with no scientific support for its predictions. Use it, if you choose, as one more layer of symbolism, like a correspondence. Many excellent practitioners never consider it at all.
 
 ## The void-of-course Moon
 

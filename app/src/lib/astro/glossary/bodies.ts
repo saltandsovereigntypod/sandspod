@@ -12,7 +12,7 @@ export const BODY_TERMS: GlossaryEntry[] = [
     simple: 'The Sun is your core self: your will, vitality and the light you live by. Your "star sign" is simply the sign the Sun was in when you were born.',
     detailed: {
       sky: 'The Sun is a star, not a planet, but astrology calls all seven visible lights "planets" (Greek planētēs, wanderers). Seen from Earth it travels the whole zodiac once a year along the ecliptic, about a degree a day, which is why your Sun sign is tied to your birthday.',
-      history: 'Babylonian sky-watchers tracked the Sun\'s path against the stars by at least the eighth century BCE; the Greeks gave it the twelve thirty-degree signs we use. In Hellenistic charts the Sun was the light of the day, head of the "sect" of day planets (with Jupiter and Saturn).',
+      history: 'Babylonian sky-watchers tracked the Sun\'s path against the stars by at least the eighth century BCE; the Greeks gave it the twelve thirty-degree signs we use. In the charts of Hellenistic astrology (the astrology of the ancient Greek-speaking world, where Western astrology began) the Sun was the light of the day, head of the "sect" of day planets (with Jupiter and Saturn).',
       traditions: 'Traditional astrology reads the Sun for life force, honour, fathers, rulers and public standing. Modern psychological astrology reads it as the conscious self and the path of becoming. Vedic astrology leads with the Moon and the rising sign rather than the Sun, which is one reason a Vedic reading can feel so different.',
       craft: 'The Sun rules Sunday and the first hour after sunrise on that day. Its workings: success, confidence, health, recognition, blessing new ventures, and lifting heavy moods. Correspondences commonly given: gold, yellow and orange, frankincense, bay, calendula, sunflower, citrine, carnelian, sunstone. Deities with solar ties include Ra, Helios, Sol, Apollo, Sunna (Sól), Surya, Amaterasu and Saulė.',
       care: 'Sun-sign columns describe a twelfth of humanity at once; your chart is far more than your Sun. And "solar" is not "masculine" in any fixed way: several traditions, Norse, Baltic and Shinto among them, hold the Sun as a goddess.',
@@ -29,7 +29,7 @@ export const BODY_TERMS: GlossaryEntry[] = [
     simple: 'The Moon is your inner life: feelings, needs, habits and what makes you feel safe. It changes sign every two and a half days, so it says a lot about the mood of a day.',
     detailed: {
       sky: 'The Moon circles Earth every 27.3 days against the stars (sidereal month) and returns to the same phase every 29.5 days (synodic month). It moves about 13° a day, fast enough that a birth time a few hours out can shift its degree noticeably, and occasionally its sign.',
-      history: 'Lunar calendars are among humanity\'s oldest timekeeping; Babylonian omen texts (Enūma Anu Enlil) read the Moon long before the zodiac was fixed. In Hellenistic astrology the Moon was the light of the night and ruled the body, fortune and the mother.',
+      history: 'Lunar calendars are among humanity\'s oldest timekeeping; Babylonian omen texts (Enūma Anu Enlil) read the Moon long before the zodiac was fixed. In Hellenistic astrology (the astrology of the ancient Greek-speaking world, where Western astrology began) the Moon was the light of the night and ruled the body, fortune and the mother.',
       traditions: 'Traditional readers look to the Moon for the body, the mother, the common people and daily changes. Modern astrology reads it as emotional needs, memory and instinct. Vedic astrology gives it pride of place: your "rashi" is usually your Moon sign, and the 27 lunar mansions (nakshatras) are counted from it.',
       craft: 'The Moon rules Monday and the first hour after sunrise on that day, and the whole of lunar timing: waxing to draw in, waning to release, full to charge and reveal, dark and new to rest and plant. Its sign colours a working too. Correspondences: silver, white, moonstone, selenite, jasmine, mugwort, willow, water and mirrors. Lunar deities include Selene, Luna, Artemis and Diana (in later tradition), Máni, Khonsu, Nanna, Chang\'e, Tsukuyomi and Mėnulis.',
       care: 'Feeling the Moon is personal; not everyone feels a full moon, and that is fine. Without a birth time your Moon sign may be uncertain if it changed sign that day; the chart will say so.',
@@ -45,7 +45,7 @@ export const BODY_TERMS: GlossaryEntry[] = [
     simple: 'Mercury is how you think, speak, learn and move about: the messenger. Its sign shows your mind\'s style; its retrogrades are famous for tangled messages.',
     detailed: {
       sky: 'The innermost planet, Mercury is never more than about 28° from the Sun, so it is always in the Sun\'s sign or a neighbouring one. It turns retrograde three or four times a year for about three weeks each time.',
-      history: 'Babylonians knew it as Nabû\'s star, the scribe god; the Greeks as Hermes\' star (Stilbōn, "the gleaming"); the Romans named it Mercury. In Hellenistic astrology it was neither day nor night but took the sect of whatever planet it was nearest, as changeable as its god.',
+      history: 'Babylonians knew it as Nabû\'s star, the scribe god; the Greeks as Hermes\' star (Stilbōn, "the gleaming"); the Romans named it Mercury. In Hellenistic astrology (the astrology of the ancient Greek-speaking world, where Western astrology began) it was neither day nor night but took the sect of whatever planet it was nearest, as changeable as its god.',
       traditions: 'Traditionally Mercury rules speech, writing, trade, calculation, siblings, young people and thieves. Modern astrology reads perception, learning style and how you process information. Vedic Budha rules intellect, commerce and humour.',
       craft: 'Wednesday (Mercredi, Woden\'s day) and Mercury hours suit communication, study, writing, exams, contracts, travel, divination and quick business. Correspondences: quicksilver (never handle mercury; use the symbol), mixed colours and yellow, lavender, mint, fennel, fluorite, agate, sodalite. Deities: Hermes, Mercury, Thoth, Nabû, Odin (through the weekday), Ogma, and Budha in the Navagraha.',
       care: 'Mercury retrograde is a time to re-check, not to fear. Contracts still get signed and phones still work; read the small print twice.',
@@ -61,7 +61,7 @@ export const BODY_TERMS: GlossaryEntry[] = [
     simple: 'Venus is love, pleasure, beauty and what you value: how you attract, enjoy and relate. Its sign shows your style of affection and taste.',
     detailed: {
       sky: 'Venus is the brightest planet, the morning or evening star, never more than about 47° from the Sun. Its cycle traces a five-petalled pattern over eight years, and it turns retrograde roughly every nineteen months for about six weeks.',
-      history: 'Babylonian Inanna/Ishtar was the planet herself, descending into the underworld as Venus vanished in the Sun\'s glare. The Greeks named it for Aphrodite, the Romans for Venus. In Hellenistic astrology Venus was the lesser benefic of the night sect.',
+      history: 'Babylonian Inanna/Ishtar was the planet herself, descending into the underworld as Venus vanished in the Sun\'s glare. The Greeks named it for Aphrodite, the Romans for Venus. In Hellenistic astrology (the astrology of the ancient Greek-speaking world, where Western astrology began) Venus was the lesser benefic of the night sect.',
       traditions: 'Traditionally Venus rules love, marriage, women, art, adornment, pleasure and peace. Modern astrology reads relating, values, self-worth and money. Vedic Shukra is teacher of the asuras and rules comforts, arts and marriage.',
       craft: 'Friday (Freya\'s or Frigg\'s day; vendredi, Venus\' day) and Venus hours suit love, friendship, beauty, art, self-worth, reconciliation and drawing money through pleasant means. Correspondences: copper, green and pink, rose, vervain, yarrow, rose quartz, emerald, jade. Deities: Aphrodite, Venus, Inanna, Ishtar, Astarte, Freyja, Frigg, Hathor, Lakshmi, Oshun (in Lucumí, approached through initiated practice) and Shukra.',
       care: 'Love workings aimed at a particular person cross into their free will; most witches work for love in general, or for themselves. Venus retrograde is a reflective time, not a curse on romance.',
@@ -77,7 +77,7 @@ export const BODY_TERMS: GlossaryEntry[] = [
     simple: 'Mars is your drive, courage, anger and desire: how you go after what you want and how you defend yourself.',
     detailed: {
       sky: 'The red planet takes about two years to go round the zodiac, lingering about six weeks in a sign, longer in a retrograde year. It turns retrograde about every 26 months for some ten weeks, when it is closest and brightest.',
-      history: 'Babylonians linked it to Nergal, god of plague and war; the Greeks to Ares (Pyroeis, "fiery"); the Romans to Mars, also a guardian of fields. Hellenistic astrology made Mars the greater malefic of the night sect: hot, sharp and separating.',
+      history: 'Babylonians linked it to Nergal, god of plague and war; the Greeks to Ares (Pyroeis, "fiery"); the Romans to Mars, also a guardian of fields. Hellenistic astrology (the astrology of the ancient Greek-speaking world, where Western astrology began) made Mars the greater malefic of the night sect: hot, sharp and separating.',
       traditions: 'Traditionally Mars rules soldiers, surgeons, smiths, fevers, cuts, fire and strife. Modern astrology reads assertion, sexuality, energy and how anger moves. Vedic Mangala rules courage, land and brothers.',
       craft: 'Tuesday (Tiw\'s day; mardi, Mars\' day) and Mars hours suit courage, protection, defence, cutting cords, banishing, physical energy and competition. Correspondences: iron, red, dragon\'s blood, nettle, black pepper, garlic, basil, garnet, hematite, bloodstone. Deities: Ares, Mars, Nergal, Tyr and Tiw, Thor, Sekhmet, Mangala, Hachiman, Perun.',
       care: 'Mars workings are strong medicine; aim them at situations and your own courage rather than at people. "Malefic" means hard to bear, not evil.',
@@ -93,7 +93,7 @@ export const BODY_TERMS: GlossaryEntry[] = [
     simple: 'Jupiter is growth, luck, generosity and faith: where life opens and you are inclined to trust. It spends about a year in each sign.',
     detailed: {
       sky: 'The largest planet circles the zodiac in about twelve years, so it spends roughly a year in each sign, and turns retrograde for about four months each year. Its twelve-year return marks ages 12, 24, 36, 48 and so on.',
-      history: 'Babylonian Marduk, king of the gods, was Jupiter; the Greeks named it for Zeus, the Romans for Jupiter. Hellenistic astrology called it the greater benefic of the day sect.',
+      history: 'Babylonian Marduk, king of the gods, was Jupiter; the Greeks named it for Zeus, the Romans for Jupiter. Hellenistic astrology (the astrology of the ancient Greek-speaking world, where Western astrology began) called it the greater benefic of the day sect.',
       traditions: 'Traditionally Jupiter rules law, religion, wealth, judges, priests and good fortune. Modern astrology reads meaning, expansion, optimism and excess. Vedic Guru (Brihaspati) is the gods\' teacher, the great benefic of wisdom and children.',
       craft: 'Thursday (Thor\'s day; jeudi, Jupiter\'s day) and Jupiter hours suit luck, abundance, growth, legal matters, learning, generosity and spiritual expansion. Correspondences: tin, royal blue and purple, clove, sage, nutmeg, star anise, amethyst, lapis lazuli. Deities: Zeus, Jupiter, Marduk, Thor and Thunor, Perun, Taranis, Brihaspati.',
       care: 'Jupiter enlarges whatever it touches, including mistakes. A "lucky" transit still needs you to show up.',
@@ -109,7 +109,7 @@ export const BODY_TERMS: GlossaryEntry[] = [
     simple: 'Saturn is time, limits, structure and responsibility: where life asks for patience and rewards real work. It spends about two and a half years in each sign.',
     detailed: {
       sky: 'The slowest planet visible to the eye, Saturn takes about 29.5 years to go round, about two and a half years per sign, with a retrograde of some four and a half months each year. The Saturn return falls around ages 29, 58 and 87.',
-      history: 'Babylonians saw Ninurta and called it "the steady one"; the Greeks named it Kronos, the Romans Saturn, god of sowing and the golden age. In Hellenistic astrology Saturn was the greater malefic of the day sect, the outermost boundary of the visible cosmos.',
+      history: 'Babylonians saw Ninurta and called it "the steady one"; the Greeks named it Kronos, the Romans Saturn, god of sowing and the golden age. In Hellenistic astrology (the astrology of the ancient Greek-speaking world, where Western astrology began) Saturn was the greater malefic of the day sect, the outermost boundary of the visible cosmos.',
       traditions: 'Traditionally Saturn rules old age, ancestors, land, lead, illness, delay and sorrow, and also patience and endurance. Modern astrology reads structure, maturity, fear, mastery and commitment. Vedic Shani is feared and honoured as the slow teacher of karma.',
       craft: 'Saturday and Saturn hours suit binding, banishing, boundaries, endings, protection of the home, ancestor work, discipline and long-term goals. Correspondences: lead (handle never; use the symbol), black and deep indigo, myrrh, patchouli, cypress, comfrey, mullein, obsidian, jet, onyx, black tourmaline. Deities: Kronos, Saturn, Ninurta, Shani, and in some modern practice Hekate and the Cailleach as keepers of thresholds and old age.',
       care: 'Saturn is the planet people fear most and often thank later. Its transits ask for structure, not punishment.',
@@ -237,8 +237,8 @@ export const BODY_TERMS: GlossaryEntry[] = [
     simple: 'The Part of Fortune is a calculated point that shows where luck, comfort and the body\'s well-being tend to flow for you.',
     detailed: {
       sky: 'Not a body: it sits as far from your Ascendant as the Moon is from the Sun. By day: Ascendant + Moon − Sun; by night, the Sun and Moon swap: Ascendant + Sun − Moon. The app chooses by whether the Sun was above the horizon. It needs a birth time.',
-      history: 'The most important of the Hellenistic "lots", used by Vettius Valens and others for fortune, the body and timing. Medieval Arabic astrologers multiplied the lots into hundreds; the Part of Fortune is the one that lasted.',
-      traditions: 'Hellenistic astrologers used it as a second Ascendant for material life. Many modern astrologers use the day formula for everyone; this app follows the older day/night rule.',
+      history: 'The most important of the "lots" of the ancient astrologers, used by Vettius Valens and others for fortune, the body and timing. Medieval Arabic astrologers multiplied the lots into hundreds; the Part of Fortune is the one that lasted.',
+      traditions: 'Ancient astrologers used it as a second Ascendant for material life. Many modern astrologers use the day formula for everyone; this app follows the older day/night rule.',
       craft: 'Its sign and house suggest where prosperity work may take root; Fortuna is the Roman goddess of luck.',
       care: 'It changes quickly with birth time (as fast as the Ascendant), so an uncertain time makes it uncertain.',
     },
@@ -254,7 +254,7 @@ export const BODY_TERMS: GlossaryEntry[] = [
     simple: 'Your Ascendant, or rising sign, is the sign that was rising on the eastern horizon when you were born. It shows how you meet the world and how it first meets you.',
     detailed: {
       sky: 'As the Earth turns, the whole zodiac rises over the eastern horizon once a day, a new sign about every two hours (faster or slower by latitude). The exact degree rising at birth is the Ascendant. It needs an accurate time and place: four minutes of clock time move it about a degree.',
-      history: 'Hellenistic astrologers called it the hōroskopos, the "hour-marker", which is where our word horoscope comes from. It was the first house and the place of life itself.',
+      history: 'Hellenistic astrologers (the Greek-speaking astrologers of the ancient Mediterranean, where Western astrology began) called it the hōroskopos, the "hour-marker", which is where our word horoscope comes from. It was the first house and the place of life itself.',
       traditions: 'Traditional astrology reads the Ascendant and its ruler (the chart ruler) for the body, temperament and the course of life. Modern astrology reads the persona, first impressions and approach to life. Vedic astrology centres the chart on the Ascendant (lagna).',
       craft: 'The ruler of your rising sign is your chart ruler: its day, hours, colours and correspondences are a natural place to build a personal practice. Your rising sign\'s element can suggest which element you call first.',
       care: 'Your rising sign is only as good as your birth time. If the time is a guess, so is the Ascendant.',
@@ -271,9 +271,9 @@ export const BODY_TERMS: GlossaryEntry[] = [
     simple: 'The Descendant is the point setting in the west, opposite your Ascendant: the start of the seventh house, of partnership and what you seek in others.',
     detailed: {
       sky: 'The ecliptic degree on the western horizon, always exactly opposite the Ascendant.',
-      history: 'Hellenistic astrologers called it the "setting place", linked with marriage, partners and open enemies.',
-      traditions: 'Traditionally the house of marriage, contracts and adversaries. Modern astrology reads the qualities we look for, or project, in close partners.',
-      craft: 'Partnership and relationship workings can be tuned to its sign.',
+      history: 'Hellenistic astrologers (the Greek-speaking astrologers of the ancient Mediterranean, where Western astrology began) called it the "setting place", linked with marriage, partners and open enemies.',
+      traditions: 'Traditionally the angle of marriage, partnership, contracts, lawsuits and open enemies, and, as the place where planets set, of old age and the close of life. Modern astrology reads the qualities we look for, or project, in close partners: the Descendant\'s sign is often a fair picture of the people we are drawn to and the parts of ourselves we meet through them. A planet close to the Descendant tends to show strongly in your relationships and in the partners you choose.',
+      craft: 'Partnership and relationship workings can be tuned to the Descendant\'s sign and its ruler: work on that planet\'s day and in its hours, use its colours and correspondences in handfasting, reconciliation or contract magic, and use the full Moon (Sun and Moon facing each other across the sky, as partners do) for blessing a bond. Work on how you relate rather than on another person\'s will.',
       care: 'Like the Ascendant it needs a reliable birth time.',
     },
     related: ['ascendant', 'house-7', 'synastry'],
@@ -287,9 +287,9 @@ export const BODY_TERMS: GlossaryEntry[] = [
     simple: 'The Midheaven is the highest point of the zodiac at your birth: it is read for vocation, reputation and the life you build in public.',
     detailed: {
       sky: 'The ecliptic degree crossing the meridian (due south in the northern hemisphere, due north in the southern) at the moment of birth. It is not the point overhead, and in most house systems it begins the tenth house.',
-      history: 'Latin medium coeli, "middle of the sky". In Hellenistic astrology it was the most powerful place for a planet to be "on top" of the chart.',
-      traditions: 'Traditionally action, honour, profession and the king. Modern astrology reads calling, ambition and public image.',
-      craft: 'Career and recognition workings can be tuned to its sign and ruler.',
+      history: 'Latin medium coeli, "middle of the sky". In Hellenistic astrology (the astrology of the ancient Greek-speaking world, where Western astrology began) it was the most powerful place for a planet to be "on top" of the chart.',
+      traditions: 'Traditionally action, honour, profession and the king, and the strongest angle after the Ascendant. Medieval and Renaissance astrologers also read it for the mother (Lilly) and for any public authority. Modern astrology reads calling, ambition, reputation and public image, and the path that gives a life its direction. Planets close to the Midheaven tend to describe your work and how you are seen, and often rise into view as life goes on.',
+      craft: 'Career and recognition workings can be tuned to its sign and ruler: work on the ruler\'s day and in its hours, or at noon, when the Sun stands at its own midheaven. A written aim kept on the altar, a sigil for your calling, Bay leaves for success and a candle in the Midheaven sign\'s colour suit it, and transits to the Midheaven are good times to begin or rededicate your work.',
       care: 'Needs a birth time; it moves a degree in about four minutes.',
     },
     related: ['imum-coeli', 'house-10', 'house-systems'],
@@ -303,9 +303,9 @@ export const BODY_TERMS: GlossaryEntry[] = [
     simple: 'The IC, opposite the Midheaven, is the lowest point of the chart: roots, home, family and the private self.',
     detailed: {
       sky: 'The degree crossing the meridian below the horizon, exactly opposite the Midheaven.',
-      history: 'Latin imum coeli, "bottom of the sky"; the Hellenistic "subterraneous" place, of parents, land and endings.',
-      traditions: 'Traditionally home, land, the father (in some authors the mother) and the end of matters. Modern astrology reads emotional foundations and ancestry.',
-      craft: 'Home blessing, hearth and ancestor work can be tuned to its sign.',
+      history: 'Latin imum coeli, "bottom of the sky"; the "subterraneous" place of the ancient astrologers, of parents, land and endings.',
+      traditions: 'Traditionally home, land, buildings, the father (in some authors the mother), hidden things and the end of matters: how a life, or any question, finally turns out. Modern astrology reads emotional foundations, ancestry, family patterns and the private self, and often the second half of life. Planets close to the IC tend to show at home and in the family, and in what you return to when everything else is taken away.',
+      craft: 'Home blessing, hearth and ancestor work can be tuned to its sign and ruler: an ancestor shelf, offerings to the land you live on, a protection charm buried by the door, and house blessings at the full Moon or when the Moon crosses your IC each month. Dark Moon and Samhain suit work with the dead.',
       care: 'Needs a birth time.',
     },
     related: ['midheaven', 'house-4'],

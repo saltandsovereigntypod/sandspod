@@ -13,13 +13,27 @@ export const CONCEPT_TERMS: GlossaryEntry[] = [
     simple: 'A birth chart is a map of the sky at the moment and place you were born: where the Sun, Moon and planets were, and which signs were rising and overhead.',
     detailed: {
       sky: 'Drawn as a wheel: the zodiac around the edge, the horizon across the middle (Ascendant on the left, Descendant on the right), the meridian up and down (Midheaven at the top, IC at the bottom), the houses as wedges, and lines for the aspects between planets.',
-      history: 'The oldest surviving personal horoscopes are Babylonian, from about 410 BCE. Hellenistic astrologers in Egypt (first century BCE onward) built the system of signs, houses and aspects that Western astrology still uses.',
+      history: 'The oldest surviving personal horoscopes are Babylonian, from about 410 BCE. Hellenistic astrologers in Egypt (the Greek-speaking astrologers of the ancient Mediterranean, from the first century BCE onward) built the system of signs, houses and aspects that Western astrology still uses.',
       traditions: 'Traditional astrology reads a chart for the shape of a life: health, wealth, relationships, timing. Modern psychological astrology reads it as a picture of the psyche. Vedic (Jyotisha) astrology uses the sidereal zodiac and its own techniques. This app shows the tropical chart by default, with sidereal as a choice.',
       craft: 'Many witches use their chart to find personal allies: the chart ruler and strong planets point to days, hours, colours, herbs, stones and deities that suit them. The natal altar suggestion gathers these together.',
       care: 'A chart is a language for reflection, not a verdict. Nothing in it decides who you are or what you will do.',
     },
     related: ['zodiac', 'houses', 'aspects', 'ascendant', 'big-three'],
     links: [{ kind: 'tool', tool: 'chart', label: 'Your chart' }],
+  },
+  {
+    id: 'hellenistic-astrology',
+    term: 'Hellenistic astrology',
+    category: 'basics',
+    aliases: ['Hellenistic astrologers', 'Hellenistic astrologer', 'Hellenistic tradition', 'Hellenistic period', 'Hellenistic'],
+    simple: 'Hellenistic astrology means the astrology of a historical period: the Greek-speaking astrologers of the late ancient Mediterranean, from about the first century BCE, where Western astrology as we know it began. It is a name for a time and a body of texts, not a religion, and has nothing to do with Hellenic (Greek pagan) religious practice.',
+    detailed: {
+      history: 'Historians call the centuries after Alexander the Great (who died in 323 BCE) the Hellenistic period, when Greek was the common language from Egypt to Persia. In that world, especially in Ptolemaic and Roman Egypt, astrologers joined Babylonian sky-omens and Egyptian star lore with Greek philosophy and mathematics, and built the horoscope: signs, houses, aspects and planetary rulers. Astrologers use "Hellenistic astrology" loosely for this tradition from about the first century BCE to around the seventh century CE. Its main surviving authors include Dorotheus of Sidon, Manilius (who wrote in Latin), Ptolemy, Vettius Valens, Firmicus Maternus (also Latin), Paulus Alexandrinus and Rhetorius.',
+      traditions: 'Its methods passed into Persian, Arabic and Indian astrology and then into medieval and Renaissance Europe. Since the 1990s, translation projects have made the Greek texts widely available, and many modern astrologers now practise "Hellenistic" or "traditional" astrology: whole sign houses, sect, lots such as the Part of Fortune, and time-lord techniques.',
+      craft: 'When this app says "Hellenistic astrologers" it means these ancient authors and their techniques, whatever gods they or their clients honoured (they wrote for a mixed Graeco-Roman and Egyptian world). If you follow a Hellenic path, the planetary gods and the old house names may still be meaningful to you, but the astrology itself belongs to everyone who studies it.',
+      care: 'Hellenistic (of the period after Alexander) and Hellenic (Greek, and in the craft the revived Greek religion, Hellenismos) are easy to confuse. The first is a date range for astrology; the second is a living religious path.',
+    },
+    related: ['natal-chart', 'zodiac', 'houses', 'whole-sign', 'sect'],
   },
   {
     id: 'zodiac',
@@ -86,7 +100,7 @@ export const CONCEPT_TERMS: GlossaryEntry[] = [
     simple: 'Your chart ruler is the planet that rules your rising sign. It is read as a guide for your whole chart, and makes a natural planetary ally.',
     detailed: {
       sky: 'Found from the Ascendant\'s sign: Aries rising, Mars; Taurus rising, Venus; and so on.',
-      history: 'The Hellenistic "lord of the hour-marker", watched closely for the course of a life.',
+      history: 'The ancient astrologers’ "lord of the hour-marker", watched closely for the course of a life.',
       traditions: 'Traditional astrologers use the seven classical rulers (Scorpio rising, Mars). Modern astrologers often use Pluto, Uranus and Neptune for Scorpio, Aquarius and Pisces; this app shows both.',
       craft: 'Your chart ruler\'s day, hours, metals, colours, herbs, stones and deities make a personal set of correspondences; the app gathers them for you.',
       care: 'Needs a birth time.',
@@ -101,7 +115,7 @@ export const CONCEPT_TERMS: GlossaryEntry[] = [
     simple: 'The houses are twelve parts of life (self, money, home, love, work and so on) laid over the sky around you at birth. A planet\'s house shows where in life it acts.',
     detailed: {
       sky: 'The signs come from the Sun\'s path; the houses come from the Earth\'s daily turn, so they depend on the exact time and place of birth. The first house starts at the Ascendant and they run counter-clockwise below the horizon.',
-      history: 'Hellenistic astrologers used "places" counted by whole signs from the rising sign; quadrant systems such as Porphyry and later Placidus divided the sky by angles and time.',
+      history: 'Hellenistic astrologers (the Greek-speaking astrologers of the ancient Mediterranean, where Western astrology began) used "places" counted by whole signs from the rising sign; quadrant systems such as Porphyry and later Placidus divided the sky by angles and time.',
       traditions: 'Angular houses (1, 4, 7, 10) are strongest; succedent (2, 5, 8, 11) build; cadent (3, 6, 9, 12) change and learn.',
       craft: 'A house suggests which part of life a working belongs to, and which planets in your chart are your allies there.',
       care: 'Without a birth time there are no true houses; the app can show a "solar chart" instead, clearly marked.',
@@ -131,7 +145,7 @@ export const CONCEPT_TERMS: GlossaryEntry[] = [
     simple: 'Each sign splits into three decans of 10°, each with its own sub-ruler and flavour.',
     detailed: {
       sky: 'Thirty-six ten-degree slices of the zodiac.',
-      history: 'The decans began as 36 Egyptian star groups that rose in turn through the night and marked ten-day weeks; Hellenistic astrology folded them into the signs. Later magic (the Picatrix, Agrippa) gave each an image.',
+      history: 'The decans began as 36 Egyptian star groups that rose in turn through the night and marked ten-day weeks; the ancient Greek-speaking astrologers folded them into the signs. Later magic (the Picatrix, Agrippa) gave each an image.',
       traditions: 'The "faces" rule them by the Chaldean order starting with Mars at 0° Aries. A modern method rules them by the three signs of the same element. The app shows both.',
       craft: 'Decan images and their rulers are used in talismanic magic and in tarot: each minor arcana card from 2 to 10 is assigned a decan in the Golden Dawn system.',
       care: 'A small refinement; the sign and house matter far more.',
@@ -146,7 +160,7 @@ export const CONCEPT_TERMS: GlossaryEntry[] = [
     simple: 'Sect is whether you were born by day (the Sun above the horizon) or by night. Old astrologers read some planets as kinder in a day chart and others by night.',
     detailed: {
       sky: 'A day chart has the Sun in houses 7 to 12; a night chart in houses 1 to 6.',
-      history: 'A cornerstone of Hellenistic astrology, revived by modern traditional astrologers.',
+      history: 'A cornerstone of Hellenistic astrology (the astrology of the ancient Greek-speaking world, where Western astrology began), revived by modern traditional astrologers.',
       traditions: 'Day sect: the Sun, Jupiter and Saturn; night sect: the Moon, Venus and Mars. A malefic of the chart\'s own sect is gentler (Saturn by day, Mars by night).',
       craft: 'Some witches favour their sect\'s light: day-born working by the Sun, night-born by the Moon.',
       care: 'Needs a birth time.',
@@ -160,7 +174,7 @@ export const CONCEPT_TERMS: GlossaryEntry[] = [
     aliases: ['Arabic parts'],
     simple: 'Lots, or "parts", are points calculated from three others, like the Part of Fortune. Each answers a particular question in a chart.',
     detailed: {
-      history: 'Hellenistic astrologers used a handful (Fortune, Spirit, Eros, Necessity); medieval Arabic astrologers listed hundreds, hence "Arabic parts".',
+      history: 'Hellenistic astrologers (the Greek-speaking astrologers of the ancient Mediterranean, where Western astrology began) used a handful (Fortune, Spirit, Eros, Necessity); medieval Arabic astrologers listed hundreds, hence "Arabic parts".',
       traditions: 'This app shows the Part of Fortune.',
       care: 'Lots move as fast as the Ascendant; they need an accurate birth time.',
     },
@@ -313,7 +327,7 @@ export const CONCEPT_TERMS: GlossaryEntry[] = [
     simple: 'Each sign has a ruling planet, its "host": Mars rules Aries, Venus rules Taurus, and so on. A planet in a sign it rules is at home.',
     detailed: {
       sky: 'The traditional scheme follows the planets\' speeds outward from the lights: the Sun and Moon rule Leo and Cancer, then Mercury, Venus, Mars, Jupiter and Saturn each rule a pair, symmetrically.',
-      history: 'Set out in Hellenistic sources and by Ptolemy. After Uranus, Neptune and Pluto were found, modern astrologers gave them Aquarius, Pisces and Scorpio.',
+      history: 'Set out in the ancient Greek astrological sources and by Ptolemy. After Uranus, Neptune and Pluto were found, modern astrologers gave them Aquarius, Pisces and Scorpio.',
       traditions: 'Traditional: Aries and Scorpio Mars; Taurus and Libra Venus; Gemini and Virgo Mercury; Cancer the Moon; Leo the Sun; Sagittarius and Pisces Jupiter; Capricorn and Aquarius Saturn. Modern adds Scorpio Pluto, Aquarius Uranus, Pisces Neptune. The app shows both.',
       craft: 'A sign\'s ruler gives its correspondences: a working timed to the Moon in Libra may borrow Venus\'s herbs and day.',
       care: 'Neither scheme is "wrong"; they answer different questions.',
@@ -327,7 +341,7 @@ export const CONCEPT_TERMS: GlossaryEntry[] = [
     aliases: ['dignities', 'essential dignity', 'debility', 'peregrine'],
     simple: 'Dignity is how comfortable a planet is in a sign: at home (domicile), honoured (exaltation), away from home (detriment) or humbled (fall).',
     detailed: {
-      history: 'The Hellenistic and medieval system of essential dignities, which also includes the finer triplicity, term and face rulers.',
+      history: 'The ancient and medieval system of essential dignities, which also includes the finer triplicity, term and face rulers.',
       traditions: 'Traditional astrology reads dignity as a planet\'s means to act well; a planet in detriment or fall must work harder or in a roundabout way. Modern astrology uses it more loosely, as comfort. A planet with none of the four is "peregrine", a wanderer.',
       craft: 'Some witches time planetary talismans for when the planet is dignified (Venus in Taurus or Libra, Jupiter in Sagittarius or Pisces).',
       care: 'A planet in fall in your chart isn\'t weak in you; it often means a skill hard-won.',
@@ -635,7 +649,7 @@ export const CONCEPT_TERMS: GlossaryEntry[] = [
     detailed: {
       sky: 'Not something in the sky: a scheme that follows from the planetary hours. The planet that rules the first hour after sunrise rules the day.',
       history: 'The seven-day planetary week spread through the Roman Empire by the first century; the names survive in Romance languages (lunes, martes, mercredi, jeudi, vendredi) and, through Norse and Anglo-Saxon gods, in English (Tiw, Woden, Thor, Frigg).',
-      traditions: 'Hellenistic, medieval and Renaissance magic (the Heptameron, Agrippa, the Key of Solomon) timed work by day and hour.',
+      traditions: 'Late ancient (Graeco-Egyptian), medieval and Renaissance magic (the Heptameron, Agrippa, the Key of Solomon) timed work by day and hour.',
       craft: 'Choose the day whose planet suits the working: Venus\'s Friday for love, Saturn\'s Saturday for banishing and protection. Today\'s correspondences card shows the day\'s planet.',
       care: 'A day is a helpful start; the planetary hour can refine it, and life sometimes chooses the day for you.',
     },
@@ -650,7 +664,7 @@ export const CONCEPT_TERMS: GlossaryEntry[] = [
     simple: 'Day and night are each split into twelve "hours", long in summer days and short in winter ones, each ruled in turn by a planet. Witches time spells by them.',
     detailed: {
       sky: 'From sunrise to sunset is divided into twelve equal parts, and from sunset to the next sunrise into twelve more, so the hours stretch and shrink with the seasons and your latitude. They need your place: the app uses your real local sunrise and sunset.',
-      history: 'Hellenistic in origin, used across the Roman world; the order of rulers follows the Chaldean order. Renaissance grimoires give tables for every day.',
+      history: 'Ancient in origin (from the Greek-speaking world of the Roman era), used across the Roman world; the order of rulers follows the Chaldean order. Renaissance grimoires give tables for every day.',
       traditions: 'The first hour of the day belongs to the day\'s planet, then the others follow in Chaldean order: Saturn, Jupiter, Mars, Sun, Venus, Mercury, Moon, round and round.',
       craft: 'Time a working to the hour of the planet that suits it, ideally on that planet\'s day: a Venus hour on a Friday for love, a Jupiter hour on a Thursday for luck. The planner and reminders can find the next one.',
       care: 'Near the poles, in summer and winter the Sun may not rise or set, and the hours don\'t exist.',

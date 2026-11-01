@@ -30,7 +30,7 @@ Signs of the same element are 120° apart (a trine), so they get on easily.
 
 Counting which elements your planets fall in gives a quick picture of temperament. Someone heavy in fire acts on enthusiasm; heavy in earth trusts what they can touch. An element with no planets at all is often noticed too: people tend to feel its lack, admire it in others, or work hard to build it.
 
-This idea is very old: the four elements come from Empedocles, and Hellenistic astrologers paired them with the four humours of medicine (choleric fire, melancholic earth, sanguine air, phlegmatic water).
+This idea is very old: the four elements come from Empedocles, and Hellenistic astrologers (the Greek-speaking astrologers of the ancient Mediterranean, where Western astrology began) paired them with the four humours of medicine (choleric fire, melancholic earth, sanguine air, phlegmatic water).
 
 ## In the craft
 
@@ -190,7 +190,7 @@ Each house echoes the sign in the same place in the zodiac (the first and Aries,
 
 ## Old names
 
-Hellenistic astrologers gave some houses names: the tenth was the *Midheaven*, the eleventh the *Good Spirit*, the twelfth the *Bad Spirit*, the fifth *Good Fortune*, the third the *Goddess*, the ninth the *God*. Planets were said to rejoice in certain houses: Mercury in the first, the Moon in the third, Venus in the fifth, Mars in the sixth, the Sun in the ninth, Jupiter in the eleventh, Saturn in the twelfth.`,
+Hellenistic astrologers (the Greek-speaking astrologers of the ancient Mediterranean, where Western astrology began) gave some houses names: the tenth was the *Midheaven*, the eleventh the *Good Spirit*, the twelfth the *Bad Spirit*, the fifth *Good Fortune*, the third the *Goddess*, the ninth the *God*. Planets were said to rejoice in certain houses: Mercury in the first, the Moon in the third, Venus in the fifth, Mars in the sixth, the Sun in the ninth, Jupiter in the eleventh, Saturn in the twelfth.`,
     },
     {
       id: 'astro-houses-systems',
@@ -205,7 +205,7 @@ Dividing the zodiac into signs is simple: 30° each. Dividing the sky around a p
 
 ## The main systems
 
-- **Whole sign**: the oldest. The whole rising sign is the first house, the next sign the second, and so on. Simple, and used by Hellenistic and Indian astrologers. Recovered by many modern traditional astrologers.
+- **Whole sign**: the oldest. The whole rising sign is the first house, the next sign the second, and so on. Simple, and used by the ancient Greek-speaking and Indian astrologers. Recovered by many modern traditional astrologers.
 - **Equal house**: twelve houses of 30° from the Ascendant's exact degree.
 - **Porphyry**: each quadrant between the angles divided in three. Ancient and simple.
 - **Placidus**: divides by time (how long each degree takes to rise). The most common system in twentieth-century books, and this app's default. It fails near the poles, where some degrees never rise; the app then uses Porphyry.
@@ -230,7 +230,7 @@ There is no proven answer. Try whole sign and Placidus on your own chart and see
       { id: 'q3', type: 'single', prompt: 'Partnership and marriage belong to which house?', options: ['Fifth', 'Seventh', 'Eighth', 'Eleventh'], correct: [1], points: 1, explanation: 'The seventh, beginning at the Descendant, is partners and open others.' },
       { id: 'q4', type: 'multi', prompt: 'Which are angular houses? Choose all.', options: ['1', '4', '7', '10', '11'], correct: [0, 1, 2, 3], points: 1, explanation: 'Angular houses begin at the four angles: 1, 4, 7 and 10.' },
       { id: 'q5', type: 'truefalse', prompt: 'An empty house means that area of life is missing from your life.', options: ['True', 'False'], correct: [1], points: 1, explanation: 'Read an empty house through its cusp sign and ruler; the area of life is still there.' },
-      { id: 'q6', type: 'single', prompt: 'Which is the oldest house system?', options: ['Placidus', 'Whole sign', 'Koch', 'Equal house'], correct: [1], points: 1, explanation: 'Whole sign houses were used by the Hellenistic astrologers.' },
+      { id: 'q6', type: 'single', prompt: 'Which is the oldest house system?', options: ['Placidus', 'Whole sign', 'Koch', 'Equal house'], correct: [1], points: 1, explanation: 'Whole sign houses were used by the Hellenistic astrologers, the Greek-speaking astrologers of the ancient Mediterranean.' },
       { id: 'q7', type: 'single', prompt: 'Spirituality, solitude and the hidden belong to the…', options: ['Third house', 'Sixth house', 'Ninth house', 'Twelfth house'], correct: [3], points: 1, explanation: 'The twelfth house: retreat, the unconscious and spiritual practice.' },
     ],
   },

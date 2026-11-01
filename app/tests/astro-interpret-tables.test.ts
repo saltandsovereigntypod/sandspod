@@ -14,7 +14,8 @@ import { composeReading } from '../src/lib/astro/interpret/compose.ts';
 import { BODY_LINKS, HOUSE_LINKS, LIBRARY_DEITIES, LIBRARY_HERBS_AND_STONES, libraryMentions } from '../src/lib/astro/interpret/links.ts';
 import { PLANET_IN_HOUSE, PLANET_IN_HOUSE_BY_BODY } from '../src/lib/astro/interpret/planetInHouse.ts';
 import { PLANET_IN_SIGN, PLANET_IN_SIGN_BY_BODY } from '../src/lib/astro/interpret/planetInSign.ts';
-import { coverage, inHouse, inSign, signOnCusp } from '../src/lib/astro/interpret/registry.ts';
+import { HELLENISTIC_ASTROLOGERS, HOUSE_KIND_TEXT, HOUSE_MEANINGS } from '../src/lib/astro/interpret/houses.ts';
+import { coverage, houseReading, inHouse, inSign, signOnCusp } from '../src/lib/astro/interpret/registry.ts';
 import { SIGN_ON_CUSP } from '../src/lib/astro/interpret/signOnCusp.ts';
 import { TRANSIT_READINGS } from '../src/lib/astro/interpret/transits.ts';
 import type { Interpretation } from '../src/lib/astro/interpret/types.ts';
@@ -157,4 +158,48 @@ test('the composer has no "coming soon" left for planets, houses and cusps', () 
     assert.ok(p.status === 'ready');
     if (p.status === 'ready') assert.ok(p.reading.links?.length, `${p.title}: cusp links`);
   }
+});
+
+test('the house cards are genuinely detailed at Detailed and short at Simple, with links that resolve', () => {
+  const library = new Set([...names('herb'), ...names('crystal'), ...names('deity')]);
+  const chart = castChart({ date: '1990-06-15', time: '14:30', utcOffsetMinutes: 60, latitude: 51.5, longitude: -0.13 })!;
+  for (const h of HOUSE_MEANINGS) {
+    const where = `house ${h.house}`;
+    assert.ok(h.simple.length < 260, `${where}: simple should stay short`);
+    assert.ok(h.detailed.length >= 2000, `${where}: detailed is too short (${h.detailed.length})`);
+    assert.ok(h.detailed.split('\n\n').length >= 5, `${where}: detailed needs several paragraphs`);
+    assert.ok(h.detailed.toLowerCase().includes(HELLENISTIC_ASTROLOGERS.toLowerCase()), `${where}: first mention of the Hellenistic astrologers is explained`);
+    assert.ok(/modern astrology/i.test(h.detailed), `${where}: no modern reading`);
+    assert.ok(h.detailed.includes(HOUSE_KIND_TEXT[h.kind]), `${where}: no angular/succedent/cadent paragraph`);
+    assert.ok(/cusp/.test(h.detailed) && /ruler/.test(h.detailed), `${where}: no word on cusp and ruler`);
+    assert.ok(h.craft.length >= 600 && h.craft.length > h.magic.length * 3, `${where}: craft is too short`);
+    checkReading(where, { simple: h.simple, detailed: h.detailed, magic: h.craft });
+    const sign = SIGNS[Math.floor(chart.houses!.cusps[h.house - 1] / 30) % 12];
+    const r = houseReading(h.house, { sign, inside: ['Mars'], rulerAt: { sign: 'Leo', house: 5 } });
+    assert.ok(r.simple.length < 600, `${where}: card simple is too long`);
+    assert.ok(r.detailed.startsWith(h.detailed) && r.detailed.includes('In your chart:') && r.detailed.length > h.detailed.length + 300, `${where}: card detailed lacks the chart and cusp`);
+    assert.ok(r.magicDetailed?.startsWith(h.craft) && r.magic === h.magic, `${where}: craft levels`);
+    assert.ok(r.links!.some((l) => l.kind === 'premade') && r.links!.some((l) => l.kind === 'tool') && r.links!.some((l) => l.kind === 'planet-guide'), `${where}: links`);
+    for (const l of r.links!) {
+      if (l.kind === 'library') assert.ok(library.has(l.name), `${where}: library ${l.name}`);
+      if (l.kind === 'premade') assert.ok(premadeById(l.id), `${where}: premade ${l.id}`);
+      if (l.kind === 'planet-guide') assert.ok(PLANET_GUIDES[l.planet as keyof typeof PLANET_GUIDES], `${where}: guide ${l.planet}`);
+    }
+    assert.equal(houseReading(h.house).detailed, h.detailed, `${where}: without a chart the card is the house alone`);
+  }
+  const houses = composeReading(chart).find((s) => s.id === 'houses')!;
+  for (const p of houses.pieces) assert.ok(p.status === 'ready' && p.reading.detailed.length > 2500 && p.reading.magicDetailed, p.title);
+});
+
+test('the big three and the Midheaven are deep at Detailed', () => {
+  for (const sign of SIGNS)
+    for (const body of ['Sun', 'Moon', 'Ascendant', 'Midheaven'] as ChartPointName[]) {
+      const r = inSign(body, sign)!;
+      const where = `${body} in ${sign}`;
+      assert.ok(r.detailed.length >= 1000, `${where}: detailed is too short (${r.detailed.length})`);
+      assert.ok(r.detailed.split('\n\n').length >= 3, `${where}: detailed needs several paragraphs`);
+      assert.ok(r.magicDetailed && r.magicDetailed.length >= r.magic.length + 150, `${where}: fuller craft text`);
+      assert.ok(r.simple.length < 300, `${where}: simple should stay short`);
+      checkReading(where, { ...r, magic: r.magicDetailed! });
+    }
 });

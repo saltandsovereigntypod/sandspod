@@ -3,11 +3,12 @@
 // yet, and the caller shows "coming soon" (with the glossary) instead.
 
 import type { AspectName, PatternName } from '../aspects.ts';
-import type { ChartPointName, ZodiacSign } from '../signs.ts';
+import { MODERN_RULER, TRADITIONAL_RULER, type ChartPointName, type ZodiacSign } from '../signs.ts';
 import { ASPECT_READINGS, minorAspectReading } from './aspects.ts';
 import { ELEMENT_READINGS } from './balance.ts';
-import { HOUSE_MEANINGS } from './houses.ts';
-import { linkCusp, linkInHouse, linkInSign } from './links.ts';
+import { deepenBig } from './bigThreeDeeper.ts';
+import { HOUSE_MEANINGS, houseAllies, ordinalHouse } from './houses.ts';
+import { linkCusp, linkHouse, linkInHouse, linkInSign } from './links.ts';
 import { MOON_IN_SIGN_READING } from './moonSigns.ts';
 import { PATTERN_READINGS } from './patterns.ts';
 import { PLANET_IN_HOUSE } from './planetInHouse.ts';
@@ -24,9 +25,9 @@ import { keys, type HouseMeaning, type Interpretation, type InterpretationTable 
 export type { HouseMeaning, Interpretation };
 
 function rawInSign(body: ChartPointName, sign: ZodiacSign): Interpretation | null {
-  if (body === 'Sun') return SUN_IN_SIGN[sign];
-  if (body === 'Moon') return MOON_IN_SIGN_READING[sign];
-  if (body === 'Ascendant') return RISING_IN_SIGN[sign];
+  if (body === 'Sun') return deepenBig(SUN_IN_SIGN[sign], 'Sun', sign);
+  if (body === 'Moon') return deepenBig(MOON_IN_SIGN_READING[sign], 'Moon', sign);
+  if (body === 'Ascendant') return deepenBig(RISING_IN_SIGN[sign], 'Ascendant', sign);
   return PLANET_IN_SIGN[keys.planetInSign(body, sign)] ?? POINT_READINGS[keys.pointInSign(body, sign)] ?? null;
 }
 
@@ -68,6 +69,44 @@ export const progressedMoonHouse = (house: number): Interpretation | null => PRO
 export const progressedPhaseReading = (phase: ProgressedPhase): Interpretation | null => PROGRESSED_PHASE_READINGS[`phase|${phase}`] ?? null;
 
 export const houseMeaning = (house: number): HouseMeaning => HOUSE_MEANINGS[house - 1];
+
+/** What a chart puts in a house, for its card: the cusp sign, the bodies in it, and where the cusp ruler sits. */
+export type HouseInChart = { sign: ZodiacSign; inside: string[]; rulerAt: { sign: ZodiacSign; house?: number | null } | null };
+
+/**
+ * One house's card, the same on the chart screen, the house sheet and the
+ * reading (app and website). Simple: the house and its cusp sign in a few
+ * sentences, and the short craft line. Detailed: the house's full reading,
+ * then this chart's cusp, ruler and planets, then the sign on the cusp read in
+ * depth; and the full craft text with the cusp sign's craft line.
+ */
+export function houseReading(house: number, inChart?: HouseInChart | null): Interpretation {
+  const h = houseMeaning(house);
+  const sign = inChart?.sign ?? null;
+  const onCusp = sign ? signOnCusp(house, sign) : null;
+  let here = '';
+  if (inChart && sign) {
+    const ruler = TRADITIONAL_RULER[sign];
+    const modern = MODERN_RULER[sign];
+    const { inside, rulerAt } = inChart;
+    const where = rulerAt ? `${rulerAt.sign}${rulerAt.house ? `, in the ${ordinalHouse(rulerAt.house)}` : ''}` : 'the chart';
+    const tie = !rulerAt?.house
+      ? 'see where it sits for where these matters lead'
+      : rulerAt.house === house
+        ? 'a ruler in its own house keeps these matters strongly in your own hands'
+        : `the matters of this house are tied to ${houseMeaning(rulerAt.house).keywords.slice(0, 2).join(', ')} and ${houseMeaning(rulerAt.house).keywords[2]}`;
+    here = `In your chart: ${sign} is on the cusp of the ${ordinalHouse(house)}${inside.length ? `, and ${inside.length > 1 ? `${inside.slice(0, -1).join(', ')} and ${inside[inside.length - 1]}` : inside[0]} ${inside.length === 1 ? 'is' : 'are'} here` : ', and no planet is here, so read it through its cusp and ruler'}. Its ruler, ${ruler}${modern !== ruler ? ` (in modern astrology also ${modern})` : ''}, is in ${where}: ${tie}.`;
+  }
+  const reading: Interpretation = {
+    simple: onCusp ? `${h.simple} ${onCusp.simple}` : h.simple,
+    detailed: [h.detailed, here, onCusp?.detailed].filter(Boolean).join('\n\n'),
+    magic: h.magic,
+    magicDetailed: onCusp ? `${h.craft} ${onCusp.magic}` : h.craft,
+    ...(onCusp?.shadow ? { shadow: onCusp.shadow } : {}),
+    ...(onCusp?.links ? { links: onCusp.links } : {}),
+  };
+  return linkHouse(reading, house, sign, houseAllies(h, (s) => TRADITIONAL_RULER[s]));
+}
 
 /** How much of the library is written, for the "coming soon" note and the tests. */
 export function coverage(): { table: string; written: number }[] {

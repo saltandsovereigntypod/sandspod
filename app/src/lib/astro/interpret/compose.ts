@@ -8,7 +8,7 @@ import { aspectDef, PATTERN_LABEL } from '../aspects.ts';
 import { PLANET_RULES, SIGN_STYLE } from '../meanings.ts';
 import { positionOf, type Chart, type Position } from '../natal.ts';
 import type { Planet } from '../planets.ts';
-import { DIGNITY_LABEL, MODERN_RULER, SIGNS, TRADITIONAL_RULER, type ChartPointName } from '../signs.ts';
+import { DIGNITY_LABEL, SIGNS, TRADITIONAL_RULER, type ChartPointName } from '../signs.ts';
 import type { ProgressedPhase, ReturnChart, TransitHit } from '../forecast.ts';
 import { ordinalHouse } from './houses.ts';
 import {
@@ -16,6 +16,7 @@ import {
   balanceReading,
   chartRulerReading,
   houseMeaning,
+  houseReading,
   inHouse,
   inSign,
   patternReading,
@@ -25,7 +26,6 @@ import {
   returnGuide,
   returnHouseReading,
   rulerReading,
-  signOnCusp,
   transitReading,
   type Interpretation,
 } from './registry.ts';
@@ -138,21 +138,12 @@ export function composeReading(chart: Chart): ReadingSection[] {
       const cusp = chart.houses!.cusps[n - 1];
       const cuspSign = SIGNS[Math.floor(cusp / 30) % 12];
       const inside = chart.positions.filter((p) => p.house === n && !['Ascendant', 'Midheaven', 'Descendant', 'IC'].includes(p.point)).map((p) => p.point);
-      const ruler = TRADITIONAL_RULER[cuspSign];
-      const modern = MODERN_RULER[cuspSign];
-      const rulerAt = positionOf(chart, ruler);
-      const onCusp = signOnCusp(n, cuspSign);
+      const rulerAt = positionOf(chart, TRADITIONAL_RULER[cuspSign]);
       houses.push({
         status: 'ready',
         title: `${n}. ${h.name}`,
         terms: [`house-${n}`, termId(cuspSign)],
-        reading: {
-          simple: onCusp ? `${h.simple} ${onCusp.simple}` : h.simple,
-          detailed: `${h.detailed}\n\n${cuspSign} is on the cusp${inside.length ? `, and ${inside.join(', ')} ${inside.length === 1 ? 'is' : 'are'} here` : ', and no planet is here'}. Its ruler, ${ruler}${modern !== ruler ? ` (modern: ${modern})` : ''}, is in ${rulerAt ? `${rulerAt.sign}${rulerAt.house ? `, the ${ordinalHouse(rulerAt.house)}` : ''}` : 'the chart'}.${onCusp ? `\n\n${onCusp.detailed}` : ''}`,
-          magic: onCusp ? `${h.magic} ${onCusp.magic}` : h.magic,
-          ...(onCusp?.shadow ? { shadow: onCusp.shadow } : {}),
-          ...(onCusp?.links ? { links: onCusp.links } : {}),
-        },
+        reading: houseReading(n, { sign: cuspSign, inside, rulerAt: rulerAt ? { sign: rulerAt.sign, house: rulerAt.house } : null }),
       });
     }
     sections.push({ id: 'houses', title: 'The twelve houses', pieces: houses });

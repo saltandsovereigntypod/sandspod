@@ -7,6 +7,7 @@
 // The nodes and Lilith by sign and house are not written here yet.
 
 import { SIGNS, TRADITIONAL_RULER, type ZodiacSign } from '../signs.ts';
+import { deepenBig } from './bigThreeDeeper.ts';
 import { HOUSE_MEANINGS } from './houses.ts';
 import { keys, type InterpretationTable } from './types.ts';
 
@@ -47,21 +48,25 @@ function build(): InterpretationTable {
     const ruler = TRADITIONAL_RULER[sign];
     out[keys.pointInSign('Part of Fortune', sign)] = {
       simple,
-      detailed: `${how}\n\nThe Part of Fortune is the oldest of the Hellenistic lots: the Moon's distance from the Sun, measured from the Ascendant (reversed in a night chart). It shows the body, wellbeing and the material luck that comes to you. Its ruler, here ${ruler}, shows by its sign and house how that fortune arrives.`,
+      detailed: `${how}\n\nThe Part of Fortune is the oldest of the lots used by ancient astrologers: the Moon's distance from the Sun, measured from the Ascendant (reversed in a night chart). It shows the body, wellbeing and the material luck that comes to you. Its ruler, here ${ruler}, shows by its sign and house how that fortune arrives.`,
       magic: `Charge a coin or charm for luck under the ${sign} moon and carry it; ${ruler}'s day and hour suit fortune work for you.`,
       sources: 'Vettius Valens, Anthology II; Paulus Alexandrinus, Introduction.',
     };
     const [mSimple, mDetail, mMagic] = MC_SIGN[sign];
-    out[keys.pointInSign('Midheaven', sign)] = {
-      simple: mSimple,
-      detailed: `${mDetail}\n\nThe Midheaven is the highest point of the ecliptic at your birth: vocation, reputation and the life you build in public. Its ruler, ${ruler}, shows by its sign and house where that path leads.`,
-      magic: mMagic,
-    };
+    out[keys.pointInSign('Midheaven', sign)] = deepenBig(
+      {
+        simple: mSimple,
+        detailed: `${mDetail}\n\nThe Midheaven is the point of the zodiac culminating (crossing the meridian, due south in the northern hemisphere) at your birth: vocation, reputation and the life you build in public. It is not always the point straight overhead.`,
+        magic: mMagic,
+      },
+      'Midheaven',
+      sign,
+    );
   }
   for (const h of HOUSE_MEANINGS) {
     out[keys.pointInHouse('Part of Fortune', h.house)] = {
       simple: `Your fortune and wellbeing are found in the matters of the ${h.name.toLowerCase().replace(/^the /, '')}: ${h.keywords.slice(0, 3).join(', ')}.`,
-      detailed: `With the Part of Fortune in the ${ORD[h.house - 1]} house, luck, comfort and bodily wellbeing gather around ${h.keywords.slice(0, 4).join(', ')}. Hellenistic astrologers also counted houses from the Part of Fortune itself: the eleventh from it was the place of acquisition, and planets there showed how wealth comes.\n\n${h.kind === 'angular' ? 'An angular house gives the Part strength and visibility.' : h.kind === 'succedent' ? 'A succedent house gives the Part steadiness: fortune that accumulates.' : 'A cadent house makes the Part quieter: fortune that comes through work, learning or behind the scenes.'}`,
+      detailed: `With the Part of Fortune in the ${ORD[h.house - 1]} house, luck, comfort and bodily wellbeing gather around ${h.keywords.slice(0, 4).join(', ')}. Ancient astrologers also counted houses from the Part of Fortune itself: the eleventh from it was the place of acquisition, and planets there showed how wealth comes.\n\n${h.kind === 'angular' ? 'An angular house gives the Part strength and visibility.' : h.kind === 'succedent' ? 'A succedent house gives the Part steadiness: fortune that accumulates.' : 'A cadent house makes the Part quieter: fortune that comes through work, learning or behind the scenes.'}`,
       magic: `Prosperity and wellbeing work aimed at ${h.keywords.slice(0, 2).join(' and ')}: ${h.magic}`,
     };
   }

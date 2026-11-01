@@ -42,7 +42,7 @@ You still have the Sun and the Moon's sign (though the Moon may be near a sign c
       yourChart: 'ruler',
       body: `## The chart ruler
 
-The planet that rules your rising sign is your **chart ruler**. Hellenistic astrologers called it the lord of the Hour and read its condition as the condition of the whole life. Where it sits (its sign and house) is where the chart's energy is "sent".
+The planet that rules your rising sign is your **chart ruler**. Hellenistic astrologers (the Greek-speaking astrologers of the ancient Mediterranean, where Western astrology began) called it the lord of the Hour and read its condition as the condition of the whole life. Where it sits (its sign and house) is where the chart's energy is "sent".
 
 - Aries rising: Mars. Taurus or Libra: Venus. Gemini or Virgo: Mercury. Cancer: the Moon. Leo: the Sun. Sagittarius or Pisces: Jupiter. Capricorn or Aquarius: Saturn.
 - Modern astrologers add Pluto for Scorpio, Uranus for Aquarius and Neptune for Pisces as co-rulers.

@@ -7,10 +7,10 @@ import { Text, View } from 'react-native';
 import { aspectDef, type AspectHit } from '../../lib/astro/aspects';
 import { term, termIdFor } from '../../lib/astro/glossary';
 import { ordinalHouse } from '../../lib/astro/interpret/compose';
-import { aspectReading, houseMeaning, inHouse, inSign, transitReading } from '../../lib/astro/interpret/registry';
+import { aspectReading, houseMeaning, houseReading as houseCardReading, inHouse, inSign, transitReading } from '../../lib/astro/interpret/registry';
 import { PLANET_RULES, SIGN_STYLE } from '../../lib/astro/meanings';
 import { formatDegree, positionOf, type Chart, type Position } from '../../lib/astro/natal';
-import { decanOf, DIGNITY_LABEL, MODERN_RULER, SIGNS, TRADITIONAL_RULER } from '../../lib/astro/signs';
+import { decanOf, DIGNITY_LABEL, SIGNS, TRADITIONAL_RULER } from '../../lib/astro/signs';
 import { type } from '../../theme';
 import { ExplainCard, TermText } from './Explain';
 
@@ -62,14 +62,12 @@ export function HouseDetail({ house, chart }: { house: number; chart: Chart }) {
   const ruler = sign ? TRADITIONAL_RULER[sign] : null;
   const rulerAt = ruler ? positionOf(chart, ruler) : null;
   return (
-    <ExplainCard eyebrow={`House ${house}`} title={h.name} reading={{ simple: h.simple, detailed: h.detailed, magic: h.magic }} terms={[`house-${house}`, ...(sign ? [termIdFor(sign)] : [])]}>
-      {sign && (
-        <TermText
-          style={type.body}
-          text={`${sign} is on its cusp, so ${ruler}${MODERN_RULER[sign] !== ruler ? ` (and in modern astrology ${MODERN_RULER[sign]})` : ''} rules it${rulerAt ? `; ${ruler} sits in ${rulerAt.sign}${rulerAt.house ? `, the ${ordinalHouse(rulerAt.house)}` : ''}` : ''}. ${inside.length ? `Here: ${inside.map((p) => p.point).join(', ')}.` : 'No planet is here; read it through its cusp and ruler.'}`}
-        />
-      )}
-    </ExplainCard>
+    <ExplainCard
+      eyebrow={`House ${house}${sign ? ` · ${sign} on the cusp · ruled by ${ruler}${inside.length ? ` · ${inside.map((p) => p.point).join(', ')}` : ''}` : ''}`}
+      title={h.name}
+      reading={houseCardReading(house, sign ? { sign, inside: inside.map((p) => p.point), rulerAt: rulerAt ? { sign: rulerAt.sign, house: rulerAt.house } : null } : null)}
+      terms={[`house-${house}`, ...(sign ? [termIdFor(sign)] : [])]}
+    />
   );
 }
 

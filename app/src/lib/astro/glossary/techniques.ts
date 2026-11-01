@@ -12,7 +12,7 @@ export const TECHNIQUE_TERMS: GlossaryEntry[] = [
     simple: 'A house system is the method used to divide the sky into the twelve houses. Different methods put the house lines in different places, which is why two apps can disagree.',
     detailed: {
       sky: 'Every system agrees on the Ascendant (and nearly all on the Midheaven) but divides the space between them differently: by equal stretches of the zodiac, by time, or by space on the sky. Far from the equator they disagree most.',
-      history: 'Hellenistic astrologers mostly used whole-sign houses. Quadrant systems came in late antiquity (Porphyry) and the medieval period (Alcabitius, Regiomontanus); Placidus, published in the 1600s, became standard in the 1900s because its tables were cheap and everywhere.',
+      history: 'Hellenistic astrologers (the Greek-speaking astrologers of the ancient Mediterranean, where Western astrology began) mostly used whole-sign houses. Quadrant systems came in late antiquity (Porphyry) and the medieval period (Alcabitius, Regiomontanus); Placidus, published in the 1600s, became standard in the 1900s because its tables were cheap and everywhere.',
       traditions: 'This app offers Placidus (the default, most common in modern Western astrology), Whole Sign (the oldest, popular with traditional astrologers), Equal (simple and works everywhere), and uses Porphyry where Placidus cannot be drawn.',
       craft: 'If a planet sits near a house line, try another system and see which reading rings true for you.',
       care: 'No system is proven "right"; each answers the question in its own way.',
@@ -41,8 +41,8 @@ export const TECHNIQUE_TERMS: GlossaryEntry[] = [
     simple: 'In Whole Sign houses, your rising sign is the whole first house, the next sign the second, and so on: each house is exactly one sign.',
     detailed: {
       sky: 'The Ascendant marks the rising sign but not the house line; the Midheaven can fall in the 9th, 10th or 11th house.',
-      history: 'The original Hellenistic method, still standard in Vedic astrology, revived in the West from the 1990s by translators of the old texts.',
-      traditions: 'Favoured by traditional and Hellenistic astrologers; simple and clean, and never breaks down near the poles.',
+      history: 'The original method of the ancient Greek-speaking astrologers, still standard in Vedic astrology, revived in the West from the 1990s by translators of the old texts.',
+      traditions: 'Favoured by traditional astrologers, including those who practise the ancient methods; simple and clean, and never breaks down near the poles.',
       craft: 'Each house has one sign and one ruler, which makes correspondences easy to read.',
       care: 'Planets can change house compared with Placidus; that\'s expected.',
     },
@@ -86,7 +86,7 @@ export const TECHNIQUE_TERMS: GlossaryEntry[] = [
     simple: 'The tropical zodiac starts Aries at the spring equinox, so the signs follow the seasons. It is the one Western astrology uses and the app\'s default.',
     detailed: {
       sky: '0° Aries is where the Sun crosses the celestial equator going north each March. Because Earth\'s axis wobbles (precession), that point drifts against the stars by about a degree every 72 years.',
-      history: 'Fixed by Hellenistic astronomers and Ptolemy, when the equinox point and the stars of Aries roughly coincided.',
+      history: 'Fixed by ancient Greek astronomers and Ptolemy, when the equinox point and the stars of Aries roughly coincided.',
       traditions: 'Western astrology: the signs as seasons of the year (Cancer begins at the June solstice, Capricorn at the December one).',
       craft: 'The signs line up with the Wheel of the Year: equinoxes and solstices at 0° of the cardinal signs, cross-quarters in the fixed signs.',
       care: 'In the southern hemisphere the seasons are reversed while the tropical signs aren\'t; many southern astrologers use them anyway, as the signs follow the equinoxes, not the weather.',

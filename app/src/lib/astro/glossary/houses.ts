@@ -21,7 +21,7 @@ export const HOUSE_TERMS: GlossaryEntry[] = HOUSE_MEANINGS.map((h) => ({
   detailed: {
     sky: `${KIND[h.kind]} Its natural sign, the one that would sit on it if Aries were rising, is ${h.naturalSign}. Where its cusp falls depends on the house system (see House systems).`,
     traditions: h.detailed,
-    craft: h.magic,
+    craft: h.craft,
     care: `Keywords: ${h.keywords.join(', ')}. A house without planets is not empty of meaning: read its cusp's sign and where that sign's ruler sits.`,
   },
   related: ['houses', 'house-systems', h.house === 1 ? 'ascendant' : h.house === 4 ? 'imum-coeli' : h.house === 7 ? 'descendant' : h.house === 10 ? 'midheaven' : 'cusp'],

@@ -84,7 +84,7 @@ export const SATURN_IN_HOUSE: Interpretation[] = [
   {
     simple: "With Saturn in the twelfth house you build strength in solitude. Hidden fears are faced slowly, and spiritual discipline becomes your anchor.",
     detailed:
-      "The twelfth house is Saturn's joy in the Hellenistic tradition: Saturn rejoices in this house of solitude and sorrow, its own kind of place. You may need a great deal of time alone, carry hidden fears or old guilt, or work in institutions.\n\nOver time spiritual discipline becomes your strength, and you can be a powerful presence for others in suffering. Hidden fears and isolation are the shadow.\n\nYou may work in hospitals, prisons, monasteries or archives, or simply need regular solitude to stay well. Facing old fears in therapy, meditation or ritual brings lasting strength. Old age may be a time of peace.",
+      "The twelfth house is Saturn's joy in ancient astrology: Saturn rejoices in this house of solitude and sorrow, its own kind of place. You may need a great deal of time alone, carry hidden fears or old guilt, or work in institutions.\n\nOver time spiritual discipline becomes your strength, and you can be a powerful presence for others in suffering. Hidden fears and isolation are the shadow.\n\nYou may work in hospitals, prisons, monasteries or archives, or simply need regular solitude to stay well. Facing old fears in therapy, meditation or ritual brings lasting strength. Old age may be a time of peace.",
     magic: "Spiritual and protective magic suits you: meditation, retreat, ancestor work and banishing hidden fears. Saturdays and Mondays suit you. Amethyst, Smoky Quartz and mugwort help.",
     shadow: "Hidden fears and isolation.",
   },

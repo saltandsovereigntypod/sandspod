@@ -372,7 +372,7 @@ Stone mining can involve dangerous working conditions and child labour, and labe
       minutes: 20,
       body: `## Seven planets, seven days
 
-The ancient world could see seven moving lights in the sky that the Greeks called *planetes*, “wanderers”: the Sun, the Moon, Mercury, Venus, Mars, Jupiter and Saturn. (The Sun and Moon were counted as planets in this old sense.) In the Hellenistic world, around two thousand years ago, each day of the week came to be ruled by one of them, and that system spread with the Roman Empire. You can still hear it in the names of the days.
+The ancient world could see seven moving lights in the sky that the Greeks called *planetes*, “wanderers”: the Sun, the Moon, Mercury, Venus, Mars, Jupiter and Saturn. (The Sun and Moon were counted as planets in this old sense.) In the Greek-speaking world of the late ancient Mediterranean (the Hellenistic and Roman periods), around two thousand years ago, each day of the week came to be ruled by one of them, and that system spread with the Roman Empire. You can still hear it in the names of the days.
 
 - **Sunday:** the Sun. Success, vitality, confidence, health, recognition, blessing new ventures. Colours: gold, yellow, orange.
 - **Monday:** the Moon (Moon-day; French *lundi*). Dreams, intuition, home and family, cleansing, emotional healing, divination. Colours: silver, white.

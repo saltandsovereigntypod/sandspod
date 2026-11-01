@@ -96,10 +96,12 @@
       if (entry) return lv === "simple" ? ptx(entry.simple, "", [entry.id]) : T.detailHtml(entry);
       return "";
     };
+    /** The craft text: the fuller one at Detailed, where a reading has it. */
+    const magic = (lv) => (lv === "detailed" && reading.magicDetailed ? reading.magicDetailed.split(/\n\s*\n/).map((p) => ptx(p.trim(), "", terms)).join("") : ptx(reading.magic, "", terms));
     return h.card(
       `${eyebrow ? `<p class="sp-eyebrow">${esc(eyebrow)}</p>` : ""}${h.cardTitle(title)}
       <div data-explain-body="${id}" data-simple="${esc(body("simple"))}" data-detailed="${esc(body("detailed"))}">${body(level)}</div>
-      ${reading ? `<div class="astro-magic"><p class="astro-part__head">In the craft</p>${ptx(reading.magic, "", terms)}${T && T.linksHtml ? T.linksHtml(reading.links) : ""}</div>` : ""}
+      ${reading ? `<div class="astro-magic"><p class="astro-part__head">In the craft</p><div data-explain-magic="${id}" data-simple="${esc(magic("simple"))}" data-detailed="${esc(magic("detailed"))}">${magic(level)}</div>${T && T.linksHtml ? T.linksHtml(reading.links) : ""}</div>` : ""}
       ${extra}
       ${reading || entry ? `<div class="astro-level" role="group" aria-label="How much to explain ${esc(title)}" data-explain-switch="${id}">${["simple", "detailed"].map((l) => `<button type="button" data-action="explain" data-card="${id}" data-level="${l}" aria-pressed="${level === l}">${l === "simple" ? "Simple" : "Detailed"}</button>`).join("")}</div>` : ""}
       ${termChips(terms)}`
@@ -110,6 +112,8 @@
     const lv = el.getAttribute("data-level");
     const box = root.querySelector(`[data-explain-body="${id}"]`);
     if (box) box.innerHTML = box.getAttribute(`data-${lv}`);
+    const craft = root.querySelector(`[data-explain-magic="${id}"]`);
+    if (craft) craft.innerHTML = craft.getAttribute(`data-${lv}`);
     root.querySelectorAll(`[data-card="${id}"]`).forEach((b) => b.setAttribute("aria-pressed", String(b.getAttribute("data-level") === lv)));
   }
 
@@ -143,11 +147,10 @@
     const ruler = sign ? A.signs.TRADITIONAL_RULER[sign] : null;
     const at = ruler ? A.natal.positionOf(chart, ruler) : null;
     return explainCard({
-      eyebrow: `House ${n}`,
+      eyebrow: `House ${n}${sign ? ` · ${sign} on the cusp · ruled by ${ruler}${inside.length ? ` · ${inside.join(", ")}` : ""}` : ""}`,
       title: hm.name,
-      reading: { simple: hm.simple, detailed: hm.detailed, magic: hm.magic },
-      terms: [`house-${n}`, ...(sign ? [termId(sign)] : [])],
-      extra: sign ? ptx(`${sign} is on its cusp, so ${ruler} rules it${at ? `; ${ruler} sits in ${at.sign}${at.house ? `, the ${ordinal(at.house)}` : ""}` : ""}. ${inside.length ? `Here: ${inside.join(", ")}.` : "No planet is here; read it through its cusp and ruler."}`) : ""
+      reading: R().interpret.houseReading(n, sign ? { sign, inside, rulerAt: at ? { sign: at.sign, house: at.house } : null } : null),
+      terms: [`house-${n}`, ...(sign ? [termId(sign)] : [])]
     });
   }
 

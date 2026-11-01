@@ -77,7 +77,7 @@ export const JUPITER_IN_HOUSE: Interpretation[] = [
   {
     simple: "With Jupiter in the eleventh house friends and groups bring blessings. Your hopes tend to grow and be fulfilled.",
     detailed:
-      "The eleventh house is Jupiter's joy in the Hellenistic tradition, the house of the good spirit, and Jupiter rejoices here. Friends are generous, groups welcoming, and hopes often come true. You may be a generous friend and a natural networker.\n\nToo many friends and too little depth, or relying on others for luck, are the risks. Your gift is goodwill that brings people together.\n\nFriends often help your career and your hopes, and you may be a generous patron to others. Groups, clubs, covens and causes are good places for your energy. Wishes made with friends tend to come true.",
+      "The eleventh house is Jupiter's joy in ancient astrology, the house of the good spirit, and Jupiter rejoices here. Friends are generous, groups welcoming, and hopes often come true. You may be a generous friend and a natural networker.\n\nToo many friends and too little depth, or relying on others for luck, are the risks. Your gift is goodwill that brings people together.\n\nFriends often help your career and your hopes, and you may be a generous patron to others. Groups, clubs, covens and causes are good places for your energy. Wishes made with friends tend to come true.",
     magic: "Communal magic is your strength: group rituals, coven work, friendship spells and wishes made at the new Moon. Thursdays and Saturdays suit you. Amethyst, Citrine and lavender help.",
     shadow: "Many friends and little depth.",
   },
