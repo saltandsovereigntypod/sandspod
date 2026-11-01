@@ -5,6 +5,7 @@ import { Pressable, StyleSheet, Text, useWindowDimensions, View } from 'react-na
 import { Button } from '../../../../../components/Button';
 import { ChartWheel, type WheelTap } from '../../../../../components/astro/ChartWheel';
 import { DeityLinkTag } from '../../../../../components/astro/DeityLinkTag';
+import { PlainWordsCard } from '../../../../../components/astro/PlainWords';
 import { ExplainCard, openTerm, Term, TermChips, TermText } from '../../../../../components/astro/Explain';
 import { AspectDetail, HouseDetail, PositionDetail } from '../../../../../components/astro/PointDetail';
 import { useCharts } from '../../../../../components/astro/useCharts';
@@ -50,7 +51,7 @@ const NOTE_TEXT: Record<string, string> = {
   sidereal: 'Sidereal zodiac (Lahiri): the signs are measured from the stars, about 24° behind the tropical ones.',
 };
 
-// One chart: the wheel, its placements, aspects and balance, the reading in
+// One chart: the whole chart in plain words at the top, then the wheel, its placements, aspects and balance, the reading in
 // full, and what moves against it (transits, returns, progressions), with
 // where it meets the craft.
 export default function ChartScreen() {
@@ -95,6 +96,7 @@ export default function ChartScreen() {
     <RitualScreen back="Charts">
       <Title eyebrow={saved.relation === 'me' ? 'Your chart' : 'A chart'}>{saved.name}</Title>
       <Body muted>{bigThreeLine(chart)}</Body>
+      <PlainWordsCard chart={chart} onTab={setTab} />
       <Chips>
         {TABS.map((t) => (
           <Chip key={t.key} label={t.label} selected={tab === t.key} onPress={() => setTab(t.key)} />

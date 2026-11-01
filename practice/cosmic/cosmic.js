@@ -296,7 +296,7 @@
 
   async function chartPage(root, user) {
     const s = await ready(user);
-    const view = { tab: TABS.some(([k]) => k === PB.query("tab")) ? PB.query("tab") : "wheel", solar: false, picked: null, when: new Date(), year: new Date().getFullYear(), atHere: false, open: null };
+    const view = { tab: TABS.some(([k]) => k === PB.query("tab")) ? PB.query("tab") : "wheel", solar: false, picked: null, when: new Date(), year: new Date().getFullYear(), atHere: false, open: null, plainOpen: true };
     const id = PB.query("id");
     const current = () => {
       const saved = id ? ST.state.data.charts.find((c) => c.id === id) : ST.myChart();
@@ -329,6 +329,7 @@
         [
           h.head(saved.relation === "me" ? "Your chart" : "A chart", saved.name, CHARTS),
           ptx(A.natal.bigThreeLine(chart), "sp-muted"),
+          plainWordsCard(chart),
           tabs,
           notes,
           solar,
@@ -337,6 +338,30 @@
             `${h.label("Birth details")}${h.p([i.date, chart.timeKnown ? i.time : "time unknown", `${A.birth.offsetLabel(i.utcOffsetMinutes)}${i.offsetOverridden ? " (set by hand)" : i.zone ? ` (${i.zone})` : ""}`].join(" · "))}${h.muted(i.placeLabel || "No birthplace")}${h.muted(`${chart.options.zodiac === "sidereal" ? "Sidereal (Lahiri)" : "Tropical"} zodiac · ${chart.houses ? `${A.houses.HOUSE_SYSTEM_LABEL[chart.houses.system]} houses` : "no houses"} · ${chart.options.nodes} node`)}${h.actions([h.button("Edit birth details", { variant: "ghost", href: url.edit({ id: saved.id }) }), h.button("All charts and settings", { variant: "text", href: CHARTS.href })])}`
           )
         ].join("")
+      );
+    };
+
+    // "Your chart in plain words": the whole chart in everyday language (plainWords.ts), five parts with links to the readings below; its own Simple · Detailed switch, starting at the global level.
+    const plainHref = (l) => (l.planet ? url.planet(l.planet) : l.hours ? url.hours(l.hours) : `/altar/?natal=${encodeURIComponent(l.altar)}`);
+    const plainWordsCard = (chart) => {
+      const words = R().plain.plainWords(chart);
+      const fold = h.chip(view.plainOpen ? "Fold away" : "Read it", { pressed: view.plainOpen, attrs: { "data-action": "plain-fold" }, a11y: view.plainOpen ? "Fold away your chart in plain words" : "Read your chart in plain words" });
+      const head = `<div class="pb-head">${h.cardTitle("Your chart in plain words")}${fold}</div>`;
+      if (!view.plainOpen) return h.card(`${head}${h.muted("The big picture, what runs the show, where your energy goes, your tensions and gifts, and how it all fits together.")}`, { gold: true, cls: "astro-plain" });
+      const level = T ? T.level : "simple";
+      const parts = (lv) =>
+        words.parts
+          .map(
+            (p, i) =>
+              `<section class="astro-plain__part"><h3 class="sp-label">${esc(`${i + 1}. ${p.title}`)}</h3>${p[lv]
+                .split(/\n\s*\n/)
+                .map((para) => ptx(para.trim()))
+                .join("")}${h.chips(p.links.map((l) => (l.tab ? h.chip(l.label, { attrs: { "data-action": "plain-tab", "data-tab": l.tab } }) : `<a class="sp-chip" href="${esc(plainHref(l))}">${esc(l.label)}</a>`)), `${p.title}: read more`)}</section>`
+          )
+          .join("");
+      return h.card(
+        `${head}${ptx(words.intro, "sp-caption")}<div class="astro-level" role="group" aria-label="How much to explain your chart in plain words" data-explain-switch="plain">${["simple", "detailed"].map((l) => `<button type="button" data-action="explain" data-card="plain" data-level="${l}" aria-pressed="${level === l}">${l === "simple" ? "Simple" : "Detailed"}</button>`).join("")}</div><div data-explain-body="plain" data-simple="${esc(parts("simple"))}" data-detailed="${esc(parts("detailed"))}">${parts(level)}</div>`,
+        { gold: true, cls: "astro-plain" }
       );
     };
 
@@ -590,6 +615,17 @@
         solar: () => {
           view.solar = !view.solar;
           draw();
+        },
+        "plain-fold": () => {
+          view.plainOpen = !view.plainOpen;
+          draw();
+        },
+        "plain-tab": (el) => {
+          view.tab = el.dataset.tab;
+          view.picked = null;
+          view.plainOpen = false;
+          draw();
+          root.querySelector(`[data-focus="tab-${view.tab}"]`)?.scrollIntoView?.({ block: "start", behavior: "smooth" });
         },
         explain: (el) => explainToggle(el, root),
         "pick-point": (el) => {
