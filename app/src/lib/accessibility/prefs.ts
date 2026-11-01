@@ -113,7 +113,10 @@ export function accessibleTextStyle<T extends object>(style: T, prefs: Accessibi
   const next: TextLike = { ...base };
   const size = typeof base.fontSize === 'number' ? base.fontSize : null;
   if (size !== null && prefs.textScale !== 1) next.fontSize = round(size * prefs.textScale);
-  if (typeof base.lineHeight === 'number' && prefs.textScale !== 1) next.lineHeight = round(base.lineHeight * prefs.textScale);
+  // Whole points only: iOS draws a paragraph's last line clipped mid-word (no
+  // ellipsis) when its lines need a hair more room than the text was measured
+  // at, and fractional line heights (24.2, 28.6) are what open that gap.
+  if (typeof base.lineHeight === 'number' && prefs.textScale !== 1) next.lineHeight = Math.round(base.lineHeight * prefs.textScale);
   if (prefs.lineSpacing && size !== null && size <= BODY_TEXT_MAX) {
     next.lineHeight = Math.max(next.lineHeight ?? 0, Math.round((next.fontSize ?? size) * 1.75));
   }

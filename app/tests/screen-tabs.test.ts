@@ -19,13 +19,13 @@ test('a stored or linked tab name is read only when it is one of the tabs', () =
 });
 
 test('a link to a section of Today lands on the tab that holds it', () => {
-  for (const section of ['moon', 'holiday', 'working', 'covens', 'tend', 'did-it-work', 'dream', 'deipnon', 'card', 'altar', 'reflect']) {
+  for (const section of ['moon', 'holiday', 'working', 'covens', 'tend', 'did-it-work', 'dream', 'deipnon', 'card', 'altar', 'reflect', 'horizon']) {
     assert.equal(todayTabFor({ section }), 'today', section);
   }
-  for (const section of ['sky', 'hours', 'correspondences', 'horizon', 'practice']) {
+  for (const section of ['sky', 'hours', 'correspondences', 'practice']) {
     assert.equal(todayTabFor({ section }), 'sky', section);
   }
-  assert.equal(todayTabFor({ section: '#Horizon' }), 'sky');
+  assert.equal(todayTabFor({ section: '#Horizon' }), 'today');
   assert.equal(todayTabFor({ tab: 'sky', section: 'moon' }), 'sky', 'a tab named outright wins');
   assert.equal(todayTabFor({ section: 'nowhere' }), null);
   assert.equal(todayTabFor({ section: 'constructor' }), null);

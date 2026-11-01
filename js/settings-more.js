@@ -158,7 +158,7 @@
       "The moon and the day’s holiday",
       `${chips("todayShow", SHOW_OPTIONS, show, "Show on Today")}
         ${show === "both" ? `<p class="settings-more-check__label">Layout</p>${chips("todayLayout", LAYOUT_OPTIONS, settings.today_layout || "stacked", "Layout")}` : ""}
-        <p class="settings-more-detail">On the horizon, under Sky &amp; Lore, always shows the next moon phase and the next holiday.</p>`,
+        <p class="settings-more-detail">On the horizon, on Today, always shows the next moon phase and the next holiday.</p>`,
     )}
       ${group(
         "Also on Today",

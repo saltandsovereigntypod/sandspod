@@ -47,10 +47,10 @@ export const TODAY_SECTIONS: Readonly<Record<string, TodayTab>> = {
   card: 'today',
   altar: 'today',
   reflect: 'today',
+  horizon: 'today',
   sky: 'sky',
   hours: 'sky',
   correspondences: 'sky',
-  horizon: 'sky',
   practice: 'sky',
 };
 

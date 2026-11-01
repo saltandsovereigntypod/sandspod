@@ -118,7 +118,7 @@ test('text styles take the accessibility choices', () => {
   assert.deepEqual(accessibleTextStyle(body, ACCESSIBILITY_DEFAULTS), body);
   const big = accessibleTextStyle(body, { ...ACCESSIBILITY_DEFAULTS, textScale: 1.2 });
   assert.equal(big.fontSize, 18);
-  assert.equal(big.lineHeight, 26.4);
+  assert.equal(big.lineHeight, 26);
   assert.equal(accessibleTextStyle(body, { ...ACCESSIBILITY_DEFAULTS, lineSpacing: true }).lineHeight, 26);
   assert.equal(accessibleTextStyle(body, { ...ACCESSIBILITY_DEFAULTS, letterSpacing: true }).letterSpacing, 0.6);
   const plain = accessibleTextStyle({ fontFamily: 'SourceSerif4_600SemiBold', fontSize: 15 }, { ...ACCESSIBILITY_DEFAULTS, readableFont: true }) as Record<string, unknown>;
