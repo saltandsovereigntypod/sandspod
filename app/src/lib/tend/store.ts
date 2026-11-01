@@ -19,7 +19,7 @@ import { changeAltarOnce } from '../covens/altarSync';
 import { tendWithSeed } from '../covens/petitionAltar';
 import { todayIso } from '../covens/record';
 import { useGrimoire } from '../grimoire/store';
-import { journeyById } from '../journeys';
+import { cachedJourney, useJourneyTexts } from '../journeys/texts';
 import { logPractice, nextSteps, normalizeProgress } from '../journeys/progress';
 import { saveProgress, useCadence, useJourneyProgress } from '../journeys/store';
 import { useMoreCachedCovens } from './covens';
@@ -73,16 +73,19 @@ export function useTendList(now: Date) {
   const covens = useMoreCachedCovens(userId);
   const { entries, records, ready } = useTendRecords();
 
+  // Journeys under way load their text from the phone (or the website, once); each joins the list as it arrives.
+  const textsVersion = useJourneyTexts(progress.map((e) => e.data.journeyId));
   const journeys = useMemo<JourneyPart[]>(
     () =>
       progress
         .map((e) => {
-          const journey = journeyById(e.data.journeyId);
+          const journey = cachedJourney(e.data.journeyId);
           if (!journey) return null;
           return { entryId: e.id, journeyId: journey.id, title: journey.title, steps: nextSteps(journey, normalizeProgress(e.data), now, cadence) } as JourneyPart;
         })
         .filter((j): j is JourneyPart => !!j),
-    [progress, now, cadence],
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- textsVersion changes as journey texts arrive
+    [progress, now, cadence, textsVersion],
   );
 
   const items = useMemo(

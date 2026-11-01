@@ -5,7 +5,8 @@ import { Image, StyleSheet, Text, View } from 'react-native';
 import { Button } from '../Button';
 import { ResearchFooter } from '../ResearchNote';
 import { Card, MoreScreen, RichText, Section, Tags } from '../more/ui';
-import { journeyForDeityRef } from '../../lib/journeys';
+import { JOURNEY_CATALOG } from '../../lib/journeys/catalog';
+import { journeyForDeityRefIn } from '../../lib/journeys/lookup';
 import { correspondences, entryIntro, findByName, useLibrary, type LibraryEntry } from '../../lib/library';
 import { sourcingForEntry } from '../../lib/library/closed';
 import { layerFields, visibleLayers } from '../../lib/library/model';
@@ -66,7 +67,7 @@ export function LibraryEntryView({ entryId, back, backLabel, hrefFor, editHref }
     .map((layer) => ({ layer, fields: layerFields(layerData(entry, layer), layer, settings, entry.layout) }))
     .filter(({ fields }) => fields.length > 0);
   // A deity with a dedication journey links to it.
-  const journey = entry.type === 'deity' ? journeyForDeityRef(entry.traditionalRef ?? entry.id) : null;
+  const journey = entry.type === 'deity' ? journeyForDeityRefIn(JOURNEY_CATALOG, entry.traditionalRef ?? entry.id) : null;
   // Rituals and ritual templates read as a record of the working, as on the website.
   const record = entry.myPractice ? ritualRecord(entry.type, entry.myPractice) : null;
   // Plants, resins and stones whose sourcing raises real concerns.

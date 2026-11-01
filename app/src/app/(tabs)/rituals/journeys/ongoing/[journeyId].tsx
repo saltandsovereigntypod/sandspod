@@ -2,7 +2,7 @@ import { router, useLocalSearchParams } from 'expo-router';
 import { Text, View } from 'react-native';
 
 import { Button } from '../../../../../components/Button';
-import { everyWords, Paragraphs, practiceHref, riteHref, stageIndexOf } from '../../../../../components/journeys/parts';
+import { everyWords, JourneyWaiting, Paragraphs, practiceHref, riteHref, stageIndexOf } from '../../../../../components/journeys/parts';
 import { Body, Card, confirmAction, List, RitualScreen, Row, SectionLabel, Title, ui } from '../../../../../components/rituals/ui';
 import { fullDate, relativeDay, shortDate } from '../../../../../lib/calendar';
 import { holyDaysBetween, journeyStatus, practiceState, rededicate, rededication } from '../../../../../lib/journeys/progress';
@@ -12,7 +12,7 @@ import { type } from '../../../../../theme';
 // The year after: the holy days coming round, the ongoing practices, and the yearly rededication.
 export default function Ongoing() {
   const { journeyId } = useLocalSearchParams<{ journeyId: string }>();
-  const { journey, progress, change } = useJourney(journeyId);
+  const { journey, progress, change, textState, retry } = useJourney(journeyId);
   const cadence = useCadence();
   const now = new Date();
 
@@ -22,6 +22,7 @@ export default function Ongoing() {
 
   const at = journey ? stageIndexOf(journey, 'ongoing') : -1;
   const stage = journey && at >= 0 ? journey.stages[at] : null;
+  if (!journey && textState !== 'missing') return <JourneyWaiting state={textState} retry={retry} back="Journey" />;
   if (!journey || !stage) {
     return (
       <RitualScreen back="Journey">

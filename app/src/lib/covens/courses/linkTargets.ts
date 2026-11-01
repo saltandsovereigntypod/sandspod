@@ -10,7 +10,7 @@ import { holyPage } from '../../holy/index.ts';
 import { TRADITIONAL_LIBRARY } from '../../library/traditionalData.ts';
 import { CLOSED_GUIDE_TITLE, closedById } from '../../library/closed/index.ts';
 import { premadeById } from '../../rituals/premade/index.ts';
-import { JOURNEYS } from '../../journeys/registry.ts';
+import { JOURNEY_CATALOG } from '../../journeys/catalog.ts';
 import { spreadById } from '../../divination/draw.ts';
 import { seasonalObject } from '../../altar/seasonal.ts';
 
@@ -41,7 +41,7 @@ export function linkTargetLabel(link: CourseLink): string | null {
       return p ? `Ritual: ${p.title}` : null;
     }
     case 'journey': {
-      const j = JOURNEYS.find((x) => x.id === id);
+      const j = JOURNEY_CATALOG.find((x) => x.id === id);
       return j ? `Journey: ${j.title}` : null;
     }
     case 'spread': {

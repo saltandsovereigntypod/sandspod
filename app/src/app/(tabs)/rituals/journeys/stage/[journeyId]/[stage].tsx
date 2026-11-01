@@ -2,18 +2,7 @@ import { router, useLocalSearchParams } from 'expo-router';
 import { View } from 'react-native';
 
 import { Button } from '../../../../../../components/Button';
-import {
-  discernHref,
-  everyWords,
-  lengthWords,
-  lessonHref,
-  ongoingHref,
-  Paragraphs,
-  practiceHref,
-  ProgressBar,
-  riteHref,
-  STAGE_WORDS,
-} from '../../../../../../components/journeys/parts';
+import { discernHref, everyWords, JourneyWaiting, lengthWords, lessonHref, ongoingHref, Paragraphs, practiceHref, ProgressBar, riteHref, STAGE_WORDS } from '../../../../../../components/journeys/parts';
 import { Body, Card, confirmAction, List, RitualScreen, Row, SectionLabel, Title, ui } from '../../../../../../components/rituals/ui';
 import { relativeDay } from '../../../../../../lib/calendar';
 import {
@@ -29,12 +18,13 @@ import { startJourney, useCadence, useJourney } from '../../../../../../lib/jour
 
 export default function StageView() {
   const { journeyId, stage: raw } = useLocalSearchParams<{ journeyId: string; stage: string }>();
-  const { journey, progress, change } = useJourney(journeyId);
+  const { journey, progress, change, textState, retry } = useJourney(journeyId);
   const cadence = useCadence();
   const now = new Date();
   const index = Number(raw);
   const stage = journey?.stages[index];
 
+  if (!journey && textState !== 'missing') return <JourneyWaiting state={textState} retry={retry} back="Journey" />;
   if (!journey || !stage) {
     return (
       <RitualScreen back="Journey">
