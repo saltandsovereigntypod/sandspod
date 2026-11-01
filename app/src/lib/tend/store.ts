@@ -12,7 +12,7 @@ import { useAltars } from '../altar/store';
 import { finishPetition, PETITIONS, type Petition, type PetitionEnd } from '../altar/petitions';
 import { documentFromAltar } from '../altar/snapshot';
 import { useWorkshop } from '../altar/workshop';
-import { addEntry, updateEntry, useCraft, type CraftEntry } from '../craft/store';
+import { addEntry, removeEntry, updateEntry, useCraft, type CraftEntry } from '../craft/store';
 import * as api from '../covens/api';
 import { setActionStatus } from '../covens/meetingApi';
 import { changeAltarOnce } from '../covens/altarSync';
@@ -28,7 +28,8 @@ import { useSession } from '../session';
 import { askForTendReminders, setTendSources } from '../reminders/store';
 import { gatherTendables, type CovenPart, type JourneyPart } from './gather';
 import { tendAltar, type AltarTend } from './altar';
-import { endingPage, newRecord, normalizeRecord, recordEnded, recordTended, TEND_COLLECTION, tendList, type ListItem, type TendEnd, type Tendable, type TendRecord } from './model';
+import { newId } from '../grimoire/ids';
+import { donePage, editOwn, endingPage, newOwnRecord, newRecord, normalizeRecord, recordDone, recordEnded, recordTended, removeDone, TEND_COLLECTION, tendList, type ListItem, type OwnInput, type TendEnd, type Tendable, type TendRecord } from './model';
 
 export type RecordEntry = { id: string; record: TendRecord };
 
@@ -97,8 +98,9 @@ export function useTendList(now: Date) {
         journeys,
         journal: rituals.journal,
         apothecary,
+        records,
       }),
-    [now, altarStore.altars, petitionEntries, covens.part, journeys, rituals.journal, apothecary],
+    [now, altarStore.altars, petitionEntries, covens.part, journeys, rituals.journal, apothecary, records],
   );
   const list = useMemo(() => tendList(items, records, now), [items, records, now]);
   return { userId, items, list, records, entries, ready, covens, altarStore, petitionEntries, progress, refresh: covens.refresh };
@@ -285,7 +287,68 @@ export function useTendActions(ctx: TendContext) {
     [remember],
   );
 
-  return { tend, end, write, checkin, done, practice, setRhythm };
+  /** A thing of your own, added (with its own key) or changed. */
+  const saveOwn = useCallback(
+    async (input: OwnInput, item?: ListItem): Promise<Outcome> => {
+      try {
+        const current = item ? entries.find((e) => e.record.key === item.key)?.record : null;
+        await saveRecord(entries, current ? editOwn(current, input) : newOwnRecord(input, newId()));
+        return { ok: true, message: current ? 'Saved.' : `${input.name.trim() || 'It'} is on your list.` };
+      } catch (error) {
+        return fail(error);
+      }
+    },
+    [entries],
+  );
+
+  /** Taken off the list altogether, with its history. */
+  const removeOwn = useCallback(
+    async (item: ListItem): Promise<Outcome> => {
+      const entry = entries.find((e) => e.record.key === item.key);
+      try {
+        if (entry) await removeEntry(TEND_COLLECTION, entry.id);
+        return { ok: true, message: 'Taken off your list.' };
+      } catch (error) {
+        return fail(error);
+      }
+    },
+    [entries],
+  );
+
+  /** Done (today, or on another day), and how; noted in your Grimoire too if you asked. */
+  const markDone = useCallback(
+    async (item: ListItem, at: Date, how: string[], note: string): Promise<Outcome> => {
+      const current = entries.find((e) => e.record.key === item.key)?.record;
+      if (!current) return { ok: false, message: 'That isn’t on your list any more.' };
+      try {
+        const next = recordDone(current, at, how, note);
+        await saveRecord(entries, next);
+        const done = next.done?.find((c) => c.at === at.toISOString());
+        const noted = !!(done && current.own?.grimoire && grimoire.canEdit && grimoire.actions.saveHolyPage(donePage(next, done)));
+        return { ok: true, message: `Done, and kept in its history.${noted ? ' Noted in your Grimoire.' : ''}` };
+      } catch (error) {
+        return fail(error);
+      }
+    },
+    [entries, grimoire],
+  );
+
+  /** A time taken out of its history. */
+  const undoDone = useCallback(
+    async (item: ListItem, at: string): Promise<Outcome> => {
+      const current = entries.find((e) => e.record.key === item.key)?.record;
+      if (!current) return { ok: false, message: 'That isn’t on your list any more.' };
+      try {
+        await saveRecord(entries, removeDone(current, at));
+        return { ok: true, message: 'Taken out of its history.' };
+      } catch (error) {
+        return fail(error);
+      }
+    },
+    [entries],
+  );
+
+  return { tend, end, write, checkin, done, practice, setRhythm, saveOwn, removeOwn, markDone, undoDone };
 }
 
 export type { CovenPart };

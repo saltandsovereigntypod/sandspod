@@ -2,8 +2,10 @@
 // first, then what's ongoing; each with where it came from, tended right
 // here by its own source's tending (so the altar, the coven and the journal
 // all show it), with a rhythm and a reminder of its own, and an ending with
-// "how did it go?" kept in your Grimoire. The logic is lib/tend, shared with
-// the website's /today/tend/.
+// "how did it go?" kept in your Grimoire. Things of your own (cleansing the
+// house, salt lines, a spiritual bath) are added here too, each with its
+// rhythm and a history of when and how it was done. The logic is lib/tend,
+// shared with the website's /today/tend/.
 
 import { router } from 'expo-router';
 import { useMemo, useState } from 'react';
@@ -12,20 +14,26 @@ import { ActivityIndicator, Pressable, StyleSheet, Text, View } from 'react-nati
 import { Button } from '../Button';
 import { DidItWork } from '../rituals/DidItWork';
 import { ItemDidItWork } from '../rituals/ItemDidItWork';
-import { Body, Card, Chip, Chips, Field, Notice, RitualScreen, SectionLabel, Title, Toggle } from '../rituals/ui';
+import { Body, Card, Chip, Chips, confirmAction, Expander, Field, Notice, RitualScreen, SectionLabel, Title, Toggle } from '../rituals/ui';
 import { useWorkshop } from '../../lib/altar/workshop';
 import { useGrimoire } from '../../lib/grimoire/store';
 import { useRituals } from '../../lib/rituals/store';
 import {
+  cleanEvery,
+  dayKey,
   END_WORDS,
+  EVERY_MAX,
   filterList,
   GROUP_FILTERS,
   KIND_LABEL,
   MOON_MARKS,
+  OWN_TYPES,
+  ownHows,
   RHYTHMS,
   rhythmOf,
   untilChoices,
   type ListItem,
+  type OwnType,
   type Rhythm,
   type TendEnd,
   type TendGroup,
@@ -45,6 +53,7 @@ export const KIND_MARK: Record<ListItem['kind'], string> = {
   'coven-task': '✎',
   checkin: '☉',
   action: '✓',
+  own: '✶',
 };
 
 /** Its own endings, and letting it go from the list (it won't ask again). */
@@ -60,6 +69,7 @@ export function TendScreen() {
   const [group, setGroup] = useState<'all' | TendGroup>('all');
   const [open, setOpen] = useState<string | null>(null);
   const [message, setMessage] = useState<string | null>(null);
+  const [adding, setAdding] = useState(false);
 
   const pick = <T extends ListItem>(list: T[]) => filterList(group === 'all' ? list : list.filter((i) => i.group === group), query);
   const today = pick(ctx.list.today);
@@ -71,7 +81,7 @@ export function TendScreen() {
       <Title eyebrow="Everything you look after">To tend</Title>
       <Body muted>
         Your petitions, candles, offerings and plants, what you hold in your covens, your journeys and your “Did it work?” days, wherever they began. Tend them
-        here and the altar, the coven and the journal keep up.
+        here and the altar, the coven and the journal keep up. Add your own too: cleansing the house, salt lines, a spiritual bath.
       </Body>
       <Field label="Find something" value={query} onChange={setQuery} placeholder="A petition, a plant, a coven, a ritual" />
       <Chips>
@@ -80,6 +90,17 @@ export function TendScreen() {
         ))}
       </Chips>
       {message && <Notice>{message}</Notice>}
+      {adding ? (
+        <OwnForm
+          ctx={ctx}
+          onDone={(text) => {
+            setAdding(false);
+            if (text) setMessage(text);
+          }}
+        />
+      ) : (
+        <Button label="Add your own" variant="outline" onPress={() => setAdding(true)} />
+      )}
       {!ctx.ready && <ActivityIndicator color={colors.gold} />}
       {ctx.ready && nothing && (
         <Card>
@@ -159,6 +180,8 @@ function TendPanel({ item, ctx, onDone }: { item: ListItem; ctx: TendContext; on
   const has = (a: ListItem['actions'][number]) => item.actions.includes(a);
   const setRhythm = (next: Rhythm) => void run(() => act.setRhythm(item, { rhythm: next }));
 
+  if (item.kind === 'own') return <OwnPanel item={item} ctx={ctx} onDone={onDone} />;
+
   // "Did it work?" is answered as the journal answers it.
   if (item.kind === 'lookback') {
     const entry = journal.find((e) => e.id === item.ref.journalId);
@@ -212,43 +235,9 @@ function TendPanel({ item, ctx, onDone }: { item: ListItem; ctx: TendContext; on
       )}
 
       <SectionLabel>Its rhythm</SectionLabel>
-      <Chips>
-        {RHYTHMS.map((r) => (
-          <Chip
-            key={r.value}
-            label={r.label}
-            selected={rhythm.kind === r.value}
-            onPress={() => setRhythm(r.value === 'moon' ? { kind: 'moon', moon: 'full' } : r.value === 'until' ? { kind: 'until', until: choices[0]?.date ?? '', untilWhy: choices[0]?.why ?? '' } : { kind: r.value })}
-          />
-        ))}
-      </Chips>
-      {rhythm.kind === 'moon' && (
-        <Chips>
-          {MOON_MARKS.map((m) => (
-            <Chip key={m.value} label={m.label} selected={rhythm.moon === m.value} onPress={() => setRhythm({ kind: 'moon', moon: m.value })} />
-          ))}
-        </Chips>
-      )}
-      {rhythm.kind === 'until' && (
-        <Chips>
-          {choices.map((c) => (
-            <Chip key={c.id} label={`${c.label} · ${new Date(`${c.date}T12:00:00`).toLocaleDateString(undefined, { day: 'numeric', month: 'short' })}`} selected={rhythm.until === c.date} onPress={() => setRhythm({ kind: 'until', until: c.date, untilWhy: c.why })} />
-          ))}
-        </Chips>
-      )}
+      <RhythmPicker rhythm={rhythm} choices={choices} onChange={setRhythm} asks />
       {rhythm.kind === 'asks' && <Body muted>It asks in its own time{item.kind === 'plant' || item.kind === 'offering' ? ', and your tending reminders ring for it' : ''}.</Body>}
-      {rhythm.kind !== 'asks' && (
-        <>
-          <Toggle label="Remind me" detail="With your other reminders, keeping your quiet hours and any pause." value={!!item.record?.remind} onChange={(on) => void run(() => act.setRhythm(item, { remind: on, rhythm }))} />
-          {!!item.record?.remind && (
-            <Chips>
-              {HOURS.map((m) => (
-                <Chip key={m} label={hourLabel(m)} selected={item.record?.at === m} onPress={() => void run(() => act.setRhythm(item, { at: m }))} />
-              ))}
-            </Chips>
-          )}
-        </>
-      )}
+      {rhythm.kind !== 'asks' && <RemindPicker item={item} rhythm={rhythm} run={run} act={act} />}
 
       <SectionLabel>When it’s done</SectionLabel>
       <Chips>
@@ -269,6 +258,217 @@ function TendPanel({ item, ctx, onDone }: { item: ListItem; ctx: TendContext; on
   );
 }
 
+type Choices = ReturnType<typeof untilChoices>;
+
+/** How often: the rhythms, with the moon, the day it ends, or how many days between. */
+function RhythmPicker({ rhythm, choices, onChange, asks }: { rhythm: Rhythm; choices: Choices; onChange: (next: Rhythm) => void; asks?: boolean }) {
+  const [every, setEvery] = useState(String(rhythm.every ?? 3));
+  const n = Number(every);
+  const valid = Number.isInteger(n) && n >= 1 && n <= EVERY_MAX;
+  return (
+    <>
+      <Chips>
+        {RHYTHMS.filter((r) => asks || r.value !== 'asks').map((r) => (
+          <Chip
+            key={r.value}
+            label={r.label}
+            selected={rhythm.kind === r.value}
+            onPress={() =>
+              onChange(
+                r.value === 'moon'
+                  ? { kind: 'moon', moon: 'full' }
+                  : r.value === 'until'
+                    ? { kind: 'until', until: choices[0]?.date ?? '', untilWhy: choices[0]?.why ?? '' }
+                    : r.value === 'every'
+                      ? { kind: 'every', every: cleanEvery(valid ? n : 3) }
+                      : { kind: r.value },
+              )
+            }
+          />
+        ))}
+      </Chips>
+      {rhythm.kind === 'every' && (
+        <>
+          <Field label={`Every how many days? (1 to ${EVERY_MAX})`} value={every} onChange={(t) => setEvery(t.replace(/[^0-9]/g, '').slice(0, 3))} keyboardType="numeric" />
+          {!valid && <Body muted>{`A whole number of days, 1 to ${EVERY_MAX}.`}</Body>}
+          {valid && n !== rhythm.every && <Button label={`Every ${n === 1 ? 'day' : `${n} days`}`} variant="outline" onPress={() => onChange({ kind: 'every', every: n })} />}
+        </>
+      )}
+      {rhythm.kind === 'moon' && (
+        <Chips>
+          {MOON_MARKS.map((m) => (
+            <Chip key={m.value} label={m.label} selected={rhythm.moon === m.value} onPress={() => onChange({ kind: 'moon', moon: m.value })} />
+          ))}
+        </Chips>
+      )}
+      {rhythm.kind === 'until' && (
+        <Chips>
+          {choices.map((c) => (
+            <Chip key={c.id} label={`${c.label} · ${new Date(`${c.date}T12:00:00`).toLocaleDateString(undefined, { day: 'numeric', month: 'short' })}`} selected={rhythm.until === c.date} onPress={() => onChange({ kind: 'until', until: c.date, untilWhy: c.why })} />
+          ))}
+        </Chips>
+      )}
+    </>
+  );
+}
+
+type Act = ReturnType<typeof useTendActions>;
+
+function RemindPicker({ item, rhythm, run, act }: { item: ListItem; rhythm: Rhythm; run: (work: () => Promise<Outcome>) => Promise<void>; act: Act }) {
+  return (
+    <>
+      <Toggle label="Remind me" detail="With your other reminders, keeping your quiet hours and any pause." value={!!item.record?.remind} onChange={(on) => void run(() => act.setRhythm(item, { remind: on, rhythm }))} />
+      {!!item.record?.remind && (
+        <Chips>
+          {HOURS.map((m) => (
+            <Chip key={m} label={hourLabel(m)} selected={item.record?.at === m} onPress={() => void run(() => act.setRhythm(item, { at: m }))} />
+          ))}
+        </Chips>
+      )}
+    </>
+  );
+}
+
+/** Add a thing of your own, or change one: what it is, what kind, notes, how often, and whether to note it in your Grimoire. */
+function OwnForm({ ctx, item, onDone }: { ctx: TendContext; item?: ListItem; onDone: (text: string | null) => void }) {
+  const act = useTendActions(ctx);
+  const grimoire = useGrimoire();
+  const own = item?.record?.own;
+  const choices = useMemo(() => untilChoices(new Date()), []);
+  const [name, setName] = useState(item?.title ?? '');
+  const [kind, setKind] = useState<OwnType>(own?.type ?? 'cleansing');
+  const [other, setOther] = useState(own?.other ?? '');
+  const [notes, setNotes] = useState(own?.notes ?? '');
+  const [rhythm, setRhythm] = useState<Rhythm>(item?.record?.rhythm ?? { kind: 'weekly' });
+  const [noteIt, setNoteIt] = useState(own?.grimoire ?? false);
+  const [busy, setBusy] = useState(false);
+  const [status, setStatus] = useState<string | null>(null);
+
+  const save = async () => {
+    setBusy(true);
+    const outcome = await act.saveOwn({ name, type: kind, other, notes, rhythm, grimoire: noteIt }, item);
+    setBusy(false);
+    if (outcome.ok) onDone(outcome.message);
+    else setStatus(outcome.message);
+  };
+  const remove = async () => {
+    if (!item || !(await confirmAction('Take it off your list?', 'It goes with its history. Anything noted in your Grimoire stays there.', 'Take it off'))) return;
+    const outcome = await act.removeOwn(item);
+    if (outcome.ok) onDone(outcome.message);
+    else setStatus(outcome.message);
+  };
+
+  return (
+    <Card>
+      {!item && <SectionLabel>Add your own</SectionLabel>}
+      {status && <Notice>{status}</Notice>}
+      <Field label="What is it?" value={name} onChange={setName} placeholder="Cleanse the house" />
+      <Chips>
+        {OWN_TYPES.map((t) => (
+          <Chip key={t.value} label={t.label} selected={kind === t.value} onPress={() => setKind(t.value)} />
+        ))}
+      </Chips>
+      {kind === 'other' && <Field label="What kind of tending?" value={other} onChange={setOther} placeholder="In your own words" />}
+      <Field label="Notes (optional)" value={notes} onChange={setNotes} multiline placeholder="What you use, where, anything to remember" />
+      <SectionLabel>How often</SectionLabel>
+      <RhythmPicker rhythm={rhythm} choices={choices} onChange={setRhythm} />
+      {grimoire.canEdit ? (
+        <Toggle label="Also note it in my Grimoire" detail="Each time it’s done, a short page under Tending." value={noteIt} onChange={setNoteIt} />
+      ) : (
+        <Body muted>Signed in, each time can also be noted in your Grimoire.</Body>
+      )}
+      <Button label={busy ? 'Saving…' : item ? 'Save' : 'Add it'} disabled={busy || (!name.trim() && kind === 'other' && !other.trim())} onPress={() => void save()} />
+      {item && <Button label="Take it off my list" variant="text" onPress={() => void remove()} />}
+      <Button label="Cancel" variant="text" onPress={() => onDone(null)} />
+    </Card>
+  );
+}
+
+const dateWords = (iso: string) => new Date(iso).toLocaleDateString(undefined, { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' });
+
+/** A thing of your own: done today (or another day) and how, its rhythm and reminder, its history, and changing it. */
+function OwnPanel({ item, ctx, onDone }: { item: ListItem; ctx: TendContext; onDone: (text: string) => void }) {
+  const act = useTendActions(ctx);
+  const choices = useMemo(() => untilChoices(new Date()), []);
+  const own = item.record?.own;
+  const hows = own ? ownHows(own.type) : [];
+  const [how, setHow] = useState<string[]>([]);
+  const [otherHow, setOtherHow] = useState('');
+  const [showOther, setShowOther] = useState(false);
+  const [note, setNote] = useState('');
+  const [another, setAnother] = useState(false);
+  const [day, setDay] = useState(() => dayKey(new Date(Date.now() - 86_400_000)));
+  const [editing, setEditing] = useState(false);
+  const [busy, setBusy] = useState(false);
+  const [status, setStatus] = useState<string | null>(null);
+  const rhythm = rhythmOf(item, item.record);
+  const history = [...(item.record?.done ?? [])].reverse();
+
+  const run = async (work: () => Promise<Outcome>) => {
+    setBusy(true);
+    setStatus(null);
+    const outcome = await work();
+    setBusy(false);
+    setStatus(outcome.message);
+    if (outcome.ok) {
+      setHow([]);
+      setOtherHow('');
+      setShowOther(false);
+      setNote('');
+      setAnother(false);
+    }
+  };
+  const when = (): Date | null => {
+    if (!another) return new Date();
+    const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(day.trim());
+    const at = m ? new Date(+m[1], +m[2] - 1, +m[3], 12) : null;
+    return at && !Number.isNaN(at.getTime()) && at.getTime() <= Date.now() ? at : null;
+  };
+  const markDone = () => {
+    const at = when();
+    if (!at) return setStatus('Choose a day up to today, as year-month-day (2026-10-28).');
+    void run(() => act.markDone(item, at, [...how, ...(showOther && otherHow.trim() ? [otherHow.trim()] : [])], note));
+  };
+
+  if (editing) return <OwnForm ctx={ctx} item={item} onDone={(text) => (text ? onDone(text) : setEditing(false))} />;
+
+  return (
+    <View style={styles.panel}>
+      {status && <Notice>{status}</Notice>}
+      {!!own?.notes && <Body muted>{own.notes}</Body>}
+      <SectionLabel>How (optional)</SectionLabel>
+      <Chips>
+        {hows.map((h) => (
+          <Chip key={h} label={h} selected={how.includes(h)} onPress={() => setHow(how.includes(h) ? how.filter((x) => x !== h) : [...how, h])} />
+        ))}
+        <Chip label="Other" selected={showOther} onPress={() => setShowOther(!showOther)} />
+      </Chips>
+      {showOther && <Field label="How, in your words" value={otherHow} onChange={setOtherHow} />}
+      <Field label="A note (optional)" value={note} onChange={setNote} multiline placeholder="What you noticed" />
+      <Toggle label="Done on another day" value={another} onChange={setAnother} />
+      {another && <Field label="Which day? (year-month-day)" value={day} onChange={setDay} placeholder="2026-10-28" />}
+      <Button label={busy ? 'Keeping it…' : another ? 'Done that day' : 'Done today'} disabled={busy} onPress={markDone} />
+
+      <SectionLabel>How often</SectionLabel>
+      <RhythmPicker rhythm={rhythm} choices={choices} onChange={(next) => void run(() => act.setRhythm(item, { rhythm: next }))} />
+      <RemindPicker item={item} rhythm={rhythm} run={run} act={act} />
+
+      <Expander title={`Its history · ${history.length}`}>
+        {!history.length && <Body muted>Not done yet. Each time you mark it done is kept here, the last 50.</Body>}
+        {history.map((c) => (
+          <View key={c.at} style={styles.history}>
+            <Text style={styles.title}>{dateWords(c.at)}</Text>
+            {!!c.how.length && <Text style={type.caption}>{c.how.join(' · ')}</Text>}
+            {!!c.note && <Text style={type.caption}>{c.note}</Text>}
+            <Button label="Take this one out" variant="text" onPress={() => void run(() => act.undoDone(item, c.at))} />
+          </View>
+        ))}
+      </Expander>
+      <Button label="Change or remove it" variant="text" onPress={() => setEditing(true)} />
+    </View>
+  );
+}
+
 const styles = StyleSheet.create({
   card: { backgroundColor: colors.surface, borderRadius: radius.card, borderWidth: 1, borderColor: colors.hairline, padding: 14, gap: 10 },
   ending: { borderColor: colors.gold },
@@ -281,4 +481,5 @@ const styles = StyleSheet.create({
   gold: { color: colors.gold },
   private: { ...type.caption, color: colors.fern },
   panel: { gap: 12, paddingTop: 4 },
+  history: { gap: 2, borderTopWidth: 1, borderTopColor: colors.hairline, paddingTop: 8 },
 });

@@ -22,7 +22,7 @@ import { cleanContribution, contributionNote, kindOf, ownerActions, ritualTasks,
 import { assigneesOf, cleanAssignees, includesMember } from '../covens/picker.ts';
 import { CHECKIN_DAYS } from '../covens/record.ts';
 import { readLookBack } from '../rituals/lookBack.ts';
-import type { TendEnd, Tendable, TendAction } from './model.ts';
+import { ownTendables, type TendEnd, type Tendable, type TendAction, type TendRecord } from './model.ts';
 
 const DAY = 86_400_000;
 const shortDay = (iso: string | number | null | undefined) => {
@@ -505,8 +505,9 @@ export function lookBackTendables(journal: JournalLike[], apothecary: Apothecary
 }
 
 /** Everything, from whatever each client could load. */
-export function gatherTendables(input: { now: Date; altars?: AltarPart | null; covens?: CovenPart | null; journeys?: JourneyPart[]; journal?: JournalLike[]; apothecary?: ApothecaryLike[] }): Tendable[] {
+export function gatherTendables(input: { now: Date; altars?: AltarPart | null; covens?: CovenPart | null; journeys?: JourneyPart[]; journal?: JournalLike[]; apothecary?: ApothecaryLike[]; records?: TendRecord[] }): Tendable[] {
   return [
+    ...ownTendables(input.records ?? []),
     ...(input.altars ? altarTendables(input.altars, input.now) : []),
     ...(input.covens ? covenTendables(input.covens, input.now) : []),
     ...journeyTendables(input.journeys ?? [], input.now),
