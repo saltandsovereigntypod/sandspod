@@ -1,4 +1,4 @@
-import { router, useFocusEffect, useLocalSearchParams } from 'expo-router';
+import { router, useFocusEffect, useIsFocused, useLocalSearchParams } from 'expo-router';
 import { journalPlace, journalRoutes } from '../../lib/journals/journals';
 import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 import {
@@ -26,6 +26,7 @@ import { AltarRitualOverlay } from './connect/AltarRitualOverlay';
 import { AncestorPanelSection, AncestorShrineSheet } from './connect/AncestorSheets';
 import { FrameNameSheet, FramePanelSection } from './connect/FrameSheets';
 import { FRAME_PHOTO_FOLDER, removeFramePhoto, setFrameAged, setFrameCaption, setFramePhoto } from '../../lib/altar/frame';
+import { useTicker } from '../../lib/altar/useTicker';
 import { HarvestSheet, PlantDetailsSheet, PlantJournalSheet, PottedPanelSection } from './connect/PottedSheets';
 import {
   addJournal,
@@ -923,10 +924,13 @@ export function AltarEditor({ shared, header, overlay, onBack, whose }: { shared
   // ── The altar that responds ──────────────────────────────────────────
   // A minute clock for offerings that age; the sky looks again around sunrise and sunset (`here`, above).
   const [tick, setTick] = useState(() => Date.now());
+  // Only while this altar is the screen in front: one left open under another stops ticking, and catches up on return.
+  const focused = useIsFocused();
   useEffect(() => {
+    if (!focused) return;
     const timer = setTimeout(() => setTick(Date.now()), Math.min(60_000, nextAmbientCheck(new Date(tick), here)));
     return () => clearTimeout(timer);
-  }, [tick, here]);
+  }, [tick, here, focused]);
   useFocusEffect(useCallback(() => setTick(Date.now()), []));
 
   const { options } = sourceId ? altarOptionsFor(optionEntries, sourceId) : { options: unsavedOptions };
@@ -2525,13 +2529,11 @@ function ObjectPanel({
   const glowing = object.glowing === 'true';
   const dressings = candle ? dressingsOf(object) : [];
   const carvings = candle ? carvingsOf(object) : [];
-  const [now, setNow] = useState(() => new Date());
-  const incense = isIncense(object) ? incenseLife(object, now.getTime()) : null;
   // A lit candle's burning time counts up, as on the website; offerings age by the minute.
-  useEffect(() => {
-    const timer = setInterval(() => setNow(new Date()), lit || incense?.lit ? 10_000 : 60_000);
-    return () => clearInterval(timer);
-  }, [lit, incense?.lit]);
+  // One shared clock for the altar, paused off screen and in the background.
+  const nowMs = useTicker(lit || isIncense(object) ? 10_000 : 60_000, useIsFocused());
+  const now = useMemo(() => new Date(nowMs), [nowMs]);
+  const incense = isIncense(object) ? incenseLife(object, nowMs) : null;
   const toRead = candle && !lit ? burnToRead(object, now.getTime()) : null;
   const read = candle && !lit && !!lastBurn(object);
   const offering = canHoldOffering(object) ? offeringFreshness(object, now.getTime()) : null;

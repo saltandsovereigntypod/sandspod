@@ -3,10 +3,10 @@ import { useState } from 'react';
 import { Text, View } from 'react-native';
 
 import { Button } from '../../../../../../components/Button';
-import { everyWords, journeyStyles, Paragraphs, ProgressBar } from '../../../../../../components/journeys/parts';
+import { everyWords, journeyStyles, JourneyWaiting, Paragraphs, ProgressBar } from '../../../../../../components/journeys/parts';
 import { Body, Card, confirmAction, Field, List, RitualScreen, Row, SectionLabel, Title, Toggle, tell, ui } from '../../../../../../components/rituals/ui';
 import { relativeDay, shortDate } from '../../../../../../lib/calendar';
-import { findPractice } from '../../../../../../lib/journeys';
+import { findPractice } from '../../../../../../lib/journeys/lookup';
 import { journeyStatus, logPractice, practiceState, unlogPractice } from '../../../../../../lib/journeys/progress';
 import { startJourney, useCadence, useJourney } from '../../../../../../lib/journeys/store';
 import { blankAnswers } from '../../../../../../lib/rituals/lifecycle';
@@ -17,7 +17,7 @@ import { type } from '../../../../../../theme';
 // A practice: what to do, a tick for each time with an optional note, and how many times are left.
 export default function PracticeView() {
   const { journeyId, practiceId } = useLocalSearchParams<{ journeyId: string; practiceId: string }>();
-  const { journey, progress, change } = useJourney(journeyId);
+  const { journey, progress, change, textState, retry } = useJourney(journeyId);
   const cadence = useCadence();
   const [note, setNote] = useState('');
   const [toJournal, setToJournal] = useState(false);
@@ -25,6 +25,7 @@ export default function PracticeView() {
   const found = findPractice(journey, practiceId);
   const now = new Date();
 
+  if (!journey && textState !== 'missing') return <JourneyWaiting state={textState} retry={retry} back="Journey" />;
   if (!journey || !found) {
     return (
       <RitualScreen back="Journey">

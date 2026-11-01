@@ -84,6 +84,12 @@ if (!only.length || only.includes('astro')) {
   console.log('js/core/cities.json');
 }
 
+// Each dedication journey's full text, which the app fetches when it's first
+// opened: js/core/journeys/<id>.json.
+if (!only.length || only.includes('journeys')) {
+  execFileSync(process.execPath, ['--experimental-strip-types', '--disable-warning=ExperimentalWarning', 'scripts/build-journey-texts.mjs'], { cwd: root, stdio: 'inherit' });
+}
+
 // The ready-made coven programs (every course lesson) as data the app and the
 // coven pages fetch only when needed: js/core/course-programs.json.
 if (!only.length || only.includes('courses')) {

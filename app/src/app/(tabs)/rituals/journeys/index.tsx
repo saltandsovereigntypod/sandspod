@@ -4,7 +4,9 @@ import { View } from 'react-native';
 
 import { journeyHref } from '../../../../components/journeys/parts';
 import { Body, Card, Expander, Field, List, RitualScreen, Row, SectionLabel, Title, ui } from '../../../../components/rituals/ui';
-import { deityGroups, journeyById, JOURNEYS, pathsMineFirst, searchJourneys, type Journey } from '../../../../lib/journeys';
+import { JOURNEY_CATALOG } from '../../../../lib/journeys/catalog';
+import { deityGroupsIn, pathsMineFirstIn, searchJourneysIn, type JourneyLike } from '../../../../lib/journeys/lookup';
+import { cachedJourney, useJourneyTexts } from '../../../../lib/journeys/texts';
 import { journeyStatus, nextStep, nextStepLine } from '../../../../lib/journeys/progress';
 import { useCadence, useJourneyProgress } from '../../../../lib/journeys/store';
 import { myPath, pathName } from '../../../../lib/library/traditions';
@@ -22,18 +24,20 @@ export default function JourneysHome() {
   const going = useMemo(() => {
     const seen = new Set<string>();
     return entries.filter((e) => {
-      if (seen.has(e.data.journeyId) || journeyStatus(e.data) === 'stopped' || !journeyById(e.data.journeyId)) return false;
+      if (seen.has(e.data.journeyId) || journeyStatus(e.data) === 'stopped' || !JOURNEY_CATALOG.some((j) => j.id === e.data.journeyId)) return false;
       seen.add(e.data.journeyId);
       return true;
     });
   }, [entries]);
 
-  const found = useMemo(() => (query.trim() ? searchJourneys(query) : JOURNEYS), [query]);
-  const paths = pathsMineFirst(mine, found);
-  const groups = deityGroups(mine, found);
+  // The journeys under way load their full text (from the phone, or the website once) for their next step.
+  useJourneyTexts(going.map((e) => e.data.journeyId));
+  const found = useMemo(() => (query.trim() ? searchJourneysIn(JOURNEY_CATALOG, query) : JOURNEY_CATALOG), [query]);
+  const paths = pathsMineFirstIn(found, mine);
+  const groups = deityGroupsIn(found, mine);
   const startedIds = new Set(going.map((e) => e.data.journeyId));
 
-  const row = (j: Journey, i: number, all: Journey[]) => (
+  const row = (j: JourneyLike, i: number, all: JourneyLike[]) => (
     <Row
       key={j.id}
       icon={j.kind === 'path' ? 'wheel' : 'altar'}
@@ -58,13 +62,14 @@ export default function JourneysHome() {
           <SectionLabel>Your journeys</SectionLabel>
           <List>
             {going.map((e, i) => {
-              const j = journeyById(e.data.journeyId)!;
+              const j = JOURNEY_CATALOG.find((c) => c.id === e.data.journeyId)!;
+              const full = cachedJourney(j.id);
               return (
                 <Row
                   key={e.id}
                   icon="calendar"
                   title={j.title}
-                  detail={nextStepLine(nextStep(j, e.data, now, cadence))}
+                  detail={full ? nextStepLine(nextStep(full, e.data, now, cadence)) : 'Under way'}
                   last={i === going.length - 1}
                   onPress={() => router.push(journeyHref(j.id))}
                 />

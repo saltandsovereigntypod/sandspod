@@ -154,6 +154,18 @@
   <li>Progressive Web App support</li>
 </ul>
 
+<h2>Screen checks</h2>
+
+<p>
+  <code>npm run check:screens</code> serves the website and the app's web build
+  at phone width (390px), visits the key pages and fails on page errors,
+  sideways scroll, cut-off text and broken internal links. It needs Playwright
+  with Chromium, takes a minute or two, and is not part of <code>npm test</code>.
+  Add <code>-- --site</code> or <code>-- --app</code> to check one side, or
+  <code>-- --app-dist=DIR</code> to reuse an app web export; screenshots go to
+  <code>SCREENS_OUT</code> (the system temp folder by default).
+</p>
+
 <h2>License</h2>
 
 <p>Copyright &copy; 2026 Salt &amp; Sovereignty LLC.</p>
