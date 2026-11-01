@@ -905,7 +905,7 @@ export const COSMIC: Premade[] = [
       'Make your act of generosity today. Keep the bundle until the next Thursday of a waxing moon, then return the herbs to the earth and refresh it.',
     safety: CANDLE_SAFETY,
     lore:
-      'Thursday is Jupiter\'s day in Latin (Iovis dies, jeudi) and Thor\'s in English. Jupiter was the "greater fortune" in Hellenistic and medieval astrology. Agrippa gives him tin, sweet tastes, the sapphire and "airy" colours, and the oak among his lucky trees; clove and sage as Jupiter herbs come from later tables, and lapis lazuli for Jupiter is a modern attribution. Giving to receive is a modern framing of an old idea of reciprocity.',
+      'Thursday is Jupiter\'s day in Latin (Iovis dies, jeudi) and Thor\'s in English. Jupiter was the "greater fortune" in ancient (Hellenistic-era, Greek-speaking) and medieval astrology. Agrippa gives him tin, sweet tastes, the sapphire and "airy" colours, and the oak among his lucky trees; clove and sage as Jupiter herbs come from later tables, and lapis lazuli for Jupiter is a modern attribution. Giving to receive is a modern framing of an old idea of reciprocity.',
     sources: [
       'Agrippa, Three Books of Occult Philosophy (1533; English 1651), Book I, on Jovial things',
       'Ptolemy, Tetrabiblos (on the benefic planets)',
@@ -1047,7 +1047,7 @@ export const COSMIC: Premade[] = [
       CANDLE_SAFETY +
       ' Keep the cypress or juniper away from the flame; it is not burned here, and juniper berries are not to be eaten (avoid them entirely in pregnancy). Keep salt lines away from where pets lick and from plants. Jet is soft and can burn; never place it in the flame.',
     lore:
-      'Saturday is Saturn\'s day in English (and Saturni dies in Latin). Saturn was the slowest and outermost visible planet, ruler of limits, time and old age in Hellenistic astrology. Agrippa gives him black, lead, the cypress and bitter, dark resins such as myrrh. Laying salt or stones across a threshold is widespread European folk protection; black salt is a modern witchcraft preparation.',
+      'Saturday is Saturn\'s day in English (and Saturni dies in Latin). Saturn was the slowest and outermost visible planet, ruler of limits, time and old age in ancient astrology. Agrippa gives him black, lead, the cypress and bitter, dark resins such as myrrh. Laying salt or stones across a threshold is widespread European folk protection; black salt is a modern witchcraft preparation.',
     sources: [
       'Agrippa, Three Books of Occult Philosophy (1533; English 1651), Book I, on Saturnine things',
       'Vettius Valens, Anthology (on Saturn)',
@@ -1116,7 +1116,7 @@ export const COSMIC: Premade[] = [
       'Carry the hematite through the retrograde. When you feel rushed, hold it and read your message once more before you send it. When Mercury goes direct, give thanks and return the lavender to the earth.',
     safety: CANDLE_SAFETY,
     lore:
-      'Mercury\'s apparent backward motion, caused by Earth overtaking it in orbit, was observed by Babylonian and Greek astronomers and explained with epicycles by Ptolemy. Hellenistic astrologers judged retrograde planets weakened. The popular idea of Mercury retrograde as a season of tech failures and miscommunication is largely a later twentieth-century development that spread widely online after 2000.',
+      'Mercury\'s apparent backward motion, caused by Earth overtaking it in orbit, was observed by Babylonian and Greek astronomers and explained with epicycles by Ptolemy. Ancient and medieval astrologers judged retrograde planets weakened. The popular idea of Mercury retrograde as a season of tech failures and miscommunication is largely a later twentieth-century development that spread widely online after 2000.',
     sources: [
       'Ptolemy, Almagest (on planetary retrogradation)',
       'History-of-astrology scholarship on retrogradation',

@@ -1725,7 +1725,7 @@ export const KITCHEN: Premade[] = [
     safety:
       'Never leave the candle unattended. Mind any allergies in your treat (gluten, dairy, eggs, nuts).',
     lore:
-      'Birthday celebrations with cake and candles have roots in Greek offerings of round cakes with candles to Artemis and in German Kinderfeste of the late 1700s. The solar return chart, cast for the sun’s return to its natal degree, is a technique of Hellenistic and medieval Arabic astrology. Treating the birthday as a personal new year with reflection and letter-writing is a modern practice.',
+      'Birthday celebrations with cake and candles have roots in Greek offerings of round cakes with candles to Artemis and in German Kinderfeste of the late 1700s. The solar return chart, cast for the sun’s return to its natal degree, is a technique of late ancient Greek-speaking and medieval Arabic astrology. Treating the birthday as a personal new year with reflection and letter-writing is a modern practice.',
     sources: [
       'Abu Ma’shar, On the Revolutions of the Years of Nativities (9th century)',
       'Philochorus, fragment on cakes offered to Artemis (via Athenaeus)',

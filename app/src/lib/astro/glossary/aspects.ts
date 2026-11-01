@@ -12,7 +12,7 @@ export const ASPECT_TERMS: GlossaryEntry[] = [
     detailed: {
       sky: 'Measured along the ecliptic, the angle between two longitudes. The major aspects divide the circle by 1, 2, 3, 4 and 6; minor ones by 5, 8 and 12. Allowed slack either side is the orb.',
       history: 'Ptolemy (Tetrabiblos, second century) explained the majors through musical ratios and through which signs "see" each other: signs of the same element trine, of the same modality square or oppose. Kepler added the quintile and others in the 1600s.',
-      traditions: 'Hellenistic astrologers often counted aspects by whole sign (any planet in Aries sees any in Leo by trine). Later astrologers measured by degree with orbs. Modern astrology reads "hard" aspects (square, opposition) as tension that drives growth and "soft" ones (trine, sextile) as ease that can be taken for granted.',
+      traditions: 'Hellenistic astrologers (the Greek-speaking astrologers of the ancient Mediterranean, where Western astrology began) often counted aspects by whole sign (any planet in Aries sees any in Leo by trine). Later astrologers measured by degree with orbs. Modern astrology reads "hard" aspects (square, opposition) as tension that drives growth and "soft" ones (trine, sextile) as ease that can be taken for granted.',
       craft: 'Aspects in the current sky are used for timing: a Moon trine Venus is a sweet moment for love work; Mars square Saturn a poor one for starting fights. Aspects in your own chart show which planetary allies work well together for you.',
       care: 'No aspect is simply good or bad. Many of the most capable people have charts full of squares.',
     },

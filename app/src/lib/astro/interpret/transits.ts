@@ -198,7 +198,7 @@ export const RETURN_GUIDES: Record<'solar' | 'lunar', Interpretation> = {
     detailed:
       'Cast for the moment of return (and, many say, for where you are that day rather than where you were born), the solar return is a snapshot of the year from one birthday to the next. Read it in steps:\n\n1. The house the Sun falls in: the year\'s main stage.\n2. The rising sign and its ruler: the year\'s tone and how you meet it.\n3. Planets on the angles (close to the Ascendant, Midheaven, Descendant or IC): the year\'s loudest themes.\n4. The Moon\'s sign and house: where feelings and needs gather.\n5. How the return chart lies on your natal chart: return angles on natal planets are strong.\n\nRead it alongside the year\'s transits; the return sets the scene, the transits time the events. Treat it as a weather map, not a script.',
     magic: 'Your solar return is your personal new year: light a candle at the exact moment, write intentions for the year, bless yourself with sun-charged water, and keep the chart in your Grimoire to look back on.',
-    sources: 'Solar returns go back to Hellenistic and Persian astrologers (Masha\'allah and Abu Ma\'shar wrote on the "revolutions of the years of nativities").',
+    sources: 'Solar returns go back to the ancient Greek-speaking and Persian astrologers (Masha\'allah and Abu Ma\'shar wrote on the "revolutions of the years of nativities").',
   },
   lunar: {
     simple: 'A lunar return is the chart for each time the Moon comes back to its birth degree, about every 27 days. It is read for the month ahead.',

@@ -207,7 +207,11 @@ export function ExplainCard({
       {reading && (
         <View style={styles.magic}>
           <Text style={styles.detailHead}>In the craft</Text>
-          <TermText text={reading.magic} style={type.body} skip={terms} />
+          {level === 'detailed' && reading.magicDetailed ? (
+            <Paragraphs text={reading.magicDetailed} skip={terms} />
+          ) : (
+            <TermText text={reading.magic} style={type.body} skip={terms} />
+          )}
           {!!reading.links?.length && <TermLinks links={reading.links} />}
         </View>
       )}

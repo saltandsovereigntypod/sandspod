@@ -41,7 +41,7 @@ There are twelve chapters. Each has a few short lessons and a quiz at the end. E
     {
       id: 'astro-basics-history',
       title: 'An honest history',
-      summary: 'From Babylonian omens to Hellenistic horoscopes, medieval scholars, the scientific revolution and the modern revival.',
+      summary: 'From Babylonian omens to the first Greek horoscopes, medieval scholars, the scientific revolution and the modern revival.',
       minutes: 8,
       terms: ['tropical', 'precession', 'house-systems', 'lots'],
       links: [astro('learn')],
@@ -50,6 +50,8 @@ There are twelve chapters. Each has a few short lessons and a quiz at the end. E
 The oldest astrology we know is Babylonian. From around 1800 BCE scribes recorded omens: if Venus appears in such a month, the harvest will be good. The tablets called *Enūma Anu Enlil* collect thousands of them. This was astrology for kings and kingdoms, not individuals. By the fifth century BCE Babylonian astronomers had divided the Sun's path into twelve equal signs, and the first birth charts for private people appear soon after.
 
 ## The Hellenistic horoscope
+
+Historians call the centuries after Alexander the Great the *Hellenistic* period, when Greek was the common language of the eastern Mediterranean. So "Hellenistic astrology" names a time and a body of texts: the Greek-speaking astrologers of the late ancient world, where Western astrology began. It is not the same as Hellenic religion (the Greek gods, then or now), though the two words look alike.
 
 After Alexander's conquests, Babylonian astronomy met Greek philosophy and Egyptian temple lore, mostly in Alexandria. Between about the second century BCE and the second century CE, the system most astrology still uses took shape: the twelve signs, the seven planets as rulers, the houses counted from the rising sign (the *hōroskopos*, "hour-marker", which gives us the word horoscope), aspects, and lots such as the Part of Fortune. Writers such as Dorotheus, Ptolemy (*Tetrabiblos*) and Vettius Valens left manuals that are still read.
 
@@ -104,7 +106,7 @@ Every reading in the app has two depths. Simple is for a glance. Detailed adds t
     passPercent: 80,
     questions: [
       { id: 'q1', type: 'single', prompt: 'What is a birth chart?', options: ['A forecast of your life', 'A map of the sky at the moment and place you were born', 'A list of your personality traits', 'A calendar of lucky days'], correct: [1], points: 1, explanation: 'A birth (natal) chart is a map of where the Sun, Moon and planets were, by sign and house, at your birth.' },
-      { id: 'q2', type: 'single', prompt: 'Where does the word "horoscope" come from?', options: ['The Greek hōroskopos, "hour-marker", the rising sign', 'The Latin horror, "fear"', 'An Egyptian god', 'A medieval calendar'], correct: [0], points: 1, explanation: 'Hellenistic astrologers called the rising degree the hōroskopos, the marker of the hour.' },
+      { id: 'q2', type: 'single', prompt: 'Where does the word "horoscope" come from?', options: ['The Greek hōroskopos, "hour-marker", the rising sign', 'The Latin horror, "fear"', 'An Egyptian god', 'A medieval calendar'], correct: [0], points: 1, explanation: 'The Hellenistic astrologers (the Greek-speaking astrologers of the ancient world) called the rising degree the hōroskopos, the marker of the hour.' },
       { id: 'q3', type: 'truefalse', prompt: 'In this course, a reading tells you what will definitely happen.', options: ['True', 'False'], correct: [1], points: 1, explanation: 'Readings are traditional meanings for reflection, never destiny.' },
       { id: 'q4', type: 'single', prompt: 'Who first divided the Sun\'s path into twelve equal signs?', options: ['Medieval European monks', 'Babylonian astronomers', 'Victorian Theosophists', 'Isaac Newton'], correct: [1], points: 1, explanation: 'By around the fifth century BCE Babylonian astronomers used twelve equal signs of 30°.' },
       { id: 'q5', type: 'multi', prompt: 'Which are good uses of astrology as this course teaches it? Choose all that fit.', options: ['A mirror for self-reflection', 'Choosing times for magic', 'Deciding someone is a bad person because of their sign', 'A shared language of myth and meaning'], correct: [0, 1, 3], points: 1, explanation: 'Astrology works as a mirror, a calendar and a story. Judging people by their sign is not a use the tradition supports.' },
@@ -157,7 +159,7 @@ Each sign has 30 degrees (0° to 29°), each degree 60 minutes. "Venus at 14° S
 
 The Earth's axis wobbles slowly, like a spinning top, once every 25,800 years or so. Because of this **precession**, the point of the spring equinox drifts backwards against the stars about one degree every 72 years.
 
-When the Hellenistic astrologers fixed the zodiac, the signs and the constellations of the same names roughly lined up. Today they are about 24° apart: the Sun is "in Aries" by season while it stands in front of the stars of Pisces.
+When the ancient Greek-speaking astrologers fixed the zodiac, the signs and the constellations of the same names roughly lined up. Today they are about 24° apart: the Sun is "in Aries" by season while it stands in front of the stars of Pisces.
 
 ## Two answers
 
@@ -313,7 +315,7 @@ Not everything in a chart is a planet.
 - The **lunar nodes** are where the Moon's path crosses the ecliptic. Eclipses happen near them. The **North Node** is read as the direction of growth in this life; the **South Node**, always exactly opposite, as what comes easily and what to grow beyond. They move backwards through the zodiac in about 18.6 years.
 - **Chiron** is a small body orbiting between Saturn and Uranus, discovered in 1977 and named for the wounded healer of Greek myth. It shows where you were hurt and how that becomes wisdom.
 - **Lilith** (Black Moon Lilith) is the far point of the Moon's orbit: the wild, refused or exiled self.
-- The **Part of Fortune** is the oldest of the Hellenistic lots, calculated from the Sun, Moon and Ascendant: the body, wellbeing and luck.
+- The **Part of Fortune** is the oldest of the lots used by the ancient astrologers, calculated from the Sun, Moon and Ascendant: the body, wellbeing and luck.
 
 ## Retrograde
 
