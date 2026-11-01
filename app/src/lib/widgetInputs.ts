@@ -36,8 +36,8 @@ export function useWidgetMore(): (now: Date) => WidgetMore {
     (now: Date): WidgetMore => {
       let tend: WidgetMore['tend'] = null;
       try {
-        // Only the altars and covens: the widgets show offerings, plants, candles and meeting actions.
-        tend = { items: gatherTendables({ now, altars: { altars, petitions }, covens: userId ? part : null }), records };
+        // The altars, covens and your own things: the widgets show offerings, plants, candles, what you've added yourself and meeting actions.
+        tend = { items: gatherTendables({ now, altars: { altars, petitions }, covens: userId ? part : null, records }), records };
       } catch {
         // Without the list, Coming Up shows the rest.
       }

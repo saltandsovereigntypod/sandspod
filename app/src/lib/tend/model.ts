@@ -11,7 +11,10 @@
 // What the list adds is kept in the craft collection `tend.rhythms` (one
 // entry per thing tended, synced like the practice tools, no new table): how
 // often you mean to tend it (a rhythm), whether to be reminded, the words
-// you've added, and how it ended. Pure, so it can be tested; the website
+// you've added, and how it ended. Things of your own (cleansing the house,
+// refreshing wards, salt lines, a spiritual bath) live there too, as records
+// of kind `own` with what they are and a history of when each was done.
+// Pure, so it can be tested; the website
 // reaches it through js/core/tend.js.
 
 import { deipnonDays } from '../deipnon.ts';
@@ -33,7 +36,8 @@ export type TendKind =
   | 'lookback'
   | 'coven-task'
   | 'checkin'
-  | 'action';
+  | 'action'
+  | 'own';
 
 /** What can be done from the list, each by its own source's tending. */
 export type TendAction =
@@ -63,7 +67,7 @@ export const END_WORDS: Record<TendEnd, { label: string; done: string }> = {
   'let-go': { label: 'Let it go', done: 'Let go. It won’t ask to be tended again.' },
 };
 
-export type TendGroup = 'altar' | 'coven' | 'journey' | 'rituals';
+export type TendGroup = 'altar' | 'coven' | 'journey' | 'rituals' | 'own';
 
 export type Tendable = {
   /** Stable across visits and devices: "<kind>:<id>". */
@@ -104,6 +108,7 @@ export const KIND_LABEL: Record<TendKind, { label: string; plural: string; one: 
   'coven-task': { label: 'Before the rite', plural: 'Before the rite', one: 'task before a rite', many: 'tasks before a rite' },
   checkin: { label: 'Mentor check-in', plural: 'Mentor check-ins', one: 'mentor check-in', many: 'mentor check-ins' },
   action: { label: 'From a meeting', plural: 'From meetings', one: 'action from a meeting', many: 'actions from meetings' },
+  own: { label: 'Your own', plural: 'Your own', one: 'thing of your own', many: 'things of your own' },
 };
 
 // ─── Rhythms ─────────────────────────────────────────────────────────────
@@ -113,19 +118,29 @@ export const KIND_LABEL: Record<TendKind, { label: string; plural: string; one: 
  * an offering going over, a journey's practice), every day, every week, at a
  * moon (new, full, or the dark moon the night before the new), or every day
  * until a day (the next Deipnon, the full moon, a date of your own), when
- * it's time to end it.
+ * it's time to end it, or every so many days (1 to 365), counted from the
+ * last time.
  */
-export type RhythmKind = 'asks' | 'daily' | 'weekly' | 'moon' | 'until';
+export type RhythmKind = 'asks' | 'daily' | 'weekly' | 'every' | 'moon' | 'until';
 export type MoonMark = 'new' | 'full' | 'dark';
-export type Rhythm = { kind: RhythmKind; moon?: MoonMark; until?: string; untilWhy?: string };
+export type Rhythm = { kind: RhythmKind; moon?: MoonMark; until?: string; untilWhy?: string; every?: number };
 
 export const RHYTHMS: { value: RhythmKind; label: string }[] = [
   { value: 'asks', label: 'As it asks' },
   { value: 'daily', label: 'Every day' },
   { value: 'weekly', label: 'Every week' },
+  { value: 'every', label: 'Every few days' },
   { value: 'moon', label: 'By the moon' },
   { value: 'until', label: 'Until a day' },
 ];
+
+/** "Every X days": a whole number of days, 1 to 365 (a week until you choose). */
+export const EVERY_MAX = 365;
+export const cleanEvery = (n: unknown) => {
+  const v = Math.round(Number(n));
+  return Number.isFinite(v) && v >= 1 ? Math.min(EVERY_MAX, v) : 7;
+};
+export const everyLabel = (n: number) => (n === 1 ? 'Every day' : `Every ${n} days`);
 
 export const MOON_MARKS: { value: MoonMark; label: string }[] = [
   { value: 'new', label: 'New moon' },
@@ -136,12 +151,12 @@ export const MOON_MARKS: { value: MoonMark; label: string }[] = [
 /** The rhythm each kind keeps until you choose another. */
 export function defaultRhythm(kind: TendKind): Rhythm {
   if (kind === 'petition' || kind === 'coven-petition') return { kind: 'daily' };
-  if (kind === 'contribution') return { kind: 'weekly' };
+  if (kind === 'contribution' || kind === 'own') return { kind: 'weekly' };
   return { kind: 'asks' };
 }
 
 /** Whether a kind has a day of its own to fall back on ("as it asks"). */
-export const asksOfItself = (kind: TendKind) => !['petition', 'coven-petition', 'contribution'].includes(kind);
+export const asksOfItself = (kind: TendKind) => !['petition', 'coven-petition', 'contribution', 'own'].includes(kind);
 
 /** The hour (minutes after midnight) a reminder rings for each kind until you choose: candles and petitions in the evening, the rest in the morning. */
 export function defaultReminderAt(kind: TendKind): number {
@@ -169,7 +184,115 @@ export type TendRecord = {
   words: { at: string; text: string }[];
   /** How it ended, once it did. */
   ended: { how: TendEnd; at: string; note: string; pageId?: string } | null;
+  /** A thing of your own: what it is (kind `own` only). */
+  own?: OwnDetails;
+  /** When it was done, and how, oldest first (the last DONE_MAX). */
+  done?: Completion[];
 };
+
+// ─── Things of your own ──────────────────────────────────────────────────
+
+/** Day-to-day craft you add yourself, each with ways it's commonly done today (modern practice; "Other" for your own). */
+export type OwnType = 'cleansing' | 'warding' | 'salt' | 'bath' | 'cloths' | 'water' | 'other';
+
+export const OWN_TYPES: { value: OwnType; label: string; hows: string[] }[] = [
+  { value: 'cleansing', label: 'Cleansing', hows: ['Incense / smoke', 'Florida Water mop', 'Floor wash', 'Sound / bells', 'Salt', 'Sprays'] },
+  { value: 'warding', label: 'Warding / protection refresh', hows: ['Salt', 'Herbs at the door', 'Sigils', 'Witch bottle', 'Incense / smoke', 'Words or a charm'] },
+  { value: 'salt', label: 'Salt lines', hows: ['Thresholds', 'Windowsills', 'Around the bed', 'Swept and renewed'] },
+  { value: 'bath', label: 'Spiritual bath', hows: ['Herbs', 'Salt', 'Milk', 'By candlelight', 'A rinse in the shower'] },
+  { value: 'cloths', label: 'Wash altar cloths', hows: ['By hand', 'In the machine', 'Salt water', 'Smoke after', 'Dried in the sun or moon'] },
+  { value: 'water', label: 'Charge water', hows: ['Moonlight', 'Sunlight', 'Crystals', 'Words or a prayer', 'Sound / bells'] },
+  { value: 'other', label: 'Something else', hows: ['Incense / smoke', 'Salt', 'Sound / bells', 'Words or a prayer'] },
+];
+
+export type OwnDetails = {
+  type: OwnType;
+  /** The type in your own words, for "Something else". */
+  other: string;
+  notes: string;
+  /** Also note each time in your Grimoire. */
+  grimoire: boolean;
+};
+export type Completion = { at: string; how: string[]; note: string };
+
+export const DONE_MAX = 50;
+export const OWN_NAME_MAX = 120;
+
+/** "Cleansing", or what you called it. */
+export const ownTypeLabel = (own: Pick<OwnDetails, 'type' | 'other'>) => (own.type === 'other' ? own.other.trim() || 'Something else' : (OWN_TYPES.find((t) => t.value === own.type)?.label ?? 'Something else'));
+/** The usual ways for a type, to choose from when it's done. */
+export const ownHows = (type: OwnType) => OWN_TYPES.find((t) => t.value === type)?.hows ?? [];
+
+function cleanOwn(raw: unknown): OwnDetails {
+  const o = (raw && typeof raw === 'object' ? raw : {}) as Partial<OwnDetails>;
+  return { type: OWN_TYPES.some((t) => t.value === o.type) ? (o.type as OwnType) : 'other', other: String(o.other || '').slice(0, 80), notes: String(o.notes || '').slice(0, NOTE_MAX), grimoire: o.grimoire === true };
+}
+
+function cleanDone(raw: unknown): Completion[] {
+  if (!Array.isArray(raw)) return [];
+  return raw
+    .filter((c) => c && typeof c.at === 'string' && !Number.isNaN(Date.parse(c.at)))
+    .map((c) => ({
+      at: String(c.at),
+      how: Array.isArray(c.how) ? c.how.filter((h: unknown): h is string => typeof h === 'string' && !!h.trim()).map((h: string) => h.trim().slice(0, 80)).slice(0, 12) : [],
+      note: String(c.note || '').slice(0, WORD_MAX),
+    }))
+    .sort((a, b) => a.at.localeCompare(b.at))
+    .slice(-DONE_MAX);
+}
+
+export type OwnInput = { name: string; type: OwnType; other?: string; notes?: string; rhythm: Rhythm; grimoire?: boolean };
+
+/** A new thing of your own, keyed by an id of its own. */
+export function newOwnRecord(input: OwnInput, id: string): TendRecord {
+  return editOwn({ key: `own:${id}`, kind: 'own', title: '', source: 'Your own', href: '/today/tend', rhythm: null, remind: false, at: defaultReminderAt('own'), tendedAt: '', words: [], ended: null, done: [] }, input);
+}
+
+/** What it is and how often, changed. */
+export function editOwn(record: TendRecord, input: OwnInput): TendRecord {
+  const own = cleanOwn({ type: input.type, other: input.other ?? '', notes: input.notes ?? '', grimoire: input.grimoire === true });
+  return { ...record, title: input.name.trim().slice(0, OWN_NAME_MAX) || ownTypeLabel(own), rhythm: cleanRhythm(input.rhythm) ?? defaultRhythm('own'), own };
+}
+
+/** Done on `at` (today, or another day), and how: kept in its history (the last DONE_MAX), and the last time counts from the latest. */
+export function recordDone(record: TendRecord, at: Date, how: string[] = [], note = ''): TendRecord {
+  const done = cleanDone([...(record.done ?? []), { at: at.toISOString(), how, note: note.trim() }]);
+  const latest = done[done.length - 1]?.at ?? '';
+  const tendedAt = record.tendedAt && record.tendedAt > latest ? record.tendedAt : latest;
+  return { ...record, done, tendedAt, times: (record.times ?? 0) + 1 };
+}
+
+/** A time taken out of its history (marked by mistake): the last time goes back to the one before. */
+export function removeDone(record: TendRecord, at: string): TendRecord {
+  const done = (record.done ?? []).filter((c) => c.at !== at);
+  return { ...record, done, tendedAt: done[done.length - 1]?.at ?? '', times: Math.max(0, (record.times ?? 0) - 1) };
+}
+
+/** Your own things as list items (ended ones aside). */
+export function ownTendables(records: TendRecord[]): Tendable[] {
+  return records
+    .filter((r) => r.kind === 'own' && !r.ended)
+    .map((r) => {
+      const what = ownTypeLabel(r.own ?? cleanOwn({}));
+      return {
+        key: r.key,
+        kind: 'own' as const,
+        group: 'own' as const,
+        title: r.title || what,
+        detail: what,
+        source: 'Your own',
+        dueAt: null,
+        tendedAt: null,
+        actions: ['done' as const],
+        ends: [],
+        private: false,
+        keywords: [r.own?.notes ?? ''],
+        href: '/today/tend',
+        webHref: '/today/tend/',
+        ref: {},
+      };
+    });
+}
 
 export const WORDS_MAX = 60;
 export const WORD_MAX = 500;
@@ -193,6 +316,7 @@ export function cleanRhythm(raw: unknown): Rhythm | null {
   if (!raw || typeof raw !== 'object') return null;
   const r = raw as Partial<Rhythm>;
   if (!RHYTHMS.some((x) => x.value === r.kind)) return null;
+  if (r.kind === 'every') return { kind: 'every', every: cleanEvery(r.every) };
   if (r.kind === 'moon') return { kind: 'moon', moon: MOON_MARKS.some((m) => m.value === r.moon) ? r.moon : 'full' };
   if (r.kind === 'until') {
     if (!isDay(r.until)) return null;
@@ -226,6 +350,7 @@ export function normalizeRecord(raw: unknown): TendRecord | null {
     ...(Number.isInteger(r.times) && (r.times as number) > 0 ? { times: r.times } : {}),
     words: Array.isArray(r.words) ? r.words.filter((w) => w && typeof w.text === 'string' && typeof w.at === 'string').slice(-WORDS_MAX) : [],
     ended,
+    ...(kind === 'own' ? { own: cleanOwn(r.own), done: cleanDone(r.done) } : Array.isArray(r.done) ? { done: cleanDone(r.done) } : {}),
   };
 }
 
@@ -303,15 +428,43 @@ export function dayWords(at: number, now: Date): string {
   return shortDay(new Date(at));
 }
 
+const daysFrom = (at: number, now: Date) => Math.round((startOfDay(at).getTime() - startOfDay(now).getTime()) / DAY);
+
+/** "due today", "due tomorrow", "due in 5 days", "overdue by 2 days". */
+export function dueWords(at: number, now: Date): string {
+  const days = daysFrom(at, now);
+  if (days < 0) return `overdue by ${-days} ${days === -1 ? 'day' : 'days'}`;
+  if (days === 0) return 'due today';
+  if (days === 1) return 'due tomorrow';
+  return `due in ${days} days`;
+}
+
+/** "Last done 9 days ago", "Last done today", "Not done yet". */
+export function sinceWords(last: number, now: Date): string {
+  if (!last) return 'Not done yet';
+  const days = -daysFrom(last, now);
+  if (days <= 0) return 'Last done today';
+  if (days === 1) return 'Last done yesterday';
+  return `Last done ${days} days ago`;
+}
+
 /**
  * When something wants tending: by your rhythm (counted from when it was
- * last tended, here or at its source), or as it asks.
+ * last tended, here or at its source), or as it asks. Your own things say
+ * when they were last done as well: "Last done 9 days ago · due in 5 days".
  */
 export function dueOf(item: Pick<Tendable, 'kind' | 'dueAt' | 'tendedAt'>, record: TendRecord | null | undefined, now: Date): Due {
+  const last = Math.max(item.tendedAt ?? 0, record?.tendedAt ? Date.parse(record.tendedAt) || 0 : 0);
+  const due = rhythmDue(item, record, now, last);
+  if (item.kind !== 'own') return due;
+  const since = sinceWords(last, now);
+  return { ...due, line: due.state === 'ending' || due.at == null ? [since, due.line].filter(Boolean).join(' · ') : `${since} · ${dueWords(due.at, now)}` };
+}
+
+function rhythmDue(item: Pick<Tendable, 'kind' | 'dueAt' | 'tendedAt'>, record: TendRecord | null | undefined, now: Date, last: number): Due {
   const rhythm = rhythmOf(item, record);
   const today = startOfDay(now).getTime();
   const tomorrow = addDays(startOfDay(now), 1).getTime();
-  const last = Math.max(item.tendedAt ?? 0, record?.tendedAt ? Date.parse(record.tendedAt) || 0 : 0);
   const tendedToday = last >= today;
 
   if (rhythm.kind === 'asks') {
@@ -325,6 +478,11 @@ export function dueOf(item: Pick<Tendable, 'kind' | 'dueAt' | 'tendedAt'>, recor
   if (rhythm.kind === 'weekly') {
     const next = last ? addDays(startOfDay(last), 7).getTime() : today;
     return next <= today ? { state: 'due', at: next, line: 'Every week · due today' } : { state: 'later', at: next, line: `Every week · next ${dayWords(next, now)}` };
+  }
+  if (rhythm.kind === 'every') {
+    const n = cleanEvery(rhythm.every);
+    const next = last ? addDays(startOfDay(last), n).getTime() : today;
+    return next <= today ? { state: 'due', at: next, line: `${everyLabel(n)} · ${dueWords(next, now)}` } : { state: 'later', at: next, line: `${everyLabel(n)} · next ${dayWords(next, now)}` };
   }
   if (rhythm.kind === 'moon') {
     const mark = rhythm.moon ?? 'full';
@@ -343,6 +501,7 @@ export function dueOf(item: Pick<Tendable, 'kind' | 'dueAt' | 'tendedAt'>, recor
 }
 
 export function rhythmLabel(rhythm: Rhythm): string {
+  if (rhythm.kind === 'every') return everyLabel(cleanEvery(rhythm.every));
   if (rhythm.kind === 'moon') return `At each ${MOON_MARKS.find((m) => m.value === (rhythm.moon ?? 'full'))!.label.toLowerCase()}`;
   if (rhythm.kind === 'until') {
     const until = fromKey(rhythm.until ?? '');
@@ -396,6 +555,7 @@ export const GROUP_FILTERS: { value: 'all' | TendGroup; label: string }[] = [
   { value: 'coven', label: 'Covens' },
   { value: 'journey', label: 'Journeys' },
   { value: 'rituals', label: 'Rituals and spells' },
+  { value: 'own', label: 'My own' },
 ];
 
 /** Today's card: how many want tending today, by kind ("2 petitions, 1 plant"), and the first few. */
@@ -429,14 +589,18 @@ export function tendReminders(records: TendRecord[], now: Date, days = 14): Tend
     const rhythm = record.rhythm ?? defaultRhythm(record.kind);
     const at = (d: Date) => new Date(d.getFullYear(), d.getMonth(), d.getDate(), Math.floor(record.at / 60), record.at % 60);
     const title = record.title || KIND_LABEL[record.kind].label;
-    const body = record.source ? `${record.source}. Tend it from your list.` : 'Tend it from your list.';
+    const body = record.own ? `${ownTypeLabel(record.own)}. Mark it done on your To tend list.` : record.source ? `${record.source}. Tend it from your list.` : 'Tend it from your list.';
     const url = '/today/tend';
     const push = (d: Date, suffix = '') => out.push({ key: `tend:${record.key}:${dayKey(d)}`, at: at(d), title: suffix || title, body: suffix ? `${title}. ${body}` : body, url });
     let dates: Date[] = [];
     if (rhythm.kind === 'daily') dates = Array.from({ length: days }, (_, i) => addDays(startOfDay(now), i));
-    else if (rhythm.kind === 'weekly') {
+    else if (rhythm.kind === 'weekly' || rhythm.kind === 'every') {
+      const step = rhythm.kind === 'every' ? cleanEvery(rhythm.every) : 7;
       const last = record.tendedAt ? startOfDay(Date.parse(record.tendedAt)) : startOfDay(now);
-      for (let d = addDays(last, record.tendedAt ? 7 : 0); d.getTime() < addDays(now, days).getTime(); d = addDays(d, 7)) dates.push(d);
+      let first = addDays(last, record.tendedAt ? step : 0);
+      // Your own thing, overdue: it asks today (tomorrow, once today's hour has gone), then by its rhythm.
+      if (record.kind === 'own' && first.getTime() < startOfDay(now).getTime()) first = at(startOfDay(now)).getTime() > now.getTime() ? startOfDay(now) : addDays(startOfDay(now), 1);
+      for (let d = first; d.getTime() < addDays(now, days).getTime(); d = addDays(d, step)) dates.push(d);
     } else if (rhythm.kind === 'moon') dates = moonDays(rhythm.moon ?? 'full', now, days);
     else if (rhythm.kind === 'until') {
       const until = fromKey(rhythm.until ?? '');
@@ -467,4 +631,17 @@ export function endingPage(item: Pick<Tendable, 'key' | 'title' | 'source' | 'ki
   const words = record?.words ?? [];
   if (words.length) blocks.push({ type: 'heading', content: 'Words along the way' }, { type: 'bulleted_list', content: words.map((w) => esc(`${new Date(w.at).toLocaleDateString(undefined, { day: 'numeric', month: 'short' })}: ${w.text.replace(/\n+/g, ' ')}`)).join('\n') });
   return { ref: `tend:${item.key}`, title: item.title.slice(0, 120) || 'How it went', sectionTitle: ENDINGS_SECTION, blocks };
+}
+
+/** Your own things, noted in your Grimoire each time they're done if you asked (written as endings are, grimoire/holyOps.ts), under "Tending". */
+export const TENDING_SECTION = 'Tending';
+
+export function donePage(record: Pick<TendRecord, 'key' | 'title' | 'own'>, done: Completion): { ref: string; title: string; sectionTitle: string; blocks: { type: string; content: string }[] } {
+  const at = new Date(done.at);
+  const when = at.toLocaleDateString(undefined, { day: 'numeric', month: 'long', year: 'numeric' });
+  const what = record.own ? ownTypeLabel(record.own) : 'Tending';
+  const blocks: { type: string; content: string }[] = [{ type: 'callout', content: esc(`${what}, done on ${when}.`) }];
+  if (done.how.length) blocks.push({ type: 'text', content: esc(`How: ${done.how.join(', ')}.`) });
+  if (done.note.trim()) blocks.push({ type: 'text', content: esc(done.note.trim()) });
+  return { ref: `tend:${record.key}:${done.at}`, title: `${record.title.slice(0, 100) || what} · ${at.toLocaleDateString(undefined, { day: 'numeric', month: 'short' })}`, sectionTitle: TENDING_SECTION, blocks };
 }

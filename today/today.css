@@ -180,6 +180,11 @@ a.td-tag:hover { background: rgba(226, 195, 109, 0.16); }
 .tn-form { display: grid; gap: 10px; }
 .tn-check { display: flex; gap: 8px; align-items: baseline; flex-wrap: wrap; }
 .tn-radio input { margin: 0 4px 0 0; }
+.tn-every { display: flex; gap: 10px; align-items: flex-end; flex-wrap: wrap; }
+.tn-every .sp-field { flex: 1 1 12rem; margin: 0; }
+.tn-history summary { cursor: pointer; color: var(--gold, #e2c36d); }
+.tn-history__list { list-style: none; margin: 8px 0 0; padding: 0; display: grid; gap: 8px; }
+.tn-history__list li { display: grid; gap: 2px; justify-items: start; border-top: 1px solid rgba(226, 195, 109, 0.2); padding-top: 8px; }
 .td-tend-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; }
 .td-tend-list a { display: flex; gap: 12px; align-items: flex-start; padding: 8px 4px; color: inherit; text-decoration: none; border-radius: 12px; }
 .td-tend-list a:hover, .td-tend-list a:focus-visible { background: rgba(226, 195, 109, 0.08); }

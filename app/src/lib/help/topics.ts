@@ -607,6 +607,23 @@ export const HELP: HelpSection[] = [
         keywords: ['water reminder', 'plant reminder', 'offering reminder', 'crystal cleanse reminder', 'candle reminder', 'altar reminder', 'tending'],
       },
       {
+        id: 'tend-your-own',
+        title: 'Keep your own day-to-day tending on To tend',
+        summary: 'Cleansing the house, warding, salt lines, a spiritual bath: when you last did it and when it’s next due.',
+        steps: [
+          'Open Today → To tend, and tap "Add your own".',
+          'Name it ("Cleanse the house"), choose what kind it is (Cleansing, Warding / protection refresh, Salt lines, Spiritual bath, Wash altar cloths, Charge water, or Something else in your own words) and add notes if you like.',
+          'Under "How often", choose Every day, Every week, Every few days (then how many, 1 to 365), By the moon or Until a day. "Every few days" works for anything else on the list too.',
+          'When you’ve done it, open it, tick how (for a cleansing: Incense / smoke, Florida Water mop, Floor wash, Sound / bells, Salt, Sprays, or Other in your words), add a note and tap "Done today". Turn on "Done on another day" to mark a day that’s past.',
+          'It then shows when it was last done and when it’s next due: "Last done 9 days ago · due in 5 days", "due today" or "overdue by 2 days". "Its history" keeps the last 50 times; "Take this one out" removes one marked by mistake.',
+          'Turn on "Remind me" for a reminder on the day it’s due, with your other reminders, quiet hours and any pause. Due things also show on Today’s To tend card and in the widgets.',
+          'Turn on "Also note it in my Grimoire" (off until you choose it) and each time you mark it done, a short page is added under Tending in your Grimoire. "Change or remove it" edits it or takes it off your list.',
+          'Without an account, your own things are kept on this device; signed in, they follow you to the website and your other phones.',
+        ],
+        href: '/today/tend',
+        keywords: ['own tending', 'cleanse the house', 'cleansing', 'warding', 'protection', 'salt lines', 'spiritual bath', 'altar cloths', 'charge water', 'every few days', 'last done', 'chores', 'routine', 'to tend'],
+      },
+      {
         id: 'planning-reminders',
         title: 'Be reminded to plan a ritual',
         summary: 'Before your holidays, and before your coven’s, earlier if you lead it.',

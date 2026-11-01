@@ -107,11 +107,11 @@ export type WidgetComing = {
 };
 
 const COMING_LENGTH = 8;
-const ALTAR_TEND: TendKind[] = ['offering', 'plant', 'candle'];
+const ALTAR_TEND: TendKind[] = ['offering', 'plant', 'candle', 'own'];
 
 /**
  * What wants tending on `day` from your altars (offerings going over, pots
- * wanting water, candles burning) and the meeting actions agreed to you that
+ * wanting water, candles burning), your own things due, and the meeting actions agreed to you that
  * are due within three days (or a week overdue), by the list's own rules.
  */
 export function tendOn(tend: WidgetMore['tend'], day: Date, now: Date = day): { altar: ListItem[]; actions: ListItem[] } {

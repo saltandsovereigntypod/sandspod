@@ -15,7 +15,8 @@
  *  - your journeys (craft `journeys.progress`) and "Did it work?" days
  *    (user_rituals.metadata.lookBack, apothecary_items.metadata.lookBack);
  *  - the list's own rhythms, reminders, words and endings: craft
- *    `tend.rhythms`, with "how did it go?" kept as a Grimoire page.
+ *    `tend.rhythms`, with "how did it go?" kept as a Grimoire page. Things
+ *    of your own (cleansing, salt lines, a spiritual bath) live there too.
  *
  * Needs: js/supabase-config.js (window.db), js/auth.js, js/my-settings.js,
  * js/salt-store.js. Loads js/core/tend.js, js/core/journeys.js (and each
@@ -213,7 +214,7 @@
       if (record && !entries.some((x) => x.record.key === record.key)) entries.push({ id: e.id, record });
     }
     const records = entries.map((e) => e.record);
-    const items = C.gather.gatherTendables({ now, altars: { altars, petitions }, covens, journeys, journal, apothecary });
+    const items = C.gather.gatherTendables({ now, altars: { altars, petitions }, covens, journeys, journal, apothecary, records });
     return { now, account, settings, altars, petitions, entries, records, journal, apothecary, covens, journeys, items, list: C.model.tendList(items, records, now) };
   }
 
@@ -410,5 +411,48 @@
     return change.remind ? "Saved. Its reminder rings on your phone, and joins the calendar file on Reminders." : "Saved.";
   }
 
-  global.TendData = { load, ensureCore, tend, end, write, checkin, done, practice, answer, setRhythm };
+  // ── Your own things (records of kind `own` in tend.rhythms), as the app's tend store ──
+
+  async function putRecord(state, record) {
+    const C = core();
+    const existing = state.entries.find((e) => e.record.key === record.key);
+    if (existing) await global.SaltCraft.update(C.model.TEND_COLLECTION, existing.id, record);
+    else await global.SaltCraft.add(C.model.TEND_COLLECTION, record);
+  }
+
+  async function saveOwn(state, input, item) {
+    const C = core();
+    const current = item ? state.entries.find((e) => e.record.key === item.key)?.record : null;
+    await putRecord(state, current ? C.model.editOwn(current, input) : C.model.newOwnRecord(input, C.newId()));
+    return current ? "Saved." : `${String(input.name || "").trim() || "It"} is on your list.`;
+  }
+
+  async function removeOwn(state, item) {
+    const C = core();
+    const entry = state.entries.find((e) => e.record.key === item.key);
+    if (entry) await global.SaltCraft.remove(C.model.TEND_COLLECTION, entry.id);
+    return "Taken off your list.";
+  }
+
+  async function markDone(state, item, at, how, note) {
+    const C = core();
+    const current = state.entries.find((e) => e.record.key === item.key)?.record;
+    if (!current) throw new Error("That isn’t on your list any more.");
+    const next = C.model.recordDone(current, at, how, note);
+    await putRecord(state, next);
+    const done = (next.done || []).find((c) => c.at === at.toISOString());
+    let noted = false;
+    if (done && current.own?.grimoire && state.account) noted = !!(await keepInGrimoire(state, C.model.donePage(next, done)).catch(() => undefined));
+    return `Done, and kept in its history.${noted ? " Noted in your Grimoire." : ""}`;
+  }
+
+  async function undoDone(state, item, at) {
+    const C = core();
+    const current = state.entries.find((e) => e.record.key === item.key)?.record;
+    if (!current) throw new Error("That isn’t on your list any more.");
+    await putRecord(state, C.model.removeDone(current, at));
+    return "Taken out of its history.";
+  }
+
+  global.TendData = { load, ensureCore, tend, end, write, checkin, done, practice, answer, setRhythm, saveOwn, removeOwn, markDone, undoDone };
 })(window);
