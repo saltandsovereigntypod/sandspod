@@ -75,6 +75,71 @@ if (typeof saveRitualTemplateFromEditor === "function") {
   };
 }
 
+/* =========================================================
+   SET A RITUAL FOR A CHOSEN TIME
+   Find a good time (practice/cosmic/timing.js) links here with
+   ?setDate=&setTime=… (rituals/js/set-ritual.js). The editor opens
+   on a new template with a "Set for" note; saving it keeps the
+   template, plans it for that time and opens the plan.
+   ========================================================= */
+
+let ritualTemplateSetFor = null;
+
+if (typeof saveRitualTemplateFromEditor === "function" && window.SaltSetRitual) {
+  const saveBeforeSetting = saveRitualTemplateFromEditor;
+
+  saveRitualTemplateFromEditor = async function saveRitualTemplateAndSetIt(form) {
+    const set = ritualTemplateSetFor;
+    const isNew = !String(new FormData(form).get("template_id") || "");
+    await saveBeforeSetting(form);
+    if (!set || !isNew) return;
+
+    const saved = ritualTemplateEditorState.templates.find((item) => item.id === ritualTemplateEditorState.activeTemplateId);
+    if (!saved) return;
+    const SR = window.SaltSetRitual;
+    const plan = SR.keep(SR.plan({ id: SR.newId(), set, title: saved.title, templateId: saved.id }));
+    ritualTemplateSetFor = null;
+    window.location.href = SR.planHref(plan);
+  };
+}
+
+// Closing the editor leaves the chosen time behind.
+document.addEventListener(
+  "click",
+  (event) => {
+    if (event.target.closest("[data-close-ritual-template-editor]") || (ritualTemplateEditorOverlay && event.target === ritualTemplateEditorOverlay)) ritualTemplateSetFor = null;
+  },
+  true
+);
+
+function showRitualTemplateSetNote() {
+  const set = ritualTemplateSetFor;
+  const form = document.querySelector("[data-ritual-template-editor-form]");
+  if (!set || !form || form.querySelector("[data-ritual-template-set-note]")) return;
+  const note = document.createElement("p");
+  note.className = "ritual-template-status";
+  note.setAttribute("data-ritual-template-set-note", "");
+  const why = set.why ? ` ${set.why}${/[.!?]$/.test(set.why) ? "" : "."}` : "";
+  note.textContent = `Set for ${window.SaltSetRitual.whenText(set)}.${why} Saving it plans it for then.`;
+  form.prepend(note);
+  const intention = form.querySelector('textarea[name="intention"]');
+  if (intention && !intention.value && set.label) intention.value = set.label;
+}
+
+window.addEventListener("load", () => {
+  const set = window.SaltSetRitual?.read(window.location.search);
+  if (!set || typeof openRitualTemplateEditor !== "function") return;
+  ritualTemplateSetFor = set;
+  openRitualTemplateEditor(null)
+    .then(() => {
+      // Signed out, the editor asks you to sign in; the time stays in the URL for when you come back.
+      if (!document.querySelector("[data-ritual-template-editor-form]")) return;
+      showRitualTemplateSetNote();
+      window.history.replaceState({}, "", window.location.pathname);
+    })
+    .catch(console.error);
+});
+
 window.addEventListener("load", () => {
   const templateId = new URLSearchParams(window.location.search).get("editRitualTemplate");
   if (!templateId || typeof openRitualTemplateEditor !== "function") return;

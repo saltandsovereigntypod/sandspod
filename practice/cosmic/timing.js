@@ -6,8 +6,11 @@
  * (app/src/lib/craft/cosmic/timing.ts, built into js/core/timing.js); your
  * calendars and deities come from settings, your place from this browser, and
  * your birth chart (optional) from the chart vault while it is open here
- * (practice/cosmic/astro-store.js). Choosing a time opens the ritual planner
- * with it filled in.
+ * (practice/cosmic/astro-store.js). Choosing a time sets a ritual for then:
+ * a new one in your template editor, one of your own rituals, or a gathering
+ * in a coven you lead rituals in (rituals/js/set-ritual.js carries the time),
+ * or just the ritual planner with it filled in. Opened for a plan, a template
+ * or a working, it moves or plans that one in the planner instead.
  *
  * Links in: ?intent= (the advisor's or the planner's key), &moon= and
  * &weekday= (a premade working's own), &title=, &days=, and &planId=,
@@ -52,8 +55,14 @@
       now: new Date(),
       settings: {},
       advice: null,
-      key: ""
+      key: "",
+      open: null,
+      mine: null
     };
+    // Opened for a particular plan, template or working: plan that one, as before.
+    const SR = global.SaltSetRitual;
+    const setting = !!SR && !["planId", "templateId", "fromSpell", "premade"].some((k) => q(k));
+    const windows = new Map();
 
     function intent() {
       const base = X.anyIntent(st.intentKey);
@@ -88,12 +97,58 @@
         )
         .join("")}</ul>`;
 
+    // "Set a ritual for then": the time, its reason and the intent, for the builders.
+    function setFor(w) {
+      const { date, time } = X.windowPlanFields(w, new Date());
+      const i = intent();
+      return { date, time, hour: w.hourPlanet || null, intent: i ? i.key : null, plannerKey: i ? i.plannerKey : null, label: i ? i.label : null, why: w.why };
+    }
+
+    function chooserHtml(w) {
+      const set = setFor(w);
+      const query = SR.toQuery(set);
+      const mine = st.mine;
+      const own = !user
+        ? h.caption("Your own rituals appear here once you sign in.")
+        : !mine
+          ? h.caption("Looking for your rituals…")
+          : mine.templates.length
+            ? h.actions(mine.templates.map((t) => h.button(t.title || "Untitled ritual", { variant: "ghost", attrs: { "data-action": "use-template", "data-window": `${w.start.getTime()}`, "data-id": t.id } })))
+            : h.caption("You haven’t kept any rituals of your own yet. Build a new ritual for then, and it will be kept for next time.");
+      const covens = user && mine ? mine.covens : [];
+      return `<div class="pb-set" role="group" aria-label="Set a ritual for then">${h.label("Set a ritual for then")}${h.actions([h.button("Build a new ritual for then", { variant: "primary", href: `/altar/?${query}` })])}<p class="sp-caption">Use one of my rituals</p>${own}${
+        covens.length ? h.actions(covens.map((c) => h.button(`Plan it with ${c.name}`, { variant: "ghost", href: `/covens/coven/?c=${encodeURIComponent(c.slug)}&tab=rituals&edit=new&${query}` }))) : ""
+      }${h.actions([h.button("Just pick the time in the planner", { variant: "text", href: plannerHref(w) })])}</div>`;
+    }
+
+    // Your templates and the covens you lead rituals in, once, when a chooser first opens.
+    async function loadMine() {
+      if (st.mine || !user || !global.db) return;
+      const [templates, covens] = await Promise.all([
+        global.db
+          .from("ritual_templates")
+          .select("id,title")
+          .eq("user_id", user.id)
+          .neq("status", "archived")
+          .order("updated_at", { ascending: false })
+          .then((r) => (r.error ? [] : r.data || []), () => []),
+        global.CovenData?.covensILead ? global.CovenData.covensILead(user.id).catch(() => []) : Promise.resolve([])
+      ]);
+      st.mine = { templates, covens };
+    }
+
     function windowCard(w, best) {
+      const key = String(w.start.getTime());
+      windows.set(key, w);
       const moon = `${w.moon.phase}, ${Math.round(w.moon.illumination * 100)}% lit`;
       return h.card(
-        `<h3 class="pb-card-title">${esc(X.windowWhen(w, st.now))}</h3>${h.caption(`${X.scoreWord(w.score)} · ${w.score}${best ? " · the best" : ""} · ${moon}`)}${h.p(w.why)}${h.details("Why", partsHtml(w))}${h.actions([
-          h.button(q("planId") ? "Move the plan to then" : "Plan it then", { variant: "ghost", href: plannerHref(w) })
-        ])}`,
+        `<h3 class="pb-card-title">${esc(X.windowWhen(w, st.now))}</h3>${h.caption(`${X.scoreWord(w.score)} · ${w.score}${best ? " · the best" : ""} · ${moon}`)}${h.p(w.why)}${h.details("Why", partsHtml(w))}${
+          !setting
+            ? h.actions([h.button(q("planId") ? "Move the plan to then" : "Plan it then", { variant: "ghost", href: plannerHref(w) })])
+            : st.open === key
+              ? chooserHtml(w)
+              : h.actions([h.button("Set a ritual for then", { variant: "ghost", attrs: { "data-action": "set", "data-window": key, "aria-expanded": "false" } })])
+        }`,
         { gold: best }
       );
     }
@@ -230,6 +285,22 @@
         again: () => {
           st.now = new Date();
           redraw();
+        },
+        set: (el) => {
+          st.open = el.dataset.window;
+          draw();
+          root.querySelector(".pb-set a, .pb-set button")?.focus();
+          if (!st.mine && user)
+            loadMine()
+              .catch(() => (st.mine = { templates: [], covens: [] }))
+              .then(() => st.open && draw());
+        },
+        "use-template": (el) => {
+          const w = windows.get(el.dataset.window);
+          const t = st.mine && st.mine.templates.find((x) => x.id === el.dataset.id);
+          if (!w || !t) return;
+          const plan = SR.keep(SR.plan({ id: SR.newId(), set: setFor(w), title: t.title, templateId: t.id }));
+          global.location.href = SR.planHref(plan);
         },
         ...PB.placeHandlers(root, "timing", redraw)
       },

@@ -147,6 +147,15 @@
       if (!userId) return [];
       return run(db().from("coven_members").select(`coven_id,status,rank_id,muted_until,covens!coven_members_coven_id_fkey(${COVEN_FIELDS})`).eq("user_id", userId).eq("status", "active"));
     },
+    /** The covens you can lead rituals in (CovenLogic.permissions().lead), for "Plan it with…" elsewhere. */
+    async covensILead(userId) {
+      const L = global.CovenLogic;
+      if (!userId || !L) return [];
+      const mine = ((await CovenData.myMemberships(userId)) || []).filter((m) => m.covens && m.covens.status === "active");
+      if (!mine.length) return [];
+      const ranks = (await run(db().from("coven_ranks").select("*").in("coven_id", mine.map((m) => m.coven_id)))) || [];
+      return mine.filter((m) => L.permissions({ coven: m.covens, membership: m, ranks: ranks.filter((r) => r.coven_id === m.coven_id), userId }).lead).map((m) => m.covens);
+    },
     async myApplications(userId) {
       if (!userId) return [];
       return run(db().from("coven_applications").select("id,coven_id,status,created_at,decided_at,reviewer_note,covens(name,slug)").eq("user_id", userId).order("created_at", { ascending: false }).limit(50));
