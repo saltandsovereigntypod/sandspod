@@ -346,7 +346,7 @@
     return `<section class="sp-card ${yours ? "sp-card--gold cv-your-turn" : ""}" aria-live="polite" data-now>
         <p class="sp-eyebrow">Step ${index + 1} of ${steps.length}${yours ? " · your turn" : ""}</p>
         <h2>${esc(step.title)}</h2>
-        ${flow ? PP().cardHtml(flow) : ""}
+        ${flow ? PP().cardHtml(flow, { altarHref: altarOf(ritual) ? UI.href(`/altar/?covenAltar=${encodeURIComponent(altarOf(ritual).id)}&c=${encodeURIComponent(state.coven.slug)}`) : undefined }) : ""}
         <p class="sp-caption">${yours ? (who.kind === "person" ? "This step is yours." : `This step is for ${esc(who.label.toLowerCase())}${who.kind === "everyone" ? "" : ", and you are one"}.`) : `${esc(who.label)} leads this step.`}${step.duration_minutes ? ` About ${step.duration_minutes} ${step.duration_minutes === 1 ? "minute" : "minutes"}.` : ""}</p>
         ${step.instructions ? `<div class="cv-doc">${prose(step.instructions)}</div>` : ""}
         ${scriptStepOf(ritual, step.id) ? linesHtml(scriptStepOf(ritual, step.id)) : step.spoken_text ? `<p class="sp-label">Words to speak</p><blockquote class="cv-doc cv-spoken">${prose(step.spoken_text)}</blockquote>` : ""}

@@ -6,6 +6,7 @@ import { AltarEditor } from '../../../../../../../components/altar/AltarEditor';
 import { AltarPanel } from '../../../../../../../components/covens/AltarRitual';
 import { CovenScreen, covenHref } from '../../../../../../../components/covens/CovenScreen';
 import * as api from '../../../../../../../lib/covens/api';
+import { deedFinish, isAltarDeed } from '../../../../../../../lib/covens/altarActions';
 import { useCovenAltar } from '../../../../../../../lib/covens/altarSync';
 import type { WhoseContext } from '../../../../../../../lib/tend/altar';
 import { useCoven } from '../../../../../../../lib/covens/CovenContext';
@@ -16,7 +17,7 @@ import { colors, radius, type } from '../../../../../../../theme';
 // coven's chat and, while a rite is under way, its step in progress, as two
 // tabs of one panel over the altar (AltarRitual.tsx).
 export default function CovenAltarScreen() {
-  const { altarId, from } = useLocalSearchParams<{ altarId: string; from?: string }>();
+  const { altarId, from, do: doParam, step: stepParam, n } = useLocalSearchParams<{ altarId: string; from?: string; do?: string; step?: string; n?: string }>();
   const coven = useCoven();
   const me = coven.userId ? { userId: coven.userId, name: coven.me?.profile?.display_name || 'A member' } : null;
   const { shared, altar, access, others } = useCovenAltar(String(altarId ?? ''), me, coven.snapshot?.coven.name);
@@ -44,6 +45,24 @@ export default function CovenAltarScreen() {
     };
   }, [coven.userId, covenId, loadNames]);
   const myName = coven.me?.profile?.display_name || '';
+
+  // A ritual step done for real here ("Write your petition at the altar"):
+  // the altar opens its sheet, and doing it is your Done for the step (altarActions.ts).
+  const { markDone, steps: covenSteps, userId } = coven;
+  const deed = useMemo(() => {
+    if (!isAltarDeed(doParam) || !stepParam) return null;
+    return {
+      kind: doParam,
+      nonce: `${stepParam}:${doParam}:${n ?? ''}`,
+      onDone: () => {
+        const step = covenSteps.find((s) => s.id === stepParam);
+        if (!step) return;
+        const finish = deedFinish(step, userId);
+        if (finish.done) markDone(step.id);
+        if (finish.passTurn) void api.nextTurn(step.id).catch(() => undefined);
+      },
+    };
+  }, [doParam, stepParam, n, covenSteps, userId, markDone]);
   const whose = useMemo<WhoseContext | null>(
     () => (mine && coven.userId ? { userId: coven.userId, myName, myContributions: mine.contributions, petitions: mine.petitions, nameOf: coven.nameOf } : null),
     [mine, coven.userId, myName, coven.nameOf],
@@ -90,6 +109,7 @@ export default function CovenAltarScreen() {
     <AltarEditor
       shared={shared}
       whose={whose}
+      deed={deed}
       header={header}
       overlay={<AltarPanel altarId={String(altarId ?? '')} ritualId={access?.ritual_id} />}
       onBack={() => {

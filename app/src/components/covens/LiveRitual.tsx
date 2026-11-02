@@ -1,4 +1,4 @@
-import { router } from 'expo-router';
+import { router, type Href } from 'expo-router';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Alert, Pressable, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -20,6 +20,7 @@ import { seedPetitionAltar } from '../../lib/covens/petitionAltar';
 import { clearNamed, nameNewThings, offerPaper, paperCount, placeOffering, snuffNamed, stepAltarChange } from '../../lib/covens/ritualAltar';
 import { builderStepFrom, cleanPlan, linkedEffect, stepThingName, type GatheringKind } from '../../lib/covens/builder';
 import { liveFlow } from '../../lib/covens/stepFlow';
+import { atAltarOf, deedQuery } from '../../lib/covens/altarActions';
 import { buildScript, mayVote, voteOptions } from '../../lib/covens/script';
 import { actionForStep } from '../../lib/covens/stepActions';
 import { useCoven } from '../../lib/covens/CovenContext';
@@ -326,6 +327,7 @@ export function LiveStepCard({ live, atAltar = false }: { live: LiveRitual; atAl
   const link = linkedEffect(current);
   const voteRow = live.votes.find((v) => v.step_id === current.id);
   const who = stepAssignee(current, coven.snapshot?.ranks ?? [], coven.nameOf);
+  const deed = atAltarOf(currentBuilder);
 
   return (
     <Card tone="gold">
@@ -402,6 +404,16 @@ export function LiveStepCard({ live, atAltar = false }: { live: LiveRitual; atAl
       {!!currentAsk && <Participation row={live.rowFor(current.id)} ask={currentAsk} nameOf={coven.nameOf} />}
       {!!currentAsk && <ContributionList list={live.othersFor(current.id)} reader={live.reader} nameOf={coven.nameOf} busy={busy} onSupport={live.support} onTend={live.tend} />}
       {showAltarButton && <Button label={altarActionButton(current)} onPress={() => void act(() => live.doAltarAction(current), () => loadMarks(ritual.id))} disabled={busy} />}
+      {!!deed && !!altar && mine && coven.standing.ok && !live.flow?.iDone && !waitingTurn && (
+        <Button
+          label={deed.button}
+          onPress={() =>
+            // At the altar already: its screen opens the deed's sheet; otherwise go there and it opens.
+            atAltar ? router.setParams({ do: deed.deed, step: current.id, n: String(Date.now()) }) : router.push(`${covenHref(coven.slug, `altars/${altar.id}`)}?${deedQuery(deed.deed, current.id)}` as Href)
+          }
+          disabled={busy}
+        />
+      )}
       {!!altar && !atAltar && <Button label="Go to the altar" variant="outline" onPress={() => router.push(covenHref(coven.slug, `altars/${altar.id}`))} />}
       <Text style={type.caption}>
         {current.altar_access === 'everyone'

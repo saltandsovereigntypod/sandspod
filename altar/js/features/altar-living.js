@@ -1280,6 +1280,8 @@
 
   global.AltarLiving = {
     render, schedule, openCloser, openPetitionBox, openWritePetition, saveJournal, loadEntries, notice,
+    /** One of the selected object's actions by name ("offer", "anoint", "incense"), as its buttons do. */
+    act: (name) => ACTIONS[name]?.(),
     setTonight(value) { tonight = value; schedule(); },
     getTonight: () => tonight
   };

@@ -14,12 +14,13 @@ import {
   type NamedThing,
   type RitualPlan,
 } from '../../../lib/covens/builder';
-import { CONTRIBUTION_FATES, CONTRIBUTION_KINDS, CONTRIBUTION_TIMINGS, CONTRIBUTION_VISIBILITY, contributionNote, defaultContribution, kindOf, type ContributionKind, type StepContribution } from '../../../lib/covens/contributions';
+import { CONTRIBUTION_FATES, CONTRIBUTION_TIMINGS, CONTRIBUTION_VISIBILITY, contributionNote, kindOf, type StepContribution } from '../../../lib/covens/contributions';
 import { ALTAR_ACCESS } from '../../../lib/covens/draft';
 import { cleanValues, partsOf, type FieldValues } from '../../../lib/covens/fields';
 import { assigneeFromKey, assigneeKey, cleanAssignees, type Assignee, type PickEntry } from '../../../lib/covens/picker';
 import { LEADER_ENDER, stepEnder } from '../../../lib/covens/stepFlow';
-import { actionLabel, ALTAR_EFFECTS, applyAction, groupsFor, searchActions, type ActionGroup, type StepAction } from '../../../lib/covens/stepActions';
+import { altarChoiceGroups, altarChoiceNote, altarChoicesOf, applyAltarChoice, atAltarActions, atAltarStep } from '../../../lib/covens/altarActions';
+import { actionLabel, applyAction, groupsFor, searchActions, type ActionGroup, type StepAction } from '../../../lib/covens/stepActions';
 import { HIDDEN_PAGE } from '../../../lib/grimoire/access';
 import { colors, fonts, radius, touch, type } from '../../../theme';
 import { Button } from '../../Button';
@@ -33,9 +34,11 @@ type BookPageLike = { id: string; title: string; section: string | null; hidden?
 // is (an action, or one of the coven's own), its name, who does it and how
 // (together, one at a time, those named only, one for all), what its action
 // asks (fields.ts: directions and callers, the candle and its name, what is
-// poured and to whom), and its words, written here or linked from a page of
-// the coven's Book. Everything else (directions, timing, items, the altar,
-// what it asks of people) waits under More options. The website's twin is
+// poured and to whom), what is done at the altar (one choice: done there for
+// real, asked of each person, or the altar by itself; altarActions.ts) and
+// what goes on it, what to do, its words (written here or linked from a page
+// of the coven's Book), and who moves it on. Timing, who tends the altar and
+// the step's section wait under More options. The website's twin is
 // covens/coven/builder.js.
 export function StepFocus({
   step,
@@ -89,7 +92,8 @@ export function StepFocus({
   const [more, setMore] = useState(false);
   const [linking, setLinking] = useState(false);
   const [pageQuery, setPageQuery] = useState('');
-  const found = useMemo(() => (query.trim() ? searchActions(query, kind) : group ? searchActions('', kind).filter((a) => a.group === group) : []), [query, group, kind]);
+  // "At the altar" lists the things done there for real, under their plain names (altarActions.ts).
+  const found = useMemo(() => (query.trim() ? searchActions(query, kind) : group === 'altar' ? atAltarActions() : group ? searchActions('', kind).filter((a) => a.group === group) : []), [query, group, kind]);
   const specs = specsOf(step, custom);
   const values = cleanValues(specs, step.details.fields);
   // Each part (a direction) has its own words, so the step's own aren't asked for.
@@ -102,12 +106,14 @@ export function StepFocus({
   const choose = (a: StepAction | null) => {
     setChoosing(false);
     setQuery('');
-    if (!a) return onChange({ action: '', details: { ...step.details, custom_action: undefined } });
-    onChange({ ...applyAction(a), details: { ...step.details, custom_action: undefined, fields: {} } });
+    if (!a) return onChange({ action: '', details: { ...step.details, custom_action: undefined, at_altar: undefined, at_altar_as: undefined } });
+    const atAltar = (group === 'altar' && !query.trim()) || a.group === 'altar' ? atAltarStep(a.id) : null;
+    if (atAltar) return onChange({ ...atAltar, details: { ...step.details, custom_action: undefined, fields: {}, ender: undefined, ...atAltar.details } });
+    onChange({ ...applyAction(a), details: { ...step.details, custom_action: undefined, at_altar: undefined, at_altar_as: undefined, fields: {} } });
   };
   const chooseCustom = (c: CustomAction) => {
     setChoosing(false);
-    onChange({ ...applyCustomAction(c), details: { ...step.details, custom_action: c.id, fields: {} } });
+    onChange({ ...applyCustomAction(c), details: { ...step.details, custom_action: c.id, at_altar: undefined, at_altar_as: undefined, fields: {} } });
   };
 
   // Who: the gathering's roles (toggled), and positions, people or the whole coven.
@@ -132,7 +138,10 @@ export function StepFocus({
   const linkedPage = step.details.book_page_id ? pages.find((p) => p.id === step.details.book_page_id) : undefined;
   const linked = step.details.book_page_id ? (linkedPage && !linkedPage.hidden ? linkedPage : { id: step.details.book_page_id, title: linkedPage?.hidden || pages.length ? HIDDEN_PAGE : (step.details.book_page_title ?? 'A page of the Book'), section: null }) : null;
   const pageMatches = pages.filter((p) => !p.hidden).filter((p) => !pageQuery.trim() || `${p.title} ${p.section ?? ''}`.toLowerCase().includes(pageQuery.trim().toLowerCase())).slice(0, 8);
-  const effect = ALTAR_EFFECTS.find((e) => e.value === step.altar_action) ?? ALTAR_EFFECTS[0];
+  // The one "At the altar" choice, and what the step had chosen (older steps may have more than one).
+  const altarNow = altarChoicesOf(step);
+  const altarGroups = altarChoiceGroups(altarNow);
+  const chooseAltar = (value: string) => onChange(applyAltarChoice(step, value) as Partial<BuilderStep>);
 
   if (choosing) {
     return (
@@ -235,7 +244,35 @@ export function StepFocus({
       )}
 
       <Card>
-        <Text style={type.eyebrow}>Place on the altar</Text>
+        {/* At the altar: one choice (altarActions.ts), then what goes on it. */}
+        <Text style={type.eyebrow}>At the altar</Text>
+        <Chips label="Nothing at the altar" options={[{ value: '', label: 'Nothing' }]} value={altarNow.length ? 'chosen' : ''} onChange={() => chooseAltar('')} />
+        {altarGroups.map((g) => (
+          <View key={g.id} style={styles.block}>
+            <Text style={type.caption}>{g.label}</Text>
+            <Chips label={g.label} options={g.options} value={altarNow.find((v) => g.options.some((o) => o.value === v)) ?? ''} onChange={chooseAltar} />
+          </View>
+        ))}
+        <Text style={type.caption}>{altarChoiceNote(step)}</Text>
+        {ask && (
+          <View style={styles.block}>
+            <Chips label="When" options={CONTRIBUTION_TIMINGS} value={ask.timing} onChange={(v) => setAsk({ timing: v })} />
+            <Text style={type.caption}>{CONTRIBUTION_TIMINGS.find((t) => t.value === ask.timing)?.detail}</Text>
+            {writes && (
+              <>
+                <Text style={type.eyebrow}>Who can read it</Text>
+                <Chips label="Who can read it" options={CONTRIBUTION_VISIBILITY} value={ask.visibility} onChange={(v) => setAsk({ visibility: v })} />
+                <Text style={type.eyebrow}>What becomes of it</Text>
+                <Chips label="What becomes of it" options={CONTRIBUTION_FATES.filter((f) => f.value !== 'petition' || ask.kind === 'petition')} value={ask.fate} onChange={(v) => setAsk({ fate: v })} />
+                <Text style={type.caption}>{CONTRIBUTION_FATES.find((f) => f.value === ask.fate)?.detail}</Text>
+              </>
+            )}
+            <Field label="A line for them (optional)" value={ask.prompt ?? ''} onChangeText={(v) => setAsk({ prompt: v })} maxLength={280} placeholder="What are you grateful for?" />
+            <Text style={type.caption}>
+              {step.turn_mode === 'on_behalf' ? 'One person does it for everyone. ' : ''}They will see: {contributionNote({ ...ask, mode: step.turn_mode === 'on_behalf' ? 'one' : 'each' })}
+            </Text>
+          </View>
+        )}
         <SearchPicker
           label="Items to place"
           hint="Exactly what goes on the coven altar. Each ticks off as it is placed."
@@ -247,15 +284,29 @@ export function StepFocus({
           placeholder="White candle, rosemary, bread…"
           empty="Nothing placed"
         />
-        <Text style={type.eyebrow}>What to do with them</Text>
+      </Card>
+
+      <Card>
+        {/* What to do: the step's directions, and with what is placed. Steps saved with a separate "with them" line keep it. */}
+        <Text style={type.eyebrow}>What to do</Text>
         <Field
-          label="What to do with them (optional)"
-          value={step.details.with_items ?? ''}
-          onChangeText={(v) => onChange({ details: { ...step.details, with_items: v || undefined } })}
+          label="What to do"
+          hint="What the person doing it does, and with what is placed. They see this when the step comes."
+          value={step.instructions}
+          onChangeText={(v) => onChange({ instructions: v })}
           multiline
-          maxLength={1000}
+          maxLength={4000}
           placeholder="Light your candle from the one before."
         />
+        {!!step.details.with_items && (
+          <Field
+            label="And with what is placed"
+            value={step.details.with_items}
+            onChangeText={(v) => onChange({ details: { ...step.details, with_items: v || undefined } })}
+            multiline
+            maxLength={1000}
+          />
+        )}
       </Card>
 
       {!partsWords && <Card>
@@ -321,7 +372,6 @@ export function StepFocus({
       {more && (
         <View style={styles.gap}>
           <Card>
-            <Field label="Directions" hint="What the person doing it does. They see this when the step comes." value={step.instructions} onChangeText={(v) => onChange({ instructions: v })} multiline maxLength={4000} />
             <Field
               label="Minutes (optional)"
               value={step.duration_minutes == null ? '' : String(step.duration_minutes)}
@@ -338,9 +388,6 @@ export function StepFocus({
           </Card>
 
           <Card>
-            <Text style={type.eyebrow}>On the altar</Text>
-            <Chips label="On the altar" options={ALTAR_EFFECTS.map((e) => ({ value: e.value, label: e.label }))} value={step.altar_action} onChange={(v) => onChange({ altar_action: v })} />
-            <Text style={type.caption}>{effect.detail}</Text>
             <Text style={type.eyebrow}>Who tends the altar during it</Text>
             <Chips label="Who tends the altar during it" options={ALTAR_ACCESS} value={step.altar_access} onChange={(v) => onChange({ altar_access: v })} />
             {step.altar_access === 'chosen' && (
@@ -357,35 +404,6 @@ export function StepFocus({
                 placeholder="Maiden, Rowan…"
                 empty="No one chosen yet."
               />
-            )}
-          </Card>
-
-          <Card>
-            <Text style={type.eyebrow}>Ask something of people</Text>
-            <Chips
-              label="Ask something of people"
-              options={[{ value: '', label: 'Nothing' }, ...CONTRIBUTION_KINDS.map((k) => ({ value: k.id, label: k.label }))]}
-              value={(ask?.kind ?? '') as ContributionKind | ''}
-              onChange={(v) => onChange({ contribution: v ? defaultContribution(v as ContributionKind, ask ? { timing: ask.timing } : {}) : null })}
-            />
-            {ask && (
-              <View style={styles.block}>
-                <Chips label="When" options={CONTRIBUTION_TIMINGS} value={ask.timing} onChange={(v) => setAsk({ timing: v })} />
-                <Text style={type.caption}>{CONTRIBUTION_TIMINGS.find((t) => t.value === ask.timing)?.detail}</Text>
-                {writes && (
-                  <>
-                    <Text style={type.eyebrow}>Who can read it</Text>
-                    <Chips label="Who can read it" options={CONTRIBUTION_VISIBILITY} value={ask.visibility} onChange={(v) => setAsk({ visibility: v })} />
-                    <Text style={type.eyebrow}>What becomes of it</Text>
-                    <Chips label="What becomes of it" options={CONTRIBUTION_FATES.filter((f) => f.value !== 'petition' || ask.kind === 'petition')} value={ask.fate} onChange={(v) => setAsk({ fate: v })} />
-                    <Text style={type.caption}>{CONTRIBUTION_FATES.find((f) => f.value === ask.fate)?.detail}</Text>
-                  </>
-                )}
-                <Field label="A line for them (optional)" value={ask.prompt ?? ''} onChangeText={(v) => setAsk({ prompt: v })} maxLength={280} placeholder="What are you grateful for?" />
-                <Text style={type.caption}>
-                  {step.turn_mode === 'on_behalf' ? 'One person does it for everyone. ' : ''}They will see: {contributionNote({ ...ask, mode: step.turn_mode === 'on_behalf' ? 'one' : 'each' })}
-                </Text>
-              </View>
             )}
           </Card>
 

@@ -35,6 +35,10 @@
   const S = () => core().script;
   const P = () => core().picker;
   const A = () => core().stepActions;
+  // Steps done for real at the coven's altar (app lib/covens/altarActions.ts).
+  const AA = () => core().altarActions;
+  /** The actions to choose from: found, or the chosen kind's ("At the altar" under plain names). */
+  const actionsFound = (query) => (query.trim() ? A().searchActions(query, m.kind) : m.group === "altar" ? AA().atAltarActions() : m.group ? A().searchActions("", m.kind).filter((a) => a.group === m.group) : []);
   const C = () => core().contributions;
   const M = () => core().meetings;
   const SF = () => core().stepFlow;
@@ -442,7 +446,7 @@
 
   function chooserHtml(step, number) {
     const query = m.choosing?.query || "";
-    const found = query.trim() ? A().searchActions(query, m.kind) : m.group ? A().searchActions("", m.kind).filter((a) => a.group === m.group) : [];
+    const found = actionsFound(query);
     const fresh = !step.title.trim() && !step.action;
     const own = custom().filter((c) => !query.trim() || c.name.toLowerCase().includes(query.trim().toLowerCase()));
     return `<p class="sp-eyebrow">Step ${number}${sectionName(step) ? ` · ${esc(sectionName(step))}` : ""}</p>
@@ -493,8 +497,8 @@
     const ask = step.contribution;
     const kinds = C().CONTRIBUTION_KINDS;
     const writes = ask && (kinds.find((k) => k.id === ask.kind) || {}).verb === "write";
-    const effects = A().ALTAR_EFFECTS;
-    const effect = effects.find((e) => e.value === (step.altar_action || "")) || effects[0];
+    // The one "At the altar" choice (altarActions.ts), and what the step had chosen (older steps may have more than one).
+    const altarNow = AA().altarChoicesOf(step);
     // A linked page you can't open (or that's gone) shows only that; its title stays with those who can (as the app's StepFocus).
     const linkedPage = step.details.book_page_id ? m.pages.find((p) => p.id === step.details.book_page_id) : null;
     const linked = step.details.book_page_id ? (linkedPage && !linkedPage.hidden ? linkedPage : { title: (linkedPage && linkedPage.hidden) || m.pages.length ? global.SaltCore.grimoire.access.HIDDEN_PAGE : step.details.book_page_title || "A page of the Book" }) : null;
@@ -511,9 +515,20 @@
         <div class="sp-chips" role="group" aria-label="How it is done">${B().TURN_MODES.map((t) => chip(t.label, "turn", attr({ value: t.value }), step.turn_mode === t.value)).join("")}</div>
         <p class="sp-caption">${esc((B().TURN_MODES.find((t) => t.value === step.turn_mode) || {}).detail || "")}</p></div>
       ${specs.some((s) => s.essential) ? `<div class="sp-card">${fieldsHtml(specs, values, "essential", step, index)}</div>` : ""}
-      <div class="sp-card"><p class="sp-label">Place on the altar</p><div data-picker-items></div>
-        <p class="sp-label">What to do with them</p>
-        <div class="sp-field"><label for="st-with">What to do with them (optional)</label><textarea id="st-with" maxlength="1000" data-with-items placeholder="Light your candle from the one before.">${esc(step.details.with_items || "")}</textarea></div></div>
+      <div class="sp-card"><p class="sp-label">At the altar</p>
+        <div class="sp-chips" role="group" aria-label="Nothing at the altar">${chip("Nothing", "altar-choice", attr({ value: "" }), !altarNow.length)}</div>
+        ${AA().altarChoiceGroups(altarNow).map((g) => `<p class="sp-caption">${esc(g.label)}</p><div class="sp-chips" role="group" aria-label="${esc(g.label)}">${g.options.map((o) => chip(o.label, "altar-choice", attr({ value: o.value }), altarNow.includes(o.value))).join("")}</div>`).join("")}
+        <p class="sp-caption">${esc(AA().altarChoiceNote(step))}</p>
+        ${ask ? `<p class="sp-label">When</p><div class="sp-chips">${C().CONTRIBUTION_TIMINGS.map((t) => chip(t.label, "ask", attr({ field: "timing", value: t.value }), ask.timing === t.value)).join("")}</div>
+          ${writes ? `<p class="sp-label">Who can read it</p><div class="sp-chips">${C().CONTRIBUTION_VISIBILITY.map((t) => chip(t.label, "ask", attr({ field: "visibility", value: t.value }), ask.visibility === t.value)).join("")}</div>
+            <p class="sp-label">What becomes of it</p><div class="sp-chips">${C().CONTRIBUTION_FATES.filter((f) => f.value !== "petition" || ask.kind === "petition").map((t) => chip(t.label, "ask", attr({ field: "fate", value: t.value }), ask.fate === t.value)).join("")}</div>
+            <p class="sp-caption">${esc((C().CONTRIBUTION_FATES.find((f) => f.value === ask.fate) || {}).detail || "")}</p>` : ""}
+          <div class="sp-field"><label for="st-prompt">A line for them (optional)</label><input id="st-prompt" maxlength="280" data-ask-prompt value="${esc(ask.prompt || "")}" placeholder="What are you grateful for?" /></div>
+          <p class="sp-caption">${step.turn_mode === "on_behalf" ? "One person does it for everyone. " : ""}They will see: ${esc(C().contributionNote({ ...ask, mode: step.turn_mode === "on_behalf" ? "one" : "each" }))}</p>` : ""}
+        <div data-picker-items></div></div>
+      <div class="sp-card"><p class="sp-label">What to do</p>
+        <div class="sp-field"><label for="st-dir">What to do</label><textarea id="st-dir" maxlength="4000" data-step="instructions" placeholder="Light your candle from the one before.">${esc(step.instructions)}</textarea><p class="sp-caption">What the person doing it does, and with what is placed. They see this when the step comes.</p></div>
+        ${step.details.with_items ? `<div class="sp-field"><label for="st-with">And with what is placed</label><textarea id="st-with" maxlength="1000" data-with-items>${esc(step.details.with_items)}</textarea></div>` : ""}</div>
       ${partsWords ? "" : `<div class="sp-card"><p class="sp-label">Words</p>
         ${linked ? `<p>From the coven’s Book: <strong>${esc(linked.title)}</strong></p><p class="sp-caption">The words are read from the page as it stands, so changes to the page show here too.</p><div class="sp-actions">${btn("Unlink the page", "unlink")}</div>`
           : `<div class="sp-field"><label for="st-words">Words to speak</label><textarea id="st-words" maxlength="4000" data-step="spoken_text" placeholder="Leave empty if nothing is said">${esc(step.spoken_text)}</textarea></div>
@@ -522,25 +537,13 @@
       ${enderHtml(step)}
       <div class="sp-actions">${btn(m.more ? "Fewer options" : "More options", "more", "", "button--ghost")}</div>
       ${m.more ? `<div class="sp-card">
-          <div class="sp-field"><label for="st-dir">Directions</label><textarea id="st-dir" maxlength="4000" data-step="instructions">${esc(step.instructions)}</textarea><p class="sp-caption">What the person doing it does. They see this when the step comes.</p></div>
           <div class="sp-field"><label for="st-min">Minutes (optional)</label><input id="st-min" type="number" min="0" max="240" data-step="duration_minutes" value="${esc(step.duration_minutes ?? "")}" /></div>
           ${specs.some((s) => !s.essential) ? fieldsHtml(specs, values, "more", step, index) : ""}
           ${m.plan.roles.length && step.spoken_text.trim() ? `<p class="sp-label">Who speaks the words</p><div class="sp-chips">${m.plan.roles.map((r) => chip(r.name, "toggle-speaker", attr({ id: r.id }), (step.details.speakers || []).includes(r.id))).join("")}</div>` : ""}
         </div>
         <div class="sp-card">
-          <p class="sp-label">On the altar</p><div class="sp-chips">${effects.map((e) => chip(e.label, "effect", attr({ value: e.value }), (step.altar_action || "") === e.value)).join("")}</div>
-          <p class="sp-caption">${esc(effect.detail || "")}</p>
           <p class="sp-label">Who tends the altar during it</p><div class="sp-chips">${access.map((a) => chip(a.label, "access", attr({ value: a.value }), step.altar_access === a.value)).join("")}</div>
           ${step.altar_access === "chosen" ? `<div data-picker-tenders></div>` : ""}</div>
-        <div class="sp-card"><p class="sp-label">Ask something of people</p>
-          <div class="sp-chips">${[{ id: "", label: "Nothing" }, ...kinds].map((k) => chip(k.label, "ask-kind", attr({ value: k.id }), (ask?.kind || "") === k.id)).join("")}</div>
-          ${ask ? `<p class="sp-label">When</p><div class="sp-chips">${C().CONTRIBUTION_TIMINGS.map((t) => chip(t.label, "ask", attr({ field: "timing", value: t.value }), ask.timing === t.value)).join("")}</div>
-            ${writes ? `<p class="sp-label">Who can read it</p><div class="sp-chips">${C().CONTRIBUTION_VISIBILITY.map((t) => chip(t.label, "ask", attr({ field: "visibility", value: t.value }), ask.visibility === t.value)).join("")}</div>
-              <p class="sp-label">What becomes of it</p><div class="sp-chips">${C().CONTRIBUTION_FATES.filter((f) => f.value !== "petition" || ask.kind === "petition").map((t) => chip(t.label, "ask", attr({ field: "fate", value: t.value }), ask.fate === t.value)).join("")}</div>
-              <p class="sp-caption">${esc((C().CONTRIBUTION_FATES.find((f) => f.value === ask.fate) || {}).detail || "")}</p>` : ""}
-            <div class="sp-field"><label for="st-prompt">A line for them (optional)</label><input id="st-prompt" maxlength="280" data-ask-prompt value="${esc(ask.prompt || "")}" placeholder="What are you grateful for?" /></div>
-            <p class="sp-caption">They will see: ${esc(C().contributionNote({ ...ask, mode: step.turn_mode === "on_behalf" ? "one" : "each" }))}</p>` : ""}
-        </div>
         <div class="sp-card"><p class="sp-label">Section</p><div class="sp-chips">${m.plan.sections.map((s) => chip(s.name, "step-section", attr({ id: s.id }), step.section === s.id)).join("")}</div>
           <div class="sp-actions">${btn("Duplicate", "duplicate")}${btn("Save as a block", "step-block")}${step.details.custom_action ? "" : btn("Make it one of the coven’s own", "make-action")}</div>
           <p class="sp-caption">A block can be added to any of the coven’s rituals. One of the coven’s own shows with the steps you choose from.</p></div>` : ""}
@@ -886,7 +889,7 @@
     else if (el.matches("[data-chooser-query]")) {
       m.choosing.query = el.value;
       const list = pane.querySelector("[data-chooser-list]");
-      const found = el.value.trim() ? A().searchActions(el.value, m.kind) : m.group ? A().searchActions("", m.kind).filter((a) => a.group === m.group) : [];
+      const found = actionsFound(el.value);
       if (list) list.innerHTML = found.map((a) => `<button type="button" class="cv-choice" data-act="pick-action" data-id="${esc(a.id)}">${esc(A().actionLabel(a))}</button>`).join("");
     } else if (el.matches("[data-page-query]")) {
       const list = pane.querySelector("[data-page-list]");
@@ -1108,15 +1111,20 @@
       case "stop-choosing":
         m.choosing = null;
         return redraw();
+      case "altar-choice":
+        Object.assign(step, AA().applyAltarChoice(step, d.value || ""));
+        return redraw();
       case "group":
         m.group = m.group === d.group ? "" : d.group;
         m.choosing.query = "";
         return redraw();
       case "pick-action": {
         const action = A().actionOf(d.id);
+        const atAltar = action && ((m.group === "altar" && !(m.choosing?.query || "").trim()) || action.group === "altar") ? AA().atAltarStep(action.id) : null;
         m.choosing = null;
-        if (action) Object.assign(step, A().applyAction(action), { details: { ...step.details, custom_action: undefined, fields: {} } });
-        else Object.assign(step, { action: "", details: { ...step.details, custom_action: undefined } });
+        if (atAltar) Object.assign(step, atAltar, { details: { ...step.details, custom_action: undefined, fields: {}, ender: undefined, ...atAltar.details } });
+        else if (action) Object.assign(step, A().applyAction(action), { details: { ...step.details, custom_action: undefined, at_altar: undefined, at_altar_as: undefined, fields: {} } });
+        else Object.assign(step, { action: "", details: { ...step.details, custom_action: undefined, at_altar: undefined, at_altar_as: undefined } });
         redraw();
         pane.querySelector("#st-title")?.focus();
         return;
@@ -1124,7 +1132,7 @@
       case "pick-custom": {
         const own = custom().find((c) => c.id === d.id);
         m.choosing = null;
-        if (own) Object.assign(step, B().applyCustomAction(own), { details: { ...step.details, custom_action: own.id, fields: {} } });
+        if (own) Object.assign(step, B().applyCustomAction(own), { details: { ...step.details, custom_action: own.id, at_altar: undefined, at_altar_as: undefined, fields: {} } });
         return redraw();
       }
       case "pick-block": {
@@ -1188,14 +1196,8 @@
         step.details = { ...step.details, fields: F().cleanValues(specs, { ...values, [d.key]: list.includes(d.value) ? list.filter((x) => x !== d.value) : [...list, d.value] }) };
         return redraw();
       }
-      case "effect":
-        step.altar_action = d.value;
-        return redraw();
       case "access":
         step.altar_access = d.value;
-        return redraw();
-      case "ask-kind":
-        step.contribution = d.value ? C().defaultContribution(d.value, step.contribution ? { timing: step.contribution.timing } : {}) : null;
         return redraw();
       case "ask":
         step.contribution = C().cleanContribution({ ...step.contribution, [d.field]: d.value });

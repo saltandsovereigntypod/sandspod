@@ -51,8 +51,21 @@
     return { ...flow, step, index, mine };
   }
 
-  /** In the step's card: the pop-up's words kept, the items ticked, Done, and moving on. */
-  function cardHtml(flow) {
+  /**
+   * A step done for real at the coven's altar (SaltCore.covens.altarActions):
+   * its button, for whoever's step it is and hasn't done it. `altarHref` goes
+   * to the altar and opens it there; without one (already at the altar) it is
+   * a button handlers.deed answers.
+   */
+  function deedHtml(flow, altarHref) {
+    const row = global.SaltCore?.covens?.altarActions?.atAltarOf(flow.step);
+    if (!row || !flow.mine || flow.iDone || (flow.kind === "turns" && (flow.step.turn_order || []).length && !flow.myTurn)) return "";
+    if (altarHref) return `<div class="sp-actions"><a class="button button--primary" href="${esc(`${altarHref}&${global.SaltCore.covens.altarActions.deedQuery(row.deed, flow.step.id)}`)}">${esc(row.button)}</a></div>`;
+    return `<div class="sp-actions"><button class="button button--primary" type="button" data-flow="deed" data-deed="${esc(row.deed)}">${esc(row.button)}</button></div>`;
+  }
+
+  /** In the step's card: the pop-up's words kept, the items ticked, the step's altar deed, Done, and moving on. */
+  function cardHtml(flow, options = {}) {
     if (!flow) return "";
     const tapsDone = !flow.progress.complete && (flow.kind === "together" || (flow.kind === "one" && flow.mine));
     const done = tapsDone
@@ -66,6 +79,7 @@
         : `<button class="button button--ghost button--small" type="button" data-flow="move">Move on anyway</button>`
       : `<p class="sp-caption">${esc(flow.progress.complete ? flow.complete.heading : `${flow.enderName} moves us on when this step is finished.`)}</p>`;
     return `<div class="cv-flow">${flow.start.lines.map((line) => `<p class="sp-caption">${esc(line)}</p>`).join("")}
+      ${options.altarHref !== undefined ? deedHtml(flow, options.altarHref) : ""}
       ${flow.items?.length ? `<p class="sp-caption">${flow.items.map((i) => `${i.placed ? "✓" : "○"} ${esc(i.name)}`).join("&nbsp;&nbsp; ")}</p>` : ""}
       <div class="sp-actions">${done}</div>
       ${flow.progress.waiting ? `<p class="sp-caption">${esc(flow.progress.waiting)}</p>` : ""}
@@ -80,6 +94,7 @@
         if (how === "done") handlers.done(flow.step.id);
         else if (how === "undone") handlers.done(null);
         else if (how === "move") handlers.move(flow.step.id, button);
+        else if (how === "deed") handlers.deed?.(button.dataset.deed, flow.step.id);
       })
     );
   }

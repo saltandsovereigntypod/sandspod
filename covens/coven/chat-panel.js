@@ -117,6 +117,20 @@
       drawRitual();
     },
     move: (stepId, button) => act(button, () => D.finishStep(stepId)),
+    // A step done for real at this altar (SaltCore.covens.altarActions): doing it is your Done, and passes your turn.
+    deed: (kind, stepId) =>
+      global.CovenAltarDeed?.start(kind, () => {
+        const step = (state.ritualSteps || []).find((s) => s.id === stepId);
+        const finish = global.SaltCore?.covens?.altarActions?.deedFinish(step || {}, state.context.user.id) || { done: true, passTurn: false };
+        if (finish.done) handlers.done(stepId);
+        if (finish.passTurn)
+          D.nextTurn(stepId)
+            .then((saved) => {
+              if (saved) state.ritualSteps = L.applyChange(state.ritualSteps, { eventType: "UPDATE", new: saved });
+              drawRitual();
+            })
+            .catch(() => undefined);
+      }),
     turn: (stepId, button) =>
       act(button, () =>
         D.nextTurn(stepId).then((saved) => {
@@ -146,7 +160,7 @@
           ${step.instructions ? `<div class="cv-doc">${UI.prose(step.instructions)}</div>` : ""}
           ${step.spoken_text ? `<blockquote class="cv-doc cv-spoken">${UI.prose(step.spoken_text)}</blockquote>` : ""}
           ${flow.myTurn && !flow.progress.complete ? `<p class="sp-label">${esc(flow.turn.heading)}</p><div class="sp-actions"><button class="button button--primary" type="button" data-panel-turn>${esc(flow.turn.button)}</button></div>` : ""}
-          ${PP().cardHtml(flow)}` : `<p class="sp-caption">The ritual is under way.</p>`}
+          ${PP().cardHtml(flow, { altarHref: "" })}` : `<p class="sp-caption">The ritual is under way.</p>`}
         <p class="cv-status" role="status" aria-live="polite" data-status></p>
       </div>`;
     if (flow) {
@@ -262,6 +276,14 @@
       loadObjects();
     }
     drawRitual();
+    // Sent here by a step's button on the coven's page ("…&do=petition&step=<id>"): open it now, once.
+    const params = new URLSearchParams(global.location.search);
+    if (params.get("do") && params.get("step")) {
+      handlers.deed(params.get("do"), params.get("step"));
+      params.delete("do");
+      params.delete("step");
+      global.history.replaceState(null, "", `${global.location.pathname}?${params}`);
+    }
     return true;
   }
 

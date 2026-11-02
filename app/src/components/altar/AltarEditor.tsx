@@ -238,6 +238,7 @@ import {
 import { altarRitualItem, groupAltarItems, type WorkingDetails } from '../../lib/grimoire/altarImport';
 import { useGrimoire } from '../../lib/grimoire/store';
 import type { SharedAltar } from '../../lib/covens/altarSync';
+import type { AltarDeed } from '../../lib/covens/altarActions';
 import { altarSummary, documentFromAltar, emptyDocument, ritualAltarSnapshot, type AltarDocument } from '../../lib/altar/snapshot';
 import { useAltars } from '../../lib/altar/store';
 import type { CabinetForm, CabinetItem } from '../../lib/altar/types';
@@ -314,6 +315,9 @@ const newMoonFor = (entries: CraftEntry<AltarOptions>[], id: string | null) => (
 const afterSheetCloses = (open: () => void) => setTimeout(open, Platform.OS === 'ios' ? 450 : 0);
 const MAX_STAGE_WIDTH = 960;
 
+/** A coven ritual step done for real here (lib/covens/altarActions.ts): the sheet to open, and what to call once it is done. */
+export type AltarDeedRequest = { kind: AltarDeed; nonce: string; onDone: () => void };
+
 const NO_OBJECTS: import('../../lib/altar/types').SavedObject[] = [];
 
 /**
@@ -323,7 +327,14 @@ const NO_OBJECTS: import('../../lib/altar/types').SavedObject[] = [];
  * copy among your own altars instead, and everything else works as it does at
  * home. `header` and `overlay` add the coven's own controls (who's here, chat).
  */
-export function AltarEditor({ shared, header, overlay, onBack, whose }: { shared?: SharedAltar; header?: ReactNode; overlay?: ReactNode; onBack?: () => void; whose?: WhoseContext | null } = {}) {
+export function AltarEditor({
+  shared,
+  header,
+  overlay,
+  onBack,
+  whose,
+  deed,
+}: { shared?: SharedAltar; header?: ReactNode; overlay?: ReactNode; onBack?: () => void; whose?: WhoseContext | null; deed?: AltarDeedRequest | null } = {}) {
   const params = useLocalSearchParams<{ altarId: string; from?: string; deity?: string; planet?: string }>();
   const altarId = shared ? `coven:${shared.key}` : params.altarId;
   const { from, deity, planet } = params;
@@ -670,6 +681,7 @@ export function AltarEditor({ shared, header, overlay, onBack, whose }: { shared
     // A coven altar you can't tend right now leaves it as it was (commit says why).
     if (docRef.current === current) return false;
     setSelected(current.objects.length);
+    finishDeed('place');
     return true;
   };
 
@@ -1090,6 +1102,7 @@ export function AltarEditor({ shared, header, overlay, onBack, whose }: { shared
     });
     await updateEntry(PETITIONS, entry.id, { ...petition, objectId: paper.altarObjectId });
     setNotice(candle ? `“${petition.title}” is folded under ${shortLabel(candle.label, 'the candle')}.` : `“${petition.title}” is on the altar and in the petition box.`);
+    finishDeed('petition');
   };
   const finishPetitionEntry = (entry: CraftEntry<Petition>, how: PetitionEnd) => {
     const now = new Date();
@@ -1105,6 +1118,7 @@ export function AltarEditor({ shared, header, overlay, onBack, whose }: { shared
     });
     setSelected(null);
     setNotice(`“${entry.data.title}” is ${words}. It stays in the box’s history.`);
+    finishDeed('release');
   };
 
   // ── Workings, reading and arranging ──────────────────────────────────
@@ -1147,6 +1161,8 @@ export function AltarEditor({ shared, header, overlay, onBack, whose }: { shared
   const placeWorking = ({ object, kept }: PlacedWorking) => {
     const index = docRef.current?.objects.length ?? 0;
     commit((d) => addObject(d, object));
+    finishDeed('jar');
+    finishDeed('sachet');
     setSelected(index);
     setSheet(null);
     setNotice(
@@ -1294,6 +1310,7 @@ export function AltarEditor({ shared, header, overlay, onBack, whose }: { shared
     setSelected(index);
     setSheet(null);
     setNotice(`${shortLabel(object.label, 'It')} is on your altar.`);
+    finishDeed('card');
   };
   // The newest cleansing or charge done here on one of your own stones, for its log in Crystal.
   const selectedCare = useMemo(() => (selectedObject && stoneIdOf(selectedObject) ? lastAltarCareOf(selectedObject) : null), [selectedObject]);
@@ -1361,6 +1378,7 @@ export function AltarEditor({ shared, header, overlay, onBack, whose }: { shared
     commit((d) => tieCord(d, a, b, choice, nowIso()));
     setSheet(null);
     setNotice(`The cord is tied ${heightWords(choice.height)} between ${labelOf(a)} and ${labelOf(b)}. Light them when you’re ready; it burns when they reach it.`);
+    finishDeed('cord');
   };
   const setOutPair = (choice: CordChoice) => {
     const index = docRef.current?.objects.length ?? 0;
@@ -1374,6 +1392,99 @@ export function AltarEditor({ shared, header, overlay, onBack, whose }: { shared
     setSelected(null);
     setSheet('grimoire');
   };
+
+  // ── A ritual step done here for real (lib/covens/altarActions.ts) ──────
+  // The step's button opens the same sheet as the altar's own; the first time
+  // that work is done (the petition placed, the candle lit…) is the person's Done.
+  const pendingDeed = useRef<AltarDeedRequest | null>(null);
+  const startedDeed = useRef('');
+  const finishDeed = (kind: AltarDeed) => {
+    const pending = pendingDeed.current;
+    if (!pending || pending.kind !== kind) return;
+    // A coven altar you can't tend right now keeps it as it was (commit says why): not done yet.
+    if (sharedRef.current && !sharedRef.current.canEdit && kind !== 'intention' && kind !== 'gratitude' && kind !== 'scry' && kind !== 'bell') return;
+    pendingDeed.current = null;
+    pending.onDone();
+  };
+  const toCabinet = (what: string) => {
+    setNotice(`There’s no ${what} on the altar yet. Set one down from the cabinet first.`);
+    setSheet('cabinet');
+  };
+  const startDeed = (kind: AltarDeed) => {
+    const objects = docRef.current?.objects ?? [];
+    const find = (test: (o: (typeof objects)[number]) => boolean) => objects.findIndex(test);
+    const candle = () => find((o) => isCandle(o) && !candleLife(o).spent);
+    switch (kind) {
+      case 'petition':
+        return openSaved('petition', 'petition box');
+      case 'release':
+        return openPetitions();
+      case 'intention':
+        return openSaved('intention', 'intention');
+      case 'gratitude':
+        return openSaved('gratitude', 'gratitude bowl');
+      case 'scry':
+        return openSaved('scry', 'scrying');
+      case 'jar':
+      case 'sachet':
+        return setSheet(kind);
+      case 'card':
+        return setSheet('drawn');
+      case 'place':
+        return setSheet('cabinet');
+      case 'cord':
+        return openCord(null);
+      case 'light': {
+        const i = find((o) => isCandle(o) && !isLit(o) && !candleLife(o).spent);
+        if (i < 0) return toCabinet('unlit candle');
+        setSelected(i);
+        commit((d) => toggleLight(d, i, nowIso()));
+        return finishDeed('light');
+      }
+      case 'incense': {
+        const i = find((o) => isIncense(o) && !incenseLife(o).lit);
+        if (i < 0) return toCabinet('incense waiting to be lit');
+        setSelected(i);
+        commit((d) => updateObjects(d, [i], (o) => (incenseLife(o).ash ? lightIncense(clearAsh(o, nowIso()), nowIso()) : lightIncense(o, nowIso()))));
+        return finishDeed('incense');
+      }
+      case 'anoint':
+      case 'carve': {
+        const i = candle();
+        if (i < 0) return toCabinet('candle');
+        setSelected(i);
+        return setSheet(kind);
+      }
+      case 'offering': {
+        const i = find((o) => canHoldOffering(o));
+        if (i < 0) return toCabinet('bowl or dish for an offering');
+        setSelected(i);
+        return setSheet('offering');
+      }
+      case 'charge_crystal': {
+        const i = find((o) => o.type === 'crystal');
+        if (i < 0) return toCabinet('crystal');
+        setSelected(i);
+        return setCrystalMode('charge');
+      }
+      case 'bell': {
+        const i = find((o) => isBell(o));
+        if (i < 0) return toCabinet('bell');
+        setSelected(i);
+        ringBell('ring', String(objects[i]?.altarObjectId || ''));
+        return finishDeed('bell');
+      }
+    }
+  };
+  const docReady = !!doc;
+  useEffect(() => {
+    if (!deed || !docReady || startedDeed.current === deed.nonce) return;
+    startedDeed.current = deed.nonce;
+    pendingDeed.current = deed;
+    afterSheetCloses(() => startDeed(deed.kind));
+    // startDeed reads the altar as it is now; it runs once for each request.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [deed, docReady]);
 
   const stage =
     doc && stageWidth > 0 ? (
@@ -1506,6 +1617,7 @@ export function AltarEditor({ shared, header, overlay, onBack, whose }: { shared
                 commit((d) => toggleLight(d, selected, nowIso()));
                 // A candle kept over nights: lighting it is tonight's tending of its spell.
                 if (lighting) for (const e of selectedSpells) tendSpell(e.id, e.data, true);
+                if (lighting) finishDeed('light');
               },
               anoint: () => setSheet('anoint'),
               renew: () => setSheet('renew'),
@@ -1543,6 +1655,7 @@ export function AltarEditor({ shared, header, overlay, onBack, whose }: { shared
                 const life = incenseLife(selectedObject);
                 changeSelected((o) => (life.lit ? putOutIncense(o, nowIso()) : life.ash ? clearAsh(o, nowIso()) : lightIncense(o, nowIso())));
                 if (life.ash) setNotice('The ash is cleared. Fresh incense is ready to light.');
+                else if (!life.lit) finishDeed('incense');
               },
               incenseKind: () => setSheet('incense'),
               petitions: openPetitions,
@@ -1854,6 +1967,7 @@ export function AltarEditor({ shared, header, overlay, onBack, whose }: { shared
               setCrystalMode(null);
               const words = playMoment(indices.map((i) => String(doc.objects[i]?.altarObjectId || '')), input.methods);
               setNotice(`${kind === 'cleanse' ? 'Cleansed' : 'Charged'}${indices.length > 1 ? ` ${indices.length} crystals` : ''}. ${words}`);
+              if (kind === 'charge') finishDeed('charge_crystal');
             }}
             onDedicate={(index, input) => {
               commit((d) => updateObjects(d, [index], (o) => dedicateCrystal(o, input, nowIso())));
@@ -1937,6 +2051,7 @@ export function AltarEditor({ shared, header, overlay, onBack, whose }: { shared
             onClose={() => setSheet(null)}
             onCarve={(text, sigil) => {
               if (selected != null) commit((d) => carveObject(d, selected, text, nowIso(), sigil));
+              finishDeed('carve');
             }}
             onMakeSigil={() => {
               setSheet(null);
@@ -2069,6 +2184,7 @@ export function AltarEditor({ shared, header, overlay, onBack, whose }: { shared
             onChoose={(kind, label) => {
               changeSelected((o) => setOffering(o, kind, label, nowIso()));
               setSheet(null);
+              finishDeed('offering');
             }}
           />
           <IncenseSheet
@@ -2170,6 +2286,7 @@ export function AltarEditor({ shared, header, overlay, onBack, whose }: { shared
                   changeSelected(() => o);
                   setSheet(null);
                   setNotice('Dressed and anointed. The oil and herbs show on the wax.');
+                  finishDeed('anoint');
                 }}
               />
               <SpellTimerSheet
@@ -2185,10 +2302,20 @@ export function AltarEditor({ shared, header, overlay, onBack, whose }: { shared
               <ScryingScreen
                 visible={sheet === 'scry' && !!sourceId}
                 altar={altarCtx}
-                onClose={() => setSheet(null)}
+                onClose={() => {
+                  setSheet(null);
+                  finishDeed('scry');
+                }}
                 onSaved={(where) => setNotice(where === 'journal' ? 'What came in the water is in your journal.' : 'What came in the water is kept with this altar.')}
               />
-              <GratitudeSheet visible={sheet === 'gratitude' && !!sourceId} altar={altarCtx} onClose={() => setSheet(null)} />
+              <GratitudeSheet
+                visible={sheet === 'gratitude' && !!sourceId}
+                altar={altarCtx}
+                onClose={() => {
+                  setSheet(null);
+                  finishDeed('gratitude');
+                }}
+              />
               <AltarReadingSheet
                 visible={sheet === 'altarReading'}
                 altar={altarCtx}
@@ -2205,7 +2332,14 @@ export function AltarEditor({ shared, header, overlay, onBack, whose }: { shared
                   afterSheetCloses(() => openSaved('intention', 'intention'));
                 }}
               />
-              <IntentionSheet visible={sheet === 'intention' && !!sourceId} altar={altarCtx} onClose={() => setSheet(null)} />
+              <IntentionSheet
+                visible={sheet === 'intention' && !!sourceId}
+                altar={altarCtx}
+                onClose={() => {
+                  setSheet(null);
+                  finishDeed('intention');
+                }}
+              />
               <LayoutSheet
                 visible={sheet === 'layouts'}
                 altar={altarCtx}

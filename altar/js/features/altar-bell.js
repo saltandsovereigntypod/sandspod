@@ -150,6 +150,9 @@
     if (B && B.ringAllowed(rung, r.from, Date.now())) sound(r.kind, findByKey(r.key), false);
   });
 
+  // A coven ritual step can ring it too (coven-altar.js).
+  global.AltarBell = { ring };
+
   const registry = global.altarObjectActionRegistry;
   if (!Array.isArray(registry)) return;
   const isBell = (o) => o?.dataset.type === "tool" && o.dataset.tool === "bell";

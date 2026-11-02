@@ -1354,6 +1354,6 @@
 
   global.AltarReading = {
     openTonight, openLayouts, openAltarReading, openIntention, openHistory, openShare, openTonightAltar, openMore, practiceHtml, renderTools, setFull, state,
-    pageLinkHtml, openPageLink, logStoneCare, beginAncestorRite, openRitualPicker, PAGES
+    pageLinkHtml, openPageLink, logStoneCare, beginAncestorRite, openRitualPicker, openDrawn, PAGES
   };
 })(typeof window !== "undefined" ? window : globalThis);

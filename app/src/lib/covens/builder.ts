@@ -23,6 +23,7 @@ import type { Rank, RitualStep } from './model.ts';
 import { assigneeFromKey, assigneeKey, assigneeLabel, andList, cleanAssignees, includesMember, legacyColumns, WHOLE_COVEN, type Assignee, type PickEntry } from './picker.ts';
 import { blankStep, draftFromStep, plannerProblem, stepsPayload, type Candidate, type DraftStep } from './draft.ts';
 import { actionOf, type StepAction } from './stepActions.ts';
+import { isAltarDeed, isAtAltarAction, type AltarDeed } from './altarActions.ts';
 import { cleanFieldSpecs, cleanValues, fieldsFor, fieldSummary, namesIn, whoIn, type FieldSpec, type FieldValues, type ThingKind } from './fields.ts';
 import { chatReminder } from './messageExtras.ts';
 import { cleanNoticeWho } from './notices.ts';
@@ -112,6 +113,10 @@ export type StepDetails = {
   with_items?: string;
   /** Who moves it on: "user:<id>" or "role:<id>"; left out, the ritual's leader (stepFlow.ts). */
   ender?: string;
+  /** Done for real at the coven's altar (altarActions.ts): which deed. */
+  at_altar?: AltarDeed;
+  /** Which of that deed's steps ("pour_libation" of the offering): its name and button. */
+  at_altar_as?: string;
 };
 
 /** One step as the builder edits it. */
@@ -411,6 +416,8 @@ function cleanDetails(raw: unknown): StepDetails {
   if (Array.isArray(d.speakers)) out.speakers = d.speakers.filter((r) => typeof r === 'string').slice(0, 20);
   if (typeof d.with_items === 'string' && d.with_items.trim()) out.with_items = d.with_items.slice(0, 1000);
   if (cleanEnder(d.ender) !== LEADER_ENDER) out.ender = cleanEnder(d.ender);
+  if (isAltarDeed(d.at_altar)) out.at_altar = d.at_altar;
+  if (isAltarDeed(d.at_altar) && isAtAltarAction(d.at_altar_as)) out.at_altar_as = d.at_altar_as;
   return out;
 }
 
