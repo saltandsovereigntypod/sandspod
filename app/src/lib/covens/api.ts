@@ -917,7 +917,7 @@ export const setModerator = (email: string, enabled: boolean) => rpc('set_commun
 
 // ─── Live ────────────────────────────────────────────────────────────────
 
-export type LiveTable = 'coven_messages' | 'coven_altar_items' | 'coven_rituals' | 'coven_ritual_steps' | 'coven_ritual_rsvps' | 'coven_ritual_step_marks' | 'coven_petitions';
+export type LiveTable = 'coven_messages' | 'coven_altar_items' | 'coven_rituals' | 'coven_ritual_steps' | 'coven_ritual_rsvps' | 'coven_ritual_step_marks' | 'coven_petitions' | 'coven_message_reactions' | 'coven_message_answers';
 export type LiveChange = { table: LiveTable; eventType: 'INSERT' | 'UPDATE' | 'DELETE'; new: Record<string, unknown>; old: Record<string, unknown> };
 
 /** Live changes for one coven, and who else is here. Returns a function that stops listening. */
@@ -929,7 +929,7 @@ export function listen(
 ): { track: (place: string) => void; done: (stepId: string | null) => void; stop: () => void } {
   // Shared (sharedChannel.ts): two of this coven's screens open at once mustn't open the channel twice.
   type Payload = { eventType: LiveChange['eventType']; new: Record<string, unknown>; old: Record<string, unknown> };
-  const tables: LiveTable[] = ['coven_messages', 'coven_altar_items', 'coven_rituals', 'coven_ritual_steps', 'coven_ritual_rsvps', 'coven_ritual_step_marks', 'coven_petitions'];
+  const tables: LiveTable[] = ['coven_messages', 'coven_altar_items', 'coven_rituals', 'coven_ritual_steps', 'coven_ritual_rsvps', 'coven_ritual_step_marks', 'coven_petitions', 'coven_message_reactions', 'coven_message_answers'];
   let place = 'coven';
   // The step you've tapped Done on (stepFlow.ts doneIn), sent with where you are.
   let done: string | null = null;
@@ -943,7 +943,7 @@ export function listen(
         );
       }
       // Deletes can't be filtered by coven; ids the app doesn't hold are ignored.
-      for (const table of ['coven_altar_items', 'coven_rituals', 'coven_ritual_steps'] as LiveTable[]) {
+      for (const table of ['coven_altar_items', 'coven_rituals', 'coven_ritual_steps', 'coven_message_reactions', 'coven_message_answers'] as LiveTable[]) {
         channel.on('postgres_changes' as never, { event: 'DELETE', schema: 'public', table } as never, (payload: Payload) =>
           emit('change', { table, eventType: 'DELETE', new: {}, old: payload.old ?? {} } satisfies LiveChange),
         );

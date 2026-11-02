@@ -339,6 +339,8 @@
         ${prefToggle("gd-inv-on", "Invitations", "A note on your phone when someone invites you to a coven", "invitations.on")}
         ${prefToggle("gd-inv-accepted", "When my invitation is accepted", "Someone you invited joins the coven", "invitations.accepted")}
         ${prefToggle("gd-together-live", "Rituals together", "Someone in your coven begins one of its gatherings as a ritual together", "together.live")}
+        ${prefToggle("gd-messages-reactions", "Reactions to my messages", "Someone in a coven reacts to a message you wrote", "messages.reactions")}
+        ${prefToggle("gd-messages-answers", "Answers to my reply buttons", "How people answered a message of yours with reply buttons, gathered into one note every few minutes", "messages.answers")}
         ${prefToggle("gd-together-mentorship", "Mentorship", "Being asked or paired, the answer, messages and check-ins from your mentor or mentee", "together.mentorship")}
         ${prefToggle("gd-training-on", "Training messages", "A message on a step of your training, from your mentor or the coven’s leaders, or from someone you mentor", "training.on")}
         <p class="sp-caption">These ring phones with the Salt &amp; Sovereignty app and coven notifications turned on. On the website, invitations to you wait at the top of My covens.</p>

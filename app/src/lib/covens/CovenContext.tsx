@@ -8,6 +8,7 @@ import { createContext, useCallback, useContext, useEffect, useMemo, useRef, use
 
 import { useSession } from '../session';
 import * as api from './api';
+import { askDueReminders } from './chat';
 import { withAncestor, type Lineage } from './lineage';
 import { fetchLineage, notifyLineage } from './lineageApi';
 import { menteesOf, signsOffAsHead, trainingToSignOff, type Enrollment, type Grant, type Mentorship } from './programs';
@@ -61,6 +62,8 @@ type CovenState = {
   loadMessages: () => Promise<void>;
   /** Every new or changed message you can read in this coven, the coven chat's and your conversations', as it arrives. */
   onMessage: (listener: (message: Message, eventType: 'INSERT' | 'UPDATE' | 'DELETE') => void) => () => void;
+  /** Live reactions and reply-button answers on this coven's messages (CovenThread.tsx useMessageExtras). */
+  onMessageExtra: (listener: (change: api.LiveChange) => void) => () => void;
   altar: AltarItem[] | null;
   setAltar: (update: (list: AltarItem[]) => AltarItem[]) => void;
   loadAltar: () => Promise<void>;
@@ -256,6 +259,10 @@ export function CovenProvider({ slug, children }: { slug: string; children: Reac
           case 'coven_petitions':
             setPetitionsVersion((v) => v + 1);
             break;
+          case 'coven_message_reactions':
+          case 'coven_message_answers':
+            extraListeners.current.forEach((l) => l(change));
+            break;
         }
       },
       // A presence sync that changes nothing (someone re-sending where they are) leaves the screens alone.
@@ -275,9 +282,18 @@ export function CovenProvider({ slug, children }: { slug: string; children: Reac
       messageListeners.current.delete(listener);
     };
   }, []);
+  const extraListeners = useRef(new Set<(change: api.LiveChange) => void>());
+  const onMessageExtra = useCallback((listener: (change: api.LiveChange) => void) => {
+    extraListeners.current.add(listener);
+    return () => {
+      extraListeners.current.delete(listener);
+    };
+  }, []);
   const covenId = snapshot?.coven.id;
   const loadMessages = useCallback(async () => {
     if (!covenId) return;
+    // A gathering's chat reminder that is due appears now, if the scheduled run hasn't posted it.
+    askDueReminders(covenId);
     const list = await api.fetchMessages(covenId);
     setMessagesState(list);
     void loadNames(list.map((m) => m.user_id));
@@ -333,6 +349,7 @@ export function CovenProvider({ slug, children }: { slug: string; children: Reac
       setMessages: (update) => setMessagesState((list) => update(list ?? [])),
       loadMessages,
       onMessage,
+      onMessageExtra,
       altar,
       setAltar: (update) => setAltarState((list) => update(list ?? [])),
       loadAltar,
@@ -348,7 +365,7 @@ export function CovenProvider({ slug, children }: { slug: string; children: Reac
       markDone,
       track,
     }),
-    [slug, status, snapshot, me, lineage, refreshLineage, perms, unsigned, stand, userId, names, loadNames, refresh, rituals, steps, rsvps, marks, refreshRituals, loadMarks, messages, loadMessages, onMessage, altar, loadAltar, petitionsVersion, grants, mentors, waitingForMe, trainingUnread, refreshPrograms, presence, track, markDone],
+    [slug, status, snapshot, me, lineage, refreshLineage, perms, unsigned, stand, userId, names, loadNames, refresh, rituals, steps, rsvps, marks, refreshRituals, loadMarks, messages, loadMessages, onMessage, onMessageExtra, altar, loadAltar, petitionsVersion, grants, mentors, waitingForMe, trainingUnread, refreshPrograms, presence, track, markDone],
   );
 
   return <Context.Provider value={value}>{children}</Context.Provider>;

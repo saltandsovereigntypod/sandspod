@@ -73,3 +73,8 @@ export * as trainingNotes from '../../supabase/functions/coven-notify/training.t
 // (covens/coven/queue.js), and the phone notes (coven-notify's queue.ts).
 export * as queue from '../../app/src/lib/covens/queue.ts';
 export * as queueNotes from '../../supabase/functions/coven-notify/queue.ts';
+// Reactions and reply buttons on coven messages, and a gathering's chat
+// reminder in its plan (covens/coven/chat.js, chat-panel.js, builder.js);
+// the phone notes, choices and timing (coven-notify's messages.ts).
+export * as messageExtras from '../../app/src/lib/covens/messageExtras.ts';
+export * as messageNotes from '../../supabase/functions/coven-notify/messages.ts';

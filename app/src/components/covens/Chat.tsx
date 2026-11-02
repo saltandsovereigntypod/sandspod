@@ -1,14 +1,16 @@
 import { router } from 'expo-router';
-import { useCallback, useState } from 'react';
+import { useCallback, useState, type ReactNode } from 'react';
 import { Alert, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { covenHref } from './CovenScreen';
+import { ReplyButtonsPanel } from './MessageExtras';
 import { useReport } from './ui';
 import * as api from '../../lib/covens/api';
 import { badgeLabel, chatButtonLabel } from '../../lib/covens/altarPanel';
 import { withBlock } from '../../lib/covens/blocking';
 import { useCoven } from '../../lib/covens/CovenContext';
+import type { ReplyButtons } from '../../lib/covens/messageExtras';
 import type { Message } from '../../lib/covens/model';
 import type { ThreadItem } from '../../lib/covens/thread';
 import { useUnread } from '../../lib/covens/unread';
@@ -107,8 +109,8 @@ export function confirmBlock(name: string, block: () => void) {
   ]);
 }
 
-/** One row of a thread: a time between runs, or a bubble. */
-export function ThreadRow({ item, nameOf, onLongPress }: { item: ThreadItem; nameOf: (id: string | null) => string; onLongPress: (m: Message) => void }) {
+/** One row of a thread: a time between runs, or a bubble (with its reactions and reply buttons under it, `under`). */
+export function ThreadRow({ item, nameOf, onLongPress, under }: { item: ThreadItem; nameOf: (id: string | null) => string; onLongPress: (m: Message) => void; under?: ReactNode }) {
   const t = useAccessibleText();
   if (item.kind === 'time') return <Text style={styles.time}>{item.label}</Text>;
   const { message, mine, first, last, showName } = item;
@@ -137,26 +139,49 @@ export function ThreadRow({ item, nameOf, onLongPress }: { item: ThreadItem; nam
           {message.edited_at && !quiet ? <Text style={styles.edited}> (edited)</Text> : null}
         </Text>
       </Pressable>
+      {under}
     </View>
   );
 }
 
-/** The box at the bottom: write, and send with the arrow. */
-export function Composer({ onSend, disabled, note }: { onSend: (body: string) => Promise<boolean>; disabled?: boolean; note?: string | null }) {
+/**
+ * The box at the bottom: write, and send with the arrow. With `replyButtons`
+ * (coven messages), "Add reply buttons" above it; its `gatherings` are the
+ * coven's upcoming ones a message may link to (none in a conversation).
+ */
+export function Composer({
+  onSend,
+  disabled,
+  note,
+  replyButtons,
+}: {
+  onSend: (body: string, buttons?: ReplyButtons | null) => Promise<boolean>;
+  disabled?: boolean;
+  note?: string | null;
+  replyButtons?: { gatherings: { id: string; title: string }[] | null };
+}) {
   const [draft, setDraft] = useState('');
   const [sending, setSending] = useState(false);
+  const [buttons, setButtons] = useState<ReplyButtons | null>(null);
+  const [panelKey, setPanelKey] = useState(0);
   const t = useAccessibleText();
   const ready = !!draft.trim() && !sending && !disabled;
   const send = async () => {
     const body = draft.trim();
     if (!body) return;
     setSending(true);
-    const ok = await onSend(body);
-    if (ok) setDraft('');
+    const ok = await onSend(body, buttons);
+    if (ok) {
+      setDraft('');
+      setButtons(null);
+      setPanelKey((k) => k + 1);
+    }
     setSending(false);
   };
   if (disabled) return note ? <Text style={[type.caption, styles.composerNote]}>{note}</Text> : null;
   return (
+    <>
+    {replyButtons && <ReplyButtonsPanel key={panelKey} value={buttons} onChange={setButtons} gatherings={replyButtons.gatherings} />}
     <View style={styles.composer}>
       <TextInput
         value={draft}
@@ -179,6 +204,7 @@ export function Composer({ onSend, disabled, note }: { onSend: (body: string) =>
         <Text style={styles.sendIcon}>↑</Text>
       </Pressable>
     </View>
+    </>
   );
 }
 

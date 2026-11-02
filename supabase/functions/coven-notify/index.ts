@@ -7,6 +7,7 @@ import { FRESH_MINUTES } from "./requests.ts";
 import { openedNote, wantsPosition } from "./positions.ts";
 import { trainingNote, wantsTraining } from "./training.ts";
 import { promotedNote, proposedNote, queuedNote, type QueueSource } from "./queue.ts";
+import { answerPushDue, answersNote, reactionNote, reminderButtons, reminderDue, reminderText, wantsMessageNote } from "./messages.ts";
 import { checkinNote, liveNote, mentorMessageNote, mentorshipNote, wantsTogether, type MentorshipEvent, type Note as TogetherNote } from "./together.ts";
 
 // Phone notifications for covens: a new message, a new application or
@@ -122,6 +123,25 @@ import { checkinNote, liveNote, mentorMessageNote, mentorshipNote, wantsTogether
 // of the pair (both, when a coven's leader paired them).
 // { mentorship_message_id } and { mentorship_checkin_id }: called by the
 // writer; tells the other of the pair.
+//
+// Reactions and reply buttons on coven messages, and chat reminders
+// (supabase/migrations/20261123000000_coven_message_reactions_replies.sql;
+// the words, choices and timing in messages.ts):
+// { reaction_id }: called by whoever just reacted; tells the message's writer,
+// once, while fresh, if their "Reactions to my messages" choice is on (off
+// unless turned on), they can still read it and don't block the reactor.
+// { answer_message_id }: called by whoever just answered a message's reply
+// buttons; tells its writer how people answered since the last note ("3
+// people answered: 2 Coming, 1 Can't make it"), at most once per message in
+// ANSWER_GAP_MINUTES, if their "Answers to my reply buttons" choice is on.
+// { due: true } with the service key (run each minute by a scheduled job):
+// posts each gathering's chat reminder when it is due (the plan's
+// chatReminder, minutes before it begins), once per start time
+// (coven_messages_reminder_once), in the coven's chat by whoever planned it
+// (else the coven's founder), with the Gathering reply buttons linked to it,
+// and rings phones as for any message; then sends answer summaries that
+// waited out their gap. { due_coven_id } by a member of that coven (the chat
+// asks when it opens): that coven's due reminders only.
 
 const EXPO_PUSH = "https://exp.host/--/api/v2/push/send";
 
@@ -144,6 +164,7 @@ Deno.serve(async (request) => {
     const payload = await request.json().catch(() => null);
     const ids = Array.isArray(payload?.leadership_event_ids) ? payload.leadership_event_ids.map(String).slice(0, 50) : [];
     const adminOnly = createClient(url, service, { auth: { persistSession: false } });
+    if (payload?.due === true) return reply(200, { sent: (await dueReminders(adminOnly, null)) + (await waitingAnswers(adminOnly)) });
     let sent = 0;
     for (const id of ids) if (/^[0-9a-f-]{36}$/i.test(id)) sent += await leadershipEvent(adminOnly, null, id);
     return reply(200, { sent });
@@ -168,8 +189,12 @@ Deno.serve(async (request) => {
   let queueId = "";
   let queueEvent: "queued" | "proposed" | "promoted" = "queued";
   let together: { kind: "live" | "mentorship" | "mentorship_message" | "mentorship_checkin"; id: string; event: string } | null = null;
+  let extra: { kind: "reaction" | "answer" | "due"; id: string } | null = null;
   try {
     const payload = (await request.json()) || {};
+    if (payload.reaction_id) extra = { kind: "reaction", id: String(payload.reaction_id) };
+    else if (payload.answer_message_id) extra = { kind: "answer", id: String(payload.answer_message_id) };
+    else if (payload.due_coven_id) extra = { kind: "due", id: String(payload.due_coven_id) };
     if (payload.live_ritual_id) together = { kind: "live", id: String(payload.live_ritual_id), event: "started" };
     else if (payload.mentorship_message_id) together = { kind: "mentorship_message", id: String(payload.mentorship_message_id), event: "new" };
     else if (payload.mentorship_checkin_id) together = { kind: "mentorship_checkin", id: String(payload.mentorship_checkin_id), event: "new" };
@@ -203,6 +228,18 @@ Deno.serve(async (request) => {
   }
   const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
   const admin = createClient(url, service, { auth: { persistSession: false } });
+  if (extra) {
+    if (!UUID.test(extra.id)) return reply(400, { error: "bad_request" });
+    if (extra.kind === "reaction") return reply(200, { sent: await reactionPush(admin, sender, extra.id) });
+    if (extra.kind === "answer") {
+      const { data: mine } = await admin.from("coven_message_answers").select("id").eq("message_id", extra.id).eq("user_id", sender).maybeSingle();
+      if (!mine) return reply(404, { error: "not_found" });
+      return reply(200, { sent: await answerPush(admin, extra.id) });
+    }
+    const { data: member } = await admin.from("coven_members").select("user_id").eq("coven_id", extra.id).eq("user_id", sender).eq("status", "active").maybeSingle();
+    if (!member) return reply(404, { error: "not_found" });
+    return reply(200, { sent: await dueReminders(admin, extra.id) });
+  }
   if (together) {
     if (!UUID.test(together.id)) return reply(400, { error: "bad_request" });
     return togetherNote(admin, sender, together.kind, together.id, together.event);
@@ -257,9 +294,21 @@ Deno.serve(async (request) => {
   if (!message || message.user_id !== sender || message.deleted_at) return reply(404, { error: "not_found" });
   if (Date.now() - new Date(message.created_at).getTime() > 5 * 60 * 1000) return reply(409, { error: "too_old" });
 
+  return reply(200, { sent: await messagePush(admin, message, sender) });
+});
+
+type MessageRow = { id: string; coven_id: string; conversation_id: string | null; user_id: string | null; body: string; created_at: string; deleted_at: string | null };
+
+/**
+ * A new message to everyone who should hear about it: for the coven's chat,
+ * its active members who want coven chat notifications; for a conversation,
+ * the others in it who haven't muted it and want conversation notifications.
+ * `sender` null is a reminder the coven posts (no one's name on the note).
+ */
+async function messagePush(admin: SupabaseClient, message: MessageRow, sender: string | null): Promise<number> {
   const [{ data: coven }, { data: profile }] = await Promise.all([
     admin.from("covens").select("name,slug").eq("id", message.coven_id).single(),
-    admin.from("coven_profiles").select("display_name").eq("user_id", sender).maybeSingle(),
+    sender ? admin.from("coven_profiles").select("display_name").eq("user_id", sender).maybeSingle() : Promise.resolve({ data: null as { display_name: string | null } | null }),
   ]);
   const who = profile?.display_name || "Someone";
 
@@ -278,37 +327,36 @@ Deno.serve(async (request) => {
     const { data: members } = await admin.from("coven_members").select("user_id").eq("coven_id", message.coven_id).eq("status", "active");
     recipients = (members || []).map((m) => m.user_id).filter((id) => id !== sender);
   }
-  if (!recipients.length) return reply(200, { sent: 0 });
+  if (!recipients.length) return 0;
 
   // Still active in the coven, not blocking the writer, and not turned off.
   const [{ data: active }, { data: blocks }, { data: settings }] = await Promise.all([
     admin.from("coven_members").select("user_id").eq("coven_id", message.coven_id).eq("status", "active").in("user_id", recipients),
-    admin.from("user_blocks").select("blocker_id").eq("blocked_id", sender).in("blocker_id", recipients),
+    sender ? admin.from("user_blocks").select("blocker_id").eq("blocked_id", sender).in("blocker_id", recipients) : Promise.resolve({ data: [] as { blocker_id: string }[] }),
     admin.from("coven_chat_settings").select("user_id,notify_coven,notify_direct").eq("coven_id", message.coven_id).in("user_id", recipients),
   ]);
   const activeSet = new Set((active || []).map((m) => m.user_id));
   const blocking = new Set((blocks || []).map((b) => b.blocker_id));
   const off = new Set((settings || []).filter((s) => s[wants] === false).map((s) => s.user_id));
   const listeners = recipients.filter((id) => activeSet.has(id) && !blocking.has(id) && !off.has(id));
-  if (!listeners.length) return reply(200, { sent: 0 });
+  if (!listeners.length) return 0;
 
   const { data: tokens } = await admin.from("push_tokens").select("token,user_id").in("user_id", listeners);
-  if (!tokens?.length) return reply(200, { sent: 0 });
+  if (!tokens?.length) return 0;
 
   const body = message.body.length > 180 ? `${message.body.slice(0, 177)}…` : message.body;
   const path = `/coven/c/${coven?.slug}/chat/${message.conversation_id || "coven"}`;
   const notes = tokens.map((t) => ({
     to: t.token,
     title,
-    body: message.conversation_id && title === who ? body : `${who}: ${body}`,
+    body: !sender || (message.conversation_id && title === who) ? body : `${who}: ${body}`,
     sound: "default",
     channelId: "coven-messages",
     threadId: message.conversation_id || message.coven_id,
     data: { source: "coven-chat", url: path, covenId: message.coven_id, conversationId: message.conversation_id },
   }));
-
-  return reply(200, { sent: await push(admin, notes) });
-});
+  return push(admin, notes);
+}
 
 type Push = { to: string; title: string; body: string; sound: string; channelId: string; threadId?: string; data: Record<string, unknown> };
 
@@ -1123,4 +1171,117 @@ async function togetherNote(admin: SupabaseClient, caller: string, kind: "live" 
     return { to: t.token, title: note.title, body: note.body, sound: "default", channelId, threadId: `${source}:${id}`, data: { source, url: note.url } };
   });
   return reply(200, { sent: await push(admin, notes) });
+}
+
+// ─── Reactions, reply buttons and chat reminders (messages.ts) ───────────
+
+const MESSAGE_FIELDS = "id,coven_id,conversation_id,user_id,body,created_at,deleted_at,reply_buttons";
+
+/** Whether this person may still read the message: active in its coven, and in its conversation if it has one. */
+async function canRead(admin: SupabaseClient, message: MessageRow, userId: string): Promise<boolean> {
+  const { data: member } = await admin.from("coven_members").select("user_id").eq("coven_id", message.coven_id).eq("user_id", userId).eq("status", "active").maybeSingle();
+  if (!member) return false;
+  if (!message.conversation_id) return true;
+  const { data: inIt } = await admin.from("coven_conversation_members").select("left_at").eq("conversation_id", message.conversation_id).eq("user_id", userId).maybeSingle();
+  return !!inIt && !inIt.left_at;
+}
+
+async function tokensFor(admin: SupabaseClient, userId: string): Promise<string[]> {
+  const { data } = await admin.from("push_tokens").select("token").eq("user_id", userId);
+  return (data || []).map((t) => t.token);
+}
+
+/** Someone reacted: their note to the message's writer, once, while fresh. */
+async function reactionPush(admin: SupabaseClient, sender: string, id: string): Promise<number> {
+  const { data: reaction } = await admin.from("coven_message_reactions").select("id,message_id,user_id,emoji,created_at,notified_at").eq("id", id).maybeSingle();
+  if (!reaction || reaction.user_id !== sender || reaction.notified_at) return 0;
+  if (Date.now() - new Date(reaction.created_at).getTime() > 5 * 60 * 1000) return 0;
+  const { data: message } = await admin.from("coven_messages").select(MESSAGE_FIELDS).eq("id", reaction.message_id).maybeSingle();
+  const writer = message?.user_id;
+  if (!message || message.deleted_at || !writer || writer === sender) return 0;
+  const [{ data: settings }, { data: blocks }] = await Promise.all([
+    admin.from("user_settings").select("reminders:settings->>reminders_v2").eq("user_id", writer).maybeSingle(),
+    admin.from("user_blocks").select("blocker_id").eq("blocker_id", writer).eq("blocked_id", sender),
+  ]);
+  if (blocks?.length || !wantsMessageNote(settings?.reminders ?? null, "reactions")) return 0;
+  if (!(await canRead(admin, message, writer))) return 0;
+  const { data: claimed } = await admin.from("coven_message_reactions").update({ notified_at: new Date().toISOString() }).eq("id", id).is("notified_at", null).select("id");
+  if (!claimed?.length) return 0;
+  const [{ data: coven }, { data: profile }] = await Promise.all([
+    admin.from("covens").select("name,slug").eq("id", message.coven_id).single(),
+    admin.from("coven_profiles").select("display_name").eq("user_id", sender).maybeSingle(),
+  ]);
+  const note = reactionNote({ who: profile?.display_name || "Someone", emoji: reaction.emoji, body: message.body, covenName: coven?.name || "Your coven", covenSlug: coven?.slug || "", conversationId: message.conversation_id });
+  const tokens = await tokensFor(admin, writer);
+  return push(admin, tokens.map((to) => ({ to, title: note.title, body: note.body, sound: "default", channelId: "coven-messages", threadId: message.conversation_id || message.coven_id, data: { source: "coven-reaction", url: note.url, covenId: message.coven_id, conversationId: message.conversation_id } })));
+}
+
+/** How people answered a message's reply buttons since the last note: to its writer, at most once per gap. */
+async function answerPush(admin: SupabaseClient, messageId: string): Promise<number> {
+  const { data: message } = await admin.from("coven_messages").select(MESSAGE_FIELDS).eq("id", messageId).maybeSingle();
+  const labels: string[] = Array.isArray(message?.reply_buttons?.labels) ? message.reply_buttons.labels.map(String) : [];
+  const writer = message?.user_id;
+  if (!message || message.deleted_at || !writer || labels.length < 2) return 0;
+  const { data: last } = await admin.from("coven_message_answers").select("notified_at").eq("message_id", messageId).not("notified_at", "is", null).order("notified_at", { ascending: false }).limit(1);
+  if (!answerPushDue(last?.[0]?.notified_at ?? null)) return 0;
+  const { data: claimed } = await admin.from("coven_message_answers").update({ notified_at: new Date().toISOString() }).eq("message_id", messageId).is("notified_at", null).select("user_id,choice");
+  const others = (claimed || []).filter((a) => a.user_id !== writer);
+  if (!others.length) return 0;
+  const [{ data: settings }, { data: blocks }] = await Promise.all([
+    admin.from("user_settings").select("reminders:settings->>reminders_v2").eq("user_id", writer).maybeSingle(),
+    admin.from("user_blocks").select("blocked_id").eq("blocker_id", writer).in("blocked_id", others.map((a) => a.user_id)),
+  ]);
+  const blocked = new Set((blocks || []).map((b) => b.blocked_id));
+  const heard = others.filter((a) => !blocked.has(a.user_id));
+  if (!heard.length || !wantsMessageNote(settings?.reminders ?? null, "answers")) return 0;
+  if (!(await canRead(admin, message, writer))) return 0;
+  const { data: coven } = await admin.from("covens").select("name,slug").eq("id", message.coven_id).single();
+  const note = answersNote({ labels, choices: heard.map((a) => a.choice), body: message.body, covenName: coven?.name || "Your coven", covenSlug: coven?.slug || "", conversationId: message.conversation_id });
+  const tokens = await tokensFor(admin, writer);
+  return push(admin, tokens.map((to) => ({ to, title: note.title, body: note.body, sound: "default", channelId: "coven-messages", threadId: message.conversation_id || message.coven_id, data: { source: "coven-answers", url: note.url, covenId: message.coven_id, conversationId: message.conversation_id } })));
+}
+
+/** Answers that waited out their gap (the scheduled run): their summaries now. */
+async function waitingAnswers(admin: SupabaseClient): Promise<number> {
+  const { data } = await admin.from("coven_message_answers").select("message_id").is("notified_at", null).order("updated_at").limit(500);
+  let sent = 0;
+  for (const id of [...new Set((data || []).map((a) => a.message_id))].slice(0, 100)) sent += await answerPush(admin, id);
+  return sent;
+}
+
+/** Post each due gathering reminder in its coven's chat (one coven's, or all), once per start time, and ring phones. */
+async function dueReminders(admin: SupabaseClient, covenId: string | null): Promise<number> {
+  const now = new Date();
+  let query = admin
+    .from("coven_rituals")
+    .select("id,coven_id,title,status,scheduled_for,plan,created_by")
+    .eq("status", "scheduled")
+    .gt("scheduled_for", now.toISOString())
+    .lte("scheduled_for", new Date(now.getTime() + 61 * 60 * 1000).toISOString())
+    .limit(300);
+  if (covenId) query = query.eq("coven_id", covenId);
+  const { data: rituals } = await query;
+  let sent = 0;
+  for (const ritual of rituals || []) {
+    if (!reminderDue(ritual, now)) continue;
+    // Whoever planned it, while still in the coven; else the coven's founder.
+    let author: string | null = null;
+    if (ritual.created_by) {
+      const { data: planner } = await admin.from("coven_members").select("user_id").eq("coven_id", ritual.coven_id).eq("user_id", ritual.created_by).eq("status", "active").maybeSingle();
+      author = planner?.user_id ?? null;
+    }
+    if (!author) {
+      const { data: coven } = await admin.from("covens").select("founder_id").eq("id", ritual.coven_id).maybeSingle();
+      author = coven?.founder_id ?? null;
+    }
+    const { data: row, error } = await admin
+      .from("coven_messages")
+      .insert({ coven_id: ritual.coven_id, user_id: author, body: reminderText(ritual.title, ritual.scheduled_for, now), reply_buttons: reminderButtons(ritual.id, ritual.scheduled_for) })
+      .select(MESSAGE_FIELDS)
+      .single();
+    // Already posted for this start time (coven_messages_reminder_once).
+    if (error || !row) continue;
+    sent += await messagePush(admin, row, author);
+  }
+  return sent;
 }

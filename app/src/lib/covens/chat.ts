@@ -4,6 +4,7 @@
 // coven-notify edge function tells the others' phones.
 
 import { supabase } from '../supabase';
+import type { Answer, Reaction, ReplyButtons } from './messageExtras';
 import type { Message } from './model';
 import type { Conversation, ConversationMember } from './thread';
 
@@ -53,10 +54,14 @@ async function fetchThreadLatest(covenId: string, conversationId: string | null)
   return run<Message[]>(query);
 }
 
-/** Send a message (a reply to another with `replyTo`, as a card drawn into a coven reading is), then let the others' phones know (best effort). */
-export async function sendMessage(covenId: string, conversationId: string | null, body: string, replyTo: string | null = null): Promise<Message> {
+/** Send a message (a reply to another with `replyTo`, as a card drawn into a coven reading is; with reply buttons), then let the others' phones know (best effort). */
+export async function sendMessage(covenId: string, conversationId: string | null, body: string, replyTo: string | null = null, buttons: ReplyButtons | null = null): Promise<Message> {
   const row = await run<Message>(
-    supabase.from('coven_messages').insert({ coven_id: covenId, conversation_id: conversationId, body, ...(replyTo ? { reply_to: replyTo } : {}) }).select().single(),
+    supabase
+      .from('coven_messages')
+      .insert({ coven_id: covenId, conversation_id: conversationId, body, ...(replyTo ? { reply_to: replyTo } : {}), ...(buttons ? { reply_buttons: buttons } : {}) })
+      .select()
+      .single(),
   );
   void supabase.functions.invoke('coven-notify', { body: { message_id: row.id } }).catch(() => {});
   return row;
@@ -75,5 +80,41 @@ export async function fetchChatSettings(covenId: string, userId: string): Promis
 }
 export const saveChatSettings = (covenId: string, userId: string, settings: ChatSettings) =>
   run(supabase.from('coven_chat_settings').upsert({ user_id: userId, coven_id: covenId, ...settings, updated_at: new Date().toISOString() }, { onConflict: 'user_id,coven_id' }));
+
+// ─── Reactions and reply buttons (messageExtras.ts) ──────────────────────
+
+/** The reactions and answers on these messages. */
+export async function fetchExtras(messageIds: string[]): Promise<{ reactions: Reaction[]; answers: Answer[] }> {
+  if (!messageIds.length) return { reactions: [], answers: [] };
+  const ids = messageIds.slice(-300);
+  const [reactions, answers] = await Promise.all([
+    run<Reaction[]>(supabase.from('coven_message_reactions').select('id,message_id,user_id,emoji,created_at').in('message_id', ids)).catch(() => [] as Reaction[]),
+    run<Answer[]>(supabase.from('coven_message_answers').select('id,message_id,user_id,choice,updated_at').in('message_id', ids)).catch(() => [] as Answer[]),
+  ]);
+  return { reactions, answers };
+}
+
+/** Add your reaction (and let the writer's phone know, if they want it), or take it back. */
+export async function react(messageId: string, userId: string, emoji: string, on: boolean): Promise<void> {
+  if (!on) {
+    await run(supabase.from('coven_message_reactions').delete().eq('message_id', messageId).eq('user_id', userId).eq('emoji', emoji));
+    return;
+  }
+  const row = await run<Reaction>(supabase.from('coven_message_reactions').insert({ message_id: messageId, emoji }).select('id').single());
+  if (row?.id) void supabase.functions.invoke('coven-notify', { body: { reaction_id: row.id } }).catch(() => {});
+}
+
+/** Answer a message's reply buttons (or change your answer), or take it back (null); the writer hears in a summary. */
+export async function answerButtons(messageId: string, userId: string, choice: number | null): Promise<void> {
+  if (choice == null) {
+    await run(supabase.from('coven_message_answers').delete().eq('message_id', messageId).eq('user_id', userId));
+    return;
+  }
+  await run(supabase.from('coven_message_answers').upsert({ message_id: messageId, user_id: userId, choice }, { onConflict: 'message_id,user_id' }));
+  void supabase.functions.invoke('coven-notify', { body: { answer_message_id: messageId } }).catch(() => {});
+}
+
+/** Ask for this coven's due gathering reminders (posted in its chat, once each). */
+export const askDueReminders = (covenId: string) => void supabase.functions.invoke('coven-notify', { body: { due_coven_id: covenId } }).catch(() => {});
 
 export { conversationTitle, othersIn } from './thread';

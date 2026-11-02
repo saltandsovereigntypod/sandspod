@@ -45,6 +45,7 @@ import {
 } from '../../../../../../lib/covens/builder';
 import { useCoven } from '../../../../../../lib/covens/CovenContext';
 import { errorMessage, OCCASIONS, orderSteps, type BookPage, type Petition } from '../../../../../../lib/covens/model';
+import { chatReminder, DEFAULT_REMINDER_MINUTES, reminderChoiceLabel, REMINDER_MINUTES, withChatReminder } from '../../../../../../lib/covens/messageExtras';
 import { noticeLabelOptions, type NoticeRule } from '../../../../../../lib/covens/notices';
 import { assigneesLabel, cleanAssignees, whoEntries, whoSuggestions, type Assignee } from '../../../../../../lib/covens/picker';
 import { fetchMeetingDefaults } from '../../../../../../lib/covens/meetingApi';
@@ -264,6 +265,19 @@ export default function PlanRitual() {
   };
 
   const back = <Button label="← Back to the outline" variant="outline" onPress={toOutline} />;
+  // A reminder posted in the coven's Messages before it begins, with Coming · Running late · Can't make it (coven-notify messages.ts).
+  const reminderMinutes = chatReminder(plan);
+  const reminderCard = (
+    <Card>
+      <Chips
+        label="Post a reminder in Messages before it starts"
+        options={[{ value: 'off', label: 'Off' }, ...REMINDER_MINUTES.map((m) => ({ value: String(m), label: reminderChoiceLabel(m) }))]}
+        value={reminderMinutes ? String(reminderMinutes) : 'off'}
+        onChange={(v) => setPlan((p) => withChatReminder(p, v === 'off' ? null : Number(v) || DEFAULT_REMINDER_MINUTES))}
+      />
+      <Text style={type.caption}>“Gentle reminder: {title.trim() || 'it'} begins in {reminderMinutes ?? DEFAULT_REMINDER_MINUTES} minutes.” in the coven’s chat, with buttons to say Coming, Running late or Can’t make it, which set people’s RSVP.</Text>
+    </Card>
+  );
   // Who hears about it (components/covens/NoticeWho.tsx): a rite's Details, a meeting's panel.
   const noticeCard = (
     <NoticeWho
@@ -508,6 +522,7 @@ export default function PlanRitual() {
           onChange={setFromPanel}
         />
         {noticeCard}
+        {reminderCard}
       </CovenScreen>
     );
   if (view === 'action' && actionDraft)
@@ -606,6 +621,7 @@ export default function PlanRitual() {
           </View>
         </Card>
         {kind === 'rite' && noticeCard}
+        {kind === 'rite' && reminderCard}
         <Button
           label="Keep this as one of the coven’s templates"
           variant="outline"

@@ -218,6 +218,34 @@
 .cv-bubble:hover .cv-msg__actions, .cv-bubble:focus-within .cv-msg__actions { display: flex; }
 @media (hover: none) { .cv-bubble .cv-msg__actions { display: flex; } }
 .cv-thread-info { display: grid; gap: 6px; }
+/* Reactions and reply buttons (covens/coven/chat.js; the app's MessageExtras.tsx). */
+.cv-react { display: flex; flex-wrap: wrap; gap: 4px; padding: 6px; background: rgba(17, 21, 18, 0.95); border: 1px solid var(--line); border-radius: 14px; max-width: min(340px, 86vw); }
+.cv-react__pick { background: none; border: 0; border-radius: 10px; font-size: 1.3rem; min-width: 40px; min-height: 40px; cursor: pointer; }
+.cv-react__pick:hover, .cv-react__pick:focus-visible { background: rgba(255, 255, 255, 0.08); }
+.cv-react__morebtn { font-size: 0.85rem; color: var(--gold, #e2c36d); }
+.cv-react__more { flex-basis: 100%; display: grid; gap: 6px; }
+.cv-react__more input { background: rgba(17, 21, 18, 0.7); color: var(--cream); border: 1px solid var(--line); border-radius: 8px; padding: 6px 8px; font: inherit; min-width: 0; }
+.cv-react__grid { display: flex; flex-wrap: wrap; gap: 2px; max-height: 180px; overflow-y: auto; }
+.cv-react__typed { display: flex; gap: 6px; }
+.cv-react__typed input { flex: 1; }
+.cv-extras { display: grid; gap: 4px; justify-items: inherit; }
+.cv-reactions { display: flex; flex-wrap: wrap; gap: 4px; }
+.cv-reaction { display: inline-flex; align-items: center; border: 1px solid var(--line); border-radius: 999px; background: rgba(255, 255, 255, 0.06); }
+.cv-reaction.is-mine { border-color: var(--gold, #e2c36d); }
+.cv-reaction button { background: none; border: 0; color: var(--cream); font: inherit; cursor: pointer; padding: 3px 4px 3px 8px; }
+.cv-reaction .cv-reaction__count { font-size: 0.8rem; padding: 3px 9px 3px 3px; }
+.cv-replies { display: grid; gap: 3px; justify-items: inherit; }
+.cv-replies__row { display: flex; flex-wrap: wrap; gap: 6px; }
+.cv-reply { background: none; border: 1px solid rgba(226, 195, 109, 0.45); border-radius: 999px; color: var(--cream); font: inherit; font-size: 0.9rem; padding: 5px 12px; cursor: pointer; max-width: 100%; }
+.cv-reply.is-on { background: var(--gold, #e2c36d); color: #102118; border-color: var(--gold, #e2c36d); }
+.cv-reply:disabled { opacity: 0.6; cursor: default; }
+.cv-replies__tally { background: none; border: 0; color: var(--muted); font: inherit; font-size: 0.78rem; text-decoration: underline; cursor: pointer; padding: 2px 0; }
+.cv-who { font-size: 0.8rem; color: var(--muted); }
+.cv-who p { margin: 0; }
+.cv-buttons { display: grid; gap: 8px; }
+.cv-buttons__head { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+.cv-buttons__custom { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 6px; }
+.cv-buttons__custom input { background: rgba(17, 21, 18, 0.7); color: var(--cream); border: 1px solid var(--line); border-radius: 8px; padding: 6px 8px; font: inherit; min-width: 0; }
 
 /* --- the coven's altars (covens/coven/altar.js) ------------------------------------ */
 .cv-altars { display: grid; gap: 14px; }

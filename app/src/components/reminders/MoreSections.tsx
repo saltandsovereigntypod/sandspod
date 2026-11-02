@@ -311,6 +311,24 @@ export function CovensSection({ prefs, update, userId }: Props & { userId: strin
             }}
           />
           <Toggle
+            label="Reactions to my messages"
+            detail="Someone in a coven reacts to a message you wrote"
+            value={prefs.messages.reactions}
+            onChange={(on) => {
+              update(withChange(prefs, 'messages.reactions', on));
+              andDevice(on);
+            }}
+          />
+          <Toggle
+            label="Answers to my reply buttons"
+            detail="How people answered a message of yours with reply buttons, gathered into one note every few minutes"
+            value={prefs.messages.answers}
+            onChange={(on) => {
+              update(withChange(prefs, 'messages.answers', on));
+              andDevice(on);
+            }}
+          />
+          <Toggle
             label="Mentorship"
             detail="Being asked or paired, the answer, messages and check-ins from your mentor or mentee"
             value={prefs.together.mentorship}
