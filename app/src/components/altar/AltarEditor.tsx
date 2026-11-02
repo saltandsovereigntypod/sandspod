@@ -84,6 +84,8 @@ import { SPELLS_COLLECTION, spellToday, tickSpell, type SpellEntry } from '../..
 import { AltarOptionsSheet, FlameReadingSheet, IncenseSheet, OfferingSheet } from './LivingSheets';
 import { PetitionBoxSheet, WritePetitionSheet } from './PetitionSheets';
 import { useCandleAmbience, useCandleFeel } from '../../lib/altar/feel';
+import { CLEANSE_LABEL, isBell, RING_LABEL } from '../../lib/altar/bell';
+import { useAltarBell } from '../../lib/altar/useAltarBell';
 import { ALTAR_OPTIONS, altarOptionsFor, defaultAltarOptions, type AltarOptions } from '../../lib/altar/altarOptions';
 import { ambientAt, moonMirrored, nextAmbientCheck } from '../../lib/altar/ambient';
 import { burnToRead, lastBurn, linkReadingJournal, readingsOf, readingText, recordReading, remnantOf, setRemnant, type ReadingInput } from '../../lib/altar/ceromancy';
@@ -867,6 +869,8 @@ export function AltarEditor({ shared, header, overlay, onBack, whose }: { shared
     const timer = setTimeout(() => setMoment(null), MOMENT_MS + 200);
     return () => clearTimeout(timer);
   }, [moment]);
+  // The altar bell: rung here, and on a coven altar heard from the others (lib/altar/bell.ts).
+  const ringBell = useAltarBell(shared, workshop.userId ?? '', (uid) => playMoment([uid], ['Bell']), setNotice);
 
   // Record a group, or with nothing selected the whole altar, in the Grimoire
   // as a ritual page (groups.js sendCurrentGroupToGrimoire / sendAltarToGrimoire).
@@ -1520,6 +1524,7 @@ export function AltarEditor({ shared, header, overlay, onBack, whose }: { shared
                 setNotice(`${shortLabel(doc.objects[result.partner].label)} now mirrors it across the altar.`);
               },
               read: () => setSheet('reading'),
+              ring: (kind) => ringBell(kind, selectedUid),
               offer: () => setSheet('offering'),
               refreshOffering: () => {
                 changeSelected((o) => refreshOffering(o, nowIso()));
@@ -2420,6 +2425,8 @@ type Actions = {
   tonight: () => void;
   mirror: () => void;
   read: () => void;
+  /** Ring the bell once, or three times to cleanse the space. */
+  ring: (kind: 'ring' | 'cleanse') => void;
   offer: () => void;
   refreshOffering: () => void;
   leaveOffering: () => void;
@@ -2781,6 +2788,13 @@ function ObjectPanel({
           )}
           <Button label="Burn, bury or release it" variant="outline" onPress={act.petitions} />
         </View>
+      )}
+
+      {isBell(object) && (
+        <>
+          <Button label={RING_LABEL} onPress={() => act.ring('ring')} />
+          <Button label={CLEANSE_LABEL} variant="outline" onPress={() => act.ring('cleanse')} />
+        </>
       )}
 
       {candle && (

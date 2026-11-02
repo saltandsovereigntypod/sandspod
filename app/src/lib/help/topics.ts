@@ -744,8 +744,11 @@ export const HELP: HelpSection[] = [
           'Or choose Tools for divination tools, cords and wax, candle care, drums and bowls, lamps and figures.',
           'Each says a few words about itself. Tap one to place it.',
         ],
-        tips: ['An oil lamp, lantern or salt lamp is set down glowing. Tap "Glow" to turn it off or on.'],
-        keywords: ['natural', 'feathers', 'hag stone', 'shells', 'sea glass', 'acorns', 'antler', 'scrying mirror', 'crystal ball', 'red cord', 'witch’s ladder', 'lantern', 'oil lamp', 'singing bowl', 'drum', 'stang'],
+        tips: [
+          'An oil lamp, lantern or salt lamp is set down glowing. Tap "Glow" to turn it off or on.',
+          'Tap a bell on your altar for "Ring the bell" (one chime) or "Ring to cleanse the space" (three chimes). Ringing to cleanse marks your own Cleansing thing on To tend done today, "Sound / bells". On a coven altar everyone there hears it. The chime follows Candle sounds in Accessibility.',
+        ],
+        keywords: ['natural', 'feathers', 'hag stone', 'shells', 'sea glass', 'acorns', 'antler', 'scrying mirror', 'crystal ball', 'red cord', 'witch’s ladder', 'lantern', 'oil lamp', 'singing bowl', 'drum', 'stang', 'bell', 'ring the bell', 'cleanse the space'],
       },
       {
         id: 'altar-seasonal',

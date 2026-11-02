@@ -3,7 +3,8 @@
 // real ones make: the soft sound of them burning, dry crackles now and then,
 // sharp pops when there are herbs dressed into the wax, and little sputters
 // from oil. Quiet, mixed with whatever else is playing, and silent when the
-// phone's ring switch is off. Each can be turned off in Accessibility.
+// phone's ring switch is off. Each can be turned off in Accessibility. The
+// altar bell (bell.ts) rings through here too, under Candle sounds.
 
 import { createAudioPlayer, setAudioModeAsync, type AudioPlayer } from 'expo-audio';
 import * as Haptics from 'expo-haptics';
@@ -49,13 +50,16 @@ const SPUTTERS: Sound[] = ['sputter1', 'sputter2', 'sputter3', 'sputter4'];
 const players = new Map<Sound, AudioPlayer>();
 let modeSet = false;
 
+function setMode() {
+  if (modeSet) return;
+  modeSet = true;
+  // Sound effects: alongside music or a podcast, and quiet with the ring switch off.
+  void setAudioModeAsync({ playsInSilentMode: false, interruptionMode: 'mixWithOthers', shouldPlayInBackground: false }).catch(() => {});
+}
+
 function player(sound: Sound): AudioPlayer | null {
   try {
-    if (!modeSet) {
-      modeSet = true;
-      // Sound effects: alongside music or a podcast, and quiet with the ring switch off.
-      void setAudioModeAsync({ playsInSilentMode: false, interruptionMode: 'mixWithOthers', shouldPlayInBackground: false }).catch(() => {});
-    }
+    setMode();
     let p = players.get(sound);
     if (!p) {
       p = createAudioPlayer(SOUNDS[sound]);
@@ -76,6 +80,43 @@ function play(sound: Sound, volume: number) {
   } catch {
     // A sound that can't play is simply not heard.
   }
+}
+
+/** The altar bell (synthesised, see bell.ts): three players, so a chime rings on under the next. */
+const BELL = require('../../../assets/sounds/bell-chime.mp3');
+const bells: AudioPlayer[] = [];
+let nextBell = 0;
+
+function chime(volume: number) {
+  try {
+    setMode();
+    const i = nextBell++ % 3;
+    if (!bells[i]) bells[i] = createAudioPlayer(BELL);
+    const p = bells[i];
+    p.volume = volume;
+    void p.seekTo(0).then(() => p.play()).catch(() => p.play());
+  } catch {
+    // A bell that can't sound is simply not heard.
+  }
+}
+
+/**
+ * Ring the altar bell `times` times, `gapMs` apart: each chime heard (when
+ * sound is on), a soft tap (when vibration is), and `onChime` for the ripple.
+ * Returns a function that stops any chimes still to come.
+ */
+export function ringBell(times: number, gapMs: number, sound: boolean, haptics: boolean, onChime: (i: number) => void): () => void {
+  const timers: ReturnType<typeof setTimeout>[] = [];
+  for (let i = 0; i < times; i++) {
+    timers.push(
+      setTimeout(() => {
+        if (sound) chime(0.8);
+        if (haptics) tap(Haptics.ImpactFeedbackStyle.Light);
+        onChime(i);
+      }, i * gapMs),
+    );
+  }
+  return () => timers.forEach(clearTimeout);
 }
 
 const pick = <T,>(list: T[]) => list[Math.floor(Math.random() * list.length)];
