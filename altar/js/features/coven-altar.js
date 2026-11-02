@@ -77,6 +77,7 @@
       /* the page's own flag; nothing to clear */
     }
     push();
+    deedChanged();
     return true;
   };
 
@@ -588,6 +589,80 @@
   // Once the page's own scripts have set the stage up (events.js would restore your draft at 500ms; this replaces that).
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", () => global.setTimeout(start, 50), { once: true });
   else global.setTimeout(start, 50);
+
+  // ── A ritual step done here for real (app lib/covens/altarActions.ts) ──
+  // The step's button opens the same sheet as the altar's own (the petition
+  // writer, the offering picker…), or lights the candle. Once that work has
+  // changed the altar (or, for an intention, gratitude or scrying, once its
+  // sheet is closed) it is the person's Done for the step: onDone.
+  let deed = null;
+  const KEEPS = ["intention", "gratitude", "scry"];
+  const NO_SHEET = ["light", "incense", "place"];
+  function deedChanged() {
+    if (!deed) return;
+    deed.changed = true;
+    if (NO_SHEET.includes(deed.kind)) finishDeed();
+  }
+  function finishDeed() {
+    const done = deed?.onDone;
+    deed = null;
+    done?.();
+  }
+  // Sheets are <dialog class="app-sheet">; a petition is placed just after its sheet closes.
+  global.document.addEventListener("close", (event) => {
+    if (!deed || NO_SHEET.includes(deed.kind) || !event.target?.classList?.contains("app-sheet")) return;
+    const mine = deed;
+    global.setTimeout(() => {
+      if (deed !== mine) return;
+      if (mine.changed || KEEPS.includes(mine.kind)) finishDeed();
+      else deed = null;
+    }, 1500);
+  }, true);
+  function startDeed(kind, onDone) {
+    const AA = global.SaltCore?.covens?.altarActions;
+    const core = global.SaltCore?.altar;
+    const app = global.AltarApp;
+    if (!AA?.isAltarDeed(kind) || !core || !app) return false;
+    deed = { kind, onDone, changed: false };
+    const els = app.objects();
+    const find = (test) => els.find((el) => test(app.toSaved(el)));
+    const toCabinet = (what) => {
+      app.notice(what ? `There’s no ${what} on the altar yet. Set one down from the cabinet first.` : "Choose something from the cabinet to set on the altar.");
+      const toggle = global.document.querySelector(".altar-mobile-cabinet-toggle");
+      if (toggle && toggle.offsetParent && toggle.getAttribute("aria-expanded") !== "true") toggle.click();
+      else global.document.querySelector(".altar-cabinet")?.scrollIntoView({ behavior: "smooth", block: "start" });
+    };
+    const withSelected = (el, what, run) => {
+      if (!el) return toCabinet(what);
+      global.selectObject?.(el);
+      run(el);
+    };
+    const live = core.livingState;
+    const candle = () => find((o) => live.isCandle(o) && !live.candleLife(o).spent);
+    const L = global.AltarLiving;
+    const R = global.AltarReading;
+    const W = global.AltarWorkings;
+    switch (kind) {
+      case "petition": return L?.openWritePetition();
+      case "release": return L?.openPetitionBox();
+      case "intention": return R?.openIntention();
+      case "gratitude": return W?.openGratitude();
+      case "scry": return W?.openScry();
+      case "jar": return W?.openJar();
+      case "sachet": return W?.openSachet();
+      case "card": return R?.openDrawn();
+      case "cord": return global.AltarCords?.openSheet();
+      case "place": return toCabinet("");
+      case "light": return withSelected(find((o) => live.isCandle(o) && !live.isLit(o) && !live.candleLife(o).spent), "unlit candle", (el) => global.executeSelectedObjectAction?.("light", el));
+      case "incense": return withSelected(find((o) => core.incense.isIncense(o) && !core.incense.incenseLife(o).lit), "incense waiting to be lit", () => L?.act("incense"));
+      case "anoint": return withSelected(candle(), "candle", () => L?.act("anoint"));
+      case "carve": return withSelected(candle(), "candle", () => L?.act("carve"));
+      case "offering": return withSelected(find((o) => core.offerings.canHoldOffering(o)), "bowl or dish for an offering", () => L?.act("offer"));
+      case "charge_crystal": return withSelected(find((o) => o.type === "crystal"), "crystal", (el) => global.executeSelectedObjectAction?.("charge", el));
+    }
+    return false;
+  }
+  global.CovenAltarDeed = { start: startDeed };
 
   global.CovenAltarPage = { altarId, slug, norm, changesFrom, status: () => ({ ready, access, problem, unwritten: unwritten.size }) };
 })(window);

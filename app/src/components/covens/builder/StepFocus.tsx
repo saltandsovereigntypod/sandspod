@@ -19,6 +19,7 @@ import { ALTAR_ACCESS } from '../../../lib/covens/draft';
 import { cleanValues, partsOf, type FieldValues } from '../../../lib/covens/fields';
 import { assigneeFromKey, assigneeKey, cleanAssignees, type Assignee, type PickEntry } from '../../../lib/covens/picker';
 import { LEADER_ENDER, stepEnder } from '../../../lib/covens/stepFlow';
+import { atAltarActions, atAltarOf, atAltarStep, DEED_CHOICES } from '../../../lib/covens/altarActions';
 import { actionLabel, ALTAR_EFFECTS, applyAction, groupsFor, searchActions, type ActionGroup, type StepAction } from '../../../lib/covens/stepActions';
 import { HIDDEN_PAGE } from '../../../lib/grimoire/access';
 import { colors, fonts, radius, touch, type } from '../../../theme';
@@ -89,7 +90,8 @@ export function StepFocus({
   const [more, setMore] = useState(false);
   const [linking, setLinking] = useState(false);
   const [pageQuery, setPageQuery] = useState('');
-  const found = useMemo(() => (query.trim() ? searchActions(query, kind) : group ? searchActions('', kind).filter((a) => a.group === group) : []), [query, group, kind]);
+  // "At the altar" lists the things done there for real, under their plain names (altarActions.ts).
+  const found = useMemo(() => (query.trim() ? searchActions(query, kind) : group === 'altar' ? atAltarActions() : group ? searchActions('', kind).filter((a) => a.group === group) : []), [query, group, kind]);
   const specs = specsOf(step, custom);
   const values = cleanValues(specs, step.details.fields);
   // Each part (a direction) has its own words, so the step's own aren't asked for.
@@ -102,12 +104,14 @@ export function StepFocus({
   const choose = (a: StepAction | null) => {
     setChoosing(false);
     setQuery('');
-    if (!a) return onChange({ action: '', details: { ...step.details, custom_action: undefined } });
-    onChange({ ...applyAction(a), details: { ...step.details, custom_action: undefined, fields: {} } });
+    if (!a) return onChange({ action: '', details: { ...step.details, custom_action: undefined, at_altar: undefined } });
+    const atAltar = (group === 'altar' && !query.trim()) || a.group === 'altar' ? atAltarStep(a.id) : null;
+    if (atAltar) return onChange({ ...atAltar, details: { ...step.details, custom_action: undefined, fields: {}, ender: undefined, ...atAltar.details } });
+    onChange({ ...applyAction(a), details: { ...step.details, custom_action: undefined, at_altar: undefined, fields: {} } });
   };
   const chooseCustom = (c: CustomAction) => {
     setChoosing(false);
-    onChange({ ...applyCustomAction(c), details: { ...step.details, custom_action: c.id, fields: {} } });
+    onChange({ ...applyCustomAction(c), details: { ...step.details, custom_action: c.id, at_altar: undefined, fields: {} } });
   };
 
   // Who: the gathering's roles (toggled), and positions, people or the whole coven.
@@ -132,6 +136,7 @@ export function StepFocus({
   const linkedPage = step.details.book_page_id ? pages.find((p) => p.id === step.details.book_page_id) : undefined;
   const linked = step.details.book_page_id ? (linkedPage && !linkedPage.hidden ? linkedPage : { id: step.details.book_page_id, title: linkedPage?.hidden || pages.length ? HIDDEN_PAGE : (step.details.book_page_title ?? 'A page of the Book'), section: null }) : null;
   const pageMatches = pages.filter((p) => !p.hidden).filter((p) => !pageQuery.trim() || `${p.title} ${p.section ?? ''}`.toLowerCase().includes(pageQuery.trim().toLowerCase())).slice(0, 8);
+  const atAltar = atAltarOf(step);
   const effect = ALTAR_EFFECTS.find((e) => e.value === step.altar_action) ?? ALTAR_EFFECTS[0];
 
   if (choosing) {
@@ -235,7 +240,22 @@ export function StepFocus({
       )}
 
       <Card>
-        <Text style={type.eyebrow}>Place on the altar</Text>
+        {/* At the altar: what each person does there for real (altarActions.ts), what the shared altar does by itself, and what goes on it. */}
+        <Text style={type.eyebrow}>At the altar</Text>
+        <Chips
+          label="Done at the altar"
+          options={DEED_CHOICES}
+          value={atAltar?.deed ?? ''}
+          onChange={(v) => onChange({ details: { ...step.details, at_altar: v || undefined } })}
+        />
+        <Text style={type.caption}>
+          {atAltar
+            ? `Each person’s step shows “${atAltar.button}”, which opens it at the coven’s altar. Doing it counts as their Done.`
+            : 'Choose something each person does for real at the coven’s altar, or leave it at nothing.'}
+        </Text>
+        <Text style={type.eyebrow}>And by itself</Text>
+        <Chips label="What the shared altar does by itself" options={ALTAR_EFFECTS.map((e) => ({ value: e.value, label: e.label }))} value={step.altar_action} onChange={(v) => onChange({ altar_action: v })} />
+        <Text style={type.caption}>{effect.detail}</Text>
         <SearchPicker
           label="Items to place"
           hint="Exactly what goes on the coven altar. Each ticks off as it is placed."
@@ -338,9 +358,6 @@ export function StepFocus({
           </Card>
 
           <Card>
-            <Text style={type.eyebrow}>On the altar</Text>
-            <Chips label="On the altar" options={ALTAR_EFFECTS.map((e) => ({ value: e.value, label: e.label }))} value={step.altar_action} onChange={(v) => onChange({ altar_action: v })} />
-            <Text style={type.caption}>{effect.detail}</Text>
             <Text style={type.eyebrow}>Who tends the altar during it</Text>
             <Chips label="Who tends the altar during it" options={ALTAR_ACCESS} value={step.altar_access} onChange={(v) => onChange({ altar_access: v })} />
             {step.altar_access === 'chosen' && (

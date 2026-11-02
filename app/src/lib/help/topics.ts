@@ -3750,11 +3750,12 @@ export const HELP: HelpSection[] = [
           'Open your coven, then "Rituals and rites". Those who can lead rituals tap "Plan a ritual".',
           'Name it, add its intention and what members should know or bring, choose an occasion and a day from "Coming moons and holidays", then add its steps. Each step asks five things in turn: what happens (one line), "Who does it?" (one at a time, everyone together, or one person), "Place on the altar" and "What to do with them", "Words", and "Who moves it on" (the leader unless you choose someone else). "Copy steps from one of your rituals" starts from your own.',
           'Tap "Read it through", then "What members will see", to read the pop-up each step will show everyone. Anything worth a second look (a candle spoken of but none placed, turns for a role no one plays yet) shows under the outline.',
+          'Under "At the altar", choose a step that is done for real at the coven’s altar: write a petition or an intention, make an offering, light a candle, burn incense, place an item, draw a card, burn, bury or release a petition, anoint or carve a candle, charge a crystal or water, make a spell jar or sachet, tie a cord or scry. During the ritual its button opens the same writer, picker or candle at the altar, and doing it counts as your Done.',
           'Tap "Plan the ritual", then "Put it on the calendar" when it is ready.',
           'Members answer "Will you be there?": Going, Maybe or Can’t make it. When it begins, tap "Join the ritual"; when a step is yours, "Open the ritual" shows on the coven’s page.',
           'Whoever leads taps "Start the ritual", moves with "Skip to the next step" or "Back a step", and finishes with "End the ritual".',
         ],
-        keywords: ['coven ritual', 'group ritual', 'rite', 'esbat', 'sabbat', 'rsvp', 'circle', 'plan ritual', 'who moves it on', 'what members will see'],
+        keywords: ['coven ritual', 'group ritual', 'rite', 'esbat', 'sabbat', 'rsvp', 'circle', 'plan ritual', 'who moves it on', 'what members will see', 'at the altar', 'petition at the altar'],
       },
       {
         id: 'covens-ritual-steps',

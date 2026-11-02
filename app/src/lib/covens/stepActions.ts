@@ -23,9 +23,11 @@ export const ALTAR_EFFECTS: { value: AltarEffect; label: string; detail: string 
   { value: 'release_papers', label: 'Release the papers', detail: 'The folded papers set down earlier in the ritual are burned, buried or released, each as its step said.' },
 ];
 
-export type ActionGroup = 'opening' | 'fire' | 'offerings' | 'words' | 'work' | 'closing' | 'meeting';
+export type ActionGroup = 'altar' | 'opening' | 'fire' | 'offerings' | 'words' | 'work' | 'closing' | 'meeting';
 
 export const ACTION_GROUPS: { id: ActionGroup; label: string }[] = [
+  // Things done for real at the coven's altar (altarActions.ts): the ones below, and others' own.
+  { id: 'altar', label: 'At the altar' },
   { id: 'opening', label: 'Opening' },
   { id: 'fire', label: 'Candles and fire' },
   { id: 'offerings', label: 'Offerings' },
@@ -96,6 +98,15 @@ export const STEP_ACTIONS: StepAction[] = [
   { id: 'carve_candle', group: 'fire', name: 'Carve a candle', directions: 'With a pin or the tip of your athame, carve a word, name, rune or sigil into the candle’s wax.', effect: '', minutes: 4, suggestItems: ['athame', 'white candle'], keywords: ['carve', 'inscribe', 'sigil', 'rune'] },
   { id: 'snuff_candle', group: 'fire', name: 'Put out a candle', label: 'Snuff one candle', directions: 'Put out the candle with a snuffer or your fingers rather than blowing on it, and thank its flame.', effect: '', minutes: 1, suggestItems: ['snuffer'], keywords: ['snuff', 'extinguish', 'put out'] },
   { id: 'snuff_all', group: 'fire', name: 'Put out the candles', label: 'Snuff every candle', directions: 'Put out every candle on the altar, one by one, thanking each flame.', effect: 'snuff_all', minutes: 2, keywords: ['snuff', 'extinguish', 'put out'] },
+
+  // ── At the altar (altarActions.ts lists these with the others done there) ──
+  { id: 'set_item', group: 'altar', name: 'Place an item', directions: 'Choose something from the altar cabinet and set it on the altar, saying what it is there for.', effect: '', minutes: 2, keywords: ['place', 'item', 'cabinet', 'set down'] },
+  { id: 'draw_card', group: 'altar', name: 'Draw a card', directions: 'Draw a card or rune for the coven, or for yourself, and lay it on the altar. Sit with it a moment before you say what you see.', effect: '', minutes: 4, keywords: ['card', 'tarot', 'rune', 'draw', 'oracle'] },
+  { id: 'charge_crystal', group: 'altar', name: 'Charge a crystal', directions: 'Hold the crystal, breathe slowly and put your intention into it, or set it in the light of the candle or the moon.', effect: '', minutes: 3, suggestItems: ['quartz'], keywords: ['crystal', 'charge', 'stone'] },
+  { id: 'charge_water', group: 'altar', name: 'Charge water', directions: 'Set out water in a bowl or chalice on the altar to take in the rite (or the moon, if it stays out overnight). Say what it is for.', effect: '', minutes: 2, suggestItems: ['chalice', 'water'], keywords: ['water', 'moon water', 'charge', 'bowl'] },
+  { id: 'make_jar', group: 'altar', name: 'Make a spell jar', directions: 'Fill a jar with what the working calls for, one thing at a time, saying why each goes in. Seal it and set it on the altar.', effect: '', minutes: 8, suggestItems: ['jar', 'salt', 'herbs'], keywords: ['jar', 'bottle', 'spell jar', 'witch bottle'] },
+  { id: 'make_sachet', group: 'altar', name: 'Make a sachet', directions: 'Fill a small pouch with herbs, stones and a written word, tie it shut and set it on the altar.', effect: '', minutes: 6, suggestItems: ['pouch', 'herbs'], keywords: ['sachet', 'pouch', 'mojo', 'herbs'] },
+  { id: 'scry', group: 'altar', name: 'Scry', directions: 'Gaze softly into dark water, a mirror or the flame. Let shapes come and go, and note what you see before you speak of it.', effect: '', minutes: 8, suggestItems: ['scrying bowl', 'water'], keywords: ['scry', 'scrying', 'mirror', 'water', 'gaze'] },
 
   // ── Offerings ────────────────────────────────────────────────────────
   { id: 'place_offering', group: 'offerings', name: 'Place an offering', directions: 'Set the offering on the altar with both hands and say who it is for.', words: 'This we give with open hands and grateful hearts.', effect: 'place_item', minutes: 2, suggestItems: ['bread', 'apple', 'honey', 'flowers'], keywords: ['offering', 'give', 'gift'] },
