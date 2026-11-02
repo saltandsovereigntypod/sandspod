@@ -158,6 +158,17 @@ Deno.serve(async (request) => {
   const service = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
   if (!url || !anon || !service) return reply(503, { error: "function_not_configured" });
 
+  // The once-a-minute scheduled job (pg_cron + pg_net, migration 20261124)
+  // calls with the anon key and the secret kept in Vault as coven_cron_secret,
+  // checked by coven_cron_ok (callable with the service key only).
+  const cronSecret = request.headers.get("x-cron-secret");
+  if (cronSecret) {
+    const adminOnly = createClient(url, service, { auth: { persistSession: false } });
+    const { data: ok } = await adminOnly.rpc("coven_cron_ok", { p_secret: cronSecret });
+    if (ok !== true) return reply(403, { error: "forbidden" });
+    return reply(200, { sent: (await dueReminders(adminOnly, null)) + (await waitingAnswers(adminOnly)) });
+  }
+
   // The delete-account function calls with the service key, for the leadership
   // changes made as an account closes (coven_hand_on_departing); nothing else may.
   if (authorization === `Bearer ${service}`) {
