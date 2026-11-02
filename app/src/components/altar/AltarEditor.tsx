@@ -1402,7 +1402,7 @@ export function AltarEditor({
     const pending = pendingDeed.current;
     if (!pending || pending.kind !== kind) return;
     // A coven altar you can't tend right now keeps it as it was (commit says why): not done yet.
-    if (sharedRef.current && !sharedRef.current.canEdit && kind !== 'intention' && kind !== 'gratitude' && kind !== 'scry') return;
+    if (sharedRef.current && !sharedRef.current.canEdit && kind !== 'intention' && kind !== 'gratitude' && kind !== 'scry' && kind !== 'bell') return;
     pendingDeed.current = null;
     pending.onDone();
   };
@@ -1466,6 +1466,13 @@ export function AltarEditor({
         if (i < 0) return toCabinet('crystal');
         setSelected(i);
         return setCrystalMode('charge');
+      }
+      case 'bell': {
+        const i = find((o) => isBell(o));
+        if (i < 0) return toCabinet('bell');
+        setSelected(i);
+        ringBell('ring', String(objects[i]?.altarObjectId || ''));
+        return finishDeed('bell');
       }
     }
   };

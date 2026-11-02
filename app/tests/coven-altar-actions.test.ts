@@ -3,7 +3,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 
-import { ALTAR_DEEDS, AT_ALTAR, atAltarActions, atAltarOf, atAltarStep, deedFinish, deedQuery, isAltarDeed } from '../src/lib/covens/altarActions.ts';
+import { ALTAR_DEEDS, altarChoiceGroups, altarChoiceNote, altarChoicesOf, applyAltarChoice, AT_ALTAR, atAltarActions, atAltarOf, atAltarStep, deedFinish, deedQuery, isAltarDeed } from '../src/lib/covens/altarActions.ts';
 import { actionOf, actionsByGroup, groupsFor } from '../src/lib/covens/stepActions.ts';
 import { blankPlan, builderPayload, builderStepFrom, blankBuilderStep } from '../src/lib/covens/builder.ts';
 import { stepEnder, stepWithItems } from '../src/lib/covens/stepFlow.ts';
@@ -15,7 +15,7 @@ test('every altar step names a real action, once, with a plain name and a button
     assert.ok(row.name && row.button && !/!/.test(row.button + row.name), row.action);
   }
   assert.equal(new Set(AT_ALTAR.map((r) => r.action)).size, AT_ALTAR.length);
-  for (const deed of ['petition', 'intention', 'offering', 'light', 'incense', 'place', 'card', 'release', 'anoint', 'charge_crystal']) assert.ok(isAltarDeed(deed) && ALTAR_DEEDS.includes(deed as never), deed);
+  for (const deed of ['petition', 'intention', 'offering', 'light', 'incense', 'place', 'card', 'release', 'anoint', 'charge_crystal', 'bell']) assert.ok(isAltarDeed(deed) && ALTAR_DEEDS.includes(deed as never), deed);
   assert.equal(isAltarDeed('rotate'), false);
 });
 
@@ -38,7 +38,9 @@ test('choosing one fills in its five parts', () => {
   assert.equal(petition.altar_action, '');
   assert.equal(petition.contribution, null, 'the altar’s writer takes the words, not the ritual');
   assert.equal(petition.details.at_altar, 'petition');
-  assert.equal(stepWithItems(petition), 'Fold it into the petition box, or beneath a candle.');
+  assert.ok(petition.instructions.endsWith('Fold it into the petition box, or beneath a candle.'), 'one "What to do"');
+  assert.equal(stepWithItems(petition), '');
+  assert.equal(petition.details.at_altar_as, 'write_petition');
   assert.equal(stepEnder(petition), 'leader');
   assert.equal(atAltarStep('light_candle')!.turn_mode, 'in_turn');
   assert.equal(atAltarStep('vote'), null);
@@ -61,4 +63,34 @@ test('doing it at the altar is your Done, and passes your turn', () => {
   assert.deepEqual(deedFinish({ turn_mode: 'in_turn', turn_order: ['u2', 'u1'], turn_at: 0 }, 'u1'), { done: true, passTurn: false });
   assert.deepEqual(deedFinish({ turn_mode: 'in_turn' }, null), { done: false, passTurn: false });
   assert.equal(deedQuery('petition', 'a b'), 'do=petition&step=a%20b');
+});
+
+test('the step’s one "At the altar" choice: done there, asked of people, or the altar by itself', () => {
+  const groups = altarChoiceGroups();
+  const values = groups.flatMap((g) => g.options.map((o) => o.value));
+  assert.equal(new Set(values).size, values.length, 'nothing listed twice');
+  assert.ok(values.includes('deed:write_petition') && values.includes('deed:ring_bell') && values.includes('deed:pour_libation'));
+  assert.ok(values.includes('ask:vow') && !values.includes('ask:petition'), 'a petition is written at the altar, not twice');
+  assert.ok(values.includes('effect:snuff_all') && !values.includes('effect:'));
+  assert.ok(altarChoiceGroups(['ask:petition']).some((g) => g.options.some((o) => o.value === 'ask:petition')), 'an older step keeps its own');
+
+  const blank = { ...blankBuilderStep('work'), instructions: '' };
+  const libation = applyAltarChoice(blank, 'deed:pour_libation');
+  assert.equal(libation.details.at_altar, 'offering');
+  assert.equal(atAltarOf({ ...blank, ...libation, action: 'custom' })?.button, 'Pour your libation');
+  assert.ok(libation.instructions && libation.instructions.length > 10, 'fills in what to do when empty');
+  assert.equal(applyAltarChoice({ ...blank, instructions: 'Mine.' }, 'deed:pour_libation').instructions, undefined, 'keeps what was written');
+  assert.deepEqual(altarChoicesOf({ ...blank, ...libation }), ['deed:pour_libation']);
+  assert.match(altarChoiceNote({ ...blank, ...libation }), /Pour your libation/);
+
+  const vow = applyAltarChoice({ ...blank, ...libation }, 'ask:vow');
+  assert.equal(vow.contribution?.kind, 'vow');
+  assert.equal(vow.details.at_altar, undefined);
+  const snuff = applyAltarChoice({ ...blank, ...vow }, 'effect:snuff_all');
+  assert.equal(snuff.altar_action, 'snuff_all');
+  assert.equal(snuff.contribution, null);
+  const none = applyAltarChoice({ ...blank, ...snuff }, '');
+  assert.deepEqual(altarChoicesOf({ ...blank, ...none }), []);
+  // A step saved with both a contribution and the altar's own change shows both.
+  assert.deepEqual(altarChoicesOf({ action: 'x', details: {}, altar_action: 'light_candle', contribution: { kind: 'petition' } }), ['ask:petition', 'effect:light_candle']);
 });

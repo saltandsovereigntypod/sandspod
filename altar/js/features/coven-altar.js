@@ -604,7 +604,7 @@
   // sheet is closed) it is the person's Done for the step: onDone.
   let deed = null;
   const KEEPS = ["intention", "gratitude", "scry"];
-  const NO_SHEET = ["light", "incense", "place"];
+  const NO_SHEET = ["light", "incense", "place", "charge_crystal"];
   function deedChanged() {
     if (!deed) return;
     deed.changed = true;
@@ -666,6 +666,10 @@
       case "carve": return withSelected(candle(), "candle", () => L?.act("carve"));
       case "offering": return withSelected(find((o) => core.offerings.canHoldOffering(o)), "bowl or dish for an offering", () => L?.act("offer"));
       case "charge_crystal": return withSelected(find((o) => o.type === "crystal"), "crystal", (el) => global.executeSelectedObjectAction?.("charge", el));
+      case "bell": return withSelected(find((o) => o.type === "tool" && o.tool === "bell"), "bell", (el) => {
+        global.AltarBell?.ring(el, "ring");
+        finishDeed();
+      });
     }
     return false;
   }
