@@ -33,6 +33,15 @@
   const RD = () => global.SaltCore?.covens?.reading || null;
   let readings = new Map();
   let beginning = false;
+  // Reactions and reply buttons (the app's lib/covens/messageExtras.ts): what's
+  // on the thread's messages, the message whose reaction row is open, and the
+  // reply buttons being added to the next message.
+  const MX = () => global.SaltCore?.covens?.messageExtras || null;
+  let reactions = [];
+  let answers = [];
+  let reactingId = null;
+  let emojiGrid = false;
+  let draftButtons = null; // { preset, custom: [4], ritual } while "Add reply buttons" is open
 
   let pane = null;
   let state = null;
@@ -204,7 +213,9 @@
     const canRemove = own || (!threadId() && (state.perms.moderate || state.perms.site)) || state.perms.site;
     const editable = own && Date.now() - new Date(m.created_at).getTime() < 86400000 && state.standing.ok;
     const blocked = state.context.blocks.includes(m.user_id);
+    const canReact = MX() && state.perms.member && state.standing.ok && (!threadId() || canSend(threadId()));
     return `<div class="cv-msg__actions">
+        ${canReact ? `<button type="button" data-react-open="${esc(m.id)}" aria-expanded="${reactingId === m.id}">React</button>` : ""}
         ${editable ? `<button type="button" data-edit="${esc(m.id)}">Edit</button>` : ""}
         ${canRemove ? `<button type="button" data-remove="${esc(m.id)}">${own ? "Delete" : "Remove"}</button>` : ""}
         ${own ? "" : `<button type="button" data-report="${esc(m.id)}">Report</button>`}
@@ -229,6 +240,63 @@
       </section>`;
   }
 
+  /** The reaction row for one message: the quick ones, "More" (a searchable grid, or type any one emoji). */
+  function reactRowHtml(m) {
+    const X = MX();
+    if (!X || reactingId !== m.id) return "";
+    const quick = X.QUICK_REACTIONS.map((e) => `<button type="button" class="cv-react__pick" data-react="${esc(e)}" data-message="${esc(m.id)}" aria-label="React with ${esc(e)}">${esc(e)}</button>`).join("");
+    const grid = emojiGrid
+      ? `<div class="cv-react__more">
+          <label class="sr-only" for="cv-emoji-search">Search emoji</label>
+          <input id="cv-emoji-search" data-emoji-search placeholder="Search: moon, heart, herb…" autocomplete="off" />
+          <div class="cv-react__grid" data-emoji-grid>${X.searchEmoji("").map((e) => `<button type="button" class="cv-react__pick" data-react="${esc(e)}" data-message="${esc(m.id)}" aria-label="React with ${esc(e)}">${esc(e)}</button>`).join("")}</div>
+          <form class="cv-react__typed" data-emoji-typed="${esc(m.id)}"><label class="sr-only" for="cv-emoji-typed">Type any one emoji</label><input id="cv-emoji-typed" name="emoji" maxlength="16" placeholder="Or type any one emoji" /><button class="button button--ghost button--small" type="submit">React</button></form>
+        </div>`
+      : "";
+    return `<div class="cv-react" role="group" aria-label="React to this message">${quick}<button type="button" class="cv-react__pick cv-react__morebtn" data-emoji-more aria-expanded="${emojiGrid}">More</button>${grid}</div>`;
+  }
+
+  /** Under a message: its reply buttons and tally, and its reactions (tap the emoji to add or take back yours, the number to see who). */
+  function extrasHtml(m) {
+    const X = MX();
+    if (!X || m.deleted_at || m.hidden) return "";
+    const blocks = state.context.blocks;
+    const groups = X.reactionGroups(reactions, m.id, me(), blocks);
+    const buttons = X.buttonsOf(m);
+    if (!groups.length && !buttons) return "";
+    const may = state.perms.member && state.standing.ok && (!threadId() || canSend(threadId()));
+    let replies = "";
+    if (buttons) {
+      const tally = X.answerTally(buttons, answers, m.id, me(), blocks);
+      const mine = X.myAnswer(answers, m.id, me());
+      replies = `<div class="cv-replies">
+          <div class="cv-replies__row">${buttons.labels.map((label, i) => `<button type="button" class="cv-reply${mine === i ? " is-on" : ""}" data-answer="${i}" data-message="${esc(m.id)}" aria-pressed="${mine === i}"${may ? "" : " disabled"}>${esc(label)}</button>`).join("")}</div>
+          <button type="button" class="cv-replies__tally" data-who-answers="${esc(m.id)}" aria-expanded="false">${esc(X.tallyWords(tally))}</button>
+          <div class="cv-who" data-who-for="${esc(m.id)}" hidden></div>
+        </div>`;
+    }
+    const chips = groups.length
+      ? `<div class="cv-reactions">${groups
+          .map(
+            (g) => `<span class="cv-reaction${g.mine ? " is-mine" : ""}"><button type="button" data-react="${esc(g.emoji)}" data-message="${esc(m.id)}" aria-label="${esc(X.reactionLabel(g))}. ${g.mine ? "Take yours back" : "Add yours"}"${may ? "" : " disabled"}>${esc(g.emoji)}</button><button type="button" class="cv-reaction__count" data-who-reacted="${esc(g.emoji)}" data-message="${esc(m.id)}" aria-label="See who reacted with ${esc(g.emoji)}">${g.count}</button></span>`
+          )
+          .join("")}</div><div class="cv-who" data-who-react="${esc(m.id)}" hidden></div>`
+      : "";
+    return `<div class="cv-extras">${replies}${chips}</div>`;
+  }
+
+  /** Load the reactions and answers on the messages shown. */
+  async function loadExtras() {
+    if (!MX() || !D.messageExtras) return;
+    const id = threadId();
+    const got = await D.messageExtras(messages.map((m) => m.id)).catch(() => null);
+    if (!got || threadId() !== id) return;
+    reactions = got.reactions;
+    answers = got.answers;
+    await UI.loadNames(state.context, [...reactions, ...answers].map((r) => r.user_id));
+    render();
+  }
+
   function bubbleHtml(item) {
     if (item.kind === "time") return `<p class="cv-day">${esc(item.label)}</p>`;
     const m = item.message;
@@ -242,6 +310,8 @@
         ${item.showName ? `<p class="cv-bubble__name">${esc(m.hidden ? "Blocked" : nameOf(m.user_id))}</p>` : ""}
         <div class="cv-bubble__inner">${body}<time class="cv-bubble__time" datetime="${esc(m.created_at)}">${esc(time)}${m.edited_at && !m.deleted_at ? " · edited" : ""}</time></div>
         ${m.hidden ? "" : actions(m)}
+        ${m.hidden ? "" : reactRowHtml(m)}
+        ${extrasHtml(m)}
       </article>${readings.has(m.id) ? readingHtml(readings.get(m.id)) : ""}`;
   }
 
@@ -268,6 +338,31 @@
         : connection === "SUBSCRIBED" ? "Connected." : "Connecting…";
   }
 
+  /** "Add reply buttons" above the composer: a preset or your own labels, and (the coven's chat) a gathering to link. */
+  function buttonsPanelHtml(conversationId) {
+    const X = MX();
+    let buttonsPanel = "";
+    if (X) {
+      if (!draftButtons) buttonsPanel = `<div class="sp-actions"><button class="button button--ghost button--small" type="button" data-buttons-open>Add reply buttons</button></div>`;
+      else {
+        const d = draftButtons;
+        const upcoming = conversationId ? [] : (state.rituals || []).filter((r) => r.status === "scheduled" && r.scheduled_for && new Date(r.scheduled_for).getTime() > Date.now()).sort((a, b) => String(a.scheduled_for).localeCompare(String(b.scheduled_for))).slice(0, 6);
+        const presetChips = X.REPLY_PRESETS.map((p) => `<button type="button" class="sp-chip${d.preset === p.value ? " is-active" : ""}" data-buttons-preset="${p.value}" aria-pressed="${d.preset === p.value}">${esc(p.label)}</button>`).join("");
+        const custom = d.preset === "custom"
+          ? `<div class="cv-buttons__custom">${d.custom.map((label, i) => `<input data-buttons-label="${i}" maxlength="40" value="${esc(label)}" placeholder="${i < 2 ? `Button ${i + 1}` : `Button ${i + 1} (optional)`}" aria-label="Button ${i + 1}" />`).join("")}</div>`
+          : `<p class="sp-caption">${esc((X.REPLY_PRESETS.find((p) => p.value === d.preset)?.labels || []).join(" · "))}</p>`;
+        const link = d.preset === "gathering" && upcoming.length
+          ? `<div class="sp-field"><label for="cv-buttons-ritual">Link to a gathering (answers set people’s RSVP too)</label><select id="cv-buttons-ritual" data-buttons-ritual><option value="">None</option>${upcoming.map((r) => `<option value="${esc(r.id)}"${d.ritual === r.id ? " selected" : ""}>${esc(r.title)}</option>`).join("")}</select></div>`
+          : "";
+        buttonsPanel = `<div class="sp-card cv-buttons" data-buttons-panel>
+            <div class="cv-buttons__head"><p class="sp-label">Reply buttons</p><button class="button button--ghost button--small" type="button" data-buttons-remove>Remove</button></div>
+            <div class="sp-chips">${presetChips}</div>${custom}${link}
+          </div>`;
+      }
+    }
+    return buttonsPanel;
+  }
+
   function composerHtml(conversationId) {
     if (!state.perms.member) return `<p class="sp-caption">${state.perms.site ? "You’re reading as a site moderator. Join the coven to speak." : "Only members can speak here."}</p>`;
     if (!state.standing.ok) return `<p class="sp-notice">${esc(state.standing.reasons.join(" "))}</p>`;
@@ -283,7 +378,7 @@
           </form>`
         : `<div class="sp-actions"><button class="button button--ghost button--small" type="button" data-reading-open>Begin a coven reading</button></div>`
       : "";
-    return `${begin}<form class="cv-composer" data-composer>
+    return `${begin}<div data-buttons-slot>${buttonsPanelHtml(conversationId)}</div><form class="cv-composer" data-composer>
         <label class="sr-only" for="cv-message">Message</label>
         <textarea id="cv-message" name="body" maxlength="2000" rows="2" placeholder="${esc(placeholder)}" data-placeholder="${esc(placeholder)}" required></textarea>
         <button class="button button--primary" type="submit">Send</button>
@@ -343,6 +438,7 @@
     markRead(id);
     drawList();
     wireThread();
+    loadExtras();
   }
 
   // --- choosing people -------------------------------------------------------------
@@ -428,6 +524,8 @@
     } else global.history.pushState(null, "", threadHref(id));
     infoOpen = false;
     editing = null;
+    reactingId = null;
+    draftButtons = null;
     drawThread();
   }
 
@@ -460,10 +558,20 @@
       const body = textarea.value.trim();
       if (!body) return;
       const target = editing;
-      const sent = await UI.busy(form, status, () => (target ? D.editMessage(target, body) : D.send(state.coven.id, body, null, id)));
+      const X = MX();
+      const buttons = !target && draftButtons && X ? X.cleanReplyButtons({ preset: draftButtons.preset, labels: draftButtons.custom, ritual_id: draftButtons.ritual || undefined }) : null;
+      if (!target && draftButtons && !buttons) {
+        if (status) status.textContent = "Give at least two reply buttons a label, or remove them.";
+        return;
+      }
+      const sent = await UI.busy(form, status, () => (target ? D.editMessage(target, body) : D.send(state.coven.id, body, null, id, buttons)));
       if (!sent) return;
       textarea.value = "";
       resetComposer();
+      if (buttons) {
+        draftButtons = null;
+        redrawButtons();
+      }
       messages = L.applyChange(messages, { eventType: target ? "UPDATE" : "INSERT", new: sent });
       if (!target) previews[id || "coven"] = sent;
       render({ stick: true });
@@ -554,7 +662,122 @@
       go(null);
     });
 
-    holder.querySelector("[data-log]").addEventListener("click", async (event) => {
+    // "Add reply buttons": choose a preset or your own labels, and a gathering to link (the coven's chat).
+    const slot = holder.querySelector("[data-buttons-slot]");
+    const redrawButtons = () => {
+      if (slot) slot.innerHTML = buttonsPanelHtml(id);
+    };
+    slot?.addEventListener("click", (event) => {
+      const b = event.target.closest("button");
+      if (!b) return;
+      if (b.dataset.buttonsOpen !== undefined) draftButtons = { preset: "gathering", custom: ["", "", "", ""], ritual: "" };
+      else if (b.dataset.buttonsRemove !== undefined) draftButtons = null;
+      else if (b.dataset.buttonsPreset) draftButtons = { ...draftButtons, preset: b.dataset.buttonsPreset };
+      else return;
+      redrawButtons();
+    });
+    slot?.addEventListener("input", (event) => {
+      const input = event.target.closest("[data-buttons-label]");
+      if (input && draftButtons) draftButtons.custom = draftButtons.custom.map((l, i) => (i === Number(input.dataset.buttonsLabel) ? input.value : l));
+    });
+    slot?.addEventListener("change", (event) => {
+      if (event.target.matches("[data-buttons-ritual]") && draftButtons) draftButtons = { ...draftButtons, ritual: event.target.value };
+    });
+
+    const log = holder.querySelector("[data-log]");
+    // Reactions: toggle yours (as the app does, at once, then saved).
+    const toggleReaction = async (messageId, emoji) => {
+      const X = MX();
+      if (!X || !me()) return;
+      const on = X.reactionToggle(reactions, messageId, me(), emoji) === "add";
+      const row = { message_id: messageId, user_id: me(), emoji };
+      reactions = X.withReaction(reactions, row, on);
+      reactingId = null;
+      emojiGrid = false;
+      render();
+      try {
+        await D.react(messageId, me(), emoji, on);
+      } catch (error) {
+        reactions = X.withReaction(reactions, row, !on);
+        render();
+        if (status) status.textContent = L.errorMessage(error);
+      }
+    };
+    // Answers: answer, change it, or take it back; a Gathering answer on a linked message sets the RSVP too.
+    const answer = async (messageId, tapped) => {
+      const X = MX();
+      const m = messages.find((x) => x.id === messageId);
+      if (!X || !me() || !m) return;
+      const before = X.myAnswer(answers, messageId, me());
+      const { choice } = X.answerChange(before, tapped);
+      const row = { message_id: messageId, user_id: me(), choice: choice ?? 0, updated_at: new Date().toISOString() };
+      answers = X.withAnswer(answers, row, choice != null);
+      render();
+      try {
+        await D.answerButtons(messageId, me(), choice);
+        const buttons = X.buttonsOf(m);
+        const response = X.rsvpFor(buttons, choice);
+        if (response !== undefined && buttons?.ritual_id) await D.rsvp(buttons.ritual_id, response).catch(() => null);
+      } catch (error) {
+        answers = before == null ? X.withAnswer(answers, row, false) : X.withAnswer(answers, { ...row, choice: before }, true);
+        render();
+        if (status) status.textContent = L.errorMessage(error);
+      }
+    };
+    const whoList = (ids) => ids.map((u) => esc(u === me() ? "You" : nameOf(u))).join(", ");
+    log.addEventListener("input", (event) => {
+      const search = event.target.closest("[data-emoji-search]");
+      const grid = log.querySelector("[data-emoji-grid]");
+      if (!search || !grid || !MX()) return;
+      grid.innerHTML = MX()
+        .searchEmoji(search.value)
+        .map((e) => `<button type="button" class="cv-react__pick" data-react="${esc(e)}" data-message="${esc(reactingId)}" aria-label="React with ${esc(e)}">${esc(e)}</button>`)
+        .join("");
+    });
+    log.addEventListener("submit", (event) => {
+      const form_ = event.target.closest("[data-emoji-typed]");
+      if (!form_) return;
+      event.preventDefault();
+      const emoji = MX()?.oneEmoji(form_.elements.emoji.value);
+      if (emoji) toggleReaction(form_.dataset.emojiTyped, emoji);
+      else if (status) status.textContent = "Type one emoji to react with it.";
+    });
+    log.addEventListener("click", (event) => {
+      const button = event.target.closest("button");
+      if (!button) return;
+      const d = button.dataset;
+      if (d.reactOpen) {
+        reactingId = reactingId === d.reactOpen ? null : d.reactOpen;
+        emojiGrid = false;
+        render();
+        log.querySelector(`[data-id="${CSS.escape(d.reactOpen)}"] .cv-react__pick`)?.focus();
+      } else if (d.emojiMore !== undefined) {
+        emojiGrid = !emojiGrid;
+        render();
+        log.querySelector("[data-emoji-search]")?.focus();
+      } else if (d.react && d.message) toggleReaction(d.message, d.react);
+      else if (d.answer !== undefined && d.message) answer(d.message, Number(d.answer));
+      else if (d.whoAnswers) {
+        const X = MX();
+        const m = messages.find((x) => x.id === d.whoAnswers);
+        const box = log.querySelector(`[data-who-for="${CSS.escape(d.whoAnswers)}"]`);
+        if (!X || !m || !box) return;
+        const tally = X.answerTally(X.buttonsOf(m), answers, m.id, me(), state.context.blocks);
+        box.hidden = !box.hidden;
+        button.setAttribute("aria-expanded", String(!box.hidden));
+        box.innerHTML = tally.filter((t) => t.count).map((t) => `<p><strong>${esc(t.label)}</strong>: ${whoList(t.who)}</p>`).join("") || `<p>No one yet.</p>`;
+      } else if (d.whoReacted && d.message) {
+        const X = MX();
+        const g = X?.reactionGroups(reactions, d.message, me(), state.context.blocks).find((x) => x.emoji === d.whoReacted);
+        const box = log.querySelector(`[data-who-react="${CSS.escape(d.message)}"]`);
+        if (!g || !box) return;
+        box.hidden = box.dataset.emoji === d.whoReacted ? !box.hidden : false;
+        box.dataset.emoji = d.whoReacted;
+        box.innerHTML = `<p>${esc(g.emoji)} ${whoList(g.who)}</p>`;
+      }
+    });
+
+    log.addEventListener("click", async (event) => {
       const button = event.target.closest("button");
       if (!button) return;
       const messageId = button.dataset.edit || button.dataset.remove || button.dataset.report;
@@ -593,6 +816,12 @@
     pane = el;
     state = s;
     api = a || api;
+    reactions = [];
+    answers = [];
+    reactingId = null;
+    draftButtons = null;
+    // A gathering's chat reminder that is due appears now, if the scheduled run hasn't posted it.
+    if (me() && state.perms.member && D.askDueReminders) D.askDueReminders(state.coven.id);
     // { panel: true }: the small window over a coven altar, starting on the coven's chat.
     if (Boolean(a?.panel) !== panel) panelThread = null;
     panel = Boolean(a?.panel);
@@ -619,6 +848,25 @@
   /** A message changed anywhere in this coven (coven.js passes every change, whichever tab is open). */
   async function onChange(change) {
     if (!state) return;
+    // A reaction or an answer on a message (covens/coven-data.js live: change.table).
+    if (change?.table === "coven_message_reactions" || change?.table === "coven_message_answers") {
+      const X = MX();
+      if (!X || !pane) return;
+      const isReaction = change.table === "coven_message_reactions";
+      if (change.eventType === "DELETE") {
+        const gone = change.old?.id;
+        if (isReaction) reactions = reactions.filter((r) => r.id !== gone);
+        else answers = answers.filter((a) => a.id !== gone);
+      } else {
+        const row = change.new || {};
+        if (!messages.some((m) => m.id === row.message_id)) return;
+        if (isReaction) reactions = X.withReaction(reactions, row, true);
+        else answers = X.withAnswer(answers, row, true);
+        if (row.user_id) await UI.loadNames(state.context, [row.user_id]);
+      }
+      render();
+      return;
+    }
     const row = change?.new && Object.keys(change.new).length ? change.new : change?.old || {};
     if (row.coven_id && row.coven_id !== state.coven.id) return;
     const conversationId = row.conversation_id || null;

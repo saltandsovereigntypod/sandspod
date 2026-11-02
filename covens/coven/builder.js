@@ -293,7 +293,7 @@
         ${m.suggestions?.length ? `<div class="sp-chips">${m.suggestions.map((sg, k) => chip(`${sg.label} · ${sg.date.toLocaleDateString(undefined, { month: "short", day: "numeric" })}`, "suggest", attr({ index: k }), false)).join("")}</div>` : ""}
         <div class="sp-field"><label for="bd-when">When (your time)</label><input id="bd-when" type="datetime-local" data-bind="when" value="${esc(f.when)}" /></div>
       </div>
-      ${m.kind === "rite" ? `<div data-notice-card></div>` : ""}
+      ${m.kind === "rite" ? `<div data-notice-card></div>${reminderCardHtml()}` : ""}
       <div class="sp-actions">${btn("Keep this as one of the coven’s templates", "keep-template", "", "button--ghost")}</div>
       ${statusLine()}`;
   }
@@ -422,7 +422,20 @@
         <div class="sp-chips">${chip("Those it is for", "meeting-set", attr({ key: "minutes_view", value: "audience" }), s.minutes_view === "audience")}${chip("The whole coven", "meeting-set", attr({ key: "minutes_view", value: "coven" }), s.minutes_view === "coven")}</div>
         <div class="sp-field"><label for="mt-series">Which meetings it follows on from</label><input id="mt-series" maxlength="60" data-meeting-series value="${esc(m.plan.meeting?.series || "")}" placeholder="${esc(s.series)}" />
           <p class="sp-caption">Actions not yet done carry forward to the next meeting with the same name here.</p></div></div>
-      <div data-notice-card></div>`;
+      <div data-notice-card></div>
+      ${reminderCardHtml()}`;
+  }
+
+  /** "Post a reminder in Messages before it starts" (the plan's chatReminder; coven-notify posts it with the Gathering reply buttons). */
+  function reminderCardHtml() {
+    const X = global.SaltCore?.covens?.messageExtras;
+    if (!X) return "";
+    const on = X.chatReminder(m.plan);
+    const options = [{ value: "", label: "Off" }, ...X.REMINDER_MINUTES.map((n) => ({ value: String(n), label: X.reminderChoiceLabel(n) }))];
+    const title = (m.fields.title || "").trim() || "it";
+    return `<div class="sp-card"><p class="sp-label">Post a reminder in Messages before it starts</p>
+        <div class="sp-chips">${options.map((o) => chip(o.label, "chat-reminder", attr({ value: o.value }), (on ? String(on) : "") === o.value)).join("")}</div>
+        <p class="sp-caption">“Gentle reminder: ${esc(title)} begins in ${on || X.DEFAULT_REMINDER_MINUTES} minutes.” in the coven’s chat, with buttons to say Coming, Running late or Can’t make it, which set people’s RSVP.</p></div>`;
   }
 
   // --- one step ------------------------------------------------------------------
@@ -1052,6 +1065,11 @@
       case "meeting-role":
         m.plan = { ...m.plan, meeting: { ...(m.plan.meeting || {}), [d.which]: d.id } };
         return redraw();
+      case "chat-reminder": {
+        const X = global.SaltCore?.covens?.messageExtras;
+        if (X) m.plan = X.withChatReminder(m.plan, d.value ? Number(d.value) : null);
+        return redraw();
+      }
       case "meeting-set":
         m.plan = { ...m.plan, meeting: { ...(m.plan.meeting || {}), [d.key]: d.key === "minutes_view" ? d.value : Number(d.value) } };
         return redraw();

@@ -373,9 +373,9 @@
       const rows = await run(db().from("coven_messages").select("*").eq("coven_id", covenId).is("conversation_id", null).lt("created_at", before).order("created_at", { ascending: false }).limit(limit));
       return (rows || []).reverse();
     },
-    /** Send to the coven's chat (or a conversation), then let the others' phones know, as the app does (best effort). */
-    async send(covenId, body, replyTo, conversationId) {
-      const row = await run(db().from("coven_messages").insert({ coven_id: covenId, conversation_id: conversationId || null, body, reply_to: replyTo || null }).select().single());
+    /** Send to the coven's chat (or a conversation), with reply buttons if any, then let the others' phones know, as the app does (best effort). */
+    async send(covenId, body, replyTo, conversationId, buttons) {
+      const row = await run(db().from("coven_messages").insert({ coven_id: covenId, conversation_id: conversationId || null, body, reply_to: replyTo || null, ...(buttons ? { reply_buttons: buttons } : {}) }).select().single());
       try {
         Promise.resolve(db().functions?.invoke?.("coven-notify", { body: { message_id: row.id } })).catch(() => {});
       } catch {
@@ -477,10 +477,55 @@
      * Live updates for one coven: chat messages, its altars and rituals as
      * they change, and who else is here. Returns { track(state), close() }.
      */
+    // Reactions and reply-button answers (the app's lib/covens/chat.ts; SaltCore.covens.messageExtras).
+    async messageExtras(messageIds) {
+      const ids = (messageIds || []).slice(-300);
+      if (!ids.length) return { reactions: [], answers: [] };
+      const [reactions, answers] = await Promise.all([
+        run(db().from("coven_message_reactions").select("id,message_id,user_id,emoji,created_at").in("message_id", ids)).catch(() => []),
+        run(db().from("coven_message_answers").select("id,message_id,user_id,choice,updated_at").in("message_id", ids)).catch(() => [])
+      ]);
+      return { reactions: reactions || [], answers: answers || [] };
+    },
+    async react(messageId, userId, emoji, on) {
+      if (!on) return run(db().from("coven_message_reactions").delete().eq("message_id", messageId).eq("user_id", userId).eq("emoji", emoji));
+      const row = await run(db().from("coven_message_reactions").insert({ message_id: messageId, emoji }).select("id").single());
+      try {
+        if (row?.id) Promise.resolve(db().functions?.invoke?.("coven-notify", { body: { reaction_id: row.id } })).catch(() => {});
+      } catch {
+        // The reaction is saved; the note is a nicety.
+      }
+      return row;
+    },
+    async answerButtons(messageId, userId, choice) {
+      if (choice == null) return run(db().from("coven_message_answers").delete().eq("message_id", messageId).eq("user_id", userId));
+      await run(db().from("coven_message_answers").upsert({ message_id: messageId, user_id: userId, choice }, { onConflict: "message_id,user_id" }));
+      try {
+        Promise.resolve(db().functions?.invoke?.("coven-notify", { body: { answer_message_id: messageId } })).catch(() => {});
+      } catch {
+        // The answer is saved; the summary goes another time.
+      }
+      return true;
+    },
+    /** Ask for this coven's due gathering reminders (posted in its chat once each by coven-notify). */
+    askDueReminders(covenId) {
+      try {
+        Promise.resolve(db().functions?.invoke?.("coven-notify", { body: { due_coven_id: covenId } })).catch(() => {});
+      } catch {
+        // The scheduled run posts them anyway.
+      }
+    },
     live(covenId, { onMessage, onAltar, onRitual, onPetition, onPresence, onStatus } = {}) {
       const channel = db().channel(`coven:${covenId}`, { config: { presence: { key: global.getCurrentSaltUser?.()?.id || "guest" } } });
       // The coven's chat and your conversations (row-level security sends only what you may read).
-      if (onMessage) channel.on("postgres_changes", { event: "*", schema: "public", table: "coven_messages", filter: `coven_id=eq.${covenId}` }, onMessage);
+      if (onMessage) {
+        channel.on("postgres_changes", { event: "*", schema: "public", table: "coven_messages", filter: `coven_id=eq.${covenId}` }, onMessage);
+        // Reactions and answers come the same way (change.table tells them apart); deletes can't be filtered by coven.
+        for (const table of ["coven_message_reactions", "coven_message_answers"]) {
+          channel.on("postgres_changes", { event: "*", schema: "public", table, filter: `coven_id=eq.${covenId}` }, onMessage);
+          channel.on("postgres_changes", { event: "DELETE", schema: "public", table }, onMessage);
+        }
+      }
       if (onAltar) {
         channel.on("postgres_changes", { event: "*", schema: "public", table: "coven_altars", filter: `coven_id=eq.${covenId}` }, onAltar);
         channel.on("postgres_changes", { event: "*", schema: "public", table: "coven_altar_objects", filter: `coven_id=eq.${covenId}` }, onAltar);

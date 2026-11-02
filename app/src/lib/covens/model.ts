@@ -92,7 +92,7 @@ export type Advancement = {
   /** What the decider ticked: { requirement id: { by, at } }. */
   checked?: Record<string, unknown>;
 };
-export type Message = { id: string; coven_id: string; conversation_id?: string | null; user_id: string | null; body: string; reply_to?: string | null; created_at: string; edited_at: string | null; deleted_at: string | null; deleted_by: string | null };
+export type Message = { id: string; coven_id: string; conversation_id?: string | null; user_id: string | null; body: string; reply_to?: string | null; reply_buttons?: unknown; created_at: string; edited_at: string | null; deleted_at: string | null; deleted_by: string | null };
 export type AltarItem = {
   id: string;
   coven_id: string;

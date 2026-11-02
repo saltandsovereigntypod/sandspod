@@ -24,6 +24,7 @@ import { assigneeFromKey, assigneeKey, assigneeLabel, andList, cleanAssignees, i
 import { blankStep, draftFromStep, plannerProblem, stepsPayload, type Candidate, type DraftStep } from './draft.ts';
 import { actionOf, type StepAction } from './stepActions.ts';
 import { cleanFieldSpecs, cleanValues, fieldsFor, fieldSummary, namesIn, whoIn, type FieldSpec, type FieldValues, type ThingKind } from './fields.ts';
+import { chatReminder } from './messageExtras.ts';
 import { cleanNoticeWho } from './notices.ts';
 import { cleanEnder, enderLabel, flowKind, flowWarnings, LEADER_ENDER, stepEnder, stepStartText, stepWithItems } from './stepFlow.ts';
 
@@ -59,6 +60,8 @@ export type RitualPlan = {
   meeting?: MeetingSettings;
   /** Who hears about it when it is put on the calendar, moved or taken off (notices.ts WHO keys); none follows the coven's rules. */
   notify?: string[];
+  /** Post a reminder in the coven's chat this many minutes before it begins (messageExtras.ts REMINDER_MINUTES); none is off. */
+  chatReminder?: number;
 };
 
 /** Steps that are voted on: a vote, a motion, an election, approving the last minutes (public.coven_is_vote_action). */
@@ -201,6 +204,8 @@ export function cleanPlan(raw: unknown, kind: GatheringKind = 'rite'): RitualPla
   if (meeting) plan.meeting = meeting;
   const notify = cleanNoticeWho(p.notify, roles);
   if (notify.length) plan.notify = notify;
+  const reminder = chatReminder(p);
+  if (reminder) plan.chatReminder = reminder;
   return plan;
 }
 
