@@ -270,7 +270,6 @@
       <radialGradient id="living-smoke-low" cx="50%" cy="80%" r="38%"><stop offset="0" stop-color="rgb(210,210,200)" stop-opacity="0.55"/><stop offset="1" stop-color="rgb(210,210,200)" stop-opacity="0"/></radialGradient>
       <radialGradient id="living-smoke-mid" cx="45%" cy="45%" r="42%"><stop offset="0" stop-color="rgb(210,210,200)" stop-opacity="0.35"/><stop offset="1" stop-color="rgb(210,210,200)" stop-opacity="0"/></radialGradient>
       <radialGradient id="living-smoke-high" cx="58%" cy="18%" r="46%"><stop offset="0" stop-color="rgb(210,210,200)" stop-opacity="0.22"/><stop offset="1" stop-color="rgb(210,210,200)" stop-opacity="0"/></radialGradient>
-      <linearGradient id="living-incense-stream" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="rgb(214,218,226)" stop-opacity="0.95"/><stop offset="0.6" stop-color="rgb(200,206,218)" stop-opacity="0.55"/><stop offset="1" stop-color="rgb(200,206,218)" stop-opacity="0"/></linearGradient>
       <radialGradient id="living-incense-wisp" cx="50%" cy="60%" r="50%"><stop offset="0" stop-color="rgb(208,212,222)" stop-opacity="0.9"/><stop offset="0.55" stop-color="rgb(170,176,190)" stop-opacity="0.45"/><stop offset="1" stop-color="rgb(170,176,190)" stop-opacity="0"/></radialGradient>
       <radialGradient id="living-charge" cx="50%" cy="55%" r="50%"><stop offset="0" stop-color="rgb(236,242,255)" stop-opacity="0.95"/><stop offset="0.4" stop-color="rgb(196,212,255)" stop-opacity="0.6"/><stop offset="0.75" stop-color="rgb(170,190,250)" stop-opacity="0.22"/><stop offset="1" stop-color="rgb(170,190,250)" stop-opacity="0"/></radialGradient>
     </defs></svg>`;
@@ -458,20 +457,227 @@
     else setTimeout(done, SMOKE_MS);
   }
 
-  function incenseHtml(origin, width) {
-    const wisp = Math.max(16, width * 0.85);
-    const ember = Math.max(3.5, width * 0.08);
-    const stream = Math.max(34, Math.min(110, width * 2.2));
-    const line = (Math.max(1.4, Math.min(3.2, width * 0.06)) * 40) / stream;
-    const at = `left:${n2(origin.x * 100)}%;top:${n2(origin.y * 100)}%`;
-    const path = "M10 40 C 9 33, 12.5 29, 10.5 23 S 7 14, 10 8 S 13 2, 11 0";
-    const wisps = [0, 1, 2, 3].map((i) => `<div class="living-incense__wisp living-incense__wisp--${i}" style="${at};width:${n2(wisp)}px;height:${n2(wisp * 1.4)}px;margin-left:${n2(-wisp / 2)}px;margin-top:${n2(-wisp * 1.3)}px;--wisp:${n2(wisp)}px"><svg viewBox="0 0 10 14" width="100%" height="100%"><ellipse cx="5" cy="8" rx="4" ry="6" fill="url(#living-incense-wisp)"/></svg></div>`).join("");
-    return `<div class="living-incense" aria-hidden="true">
-      <div class="living-incense__stream" style="${at};width:${n2(stream * 0.5)}px;height:${n2(stream)}px;margin-left:${n2(-stream * 0.25)}px;margin-top:${n2(-stream)}px;--sway:${n2(stream * 0.05)}px"><svg viewBox="0 0 20 40" width="100%" height="100%"><path d="${path}" stroke="rgba(70,74,84,0.35)" stroke-width="${n2(line * 1.7)}" fill="none" stroke-linecap="round"/><path d="${path}" stroke="url(#living-incense-stream)" stroke-width="${n2(line)}" fill="none" stroke-linecap="round"/></svg></div>
-      ${wisps}
-      <div class="living-incense__ember" style="${at};width:${n2(ember)}px;height:${n2(ember)}px;margin-left:${n2(-ember / 2)}px;margin-top:${n2(-ember / 2)}px"></div>
-    </div>`;
+  // ── Incense smoke: a plume on its own small canvas ──────────────────────
+  // A thin thread off the burning point that wavers more the higher it gets
+  // (its foot never leaves the tip), breaking into soft wisps that rise,
+  // widen, curl and fade, each on its own clock, with a slow drift of air
+  // that changes over time. The plume sits inside the object at its burning
+  // point and is turned back upright against the object's rotation and flip,
+  // so it stays on the incense however it is moved and still rises straight
+  // up. One clock for every plume; it rests while the tab is hidden or the
+  // plume is off-screen. Reduce Motion: one faint, still wisp.
+  const plumes = new Set();
+  let plumeFrame = 0;
+  let plumeSprite = null;
+  const seen = typeof IntersectionObserver === "function"
+    ? new IntersectionObserver((entries) => {
+      entries.forEach((e) => {
+        const plume = e.target.__plume;
+        if (plume) plume.visible = e.isIntersecting;
+      });
+      startPlumes();
+    })
+    : null;
+
+  function sprite() {
+    if (plumeSprite) return plumeSprite;
+    const c = document.createElement("canvas");
+    c.width = c.height = 64;
+    const g = c.getContext("2d");
+    const grad = g.createRadialGradient(32, 32, 0, 32, 32, 32);
+    grad.addColorStop(0, "rgba(214,218,228,1)");
+    grad.addColorStop(0.45, "rgba(196,202,214,0.55)");
+    grad.addColorStop(1, "rgba(196,202,214,0)");
+    g.fillStyle = grad;
+    g.fillRect(0, 0, 64, 64);
+    plumeSprite = c;
+    return c;
   }
+
+  function makePlume() {
+    const wrap = document.createElement("div");
+    wrap.className = "living-incense";
+    wrap.setAttribute("aria-hidden", "true");
+    wrap.innerHTML = `<div class="living-incense__plume"><canvas></canvas></div><div class="living-incense__ember"></div>`;
+    const canvas = wrap.querySelector("canvas");
+    const rnd = (a, b) => a + Math.random() * (b - a);
+    const plume = {
+      wrap,
+      box: wrap.firstElementChild,
+      canvas,
+      ctx: canvas.getContext("2d"),
+      ember: wrap.lastElementChild,
+      visible: true,
+      size: "",
+      w: 0,
+      h: 0,
+      unit: 0,
+      spread: 1,
+      wisps: [],
+      last: 0,
+      spawn: 0,
+      // The thread's waver, and the air's slow drift: incommensurate periods and their own phases.
+      waves: [[rnd(0.6, 0.9), rnd(0, 6.3)], [rnd(1.3, 1.9), rnd(0, 6.3)]],
+      air: [[1 / rnd(9, 13), rnd(0, 6.3)], [1 / rnd(17, 23), rnd(0, 6.3)], [1 / rnd(29, 37), rnd(0, 6.3)]],
+    };
+    canvas.__plume = plume;
+    seen?.observe(canvas);
+    return plume;
+  }
+
+  function dropPlume(plume) {
+    seen?.unobserve(plume.canvas);
+    plume.wrap.remove();
+    plumes.delete(plume);
+  }
+
+  /** Put the plume at the burning point (fractions of the box), upright whatever the object's turn and flip. */
+  function placePlume(plume, source, object) {
+    const unit = source.unit;
+    const w = Math.round(unit * 1.5);
+    const h = Math.round(unit * 3.4);
+    plume.wrap.style.left = `${n2(source.x * 100)}%`;
+    plume.wrap.style.top = `${n2(source.y * 100)}%`;
+    const rotation = Number(object.dataset.rotation || 0) || 0;
+    const flip = object.dataset.flipped === "true" ? -1 : 1;
+    plume.box.style.transform = `scaleX(${flip}) rotate(${n2(-rotation)}deg)`;
+    const ember = Math.max(3, Math.min(9, source.spread * 1.4));
+    // A stick or cone glows at its tip; a burner or bowl hides its coal.
+    Object.assign(plume.ember.style, { display: source.spread > source.unit * 0.08 ? "none" : "", width: `${n2(ember)}px`, height: `${n2(ember)}px`, marginLeft: `${n2(-ember / 2)}px`, marginTop: `${n2(-ember / 2)}px` });
+    plume.spread = Math.max(1, source.spread);
+    const size = `${w}x${h}`;
+    if (size !== plume.size) {
+      plume.size = size;
+      const dpr = Math.min(2, global.devicePixelRatio || 1);
+      plume.w = w;
+      plume.h = h;
+      plume.unit = unit;
+      plume.canvas.width = Math.round(w * dpr);
+      plume.canvas.height = Math.round(h * dpr);
+      Object.assign(plume.canvas.style, { width: `${w}px`, height: `${h}px`, left: `${-w / 2}px`, top: `${-h}px` });
+      plume.ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      plume.wisps = [];
+      if (still()) drawPlume(plume, 0, 0);
+    }
+  }
+
+  /** The thread's sideways offset at a height above the tip (0 at the tip itself). */
+  function threadX(plume, rise, t) {
+    const u = plume.unit;
+    const k = rise / (u * 1.1);
+    const amp = u * 0.07 * Math.pow(Math.min(1.4, k), 1.4);
+    const [[f1, p1], [f2, p2]] = plume.waves;
+    return amp * (Math.sin(rise / (u * 0.22) - t * f1 + p1) + 0.55 * Math.sin(rise / (u * 0.13) - t * f2 + p2)) + airAt(plume, t) * u * 0.12 * k * k;
+  }
+  function airAt(plume, t) {
+    return plume.air.reduce((sum, [f, p], i) => sum + Math.sin(t * f * 6.283 + p) / (i + 1.4), 0);
+  }
+
+  function stepPlume(plume, dt, t) {
+    const u = plume.unit;
+    const threadTop = u * (plume.spread > u * 0.08 ? 0.15 : 0.55);
+    // New wisps leave the top of the thread, a few a second, irregularly.
+    plume.spawn -= dt;
+    if (plume.spawn <= 0 && plume.wisps.length < 34) {
+      plume.spawn = 0.16 + Math.random() * 0.22;
+      const off = (Math.random() - 0.5) * plume.spread;
+      plume.wisps.push({
+        x: threadX(plume, threadTop, t) + off,
+        y: -threadTop * (0.85 + Math.random() * 0.2),
+        vx: (Math.random() - 0.5) * u * 0.03,
+        vy: -u * (0.16 + Math.random() * 0.08),
+        age: 0,
+        life: 4 + Math.random() * 3,
+        r0: u * (0.035 + Math.random() * 0.02),
+        r1: u * (0.26 + Math.random() * 0.16),
+        peak: 0.2 + Math.random() * 0.12,
+        curl: (Math.random() < 0.5 ? -1 : 1) * u * (0.04 + Math.random() * 0.05),
+        period: 2.4 + Math.random() * 2.6,
+        phase: Math.random() * 6.3,
+      });
+    }
+    const air = airAt(plume, t) * u * 0.035;
+    plume.wisps = plume.wisps.filter((p) => {
+      p.age += dt;
+      if (p.age >= p.life) return false;
+      const k = p.age / p.life;
+      // Rising, slowing a little as it spreads; curling gently on its own clock; carried by the air the higher it is.
+      p.vy *= 1 - 0.12 * dt;
+      p.vx += (Math.cos((p.age / p.period) * 6.283 + p.phase) * p.curl * 0.9 + air * k - p.vx * 0.6) * dt;
+      p.x += p.vx * dt;
+      p.y += p.vy * dt;
+      return -p.y < plume.h * 1.05;
+    });
+  }
+
+  function drawPlume(plume, t, dtSec) {
+    const { ctx, w, h, unit: u } = plume;
+    if (!ctx || !w) return;
+    ctx.clearRect(0, 0, w, h);
+    const cx = w / 2;
+    const reduce = still();
+    if (!reduce && dtSec > 0) stepPlume(plume, dtSec, t);
+    // The thread: thin and clear near the tip, thinning out as it climbs.
+    const top = u * (plume.spread > u * 0.08 ? 0.15 : 0.55) * (reduce ? 0.8 : 1);
+    ctx.lineCap = "round";
+    for (let s = 0; s < top; s += 2) {
+      const a = 1 - s / top;
+      ctx.strokeStyle = `rgba(212,216,226,${n2(0.5 * a)})`;
+      ctx.lineWidth = Math.max(0.8, u * 0.018) * (1 + s / top);
+      ctx.beginPath();
+      ctx.moveTo(cx + (reduce ? 0 : threadX(plume, s, t)), h - s);
+      ctx.lineTo(cx + (reduce ? 0 : threadX(plume, s + 2, t)), h - s - 2);
+      ctx.stroke();
+    }
+    const img = sprite();
+    const wisps = reduce
+      ? [{ x: 0, y: -top - u * 0.25, r: u * 0.18, a: 0.14 }, { x: u * 0.05, y: -top - u * 0.7, r: u * 0.3, a: 0.07 }]
+      : plume.wisps.map((p) => {
+        const k = p.age / p.life;
+        // Fades in quickly, out slowly; widens as it climbs.
+        const a = p.peak * Math.min(1, k / 0.12) * Math.pow(1 - k, 1.6);
+        return { x: p.x, y: p.y, r: p.r0 + (p.r1 - p.r0) * Math.sqrt(k), a };
+      });
+    wisps.forEach((p) => {
+      if (!(p.a > 0.004)) return;
+      ctx.globalAlpha = p.a;
+      const d = p.r * 2;
+      ctx.drawImage(img, cx + p.x - p.r, h + p.y - p.r * 1.2, d, d * 1.2);
+    });
+    ctx.globalAlpha = 1;
+  }
+
+  function plumeTick(time) {
+    plumeFrame = 0;
+    if (document.hidden || still()) return;
+    let running = false;
+    plumes.forEach((plume) => {
+      if (!plume.wrap.isConnected) {
+        dropPlume(plume);
+        return;
+      }
+      const dt = plume.last ? Math.min(0.05, (time - plume.last) / 1000) : 0;
+      plume.last = time;
+      if (!plume.visible) {
+        plume.last = 0;
+        return;
+      }
+      running = true;
+      drawPlume(plume, time / 1000, dt);
+    });
+    if (running) plumeFrame = requestAnimationFrame(plumeTick);
+  }
+  function startPlumes() {
+    if (!plumeFrame && plumes.size && !still() && !document.hidden) plumeFrame = requestAnimationFrame(plumeTick);
+  }
+  if (typeof document !== "undefined") document.addEventListener("visibilitychange", () => {
+    plumes.forEach((p) => (p.last = 0));
+    startPlumes();
+  });
+  reduceQuery?.addEventListener?.("change", () => {
+    plumes.forEach((p) => drawPlume(p, 0, 0));
+    startPlumes();
+  });
 
   const GLINTS = [[0.12, 0.18, 1], [0.86, 0.32, 0.8], [0.22, 0.62, 0.65], [0.8, 0.74, 0.9]];
   function chargeHtml(strength) {
@@ -660,7 +866,7 @@
       const fx = layerOf(object, "fx");
       const stickAsh = stick ? stickAshSvg(stick, width, height, !!incense?.lit) : "";
       fx.innerHTML = incense?.lit
-        ? stickAsh + incenseHtml(stick?.origin ?? A.incense.smokeOrigin(saved), width)
+        ? stickAsh
         : incense?.ash
           ? `${stick ? stickAsh : `<div class="living-ash"></div>`}<span class="living-label">Ash</span>`
           : stickAsh;
@@ -670,6 +876,21 @@
       // The light on the altar sits lower as the candle burns down.
       if (geo) object.dataset.lightDrop = n2(height ? geo.dropPx / height : 0);
       else delete object.dataset.lightDrop;
+    }
+
+    // Incense smoke, on its burning point (kept across redraws so it doesn't start over).
+    if (incense?.lit) {
+      if (!record.plume || !plumes.has(record.plume)) {
+        record.plume = makePlume();
+        plumes.add(record.plume);
+      }
+      const fx = layerOf(object, "fx");
+      if (record.plume.wrap.parentNode !== fx) fx.appendChild(record.plume.wrap);
+      placePlume(record.plume, A.offeringArt.incenseSmokeSource(saved, width, height, now, ratio), object);
+      startPlumes();
+    } else if (record.plume) {
+      dropPlume(record.plume);
+      record.plume = null;
     }
 
     // The flame, on its wick.
@@ -786,7 +1007,7 @@
       if (mutations.some((m) => m.type === "attributes" || [...m.addedNodes].some((n) => n.nodeType === 1 && (n.classList?.contains("altar-object") || n.querySelector?.(".altar-object"))))) schedule();
     }).observe(stage, { childList: true, subtree: false, attributes: true, attributeFilter: ["data-lit", "data-living-state", "data-flipped", "data-color"], attributeOldValue: false });
     // Attribute changes on objects (children of the stage).
-    new MutationObserver(schedule).observe(stage, { subtree: true, attributes: true, attributeFilter: ["data-lit", "data-living-state", "data-flipped", "src"] });
+    new MutationObserver(schedule).observe(stage, { subtree: true, attributes: true, attributeFilter: ["data-lit", "data-living-state", "data-flipped", "data-rotation", "src"] });
     stage.addEventListener("load", schedule, true);
     ["app-altar:changed", "living-object-state:changed"].forEach((name) => document.addEventListener(name, schedule));
     // Candles burn down and melt, offerings age, charges fade: look again now and then.

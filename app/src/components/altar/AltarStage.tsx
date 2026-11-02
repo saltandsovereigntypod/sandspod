@@ -6,7 +6,7 @@ import Svg, { Circle, Defs, Ellipse, LinearGradient, Path, RadialGradient, Rect,
 
 import { useReducedMotion } from '../../lib/accessibility/store';
 import type { Tint } from '../../lib/altar/ambient';
-import { incenseLife, isIncense, smokeOrigin } from '../../lib/altar/incense';
+import { incenseLife, isIncense } from '../../lib/altar/incense';
 import { isPetitionPaper } from '../../lib/altar/petitions';
 import { MoonDisc } from '../MoonDisc';
 import type { MomentKind } from '../../lib/altar/charge';
@@ -26,7 +26,7 @@ import type { FlameLayout } from '../../lib/altar/flame';
 import { boxToPixels, displayBox, hitTest, IMAGE_INSET, imageRatio, rotationOf, STAGE_ASPECT } from '../../lib/altar/geometry';
 import { stackOrder } from '../../lib/altar/layers';
 import { candleLife, dressingOverlays, isCandle, isLit } from '../../lib/altar/livingState';
-import { incenseStickArt, offeringArt, tintFilter, tintMatrix, type IncenseStickArt, type OfferingArt } from '../../lib/altar/offeringArt';
+import { incenseSmokeSource, incenseStickArt, offeringArt, tintFilter, tintMatrix, type IncenseSmokeSource, type IncenseStickArt, type OfferingArt } from '../../lib/altar/offeringArt';
 import { AgedPicture, HAS_AGED } from './AgedPicture';
 import { AltarImage } from './AltarImage';
 import { FoodHeap } from './FoodHeap';
@@ -541,7 +541,7 @@ export const AltarObjectArt = memo(function AltarObjectArt({ object, width, heig
       {art?.food && <FoodHeap food={art.food} width={width} height={height} uid={uid} />}
       {art && (art.liquid || art.tide || art.stain || art.petals.length > 0) && <OfferingMarks art={art} width={width} height={height} uid={uid} />}
       {stick && (stick.pile || stickCut) && <StickAsh stick={stick} width={width} height={height} lit={!!incense?.lit} />}
-      {incense?.lit && <IncenseSmoke origin={stick?.origin ?? smokeOrigin(object)} width={width} />}
+      {incense?.lit && <IncenseSmoke source={incenseSmokeSource(object, width, height, now, object.imagePath ? imageRatio(String(object.imagePath)) : null)} rotation={rotationOf(object)} flipped={flipped} />}
       {ash && !stick && <View style={styles.ash} />}
       {ash && (
         <Text style={[styles.spentLabel, { fontSize: labelSize, transform: [{ scaleX: flipped ? -1 : 1 }] }]} numberOfLines={1}>
@@ -603,18 +603,22 @@ function PetitionPaper() {
   );
 }
 
-const WISPS = [0, 1, 2, 3, 4, 5];
-/** How far each wisp curls and which way, so the smoke doesn't rise in step. */
-const WISP_CURL = [-0.22, 0.28, -0.12, 0.34, -0.3, 0.18];
-/** How long one wisp of incense smoke takes to rise and fade. */
-const WISP_MS = 5600;
+/** How many wisps of incense smoke are rising at once. */
+const WISP_COUNT = 7;
 
-/**
- * Smoke rising from lit incense: a thin curling stream off the ember that
- * sways, and soft wisps that climb, spread and fade above it, in a blue-grey
- * that reads on light backgrounds and dark. Reduce Motion: the stream and two
- * wisps, still.
- */
+type WispPlan = { ms: number; delay: number; curl: number; drift: number; rise: number; peak: number; wide: number };
+
+/** Each wisp's own clock, curl and drift, so the smoke never rises or sways in step. */
+function planWisps(): WispPlan[] {
+  const rnd = (a: number, b: number) => a + Math.random() * (b - a);
+  let delay = 0;
+  return Array.from({ length: WISP_COUNT }, () => {
+    const plan = { ms: rnd(4200, 6800), delay, curl: (Math.random() < 0.5 ? -1 : 1) * rnd(0.05, 0.13), drift: rnd(-0.14, 0.14), rise: rnd(2.3, 3.1), peak: rnd(0.2, 0.32), wide: rnd(1.9, 2.8) };
+    delay += rnd(550, 950);
+    return plan;
+  });
+}
+
 /**
  * What an offering's age leaves in its box: the liquid's surface sinking in
  * its vessel, the line it was poured to, a stain when it's gone, and petals
@@ -679,121 +683,120 @@ function StickAsh({ stick, width, height, lit }: { stick: IncenseStickArt; width
   );
 }
 
-function IncenseSmoke({ origin, width }: { origin: { x: number; y: number }; width: number }) {
+/**
+ * Smoke rising from lit incense (as the website draws it, living-art.js): a
+ * thin thread off the burning point that wavers from its foot, which never
+ * leaves the tip, and soft wisps that rise mostly straight up, widening,
+ * curling and fading, each on its own clock. It sits inside the object at its
+ * burning point and is turned back upright against the object's rotation and
+ * flip, so it stays on the incense and still rises. Reduce Motion: the thread
+ * and two faint wisps, still.
+ */
+function IncenseSmoke({ source, rotation, flipped }: { source: IncenseSmokeSource; rotation: number; flipped: boolean }) {
   const still = useReducedMotion();
-  const [rise] = useState(() => WISPS.map(() => new Animated.Value(0)));
-  const [sway] = useState(() => new Animated.Value(0.5));
+  const [plans] = useState(planWisps);
+  const [rise] = useState(() => plans.map(() => new Animated.Value(0)));
+  const [waver] = useState(() => [new Animated.Value(0.5), new Animated.Value(0.5)]);
   useEffect(() => {
     if (still) {
-      rise.forEach((v, i) => v.setValue(0.25 + i * 0.18));
-      sway.setValue(0.5);
+      rise.forEach((v, i) => v.setValue(0.22 + i * 0.2));
+      waver.forEach((v) => v.setValue(0.5));
       return;
     }
     const loops = rise.map((value, i) =>
-      Animated.loop(
-        Animated.sequence([
-          Animated.delay((i * WISP_MS) / WISPS.length),
-          Animated.timing(value, { toValue: 1, duration: WISP_MS, easing: Easing.out(Easing.quad), useNativeDriver: useNative }),
-          Animated.timing(value, { toValue: 0, duration: 0, useNativeDriver: useNative }),
-        ]),
-      ),
-    );
-    const swaying = Animated.loop(
       Animated.sequence([
-        Animated.timing(sway, { toValue: 1, duration: 2400, easing: Easing.inOut(Easing.sin), useNativeDriver: useNative }),
-        Animated.timing(sway, { toValue: 0, duration: 2600, easing: Easing.inOut(Easing.sin), useNativeDriver: useNative }),
+        Animated.delay(plans[i].delay),
+        Animated.loop(
+          Animated.sequence([
+            Animated.timing(value, { toValue: 1, duration: plans[i].ms, easing: Easing.out(Easing.quad), useNativeDriver: useNative }),
+            Animated.timing(value, { toValue: 0, duration: 0, useNativeDriver: useNative }),
+          ]),
+        ),
       ]),
     );
-    loops.forEach((l) => l.start());
-    swaying.start();
-    return () => {
-      loops.forEach((l) => l.stop());
-      swaying.stop();
-    };
-  }, [rise, sway, still]);
+    // Two slow wavers at unrelated periods, so the thread never sweeps side to side in a beat.
+    const wavers = waver.map((value, i) => {
+      const ms = (i ? 4700 : 3100) * (0.85 + Math.random() * 0.3);
+      return Animated.loop(
+        Animated.sequence([
+          Animated.timing(value, { toValue: 1, duration: ms, easing: Easing.inOut(Easing.sin), useNativeDriver: useNative }),
+          Animated.timing(value, { toValue: 0, duration: ms * 1.13, easing: Easing.inOut(Easing.sin), useNativeDriver: useNative }),
+        ]),
+      );
+    });
+    [...loops, ...wavers].forEach((l) => l.start());
+    return () => [...loops, ...wavers].forEach((l) => l.stop());
+  }, [rise, waver, plans, still]);
 
-  const wisp = Math.max(16, width * 0.85);
-  const ember = Math.max(3.5, width * 0.08);
-  const stream = Math.max(34, Math.min(110, width * 2.2));
-  // The stream's line, about the same few points thick at any size (its drawing is 40 units tall).
-  const line = (Math.max(1.4, Math.min(3.2, width * 0.06)) * 40) / stream;
-  const streamX = sway.interpolate({ inputRange: [0, 1], outputRange: [-stream * 0.05, stream * 0.05] });
+  const u = source.unit;
+  const wide = source.spread > u * 0.08;
+  const thread = u * (wide ? 0.18 : 0.55);
+  const threadW = Math.max(6, u * 0.24);
+  const line = Math.max(0.9, u * 0.018);
+  const wisp = u * 0.34;
+  const ember = Math.max(3, Math.min(9, source.spread * 1.4));
+  const bend = Animated.add(
+    waver[0].interpolate({ inputRange: [0, 1], outputRange: [-4, 4] }),
+    waver[1].interpolate({ inputRange: [0, 1], outputRange: [-2.5, 2.5] }),
+  ).interpolate({ inputRange: [-10, 10], outputRange: ['-10deg', '10deg'] });
+  // The thread's drawing, 20 units wide and 40 tall, its foot at the bottom centre.
+  const path = 'M10 40 C 10 34, 10.6 30, 10.2 25 S 8.6 15, 10.4 8 S 11.6 2, 10.6 0';
   return (
-    <View pointerEvents="none" style={[StyleSheet.absoluteFill, { overflow: 'visible' }]}>
-      {/* The stream: a thin ribbon curling up off the ember. */}
-      <Animated.View
-        style={{
-          position: 'absolute',
-          left: `${origin.x * 100}%`,
-          top: `${origin.y * 100}%`,
-          width: stream * 0.5,
-          height: stream,
-          marginLeft: -stream * 0.25,
-          marginTop: -stream,
-          transform: [{ translateX: still ? 0 : streamX }],
-        }}
-      >
-        <Svg width="100%" height="100%" viewBox="0 0 20 40">
-          <Defs>
-            <LinearGradient id="incense-stream" x1="0" y1="1" x2="0" y2="0">
-              <Stop offset="0" stopColor="rgb(214,218,226)" stopOpacity={0.95} />
-              <Stop offset="0.6" stopColor="rgb(200,206,218)" stopOpacity={0.55} />
-              <Stop offset="1" stopColor="rgb(200,206,218)" stopOpacity={0} />
-            </LinearGradient>
-          </Defs>
-          <Path d="M10 40 C 9 33, 12.5 29, 10.5 23 S 7 14, 10 8 S 13 2, 11 0" stroke="rgba(70,74,84,0.35)" strokeWidth={line * 1.7} fill="none" strokeLinecap="round" />
-          <Path d="M10 40 C 9 33, 12.5 29, 10.5 23 S 7 14, 10 8 S 13 2, 11 0" stroke="url(#incense-stream)" strokeWidth={line} fill="none" strokeLinecap="round" />
-        </Svg>
-      </Animated.View>
-      {rise.map((value, i) => {
-        if (still && i > 1) return null;
-        const opacity = still ? 0.5 - i * 0.12 : value.interpolate({ inputRange: [0, 0.12, 0.6, 1], outputRange: [0, 0.8, 0.45, 0] });
-        const translateY = value.interpolate({ inputRange: [0, 1], outputRange: [-wisp * 0.4, -wisp * 2.8] });
-        const c = WISP_CURL[i];
-        const translateX = value.interpolate({ inputRange: [0, 0.25, 0.5, 0.75, 1], outputRange: [0, wisp * c, wisp * -c * 0.7, wisp * c * 1.2, wisp * (0.35 + c)] });
-        const scale = value.interpolate({ inputRange: [0, 0.5, 1], outputRange: [0.4, 1.3, 2.3] });
-        return (
-          <Animated.View
-            key={i}
-            style={{
-              position: 'absolute',
-              left: `${origin.x * 100}%`,
-              top: `${origin.y * 100}%`,
-              width: wisp,
-              height: wisp * 1.4,
-              marginLeft: -wisp / 2,
-              marginTop: -wisp * 1.3,
-              opacity,
-              transform: [{ translateX }, { translateY }, { scale }],
-            }}
-          >
-            <Svg width="100%" height="100%" viewBox="0 0 10 14">
-              <Defs>
-                <RadialGradient id={`wisp-${i}`} cx="50%" cy="60%" r="50%">
-                  <Stop offset="0" stopColor="rgb(208,212,222)" stopOpacity={0.9} />
-                  <Stop offset="0.55" stopColor="rgb(170,176,190)" stopOpacity={0.45} />
-                  <Stop offset="1" stopColor="rgb(170,176,190)" stopOpacity={0} />
-                </RadialGradient>
-              </Defs>
-              <Ellipse cx={5} cy={8} rx={4} ry={6} fill={`url(#wisp-${i})`} />
-            </Svg>
-          </Animated.View>
-        );
-      })}
-      <View
-        style={{
-          position: 'absolute',
-          left: `${origin.x * 100}%`,
-          top: `${origin.y * 100}%`,
-          width: ember,
-          height: ember,
-          marginLeft: -ember / 2,
-          marginTop: -ember / 2,
-          borderRadius: ember / 2,
-          backgroundColor: 'rgb(255,140,50)',
-          boxShadow: '0 0 8px 3px rgba(255,140,60,0.85)',
-        }}
-      />
+    <View pointerEvents="none" style={{ position: 'absolute', left: `${source.x * 100}%`, top: `${source.y * 100}%`, width: 0, height: 0, overflow: 'visible' }}>
+      <View style={{ position: 'absolute', left: 0, top: 0, width: 0, height: 0, overflow: 'visible', transform: [{ scaleX: flipped ? -1 : 1 }, { rotate: `${-rotation}deg` }] }}>
+        {/* The thread: turns about its foot, so it never leaves the tip. */}
+        <Animated.View style={{ position: 'absolute', left: -threadW / 2, top: -thread, width: threadW, height: thread, transformOrigin: '50% 100%', transform: [{ rotate: still ? '0deg' : bend }] }}>
+          <Svg width="100%" height="100%" viewBox="0 0 20 40" preserveAspectRatio="none">
+            <Defs>
+              <LinearGradient id="incense-thread" x1="0" y1="1" x2="0" y2="0">
+                <Stop offset="0" stopColor="rgb(214,218,228)" stopOpacity={0.55} />
+                <Stop offset="1" stopColor="rgb(200,206,218)" stopOpacity={0} />
+              </LinearGradient>
+            </Defs>
+            <Path d={path} stroke="url(#incense-thread)" strokeWidth={(line * 20) / threadW} fill="none" strokeLinecap="round" />
+          </Svg>
+        </Animated.View>
+        {rise.map((value, i) => {
+          if (still && i > 1) return null;
+          const p = plans[i];
+          const opacity = still ? (i ? 0.07 : 0.14) : value.interpolate({ inputRange: [0, 0.12, 0.5, 1], outputRange: [0, p.peak, p.peak * 0.5, 0] });
+          const translateY = value.interpolate({ inputRange: [0, 1], outputRange: [-thread * 0.9, -thread * 0.9 - u * p.rise] });
+          const translateX = value.interpolate({ inputRange: [0, 0.3, 0.6, 1], outputRange: [0, u * p.curl, u * (p.drift * 0.5 - p.curl * 0.5), u * (p.drift + p.curl * 0.4)] });
+          const scale = value.interpolate({ inputRange: [0, 1], outputRange: [0.25, p.wide] });
+          return (
+            <Animated.View
+              key={i}
+              style={{ position: 'absolute', left: -wisp / 2, top: -wisp * 0.6, width: wisp, height: wisp * 1.2, opacity, transform: [{ translateX }, { translateY }, { scale }] }}
+            >
+              <Svg width="100%" height="100%" viewBox="0 0 10 12">
+                <Defs>
+                  <RadialGradient id={`wisp-${i}`} cx="50%" cy="50%" r="50%">
+                    <Stop offset="0" stopColor="rgb(214,218,228)" stopOpacity={1} />
+                    <Stop offset="0.45" stopColor="rgb(196,202,214)" stopOpacity={0.55} />
+                    <Stop offset="1" stopColor="rgb(196,202,214)" stopOpacity={0} />
+                  </RadialGradient>
+                </Defs>
+                <Ellipse cx={5} cy={6} rx={5} ry={6} fill={`url(#wisp-${i})`} />
+              </Svg>
+            </Animated.View>
+          );
+        })}
+      </View>
+      {/* A stick or cone glows at its tip; a burner or bowl hides its coal. */}
+      {!wide && (
+        <View
+          style={{
+            position: 'absolute',
+            left: -ember / 2,
+            top: -ember / 2,
+            width: ember,
+            height: ember,
+            borderRadius: ember / 2,
+            backgroundColor: 'rgb(255,140,50)',
+            boxShadow: '0 0 6px 2px rgba(255,140,60,0.8)',
+          }}
+        />
+      )}
     </View>
   );
 }

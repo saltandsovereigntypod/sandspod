@@ -7,7 +7,7 @@ import { test } from 'node:test';
 import { builtInCabinet, objectFromForm } from '../src/lib/altar/cabinet.ts';
 import { lightIncense } from '../src/lib/altar/incense.ts';
 import { appHistoryOf, readLivingState } from '../src/lib/altar/livingState.ts';
-import { incenseStickArt, liquidOf, offeringArt, petalColor, tintFilter, tintMatrix } from '../src/lib/altar/offeringArt.ts';
+import { incenseSmokeSource, incenseStickArt, liquidOf, offeringArt, petalColor, tintFilter, tintMatrix } from '../src/lib/altar/offeringArt.ts';
 import {
   agingLook,
   altarPhrase,
@@ -220,6 +220,14 @@ test('a stick of incense burns down from its tip and leaves ash at its foot', ()
   assert.ok(later.origin.y > half.origin.y);
   // Not a stick: a burner keeps its own drawing.
   assert.equal(incenseStickArt(place('tools:incense-burner'), 30, 30, T0), null);
+  // Its smoke rises from that tip, and follows it down.
+  const early = incenseSmokeSource(lit, 30, 90, T0 + 20 * 60_000);
+  assert.deepEqual([early.x, early.y], [half.origin.x, half.origin.y]);
+  assert.ok(incenseSmokeSource(lit, 30, 90, T0 + 35 * 60_000).y > early.y);
+  // A burner's smoke leaves round its lid, inside the picture, wider than a stick's point.
+  const burner = incenseSmokeSource(place('tools:incense-burner'), 60, 60, T0, 1);
+  assert.ok(burner.y > 0.2 && burner.y < 0.5 && Math.abs(burner.x - 0.5) < 0.05);
+  assert.ok(burner.spread > early.spread && burner.unit > 0);
 });
 
 test('offering reminders are off unless chosen, then one a day at the chosen time', () => {
