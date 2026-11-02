@@ -300,7 +300,7 @@ async function loadLivingLibraryFromSupabase() {
 
   livingLibraryHydrating = true;
   try {
-    (data || []).forEach((row) => {
+    runLivingLibraryBatch(() => (data || []).forEach((row) => {
       const completedMerge = localStorage.getItem(getCanonicalMergeKey(user.id, row.entity_id));
       if (completedMerge) return;
       if ((livingLibraryLocalRevisions[row.entity_id] || 0) !== (revisionsAtRequest[row.entity_id] || 0)) return;
@@ -345,7 +345,7 @@ async function loadLivingLibraryFromSupabase() {
         ...(layouts[entity.id] || {})
       };
     }
-    });
+    }));
   } finally {
     livingLibraryHydrating = false;
   }
@@ -372,7 +372,7 @@ async function loadLivingLibraryRelationsFromSupabase() {
 
   const existingRelations = Library.exportLibrary?.().relations || [];
 
-  (data || []).forEach((row) => {
+  runLivingLibraryBatch(() => (data || []).forEach((row) => {
     const existing = existingRelations.find((link) => {
       return (
         link.from === row.from_entity_id &&
@@ -390,7 +390,12 @@ async function loadLivingLibraryRelationsFromSupabase() {
     }
 
     Library.connect(row.from_entity_id, row.relation, row.to_entity_id, row.metadata || null);
-  });
+  }));
+}
+
+// Many Library changes in a row: write the local copy once at the end.
+function runLivingLibraryBatch(fn) {
+  return typeof Library.withDeferredSave === "function" ? Library.withDeferredSave(fn) : fn();
 }
 
 function wrapLivingLibraryMethodsForSupabase() {
