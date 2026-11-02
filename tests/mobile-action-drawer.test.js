@@ -67,7 +67,9 @@ test("repeated actions restore viewport anchoring without scroll-driven focus", 
 });
 
 test("drawer has explicit exits and Escape closes it before deselection", () => {
-  assert.match(source, /data-close-object-actions role="menuitem">Close Actions<\/button>/);
+  assert.match(source, /data-close-object-actions aria-label="Close actions"/);
+  assert.match(source, /id: "to-front"[^\n]*bringToFront\(o\)/);
+  assert.match(source, /id: "to-back"[^\n]*sendToBack\(o\)/);
   assert.match(source, /if \(overflowOpen\) \{\s*event\.preventDefault\(\);\s*closeObjectActionOverflow\(\);\s*return;/s);
   assert.match(source, /const closesDrawer = actionId === "back-to-altar" \|\| actionId === "delete"/);
   assert.match(source, /if \(!event\.matches\) closeObjectActionOverflow\(\)/);

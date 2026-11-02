@@ -516,3 +516,170 @@ body.altar-page .altar-side .altar-workspace-panel-inner > .altar-companion-pane
   .altar-tool,
   .altar-picker { transition: none; }
 }
+
+/* ── The selected object's See More panel ──────────────────
+   A rounded panel grouped as the toolbar is (Tend, Arrange, Layer, Keep,
+   Altar actions), rising from See More on wider screens and a bottom sheet
+   on phones (object-actions.js MOBILE_QUERY, 900px). */
+
+body.altar-page .altar-action-bar .altar-toolbar.is-in-action-bar button > span.altar-icon[aria-hidden="true"]:first-child { display: inline-flex; color: var(--app-gold); }
+
+body.altar-page .altar-action-bar .altar-object-actions-layer {
+  display: inline-flex;
+  gap: 4px;
+  padding-left: 8px;
+  border-left: 1px solid var(--app-hairline);
+}
+
+body.altar-page .altar-action-bar .altar-toolbar.is-in-action-bar .altar-object-actions-layer > button {
+  width: 40px;
+  min-width: 40px;
+  height: 40px !important;
+  padding: 0;
+}
+
+/* The panel hangs from the whole toolbar's right edge, so it never spills off the stage. */
+body.altar-page .altar-stage-wrap > .altar-action-bar .altar-toolbar.is-in-action-bar { position: relative; }
+body.altar-page .altar-action-bar .altar-object-actions-more-wrap { position: static; }
+
+body.altar-page .altar-action-bar .altar-object-actions-overflow {
+  position: absolute;
+  right: 0;
+  bottom: calc(100% + 10px);
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  width: min(30rem, calc(100vw - 32px));
+  max-width: none;
+  max-height: min(26rem, 62vh);
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  border: 1px solid var(--app-gold-line);
+  border-radius: var(--app-radius-card);
+  background: rgba(20, 34, 25, 0.98);
+  box-shadow: 0 18px 44px rgba(0, 0, 0, 0.5);
+  font-family: var(--app-body);
+  transform-origin: bottom right;
+  animation: altar-menu 0.16s var(--app-ease);
+}
+
+body.altar-page .altar-action-bar .altar-object-actions-overflow[hidden] { display: none; }
+
+body.altar-page .altar-action-bar .altar-object-actions-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 10px 10px 18px;
+  border-bottom: 1px solid var(--app-hairline);
+}
+
+body.altar-page .altar-action-bar .altar-object-actions-heading {
+  margin: 0;
+  overflow: hidden;
+  color: var(--app-cream);
+  font: 600 1.15rem/1.2 var(--app-display);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+body.altar-page .altar-action-bar .altar-toolbar.is-in-action-bar .altar-object-actions-close {
+  position: static;
+  flex: 0 0 auto;
+  width: 36px !important;
+  min-width: 36px;
+  height: 36px !important;
+  min-height: 36px !important;
+  padding: 0;
+  border-color: transparent;
+  background: transparent;
+  color: var(--app-muted);
+}
+
+body.altar-page .altar-action-bar .altar-toolbar.is-in-action-bar .altar-object-actions-close .altar-icon { color: currentColor; }
+body.altar-page .altar-action-bar .altar-toolbar.is-in-action-bar .altar-object-actions-close:hover { color: var(--app-cream); background: var(--app-raised); }
+
+body.altar-page .altar-action-bar .altar-object-actions-body {
+  display: grid;
+  gap: 16px;
+  min-height: 0;
+  padding: 14px 16px 16px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scrollbar-color: var(--app-gold-line) transparent;
+}
+
+body.altar-page .altar-action-bar .altar-object-actions-body::-webkit-scrollbar { width: 6px; }
+body.altar-page .altar-action-bar .altar-object-actions-body::-webkit-scrollbar-track { background: transparent; }
+body.altar-page .altar-action-bar .altar-object-actions-body::-webkit-scrollbar-thumb { border-radius: 3px; background: var(--app-gold-line); }
+
+body.altar-page .altar-action-bar .altar-object-actions-group { display: grid; gap: 8px; }
+
+body.altar-page .altar-action-bar .altar-object-actions-label {
+  margin: 0;
+  color: var(--app-muted);
+  font-size: 12px;
+  line-height: 16px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+
+body.altar-page .altar-action-bar .altar-object-actions-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+body.altar-page .altar-action-bar .altar-toolbar.is-in-action-bar .altar-object-actions-row > button {
+  flex-direction: row;
+  justify-content: center !important;
+  gap: 8px !important;
+  width: auto !important;
+  min-width: 0;
+  min-height: 40px !important;
+  height: auto !important;
+  padding: 0 14px;
+  white-space: nowrap;
+  text-align: left;
+}
+
+body.altar-page .altar-action-bar .altar-object-actions-row > .is-danger,
+body.altar-page .altar-action-bar .altar-object-actions-row > .is-danger .altar-icon { color: var(--app-danger) !important; }
+
+body.altar-page .altar-action-bar .altar-object-actions-backdrop { display: none !important; }
+
+@media (max-width: 900px) {
+  body.altar-page .altar-action-bar .altar-object-actions-backdrop:not([hidden]) {
+    position: fixed;
+    inset: 0;
+    z-index: 10030;
+    display: block !important;
+    background: rgba(5, 9, 7, 0.55);
+  }
+
+  body.altar-page .altar-action-bar .altar-object-actions-overflow {
+    position: fixed;
+    inset: auto 0 0 0;
+    z-index: 10031;
+    width: 100%;
+    max-height: min(78dvh, 40rem);
+    border-bottom: 0;
+    border-radius: var(--app-radius-card) var(--app-radius-card) 0 0;
+    transform-origin: bottom center;
+    animation: altar-sheet 0.2s var(--app-ease);
+  }
+
+  body.altar-page .altar-action-bar .altar-object-actions-body { padding-bottom: max(18px, env(safe-area-inset-bottom)); }
+  body.altar-action-sheet-open { overflow: hidden; }
+}
+
+@keyframes altar-sheet {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body.altar-page .altar-action-bar .altar-object-actions-overflow { animation: none; }
+}

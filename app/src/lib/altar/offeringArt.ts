@@ -11,7 +11,7 @@
 
 import { ALTAR_ARTWORK } from './artworkData.ts';
 import { pictureBox } from './flame.ts';
-import { incenseFormOf, incenseLife, isIncense } from './incense.ts';
+import { incenseFormOf, incenseLife, isIncense, type IncenseForm } from './incense.ts';
 import { isPottedPlant, thirstLook } from './pottedPlants.ts';
 import { agingLook, isOfferingItself, offeringFreshness, offeringOf, type OfferingKindId, type OfferingLook } from './offerings.ts';
 import type { SavedObject } from './types.ts';
@@ -389,4 +389,51 @@ export function incenseStickArt(object: SavedObject, width: number, height: numb
       ? { cx: r1(footX), cy: r1(pic.top + pic.height * 0.985), rx: r1(Math.max(1.2, pic.width * (0.06 + 0.16 * burned))), ry: r1(Math.max(0.6, pic.width * (0.025 + 0.035 * burned))) }
       : null;
   return { cutPx: r1(y * pic.height), pic, tip, pile, origin: { x: tip.x / width, y: Math.max(0, (tip.y - pic.width * 0.02) / height) } };
+}
+
+// ── Where incense smoke rises from ───────────────────────────────────────
+// Each form's burning point, as fractions of its picture: a stick's tip, the
+// lid of a burner with a cone inside, the coal or stubs in a bowl of ash. The
+// built-in pictures are measured; a picture of your own uses its form's.
+
+type SmokeTip = { x: number; y: number; spread: number };
+const SMOKE_PICTURES: { match: RegExp; tip: SmokeTip }[] = [
+  // The lidded burner: smoke leaves round the finial at the top of its dome.
+  { match: /\/incense-burner\/incense-burner\.png$/i, tip: { x: 0.5, y: 0.33, spread: 0.16 } },
+  // The bowl of ash with stubs standing in it.
+  { match: /\/incense-bowl\/incense-bowl\.png$/i, tip: { x: 0.5, y: 0.25, spread: 0.1 } },
+];
+const SMOKE_FORMS: Record<IncenseForm, SmokeTip> = {
+  stick: { x: 0.5, y: 0.02, spread: 0.02 },
+  cone: { x: 0.5, y: 0.12, spread: 0.04 },
+  resin: { x: 0.5, y: 0.22, spread: 0.14 },
+};
+
+export type IncenseSmokeSource = {
+  /** The burning point, as fractions of the object's box (in its own unrotated, unflipped drawing). */
+  x: number;
+  y: number;
+  /** How wide the smoke leaves it, in box pixels (a stick's tip is a point; a burner's lid is not). */
+  spread: number;
+  /** The plume's size unit, in box pixels. */
+  unit: number;
+};
+
+/**
+ * Where a lit incense's smoke rises from and how big its plume is drawn, so
+ * the stage can anchor the smoke inside the object (it moves, scales, rotates
+ * and flips with it). A burning stick's tip follows it down as it burns.
+ * `ratio` is the picture's width over height, when known.
+ */
+export function incenseSmokeSource(object: SavedObject, width: number, height: number, now: number, ratio?: number | null): IncenseSmokeSource {
+  const w = width > 0 ? width : 1;
+  const h = height > 0 ? height : 1;
+  const unit = r1(Math.max(28, Math.min(140, w)));
+  const stick = incenseStickArt(object, w, h, now);
+  if (stick) return { x: stick.origin.x, y: stick.origin.y, spread: r1(Math.max(1, stick.tip.width * 0.6)), unit };
+  const path = String(object.imagePath || '');
+  const tip = SMOKE_PICTURES.find((p) => p.match.test(path))?.tip ?? SMOKE_FORMS[incenseFormOf(object)];
+  const pic = ratio && ratio > 0 ? pictureRect(ratio, w, h) : { left: 0, top: 0, width: w, height: h };
+  const round = (n: number) => Math.round(n * 1000) / 1000;
+  return { x: round((pic.left + tip.x * pic.width) / w), y: round((pic.top + tip.y * pic.height) / h), spread: r1(Math.max(1, tip.spread * pic.width)), unit };
 }

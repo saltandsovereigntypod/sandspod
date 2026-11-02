@@ -3516,3 +3516,42 @@ body.mundane-mode [data-mundane-label="ritual"]::after {
 .object-action-modal-card .object-action-check input {
   width: auto;
 }
+
+/* Opening your altar: the stage waits, calm, while your own altar is fetched
+   (js/core/altar-opening.js), and each object stays hidden until it is placed
+   and its picture has loaded (storage.js placeAltarObjectWhenReady). */
+html.is-altar-opening body .altar-stage[data-altar-stage] {
+  background: radial-gradient(ellipse at center, #2a261d 0%, #15130f 75%) !important;
+}
+
+html.is-altar-opening body .altar-stage[data-altar-stage] > * {
+  visibility: hidden;
+}
+
+html.is-altar-opening body .altar-stage[data-altar-stage]::after {
+  content: "Opening your altar\2026";
+  position: absolute;
+  inset: 0;
+  z-index: 50;
+  display: grid;
+  place-items: center;
+  color: var(--cream, #efe6d2);
+  font-style: italic;
+  letter-spacing: 0.02em;
+  opacity: 0.85;
+  animation: altar-opening-breathe 2.4s ease-in-out infinite;
+}
+
+@keyframes altar-opening-breathe {
+  0%, 100% { opacity: 0.55; }
+  50% { opacity: 0.9; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html.is-altar-opening body .altar-stage[data-altar-stage]::after { animation: none; }
+}
+
+.altar-object.is-placing {
+  visibility: hidden;
+  opacity: 0;
+}

@@ -14,6 +14,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import type { AltarDocument } from '../altar/snapshot';
+import { readRing, type RingKind, type RingWire } from '../altar/bell';
 import type { SavedObject } from '../altar/types';
 import { supabase } from '../supabase';
 import { diff, documentFromRows, keyed, keyOf, sceneFromAltar, sceneOf, sortAltars, withObject, withScene, type AltarAccess, type AltarEditor, type Change, type CovenAltar, type Scene } from './altarDoc';
@@ -48,6 +49,10 @@ export type SharedAltar = {
   attach: (apply: (transform: RemoteTransform) => void) => () => void;
   /** The editor's document after every change you make. */
   push: (doc: AltarDocument) => void;
+  /** Ring the altar bell for everyone here (lib/altar/bell.ts): a broadcast, nothing saved. */
+  ring?: (kind: RingKind, key: string) => void;
+  /** Hear the others ring; returns a function that stops listening. */
+  onRing?: (hear: (ring: RingWire) => void) => () => void;
 };
 
 export type Presence = { user_id: string; name: string };
@@ -223,6 +228,7 @@ export function useCovenAltar(altarId: string, me: { userId: string; name: strin
   const altarRef = useRef<CovenAltar | null>(null);
   const accessRef = useRef<AltarAccess | null>(null);
   const channelRef = useRef<SharedChannel | null>(null);
+  const hearRef = useRef<((ring: RingWire) => void) | null>(null);
   const timers = useRef<{ send: ReturnType<typeof setTimeout> | null; write: ReturnType<typeof setTimeout> | null }>({ send: null, write: null });
   const userId = me?.userId ?? '';
   useEffect(() => {
@@ -311,6 +317,7 @@ export function useCovenAltar(altarId: string, me: { userId: string; name: strin
           channel.on('postgres_changes' as never, { event: '*', schema: 'public', table, filter: `coven_id=eq.${covenId}` } as never, () => emit('access', null));
         }
         channel.on('broadcast', { event: 'change' }, ({ payload }: { payload: Wire }) => emit('broadcast', payload));
+        channel.on('broadcast', { event: 'bell' }, ({ payload }: { payload: unknown }) => emit('bell', payload));
       },
       (event, raw) => {
         if (event === 'object') {
@@ -338,6 +345,9 @@ export function useCovenAltar(altarId: string, me: { userId: string; name: strin
           if (!payload || payload.from === userId) return;
           if (payload.scene) receiveScene(payload.scene);
           else if (payload.key) receive(payload.key, payload.data ?? null);
+        } else if (event === 'bell') {
+          const heard = readRing(raw, userId);
+          if (heard) hearRef.current?.(heard);
         } else if (event === 'presence') {
           const state = shared.presence() as Record<string, Presence[]>;
           const next = Object.values(state).map((list) => list[0]).filter(Boolean);
@@ -451,6 +461,20 @@ export function useCovenAltar(altarId: string, me: { userId: string; name: strin
     };
   }, []);
 
+  const ring = useCallback(
+    (kind: RingKind, key: string) => {
+      const payload: RingWire = { from: userId, kind, key };
+      channelRef.current?.send('bell', payload);
+    },
+    [userId],
+  );
+  const onRing = useCallback((hear: (ring: RingWire) => void) => {
+    hearRef.current = hear;
+    return () => {
+      if (hearRef.current === hear) hearRef.current = null;
+    };
+  }, []);
+
   const others = here.filter((p) => p.user_id !== userId);
   // What the bar says: saving is automatic, so it shows whether your last
   // change has reached the coven (or what went wrong). Who's here is shown apart.
@@ -474,8 +498,10 @@ export function useCovenAltar(altarId: string, me: { userId: string; name: strin
       status,
       attach,
       push,
+      ring,
+      onRing,
     }),
-    [altarId, altar?.name, covenName, initial, missing, access, status, attach, push],
+    [altarId, altar?.name, covenName, initial, missing, access, status, attach, push, ring, onRing],
   );
 
   return { shared, altar, access, here, others, problem, reload: () => load(true), checkAccess };

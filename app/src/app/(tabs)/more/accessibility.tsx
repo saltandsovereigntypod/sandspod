@@ -18,7 +18,7 @@ const READING: Toggle[] = [
 ];
 
 const ALTAR: Toggle[] = [
-  { key: 'candleSounds', label: 'Candle sounds', detail: 'A match as you light, and quiet crackles while candles burn; herbs pop and oil sputters. Silent when your ring switch is off.' },
+  { key: 'candleSounds', label: 'Candle sounds', detail: 'A match as you light, and quiet crackles while candles burn; herbs pop and oil sputters; and the altar bell when you ring it. Silent when your ring switch is off.' },
   { key: 'haptics', label: 'Vibration', detail: 'A soft tap as a candle is lit or snuffed, and as dressed candles pop.' },
   { key: 'tiltDepth', label: 'Tilt depth', detail: 'The altar shifts a little as you tilt your phone, and flames lean against it.' },
 ];

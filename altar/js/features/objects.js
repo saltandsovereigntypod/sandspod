@@ -144,20 +144,8 @@ function restoreAltarSnapshot(snapshot) {
 
     highestLayer = Math.max(highestLayer, Number(savedObject.zIndex || 10));
 
-    const img = object.querySelector("img");
-
-    function positionRestoredObject() {
-      applyStagePositionPercent(object, savedObject);
-      updateObjectTransform(object);
-      keepObjectInsideStage(object);
-      updateObjectPositionPercent(object);
-    }
-
-    if (img && !img.complete) {
-      img.addEventListener("load", positionRestoredObject, { once: true });
-    } else {
-      positionRestoredObject();
-    }
+    // Hidden until placed (storage.js), so it never shows at the corner first.
+    placeAltarObjectWhenReady(object, savedObject, { fade: false });
   });
 
   updateGroupIndicator();
@@ -316,7 +304,51 @@ function rotateObject(object, amount = 15) {
   saveWorkingAltarDraft();
 }
 
+function objectLayer(object) {
+  return Number(object?.style.zIndex || 10);
+}
+
+function otherAltarObjects(object) {
+  return Array.from(altarStage.querySelectorAll(".altar-object")).filter((other) => other !== object);
+}
+
+/** One step up: trade places with the nearest object above, or rise to the top. */
 function bringForward(object) {
+  if (!object) return;
+
+  const currentLayer = objectLayer(object);
+  const above = otherAltarObjects(object)
+    .filter((other) => objectLayer(other) >= currentLayer)
+    .sort((a, b) => objectLayer(a) - objectLayer(b))[0];
+  if (above && objectLayer(above) > currentLayer) {
+    object.style.zIndex = objectLayer(above);
+    above.style.zIndex = currentLayer;
+  } else {
+    highestLayer = Math.max(highestLayer, currentLayer) + 1;
+    object.style.zIndex = highestLayer;
+  }
+  saveWorkingAltarDraft();
+}
+
+/** One step down: trade places with the nearest object below. */
+function sendBackward(object) {
+  if (!object) return;
+
+  const currentLayer = objectLayer(object);
+  const below = otherAltarObjects(object)
+    .filter((other) => objectLayer(other) <= currentLayer)
+    .sort((a, b) => objectLayer(b) - objectLayer(a))[0];
+  if (below && objectLayer(below) < currentLayer) {
+    object.style.zIndex = objectLayer(below);
+    below.style.zIndex = currentLayer;
+  } else {
+    object.style.zIndex = Math.max(1, currentLayer - 1);
+  }
+  saveWorkingAltarDraft();
+}
+
+/** In front of everything on the altar. */
+function bringToFront(object) {
   if (!object) return;
 
   highestLayer += 1;
@@ -324,11 +356,13 @@ function bringForward(object) {
   saveWorkingAltarDraft();
 }
 
-function sendBackward(object) {
+/** Behind everything on the altar, never below layer 1. */
+function sendToBack(object) {
   if (!object) return;
 
-  const currentLayer = Number(object.style.zIndex || 10);
-  object.style.zIndex = Math.max(5, currentLayer - 1);
+  const layers = otherAltarObjects(object).map(objectLayer);
+  const lowest = layers.length ? Math.min(...layers) : objectLayer(object);
+  object.style.zIndex = Math.max(1, lowest - 1);
   saveWorkingAltarDraft();
 }
 

@@ -3,7 +3,8 @@
 // real ones make: the soft sound of them burning, dry crackles now and then,
 // sharp pops when there are herbs dressed into the wax, and little sputters
 // from oil. Quiet, mixed with whatever else is playing, and silent when the
-// phone's ring switch is off. Each can be turned off in Accessibility.
+// phone's ring switch is off. Each can be turned off in Accessibility. The
+// altar bell (bell.ts) rings through here too, under Candle sounds.
 
 import { createAudioPlayer, setAudioModeAsync, type AudioPlayer } from 'expo-audio';
 import * as Haptics from 'expo-haptics';
@@ -49,13 +50,20 @@ const SPUTTERS: Sound[] = ['sputter1', 'sputter2', 'sputter3', 'sputter4'];
 const players = new Map<Sound, AudioPlayer>();
 let modeSet = false;
 
+/** Whether a bell is ringing out (it plays through the silent switch meanwhile). */
+let bellRinging = false;
+
+function setMode() {
+  if (modeSet) return;
+  modeSet = true;
+  if (bellRinging) return; // set back to quiet once the bell has rung out
+  // Sound effects: alongside music or a podcast, and quiet with the ring switch off.
+  void setAudioModeAsync({ playsInSilentMode: false, interruptionMode: 'mixWithOthers', shouldPlayInBackground: false }).catch(() => {});
+}
+
 function player(sound: Sound): AudioPlayer | null {
   try {
-    if (!modeSet) {
-      modeSet = true;
-      // Sound effects: alongside music or a podcast, and quiet with the ring switch off.
-      void setAudioModeAsync({ playsInSilentMode: false, interruptionMode: 'mixWithOthers', shouldPlayInBackground: false }).catch(() => {});
-    }
+    setMode();
     let p = players.get(sound);
     if (!p) {
       p = createAudioPlayer(SOUNDS[sound]);
@@ -76,6 +84,76 @@ function play(sound: Sound, volume: number) {
   } catch {
     // A sound that can't play is simply not heard.
   }
+}
+
+/** The altar bell (synthesised, see bell.ts): three players, so a chime rings on under the next. */
+const BELL = require('../../../assets/sounds/bell-chime.mp3');
+const bells: AudioPlayer[] = [];
+const played = new Set<AudioPlayer>();
+let nextBell = 0;
+/** Each ring's number, so only the newest one sets the silent switch back. */
+let ringSeq = 0;
+/** How long after the last chime the bell is left to ring out. */
+const RING_OUT_MS = 4500;
+
+function chime(volume: number) {
+  try {
+    const i = nextBell++ % 3;
+    if (!bells[i]) bells[i] = createAudioPlayer(BELL);
+    const p = bells[i];
+    p.volume = volume;
+    if (played.has(p)) void p.seekTo(0).then(() => p.play()).catch(() => p.play());
+    else {
+      played.add(p);
+      p.play();
+    }
+  } catch {
+    // A bell that can't sound is simply not heard.
+  }
+}
+
+/**
+ * Ring the altar bell `times` times, `gapMs` apart: each chime heard (when
+ * sound is on), a soft tap (when vibration is), and `onChime` for the ripple.
+ * Ringing is something you do on purpose, so the bell sounds even with the
+ * iPhone's silent switch on; the candles' sounds stay quiet with it, as the
+ * audio mode goes back once the last chime has rung out.
+ * Returns a function that stops any chimes still to come.
+ */
+export function ringBell(times: number, gapMs: number, sound: boolean, haptics: boolean, onChime: (i: number) => void): () => void {
+  const timers: ReturnType<typeof setTimeout>[] = [];
+  let stopped = false;
+  const seq = ++ringSeq;
+  const schedule = () => {
+    if (stopped) return;
+    for (let i = 0; i < times; i++) {
+      timers.push(
+        setTimeout(() => {
+          if (sound) chime(0.8);
+          if (haptics) tap(Haptics.ImpactFeedbackStyle.Light);
+          onChime(i);
+        }, i * gapMs),
+      );
+    }
+  };
+  if (!sound) schedule();
+  else {
+    bellRinging = true;
+    setAudioModeAsync({ playsInSilentMode: true, interruptionMode: 'mixWithOthers', shouldPlayInBackground: false })
+      .catch(() => {})
+      .then(schedule);
+    // Not cleared by stop: the mode always goes back, unless a newer ring will.
+    setTimeout(() => {
+      if (seq !== ringSeq) return;
+      bellRinging = false;
+      modeSet = true;
+      void setAudioModeAsync({ playsInSilentMode: false, interruptionMode: 'mixWithOthers', shouldPlayInBackground: false }).catch(() => {});
+    }, (times - 1) * gapMs + RING_OUT_MS);
+  }
+  return () => {
+    stopped = true;
+    timers.forEach(clearTimeout);
+  };
 }
 
 const pick = <T,>(list: T[]) => list[Math.floor(Math.random() * list.length)];
