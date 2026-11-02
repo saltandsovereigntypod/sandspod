@@ -485,6 +485,71 @@ function createSavedObject(savedObject) {
   return object;
 }
 
+/** The object's own picture (not a candle's herb or oil overlay). */
+function mainAltarObjectImage(object) {
+  return object.querySelector("img:not(.candle-herb-overlay):not(.candle-oil-overlay)");
+}
+
+/**
+ * Keep a new object hidden until it can be placed where it was saved: its
+ * picture has loaded (or failed), so its size is known, then set its
+ * position and scale from the saved percentages and let it fade in. Never
+ * drawn first at the stage's corner. Resolves once placed.
+ */
+function placeAltarObjectWhenReady(object, savedObject, options = {}) {
+  object.classList.add("is-placing");
+  return new Promise((resolve) => {
+    let settled = false;
+    let waitTimer = 0;
+    const place = () => {
+      if (settled) return;
+      settled = true;
+      window.clearTimeout(waitTimer);
+      if (object.isConnected) {
+        applyStagePositionPercent(object, savedObject);
+        updateObjectTransform(object);
+        keepObjectInsideStage(object);
+        updateObjectPositionPercent(object);
+      }
+      object.classList.remove("is-placing");
+      if (object.isConnected && options.fade !== false && !window.AltarOpening?.isWaiting?.() && typeof object.animate === "function"
+        && !window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) {
+        object.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 220, easing: "ease-out" });
+      }
+      options.onPlaced?.(object);
+      resolve(object);
+    };
+    const img = mainAltarObjectImage(object);
+    if (!img || img.complete) {
+      place();
+      return;
+    }
+    // A missing WebP twin is swapped for its PNG (sanctuary-asset-catalog.js): wait for that one too.
+    const onError = () => window.setTimeout(() => {
+      if (img.complete) place();
+      else img.addEventListener("error", place, { once: true });
+    }, 0);
+    img.addEventListener("load", place, { once: true });
+    img.addEventListener("error", onError, { once: true });
+    // Never leave an object hidden for good on a stalled picture.
+    waitTimer = window.setTimeout(place, 8000);
+  });
+}
+
+/** Resolves once a picture has loaded or failed (or after `ms`). */
+function whenImageSettled(src, ms = 5000) {
+  if (!src) return Promise.resolve();
+  return new Promise((resolve) => {
+    const image = new Image();
+    let timer = 0;
+    const finish = () => { window.clearTimeout(timer); resolve(); };
+    timer = window.setTimeout(finish, ms);
+    image.onload = finish;
+    image.onerror = finish;
+    image.src = src;
+  });
+}
+
 function restoreAltarData(altarData, options = {}) {
   if (!altarStage || !altarData) return;
 
@@ -516,25 +581,13 @@ function restoreAltarData(altarData, options = {}) {
   window.altarExtraFields = unknownFields(altarData, KNOWN_ALTAR_FIELDS);
   const restoredObjects = [];
 
+  const placements = [];
+
   (altarData.objects || []).forEach((savedObject) => {
     const object = createSavedObject(savedObject);
     restoredObjects.push(object);
     altarStage.appendChild(object);
-
-    const img = object.querySelector("img");
-
-    function positionLoadedObject() {
-      applyStagePositionPercent(object, savedObject);
-      updateObjectTransform(object);
-      keepObjectInsideStage(object);
-      updateObjectPositionPercent(object);
-    }
-
-    if (img && !img.complete) {
-      img.addEventListener("load", positionLoadedObject, { once: true });
-    } else {
-      positionLoadedObject();
-    }
+    placements.push(placeAltarObjectWhenReady(object, savedObject));
   });
 
   updateGroupIndicator();
@@ -563,14 +616,107 @@ function restoreAltarData(altarData, options = {}) {
   // Tonight's altar and a shrine open unsaved: they replace your working draft only once you change something.
   if (!options.keepDraft) persistWorkingAltarDraft({ ...altarData, objects: normalizedObjects });
   isRestoringAltarDraft = false;
+
+  // Resolves once every object is placed and the background has arrived.
+  const background = altarData.background ? (window.SanctuaryAssetCatalog?.displayPath?.(altarData.background) || altarData.background) : "";
+  return Promise.all([...placements, whenImageSettled(background)]);
 }
 
-function restoreWorkingAltarDraft() {
+/* -- Opening the page on your own altar ----------------------------------
+   Signed in, the saved row of the altar you last had open is asked for at
+   once (with the session this browser keeps, not waiting for sign-in to be
+   confirmed over the network), alongside everything else loading. The
+   working draft and the saved row are compared up front, and only the right
+   one is set out, once. */
+const startingAltarRow = (() => {
+  const id = window.currentSavedAltarId;
+  const params = new URLSearchParams(window.location.search);
+  if (!id || typeof db === "undefined" || !db?.auth?.getSession) return null;
+  if (["covenAltar", "altarId", "tonight", "shrine"].some((name) => params.has(name))) return null;
+  if (window.AltarOpening && !window.AltarOpening.hasCachedSession()) return null;
+  return {
+    id,
+    taken: false,
+    promise: db.auth.getSession()
+      .then(({ data }) => {
+        const userId = data?.session?.user?.id;
+        if (!userId) return null;
+        return db.from(ALTAR_CLOUD_TABLE).select("name,altar_data,updated_at").eq("id", id).eq("user_id", userId).maybeSingle()
+          .then(({ data: row, error }) => (error ? null : row || null));
+      })
+      .catch(() => null)
+  };
+})();
+
+/** Start fetching an altar's pictures now, so they are in by the time it is set out. */
+function preloadAltarPictures(altarData) {
+  if (!altarData || !Array.isArray(altarData.objects)) return;
+  const shown = (path) => window.SanctuaryAssetCatalog?.displayPath?.(path) || path;
+  const paths = altarData.objects.map((object) => object?.imagePath).filter(Boolean);
+  if (altarData.background) paths.push(altarData.background);
+  [...new Set(paths)].slice(0, 60).forEach((path) => { const image = new Image(); image.src = shown(path); });
+}
+
+if (!["covenAltar", "altarId", "tonight", "shrine"].some((name) => new URLSearchParams(window.location.search).has(name))) {
+  preloadAltarPictures(getWorkingAltarDraft());
+  startingAltarRow?.promise.then((row) => preloadAltarPictures(row?.altar_data));
+}
+
+/** The saved row read as the page opened, for that altar id: given out once (to altar-tend-sync.js). */
+function takeStartingAltarRow(altarId) {
+  if (!startingAltarRow || startingAltarRow.id !== altarId || startingAltarRow.taken) return null;
+  startingAltarRow.taken = true;
+  return startingAltarRow.promise;
+}
+window.takeStartingAltarRow = takeStartingAltarRow;
+
+/**
+ * Which to set out as the page opens: "row" (the saved altar), "draft" or "".
+ * The draft wins unless there is none, or the saved row was changed elsewhere
+ * (in the app) since this browser last saw it and after the draft was written.
+ */
+function chooseStartingAltar(draft, row, altarId) {
+  const hasDraft = Boolean(draft && Array.isArray(draft.objects));
+  const rowData = row?.altar_data;
+  if (!rowData || !Array.isArray(rowData.objects)) return hasDraft ? "draft" : "";
+  if (!hasDraft) return "row";
+  const sync = window.AltarTendSync;
+  if (sync?.hasLayoutChanges && !sync.hasLayoutChanges(rowData, draft)) return "draft";
+  let baseline = null;
+  try { baseline = JSON.parse(localStorage.getItem(`saltAndSovereigntyAltarTendBaseline:${altarId}`) || "null"); } catch { baseline = null; }
+  const rowTime = Date.parse(row.updated_at || "") || 0;
+  const draftTime = Date.parse(draft.savedAt || "") || 0;
+  const changedElsewhere = !baseline || baseline.updatedAt !== row.updated_at;
+  return changedElsewhere && rowTime > draftTime ? "row" : "draft";
+}
+
+function settleWithin(promise, ms) {
+  return Promise.race([promise, new Promise((resolve) => window.setTimeout(() => resolve(null), ms))]);
+}
+
+async function restoreWorkingAltarDraft() {
+  const altarId = window.currentSavedAltarId || "";
+  const rowPromise = startingAltarRow && startingAltarRow.id === altarId ? startingAltarRow.promise : null;
+  const row = rowPromise ? await settleWithin(rowPromise, 5000) : null;
+  // The page may have moved on while the row was on its way (another altar chosen, tonight's altar).
+  if (rowPromise && (window.currentSavedAltarId || "") !== altarId) {
+    window.AltarOpening?.done();
+    return;
+  }
   const draft = getWorkingAltarDraft();
+  const choice = chooseStartingAltar(draft, row, altarId);
 
-  if (!draft || !Array.isArray(draft.objects)) return;
+  let placed = null;
+  if (choice === "row") {
+    window.currentSavedAltarName = row.name || window.currentSavedAltarName || "My Altar";
+    placed = restoreAltarData({ ...row.altar_data, name: row.name || row.altar_data.name });
+  } else if (choice === "draft") {
+    placed = restoreAltarData(draft);
+  }
 
-  restoreAltarData(draft);
+  if (placed) await settleWithin(placed, 5000);
+  window.AltarOpening?.done();
+  if (choice !== "draft" || rowPromise) return;
   const destinationParams = new URLSearchParams(window.location.search);
   const hasSpecificDestination = ["cabinet", "apothecaryItem", "placeCabinetItem", "placeApothecaryItem", "selectObject", "editRitualTemplate", "beginRitual", "setDate"].some((name) => destinationParams.has(name));
   if (!hasSpecificDestination) showAltarToast("Working altar restored");
