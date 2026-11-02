@@ -925,12 +925,14 @@ export function listen(
   covenId: string,
   me: { userId: string; name: string },
   onChange: (change: LiveChange) => void,
-  onPresence: (people: { user_id: string; name: string; place?: string }[]) => void,
-): { track: (place: string) => void; stop: () => void } {
+  onPresence: (people: { user_id: string; name: string; place?: string; done?: string | null }[]) => void,
+): { track: (place: string) => void; done: (stepId: string | null) => void; stop: () => void } {
   // Shared (sharedChannel.ts): two of this coven's screens open at once mustn't open the channel twice.
   type Payload = { eventType: LiveChange['eventType']; new: Record<string, unknown>; old: Record<string, unknown> };
   const tables: LiveTable[] = ['coven_messages', 'coven_altar_items', 'coven_rituals', 'coven_ritual_steps', 'coven_ritual_rsvps', 'coven_ritual_step_marks', 'coven_petitions'];
   let place = 'coven';
+  // The step you've tapped Done on (stepFlow.ts doneIn), sent with where you are.
+  let done: string | null = null;
   const shared = joinChannel(
     `coven:${covenId}`,
     { presence: { key: me.userId } },
@@ -950,7 +952,7 @@ export function listen(
     (event, payload) => {
       if (event === 'change') onChange(payload as LiveChange);
       else if (event === 'presence') {
-        const state = shared.presence() as Record<string, { user_id: string; name: string; place?: string }[]>;
+        const state = shared.presence() as Record<string, { user_id: string; name: string; place?: string; done?: string | null }[]>;
         onPresence(Object.values(state).map((list) => list[0]).filter(Boolean));
       }
     },
@@ -960,7 +962,12 @@ export function listen(
     track(next: string) {
       if (next === place) return;
       place = next;
-      shared.track({ user_id: me.userId, name: me.name, place });
+      shared.track({ user_id: me.userId, name: me.name, place, done });
+    },
+    done(stepId: string | null) {
+      if (stepId === done) return;
+      done = stepId;
+      shared.track({ user_id: me.userId, name: me.name, place, done });
     },
     stop() {
       shared.leave();

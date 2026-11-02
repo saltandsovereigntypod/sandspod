@@ -553,7 +553,7 @@
   // ── The coven's Messages, in a small window over the altar ──────────────
   // covens/coven/chat-panel.js, with the coven scripts it needs, loaded only here.
   const CHAT_STYLES = ["/css/sanctuary-pages.css", "/covens/covens.css"];
-  const CHAT_SCRIPTS = ["/covens/coven-logic.js", "/covens/coven-data.js", "/covens/coven-ui.js", "/js/core/covens.js", "/covens/coven/chat.js", "/covens/coven/chat-panel.js"];
+  const CHAT_SCRIPTS = ["/covens/coven-logic.js", "/covens/coven-data.js", "/covens/coven-ui.js", "/js/core/covens.js", "/covens/coven/chat.js", "/covens/coven/step-popups.js", "/covens/coven/chat-panel.js"];
   const resolve = (path) => global.SaltEnvironment?.resolvePath?.(path) || path;
 
   function addScript(path) {

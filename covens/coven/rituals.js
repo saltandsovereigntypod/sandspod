@@ -301,16 +301,52 @@
     if (pane && id && !editing) draw();
   }
 
+  // How the step under way runs (covens/coven/step-popups.js, SaltCore.covens.stepFlow): its parts, Done, its items, moving on.
+  const PP = () => global.CovenStepPopups || null;
+  // What's on the ritual's altar now, for ticking a step's items (loaded when a step lists some).
+  let objects_ = null;
+  let objectsKey_ = null;
+  function objectsFor(ritual, step) {
+    const altar = altarOf(ritual);
+    if (!step?.items?.length || !altar) return null;
+    const key = `${step.id}:${altar.id}`;
+    if (objectsKey_ !== key) {
+      objectsKey_ = key;
+      objects_ = null;
+      loadObjects(altar.id, key);
+    }
+    return objects_;
+  }
+  async function loadObjects(altarId, key) {
+    const rows = await D.altarObjects(altarId).catch(() => null);
+    if (!rows || objectsKey_ !== key) return;
+    objects_ = rows.map((r) => r.data || {});
+    onChange();
+  }
+  const flowFor = (ritual, steps) => (PP() ? PP().flowOf(ritual, steps, state, objectsFor(ritual, steps.find((s) => s.id === ritual.current_step_id))) : null);
+  const flowHandlers = (ritual, act) => ({
+    done: (stepId) => {
+      api.markDone?.(stepId);
+      // Shown at once; the others see it when presence syncs.
+      state.presence = (state.presence || []).filter((p) => p.user_id !== me()).concat({ user_id: me(), name: nameOf(me()), place: "rituals", done: stepId });
+      onChange();
+    },
+    move: (stepId, button) => act(button, () => D.finishStep(stepId)),
+    turn: (stepId, button) => act(button, () => D.nextTurn(stepId).then((saved) => (saved && apply("step", { eventType: "UPDATE", new: saved }), null)))
+  });
+
   function nowCard(ritual, steps) {
     const index = steps.findIndex((s) => s.id === ritual.current_step_id);
     const step = steps[index];
     if (!step) return "";
+    const flow = flowFor(ritual, steps);
     const yours = mine(step);
     const who = L.stepAssignee(step, state.ranks, nameOf);
     const canFinish = (yours && state.standing.ok) || state.perms.lead || state.perms.site;
     return `<section class="sp-card ${yours ? "sp-card--gold cv-your-turn" : ""}" aria-live="polite" data-now>
         <p class="sp-eyebrow">Step ${index + 1} of ${steps.length}${yours ? " · your turn" : ""}</p>
         <h2>${esc(step.title)}</h2>
+        ${flow ? PP().cardHtml(flow) : ""}
         <p class="sp-caption">${yours ? (who.kind === "person" ? "This step is yours." : `This step is for ${esc(who.label.toLowerCase())}${who.kind === "everyone" ? "" : ", and you are one"}.`) : `${esc(who.label)} leads this step.`}${step.duration_minutes ? ` About ${step.duration_minutes} ${step.duration_minutes === 1 ? "minute" : "minutes"}.` : ""}</p>
         ${step.instructions ? `<div class="cv-doc">${prose(step.instructions)}</div>` : ""}
         ${scriptStepOf(ritual, step.id) ? linesHtml(scriptStepOf(ritual, step.id)) : step.spoken_text ? `<p class="sp-label">Words to speak</p><blockquote class="cv-doc cv-spoken">${prose(step.spoken_text)}</blockquote>` : ""}
@@ -321,7 +357,7 @@
         ${altarActionHtml(step, yours)}
         ${waitingTurn(ritual, step) ? "" : nowAskHtml(step, yours)}
         <div class="sp-actions">
-          ${canFinish ? `<button class="button button--primary" type="button" data-finish="${esc(step.id)}">${yours ? "I’ve finished this step" : "Finish this step"}${index === steps.length - 1 ? " and close the ritual" : ""}</button>` : ""}
+          ${canFinish && !flow ? `<button class="button button--primary" type="button" data-finish="${esc(step.id)}">${yours ? "I’ve finished this step" : "Finish this step"}${index === steps.length - 1 ? " and close the ritual" : ""}</button>` : ""}
           ${state.perms.lead || state.perms.site ? `${index > 0 ? `<button class="button button--ghost button--small" type="button" data-goto="${esc(steps[index - 1].id)}">Back a step</button>` : ""}
             <button class="button button--ghost button--small" type="button" data-end>End the ritual</button>` : ""}
         </div>
@@ -816,6 +852,10 @@
       draw();
     };
     pane.querySelector("[data-finish]")?.addEventListener("click", (event) => act(event.currentTarget, () => D.finishStep(event.currentTarget.dataset.finish)));
+    // The step's Done and moving on, and the pop-ups over the screen.
+    const flow = ritual.status === "live" ? flowFor(ritual, steps) : null;
+    if (flow) PP().wire(pane.querySelector("[data-now]"), flow, flowHandlers(ritual, act));
+    PP()?.render(flow, flow ? flowHandlers(ritual, act) : null);
     pane.querySelector("[data-goto]")?.addEventListener("click", (event) => act(event.currentTarget, () => D.goToStep(ritual.id, event.currentTarget.dataset.goto)));
     pane.querySelector("[data-end]")?.addEventListener("click", async (event) => {
       const button = event.currentTarget;
@@ -1059,6 +1099,8 @@
 
   function draw() {
     if (!pane) return;
+    // The pop-ups belong to the ritual page; it puts them back when it draws.
+    PP()?.clear();
     const p = params();
     if (p.get("edit")) return editor(p.get("edit"));
     if (editing) global.CovenBuilder?.close?.();
@@ -1083,6 +1125,7 @@
     if (!altar || (row.altar_id || row.id) !== altar.id) return;
     global.clearTimeout(altarTimer);
     altarTimer = global.setTimeout(() => {
+      if (objectsKey_) loadObjects(altar.id, objectsKey_);
       const holder = pane?.querySelector("[data-ritual-altar]");
       if (holder) global.CovenAltar?.preview?.(holder, altar.id, state);
     }, 800);
@@ -1105,7 +1148,20 @@
     draw();
   }
 
+  /** Who is here, and who has tapped Done: the step's card and pop-ups again (not while you're typing). */
+  let presenceKey_ = "";
+  function onPresence(list) {
+    const key = (list || []).map((p) => `${p.user_id}:${p.place || ""}:${p.done || ""}`).sort().join("|");
+    if (key === presenceKey_) return;
+    presenceKey_ = key;
+    const ritual = state?.rituals.find((r) => r.id === params().get("ritual"));
+    if (!pane || editing || ritual?.status !== "live" || (pane.contains(doc_().activeElement) && doc_().activeElement.matches("input, textarea, select"))) return;
+    onChange();
+  }
+  const doc_ = () => global.document;
+
   function unmount() {
+    PP()?.clear();
     if (editing) global.CovenBuilder?.close?.();
     global.CovenMeeting?.stop?.();
     pane = null;
@@ -1121,5 +1177,5 @@
     global.clearTimeout(altarTimer);
   }
 
-  global.CovenRituals = { mount, unmount, onChange, onAltarChange };
+  global.CovenRituals = { mount, unmount, onChange, onAltarChange, onPresence };
 })(window);

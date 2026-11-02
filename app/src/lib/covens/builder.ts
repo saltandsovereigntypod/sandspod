@@ -25,6 +25,7 @@ import { blankStep, draftFromStep, plannerProblem, stepsPayload, type Candidate,
 import { actionOf, type StepAction } from './stepActions.ts';
 import { cleanFieldSpecs, cleanValues, fieldsFor, fieldSummary, namesIn, whoIn, type FieldSpec, type FieldValues, type ThingKind } from './fields.ts';
 import { cleanNoticeWho } from './notices.ts';
+import { cleanEnder, enderLabel, flowKind, flowWarnings, LEADER_ENDER, stepEnder, stepStartText, stepWithItems } from './stepFlow.ts';
 
 export type GatheringKind = 'rite' | 'meeting';
 
@@ -104,6 +105,10 @@ export type StepDetails = {
   custom_action?: string;
   /** Roles that speak its words (a hook for voice later); everyone named when empty. */
   speakers?: string[];
+  /** What to do with the items placed on the altar (stepFlow.ts). */
+  with_items?: string;
+  /** Who moves it on: "user:<id>" or "role:<id>"; left out, the ritual's leader (stepFlow.ts). */
+  ender?: string;
 };
 
 /** One step as the builder edits it. */
@@ -399,6 +404,8 @@ function cleanDetails(raw: unknown): StepDetails {
   if (typeof d.book_page_title === 'string' && d.book_page_title) out.book_page_title = d.book_page_title.slice(0, 120);
   if (typeof d.custom_action === 'string' && d.custom_action) out.custom_action = d.custom_action;
   if (Array.isArray(d.speakers)) out.speakers = d.speakers.filter((r) => typeof r === 'string').slice(0, 20);
+  if (typeof d.with_items === 'string' && d.with_items.trim()) out.with_items = d.with_items.slice(0, 1000);
+  if (cleanEnder(d.ender) !== LEADER_ENDER) out.ender = cleanEnder(d.ender);
   return out;
 }
 
@@ -647,7 +654,29 @@ export function builderWarnings(plan: RitualPlan, steps: BuilderStep[], custom: 
     }
   }
   for (const link of brokenLinks(ordered, custom)) out.push(`Step ${link.index + 1} refers to “${link.name}”, which no earlier step names.`);
+  out.push(...flowWarnings(ordered.map((s) => withFieldColumns(s, plan, custom)).map((s, i) => ({ ...s, roles: ordered[i].roles, assignees: ordered[i].assignees })), plan.roles));
   return out;
+}
+
+/** "What members will see": each step's pop-up as it will read when the step begins (stepFlow.ts stepStartText). */
+export function memberPreview(plan: RitualPlan, steps: BuilderStep[], ctx: WhoContext, custom: CustomAction[] = [], leaderName = ''): { key: string; heading: string; lines: string[] }[] {
+  const ordered = orderBySections(steps, plan.sections).filter((s) => s.title.trim());
+  return ordered.map((step, index) => {
+    const merged = withFieldColumns(step, plan, custom);
+    const kind = flowKind({ turn_mode: step.turn_mode, assignees: merged.assignees });
+    const text = stepStartText({
+      index,
+      total: ordered.length,
+      title: step.title,
+      kind,
+      doerName: stepWhoLabel(step, ctx),
+      items: merged.items.map((i) => i.name),
+      withItems: stepWithItems(step),
+      enderName: enderLabel(stepEnder(step), ctx, leaderName),
+      minutes: step.duration_minutes,
+    });
+    return { key: step.key, ...text };
+  });
 }
 
 /** Whether this person is among a step's people, roles included (for highlighting their parts). */

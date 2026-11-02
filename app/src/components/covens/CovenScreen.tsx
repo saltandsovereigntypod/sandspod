@@ -38,6 +38,7 @@ export function CovenScreen({
   onBack,
   backLabel,
   scrollKey,
+  overlay,
 }: {
   title: string;
   eyebrow?: string;
@@ -53,6 +54,8 @@ export function CovenScreen({
   backLabel?: string;
   /** Which inner view is showing (MoreScreen keeps each one's place). */
   scrollKey?: string;
+  /** Small cards over the screen (a rite's pop-ups, LiveRitual.tsx StepPopups). */
+  overlay?: ReactNode;
 }) {
   const coven = useCoven();
   const [pulling, setPulling] = useState(false);
@@ -82,6 +85,7 @@ export function CovenScreen({
       {body}
     </MoreScreen>
     {chat && coven.status === 'ready' && <ChatBubble />}
+    {overlay}
     </View>
   );
 

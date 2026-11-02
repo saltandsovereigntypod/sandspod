@@ -497,14 +497,22 @@
       if (onPetition) channel.on("postgres_changes", { event: "*", schema: "public", table: "coven_petitions", filter: `coven_id=eq.${covenId}` }, onPetition);
       if (onPresence) channel.on("presence", { event: "sync" }, () => onPresence(channel.presenceState()));
       let tracked = null;
+      // The step you've tapped Done on (SaltCore.covens.stepFlow doneIn), sent with where you are.
+      let doneStep = null;
       channel.subscribe((status) => {
         onStatus?.(status);
         if (status === "SUBSCRIBED" && tracked) channel.track(tracked);
       });
       return {
         track(state) {
-          tracked = state;
-          return channel.track(state).catch(() => {});
+          tracked = { ...state, done: doneStep };
+          return channel.track(tracked).catch(() => {});
+        },
+        done(stepId) {
+          doneStep = stepId || null;
+          if (!tracked) return Promise.resolve();
+          tracked = { ...tracked, done: doneStep };
+          return channel.track(tracked).catch(() => {});
         },
         close() {
           db().removeChannel(channel);

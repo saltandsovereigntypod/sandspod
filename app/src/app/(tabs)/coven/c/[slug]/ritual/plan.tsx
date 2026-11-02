@@ -20,6 +20,7 @@ import {
   builderProblem,
   builderStepFrom,
   builderWarnings,
+  memberPreview,
   cleanCustomAction,
   cleanPlan,
   defaultSectionFor,
@@ -112,7 +113,7 @@ export default function PlanRitual() {
   const [tidying, setTidying] = useState(false);
   const [pages, setPages] = useState<BookPage[]>([]);
   const [petitions, setPetitions] = useState<Petition[]>([]);
-  const [previewMode, setPreviewMode] = useState<'script' | 'run'>('script');
+  const [previewMode, setPreviewMode] = useState<'script' | 'run' | 'seen'>('script');
   const [rules, setRules] = useState<NoticeRule[]>([]);
   const [actionDraft, setActionDraft] = useState<{ name: string; section?: string; directions: string; words: string; minutes: number | null; fields: CustomAction['fields'] } | null>(null);
   const altars = useAltars();
@@ -527,10 +528,31 @@ export default function PlanRitual() {
   if (view === 'preview') {
     const script = buildScript({ title: title || 'This gathering', kind, plan, steps: ordered.map((s) => withFieldColumns(s, plan, custom)), ctx: { ranks, nameOf: coven.nameOf }, custom, pages, viewer: { membership: coven.snapshot?.membership ?? null, userId: coven.userId } });
     return (
-      <CovenScreen title={previewMode === 'script' ? 'The script' : 'Your run-through'} {...backTo}>
+      <CovenScreen title={previewMode === 'script' ? 'The script' : previewMode === 'run' ? 'Your run-through' : 'What members will see'} {...backTo}>
         {back}
-        <Chips label="Read it as" options={[{ value: 'script', label: 'The whole script' }, { value: 'run', label: 'Your run-through' }] as const} value={previewMode} onChange={setPreviewMode} />
-        <ScriptView script={script} mode={previewMode} />
+        <Chips
+          label="Read it as"
+          options={[{ value: 'script', label: 'The whole script' }, { value: 'run', label: 'Your run-through' }, { value: 'seen', label: 'What members will see' }] as const}
+          value={previewMode}
+          onChange={setPreviewMode}
+        />
+        {previewMode === 'seen' ? (
+          <>
+            <Text style={type.caption}>The pop-up each step shows everyone as it begins.</Text>
+            {memberPreview(plan, steps, ctx, custom).map((p) => (
+              <Card key={p.key}>
+                <Text style={type.eyebrow}>{p.heading}</Text>
+                {p.lines.map((line) => (
+                  <Text key={line} style={type.caption}>
+                    {line}
+                  </Text>
+                ))}
+              </Card>
+            ))}
+          </>
+        ) : (
+          <ScriptView script={script} mode={previewMode} />
+        )}
       </CovenScreen>
     );
   }

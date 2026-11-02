@@ -37,6 +37,7 @@
   const A = () => core().stepActions;
   const C = () => core().contributions;
   const M = () => core().meetings;
+  const SF = () => core().stepFlow;
 
   let pane = null;
   let ctx = null;
@@ -361,8 +362,11 @@
 
   function previewHtml() {
     const script = S().buildScript({ title: m.fields.title || "This gathering", kind: m.kind, plan: m.plan, steps: ordered().map((s) => B().withFieldColumns(s, m.plan, custom())), ctx: { ranks: ctx.state.ranks, nameOf }, custom: custom(), pages: m.pages, viewer: { membership: ctx.state.membership, userId: ctx.state.context.user?.id } });
-    return `${back()}<div class="sp-chips">${chip("The whole script", "preview-mode", attr({ mode: "script" }), m.previewMode === "script")}${chip("Your run-through", "preview-mode", attr({ mode: "run" }), m.previewMode === "run")}</div>
-      ${scriptHtml(script, m.previewMode)}`;
+    const seen = m.previewMode === "seen"
+      ? `<p class="sp-caption">The pop-up each step shows everyone as it begins.</p>${B().memberPreview(m.plan, m.steps, whoCtx(), custom()).map((p) => `<div class="sp-card"><p class="sp-eyebrow">${esc(p.heading)}</p>${p.lines.map((line) => `<p class="sp-caption">${esc(line)}</p>`).join("")}</div>`).join("")}`
+      : "";
+    return `${back()}<div class="sp-chips">${chip("The whole script", "preview-mode", attr({ mode: "script" }), m.previewMode === "script")}${chip("Your run-through", "preview-mode", attr({ mode: "run" }), m.previewMode === "run")}${chip("What members will see", "preview-mode", attr({ mode: "seen" }), m.previewMode === "seen")}</div>
+      ${seen || scriptHtml(script, m.previewMode)}`;
   }
 
   function actionHtml() {
@@ -441,6 +445,24 @@
 
   const sectionName = (step) => (m.plan.sections.find((s) => s.id === step.section) || {}).name || "";
 
+  /** "Who moves it on": the leader unless chosen (SaltCore.covens.stepFlow), as the app's StepFocus. */
+  function enderOptions(step) {
+    return [
+      { value: SF().LEADER_ENDER, label: "The leader" },
+      ...m.plan.roles.map((r) => ({ value: `role:${r.id}`, label: r.name })),
+      ...P().cleanAssignees(step.assignees).filter((a) => a.kind === "user").map((a) => ({ value: P().assigneeKey(a), label: whoLabel(P().assigneeKey(a)) }))
+    ];
+  }
+
+  function enderHtml(step) {
+    const ender = SF().stepEnder(step);
+    const options = enderOptions(step);
+    return `<div class="sp-card"><p class="sp-label">Who moves it on</p>
+      <div class="sp-chips" role="group" aria-label="Who moves it on">${options.map((o) => chip(o.label, "ender", attr({ value: o.value }), ender === o.value)).join("")}</div>
+      <div data-picker-ender></div>
+      <p class="sp-caption">${ender === SF().LEADER_ENDER ? "The leader is asked to move everyone on once the step is finished." : "They are asked to move everyone on once the step is finished, instead of the leader."}</p></div>`;
+  }
+
   function stepHtml(key) {
     const list = ordered();
     const index = list.findIndex((s) => s.key === key);
@@ -466,9 +488,9 @@
     const blocked = problems()[step.key];
     const access = [{ value: "assigned", label: "Whoever does the step" }, { value: "everyone", label: "Everyone" }, { value: "leader", label: "Only the leader" }, { value: "chosen", label: "Chosen people" }];
     return `${back()}<p class="sp-eyebrow">Step ${index + 1}${sectionName(step) ? ` · ${esc(sectionName(step))}` : ""}</p>
-      <div class="sp-field"><label for="st-title">Step name</label><input id="st-title" maxlength="120" data-step="title" value="${esc(step.title)}" placeholder="Call the quarters" /></div>
+      <div class="sp-field"><label for="st-title">What happens</label><input id="st-title" maxlength="120" data-step="title" value="${esc(step.title)}" placeholder="Call the quarters" /><p class="sp-caption">One line: the step’s name, as everyone sees it.</p></div>
       <div class="cv-inline-form"><span class="sp-caption">${esc(B().stepActionName(step, custom()) || "Written by you")}</span><span class="cv-grow"></span>${btn("Change what it is", "choose")}</div>
-      <div class="sp-card"><p class="sp-label">Who</p>
+      <div class="sp-card"><p class="sp-label">Who does it?</p>
         ${m.plan.roles.length ? `<div class="sp-chips" role="group" aria-label="Roles">${m.plan.roles.map((r) => chip(r.name, "toggle-role", attr({ id: r.id }), step.roles.includes(r.id))).join("")}</div>` : ""}
         <div data-picker-people></div>
         ${blocked ? `<p class="cv-status is-error">${esc(blocked)}</p>` : ""}
@@ -476,11 +498,15 @@
         <div class="sp-chips" role="group" aria-label="How it is done">${B().TURN_MODES.map((t) => chip(t.label, "turn", attr({ value: t.value }), step.turn_mode === t.value)).join("")}</div>
         <p class="sp-caption">${esc((B().TURN_MODES.find((t) => t.value === step.turn_mode) || {}).detail || "")}</p></div>
       ${specs.some((s) => s.essential) ? `<div class="sp-card">${fieldsHtml(specs, values, "essential", step, index)}</div>` : ""}
+      <div class="sp-card"><p class="sp-label">Place on the altar</p><div data-picker-items></div>
+        <p class="sp-label">What to do with them</p>
+        <div class="sp-field"><label for="st-with">What to do with them (optional)</label><textarea id="st-with" maxlength="1000" data-with-items placeholder="Light your candle from the one before.">${esc(step.details.with_items || "")}</textarea></div></div>
       ${partsWords ? "" : `<div class="sp-card"><p class="sp-label">Words</p>
         ${linked ? `<p>From the coven’s Book: <strong>${esc(linked.title)}</strong></p><p class="sp-caption">The words are read from the page as it stands, so changes to the page show here too.</p><div class="sp-actions">${btn("Unlink the page", "unlink")}</div>`
           : `<div class="sp-field"><label for="st-words">Words to speak</label><textarea id="st-words" maxlength="4000" data-step="spoken_text" placeholder="Leave empty if nothing is said">${esc(step.spoken_text)}</textarea></div>
             ${m.pages.length ? `<details class="sp-details"><summary>Link a page of the coven’s Book instead</summary><div class="sp-field"><label for="st-page">Find a page</label><input id="st-page" type="search" data-page-query placeholder="Opening prayer" /></div><div class="cv-choices" data-page-list>${pageChoices("")}</div></details>` : ""}`}
       </div>`}
+      ${enderHtml(step)}
       <div class="sp-actions">${btn(m.more ? "Fewer options" : "More options", "more", "", "button--ghost")}</div>
       ${m.more ? `<div class="sp-card">
           <div class="sp-field"><label for="st-dir">Directions</label><textarea id="st-dir" maxlength="4000" data-step="instructions">${esc(step.instructions)}</textarea><p class="sp-caption">What the person doing it does. They see this when the step comes.</p></div>
@@ -488,7 +514,7 @@
           ${specs.some((s) => !s.essential) ? fieldsHtml(specs, values, "more", step, index) : ""}
           ${m.plan.roles.length && step.spoken_text.trim() ? `<p class="sp-label">Who speaks the words</p><div class="sp-chips">${m.plan.roles.map((r) => chip(r.name, "toggle-speaker", attr({ id: r.id }), (step.details.speakers || []).includes(r.id))).join("")}</div>` : ""}
         </div>
-        <div class="sp-card"><div data-picker-items></div>
+        <div class="sp-card">
           <p class="sp-label">On the altar</p><div class="sp-chips">${effects.map((e) => chip(e.label, "effect", attr({ value: e.value }), (step.altar_action || "") === e.value)).join("")}</div>
           <p class="sp-caption">${esc(effect.detail || "")}</p>
           <p class="sp-label">Who tends the altar during it</p><div class="sp-chips">${access.map((a) => chip(a.label, "access", attr({ value: a.value }), step.altar_access === a.value)).join("")}</div>
@@ -695,13 +721,37 @@
     if (items && m.I) {
       Pk.create(items, {
         id: "st-items",
-        label: "Items",
-        hint: "What the step uses, or sets on the altar.",
+        label: "Items to place",
+        hint: "Exactly what goes on the coven altar. Each ticks off as it is placed.",
+        empty: "Nothing placed",
         placeholder: "White candle, rosemary, bread…",
         chips: () => step.items.map((it) => ({ key: it.key, label: it.name, image: it.image })),
         search: (q, picked) => m.I.searchItems(m.itemList, q, { limit: 8, picked, suggestions: m.I.itemSuggestions(m.itemList, A().actionOf(step.action)?.suggestItems) }),
         onAdd: (entry) => (step.items = [...step.items, m.I.stepItemOf(entry)].slice(0, 24)),
         onRemove: (key) => (step.items = step.items.filter((it) => it.key !== key))
+      });
+    }
+    const enderEl = pane.querySelector("[data-picker-ender]");
+    if (enderEl) {
+      const ender = SF().stepEnder(step);
+      const chosen = ender.startsWith("user:") && !enderOptions(step).some((o) => o.value === ender);
+      const users = whoEntries().filter((e) => e.key.startsWith("user:"));
+      Pk.create(enderEl, {
+        id: "st-ender",
+        label: "Or someone else",
+        placeholder: "Rowan…",
+        max: 1,
+        chips: () => (chosen ? [{ key: ender, label: whoLabel(ender) }] : []),
+        search: (q, picked) => P().searchEntries(users, q, { limit: 8, picked, suggestions: whoSuggest().filter((k) => k.startsWith("user:")) }),
+        onAdd: (entry) => {
+          step.details = { ...step.details, ender: entry.key };
+          draw();
+        },
+        onRemove: () => {
+          const { ender: _gone, ...rest } = step.details;
+          step.details = rest;
+          draw();
+        }
       });
     }
     const tenders = pane.querySelector("[data-picker-tenders]");
@@ -844,7 +894,8 @@
         const spec = specs.find((s) => s.key === f.partWords);
         const parts = F().partsOf(spec, F().cleanValues(specs, step.details.fields), specs).map((p) => (p.part === f.part ? { ...p, words: el.value } : p));
         step.details = { ...step.details, fields: { ...(step.details.fields || {}), [spec.key]: parts } };
-      } else if (el.matches("[data-ask-prompt]") && step.contribution) step.contribution = { ...step.contribution, prompt: el.value };
+      } else if (el.matches("[data-with-items]")) step.details = { ...step.details, with_items: el.value || undefined };
+      else if (el.matches("[data-ask-prompt]") && step.contribution) step.contribution = { ...step.contribution, prompt: el.value };
     }
   }
 
@@ -1088,6 +1139,11 @@
       case "turn":
         step.turn_mode = d.value;
         return redraw();
+      case "ender": {
+        const { ender: _was, ...rest } = step.details;
+        step.details = d.value === SF().LEADER_ENDER ? rest : { ...rest, ender: d.value };
+        return redraw();
+      }
       case "more":
         m.more = !m.more;
         return redraw();

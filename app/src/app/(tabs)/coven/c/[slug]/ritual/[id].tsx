@@ -5,7 +5,7 @@ import { Alert, StyleSheet, Text, View } from 'react-native';
 import { Button } from '../../../../../../components/Button';
 import { CovenScreen, covenHref } from '../../../../../../components/covens/CovenScreen';
 import { MyContribution } from '../../../../../../components/covens/Contributions';
-import { askEndRitual, LeadSteps, LiveStepCard, StepList, useLiveRitual, type AltarAccessChoice } from '../../../../../../components/covens/LiveRitual';
+import { askEndRitual, LeadSteps, LiveStepCard, StepList, StepPopups, useLiveRitual, type AltarAccessChoice } from '../../../../../../components/covens/LiveRitual';
 import { ApologyNote } from '../../../../../../components/covens/Record';
 import { MeetingScreen } from '../../../../../../components/covens/meeting/MeetingScreen';
 import { SendNotice } from '../../../../../../components/covens/SendNotice';
@@ -212,7 +212,7 @@ function RitualScreen() {
   const confirmEnd = () => askEndRitual(live);
 
   return (
-    <CovenScreen title={ritual.title} onRefresh={coven.refreshRituals}>
+    <CovenScreen title={ritual.title} onRefresh={coven.refreshRituals} overlay={isLive && kind !== 'meeting' ? <StepPopups live={live} /> : null}>
       <Pills>
         <Pill label={isLive ? 'Under way' : ritual.status === 'scheduled' ? 'On the calendar' : ritual.status === 'done' ? 'Done' : ritual.status === 'cancelled' ? 'Cancelled' : 'Draft'} tone={isLive ? 'gold' : undefined} />
         {!!occasionLabel(ritual) && <Pill label={occasionLabel(ritual)} />}
