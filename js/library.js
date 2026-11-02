@@ -108,9 +108,19 @@ function dedupeRelations() {
   });
 }
 
+// While a bulk import runs, save() keeps the in-memory tidy-up but writes to
+// localStorage only once at the end (each write copies the whole Library).
+let deferredSaveDepth = 0;
+let deferredSavePending = false;
+
 function save() {
   dedupeRelations();
   rebuildIndexes();
+
+  if (deferredSaveDepth > 0) {
+    deferredSavePending = true;
+    return;
+  }
 
   const lightweightLibrary = structuredClone(library);
 
@@ -760,6 +770,26 @@ function mergeDuplicateEntities(sourceId, destinationId) {
 function importTraditionalLibrary() {
   if (typeof TraditionalLibrary === "undefined") return;
 
+  return withDeferredSave(importTraditionalLibraryEntries);
+}
+
+// Runs fn with localStorage writes held back, then saves once if anything
+// changed. The in-memory Library is the same as with a save per change.
+function withDeferredSave(fn) {
+  deferredSaveDepth += 1;
+  try {
+    return fn();
+  } finally {
+    deferredSaveDepth -= 1;
+    if (deferredSaveDepth === 0 && deferredSavePending) {
+      deferredSavePending = false;
+      save();
+    }
+  }
+}
+
+function importTraditionalLibraryEntries() {
+
   const merges = [];
 
   Object.entries(TraditionalLibrary).forEach(([type, collection]) => {
@@ -876,6 +906,7 @@ return {
   findEntityByTraditionalReference,
   searchTraditionalEntries,
   importTraditionalLibrary,
+  withDeferredSave,
   syncMyPracticeConnections,
 
   updateEntity,
