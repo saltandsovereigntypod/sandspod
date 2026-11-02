@@ -1,50 +1,30 @@
 import { router } from 'expo-router';
 import { useEffect, useState } from 'react';
-import { KeyboardAvoidingView, Platform, Pressable, ScrollView, StyleSheet, Text, useWindowDimensions, View } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 
-import { Avatar, ChatBubble } from './Chat';
+import { Avatar } from './Chat';
 import { covenHref } from './CovenScreen';
 import { CovenThreadBody, useCovenThread } from './CovenThread';
-import { badgeLabel, chatPanelFrame, myConversations } from '../../lib/covens/altarPanel';
+import { badgeLabel, myConversations } from '../../lib/covens/altarPanel';
 import { conversationTitle, COVEN_THREAD, fetchConversations, type Conversation, type ConversationMember } from '../../lib/covens/chat';
 import { useCoven } from '../../lib/covens/CovenContext';
 import { markRead, useUnread } from '../../lib/covens/unread';
 import { colors, fonts, radius, type } from '../../theme';
 
-// The coven's chat in a small window over a coven altar, so you can talk with
-// the others without leaving the altar. It sits along the bottom (down the
-// side on a wide screen), so the altar stays in view and can still be tended
-// above it. The coven's chat first; "Chats" switches to one of your
+// The coven's chat in the panel over a coven altar (AltarRitual.tsx), so you
+// can talk with the others without leaving the altar, which stays in view
+// and tendable above it. The coven's chat first; "Chats" switches to one of your
 // conversations, and "Open" goes to the full Messages screen. The thread
 // itself is the Messages screen's own (CovenThread.tsx): who may write,
 // blocks, agreements and coven readings work the same.
 
-/** The chat button and its window, for a coven altar's overlay. */
-export function AltarChat() {
-  const [open, setOpen] = useState(false);
-  // Once opened it stays mounted (hidden), so the report sheet inside it is never torn down mid-close.
-  const [opened, setOpened] = useState(false);
-  return (
-    <>
-      {opened && <ChatPanel visible={open} onClose={() => setOpen(false)} />}
-      {!open && (
-        <ChatBubble
-          onPress={() => {
-            setOpened(true);
-            setOpen(true);
-          }}
-        />
-      )}
-    </>
-  );
-}
-
-function ChatPanel({ visible, onClose }: { visible: boolean; onClose: () => void }) {
+/**
+ * The Messages side of the panel over a coven altar (AltarRitual.tsx
+ * AltarPanel): the coven's chat, or one of your conversations. "Close" folds
+ * the panel down to its slim bar.
+ */
+export function MessagesPane({ visible, onClose }: { visible: boolean; onClose: () => void }) {
   const coven = useCoven();
-  const insets = useSafeAreaInsets();
-  const { width, height } = useWindowDimensions();
-  const frame = chatPanelFrame(width, height - insets.top);
   const [thread, setThread] = useState<string | null>(null);
   const [choosing, setChoosing] = useState(false);
 
@@ -54,35 +34,21 @@ function ChatPanel({ visible, onClose }: { visible: boolean; onClose: () => void
   };
 
   return (
-    <KeyboardAvoidingView
-      pointerEvents="box-none"
-      behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-      style={[StyleSheet.absoluteFill, frame.side === 'right' ? styles.holderRight : styles.holderBottom, !visible && styles.hidden]}
-    >
-      <View
-        accessibilityLabel="Messages"
-        style={[
-          styles.panel,
-          frame.side === 'right'
-            ? [styles.panelRight, { width: frame.width, marginTop: insets.top, paddingRight: insets.right }]
-            : [styles.panelBottom, { height: frame.height }],
-        ]}
-      >
-        {choosing ? (
-          <ThreadPicker
-            current={thread}
-            onPick={(id) => {
-              setThread(id);
-              setChoosing(false);
-            }}
-            onBack={() => setChoosing(false)}
-            onClose={onClose}
-          />
-        ) : (
-          <ThreadPane key={thread ?? COVEN_THREAD} conversationId={thread} visible={visible} onChoose={() => setChoosing(true)} onOpenFull={openFull} onClose={onClose} />
-        )}
-      </View>
-    </KeyboardAvoidingView>
+    <View style={[styles.body, !visible && styles.hidden]}>
+      {choosing ? (
+        <ThreadPicker
+          current={thread}
+          onPick={(id) => {
+            setThread(id);
+            setChoosing(false);
+          }}
+          onBack={() => setChoosing(false)}
+          onClose={onClose}
+        />
+      ) : (
+        <ThreadPane key={thread ?? COVEN_THREAD} conversationId={thread} visible={visible} onChoose={() => setChoosing(true)} onOpenFull={openFull} onClose={onClose} />
+      )}
+    </View>
   );
 }
 
@@ -242,22 +208,7 @@ function HeadButton({ label, accessibilityLabel, onPress, strong }: { label: str
 }
 
 const styles = StyleSheet.create({
-  holderBottom: { justifyContent: 'flex-end' },
-  holderRight: { alignItems: 'flex-end' },
   hidden: { display: 'none' },
-  panel: {
-    backgroundColor: colors.ground,
-    borderColor: colors.goldLine,
-    overflow: 'hidden',
-    shadowColor: '#000',
-    shadowOpacity: 0.4,
-    shadowRadius: 12,
-    shadowOffset: { width: 0, height: -3 },
-    elevation: 12,
-  },
-  // Shrinks with the keyboard rather than running off the top of the screen.
-  panelBottom: { alignSelf: 'stretch', flexShrink: 1, maxHeight: '100%', borderTopWidth: 1, borderTopLeftRadius: radius.card, borderTopRightRadius: radius.card },
-  panelRight: { flex: 1, borderLeftWidth: 1, borderTopLeftRadius: radius.card, borderBottomLeftRadius: radius.card },
   head: {
     flexDirection: 'row',
     alignItems: 'center',

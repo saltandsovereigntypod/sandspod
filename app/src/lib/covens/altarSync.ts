@@ -138,6 +138,13 @@ export const setRitualAltar = (ritualId: string, altarId: string | null, access:
 
 // ─── The document, as rows ──────────────────────────────────────────────
 
+/** What is on an altar now (for ticking a ritual step's items as they're placed, stepFlow.ts itemsOnAltar). */
+export async function fetchAltarObjects(altarId: string): Promise<SavedObject[]> {
+  const { data, error } = await supabase.from('coven_altar_objects').select('data').eq('altar_id', altarId);
+  if (error) throw new Error(error.message);
+  return ((data ?? []) as { data: SavedObject }[]).map((r) => r.data);
+}
+
 // ─── One-off changes (a ritual step's candle) ───────────────────────────
 
 /** Load an altar, change it, and save what changed (for actions taken away from the altar screen). */

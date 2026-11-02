@@ -3,8 +3,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 import { AltarEditor } from '../../../../../../../components/altar/AltarEditor';
-import { AltarChat } from '../../../../../../../components/covens/ChatPanel';
-import { AltarRitual } from '../../../../../../../components/covens/AltarRitual';
+import { AltarPanel } from '../../../../../../../components/covens/AltarRitual';
 import { CovenScreen, covenHref } from '../../../../../../../components/covens/CovenScreen';
 import * as api from '../../../../../../../lib/covens/api';
 import { useCovenAltar } from '../../../../../../../lib/covens/altarSync';
@@ -14,8 +13,8 @@ import { colors, radius, type } from '../../../../../../../theme';
 
 // One of the coven's altars, open in the whole altar editor and shared live:
 // who else is here, whether you can tend it right now (and why not), and the
-// coven's chat in a small window over the altar (ChatPanel.tsx), and, while a
-// rite is under way, its step in progress in another (AltarRitual.tsx).
+// coven's chat and, while a rite is under way, its step in progress, as two
+// tabs of one panel over the altar (AltarRitual.tsx).
 export default function CovenAltarScreen() {
   const { altarId, from } = useLocalSearchParams<{ altarId: string; from?: string }>();
   const coven = useCoven();
@@ -92,12 +91,7 @@ export default function CovenAltarScreen() {
       shared={shared}
       whose={whose}
       header={header}
-      overlay={
-        <>
-          <AltarChat />
-          <AltarRitual altarId={String(altarId ?? '')} ritualId={access?.ritual_id} />
-        </>
-      }
+      overlay={<AltarPanel altarId={String(altarId ?? '')} ritualId={access?.ritual_id} />}
       onBack={() => {
         if (from === 'altar') {
           // Opened from the Altar tab's Coven list: close this altar first, so the

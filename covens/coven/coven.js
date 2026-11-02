@@ -299,7 +299,7 @@
     function mount(module) {
       if (!module) return (pane.innerHTML = `<p class="sp-notice">This part of the coven couldn’t load. Please refresh the page.</p>`);
       mounted = module;
-      module.mount(pane, state, { refresh, live, covenHref });
+      module.mount(pane, state, { refresh, live, covenHref, markDone: (stepId) => live?.done(stepId) });
     }
     (views[tab] || about)(pane);
     if (live) live.track({ user_id: state.context.user.id, name: UI.nameOf(state.context, state.context.user.id), place: tab });
@@ -598,6 +598,7 @@
         state.presence = Object.values(presence).map((list) => list[0]).filter(Boolean);
         global.CovenChat?.onPresence?.(state.presence);
         global.CovenAltar?.onPresence?.(state.presence);
+        global.CovenRituals?.onPresence?.(state.presence);
       },
       onStatus: (status) => global.CovenChat?.onStatus?.(status)
     });

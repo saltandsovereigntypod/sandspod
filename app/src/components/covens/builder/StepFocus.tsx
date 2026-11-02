@@ -18,6 +18,7 @@ import { CONTRIBUTION_FATES, CONTRIBUTION_KINDS, CONTRIBUTION_TIMINGS, CONTRIBUT
 import { ALTAR_ACCESS } from '../../../lib/covens/draft';
 import { cleanValues, partsOf, type FieldValues } from '../../../lib/covens/fields';
 import { assigneeFromKey, assigneeKey, cleanAssignees, type Assignee, type PickEntry } from '../../../lib/covens/picker';
+import { LEADER_ENDER, stepEnder } from '../../../lib/covens/stepFlow';
 import { actionLabel, ALTAR_EFFECTS, applyAction, groupsFor, searchActions, type ActionGroup, type StepAction } from '../../../lib/covens/stepActions';
 import { HIDDEN_PAGE } from '../../../lib/grimoire/access';
 import { colors, fonts, radius, touch, type } from '../../../theme';
@@ -115,6 +116,14 @@ export function StepFocus({
   const setPeople = (list: Assignee[]) => onChange({ assignees: cleanAssignees(list) });
   const toggleRole = (id: string) => onChange({ roles: step.roles.includes(id) ? step.roles.filter((r) => r !== id) : [...step.roles, id] });
   const nonRole = who.filter((e) => !e.key.startsWith('role:'));
+  // Who moves it on: the leader unless chosen (stepFlow.ts).
+  const ender = stepEnder(step);
+  const setEnder = (v: string) => onChange({ details: { ...step.details, ender: v === LEADER_ENDER ? undefined : v } });
+  const enderOptions = [
+    { value: LEADER_ENDER, label: 'The leader' },
+    ...plan.roles.map((r) => ({ value: `role:${r.id}`, label: r.name })),
+    ...people.filter((a) => a.kind === 'user').map((a) => ({ value: assigneeKey(a), label: whoLabel(assigneeKey(a)) })),
+  ];
 
   const ask = step.contribution;
   const setAsk = (patch: Partial<StepContribution>) => ask && onChange({ contribution: { ...ask, ...patch } });
@@ -187,14 +196,14 @@ export function StepFocus({
         Step {number}
         {sectionName ? ` · ${sectionName}` : ''}
       </Text>
-      <Field label="Step name" value={step.title} onChangeText={(v) => onChange({ title: v })} maxLength={120} placeholder="Call the quarters" />
+      <Field label="What happens" hint="One line: the step’s name, as everyone sees it." value={step.title} onChangeText={(v) => onChange({ title: v })} maxLength={120} placeholder="Call the quarters" />
       <View style={styles.row}>
         <Text style={[type.caption, styles.grow]}>{stepActionName(step, custom) || 'Written by you'}</Text>
         <Button label="Change what it is" variant="text" onPress={() => setChoosing(true)} />
       </View>
 
       <Card>
-        <Text style={type.eyebrow}>Who</Text>
+        <Text style={type.eyebrow}>Who does it?</Text>
         {plan.roles.length > 0 && (
           <MultiChips label="Roles" options={plan.roles.map((r) => ({ value: r.id, label: r.name }))} value={step.roles} onChange={(next) => onChange({ roles: next })} />
         )}
@@ -224,6 +233,30 @@ export function StepFocus({
           <FieldRenderer specs={specs} values={values} onChange={setFields} ctx={fieldCtx} only="essential" />
         </Card>
       )}
+
+      <Card>
+        <Text style={type.eyebrow}>Place on the altar</Text>
+        <SearchPicker
+          label="Items to place"
+          hint="Exactly what goes on the coven altar. Each ticks off as it is placed."
+          chips={step.items.map((i) => ({ key: i.key, label: i.name, image: i.image }))}
+          entries={items}
+          search={(q, picked) => searchItems(items, q, { limit: 8, picked, suggestions: itemSuggest() })}
+          onAdd={(entry) => onChange({ items: [...step.items, stepItemOf(entry as ItemEntry)].slice(0, 24) })}
+          onRemove={(key) => onChange({ items: step.items.filter((i) => i.key !== key) })}
+          placeholder="White candle, rosemary, bread…"
+          empty="Nothing placed"
+        />
+        <Text style={type.eyebrow}>What to do with them</Text>
+        <Field
+          label="What to do with them (optional)"
+          value={step.details.with_items ?? ''}
+          onChangeText={(v) => onChange({ details: { ...step.details, with_items: v || undefined } })}
+          multiline
+          maxLength={1000}
+          placeholder="Light your candle from the one before."
+        />
+      </Card>
 
       {!partsWords && <Card>
         <Text style={type.eyebrow}>Words</Text>
@@ -266,6 +299,24 @@ export function StepFocus({
         )}
       </Card>}
 
+      <Card>
+        <Text style={type.eyebrow}>Who moves it on</Text>
+        <Chips label="Who moves it on" options={enderOptions} value={enderOptions.some((o) => o.value === ender) ? ender : ''} onChange={setEnder} />
+        <SearchPicker
+          label="Or someone else"
+          chips={ender.startsWith('user:') && !enderOptions.some((o) => o.value === ender) ? [{ key: ender, label: whoLabel(ender) }] : []}
+          entries={who.filter((e) => e.key.startsWith('user:'))}
+          suggestions={whoSuggest.filter((k) => k.startsWith('user:'))}
+          onAdd={(entry) => setEnder(entry.key)}
+          onRemove={() => setEnder(LEADER_ENDER)}
+          placeholder="Rowan…"
+          max={1}
+        />
+        <Text style={type.caption}>
+          {ender === LEADER_ENDER ? 'The leader is asked to move everyone on once the step is finished.' : 'They are asked to move everyone on once the step is finished, instead of the leader.'}
+        </Text>
+      </Card>
+
       <Button label={more ? 'Fewer options' : 'More options'} variant="outline" onPress={() => setMore(!more)} />
       {more && (
         <View style={styles.gap}>
@@ -287,16 +338,6 @@ export function StepFocus({
           </Card>
 
           <Card>
-            <SearchPicker
-              label="Items"
-              hint="What the step uses, or sets on the altar."
-              chips={step.items.map((i) => ({ key: i.key, label: i.name, image: i.image }))}
-              entries={items}
-              search={(q, picked) => searchItems(items, q, { limit: 8, picked, suggestions: itemSuggest() })}
-              onAdd={(entry) => onChange({ items: [...step.items, stepItemOf(entry as ItemEntry)].slice(0, 24) })}
-              onRemove={(key) => onChange({ items: step.items.filter((i) => i.key !== key) })}
-              placeholder="White candle, rosemary, bread…"
-            />
             <Text style={type.eyebrow}>On the altar</Text>
             <Chips label="On the altar" options={ALTAR_EFFECTS.map((e) => ({ value: e.value, label: e.label }))} value={step.altar_action} onChange={(v) => onChange({ altar_action: v })} />
             <Text style={type.caption}>{effect.detail}</Text>

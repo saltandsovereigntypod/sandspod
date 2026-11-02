@@ -29,7 +29,7 @@ import {
   type StepMark,
 } from './model';
 
-type Presence = { user_id: string; name: string; place?: string };
+type Presence = { user_id: string; name: string; place?: string; done?: string | null };
 
 type CovenState = {
   slug: string;
@@ -75,6 +75,8 @@ type CovenState = {
   refreshPrograms: () => Promise<void>;
   presence: Presence[];
   track: (place: string) => void;
+  /** Tap Done on a step taken together (stepFlow.ts), or null to take it back. */
+  markDone: (stepId: string | null) => void;
 };
 
 const Context = createContext<CovenState | null>(null);
@@ -295,6 +297,7 @@ export function CovenProvider({ slug, children }: { slug: string; children: Reac
   // every change; a new function each time made them re-send presence, whose
   // sync changed the value again: a loop that kept phones busy and hot.
   const track = useCallback((place: string) => liveRef.current?.track(place), []);
+  const markDone = useCallback((stepId: string | null) => liveRef.current?.done(stepId), []);
 
   const value = useMemo<CovenState>(
     () => ({
@@ -342,9 +345,10 @@ export function CovenProvider({ slug, children }: { slug: string; children: Reac
       trainingUnread,
       refreshPrograms,
       presence,
+      markDone,
       track,
     }),
-    [slug, status, snapshot, me, lineage, refreshLineage, perms, unsigned, stand, userId, names, loadNames, refresh, rituals, steps, rsvps, marks, refreshRituals, loadMarks, messages, loadMessages, onMessage, altar, loadAltar, petitionsVersion, grants, mentors, waitingForMe, trainingUnread, refreshPrograms, presence, track],
+    [slug, status, snapshot, me, lineage, refreshLineage, perms, unsigned, stand, userId, names, loadNames, refresh, rituals, steps, rsvps, marks, refreshRituals, loadMarks, messages, loadMessages, onMessage, altar, loadAltar, petitionsVersion, grants, mentors, waitingForMe, trainingUnread, refreshPrograms, presence, track, markDone],
   );
 
   return <Context.Provider value={value}>{children}</Context.Provider>;
@@ -356,7 +360,7 @@ export function useCoven(): CovenState {
   return value;
 }
 
-const presenceKey = (p: Presence) => `${p.user_id}\u0000${p.name}\u0000${p.place ?? ''}`;
+const presenceKey = (p: Presence) => `${p.user_id}\u0000${p.name}\u0000${p.place ?? ''}\u0000${p.done ?? ''}`;
 /** The same people in the same places (order aside). */
 function samePresence(a: Presence[], b: Presence[]): boolean {
   if (a.length !== b.length) return false;

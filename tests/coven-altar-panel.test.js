@@ -104,3 +104,20 @@ test("in the window, choosing a thread keeps the altar's address", async () => {
   assert.deepEqual(pushed, []);
   global.CovenChat.unmount();
 });
+
+test("the altar's Messages and Ritual share one panel, and a rite's steps run as in the app", () => {
+  const page = read("altar/js/features/coven-altar.js");
+  assert.ok(page.indexOf('"/covens/coven/step-popups.js"') < page.indexOf('"/covens/coven/chat-panel.js"'), "the pop-ups load before the panel");
+  const panel = read("covens/coven/chat-panel.js");
+  assert.match(panel, /data-tab-to="messages"/);
+  assert.match(panel, /data-tab-to="ritual"/);
+  assert.match(panel, /liveRitualFor\(/);
+  assert.match(read("covens/covens.css"), /\.cv-altar-chat\.is-open \{[^}]*min\(35vh/);
+  const popups = read("covens/coven/step-popups.js");
+  assert.match(popups, /liveFlow\(/);
+  assert.match(read("covens/coven/index.html"), /step-popups\.js[\s\S]*rituals\.js/);
+  assert.match(read("covens/coven/builder.js"), /Who moves it on/);
+  assert.match(read("covens/coven/builder.js"), /What members will see/);
+  // The same rules as the app's (lib/covens/stepFlow.ts, built into js/core/covens.js).
+  assert.match(read("js/core/covens.js"), /Everyone(’|\\u2019)s done\. Move to step/);
+});

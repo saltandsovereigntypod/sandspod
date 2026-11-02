@@ -1,6 +1,7 @@
 import { router } from 'expo-router';
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { Alert, StyleSheet, Text, View } from 'react-native';
+import { Alert, Pressable, StyleSheet, Text, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { Button } from '../Button';
 import { covenHref } from './CovenScreen';
@@ -10,13 +11,15 @@ import { Spoken, Words } from './ui';
 import { Card, Chips, Notice } from '../more/ui';
 import * as api from '../../lib/covens/api';
 import { turnLine } from '../../lib/covens/altarPanel';
-import { changeAltarOnce, fetchCovenAltars, type CovenAltar } from '../../lib/covens/altarSync';
+import { changeAltarOnce, fetchAltarObjects, fetchCovenAltars, type CovenAltar } from '../../lib/covens/altarSync';
+import type { SavedObject } from '../../lib/altar/types';
 import { itemIndex } from '../../lib/altar/itemIndex';
 import { useAltars } from '../../lib/altar/store';
 import { cleanContribution, contributionLabel, type Contribution, type ParticipationRow, type Reader } from '../../lib/covens/contributions';
 import { seedPetitionAltar } from '../../lib/covens/petitionAltar';
 import { clearNamed, nameNewThings, offerPaper, paperCount, placeOffering, snuffNamed, stepAltarChange } from '../../lib/covens/ritualAltar';
 import { builderStepFrom, cleanPlan, linkedEffect, stepThingName, type GatheringKind } from '../../lib/covens/builder';
+import { liveFlow } from '../../lib/covens/stepFlow';
 import { buildScript, mayVote, voteOptions } from '../../lib/covens/script';
 import { actionForStep } from '../../lib/covens/stepActions';
 import { useCoven } from '../../lib/covens/CovenContext';
@@ -188,7 +191,53 @@ export function useLiveRitual(id: string | undefined) {
   const scriptStep = (stepId: string) => script?.sections.flatMap((x) => x.steps).find((x) => x.key === stepId);
   const at = current ? steps.indexOf(current) : -1;
 
+  // How the step runs (stepFlow.ts): who moves it on, who has tapped Done,
+  // its items as they go on the altar, and whether it has finished by itself.
+  const currentBuilder = current ? builderSteps.find((s) => s.key === current.id) : undefined;
+  const altarId = altar?.id ?? null;
+  const itemsKey = current?.items?.length ? `${current.id}:${altarId}` : '';
+  const [seen, setSeen] = useState<{ key: string; list: SavedObject[] } | null>(null);
+  const objects = itemsKey && seen?.key === itemsKey ? seen.list : null;
+  useEffect(() => {
+    if (!itemsKey || !altarId || !live) return;
+    let off = false;
+    const load = () => void fetchAltarObjects(altarId).then((list) => !off && setSeen({ key: itemsKey, list })).catch(() => undefined);
+    load();
+    // Placed by anyone, at any altar screen: looked at again every little while.
+    const timer = setInterval(load, 8000);
+    return () => {
+      off = true;
+      clearInterval(timer);
+    };
+  }, [itemsKey, altarId, live]);
+  // Bumped when a step's time is up, so it reads as finished.
+  const [, setTick] = useState(0);
+  const flow = current && ritual
+    ? liveFlow({
+        step: { ...current, details: currentBuilder?.details },
+        index: at,
+        total: steps.length,
+        roles: plan.roles,
+        leaderId: ritual.led_by,
+        leads: steers,
+        userId: coven.userId,
+        membership,
+        presence: coven.presence,
+        objects,
+        nameOf: coven.nameOf,
+        doerName: stepAssignee(current, coven.snapshot?.ranks ?? [], coven.nameOf).label,
+      })
+    : null;
+  // A step with a time finishes by itself when it's up: look again then.
+  const endsAt = flow?.endsAt ?? null;
+  useEffect(() => {
+    if (!endsAt || endsAt <= Date.now()) return;
+    const timer = setTimeout(() => setTick((t) => t + 1), endsAt - Date.now() + 500);
+    return () => clearTimeout(timer);
+  }, [endsAt]);
+
   return {
+    flow,
     ritual,
     steps,
     live,
@@ -285,6 +334,13 @@ export function LiveStepCard({ live, atAltar = false }: { live: LiveRitual; atAl
         {mine ? ' · Your turn' : ` · ${who.label}`}
       </Text>
       <Text style={type.cardTitle}>{current.title}</Text>
+      {/* The step's pop-up, kept here once it has gone. */}
+      {live.flow?.start.lines.map((line) => (
+        <Text key={line} style={type.caption}>
+          {line}
+        </Text>
+      ))}
+      {!!live.flow?.items?.length && <Text style={type.caption}>{live.flow.items.map((i) => `${i.placed ? '✓' : '○'} ${i.name}`).join('   ')}</Text>}
       {atAltar && <Text style={type.caption}>{`Whose step: ${who.label}${mine && who.kind !== 'everyone' ? ' (yours)' : ''}`}</Text>}
       {atAltar && <Text style={type.caption}>{turnLine(current, coven.userId, coven.nameOf)}</Text>}
       <Words text={current.instructions} />
@@ -357,29 +413,103 @@ export function LiveStepCard({ live, atAltar = false }: { live: LiveRitual; atAl
               : 'During this step, the altar is tended by whoever the step belongs to.'}
       </Text>
       {sharedAction && doneOnAltar && <Text style={type.caption}>You’ve done this on the altar.</Text>}
-      {(() => {
-        // "Your part" (above: your turn, card, words, candle) is separate from
-        // finishing the step, which moves everyone on. A whole-coven step is
-        // moved on by those who lead, so members don't end it for everyone.
-        const shared = who.kind !== 'person' || inTurn;
-        const last = at === steps.length - 1;
-        const canFinish = canLead || (mine && !shared);
-        if (canFinish) {
-          return (
-            <>
-              <Text style={type.caption}>{last ? 'This closes the ritual for everyone.' : 'This ends the step for everyone and moves the whole circle to the next step.'}</Text>
-              <Button
-                label={last ? 'Finish and close the ritual for everyone' : 'Finish this step for everyone'}
-                variant={showAltarButton ? 'outline' : 'primary'}
-                onPress={() => void act(() => api.finishStep(current.id))}
-                disabled={busy}
-              />
-            </>
-          );
-        }
-        return <Text style={type.caption}>{mine ? 'Do your part above. When everyone has, the leader moves the circle to the next step.' : 'Follow along; the leader moves the circle on when this step is finished.'}</Text>;
-      })()}
+      {live.flow && <FinishStep live={live} />}
     </Card>
+  );
+}
+
+/**
+ * Your part done, and moving on. "Your part" (your turn, card, words, candle)
+ * is separate from moving everyone on, which is the step's ender's alone (the
+ * ritual's leader unless the planner chose someone): they're asked once the
+ * step has finished by itself, and may move on early. Everyone else is told
+ * whom they're waiting for.
+ */
+export function FinishStep({ live }: { live: LiveRitual }) {
+  const coven = useCoven();
+  const { current, flow, busy, act, mine } = live;
+  if (!current || !flow) return null;
+  // Together: everyone taps Done; one person: theirs alone. One at a time passes with "I've done my part".
+  const tapsDone = flow.kind === 'together' || (flow.kind === 'one' && mine);
+  return (
+    <>
+      {tapsDone &&
+        !flow.progress.complete &&
+        (flow.iDone ? (
+          <View style={styles.row}>
+            <Text style={[type.caption, styles.grow]}>You’ve tapped Done.</Text>
+            <Button label="Not yet" variant="text" onPress={() => coven.markDone(null)} />
+          </View>
+        ) : (
+          <Button label="Done" variant={flow.isEnder ? 'outline' : 'primary'} onPress={() => coven.markDone(current.id)} disabled={busy} />
+        ))}
+      {!!flow.progress.waiting && <Text style={type.caption}>{flow.progress.waiting}</Text>}
+      {flow.isEnder ? (
+        flow.progress.complete ? (
+          <>
+            <Text style={type.body}>{flow.complete.heading}</Text>
+            <Button label={flow.complete.button ?? 'Move on'} onPress={() => void act(() => api.finishStep(current.id))} disabled={busy} />
+          </>
+        ) : (
+          <Button label="Move on anyway" variant="text" onPress={() => void act(() => api.finishStep(current.id))} disabled={busy} />
+        )
+      ) : (
+        <Text style={type.caption}>{flow.progress.complete ? flow.complete.heading : `${flow.enderName} moves us on when this step is finished.`}</Text>
+      )}
+    </>
+  );
+}
+
+/**
+ * The running pop-ups, small cards over the screen that never block it: the
+ * step as it begins (gone after a few seconds or a tap, and kept in the
+ * Ritual panel), your turn, and the step finished (the ender is asked to move
+ * on; everyone else sees whom they wait for).
+ */
+export function StepPopups({ live }: { live: LiveRitual }) {
+  const insets = useSafeAreaInsets();
+  const { current, flow, busy, act } = live;
+  const stepId = current?.id ?? null;
+  const [gone, setGone] = useState<string | null>(null);
+  const [later, setLater] = useState<string | null>(null);
+  useEffect(() => {
+    if (!stepId) return;
+    const timer = setTimeout(() => setGone(stepId), 8000);
+    return () => clearTimeout(timer);
+  }, [stepId]);
+  if (!current || !flow || !live.live) return null;
+  const showStart = gone !== current.id;
+  const showTurn = flow.myTurn && !flow.progress.complete;
+  const showDone = flow.progress.complete && later !== current.id;
+  if (!showStart && !showTurn && !showDone) return null;
+  return (
+    <View pointerEvents="box-none" style={[styles.popups, { top: insets.top + 8 }]}>
+      {showStart && (
+        <Pressable onPress={() => setGone(current.id)} accessibilityRole="button" accessibilityLabel={`${flow.start.heading}. ${flow.start.lines.join(' ')} Tap to close.`} style={styles.popup}>
+          <Text style={type.eyebrow}>{flow.start.heading}</Text>
+          {flow.start.lines.map((line) => (
+            <Text key={line} style={type.caption}>
+              {line}
+            </Text>
+          ))}
+        </Pressable>
+      )}
+      {showTurn && (
+        <View style={[styles.popup, styles.popupGold]} accessibilityLiveRegion="polite">
+          <Text style={type.cardTitle}>{flow.turn.heading}</Text>
+          <Text style={type.caption} numberOfLines={4}>
+            {flow.turn.body}
+          </Text>
+          <Button label={flow.turn.button} onPress={() => void act(() => api.nextTurn(current.id))} disabled={busy} />
+        </View>
+      )}
+      {showDone && (
+        <Pressable onPress={() => setLater(current.id)} accessibilityLabel={flow.complete.heading} style={[styles.popup, flow.isEnder && styles.popupGold]} accessibilityLiveRegion="polite">
+          <Text style={type.body}>{flow.complete.heading}</Text>
+          {flow.isEnder && !!flow.complete.button && <Button label={flow.complete.button} onPress={() => void act(() => api.finishStep(current.id))} disabled={busy} />}
+        </Pressable>
+      )}
+    </View>
   );
 }
 
@@ -459,6 +589,11 @@ export function StepList({ live, onAccess }: { live: LiveRitual; onAccess?: (ste
 
 const styles = StyleSheet.create({
   lead: { gap: 10 },
+  row: { flexDirection: 'row', alignItems: 'center', gap: 8 },
+  grow: { flex: 1 },
+  popups: { position: 'absolute', left: 12, right: 12, alignItems: 'center', gap: 8 },
+  popup: { width: '100%', maxWidth: 420, gap: 4, padding: 12, borderRadius: radius.card, backgroundColor: colors.ground, borderWidth: 1, borderColor: colors.goldLine, shadowColor: '#000', shadowOpacity: 0.35, shadowRadius: 10, shadowOffset: { width: 0, height: 3 }, elevation: 10 },
+  popupGold: { borderColor: colors.gold },
   step: { gap: 2, paddingVertical: 8, paddingHorizontal: 12, borderRadius: radius.tile, borderWidth: 1, borderColor: colors.hairline },
   stepNow: { borderColor: colors.gold },
 });

@@ -87,6 +87,16 @@ export function chatPanelFrame(width: number, height: number): { side: 'bottom' 
   return { side: 'bottom', width: w, height: Math.round(Math.min(520, Math.max(280, h * 0.55))) };
 }
 
+/**
+ * How tall the one panel over a coven altar (Messages and Ritual, as tabs)
+ * opens: at most about a third of the screen, so the altar stays in view and
+ * tendable above it, and never too short to read.
+ */
+export function altarPanelHeight(height: number): number {
+  const h = Math.max(0, height);
+  return Math.round(Math.max(Math.min(160, h), h * 0.35));
+}
+
 // ─── The rite under way ─────────────────────────────────────────────────
 
 type LiveRitualRow = { id: string; status: string; kind?: string | null; current_step_id?: string | null; altar_id?: string | null };
