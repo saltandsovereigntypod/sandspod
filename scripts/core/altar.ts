@@ -90,5 +90,5 @@ export * as itemIndex from '../../app/src/lib/altar/itemIndex.ts';
 // tab's list: every coven altar you can see, grouped under each coven.
 export * as screenTabs from '../../app/src/lib/screenTabs.ts';
 export * as altarsAcross from '../../app/src/lib/covens/altarsAcross.ts';
-// The altar bell: ringing it, ringing to cleanse (marking your own Cleansing on To tend) and the coven altar hearing it.
+// The altar bell: ringing it, ringing to cleanse (kept in the altar’s History) and the coven altar hearing it.
 export * as bell from '../../app/src/lib/altar/bell.ts';

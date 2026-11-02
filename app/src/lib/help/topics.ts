@@ -746,7 +746,7 @@ export const HELP: HelpSection[] = [
         ],
         tips: [
           'An oil lamp, lantern or salt lamp is set down glowing. Tap "Glow" to turn it off or on.',
-          'Tap a bell on your altar for "Ring the bell" (one chime) or "Ring to cleanse the space" (three chimes). Ringing to cleanse marks your own Cleansing thing on To tend done today, "Sound / bells". On a coven altar everyone there hears it. The chime follows Candle sounds in Accessibility.',
+          'Tap a bell on your altar for "Ring the bell" (one chime) or "Ring to cleanse the space" (three chimes). Ringing to cleanse is kept in that altar’s History as "Space cleansed with the bell"; it doesn’t change anything on To tend. On a coven altar everyone there hears it. The chime follows Candle sounds in Accessibility, and as you rang it on purpose it sounds even with an iPhone’s silent switch on.',
         ],
         keywords: ['natural', 'feathers', 'hag stone', 'shells', 'sea glass', 'acorns', 'antler', 'scrying mirror', 'crystal ball', 'red cord', 'witch’s ladder', 'lantern', 'oil lamp', 'singing bowl', 'drum', 'stang', 'bell', 'ring the bell', 'cleanse the space'],
       },

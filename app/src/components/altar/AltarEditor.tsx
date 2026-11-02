@@ -870,7 +870,10 @@ export function AltarEditor({ shared, header, overlay, onBack, whose }: { shared
     return () => clearTimeout(timer);
   }, [moment]);
   // The altar bell: rung here, and on a coven altar heard from the others (lib/altar/bell.ts).
-  const ringBell = useAltarBell(shared, workshop.userId ?? '', (uid) => playMoment([uid], ['Bell']), setNotice);
+  const ringBell = useAltarBell(shared, workshop.userId ?? '', (uid) => playMoment([uid], ['Bell']), setNotice, (text) => {
+    // Kept in this altar's History, as logAltar below does.
+    if (sourceId) void addEntry('altar.history', { altarId: sourceId, text, at: nowIso() });
+  });
 
   // Record a group, or with nothing selected the whole altar, in the Grimoire
   // as a ritual page (groups.js sendCurrentGroupToGrimoire / sendAltarToGrimoire).
