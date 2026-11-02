@@ -56,6 +56,8 @@
   let sending = false;
   let here = [];
   let channel = null;
+  // The altar bell (altar-bell.js): who's listening for the others ringing.
+  let hearBell = null;
   // What the coven is known to hold: each object (normalised JSON) and the scene.
   let saved = new Map();
   let savedScene = "";
@@ -513,6 +515,11 @@
       if (payload.scene) receiveScene(payload.scene);
       else if (payload.key) receive(payload.key, payload.data ?? null);
     });
+    // The altar bell rung by someone else here (the app's "bell" broadcast; js/core/altar.js bell).
+    channel.on("broadcast", { event: "bell" }, ({ payload }) => {
+      const ring = global.SaltCore?.altar?.bell?.readRing(payload, me.id);
+      if (ring && hearBell) hearBell(ring);
+    });
     channel.on("presence", { event: "sync" }, () => {
       here = Object.values(channel.presenceState()).map((list) => list[0]).filter(Boolean);
       status();
@@ -589,5 +596,11 @@
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", () => global.setTimeout(start, 50), { once: true });
   else global.setTimeout(start, 50);
 
-  global.CovenAltarPage = { altarId, slug, norm, changesFrom, status: () => ({ ready, access, problem, unwritten: unwritten.size }) };
+  global.CovenAltarPage = {
+    altarId, slug, norm, changesFrom, status: () => ({ ready, access, problem, unwritten: unwritten.size }),
+    me: () => me?.id || "",
+    // Ring the bell for everyone here: a broadcast, nothing saved.
+    ringBell: (kind, key) => { channel?.send({ type: "broadcast", event: "bell", payload: { from: me?.id || "", kind, key } }).catch?.(() => {}); },
+    onBell: (hear) => { hearBell = hear; }
+  };
 })(window);
