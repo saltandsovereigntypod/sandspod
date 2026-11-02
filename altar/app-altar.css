@@ -45,25 +45,11 @@
 .living-flame__halo svg { overflow: visible; display: block; }
 .living-smoke { position: absolute; width: 10%; pointer-events: none; filter: blur(1px); }
 
-.living-incense > div { position: absolute; pointer-events: none; }
-.living-incense__stream { animation: living-sway 5s ease-in-out infinite; }
-.living-incense__wisp { opacity: 0; animation: living-wisp 5.6s cubic-bezier(.25,.46,.45,.94) infinite; }
-.living-incense__wisp--1 { animation-delay: 1.4s; --wx: 0.2; }
-.living-incense__wisp--2 { animation-delay: 2.8s; }
-.living-incense__wisp--3 { animation-delay: 4.2s; --wx: 0.2; }
-.living-incense__ember { border-radius: 50%; background: rgb(255, 140, 50); box-shadow: 0 0 8px 3px rgba(255, 140, 60, 0.85); }
-@keyframes living-sway {
-  0%, 100% { transform: translateX(calc(var(--sway) * -1)); }
-  48% { transform: translateX(var(--sway)); }
-}
-@keyframes living-wisp {
-  0% { opacity: 0; transform: translate(0, calc(var(--wisp) * -0.4)) scale(.45); }
-  12% { opacity: .8; }
-  35% { transform: translate(calc(var(--wisp) * -0.18), calc(var(--wisp) * -1.1)) scale(.85); }
-  60% { opacity: .45; }
-  70% { transform: translate(calc(var(--wisp) * 0.25), calc(var(--wisp) * -2)) scale(1.4); }
-  100% { opacity: 0; transform: translate(calc(var(--wisp) * 0.35), calc(var(--wisp) * -2.8)) scale(1.8); }
-}
+.living-incense { position: absolute; width: 0; height: 0; pointer-events: none; }
+.living-incense > div { position: absolute; left: 0; top: 0; pointer-events: none; }
+.living-incense__plume { width: 0; height: 0; transform-origin: 0 0; }
+.living-incense__plume canvas { position: absolute; display: block; }
+.living-incense__ember { border-radius: 50%; background: rgb(255, 140, 50); box-shadow: 0 0 6px 2px rgba(255, 140, 60, 0.8); }
 .living-ash { position: absolute; bottom: 1%; left: 22%; width: 56%; height: 5%; border-radius: 999px; background: rgba(150, 146, 138, .85); }
 .altar-object.is-incense-ash > img:first-of-type { filter: grayscale(.9) saturate(.2) opacity(.78); }
 .living-label {
@@ -107,9 +93,7 @@
 .altar-snap-guide span { position: absolute; left: 50%; transform: translateX(-50%); white-space: nowrap; color: var(--gold); font-size: .72rem; letter-spacing: .04em; text-shadow: 0 0 3px #000; }
 
 @media (prefers-reduced-motion: reduce) {
-  .living-incense__stream, .living-charge, .living-glint { animation: none; }
-  .living-incense__wisp { animation: none; opacity: .4; transform: translateY(calc(var(--wisp) * -1)); }
-  .living-incense__wisp--2, .living-incense__wisp--3 { display: none; }
+  .living-charge, .living-glint { animation: none; }
   .living-moment > div { animation: none !important; opacity: .8 !important; }
 }
 
