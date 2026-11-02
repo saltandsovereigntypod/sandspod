@@ -81,7 +81,7 @@
   }
 
   function captureActionAnchor(actionId, object) {
-    if (!MOBILE_QUERY.matches || !overflowOpen || !sameObject(object, overflowObject)) return null;
+    if (!overflowOpen || !sameObject(object, overflowObject)) return null;
     const button = Array.from(toolbar?.querySelectorAll("[data-object-action-overflow] [data-action]") || [])
       .find((candidate) => candidate.dataset.action === actionId);
     if (!button) return null;
@@ -570,9 +570,11 @@
     { id: "rotate-left", label: "Rotate Left", icon: "↺", priority: 42, types: ["*"], available: (o) => o.dataset.locked !== "true", handler: (o) => { snapshot(); rotateObject(o, -15); } },
     { id: "rotate-right", label: "Rotate Right", icon: "↻", priority: 43, types: ["*"], available: (o) => o.dataset.locked !== "true", handler: (o) => { snapshot(); rotateObject(o, 15); } },
     { id: "flip", label: "Flip", icon: "⇋", priority: 44, types: ["*"], available: (o) => o.dataset.locked !== "true", handler: (o) => { snapshot(); flipObject(o); } },
-    { id: "forward", label: "Bring Forward", icon: "⬆", priority: 45, types: ["*"], handler: (o) => { snapshot(); bringForward(o); } },
-    { id: "backward", label: "Send Backward", icon: "⬇", priority: 46, types: ["*"], handler: (o) => { snapshot(); sendBackward(o); } },
-    { id: "ungroup", label: "Ungroup", icon: "⊟", priority: 47, types: ["*"], available: (o) => Boolean(o.dataset.groupId && typeof ungroupCurrentItems === "function"), handler: (o) => { snapshot(); ungroupCurrentItems(o.dataset.groupId); } },
+    { id: "to-front", label: "Bring to Front", icon: "⤒", priority: 45, types: ["*"], available: () => typeof bringToFront === "function", handler: (o) => { snapshot(); bringToFront(o); } },
+    { id: "forward", label: "Bring Forward", icon: "⬆", priority: 46, types: ["*"], handler: (o) => { snapshot(); bringForward(o); } },
+    { id: "backward", label: "Send Backward", icon: "⬇", priority: 47, types: ["*"], handler: (o) => { snapshot(); sendBackward(o); } },
+    { id: "to-back", label: "Send to Back", icon: "⤓", priority: 48, types: ["*"], available: () => typeof sendToBack === "function", handler: (o) => { snapshot(); sendToBack(o); } },
+    { id: "ungroup", label: "Ungroup", icon: "⊟", priority: 49, types: ["*"], available: (o) => Boolean(o.dataset.groupId && typeof ungroupCurrentItems === "function"), handler: (o) => { snapshot(); ungroupCurrentItems(o.dataset.groupId); } },
     { id: "back-to-altar", label: "Back to Altar", mobileLabel: "Deselect", icon: "←", priority: 98, types: ["*"], handler: () => deselectObject() },
     { id: "delete", label: "Delete", icon: "🗑", priority: 99, types: ["*"], handler: (o) => deleteObject(o) }
   ];
@@ -591,16 +593,107 @@
     return registry.filter((action) => actionApplies(action, object)).sort((a, b) => a.priority - b.priority);
   }
 
-  function buttonMarkup(action, object, overflow = false) {
+  // Line icons in the toolbar's own drawing (altar-toolbar.js): 24px, 1.6 stroke, never emoji.
+  const ACTION_ICONS = {
+    edit: '<path d="M4 20h4L19 9l-4-4L4 16z"/><path d="m13.5 6.5 4 4"/>',
+    light: '<path d="M12 3c2.8 3.2 4.5 5.6 4.5 8.6a4.5 4.5 0 0 1-9 0c0-1.7.8-3.2 2-4.4.2 1.4.9 2.3 1.8 2.8C11 7.6 11.2 5.3 12 3Z"/><path d="M9 20h6"/>',
+    leaf: '<path d="M5 19C5 10 10 5 19 5c0 9-5 14-14 14Z"/><path d="M5 19 13 11"/>',
+    drop: '<path d="M12 3.5s6 6.4 6 10.5a6 6 0 0 1-12 0c0-4.1 6-10.5 6-10.5Z"/>',
+    moon: '<path d="M18.5 14.5A7.5 7.5 0 0 1 9.5 5.5a7.5 7.5 0 1 0 9 9Z"/>',
+    star: '<path d="m12 3 2.2 5.6L20 9.3l-4.5 3.8 1.4 5.9L12 15.9 7.1 19l1.4-5.9L4 9.3l5.8-.7z"/>',
+    history: '<path d="M3.5 12a8.5 8.5 0 1 0 2.5-6"/><path d="M3 4v4h4"/><path d="M12 7.5V12l3 2"/>',
+    link: '<path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1"/><path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/>',
+    calendar: '<rect x="4" y="5" width="16" height="15" rx="1.5"/><path d="M4 10h16M8 3v4M16 3v4"/>',
+    gauge: '<circle cx="12" cy="12" r="8.5"/><path d="M12 3.5v17"/>',
+    gift: '<rect x="4" y="9" width="16" height="11" rx="1"/><path d="M3 9h18M12 9v11M12 9c-1.5-3-5-3.5-5-1.5S10 9 12 9Zm0 0c1.5-3 5-3.5 5-1.5S14 9 12 9Z"/>',
+    duplicate: '<rect x="8" y="8" width="12" height="12" rx="1.5"/><path d="M16 8V5.5A1.5 1.5 0 0 0 14.5 4h-9A1.5 1.5 0 0 0 4 5.5v9A1.5 1.5 0 0 0 5.5 16H8"/>',
+    lock: '<rect x="5" y="10.5" width="14" height="10" rx="1.5"/><path d="M8 10.5V7.5a4 4 0 0 1 8 0v3"/>',
+    glow: '<circle cx="12" cy="12" r="3.5"/><path d="M12 3v2.5M12 18.5V21M3 12h2.5M18.5 12H21M5.6 5.6l1.8 1.8M16.6 16.6l1.8 1.8M5.6 18.4l1.8-1.8M16.6 7.4l1.8-1.8"/>',
+    smaller: '<circle cx="12" cy="12" r="8.5"/><path d="M8 12h8"/>',
+    larger: '<circle cx="12" cy="12" r="8.5"/><path d="M8 12h8M12 8v8"/>',
+    "rotate-left": '<path d="M4.5 12a7.5 7.5 0 1 0 2.2-5.3"/><path d="M4 4v4h4"/>',
+    "rotate-right": '<path d="M19.5 12a7.5 7.5 0 1 1-2.2-5.3"/><path d="M20 4v4h-4"/>',
+    flip: '<path d="M12 3v18"/><path d="M9 7 4 17h5zM15 7l5 10h-5z"/>',
+    "to-front": '<path d="M5 4h14"/><path d="M12 20V8M7.5 12.5 12 8l4.5 4.5"/>',
+    forward: '<path d="M12 19V5M6.5 10.5 12 5l5.5 5.5"/>',
+    backward: '<path d="M12 5v14M6.5 13.5 12 19l5.5-5.5"/>',
+    "to-back": '<path d="M5 20h14"/><path d="M12 4v12M7.5 11.5 12 16l4.5-4.5"/>',
+    ungroup: '<rect x="3.5" y="3.5" width="8" height="8" rx="1"/><rect x="12.5" y="12.5" width="8" height="8" rx="1"/>',
+    "back-to-altar": '<path d="M19 12H5M11 6l-6 6 6 6"/>',
+    delete: '<path d="M4 7h16M10 11v6M14 11v6"/><path d="M6 7l1 13h10l1-13M9 7V4h6v3"/>',
+    more: '<circle cx="5" cy="12" r="1.4"/><circle cx="12" cy="12" r="1.4"/><circle cx="19" cy="12" r="1.4"/>',
+    close: '<path d="M6 6l12 12M18 6 6 18"/>'
+  };
+  const ICON_FOR_ACTION = {
+    "replace-candle": "light", "ritual-candle": "star", "dress-candle": "leaf", "clear-dressings": "leaf",
+    cleanse: "drop", charge: "moon", dedicate: "star", "record-offering": "gift", "reason-presence": "edit",
+    "edit-apothecary": "edit", "begin-practice": "star", "edit-practice": "edit", relationships: "link",
+    activation: "star", remaining: "gauge", tend: "leaf", review: "calendar"
+  };
+
+  function actionIcon(id) {
+    const paths = ACTION_ICONS[id] || ACTION_ICONS[ICON_FOR_ACTION[id]] || ACTION_ICONS.star;
+    return `<span class="altar-icon altar-icon--small" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">${paths}</svg></span>`;
+  }
+
+  // The See More panel's groups, as the altar toolbar groups its own tools.
+  // Whatever is the object's own (light, tend, history...) goes under Tend.
+  const ACTION_GROUPS = [
+    { key: "arrange", label: "Arrange", ids: ["smaller", "larger", "rotate-left", "rotate-right", "flip"] },
+    { key: "layer", label: "Layer", ids: ["to-front", "forward", "backward", "to-back"] },
+    { key: "keep", label: "Keep", ids: ["duplicate", "lock", "glow", "ungroup", "back-to-altar", "delete"] }
+  ];
+  const GROUPED_IDS = new Set(ACTION_GROUPS.flatMap((group) => group.ids));
+
+  function actionLabel(action, object) {
     const configuredLabel = MOBILE_QUERY.matches && action.mobileLabel ? action.mobileLabel : action.label;
-    const label = typeof configuredLabel === "function" ? configuredLabel(object) : configuredLabel;
-    return `<button type="button" data-action="${escapeHtml(action.id)}" ${overflow ? 'role="menuitem"' : ""} title="${escapeHtml(label)}"><span aria-hidden="true">${escapeHtml(action.icon)}</span><span>${escapeHtml(label)}</span></button>`;
+    return typeof configuredLabel === "function" ? configuredLabel(object) : configuredLabel;
+  }
+
+  function buttonMarkup(action, object, overflow = false) {
+    const label = actionLabel(action, object);
+    const danger = action.id === "delete" ? ' class="is-danger"' : "";
+    return `<button type="button"${danger} data-action="${escapeHtml(action.id)}" ${overflow ? 'role="menuitem"' : ""} title="${escapeHtml(label)}">${actionIcon(action.id)}<span>${escapeHtml(label)}</span></button>`;
+  }
+
+  // Forward and Backward, one tap away on wider screens.
+  function layerPairMarkup(object) {
+    const buttons = ["forward", "backward"].map((id) => {
+      const action = registry.find((candidate) => candidate.id === id);
+      if (!actionApplies(action, object)) return "";
+      const label = actionLabel(action, object);
+      return `<button type="button" data-action="${id}" aria-label="${escapeHtml(label)}" title="${escapeHtml(label)}">${actionIcon(id)}</button>`;
+    }).join("");
+    return buttons ? `<div class="altar-object-actions-layer" role="group" aria-label="Layer">${buttons}</div>` : "";
+  }
+
+  function groupMarkup(key, label, buttons) {
+    if (!buttons) return "";
+    const id = `altar-object-actions-${key}`;
+    return `<div class="altar-object-actions-group" role="group" aria-labelledby="${id}"><p class="altar-object-actions-label" id="${id}">${escapeHtml(label)}</p><div class="altar-object-actions-row">${buttons}</div></div>`;
+  }
+
+  function overflowGroupsMarkup(actions, object, altarActions) {
+    const tend = actions.filter((action) => !GROUPED_IDS.has(action.id));
+    return [
+      groupMarkup("tend", "Tend", tend.map((action) => buttonMarkup(action, object, true)).join("")),
+      ...ACTION_GROUPS.map((group) => groupMarkup(group.key, group.label, group.ids
+        .map((id) => actions.find((action) => action.id === id))
+        .filter(Boolean)
+        .map((action) => buttonMarkup(action, object, true))
+        .join(""))),
+      groupMarkup("altar", "Altar actions", altarActions)
+    ].join("");
   }
 
   function globalActionMarkup() {
     return Array.from(altarActionBar.querySelectorAll(':scope > .altar-action-group [data-global-action]'))
       .filter((button) => !button.disabled && String(button.textContent || "").trim())
-      .map((button) => `<button type="button" data-global-action="${escapeHtml(button.dataset.globalAction)}" role="menuitem">${escapeHtml(button.textContent.trim())}</button>`)
+      .map((button) => {
+        const icon = button.querySelector(".altar-icon svg");
+        const iconMarkup = icon ? `<span class="altar-icon altar-icon--small" aria-hidden="true">${icon.outerHTML}</span>` : "";
+        return `<button type="button" data-global-action="${escapeHtml(button.dataset.globalAction)}" role="menuitem">${iconMarkup}<span>${escapeHtml(button.textContent.trim())}</span></button>`;
+      })
       .join("");
   }
 
@@ -611,8 +704,11 @@
     const popup = toolbar?.querySelector("[data-object-action-overflow]");
     const trigger = toolbar?.querySelector("[data-object-action-more]");
     const backdrop = toolbar?.querySelector("[data-object-action-backdrop]");
+    // Focus that was in the panel goes back to See More, not to the page's top.
+    const hadFocus = Boolean(popup && !popup.hidden && popup.contains(document.activeElement));
     if (popup) popup.hidden = true;
     if (backdrop) backdrop.hidden = true;
+    if (hadFocus) trigger?.focus({ preventScroll: true });
     if (trigger) trigger.setAttribute("aria-expanded", "false");
     document.body.classList.remove("altar-action-sheet-open");
   }
@@ -620,7 +716,7 @@
   function renderSelectedObjectActions(object = currentObject()) {
     if (!toolbar || !altarActionBar) return;
     closeActionModal();
-    const preserveOverflow = MOBILE_QUERY.matches && overflowOpen && sameObject(overflowObject, object);
+    const preserveOverflow = overflowOpen && sameObject(overflowObject, object);
     const anchor = preserveOverflow ? pendingActionAnchor : null;
     if (!preserveOverflow) closeObjectActionOverflow();
     altarActionBar.classList.toggle("has-object-selection", Boolean(object));
@@ -631,24 +727,34 @@
     }
 
     const actions = getObjectActions(object);
-    const visibleCount = MOBILE_QUERY.matches ? 3 : 5;
+    const visibleCount = MOBILE_QUERY.matches ? 3 : 4;
     const visible = actions.slice(0, visibleCount);
-    const overflow = actions.slice(visibleCount);
+    const hasMore = actions.length > visibleCount;
     const altarActions = globalActionMarkup();
+    const layerPair = MOBILE_QUERY.matches ? "" : layerPairMarkup(object);
+    const objectName = String(object.dataset.label || "").trim();
+    const heading = objectName && objectName !== "object" ? objectName : "This object";
     toolbar.innerHTML = `
       <div class="altar-object-actions-visible">${visible.map((action) => buttonMarkup(action, object)).join("")}</div>
-      ${overflow.length || altarActions ? `
+      ${layerPair}
+      ${hasMore || altarActions ? `
         <div class="altar-object-actions-more-wrap">
-          <button type="button" data-object-action-more aria-haspopup="menu" aria-expanded="${preserveOverflow}"><span aria-hidden="true">•••</span><span>See More</span></button>
-          <div class="altar-object-actions-backdrop" data-object-action-backdrop hidden></div>
-          <div class="altar-object-actions-overflow" data-object-action-overflow role="menu" aria-label="Selected object actions" ${preserveOverflow ? "" : "hidden"}><button type="button" class="altar-object-actions-close" data-close-object-actions role="menuitem">Close Actions</button>${overflow.length ? `<strong class="altar-object-actions-overflow-title">Object Actions</strong>${overflow.map((action) => buttonMarkup(action, object, true)).join("")}` : ""}${altarActions ? `<strong class="altar-object-actions-overflow-title">Altar Actions</strong>${altarActions}` : ""}</div>
+          <button type="button" data-object-action-more aria-haspopup="menu" aria-expanded="${preserveOverflow}">${actionIcon("more")}<span>See More</span></button>
+          <div class="altar-object-actions-backdrop" data-object-action-backdrop ${preserveOverflow ? "" : "hidden"}></div>
+          <div class="altar-object-actions-overflow" data-object-action-overflow ${preserveOverflow ? "" : "hidden"}>
+            <div class="altar-object-actions-head">
+              <p class="altar-object-actions-heading">${escapeHtml(heading)}</p>
+              <button type="button" class="altar-object-actions-close" data-close-object-actions aria-label="Close actions" title="Close">${actionIcon("close")}</button>
+            </div>
+            <div class="altar-object-actions-body" role="menu" aria-label="Selected object actions">${overflowGroupsMarkup(actions, object, altarActions)}</div>
+          </div>
         </div>
       ` : ""}
     `;
     toolbar.hidden = false;
     if (preserveOverflow) {
       overflowObject = object;
-      document.body.classList.add("altar-action-sheet-open");
+      document.body.classList.toggle("altar-action-sheet-open", MOBILE_QUERY.matches);
       window.requestAnimationFrame(() => restoreActionAnchor(anchor, object));
     }
     pendingActionAnchor = null;
@@ -684,6 +790,7 @@
       if (backdrop) backdrop.hidden = !overflowOpen;
       more.setAttribute("aria-expanded", String(overflowOpen));
       document.body.classList.toggle("altar-action-sheet-open", overflowOpen && MOBILE_QUERY.matches);
+      if (overflowOpen) popup.querySelector('[role="menuitem"]')?.focus({ preventScroll: true });
       return;
     }
     if (event.target.closest("[data-close-object-actions]")) {
@@ -713,6 +820,8 @@
 
   const resetDrawerForViewport = (event) => {
     if (!event.matches) closeObjectActionOverflow();
+    // Labels, the layer pair and the visible count differ between phone and desk.
+    if (currentObject() && !document.querySelector("[data-object-action-modal]")) renderSelectedObjectActions();
   };
   if (typeof MOBILE_QUERY.addEventListener === "function") MOBILE_QUERY.addEventListener("change", resetDrawerForViewport);
   else MOBILE_QUERY.addListener(resetDrawerForViewport);
