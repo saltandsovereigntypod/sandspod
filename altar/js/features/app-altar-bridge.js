@@ -201,16 +201,17 @@
     if (options.undo !== false) global.pushAltarUndoSnapshot?.();
     const object = global.createSavedObject({ zIndex: String(lexical.highest() + 1), ...saved });
     root.appendChild(object);
-    const position = () => {
+    const changed = () => document.dispatchEvent(new CustomEvent("app-altar:changed", { detail: { object } }));
+    if (typeof global.placeAltarObjectWhenReady === "function") {
+      // Hidden until its picture is in and it is placed (storage.js).
+      global.placeAltarObjectWhenReady(object, saved, { onPlaced: changed });
+    } else {
       global.applyStagePositionPercent?.(object, saved);
       global.updateObjectTransform?.(object);
       global.keepObjectInsideStage?.(object);
       global.updateObjectPositionPercent?.(object);
-      document.dispatchEvent(new CustomEvent("app-altar:changed", { detail: { object } }));
-    };
-    const img = mainImage(object);
-    if (img && !img.complete) img.addEventListener("load", position, { once: true });
-    else position();
+      changed();
+    }
     global.updateEmptyMessage?.();
     global.renderLighting?.();
     global.saveWorkingAltarDraft?.();

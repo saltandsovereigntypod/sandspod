@@ -144,20 +144,8 @@ function restoreAltarSnapshot(snapshot) {
 
     highestLayer = Math.max(highestLayer, Number(savedObject.zIndex || 10));
 
-    const img = object.querySelector("img");
-
-    function positionRestoredObject() {
-      applyStagePositionPercent(object, savedObject);
-      updateObjectTransform(object);
-      keepObjectInsideStage(object);
-      updateObjectPositionPercent(object);
-    }
-
-    if (img && !img.complete) {
-      img.addEventListener("load", positionRestoredObject, { once: true });
-    } else {
-      positionRestoredObject();
-    }
+    // Hidden until placed (storage.js), so it never shows at the corner first.
+    placeAltarObjectWhenReady(object, savedObject, { fade: false });
   });
 
   updateGroupIndicator();

@@ -227,15 +227,26 @@
     return count;
   }
 
-  async function pull() {
+  // The page opens with several reasons to read the row at once (load, sign-in,
+  // focus): one read answers them all.
+  const PULL_QUIET_MS = 3000;
+  let lastPull = { id: "", at: 0 };
+
+  async function pull(options = {}) {
     const id = altarId();
     if (!id || onCoven()) { ready = ""; return; }
     if (pulling) return pulling;
+    if (!options.force && ready === id && lastPull.id === id && Date.now() - lastPull.at < PULL_QUIET_MS) return;
     pulling = (async () => {
-      const user = await signedInUser();
-      if (!user) return;
-      let row;
-      try { row = await readRow(id, user); } catch (error) { console.error(error); return; }
+      // The row storage.js read as the page opened, when it is this altar's.
+      const opening = global.takeStartingAltarRow?.(id);
+      let row = opening ? await opening : undefined;
+      if (row === undefined || row === null) {
+        const user = await signedInUser();
+        if (!user) return;
+        try { row = await readRow(id, user); } catch (error) { console.error(error); return; }
+      }
+      lastPull = { id, at: Date.now() };
       if (!row || altarId() !== id) return;
       const serverObjects = Array.isArray(row.altar_data?.objects) ? row.altar_data.objects : [];
       const local = new Map(stageObjects().map((object) => [objectId(object), object]));
@@ -274,7 +285,7 @@
   wrapDraftSave();
   document.addEventListener("living-object-state:changed", () => global.setTimeout(schedule, 0));
   document.addEventListener("app-altar:changed", () => global.setTimeout(schedule, 0));
-  document.addEventListener("altar:current-changed", () => { ready = ""; layoutNoticeShown = false; pull(); });
+  document.addEventListener("altar:current-changed", () => { ready = ""; layoutNoticeShown = false; pull({ force: true }); });
   // A full Save writes everything, tending included.
   document.addEventListener("altar:saved", (event) => {
     const id = event.detail?.id;
@@ -290,6 +301,7 @@
     else if (timer) { global.clearTimeout(timer); push(); }
   });
   global.addEventListener("focus", () => pull());
-  // After the working draft is restored (events.js, ~500 ms after load).
+  // After the working draft is restored (events.js, ~500 ms after load; storage.js
+  // waits there for the saved row when signed in).
   global.setTimeout(pull, 900);
 })(typeof window !== "undefined" ? window : globalThis);
