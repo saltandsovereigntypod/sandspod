@@ -570,7 +570,7 @@
   // ── The coven's Messages, in a small window over the altar ──────────────
   // covens/coven/chat-panel.js, with the coven scripts it needs, loaded only here.
   const CHAT_STYLES = ["/css/sanctuary-pages.css", "/covens/covens.css"];
-  const CHAT_SCRIPTS = ["/covens/coven-logic.js", "/covens/coven-data.js", "/covens/coven-ui.js", "/js/core/covens.js", "/covens/coven/chat.js", "/covens/coven/step-popups.js", "/covens/coven/chat-panel.js"];
+  const CHAT_SCRIPTS = ["/covens/coven-logic.js", "/covens/coven-data.js", "/covens/coven-ui.js", "/js/core/covens.js", "/js/core/meditation.js", "/covens/coven/chat.js", "/covens/coven/step-popups.js", "/covens/coven/ritual-sit.js", "/covens/coven/chat-panel.js"];
   const resolve = (path) => global.SaltEnvironment?.resolvePath?.(path) || path;
 
   function addScript(path) {
@@ -619,6 +619,11 @@
   function deedChanged() {
     if (!deed) return;
     deed.changed = true;
+    // Waiting for a live step (arm, below): only the deed itself counts, a candle lit, incense lit, something set down.
+    if (deed.armed) {
+      if (armedDone(deed)) finishDeed();
+      return;
+    }
     if (NO_SHEET.includes(deed.kind)) finishDeed();
   }
   function finishDeed() {
@@ -688,7 +693,55 @@
     }
     return false;
   }
-  global.CovenAltarDeed = { start: startDeed };
+
+  // ── The live step at this altar (the app's components/altar/altarDesk.ts) ──
+  // The step's deed waits here, so doing it on the altar by hand counts once
+  // for that step and turn; and what to tap glows for the person whose part it
+  // is (SaltCore.covens.ritualPanel glowsForMe, SaltCore.altar.deedTargets).
+  const counted = new Set();
+  const savedNow = () => {
+    const app = global.AltarApp;
+    return app ? app.objects().map((el) => app.toSaved(el)) : [];
+  };
+  const targetCount = (kind) => global.SaltCore?.altar?.deedTargets?.deedTargetKeys(kind, savedNow()).length || 0;
+  function armedDone(d) {
+    if (d.kind === "light" || d.kind === "incense") return targetCount(d.kind) < d.before;
+    if (d.kind === "place") return savedNow().length > d.objects;
+    return false;
+  }
+  function armDeed(next) {
+    if (!next) {
+      if (deed?.armed) deed = null;
+      return;
+    }
+    if (counted.has(next.key) || deed?.key === next.key) return;
+    const onDone = () => {
+      if (counted.has(next.key)) return;
+      counted.add(next.key);
+      next.onDone();
+    };
+    deed = { kind: next.kind, onDone, changed: false, key: next.key, armed: true, before: targetCount(next.kind), objects: savedNow().length };
+    global.AltarRites?.arm?.(next.kind, () => {
+      if (deed?.key === next.key) finishDeed();
+    });
+  }
+  let glowKind = null;
+  let glowTimer = null;
+  function drawGlow() {
+    const app = global.AltarApp;
+    if (!app) return;
+    const keys = new Set(glowKind ? global.SaltCore?.altar?.deedTargets?.deedTargetKeys(glowKind, savedNow()) || [] : []);
+    app.objects().forEach((el) => el.classList.toggle("is-step-target", keys.has(el.dataset.altarObjectId || "")));
+  }
+  function glowFor(kind) {
+    if ((kind || null) === glowKind) return;
+    glowKind = kind || null;
+    global.clearInterval(glowTimer);
+    // Redrawn now and then, as the altar changes under everyone's hands.
+    glowTimer = glowKind ? global.setInterval(drawGlow, 1000) : null;
+    drawGlow();
+  }
+  global.CovenAltarDeed = { start: startDeed, arm: armDeed, glow: glowFor, toCabinet: toCabinetFor };
 
   global.CovenAltarPage = {
     altarId, slug, norm, changesFrom, status: () => ({ ready, access, problem, unwritten: unwritten.size }),

@@ -3,7 +3,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 import { AltarEditor } from '../../../../../../../components/altar/AltarEditor';
-import { AltarPanel } from '../../../../../../../components/covens/AltarRitual';
+import { AltarPanel, openRitualPanel } from '../../../../../../../components/covens/AltarRitual';
 import { CovenScreen, covenHref } from '../../../../../../../components/covens/CovenScreen';
 import * as api from '../../../../../../../lib/covens/api';
 import { deedFinish, isAltarDeed } from '../../../../../../../lib/covens/altarActions';
@@ -51,9 +51,12 @@ export default function CovenAltarScreen() {
   const { markDone, steps: covenSteps, userId } = coven;
   const deed = useMemo(() => {
     if (!isAltarDeed(doParam) || !stepParam) return null;
+    const at = covenSteps.find((s) => s.id === stepParam)?.turn_at ?? 0;
     return {
       kind: doParam,
       nonce: `${stepParam}:${doParam}:${n ?? ''}`,
+      // The same step and turn as the panel's (AltarRitual.tsx), so it counts once.
+      key: `${stepParam}:${at}:${doParam}`,
       onDone: () => {
         const step = covenSteps.find((s) => s.id === stepParam);
         if (!step) return;
@@ -97,8 +100,12 @@ export default function CovenAltarScreen() {
         )}
       </View>
       {ritual && (
-        <Pressable onPress={() => router.push(covenHref(coven.slug, `ritual/${ritual.id}`))} accessibilityRole="button" style={({ pressed }) => [styles.ritual, pressed && styles.pressed]}>
-          <Text style={type.caption}>{`${ritual.title} is under way here. Open the ritual ›`}</Text>
+        <Pressable
+          onPress={() => (ritual.status === 'live' ? openRitualPanel() : router.push(covenHref(coven.slug, `ritual/${ritual.id}`)))}
+          accessibilityRole="button"
+          style={({ pressed }) => [styles.ritual, pressed && styles.pressed]}
+        >
+          <Text style={type.caption}>{ritual.status === 'live' ? `${ritual.title} is under way here. Its steps are in the Ritual panel below ›` : `${ritual.title} is held here. Open the ritual ›`}</Text>
         </Pressable>
       )}
       {!shared.canEdit && !!access && <Text style={[type.caption, styles.reason]}>{shared.reason}</Text>}

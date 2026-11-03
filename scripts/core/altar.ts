@@ -43,6 +43,8 @@ export * as meditation from '../../app/src/lib/meditation/timer.ts';
 // Choosing several things at once, and cord cutting between two candles.
 export * as selection from '../../app/src/lib/altar/selection.ts';
 export * as cord from '../../app/src/lib/altar/cord.ts';
+// A coven ritual step's target on the altar, lit for the person whose part it is, and its items as cabinet things.
+export * as deedTargets from '../../app/src/lib/covens/deedTargets.ts';
 export * as snapshot from '../../app/src/lib/altar/snapshot.ts';
 export * as altarOptions from '../../app/src/lib/altar/altarOptions.ts';
 export * as ambient from '../../app/src/lib/altar/ambient.ts';

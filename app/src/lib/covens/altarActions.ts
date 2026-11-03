@@ -135,8 +135,8 @@ export function atAltarOf(step: { action?: string | null; details?: unknown } | 
 /**
  * A timed sit for everyone in the step: a meditation preset (Ground &
  * centre, Clearing; meditation/scripts.ts), kept on the step's details as
- * `sit_preset`. Each person's step shows a button that starts the sit's
- * timer and guidance on their own screen.
+ * `sit_preset`. It runs in the Ritual panel over the coven's altar for
+ * everyone at once, from the step's start (ritualPanel.ts sitSync).
  */
 export function sitStepOf(step: { details?: unknown } | null | undefined): { id: PresetId; label: string; minutes: number; button: string; params: Record<string, string> } | null {
   const p = presetOf(detailsOf(step).sit_preset);
@@ -249,7 +249,7 @@ export function altarChoiceNote(step: Parameters<typeof altarChoicesOf>[0]): str
   }
   if (kind === 'sit') {
     const sit = sitStepOf(step)!;
-    return `Each person’s step shows “${sit.button}”, which starts a ${sit.minutes}-minute timer with its guidance on their own screen, from Meditation.`;
+    return `A ${sit.minutes}-minute sit runs in the Ritual panel at the altar for everyone at once, from when the step is started, with the guidance, breath, bells and sound each person chose.`;
   }
   if (kind === 'ask') return `Each person is asked for ${(CONTRIBUTION_KINDS.find((k) => k.id === id)?.label ?? 'something').toLowerCase()} during the step, and it is kept with the ritual.`;
   return ALTAR_EFFECTS.find((e) => e.value === id)?.detail ?? '';

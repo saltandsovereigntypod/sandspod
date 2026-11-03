@@ -1292,6 +1292,8 @@
 
   global.AltarLiving = {
     render, schedule, openCloser, openPetitionBox, openWritePetition, saveJournal, loadEntries, notice,
+    /** A petition written elsewhere (a live coven ritual's panel) folded onto this altar, as the writer does. */
+    writePetition: (input) => writePetition(input, null),
     /** One of the selected object's actions by name ("offer", "anoint", "incense"), as its buttons do. */
     act: (name) => ACTIONS[name]?.(),
     setTonight(value) { tonight = value; schedule(); },

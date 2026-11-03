@@ -133,6 +133,7 @@ import { usePlace } from '../../lib/location';
 import { blankAnswers } from '../../lib/rituals/lifecycle';
 import { saveJournal, startRitual, updateActive, useRituals } from '../../lib/rituals/store';
 import { CabinetSheet } from './CabinetSheet';
+import { AltarDeskContext, type AltarDesk, type ArmedDeed } from './altarDesk';
 import { CarveSheet } from './CarveSheet';
 import { CloseUpSheet } from './CloseUpSheet';
 import { GroupGrimoireSheet, GroupSheet, RenameSheet } from './ArrangeSheets';
@@ -244,6 +245,7 @@ import { altarRitualItem, groupAltarItems, type WorkingDetails } from '../../lib
 import { useGrimoire } from '../../lib/grimoire/store';
 import type { SharedAltar } from '../../lib/covens/altarSync';
 import type { AltarDeed } from '../../lib/covens/altarActions';
+import { deedTargetKeys } from '../../lib/covens/deedTargets';
 import { altarSummary, documentFromAltar, emptyDocument, ritualAltarSnapshot, type AltarDocument } from '../../lib/altar/snapshot';
 import { useAltars } from '../../lib/altar/store';
 import type { CabinetForm, CabinetItem } from '../../lib/altar/types';
@@ -330,7 +332,7 @@ const afterSheetCloses = (open: () => void) => setTimeout(open, Platform.OS === 
 const MAX_STAGE_WIDTH = 960;
 
 /** A coven ritual step done for real here (lib/covens/altarActions.ts): the sheet to open, and what to call once it is done. */
-export type AltarDeedRequest = { kind: AltarDeed; nonce: string; onDone: () => void };
+export type AltarDeedRequest = { kind: AltarDeed; nonce: string; onDone: () => void; /** The step (and turn) it is for: it counts once (altarDesk.ts). */ key?: string };
 
 const NO_OBJECTS: import('../../lib/altar/types').SavedObject[] = [];
 
@@ -1413,16 +1415,34 @@ export function AltarEditor({
   // ── A ritual step done here for real (lib/covens/altarActions.ts) ──────
   // The step's button opens the same sheet as the altar's own; the first time
   // that work is done (the petition placed, the candle lit…) is the person's Done.
-  const pendingDeed = useRef<AltarDeedRequest | null>(null);
+  const pendingDeed = useRef<(Omit<AltarDeedRequest, 'nonce'> & { armed?: boolean }) | null>(null);
   const startedDeed = useRef('');
+  // Steps (and turns) already counted, so a deed done again doesn't count twice.
+  const countedDeeds = useRef(new Set<string>());
   const finishDeed = (kind: AltarDeed) => {
     const pending = pendingDeed.current;
     if (!pending || pending.kind !== kind) return;
     // A coven altar you can't tend right now keeps it as it was (commit says why): not done yet.
     if (sharedRef.current && !sharedRef.current.canEdit && kind !== 'intention' && kind !== 'gratitude' && kind !== 'scry' && kind !== 'scry_mirror' && kind !== 'pendulum' && kind !== 'bell' && kind !== 'bowl') return;
     pendingDeed.current = null;
+    if (pending.key) {
+      if (countedDeeds.current.has(pending.key)) return;
+      countedDeeds.current.add(pending.key);
+    }
     pending.onDone();
   };
+  // ── The panel over a coven altar (altarDesk.ts) ──
+  // A live step's deed waits here, so doing it on the altar any way counts;
+  // and what to tap glows for the person whose part it is.
+  const [glowKind, setGlowKind] = useState<AltarDeed | 'gaze' | null>(null);
+  const armDeed = useCallback((next: ArmedDeed | null) => {
+    if (!next) {
+      if (pendingDeed.current?.armed) pendingDeed.current = null;
+      return;
+    }
+    if (countedDeeds.current.has(next.key) || (pendingDeed.current?.key === next.key && pendingDeed.current.kind === next.kind)) return;
+    pendingDeed.current = { ...next, armed: true };
+  }, []);
   const toCabinet = (what: string) => {
     setNotice(`There’s no ${what} on the altar yet. Set one down from the cabinet first.`);
     setSheet('cabinet');
@@ -1560,6 +1580,21 @@ export function AltarEditor({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [deed, docReady]);
 
+  const glowKeys = useMemo(() => deedTargetKeys(glowKind, doc?.objects), [glowKind, doc?.objects]);
+  const desk: AltarDesk = {
+    cabinet: allItems,
+    overrides,
+    place,
+    start: (kind) => afterSheetCloses(() => startDeed(kind)),
+    arm: armDeed,
+    glow: setGlowKind,
+    writePetition: (input) => writePetition(input, null),
+    canWrite: !!sourceId,
+    notice,
+    canEdit: !shared || shared.canEdit,
+  };
+  const overlayEl = overlay ? <AltarDeskContext.Provider value={desk}>{overlay}</AltarDeskContext.Provider> : null;
+
   const stage =
     doc && stageWidth > 0 ? (
       <View>
@@ -1568,7 +1603,7 @@ export function AltarEditor({
             width={stageWidth}
             viewport={viewport}
             selected={selected}
-            highlightKeys={highlight ?? undefined}
+            highlightKeys={highlight ?? (glowKeys.length ? glowKeys : undefined)}
             selecting={selecting}
             chosen={chosen}
             onSelect={(index) => {
@@ -2528,7 +2563,7 @@ export function AltarEditor({
           {selectedObject ? <Chip label={tools ? 'Hide tools' : 'Tools'} symbol="☰" accessibilityLabel={`${tools ? 'Hide' : 'Show'} what ${shortLabel(selectedObject.label)} can do`} onPress={() => setTools(!tools)} /> : null}
         </View>
         {sheets}
-        {overlay}
+        {overlayEl}
       </SafeAreaView>
     );
   }
@@ -2600,7 +2635,7 @@ export function AltarEditor({
           </View>
         )}
         {sheets}
-        {overlay}
+        {overlayEl}
       </View>
     );
   }
@@ -2688,7 +2723,7 @@ export function AltarEditor({
       </View>
 
       {sheets}
-      {overlay}
+      {overlayEl}
     </SafeAreaView>
   );
 }

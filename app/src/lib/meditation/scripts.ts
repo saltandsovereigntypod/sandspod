@@ -199,10 +199,12 @@ export function lineAt(script: Pick<Script, 'lines'>, sitMs: number, lengthMs: n
 
 // ─── Presets for before a ritual ─────────────────────────────────────────
 
-export type PresetId = 'ground' | 'clearing';
-export const PRESETS: { id: PresetId; label: string; minutes: number; script: ScriptId; line: string }[] = [
-  { id: 'ground', label: 'Ground & centre', minutes: 3, script: 'grounding', line: 'Three minutes: roots down, light down, steady at the heart.' },
-  { id: 'clearing', label: 'Clearing', minutes: 5, script: 'clearing', line: 'Five minutes: breathe out the day and set a clear space.' },
+export type PresetId = 'ground' | 'clearing' | 'candle';
+/** Candle gazing has no written guidance: the flame is the guide (on a coven altar, the altar's own lit candle). */
+export const PRESETS: { id: PresetId; label: string; minutes: number; script: ScriptId | null; kind: SitKind; focus?: 'candle'; line: string }[] = [
+  { id: 'ground', label: 'Ground & centre', minutes: 3, script: 'grounding', kind: 'grounding', line: 'Three minutes: roots down, light down, steady at the heart.' },
+  { id: 'clearing', label: 'Clearing', minutes: 5, script: 'clearing', kind: 'breath', line: 'Five minutes: breathe out the day and set a clear space.' },
+  { id: 'candle', label: 'Candle gazing', minutes: 5, script: null, kind: 'candle', focus: 'candle', line: 'Five minutes with a candle flame: soft eyes, slow breath, nothing to do but watch.' },
 ];
 export const presetOf = (id: unknown) => PRESETS.find((p) => p.id === id) ?? null;
 
@@ -215,5 +217,5 @@ export function presetPlan(id: PresetId): SitPlan {
 /** A preset as a sit's route params (the plan, its script and kind). */
 export function presetParams(id: PresetId): Record<string, string> {
   const p = presetOf(id)!;
-  return { ...planParams(presetPlan(id)), script: p.script, kind: scriptOf(p.script)!.kind, preset: p.id };
+  return { ...planParams(presetPlan(id)), ...(p.script ? { script: p.script } : {}), ...(p.focus ? { focus: p.focus } : {}), kind: p.script ? scriptOf(p.script)!.kind : p.kind, preset: p.id };
 }

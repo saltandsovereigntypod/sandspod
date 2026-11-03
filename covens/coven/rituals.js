@@ -856,6 +856,18 @@
     const flow = ritual.status === "live" ? flowFor(ritual, steps) : null;
     if (flow) PP().wire(pane.querySelector("[data-now]"), flow, flowHandlers(ritual, act));
     PP()?.render(flow, flow ? flowHandlers(ritual, act) : null);
+    // A live rite happens at its altar (as the app's ritual page): opened here, it takes you there once.
+    if (flow && ritual.kind !== "meeting" && altarOf(ritual)) {
+      const key = `cv-taken-to-altar:${ritual.id}`;
+      let taken = true;
+      try {
+        taken = global.sessionStorage.getItem(key) === "1";
+        if (!taken) global.sessionStorage.setItem(key, "1");
+      } catch {
+        taken = true;
+      }
+      if (!taken) global.location.assign(UI.href(`/altar/?covenAltar=${encodeURIComponent(altarOf(ritual).id)}&c=${encodeURIComponent(state.coven.slug)}`));
+    }
     pane.querySelector("[data-goto]")?.addEventListener("click", (event) => act(event.currentTarget, () => D.goToStep(ritual.id, event.currentTarget.dataset.goto)));
     pane.querySelector("[data-end]")?.addEventListener("click", async (event) => {
       const button = event.currentTarget;

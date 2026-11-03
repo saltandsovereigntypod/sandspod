@@ -256,6 +256,10 @@ a.app-chip { text-decoration: none; }
 .coven-altar-list__row span { font-size: 0.88rem; opacity: 0.85; }
 .coven-altar-list__row.is-mine { border-color: var(--gold); }
 .altar-object.is-mine-found { outline: 2px solid var(--gold, #e2c36d); outline-offset: 3px; border-radius: 10px; box-shadow: 0 0 18px rgba(226, 195, 109, 0.55); }
+/* A live coven ritual's step: what to tap glows for the person whose part it is (coven-altar.js glow). */
+.altar-object.is-step-target { outline: 2px solid var(--gold, #e2c36d); outline-offset: 4px; border-radius: 12px; animation: altar-step-glow 1.6s ease-in-out infinite; }
+@keyframes altar-step-glow { 0%, 100% { box-shadow: 0 0 10px rgba(226, 195, 109, 0.35); } 50% { box-shadow: 0 0 26px rgba(226, 195, 109, 0.8); } }
+@media (prefers-reduced-motion: reduce) { .altar-object.is-step-target { animation: none; box-shadow: 0 0 18px rgba(226, 195, 109, 0.6); } }
 .altar-hero__tend a { color: var(--gold); text-decoration: none; }
 .altar-hero__tend a:hover, .altar-hero__tend a:focus-visible { text-decoration: underline; }
 body.is-coven-altar .altar-hero__tend { display: none; }
