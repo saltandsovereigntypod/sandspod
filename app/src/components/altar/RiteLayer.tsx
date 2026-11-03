@@ -7,7 +7,7 @@
 
 import { memo } from 'react';
 import { StyleSheet } from 'react-native';
-import Svg, { Circle, G, Line, Polyline, Text as SvgText } from 'react-native-svg';
+import Svg, { Circle, G, Line, Polyline, Rect, Text as SvgText } from 'react-native-svg';
 
 import { circleOf, QUARTER_SPOT, quarterColor, quarterOf, quartersOf, type Pt } from '../../lib/altar/circle';
 import type { AltarDocument } from '../../lib/altar/snapshot';
@@ -45,9 +45,9 @@ export const RiteLayer = memo(function RiteLayer({ doc, stageWidth: w, stageHeig
       )}
       {circle && (
         <G>
-          <Circle cx={circle.cx * w} cy={circle.cy * h} r={circle.r * w} stroke={circle.color} strokeOpacity={0.18} strokeWidth={14 * unit} fill="none" />
-          <Circle cx={circle.cx * w} cy={circle.cy * h} r={circle.r * w} stroke={circle.color} strokeOpacity={0.4} strokeWidth={5 * unit} fill="none" />
-          <Circle cx={circle.cx * w} cy={circle.cy * h} r={circle.r * w} stroke={circle.color} strokeOpacity={0.95} strokeWidth={1.4 * unit} fill="none" />
+          <Rect x={3 * unit} y={3 * unit} width={w - 6 * unit} height={h - 6 * unit} rx={14 * unit} stroke={circle.color} strokeOpacity={0.18} strokeWidth={14 * unit} fill="none" />
+          <Rect x={3 * unit} y={3 * unit} width={w - 6 * unit} height={h - 6 * unit} rx={14 * unit} stroke={circle.color} strokeOpacity={0.4} strokeWidth={5 * unit} fill="none" />
+          <Rect x={3 * unit} y={3 * unit} width={w - 6 * unit} height={h - 6 * unit} rx={14 * unit} stroke={circle.color} strokeOpacity={0.95} strokeWidth={1.4 * unit} fill="none" />
         </G>
       )}
       {quarters.open.map((id) => {

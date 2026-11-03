@@ -153,7 +153,8 @@
         : `<g opacity="0.85"><circle cx="${x}" cy="${y}" r="${7 * u}" fill="rgb(90,86,82)" opacity="0.55"/><circle cx="${x + 3 * u}" cy="${y - 1.5 * u}" r="${4 * u}" fill="rgb(150,146,140)" opacity="0.6"/><circle cx="${x - 3.5 * u}" cy="${y + u}" r="${2.5 * u}" fill="rgb(40,36,34)" opacity="0.7"/></g>`);
     }
     if (circle) {
-      const ring = (sw, op) => `<circle cx="${circle.cx * w}" cy="${circle.cy * h}" r="${circle.r * w}" stroke="${esc(circle.color)}" stroke-opacity="${op}" stroke-width="${sw}" fill="none"/>`;
+      // The cast circle shows as a glowing border round the whole altar, in its colour.
+      const ring = (sw, op) => `<rect x="${3 * u}" y="${3 * u}" width="${w - 6 * u}" height="${h - 6 * u}" rx="${14 * u}" stroke="${esc(circle.color)}" stroke-opacity="${op}" stroke-width="${sw}" fill="none"/>`;
       parts.push(`<g class="altar-rites__ring">${ring(14 * u, 0.18)}${ring(5 * u, 0.4)}${ring(1.4 * u, 0.95)}</g>`);
     }
     for (const id of quarters.open) {
