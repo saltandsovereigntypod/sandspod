@@ -19,7 +19,8 @@
   /** Notes for single topics, where the website's steps differ from the app's. */
   const TOPIC_NOTES = {
     "meditation-mala": "On the website a walking meditation is simply timed, as browsers have no step counter. Buzzes come where the browser can vibrate; “Guru bead” is also a button.",
-    "meditation-sound": "On the website the sound is made in the browser. If it asks, tap “Let the sound play”, and keep the tab open: some browsers hold back sound in a hidden tab.",
+    "meditation-listen": "On the website the sound is made in the browser. If it asks, tap “Let the sound play”, and keep the tab open: some browsers hold back sound in a hidden tab.",
+    "meditation-sound":"On the website the sound is made in the browser. If it asks, tap “Let the sound play”, and keep the tab open: some browsers hold back sound in a hidden tab.",
     "find-your-way-around": "More opens your Sanctuary: My Journey, the Community Grimoire and Settings, which holds notifications and reminders, accessibility, calendars, deities and your account.",
     "replay-welcome-tour": "The website opens a welcome on Today the first time you visit: one page for each main part of the Sanctuary. Choose “Watch the welcome again” at the top of How to. The Altar and the Grimoire also have their own “How This Works”.",
     "welcome-tour":"Open your Sanctuary from Today or More and choose Sign In or Create Account, or carry on as a guest. The same account works in the app.",

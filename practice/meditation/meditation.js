@@ -15,7 +15,9 @@
  * at (full screen if you like), sound layers made in the browser with Web
  * Audio (SaltCore.meditation.webSound, the beds from
  * /assets/sounds/meditation/), presets before a ritual, suggestions for
- * today; and the mala counter (mala) and programmes (programmes) pages.
+ * today; and the mala counter (mala), programmes (programmes) and Listen
+ * (listen: the sound layers on their own, with a stop timer; its last mix
+ * kept apart from the sit's, under meditation.listen) pages.
  */
 (function (global) {
   "use strict";
@@ -27,7 +29,7 @@
     root.innerHTML = '<p class="sp-notice">This page could not load. Check your connection and refresh the page.</p>';
     return;
   }
-  const { timer: T, log: L, patterns: P, extras: X, scripts: SC, focus: F, sound: S, mala: MA, programmes: PG } = M;
+  const { timer: T, log: L, patterns: P, extras: X, scripts: SC, focus: F, sound: S, mala: MA, programmes: PG, listen: LI } = M;
   const esc = kit.esc;
   const view = root.dataset.view || "home";
   const params = new URLSearchParams(global.location.search);
@@ -38,7 +40,7 @@
   };
   const plural = (n, one, many) => `${n} ${n === 1 ? one : many}`;
   const PLAN_KEY = "meditation.plan";
-  const MIX_KEY = "meditation.sound";
+  const MIX_KEY = view === "listen" ? LI.LISTEN_KEY : "meditation.sound";
 
   const state = {
     user: null,
@@ -67,9 +69,9 @@
 
   function readMix() {
     try {
-      return S.cleanMix(JSON.parse(global.localStorage.getItem(MIX_KEY) || "{}"));
+      return (view === "listen" ? LI.cleanListen : S.cleanMix)(JSON.parse(global.localStorage.getItem(MIX_KEY) || "{}"));
     } catch {
-      return S.cleanMix({});
+      return view === "listen" ? LI.DEFAULT_LISTEN_MIX : S.cleanMix({});
     }
   }
   function saveMix() {
@@ -255,7 +257,7 @@
     const sound = kit.details(
       "Sound",
       kit.toggle({ id: "md-with-sound", label: "Play sound with the sit", detail: state.withSound && S.mixOn(state.mix) ? S.mixLine(state.mix) : "Layers you mix yourself, faded in and out, stopping with the timer.", checked: state.withSound, change: "with-sound" }) +
-        (state.withSound ? soundHtml() : ""),
+        (state.withSound ? kit.actions([kit.button({ label: "Use my last Listen mix", act: "listen-mix", ghost: true, small: true })]) + soundHtml() : ""),
       { id: "md-sound" }
     );
     return bring + guide + look + sound;
@@ -312,6 +314,16 @@
       state.extras.sigil = el.dataset.value;
       draw();
     },
+    "listen-mix"() {
+      try {
+        const raw = global.localStorage.getItem(LI.LISTEN_KEY);
+        if (raw) state.mix = LI.cleanListen(JSON.parse(raw));
+      } catch {
+        return;
+      }
+      saveMix();
+      draw();
+    },
     "with-sound"(el) {
       state.withSound = el.checked;
       draw();
@@ -319,11 +331,13 @@
     level(el) {
       state.mix = S.cleanMix({ ...state.mix, levels: { ...state.mix.levels, [el.dataset.layer]: Number(el.dataset.value) } });
       saveMix();
+      if (view === "listen") listenRemix();
       draw();
     },
     mix(el) {
       state.mix = S.cleanMix({ ...state.mix, [el.dataset.field]: el.dataset.value });
       saveMix();
+      if (view === "listen") listenRemix();
       draw();
     },
     preset(el) {
@@ -366,6 +380,7 @@
       ${kit.section(
         "More ways in",
         kit.list([
+          kit.row({ url: url("listen"), title: "Listen", detail: "Binaural beats, noise, rain, fire, a drone, drum or bowls on their own, with a stop timer" }),
           kit.row({ url: url("breath"), title: "Breath pacing", detail: "A circle, wave or square path to breathe with: box breathing, 4-7-8 or your own count" }),
           kit.row({ url: url("mala"), title: "Mala and mantra", detail: "Count beads with a tap: 27, 54 or 108, and keep the mantra in your log" }),
           kit.row({ act: "walk", title: "Walking meditation", detail: "A timed walk; steps are counted in the app" }),
@@ -887,6 +902,115 @@
   });
   root.addEventListener("contextmenu", (ev) => ev.target.closest?.("[data-mala]") && ev.preventDefault());
 
+  // ── Listen ─────────────────────────────────────────────────────────────
+  // As the app's meditation/listen: the sound layers on their own (the
+  // sit's sound engine against an open-ended plan, its end the timer's or
+  // Stop's fade), with a stop timer and play, pause and stop.
+  const lis = { minutes: 30, run: null, done: null, sound: null, strikes: [], last: null, timer: 0 };
+  function listenElapsed() {
+    return lis.run ? T.elapsedOf(lis.run.clock, Date.now()) : 0;
+  }
+  function listenTick() {
+    const r = lis.run;
+    if (!r) return;
+    const elapsed = listenElapsed();
+    const st = LI.listenState(elapsed, r.endMs);
+    if (st.done) {
+      lis.done = { startedAt: r.clock.startedAt, ms: elapsed };
+      listenQuiet();
+      return draw();
+    }
+    if (r.clock.pausedAt !== null) {
+      lis.sound.pause();
+    } else {
+      lis.sound.resume();
+      const plan = LI.listenPlan(r.minutes);
+      const x = S.soundTick(state.mix, plan, lis.strikes, lis.last ?? -1, elapsed, r.endMs);
+      lis.last = elapsed;
+      lis.sound.update(x.voices);
+      if (x.strike) lis.sound.strike(x.strike.key, x.strike.volume);
+    }
+    const face = root.querySelector("[data-listen-clock]");
+    if (face) face.textContent = T.clockLabel(st.leftMs ?? elapsed);
+    const tap = root.querySelector("[data-sound-tap]");
+    if (tap) tap.hidden = !lis.sound.needsTap();
+  }
+  function listenQuiet() {
+    clearInterval(lis.timer);
+    if (lis.sound) lis.sound.stop();
+    lis.sound = null;
+    lis.run = null;
+    lis.last = null;
+  }
+  /** A new mix while playing: the voices follow it at the next tick; the bowls are worked out again. */
+  function listenRemix() {
+    if (lis.run) lis.strikes = S.bowlStrikes(state.mix, LI.listenPlan(lis.run.minutes));
+  }
+  function listenHtml() {
+    const r = lis.run;
+    const m = state.mix;
+    const on = S.mixOn(m);
+    const paused = !!r && r.clock.pausedAt !== null;
+    const elapsed = listenElapsed();
+    const st = r ? LI.listenState(elapsed, r.endMs) : null;
+    const line = r ? (paused ? "Paused" : r.stopping ? "Fading out" : S.mixLine(m)) : on ? S.mixLine(m) : "Choose at least one layer below.";
+    const done = lis.done ? kit.p(`You listened for ${T.clockLabel(lis.done.ms)}.`) + kit.actions([kit.button({ label: "Keep it in your log", url: url("log", LI.listenLogParams(lis.done.startedAt, lis.done.ms)), ghost: true })]) : "";
+    return `${kit.back(BASE, "Meditation")}${kit.head({ eyebrow: "Meditation", title: "Listen", lede: "Binaural beats, noise, rain, fire, a drone, a drum or bowls, on their own: to rest, read, work or fall quiet to. The same layers you can play with a sit." })}
+      ${kit.card(
+        `<p class="md-listen__clock" data-listen-clock>${esc(r ? T.clockLabel(st.leftMs ?? elapsed) : LI.timerLabel(lis.minutes))}</p>${kit.muted(line)}${kit.actions([
+          !r || paused ? kit.button({ label: paused ? "Play on" : "Play", act: "listen-play", primary: true, disabled: !on }) : "",
+          r && !paused && !r.stopping ? kit.button({ label: "Pause", act: "listen-pause", ghost: true }) : "",
+          r && !r.stopping ? kit.button({ label: "Stop", act: "listen-stop", ghost: true }) : ""
+        ])}${lis.sound ? `<div data-sound-tap${lis.sound.needsTap() ? "" : " hidden"}>${kit.actions([kit.button({ label: "Let the sound play", act: "listen-unlock", ghost: true })])}</div>` : ""}${done}`
+      )}
+      ${kit.section(
+        "Stop after",
+        kit.chips(LI.LISTEN_TIMERS.map((x) => kit.chip({ label: LI.timerLabel(x), act: "listen-timer", value: x === null ? "" : x, pressed: lis.minutes === x })), "Stop after") +
+          kit.muted(`It fades in as it begins and out as it ends. The binaural slow descent spans the time you choose, or 30 minutes if it plays until you stop it.${r ? " A new time applies when you next press Play." : ""}`)
+      )}
+      ${kit.section("Your mix", kit.card(soundHtml()) + kit.muted("Kept on this device for next time, and you can use it for a sit too (Meditation → Sound → Use my last Listen mix). Binaural layers come with soft pink noise under them unless you choose another noise."))}
+      ${kit.notice(LI.LISTEN_NOTE)}`;
+  }
+  const listenHandlers = {
+    "listen-timer"(el) {
+      lis.minutes = LI.cleanTimer(el.dataset.value);
+      draw();
+    },
+    "listen-play"() {
+      if (!S.mixOn(state.mix)) return;
+      lis.done = null;
+      if (lis.run) {
+        lis.run.clock = T.resumeClock(lis.run.clock, Date.now());
+      } else {
+        lis.sound = M.webSound.createWebSound((bed) => `/assets/sounds/meditation/${bed}.wav`);
+        if (!lis.sound) return;
+        lis.sound.unlock();
+        lis.run = { clock: T.startClock(Date.now()), minutes: lis.minutes, endMs: LI.listenEnd(lis.minutes), stopping: false };
+        lis.strikes = S.bowlStrikes(state.mix, LI.listenPlan(lis.minutes));
+        lis.timer = setInterval(listenTick, 500);
+      }
+      draw();
+      listenTick();
+    },
+    "listen-pause"() {
+      if (lis.run) lis.run.clock = T.pauseClock(lis.run.clock, Date.now());
+      listenTick();
+      draw();
+    },
+    "listen-stop"() {
+      const r = lis.run;
+      if (!r) return;
+      r.clock = T.resumeClock(r.clock, Date.now());
+      r.endMs = LI.stopAt(T.elapsedOf(r.clock, Date.now()), r.endMs);
+      r.stopping = true;
+      draw();
+    },
+    "listen-unlock"() {
+      if (lis.sound) lis.sound.unlock();
+      listenTick();
+    }
+  };
+
   // ── Programmes ─────────────────────────────────────────────────────────
   function programmesHtml() {
     const head = `${kit.back(BASE, "Meditation")}${kit.head({ eyebrow: "Meditation", title: "Programmes", lede: "A sit a day with a focus for each. Progress comes from your log, so a sit logged for a programme counts wherever you sat it." })}`;
@@ -967,7 +1091,9 @@
                 ? malaHtml()
                 : view === "programmes"
                   ? programmesHtml()
-                  : homeHtml();
+                  : view === "listen"
+                    ? listenHtml()
+                    : homeHtml();
     // Keep open what was open (the plan's sections) across a redraw.
     const open = [...root.querySelectorAll("details[id]")].filter((d) => d.open).map((d) => d.id);
     kit.render(root, html);
@@ -985,6 +1111,7 @@
     ...extrasHandlers,
     ...malaHandlers,
     ...programmeHandlers,
+    ...listenHandlers,
     begin() {
       kit.go(url("sit", { ...T.planParams(state.plan), ...X.extrasParams(chosen()) }));
     }
@@ -998,7 +1125,7 @@
     }
     if (view === "home" || view === "programmes") state.settings = await kit.settings();
     if (view === "home") await loadSigils();
-    if (view !== "sit" && view !== "breath" && view !== "mala") await load();
+    if (view !== "sit" && view !== "breath" && view !== "mala" && view !== "listen") await load();
     if (view === "log") await findKept().catch(() => undefined);
     draw();
   });

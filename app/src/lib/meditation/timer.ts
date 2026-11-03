@@ -27,6 +27,8 @@ export type SitPlan = {
   /** A bell every this many minutes during the sit; 0 for none. */
   every: number;
   signal: Signal;
+  /** How long the binaural slow descent takes, in minutes, when it isn't the sit's length (Listen). */
+  descentMinutes?: number;
 };
 
 export const DEFAULT_PLAN: SitPlan = { minutes: 10, settle: 0, warm: 0, startBell: true, endBell: true, every: 0, signal: 'bell' };

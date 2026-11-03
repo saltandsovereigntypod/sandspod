@@ -1,29 +1,41 @@
 // Choosing a sit's sound (lib/meditation/sound.ts): each layer at its own
 // level, and for some a key, tempo, bowl round or binaural beat. The last mix
-// is remembered on this device. Shared by Meditation and its programmes.
+// is remembered on this device. Shared by Meditation, its programmes and
+// Listen (which keeps its own last mix).
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useEffect, useState } from 'react';
 import { View } from 'react-native';
 
 import { BEATS, BINAURAL_NOTE, BINAURAL_PRESETS, BOWL_GAPS, BOWL_SETS, CARRIERS, cleanMix, DEFAULT_MIX, KEYS, LAYERS, levelOf, LEVELS, TEMPOS, type SoundMix } from '../../lib/meditation/sound';
+import { cleanListen, LISTEN_KEY } from '../../lib/meditation/listen';
 import { Body, Chip, Chips, Notice, ui } from '../rituals/ui';
 
 const KEY = 'meditation.sound';
 
-/** The mix last used on this device. */
-export function useLastMix(): [SoundMix, (m: SoundMix) => void] {
-  const [mix, setMix] = useState<SoundMix>(DEFAULT_MIX);
+/** The mix last used on this device (for a sit, or under another key, as Listen's). */
+export function useLastMix(key = KEY, initial = DEFAULT_MIX, clean: (raw: unknown) => SoundMix = cleanMix): [SoundMix, (m: SoundMix) => void] {
+  const [mix, setMix] = useState<SoundMix>(initial);
   useEffect(() => {
-    AsyncStorage.getItem(KEY)
-      .then((raw) => raw && setMix(cleanMix(JSON.parse(raw))))
+    AsyncStorage.getItem(key)
+      .then((raw) => raw && setMix(clean(JSON.parse(raw))))
       .catch(() => {});
-  }, []);
+  }, [key, clean]);
   const change = (m: SoundMix) => {
     setMix(m);
-    void AsyncStorage.setItem(KEY, JSON.stringify(m)).catch(() => {});
+    void AsyncStorage.setItem(key, JSON.stringify(m)).catch(() => {});
   };
   return [mix, change];
+}
+
+/** The last Listen mix on this device, or null if there's none. */
+export async function lastListenMix(): Promise<SoundMix | null> {
+  try {
+    const raw = await AsyncStorage.getItem(LISTEN_KEY);
+    return raw ? cleanListen(JSON.parse(raw)) : null;
+  } catch {
+    return null;
+  }
 }
 
 export function SoundForm({ mix, onChange }: { mix: SoundMix; onChange: (m: SoundMix) => void }) {

@@ -13,7 +13,7 @@ import { cleanPlan, minutesSat, type SitPlan } from './timer.ts';
 
 export const SITS = 'meditation.sits';
 
-export type SitKind = 'breath' | 'grounding' | 'candle' | 'visualisation' | 'pathworking' | 'trance' | 'walking' | 'body' | 'scrying' | 'devotional' | 'mantra' | 'other';
+export type SitKind = 'breath' | 'grounding' | 'candle' | 'visualisation' | 'pathworking' | 'trance' | 'walking' | 'body' | 'scrying' | 'devotional' | 'mantra' | 'listening' | 'other';
 
 export const SIT_KINDS: { value: SitKind; label: string }[] = [
   { value: 'breath', label: 'Breath' },
@@ -27,6 +27,7 @@ export const SIT_KINDS: { value: SitKind; label: string }[] = [
   { value: 'scrying', label: 'Scrying' },
   { value: 'devotional', label: 'Devotional' },
   { value: 'mantra', label: 'Mantra & mala' },
+  { value: 'listening', label: 'Listening' },
   { value: 'other', label: 'Other' },
 ];
 
@@ -55,6 +56,7 @@ export const PROMPTS: Record<SitKind, string[]> = {
   scrying: ['What shapes, colours or pictures came?', 'What do they bring to mind now?'],
   devotional: ['Did you feel a presence, or a quiet?', 'What would you like to offer or say next time?'],
   mantra: ['How did the words feel by the end?', 'Did the counting settle you, or busy you?'],
+  listening: ['What did you notice in the sound, and in yourself?', 'Where did your attention go as you listened?'],
   other: ['What came up?', 'What would you keep from this sit?'],
 };
 export const promptsFor = (kind: SitKind) => PROMPTS[kind] ?? PROMPTS.other;

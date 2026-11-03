@@ -148,7 +148,7 @@ test('objects are kept inside the stage, cloths may hang off the edge', () => {
   close(inside.cx, 1 - size / 2);
   close(inside.cy, (size * 2 * STAGE_ASPECT) / 2);
   const cloth = clampBox({ cx: 1.2, cy: 0.5, size: 0.6, aspect: 1 }, 'cloth');
-  close(cloth.cx, 1 - 0.6 * 0.25);
+  close(cloth.cx, 1 + 0.6 * 0.25); // the website's left-edge rule, shifted to the centre
   assert.deepEqual(clampBox({ cx: 1.2, cy: 0.5, size: 0.6, aspect: 1 }, 'cloth', 'load'), { cx: 1.2, cy: 0.5, size: 0.6, aspect: 1 });
 });
 

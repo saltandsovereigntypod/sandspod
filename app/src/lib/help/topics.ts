@@ -3363,6 +3363,23 @@ export const HELP: HelpSection[] = [
         keywords: ['mala', 'japa', 'mantra', 'chant', 'beads', 'rosary', 'counter', 'walking meditation', 'steps', 'pedometer'],
       },
       {
+        id: 'meditation-listen',
+        title: 'Listen: binaural beats and sound on their own',
+        summary: 'Play binaural beats, pink or brown noise, rain, wind, fire, a drone, a frame drum or singing bowls without a sit, each at its own level, with a stop timer.',
+        steps: [
+          'In Meditation, tap "Listen". Choose a level for each layer you want, and for binaural layers a preset (the slow descent from alpha to theta, a fixed beat, or your own beat and carrier).',
+          'Under "Stop after", choose 15, 30, 45, 60 or 90 minutes, or "Until I stop". The slow descent spans the time you choose, or 30 minutes if it plays until you stop it.',
+          'Tap "Play". It fades in; "Pause" holds it, and "Stop" fades it out. When it ends, "Keep it in your log" notes it as a Listening sit, if you like.',
+          'To use the same mix with a sit, open Sound in Meditation and tap "Use my last Listen mix".',
+        ],
+        tips: [
+          'Binaural layers need headphones. Research into what they do is mixed; don’t use them if you have epilepsy or a seizure disorder, or while driving.',
+          'Sound plays only while the screen is open: in the app it pauses if you switch away or lock the phone. It plays with the silent switch on. The last mix is remembered on each device.',
+        ],
+        href: '/rituals/craft/meditation/listen',
+        keywords: ['binaural', 'binaural beats', 'theta', 'alpha', 'delta', 'white noise', 'pink noise', 'brown noise', 'rain sounds', 'sleep sounds', 'ambient', 'soundscape', 'listen', 'sound bath'],
+      },
+      {
         id: 'meditation-programmes',
         title: 'Meditation programmes, and before and after',
         summary: '7 days of grounding, a 28-day moon cycle and Sabbat sits, with how you feel before and after each sit.',
