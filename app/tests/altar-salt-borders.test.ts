@@ -64,6 +64,7 @@ test('a salt border is hollow: a tap inside goes to what lies within', () => {
   const nearY = h / 2 - line.insetY * w * (line.ratio / line.flat);
   assert.ok(onSaltLine(line, w / 2 - line.inset * w, h / 2 - 1, w));
   assert.ok(onSaltLine(line, 0, nearY, w));
+  assert.equal(line.taper, line.flat === 1 ? 0.68 : 0.6, 'far edge: 0.60 of the near edge altar-wide, 0.68 square');
   assert.ok(onSaltLine(line, (w / 2 - line.inset * w) * line.taper, -h / 2 + 1, w));
   assert.ok(!onSaltLine(line, w / 2 - line.inset * w, -h / 2 + 1, w), 'the far corner is drawn in');
   assert.ok(!onSaltLine(line, 0, 0, w));
