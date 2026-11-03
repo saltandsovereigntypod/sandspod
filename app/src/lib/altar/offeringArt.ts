@@ -291,7 +291,8 @@ export function offeringArt(
   // A vessel of drink: the liquid sinks, leaving a tide line and, at the last, a stain.
   const liquid = liquidOf(contents.kind, contents.label, look.stage);
   if (!liquid) return null;
-  const level = Math.max(0, Math.min(1, look.level));
+  // A cup drunk from or poured out sits lower still (contents.fill).
+  const level = Math.max(0, Math.min(1, look.level * (contents.fill ?? 1)));
   const surface: Ellipse = {
     cx: lerp(mouth.empty.cx, mouth.full.cx, level),
     cy: lerp(mouth.empty.cy, mouth.full.cy, level),

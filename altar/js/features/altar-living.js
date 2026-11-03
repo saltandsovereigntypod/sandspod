@@ -848,6 +848,8 @@
       const saved = B().toSaved(el);
       return core.petitions.isPetitionPaper(saved) && core.petitions.petitionEntryOf(saved) === entry.id;
     });
+    // A burned petition leaves a little ash on the altar, for the besom (altar-rites.js).
+    if (how === "burned") global.AltarRites?.dropAsh?.(paperEl ? B().toSaved(paperEl) : candleEl ? B().toSaved(candleEl) : null);
     if (paperEl) B().removeEl(paperEl, { undo: false });
     await loadEntries();
     notice(`“${entry.data.title}” is ${words}. It stays in the box’s history.`);

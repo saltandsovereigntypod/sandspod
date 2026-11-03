@@ -924,6 +924,63 @@ export const HELP: HelpSection[] = [
         keywords: ['cord', 'cutting', 'release', 'let go', 'ending', 'knot', 'tie'],
       },
       {
+        id: 'altar-cast-circle',
+        title: 'Cast the circle and call the quarters',
+        summary: 'Trace a ring of light round the altar with an athame or wand, and light the four quarters.',
+        steps: [
+          'Set an athame or a wand on the altar from the cabinet’s Tools (the selenite athame and the crystal wand work too), and select it.',
+          'Tap "Cast the circle", choose the colour of the light (or type your own), and trace round the altar with the tool, sunwise (clockwise). A thin line of light follows it; once you’ve gone most of the way round, it closes into a glowing ring and says "Circle cast". "Cast it for me" draws the ring without tracing.',
+          'Tap "Call the quarters" for the circle panel. Call East (air, yellow), South (fire, red), West (water, blue) and North (earth, green); each lights a marker at that edge of the altar. "Colour" changes a quarter’s colour to your own.',
+          'To close, release the quarters in reverse (North first), then tap "Release the circle" and trace the ring back anticlockwise, or tap "Release it for me".',
+        ],
+        tips: [
+          'While anything is open, a line under the altar reminds you what’s left to release before you end.',
+          'Casting, calling and releasing are kept in the altar’s History. On a coven altar everyone there sees the ring and the quarters.',
+          'Casting a circle and calling the quarters is modern practice, mostly from Wicca and the ceremonial magic it drew on. The colours here are common modern ones, not the only ones; many traditions use others, or none.',
+        ],
+        keywords: ['circle', 'cast the circle', 'athame', 'wand', 'quarters', 'watchtowers', 'directions', 'elements', 'deosil', 'widdershins', 'open the circle', 'release the circle'],
+      },
+      {
+        id: 'altar-singing-bowl',
+        title: 'Strike or ring the singing bowl',
+        summary: 'Strike it once, or let it ring every few minutes, in one of eight tones.',
+        steps: [
+          'Set a singing bowl on the altar from the cabinet’s Tools, and select it.',
+          'Choose its tone: one of the seven chakra notes (root C, sacral D, solar plexus E, heart F, throat G, third eye A, crown B) or 432 Hz.',
+          'Tap "Strike once", or choose how often (every 1 to 10 minutes) and tap "Ring every…". Tap "Stop ringing" to let it fall still.',
+        ],
+        tips: [
+          'The bowl follows Candle sounds and Vibration in Accessibility. As you struck it on purpose, it sounds even with an iPhone’s silent switch on.',
+          'Pairing chakras with the notes of a C major scale is a modern Western convention, one of several, and 432 Hz is a modern preference, not an old tuning.',
+          'On a coven altar everyone there hears it.',
+        ],
+        keywords: ['singing bowl', 'bowl', 'sound', 'tone', 'chakra', '432', 'meditation', 'strike', 'ring'],
+      },
+      {
+        id: 'altar-chalice-besom',
+        title: 'The chalice and the besom',
+        summary: 'Fill, raise and pour from the chalice; sweep the altar clean with the besom.',
+        steps: [
+          'Select a chalice and fill it with wine, water, juice or mead. The cup shows how full it is.',
+          'Tap "Raise it in a toast", "Pour a libation" (into an offering bowl on the altar if there is one, where it’s kept as an offering) or "Drink", which empties it.',
+          'Select a besom and tap "Sweep the altar" to clear the incense ash, spent matches, the ash of burned petitions and burned cords.',
+        ],
+        tips: ['Each is kept in the altar’s History. On a coven altar the others see the toast, the libation and the sweep.'],
+        keywords: ['chalice', 'cup', 'wine', 'mead', 'toast', 'libation', 'drink', 'besom', 'broom', 'sweep', 'clean', 'ash'],
+      },
+      {
+        id: 'altar-light-by-hand',
+        title: 'Light with a match or lighter, or snuff a candle',
+        summary: 'Bring the matches, a lighter or a snuffer to a candle and tap the button that appears.',
+        steps: [
+          'Set matches, a lighter or a candle snuffer on the altar from the cabinet’s Tools (Candle care).',
+          'Drag it near or over an unlit candle or incense. A small "Light candle" button appears; tap it to light it, with the strike of a match or the click of a lighter.',
+          'Drag the snuffer to a lit candle and tap "Snuff candle". Move away and the button goes.',
+        ],
+        tips: ['Nothing is ever lit or put out on its own: only when you tap. A struck match is left beside the candle until you sweep the altar.'],
+        keywords: ['match', 'matches', 'lighter', 'snuffer', 'light candle', 'snuff', 'strike'],
+      },
+      {
         id: 'altar-glow-duplicate-rename-remove',
         title: 'Glow, duplicate, rename or remove an object',
         summary: 'The More row holds the everyday editing tools.',

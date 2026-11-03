@@ -58,6 +58,8 @@
   let channel = null;
   // The altar bell (altar-bell.js): who's listening for the others ringing.
   let hearBell = null;
+  // The altar's other tools (altar-rites.js): who's listening for the others' bowl, matches, toasts and sweeps.
+  let hearRite = null;
   // What the coven is known to hold: each object (normalised JSON) and the scene.
   let saved = new Map();
   let savedScene = "";
@@ -187,6 +189,8 @@
     } finally {
       applying = false;
     }
+    // The circle, quarters, debris and cords are drawn from the scene (altar-rites.js, altar-cords.js).
+    document.dispatchEvent(new CustomEvent("altar:cords-changed"));
   }
 
   // ── Your changes: to the others at once, to the database a moment later ─
@@ -521,6 +525,11 @@
       const ring = global.SaltCore?.altar?.bell?.readRing(payload, me.id);
       if (ring && hearBell) hearBell(ring);
     });
+    // The singing bowl, a match, a toast, a libation or a sweep by someone else here (the app's "rite" broadcast; js/core/altar.js toolRites).
+    channel.on("broadcast", { event: "rite" }, ({ payload }) => {
+      const rite = global.SaltCore?.altar?.toolRites?.readRite(payload, me.id);
+      if (rite && hearRite) hearRite(rite);
+    });
     channel.on("presence", { event: "sync" }, () => {
       here = Object.values(channel.presenceState()).map((list) => list[0]).filter(Boolean);
       status();
@@ -605,6 +614,8 @@
   let deed = null;
   const KEEPS = ["intention", "gratitude", "scry"];
   const NO_SHEET = ["light", "incense", "place", "charge_crystal"];
+  // Done when the deed itself is (the circle cast, the bowl struck…), never on a sheet closing (altar-rites.js).
+  const SELF_DONE = ["circle", "release_circle", "quarters", "release_quarters", "bowl", "toast", "libation", "sweep", "match"];
   function deedChanged() {
     if (!deed) return;
     deed.changed = true;
@@ -617,7 +628,7 @@
   }
   // Sheets are <dialog class="app-sheet">; a petition is placed just after its sheet closes.
   global.document.addEventListener("close", (event) => {
-    if (!deed || NO_SHEET.includes(deed.kind) || !event.target?.classList?.contains("app-sheet")) return;
+    if (!deed || NO_SHEET.includes(deed.kind) || SELF_DONE.includes(deed.kind) || !event.target?.classList?.contains("app-sheet")) return;
     const mine = deed;
     global.setTimeout(() => {
       if (deed !== mine) return;
@@ -625,20 +636,24 @@
       else deed = null;
     }, 1500);
   }, true);
+  function toCabinetFor(what) {
+    const app = global.AltarApp;
+    app?.notice(what ? `There’s no ${what} on the altar yet. Set one down from the cabinet first.` : "Choose something from the cabinet to set on the altar.");
+    const toggle = global.document.querySelector(".altar-mobile-cabinet-toggle");
+    if (toggle && toggle.offsetParent && toggle.getAttribute("aria-expanded") !== "true") toggle.click();
+    else global.document.querySelector(".altar-cabinet")?.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
   function startDeed(kind, onDone) {
     const AA = global.SaltCore?.covens?.altarActions;
     const core = global.SaltCore?.altar;
     const app = global.AltarApp;
     if (!AA?.isAltarDeed(kind) || !core || !app) return false;
     deed = { kind, onDone, changed: false };
+    // The circle, quarters, singing bowl, chalice, besom and matches finish themselves (altar-rites.js).
+    if (global.AltarRites?.deed(kind, () => { if (deed?.kind === kind) finishDeed(); }, (what) => toCabinetFor(what))) return true;
     const els = app.objects();
     const find = (test) => els.find((el) => test(app.toSaved(el)));
-    const toCabinet = (what) => {
-      app.notice(what ? `There’s no ${what} on the altar yet. Set one down from the cabinet first.` : "Choose something from the cabinet to set on the altar.");
-      const toggle = global.document.querySelector(".altar-mobile-cabinet-toggle");
-      if (toggle && toggle.offsetParent && toggle.getAttribute("aria-expanded") !== "true") toggle.click();
-      else global.document.querySelector(".altar-cabinet")?.scrollIntoView({ behavior: "smooth", block: "start" });
-    };
+    const toCabinet = (what) => toCabinetFor(what);
     const withSelected = (el, what, run) => {
       if (!el) return toCabinet(what);
       global.selectObject?.(el);
@@ -680,6 +695,9 @@
     me: () => me?.id || "",
     // Ring the bell for everyone here: a broadcast, nothing saved.
     ringBell: (kind, key) => { channel?.send({ type: "broadcast", event: "bell", payload: { from: me?.id || "", kind, key } }).catch?.(() => {}); },
-    onBell: (hear) => { hearBell = hear; }
+    onBell: (hear) => { hearBell = hear; },
+    // The altar's other tools for everyone here (altar-rites.js): a broadcast, nothing saved.
+    sendRite: (wire) => { channel?.send({ type: "broadcast", event: "rite", payload: { ...wire, from: me?.id || "" } }).catch?.(() => {}); },
+    onRite: (hear) => { hearRite = hear; }
   };
 })(window);

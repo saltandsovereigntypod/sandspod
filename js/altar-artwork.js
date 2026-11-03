@@ -571,6 +571,7 @@
       "goddess-figure": "../assets/altar/objects/tools/goddess-figure/goddess-figure.png",
       "green-man": "../assets/altar/objects/tools/green-man/green-man.png",
       "lantern": "../assets/altar/objects/tools/lantern/lantern.png",
+      "lighter": "../assets/altar/objects/tools/lighter/lighter.png",
       "matches": "../assets/altar/objects/tools/matches/matches.png",
       "ogham-staves": "../assets/altar/objects/tools/ogham-staves/ogham-staves.png",
       "oil-lamp": "../assets/altar/objects/tools/oil-lamp/oil-lamp.png",

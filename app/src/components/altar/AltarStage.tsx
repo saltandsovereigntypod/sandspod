@@ -14,6 +14,7 @@ import type { Snap } from '../../lib/altar/arrange';
 import { CandleMarks, CandlePicture, candleGeometry, drawsBurnedDown } from './CandleMarks';
 import { ChargeAura, Moment, SnapGuide } from './StageEffects';
 import { CordLayer } from './CordLayer';
+import { RiteLayer } from './RiteLayer';
 import { FlameFire, HAS_FIRE } from './FlameFire';
 import { HAS_LIT, LitPicture } from './LitPicture';
 import { HAS_SMOKE, SmokeFire } from './SmokeFire';
@@ -88,6 +89,10 @@ type Props = {
   moment?: StageMoment | null;
   /** Where a dragged object is settling (snap to meaning), in stage fractions. */
   guide?: Snap | null;
+  /** Tracing a circle with an athame or wand: drags report where the finger is (stage fractions) instead of moving things. */
+  onTrace?: (phase: 'start' | 'move' | 'end', x: number, y: number) => void;
+  /** The line of light a circle being traced leaves (RiteLayer). */
+  trail?: { points: { x: number; y: number }[]; color: string } | null;
   /** The minute, so candles burn down and their carvings and wax follow, and incense burns. */
   now: number;
 };
@@ -110,6 +115,7 @@ export function clampViewport(viewport: Viewport, width: number): Viewport {
 type Active =
   | { kind: 'object'; index: number; cx: number; cy: number; size: number; rotation: number }
   | { kind: 'pan'; offsetX: number; offsetY: number }
+  | { kind: 'trace' }
   | null;
 
 export function AltarStage(props: Props) {
@@ -162,6 +168,7 @@ export function AltarStage(props: Props) {
     const end = (name: string) => () => {
       if (!running.delete(name) || running.size > 0) return;
       if (active.current?.kind === 'object' && moved.current) latest.current.onGestureEnd();
+      if (active.current?.kind === 'trace') latest.current.onTrace?.('end', 0, 0);
       active.current = null;
       moved.current = false;
     };
@@ -170,7 +177,7 @@ export function AltarStage(props: Props) {
       .runOnJS(true)
       .maxDistance(12)
       .onEnd((e, success) => {
-        if (!success) return;
+        if (!success || latest.current.onTrace) return;
         latest.current.onSelect(find(e.x, e.y));
       });
 
@@ -181,6 +188,13 @@ export function AltarStage(props: Props) {
       .onStart((e) => {
         started('pan');
         if (active.current) return;
+        const trace = latest.current.onTrace;
+        if (trace) {
+          const p = stagePoint(e.x - e.translationX, e.y - e.translationY);
+          active.current = { kind: 'trace' };
+          trace('start', p.x / p.stageWidth, (p.y / p.stageWidth) * STAGE_ASPECT);
+          return;
+        }
         const index = find(e.x - e.translationX, e.y - e.translationY);
         if (index != null) {
           beginObject(index);
@@ -193,6 +207,11 @@ export function AltarStage(props: Props) {
         const a = active.current;
         const { width: w, viewport: v } = latest.current;
         if (!a) return;
+        if (a.kind === 'trace') {
+          const p = stagePoint(e.x, e.y);
+          latest.current.onTrace?.('move', p.x / p.stageWidth, (p.y / p.stageWidth) * STAGE_ASPECT);
+          return;
+        }
         if (a.kind === 'pan') {
           if (v.zoom <= 1) return;
           latest.current.onViewportChange(
@@ -211,7 +230,7 @@ export function AltarStage(props: Props) {
       .runOnJS(true)
       .onStart((e) => {
         started('pinch');
-        if (latest.current.selecting) return;
+        if (latest.current.selecting || latest.current.onTrace) return;
         const sel = latest.current.selected;
         const index = sel ?? find(e.focalX, e.focalY);
         if (index == null) return;
@@ -229,7 +248,7 @@ export function AltarStage(props: Props) {
       .runOnJS(true)
       .onStart((e) => {
         started('rotation');
-        if (latest.current.selecting) return;
+        if (latest.current.selecting || latest.current.onTrace) return;
         const sel = latest.current.selected;
         const index = sel ?? find(e.anchorX, e.anchorY);
         if (index == null) return;
@@ -328,6 +347,7 @@ export function AltarStage(props: Props) {
             />
           ))}
           <CordLayer doc={doc} stageWidth={stageWidth} stageHeight={stageHeight} />
+          <RiteLayer doc={doc} stageWidth={stageWidth} stageHeight={stageHeight} trail={props.trail} />
           </Animated.View>
 
           {!!sky?.darkness && <NightVeil objects={doc.objects} stageWidth={stageWidth} now={now} darkness={sky.darkness} />}

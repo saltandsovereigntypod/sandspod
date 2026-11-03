@@ -15,6 +15,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import type { AltarDocument } from '../altar/snapshot';
 import { readRing, type RingKind, type RingWire } from '../altar/bell';
+import { readRite, type RiteWire } from '../altar/toolRites';
 import type { SavedObject } from '../altar/types';
 import { supabase } from '../supabase';
 import { diff, documentFromRows, keyed, keyOf, sceneFromAltar, sceneOf, sortAltars, withObject, withScene, type AltarAccess, type AltarEditor, type Change, type CovenAltar, type Scene } from './altarDoc';
@@ -53,6 +54,10 @@ export type SharedAltar = {
   ring?: (kind: RingKind, key: string) => void;
   /** Hear the others ring; returns a function that stops listening. */
   onRing?: (hear: (ring: RingWire) => void) => () => void;
+  /** The altar's other tools for everyone here (lib/altar/toolRites.ts): the singing bowl, a match struck, a toast, a libation, a sweep. A broadcast, nothing saved. */
+  rite?: (wire: Omit<RiteWire, 'from'>) => void;
+  /** Hear the others' tools; returns a function that stops listening. */
+  onRite?: (hear: (wire: RiteWire) => void) => () => void;
 };
 
 export type Presence = { user_id: string; name: string };
@@ -229,6 +234,7 @@ export function useCovenAltar(altarId: string, me: { userId: string; name: strin
   const accessRef = useRef<AltarAccess | null>(null);
   const channelRef = useRef<SharedChannel | null>(null);
   const hearRef = useRef<((ring: RingWire) => void) | null>(null);
+  const riteRef = useRef<((wire: RiteWire) => void) | null>(null);
   const timers = useRef<{ send: ReturnType<typeof setTimeout> | null; write: ReturnType<typeof setTimeout> | null }>({ send: null, write: null });
   const userId = me?.userId ?? '';
   useEffect(() => {
@@ -318,6 +324,7 @@ export function useCovenAltar(altarId: string, me: { userId: string; name: strin
         }
         channel.on('broadcast', { event: 'change' }, ({ payload }: { payload: Wire }) => emit('broadcast', payload));
         channel.on('broadcast', { event: 'bell' }, ({ payload }: { payload: unknown }) => emit('bell', payload));
+        channel.on('broadcast', { event: 'rite' }, ({ payload }: { payload: unknown }) => emit('rite', payload));
       },
       (event, raw) => {
         if (event === 'object') {
@@ -348,6 +355,9 @@ export function useCovenAltar(altarId: string, me: { userId: string; name: strin
         } else if (event === 'bell') {
           const heard = readRing(raw, userId);
           if (heard) hearRef.current?.(heard);
+        } else if (event === 'rite') {
+          const heard = readRite(raw, userId);
+          if (heard) riteRef.current?.(heard);
         } else if (event === 'presence') {
           const state = shared.presence() as Record<string, Presence[]>;
           const next = Object.values(state).map((list) => list[0]).filter(Boolean);
@@ -475,6 +485,19 @@ export function useCovenAltar(altarId: string, me: { userId: string; name: strin
     };
   }, []);
 
+  const rite = useCallback(
+    (wire: Omit<RiteWire, 'from'>) => {
+      channelRef.current?.send('rite', { ...wire, from: userId });
+    },
+    [userId],
+  );
+  const onRite = useCallback((hear: (wire: RiteWire) => void) => {
+    riteRef.current = hear;
+    return () => {
+      if (riteRef.current === hear) riteRef.current = null;
+    };
+  }, []);
+
   const others = here.filter((p) => p.user_id !== userId);
   // What the bar says: saving is automatic, so it shows whether your last
   // change has reached the coven (or what went wrong). Who's here is shown apart.
@@ -500,8 +523,10 @@ export function useCovenAltar(altarId: string, me: { userId: string; name: strin
       push,
       ring,
       onRing,
+      rite,
+      onRite,
     }),
-    [altarId, altar?.name, covenName, initial, missing, access, status, attach, push, ring, onRing],
+    [altarId, altar?.name, covenName, initial, missing, access, status, attach, push, ring, onRing, rite, onRite],
   );
 
   return { shared, altar, access, here, others, problem, reload: () => load(true), checkAccess };

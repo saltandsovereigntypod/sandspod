@@ -13,6 +13,7 @@ import { useEffect, useRef } from 'react';
 import { AppState, Platform } from 'react-native';
 
 import { useAccessibility } from '../accessibility/store';
+import type { BowlToneId } from './bowl';
 import { dressingsOf, isCandle, isLit } from './livingState';
 import type { SavedObject } from './types';
 
@@ -164,6 +165,73 @@ export function ringBell(times: number, gapMs: number, sound: boolean, haptics: 
   };
 }
 
+/** The singing bowl's tones (bowl.ts; synthesised by scripts/build-bowl-sounds.py). */
+const BOWLS: Record<BowlToneId, number> = {
+  root: require('../../../assets/sounds/bowl-root.mp3'),
+  sacral: require('../../../assets/sounds/bowl-sacral.mp3'),
+  solar: require('../../../assets/sounds/bowl-solar.mp3'),
+  heart: require('../../../assets/sounds/bowl-heart.mp3'),
+  throat: require('../../../assets/sounds/bowl-throat.mp3'),
+  'third-eye': require('../../../assets/sounds/bowl-third-eye.mp3'),
+  crown: require('../../../assets/sounds/bowl-crown.mp3'),
+  '432': require('../../../assets/sounds/bowl-432.mp3'),
+};
+const bowlPlayers = new Map<BowlToneId, AudioPlayer>();
+/** How long a struck bowl is left to ring out before the silent switch is minded again. */
+const BOWL_OUT_MS = 9500;
+
+/**
+ * Strike the singing bowl once in this tone: heard when sound is on (through
+ * the silent switch, as striking it is something you do on purpose, like the
+ * bell), a soft tap when vibration is.
+ */
+export function strikeBowl(tone: BowlToneId, sound: boolean, haptics: boolean) {
+  if (haptics) tap(Haptics.ImpactFeedbackStyle.Soft);
+  if (!sound) return;
+  holdLoud(true);
+  try {
+    let p = bowlPlayers.get(tone);
+    if (!p) {
+      p = createAudioPlayer(BOWLS[tone] ?? BOWLS.heart);
+      bowlPlayers.set(tone, p);
+    }
+    const player = p;
+    player.volume = 0.85;
+    void player.seekTo(0).then(() => player.play()).catch(() => player.play());
+  } catch {
+    // A bowl that can't sound is simply not heard.
+  }
+  setTimeout(() => holdLoud(false), BOWL_OUT_MS);
+}
+
+/** The lighter's click (a struck match is SOUNDS.strike). */
+const LIGHTER = require('../../../assets/sounds/lighter-click.mp3');
+let lighterPlayer: AudioPlayer | null = null;
+/** What the next candle lit on this altar was lit with, so it sounds right (useCandleFeel). */
+let litWith: 'match' | 'lighter' | null = null;
+export function lightingWith(how: 'match' | 'lighter') {
+  litWith = how;
+  setTimeout(() => {
+    if (litWith === how) litWith = null;
+  }, 1500);
+}
+
+/** A match struck or a lighter clicked, heard from someone else at a coven altar. */
+export function fireSound(how: 'match' | 'lighter', sound: boolean, haptics: boolean) {
+  if (haptics) tap(Haptics.ImpactFeedbackStyle.Light);
+  if (!sound) return;
+  if (how === 'match') return play('strike', 0.6);
+  try {
+    setMode();
+    if (!lighterPlayer) lighterPlayer = createAudioPlayer(LIGHTER);
+    const p = lighterPlayer;
+    p.volume = 0.7;
+    void p.seekTo(0).then(() => p.play()).catch(() => p.play());
+  } catch {
+    // Not heard.
+  }
+}
+
 const pick = <T,>(list: T[]) => list[Math.floor(Math.random() * list.length)];
 
 function tap(style: Haptics.ImpactFeedbackStyle) {
@@ -189,7 +257,10 @@ export function useCandleFeel(altarId: string, objects: SavedObject[]) {
     const lighted = [...lit].some((id) => !before.lit.has(id));
     const snuffed = [...before.lit].some((id) => !lit.has(id));
     if (lighted) {
-      if (prefs.candleSounds) play('strike', 0.6);
+      const how = litWith;
+      litWith = null;
+      if (how === 'lighter') fireSound('lighter', prefs.candleSounds, false);
+      else if (prefs.candleSounds) play('strike', 0.6);
       if (prefs.haptics) tap(Haptics.ImpactFeedbackStyle.Medium);
     } else if (snuffed) {
       if (prefs.haptics) tap(Haptics.ImpactFeedbackStyle.Light);
