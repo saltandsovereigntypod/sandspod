@@ -20,6 +20,15 @@
   const A = () => global.SaltCore?.altar;
   const esc = (v) => B().esc(v);
   const nowIso = () => new Date().toISOString();
+  // The Living Library pages something without a page of its own is linked to (app/src/lib/altar/shelf.ts libraryLinksOf).
+  const libraryLinksHtml = (links) => {
+    if (!links.length) return "";
+    const href = (entity) => {
+      const path = `/library/entry/?entity=${encodeURIComponent(entity)}`;
+      return global.SaltEnvironment?.resolvePath?.(path) || path;
+    };
+    return `<p class="app-caption">In the Living Library: ${links.map((link) => `<a href="${esc(href(link.entity))}">${esc(link.name)}</a>`).join(" · ")}</p>`;
+  };
   const HOUR = 3600000;
   const MIN = 60000;
   const DAY = 24 * HOUR;
@@ -115,6 +124,7 @@
     out.push(`<div><p class="app-living__eyebrow">${esc(eyebrow)}</p><h3 class="app-living__title">${esc(label)}</h3>
       ${attunement.attuned ? `<p class="app-living__attuned">✦ ${esc(attunement.line)}</p>` : ""}
       ${caption(core.shelf.shelfDescription(saved) || core.seasonal.seasonalDescription(saved))}
+      ${libraryLinksHtml(core.shelf.libraryLinksOf?.(saved) || [])}
       ${caption(candleCaption)}</div>`);
     out.push(chips([
       { label: "Look closer", symbol: "◎", action: "closer", hint: `Look closer at ${label}: shown large, with every mark on it` },

@@ -326,6 +326,29 @@
   user-select: none;
 }
 
+/* A salt circle or rectangle is hollow: only its line takes a touch
+   (objects.js markSaltLine), laid exactly over the picture inside the
+   button's padding, so a tap inside reaches what's within it. */
+.altar-object--salt-line {
+  pointer-events: none;
+}
+
+.altar-object__salt-line {
+  position: absolute;
+  inset: 1px 6px;
+  width: calc(100% - 12px);
+  height: calc(100% - 2px);
+  z-index: 7;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.altar-object__salt-line path {
+  fill: transparent;
+  pointer-events: fill;
+  cursor: grab;
+}
+
 .altar-object:hover,
 .altar-object:focus-visible {
   filter: brightness(1.15);

@@ -27,6 +27,7 @@ that are missing. tests/altar-object-webp.test.js checks every picture has both.
 import argparse
 import io
 import math
+import re
 import sys
 from concurrent.futures import ProcessPoolExecutor
 from pathlib import Path
@@ -38,6 +39,8 @@ ROOT = Path(__file__).resolve().parent.parent
 FOLDERS = [ROOT / "assets" / "altar" / "objects", ROOT / "assets" / "altar" / "overlays"]
 DISPLAY_EDGE = 768
 CLOTH_EDGE = 2400
+# Salt circles and rectangles can be scaled to frame the whole altar, as cloths can.
+SALT_BORDER = re.compile(r"/tools/(black-)?salt-(circle|rectangle)/")
 THUMB_EDGE = 264
 QUALITIES = (90, 95, None)  # None: lossless
 # (drawn long edge, least SSIM) for each copy: its usual size, then twice that.
@@ -123,7 +126,7 @@ def make(original, edge, checks):
 
 def build(png):
     original = Image.open(png).convert("RGBA")
-    edge = CLOTH_EDGE if "/cloths/" in png.as_posix() else DISPLAY_EDGE
+    edge = CLOTH_EDGE if "/cloths/" in png.as_posix() or SALT_BORDER.search(png.as_posix()) else DISPLAY_EDGE
     rows = []
     for kind, target, size in (("display", png.with_suffix(".webp"), edge), ("thumb", png.with_name(png.stem + ".thumb.webp"), THUMB_EDGE)):
         data, quality, scores = make(original, size, CHECKS[kind])

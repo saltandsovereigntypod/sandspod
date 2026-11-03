@@ -191,10 +191,45 @@ function redoAltarChange() {
   showAltarToast("Redone");
 }
 
+/* A salt circle or salt rectangle (app/src/lib/altar/geometry.ts isSaltBorder):
+   it may hang off the stage like a cloth, grow to frame the whole altar, and is
+   hollow, touched only on its line. */
+function isSaltBorderObject(object) {
+  return !!window.SaltCore?.altar?.geometry?.isSaltBorder?.({ type: object?.dataset?.type || "", tool: object?.dataset?.tool || "" });
+}
+
+/** Holds like a cloth on the stage: a cloth, or a salt border. */
+function hangsLikeCloth(object) {
+  return object?.dataset?.type === "cloth" || isSaltBorderObject(object);
+}
+
+/**
+ * Make a salt border hollow: the button itself takes no touches, and an SVG
+ * of its salt line (geometry.ts saltLinePath, the same line the app's hitTest
+ * uses) laid over the picture does, so a tap inside reaches what lies within.
+ */
+function markSaltLine(object) {
+  const geometry = window.SaltCore?.altar?.geometry;
+  const line = geometry?.saltLineOf?.({ type: object.dataset.type || "", tool: object.dataset.tool || "", form: object.dataset.form || "" });
+  object.querySelector(".altar-object__salt-line")?.remove();
+  object.classList.toggle("altar-object--salt-line", !!line);
+  if (!line) return;
+  const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+  svg.setAttribute("class", "altar-object__salt-line");
+  svg.setAttribute("viewBox", `0 0 1000 ${1000 * line.ratio}`);
+  svg.setAttribute("preserveAspectRatio", "xMidYMid meet");
+  svg.setAttribute("aria-hidden", "true");
+  const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+  path.setAttribute("d", geometry.saltLinePath(line));
+  path.setAttribute("fill-rule", "evenodd");
+  svg.appendChild(path);
+  object.appendChild(svg);
+}
+
 function keepObjectInsideStage(object) {
   if (!altarStage || !object) return;
 
-  if (object.dataset.type === "cloth") return;
+  if (hangsLikeCloth(object)) return;
 
   const scale = Number(object.dataset.scale || 1);
   const visualWidth = object.offsetWidth * scale;
@@ -220,7 +255,7 @@ function objectMoveBounds(object) {
   const scale = Number(object.dataset.scale || 1);
   const visualWidth = object.offsetWidth * scale;
   const visualHeight = object.offsetHeight * scale;
-  if (object.dataset.type === "cloth") {
+  if (hangsLikeCloth(object)) {
     return [-visualWidth * 0.75, altarStage.clientWidth - visualWidth * 0.25, -visualHeight * 0.75, altarStage.clientHeight - visualHeight * 0.25];
   }
   return [visualWidth / 2, altarStage.clientWidth - visualWidth / 2, visualHeight / 2, altarStage.clientHeight - visualHeight / 2];
@@ -273,8 +308,11 @@ function resizeObject(object, amount) {
     const centerX = oldLeft;
     const centerY = oldTop;
 
-    let newScale = oldScale + amount;
-    const maxScale = item.dataset.type === "cloth" ? 18 : 3;
+    // A salt border grows by a tenth at a time, up to twice the altar's width (geometry.ts sizeLimitsOf).
+    const border = isSaltBorderObject(item);
+    let newScale = border ? oldScale * (1 + amount) : oldScale + amount;
+    const borderMax = ((window.SaltCore?.altar?.geometry?.SALT_BORDER_MAX_SIZE || 2) * altarStage.clientWidth) / (item.offsetWidth || 80);
+    const maxScale = border ? Math.max(3, borderMax) : item.dataset.type === "cloth" ? 18 : 3;
     const minScale = item.dataset.type === "candle" ? 0.18 : 0.35;
 
     newScale = Math.max(minScale, Math.min(newScale, maxScale));
@@ -445,7 +483,7 @@ function makeDraggable(object) {
     let x = event.clientX - stageRect.left - offsetX;
     let y = event.clientY - stageRect.top - offsetY;
 
-    if (object.dataset.type === "cloth") {
+    if (hangsLikeCloth(object)) {
       const visualWidth = object.offsetWidth * scale;
       const visualHeight = object.offsetHeight * scale;
 
@@ -645,7 +683,8 @@ function placeObject(options) {
   object.dataset.apothecaryLogToGrimoire = apothecaryLogToGrimoire || "false";
   object.dataset.apothecaryGrimoireStatus = apothecaryGrimoireStatus || "";
 
-  const startingScale = type === "cloth"
+  const saltBorder = !!window.SaltCore?.altar?.geometry?.isSaltBorder?.({ type: type || "", tool: tool || "" });
+  const startingScale = type === "cloth" || saltBorder
     ? "3"
     : String(Math.max(0.75, Math.min(1.35, altarStage.clientWidth / 900)));
 
@@ -657,8 +696,14 @@ function placeObject(options) {
   object.dataset.glowing = window.SaltCore?.altar?.shelf?.glowsWhenPlaced({ type: type || "", tool: tool || "", form: form || "" }) ? "true" : "false";
   object.classList.toggle("has-glow", object.dataset.glowing === "true");
   object.dataset.lit = "false";
-  highestLayer += 1;
-  object.style.zIndex = highestLayer;
+  if (saltBorder) {
+    // Set down under everything but the cloths, so things can be placed within it (app/src/lib/altar/layers.ts bottomLayer).
+    const layers = Array.from(altarStage.querySelectorAll(".altar-object")).filter((other) => other.dataset.type !== "cloth").map((other) => Number(other.style.zIndex || 10));
+    object.style.zIndex = String(Math.max(1, (layers.length ? Math.min(...layers) : 10) - 1));
+  } else {
+    highestLayer += 1;
+    object.style.zIndex = highestLayer;
+  }
 
   if (imagePath) {
     const img = document.createElement("img");
@@ -676,6 +721,7 @@ function placeObject(options) {
     `${label || "Object"}. Click to select. Drag to move. Double click to remove.`
   );
 
+  markSaltLine(object);
   altarStage.appendChild(object);
 
   const scale = Number(object.dataset.scale || 1);
