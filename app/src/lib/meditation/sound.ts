@@ -177,7 +177,7 @@ export function callbackStart(mix: SoundMix, plan: SitPlan): number | null {
 /** The binaural beats sounding `sitMs` into the sit, and how loud each (they crossfade on the slow descent). */
 export function binauralAt(mix: SoundMix, plan: SitPlan, sitMs: number): { beat: number; weight: number }[] {
   if (mix.binaural !== 'descent') return [{ beat: binauralBeat(mix), weight: 1 }];
-  const length = plan.minutes === null ? 30 * MIN : plan.minutes * MIN;
+  const length = (plan.descentMinutes ?? plan.minutes ?? 30) * MIN;
   // Each step held, then a slow crossfade into the next.
   const pos = Math.max(0, Math.min(1, sitMs / length)) * (DESCENT.length - 1);
   const i = Math.min(DESCENT.length - 2, Math.floor(pos));

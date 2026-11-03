@@ -7,7 +7,7 @@ import { useDayContext } from '../../../../../components/craft/hearth';
 import { beginSit } from '../../../../../components/meditation/begin';
 import { PlanForm, useLastPlan } from '../../../../../components/meditation/PlanForm';
 import { useSigils } from '../../../../../components/meditation/SitGuide';
-import { SoundForm, useLastMix } from '../../../../../components/meditation/SoundForm';
+import { lastListenMix, SoundForm, useLastMix } from '../../../../../components/meditation/SoundForm';
 import { Body, Card, Chip, Chips, Expander, Field, List, RitualScreen, Row, SectionLabel, Title, Toggle, ui } from '../../../../../components/rituals/ui';
 import { useCraft } from '../../../../../lib/craft/store';
 import { NO_EXTRAS, type SitExtras } from '../../../../../lib/meditation/extras';
@@ -24,7 +24,8 @@ import { localDateKey } from '../../../../../lib/rituals/lifecycle';
 
 // Meditation (Craft → Meditation): choose a sit (its length and bells, what
 // you bring to it, guidance, something to look at and sound) and begin;
-// presets for before a ritual; suggestions for today; breath pacing, the
+// presets for before a ritual; suggestions for today; Listen (sound on its
+// own), breath pacing, the
 // mala, walking, programmes; log a sit, your sits, and their patterns. Sits
 // are craft entries (meditation.sits). Website: /practice/meditation/.
 const MEDITATION = '/rituals/craft/meditation';
@@ -112,6 +113,7 @@ export default function MeditationHome() {
           </Expander>
           <Expander title="Sound">
             <Toggle label="Play sound with the sit" detail={withSound && mixOn(mix) ? mixLine(mix) : 'Layers you mix yourself, faded in and out, stopping with the timer.'} value={withSound} onChange={setWithSound} />
+            {withSound && <Button label="Use my last Listen mix" variant="text" onPress={() => void lastListenMix().then((m) => m && setMix(m))} />}
             {withSound && <SoundForm mix={mix} onChange={setMix} />}
           </Expander>
           <Body muted>{[planLine(plan), chosen.sound ? mixLine(chosen.sound) : ''].filter(Boolean).join(' · ')}</Body>
@@ -140,6 +142,7 @@ export default function MeditationHome() {
       <View style={ui.gapSmall}>
         <SectionLabel>More ways in</SectionLabel>
         <List>
+          <Row icon="wheel" title="Listen" detail="Binaural beats, noise, rain, fire, a drone, drum or bowls on their own, with a stop timer" onPress={go(`${MEDITATION}/listen`)} />
           <Row icon="wheel" title="Breath pacing" detail="A circle, wave or square path to breathe with: box breathing, 4-7-8 or your own count" onPress={go(`${MEDITATION}/breath`)} />
           <Row icon="rituals" title="Mala and mantra" detail="Count beads with a tap: 27, 54 or 108, and keep the mantra in your log" onPress={go(`${MEDITATION}/mala`)} />
           <Row icon="today" title="Walking meditation" detail="A timed walk, with your steps counted where the phone can" onPress={() => beginSit(plan, { ...chosen, kind: 'walking' })} />
