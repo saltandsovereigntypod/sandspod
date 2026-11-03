@@ -7,7 +7,9 @@
 // since everyone's clock starts at the same moment. Sound you chose plays
 // with the silent switch on. The web build uses sitSound.web.ts.
 
-import { createAudioPlayer, setAudioModeAsync, type AudioPlayer, type AudioSource } from 'expo-audio';
+import { createAudioPlayer, type AudioPlayer, type AudioSource } from 'expo-audio';
+
+import { holdLoud } from '../../lib/altar/feel';
 import { File, Paths } from 'expo-file-system';
 import { useEffect, useMemo, useRef } from 'react';
 
@@ -61,7 +63,7 @@ export function useSitSound(mix: SoundMix | null, plan: SitPlan, clock: SitClock
     const bowls = new Map<string, AudioPlayer>();
     let last: number | null = null;
     let wasPaused = false;
-    void setAudioModeAsync({ playsInSilentMode: true, interruptionMode: 'mixWithOthers' }).catch(() => {});
+    holdLoud(true);
 
     const tick = () => {
       const { plan: p, clock: c, endedAtMs: ended } = latest.current;
@@ -123,6 +125,7 @@ export function useSitSound(mix: SoundMix | null, plan: SitPlan, clock: SitClock
     tick();
     const id = setInterval(tick, 500);
     return () => {
+      holdLoud(false);
       clearInterval(id);
       players.forEach(quiet);
       bowls.forEach(quiet);
