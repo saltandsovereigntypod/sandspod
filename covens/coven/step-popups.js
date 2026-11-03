@@ -57,6 +57,11 @@
    * to the altar and opens it there; without one (already at the altar) it is
    * a button handlers.deed answers.
    */
+  /** A timed sit for everyone (altarActions.sitStepOf): each person starts it on their own screen. */
+  function sitStepHtml(flow) {
+    const sit = global.SaltCore?.covens?.altarActions?.sitStepOf?.(flow.step);
+    return sit ? `<div class="sp-actions"><a class="button button--ghost" href="${esc(`/practice/meditation/sit/?${new URLSearchParams(sit.params)}`)}">${esc(sit.button)}</a></div>` : "";
+  }
   function deedHtml(flow, altarHref) {
     const row = global.SaltCore?.covens?.altarActions?.atAltarOf(flow.step);
     if (!row || !flow.mine || flow.iDone || (flow.kind === "turns" && (flow.step.turn_order || []).length && !flow.myTurn)) return "";
@@ -79,7 +84,7 @@
         : `<button class="button button--ghost button--small" type="button" data-flow="move">Move on anyway</button>`
       : `<p class="sp-caption">${esc(flow.progress.complete ? flow.complete.heading : `${flow.enderName} moves us on when this step is finished.`)}</p>`;
     return `<div class="cv-flow">${flow.start.lines.map((line) => `<p class="sp-caption">${esc(line)}</p>`).join("")}
-      ${options.altarHref !== undefined ? deedHtml(flow, options.altarHref) : ""}
+      ${sitStepHtml(flow)}${options.altarHref !== undefined ? deedHtml(flow, options.altarHref) : ""}
       ${flow.items?.length ? `<p class="sp-caption">${flow.items.map((i) => `${i.placed ? "✓" : "○"} ${esc(i.name)}`).join("&nbsp;&nbsp; ")}</p>` : ""}
       <div class="sp-actions">${done}</div>
       ${flow.progress.waiting ? `<p class="sp-caption">${esc(flow.progress.waiting)}</p>` : ""}

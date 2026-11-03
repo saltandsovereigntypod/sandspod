@@ -37,7 +37,7 @@ export type LiveSource = {
   preparation?: string;
   closing?: string;
   /** A sit together (meditation/together.ts): its plan, and the shared start time (null: when the leader begins). */
-  sit?: { plan: Record<string, unknown>; startAt: string | null };
+  sit?: { plan: Record<string, unknown>; startAt: string | null; sound?: unknown };
 };
 
 export type LiveRitual = {

@@ -250,6 +250,7 @@
           deipnonCard(m) +
           journalCard(m) +
           cardOfTheDay(m) +
+          `<div data-meditation-today>${window.MeditationToday?.html?.() || ""}</div>` +
           `<div class="sp-actions"><a class="button button--ghost" href="${esc(T.siteHref({ pathname: "/altar/[altarId]", params: { altarId: "tonight" } }))}">Set tonight’s altar</a><a class="button button--ghost" href="/practice/meditation/">Sit for a while</a></div>` +
           `<section class="td-prompt" aria-label="Reflect"><p class="sp-eyebrow td-gold">Reflect</p><p class="td-prompt__text">${esc(today.prompt)}</p></section>` +
           lastTimeLine(m) +

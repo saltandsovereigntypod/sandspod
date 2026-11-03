@@ -15,9 +15,11 @@ import { AppState, Platform, StyleSheet, Text, View } from 'react-native';
 import { useAccessibility } from '../../lib/accessibility/store';
 import { ringBell } from '../../lib/altar/feel';
 import { setSitAlarm } from '../../lib/reminders/notifier';
+import type { SoundMix } from '../../lib/meditation/sound';
 import { bellsDue, bellsOf, clockLabel, elapsedOf, endBellAt, PHASE_WORDS, pauseClock, resumeClock, sitStateAt, type SitClock, type SitPlan, type SitState } from '../../lib/meditation/timer';
 import { colors, fonts } from '../../theme';
 import { Button } from '../Button';
+import { useSitSound } from './sitSound';
 
 const GAP_MS = 2600;
 
@@ -42,10 +44,13 @@ type Props = {
   compact?: boolean;
   /** No pause (a sit together keeps everyone's time). */
   shared?: boolean;
+  /** Sound layers to play with it (lib/meditation/sound.ts). */
+  sound?: SoundMix | null;
 };
 
-export function SitTimer({ plan, clock, onClock, endedAtMs, onEnd, onFinished, compact, shared }: Props) {
+export function SitTimer({ plan, clock, onClock, endedAtMs, onEnd, onFinished, compact, shared, sound }: Props) {
   const prefs = useAccessibility();
+  const audio = useSitSound(sound ?? null, plan, clock, endedAtMs);
   const bells = useMemo(() => bellsOf(plan), [plan]);
   const [now, setNow] = useState(() => Date.now());
   const last = useRef<number | null>(null);
@@ -108,6 +113,7 @@ export function SitTimer({ plan, clock, onClock, endedAtMs, onEnd, onFinished, c
       </Text>
       {state.leftMs !== null && state.phase !== 'sit' && state.phase !== 'done' && elapsed >= 0 && <Text style={styles.caption}>{`${clockLabel(state.leftMs)} in all`}</Text>}
       {state.phaseLeftMs === null && <Text style={styles.caption}>Open-ended: end when you’re ready</Text>}
+      {audio.needsTap && <Button label="Let the sound play" variant="outline" onPress={audio.unlock} />}
       {state.phase !== 'done' && elapsed >= 0 && (
         <View style={styles.actions}>
           {!shared && onClock && <Button label={paused ? 'Carry on' : 'Pause'} variant="outline" onPress={() => onClock(paused ? resumeClock(clock, Date.now()) : pauseClock(clock, Date.now()))} />}
