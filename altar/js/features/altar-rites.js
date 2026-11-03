@@ -97,14 +97,14 @@
         try {
           const source = ctx.createBufferSource();
           const gain = ctx.createGain();
-          gain.gain.value = volume;
+          gain.gain.value = volume * (global.AltarSoftSounds || 1);
           source.buffer = buffer;
           source.connect(gain).connect(ctx.destination);
           source.start(ctx.currentTime + 0.02);
         } catch (_) { /* not heard */ }
       });
     } else if (mine) {
-      try { const a = new Audio(src); a.volume = volume; a.play()?.catch?.(() => {}); } catch (_) { /* not heard */ }
+      try { const a = new Audio(src); a.volume = volume * (global.AltarSoftSounds || 1); a.play()?.catch?.(() => {}); } catch (_) { /* not heard */ }
     }
   }
   const SOUND = {
@@ -647,7 +647,9 @@
     if (wire.kind === "bowl") return soundBowl(W().bowlTone(wire.tone).id, el, false);
     if (wire.kind === "strike") return play(SOUND.match, 0.6, false);
     if (wire.kind === "click") return play(SOUND.lighter, 0.7, false);
-    const shown = { toast: ["moon", "The chalice is raised."], pour: ["moon", "A libation is poured."], sweep: ["salt", "The altar is swept."] }[wire.kind];
+    // The round-two tools (craftTools CRAFT_HEARD): the pendulum, mortar, cauldron, grid, bolline, a draw, a charge.
+    const craft = K()?.craftTools?.CRAFT_HEARD?.[wire.kind];
+    const shown = { toast: ["moon", "The chalice is raised."], pour: ["moon", "A libation is poured."], sweep: ["salt", "The altar is swept."] }[wire.kind] || (craft ? [K().charge.momentFor(craft.methods), craft.line] : null);
     if (!shown) return;
     moment(el, shown[0]);
     say(shown[1]);
@@ -727,7 +729,8 @@
       }
     }
     pending = null;
-    return false;
+    // The round-two tools (altar-craft.js) take the rest.
+    return !!global.AltarCraft?.deed(kind, done, toCabinet);
   }
 
   global.AltarRites = { deed, dropAsh, openCirclePanel, redraw };

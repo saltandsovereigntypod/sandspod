@@ -85,6 +85,7 @@
         ${unlit ? chip("light", unlit > 1 ? `Light ${unlit} candles` : "Light the candle", "✺") : ""}
         ${lit ? chip("snuff", lit > 1 ? `Snuff ${lit} candles` : "Snuff the candle", "◌") : ""}
         ${chip(locked ? "unlock" : "lock", locked ? "Unlock" : "Lock", "⚿")}
+        ${global.AltarCraft && saved.filter((o) => o.type === "crystal").length >= 3 ? chip("grid", "Activate with the wand", "✧") : ""}
       </div>
       ${confirming
         ? `<p class="app-caption">${esc(`Delete ${words(n)} from the altar? Undo brings them back.`)}</p><div class="app-chips">${chip("delete-yes", n === 1 ? "Delete it" : `Delete all ${n}`, "", " app-chip--danger")}${chip("delete-no", "Keep them")}</div>`
@@ -113,6 +114,10 @@
     switch (action) {
       case "done":
         undoWords = "";
+        if (selecting()) toggleRitualSelectionMode();
+        break;
+      case "grid":
+        global.AltarCraft?.gridOf(chosen());
         if (selecting()) toggleRitualSelectionMode();
         break;
       case "all":

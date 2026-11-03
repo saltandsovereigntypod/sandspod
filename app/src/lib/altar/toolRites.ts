@@ -266,8 +266,14 @@ export const hasDebris = (objects: SavedObject[], extra: Extra, burnedCords: num
 // ── Heard on a coven altar ──────────────────────────────────────────────
 
 /** A sound or moment from someone else at a coven altar (the "rite" broadcast). */
-export type RiteWire = { from: string; kind: 'bowl' | 'strike' | 'click' | 'toast' | 'pour' | 'sweep'; key?: string; tone?: string };
-const RITE_KINDS = ['bowl', 'strike', 'click', 'toast', 'pour', 'sweep'];
+export type RiteWire = {
+  from: string;
+  /** The last seven are the round-two tools (craftTools.ts CRAFT_HEARD). */
+  kind: 'bowl' | 'strike' | 'click' | 'toast' | 'pour' | 'sweep' | 'swing' | 'grind' | 'cauldron' | 'grid' | 'cut' | 'draw' | 'charge';
+  key?: string;
+  tone?: string;
+};
+const RITE_KINDS = ['bowl', 'strike', 'click', 'toast', 'pour', 'sweep', 'swing', 'grind', 'cauldron', 'grid', 'cut', 'draw', 'charge'];
 
 export function readRite(raw: unknown, me: string): RiteWire | null {
   const r = raw as Partial<RiteWire> | null;

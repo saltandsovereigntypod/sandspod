@@ -84,10 +84,13 @@ import { daysSinceRenewal, jarStateOf } from '../../lib/altar/workings/spellJar'
 import { SPELLS_COLLECTION, spellToday, tickSpell, type SpellEntry } from '../../lib/altar/workings/spells';
 import { AltarOptionsSheet, FlameReadingSheet, IncenseSheet, OfferingSheet } from './LivingSheets';
 import { PetitionBoxSheet, WritePetitionSheet } from './PetitionSheets';
-import { useCandleAmbience, useCandleFeel } from '../../lib/altar/feel';
+import { softenSounds, useCandleAmbience, useCandleFeel } from '../../lib/altar/feel';
 import { CLEANSE_LABEL, isBell, RING_LABEL } from '../../lib/altar/bell';
 import { useAltarBell } from '../../lib/altar/useAltarBell';
 import { useToolRites } from './useToolRites';
+import { useCraftTools } from './useCraftTools';
+import { RITUAL_ON, RITUAL_SOFT } from '../../lib/altar/craftTools';
+import { scryLine, type ScryVessel } from '../../lib/altar/workings/scrying';
 import { ALTAR_OPTIONS, altarOptionsFor, defaultAltarOptions, type AltarOptions } from '../../lib/altar/altarOptions';
 import { ambientAt, moonMirrored, nextAmbientCheck } from '../../lib/altar/ambient';
 import { burnToRead, lastBurn, linkReadingJournal, readingsOf, readingText, recordReading, remnantOf, setRemnant, type ReadingInput } from '../../lib/altar/ceromancy';
@@ -257,6 +260,14 @@ import { TEND_COLLECTION } from '../../lib/tend/model';
 import { colors, fonts, space, touch, type } from '../../theme';
 
 const capitalizeFirst = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
+/** The charge glows, with a stone's glow building as it charges by moon, sun or selenite (craftTools.ts) where that's brighter. */
+const withBuilding = (glows: Record<string, number>, building: Record<string, number>) => {
+  const keys = Object.keys(building);
+  if (!keys.length) return glows;
+  const out = { ...glows };
+  for (const k of keys) out[k] = Math.max(out[k] ?? 0, building[k]);
+  return out;
+};
 
 type SheetName =
   | 'about'
@@ -342,7 +353,7 @@ export function AltarEditor({
   const altarId = shared ? `coven:${shared.key}` : params.altarId;
   const { from, deity, planet } = params;
   const store = useAltars();
-  const { settings } = useMySettings();
+  const { settings, save: saveSettings } = useMySettings();
   const { altars, draft, draftSourceId, status, backgrounds, overrides, signedIn } = store;
 
   const [doc, setDoc] = useState<AltarDocument | null>(null);
@@ -1408,7 +1419,7 @@ export function AltarEditor({
     const pending = pendingDeed.current;
     if (!pending || pending.kind !== kind) return;
     // A coven altar you can't tend right now keeps it as it was (commit says why): not done yet.
-    if (sharedRef.current && !sharedRef.current.canEdit && kind !== 'intention' && kind !== 'gratitude' && kind !== 'scry' && kind !== 'bell' && kind !== 'bowl') return;
+    if (sharedRef.current && !sharedRef.current.canEdit && kind !== 'intention' && kind !== 'gratitude' && kind !== 'scry' && kind !== 'scry_mirror' && kind !== 'pendulum' && kind !== 'bell' && kind !== 'bowl') return;
     pendingDeed.current = null;
     pending.onDone();
   };
@@ -1434,8 +1445,46 @@ export function AltarEditor({
     toCabinet,
     canEdit: !shared || shared.canEdit,
   });
+  // The pendulum, scrying mirror, mortar, bolline, cauldron, crystals and grid, a deck drawn from, and ritual mode.
+  const [scryWith, setScryWith] = useState<ScryVessel>('bowl');
+  const craft = useCraftTools({
+    doc,
+    docRef,
+    commit,
+    selected,
+    setSelected,
+    say: setNotice,
+    log: logAltar,
+    show: toolRites.show,
+    me: workshop.userId ?? '',
+    userId: workshop.userId ?? null,
+    settings: (settings as Record<string, unknown> | null) ?? null,
+    saveSettings: (change) => {
+      if (!settings) return false;
+      void saveSettings({ ...settings, ...change }).catch(() => {});
+      return true;
+    },
+    finishDeed,
+    toCabinet,
+    openSheet: (name) => (name === 'petitions' ? openPetitions() : setSheet(name)),
+    openScry: (vessel) => {
+      setScryWith(vessel);
+      openSaved('scry', 'scrying');
+    },
+    isPottedPlant,
+    chosenIds: selectIds,
+    stopSelecting: () => setSelectIds(null),
+  });
+  const ritualMode = craft.ritualMode && !!doc;
+  useEffect(() => {
+    softenSounds(ritualMode ? RITUAL_SOFT : null);
+    return () => softenSounds(null);
+  }, [ritualMode]);
+  const setRitualMode = craft.setRitualMode;
+  // Leaving the altar always comes out of ritual mode.
+  useFocusEffect(useCallback(() => () => setRitualMode(false), [setRitualMode]));
   const startDeed = (kind: AltarDeed) => {
-    if (toolRites.startDeed(kind)) return;
+    if (toolRites.startDeed(kind) || craft.startDeed(kind)) return;
     const objects = docRef.current?.objects ?? [];
     const find = (test: (o: (typeof objects)[number]) => boolean) => objects.findIndex(test);
     const candle = () => find((o) => isCandle(o) && !candleLife(o).spent);
@@ -1562,7 +1611,7 @@ export function AltarEditor({
             onViewportChange={setViewport}
             sky={sky}
             aging={aging}
-            charges={charges}
+            charges={withBuilding(charges, craft.building(minute * 60_000))}
             moment={moment}
             guide={guide}
             now={minute * 60_000}
@@ -1596,6 +1645,7 @@ export function AltarEditor({
         )}
 
         {doc && toolRites.panels}
+        {doc && craft.panels}
 
         {doc && selecting ? (
           <SelectionPanel
@@ -1775,6 +1825,18 @@ export function AltarEditor({
               <Chip label="Zoom in" symbol="+" onPress={() => zoomBy(1.5)} disabled={viewport.zoom >= 4} />
               <Chip label="Zoom out" symbol="−" onPress={() => zoomBy(1 / 1.5)} disabled={viewport.zoom <= 1} />
               {!full ? <Chip label="Full screen" symbol="⤢" accessibilityLabel={canTurnScreen ? 'Turn the altar sideways to fill the screen' : 'Fill the screen with the altar'} onPress={() => enterFullScreen(true)} /> : null}
+              {!full ? (
+                <Chip
+                  label="Ritual mode"
+                  symbol="◐"
+                  accessibilityLabel="Ritual mode: dim everything around the altar, keep one small bar, and soften the sounds"
+                  onPress={() => {
+                    setTools(false);
+                    setRitualMode(true);
+                    setNotice(RITUAL_ON);
+                  }}
+                />
+              ) : null}
             </ChipRow>
             <ToolGroup title="Add">
               <Button label="Open the cabinet" onPress={() => setSheet('cabinet')} />
@@ -2347,11 +2409,18 @@ export function AltarEditor({
               <ScryingScreen
                 visible={sheet === 'scry' && !!sourceId}
                 altar={altarCtx}
+                vessel={scryWith}
+                candles={craft.litCandles}
                 onClose={() => {
                   setSheet(null);
-                  finishDeed('scry');
+                  setScryWith('bowl');
+                  finishDeed(scryWith === 'mirror' ? 'scry_mirror' : 'scry');
                 }}
-                onSaved={(where) => setNotice(where === 'journal' ? 'What came in the water is in your journal.' : 'What came in the water is kept with this altar.')}
+                onSaved={(where, minutes) => {
+                  const what = scryWith === 'mirror' ? 'in the glass' : 'in the water';
+                  logAltar(scryLine(scryWith, minutes));
+                  setNotice(where === 'journal' ? `What came ${what} is in your journal.` : `What came ${what} is kept with this altar.`);
+                }}
               />
               <GratitudeSheet
                 visible={sheet === 'gratitude' && !!sourceId}
@@ -2435,6 +2504,34 @@ export function AltarEditor({
           />
     </>
   ) : null;
+
+  if (ritualMode && doc && !full) {
+    // Ritual mode: the room goes dark around the altar, the tools step back to one small bar, the sounds soften.
+    return (
+      <SafeAreaView edges={['top', 'bottom']} style={styles.ritual}>
+        <StatusBar hidden />
+        <View style={styles.ritualStage}>{stage}</View>
+        {ritualOverlay}
+        {notice ? (
+          <Text style={[type.caption, styles.ritualNotice]} accessibilityLiveRegion="polite" onPress={() => setNotice(null)}>
+            {notice}
+          </Text>
+        ) : null}
+        {selectedObject && tools ? (
+          <ScrollView style={styles.ritualTools} contentContainerStyle={styles.ritualToolsContent} keyboardShouldPersistTaps="handled">
+            {toolRites.panels}
+            {craft.panels}
+          </ScrollView>
+        ) : null}
+        <View style={styles.ritualBar}>
+          <Chip label="Leave ritual mode" symbol="✕" onPress={() => setRitualMode(false)} />
+          {selectedObject ? <Chip label={tools ? 'Hide tools' : 'Tools'} symbol="☰" accessibilityLabel={`${tools ? 'Hide' : 'Show'} what ${shortLabel(selectedObject.label)} can do`} onPress={() => setTools(!tools)} /> : null}
+        </View>
+        {sheets}
+        {overlay}
+      </SafeAreaView>
+    );
+  }
 
   if (full && doc) {
     // The drawer opens only when asked, so tapping things to arrange them keeps the whole altar in view.
@@ -2797,7 +2894,7 @@ function ObjectPanel({
       </View>
 
       <ChipRow>
-        <Chip label="About" symbol="☽" accessibilityLabel={`About ${objectLabel}`} onPress={onAbout} />
+        <Chip label="About" symbol="◐" accessibilityLabel={`About ${objectLabel}`} onPress={onAbout} />
         <Chip label="Look closer" symbol="◎" accessibilityLabel={`Look closer at ${objectLabel}: shown large, with every mark on it`} onPress={onCloser} />
         {crafted && <Chip label="Status" symbol="✓" accessibilityLabel={`Status of ${objectLabel}: activation, remaining and review`} onPress={act.tend} />}
         {canPractice && <Chip label="Begin Practice" symbol="✧" accessibilityLabel={`Begin today’s practice with ${objectLabel}`} onPress={act.practice} />}
@@ -3159,6 +3256,12 @@ const styles = StyleSheet.create({
   group: { gap: 8 },
   centered: { flex: 1, justifyContent: 'center', padding: space.gutter, gap: 14 },
   full: { flex: 1, backgroundColor: '#000000', alignItems: 'center', justifyContent: 'center' },
+  ritual: { flex: 1, backgroundColor: '#050605' },
+  ritualStage: { flex: 1, alignItems: 'center', justifyContent: 'center' },
+  ritualNotice: { color: colors.muted, textAlign: 'center', paddingHorizontal: 16, paddingBottom: 6 },
+  ritualTools: { maxHeight: '40%', borderTopWidth: 1, borderTopColor: colors.hairline },
+  ritualToolsContent: { padding: 16, gap: 10 },
+  ritualBar: { flexDirection: 'row', justifyContent: 'center', gap: 8, paddingVertical: 8, opacity: 0.8 },
   fullStatus: { position: 'absolute', maxWidth: 320, paddingHorizontal: 10, paddingVertical: 4, borderRadius: 999, backgroundColor: 'rgba(0,0,0,0.55)' },
   fullStatusText: { fontFamily: fonts.body, fontSize: 12, color: colors.cream },
   fullButton: { width: 40, height: 40, borderWidth: 1, borderColor: colors.hairline, borderRadius: 999 },

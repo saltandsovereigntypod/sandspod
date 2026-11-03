@@ -445,24 +445,41 @@
         ${paths.map((p, i) => `<ellipse cx="${9 + p.cx * 82}" cy="${12 + p.cy * 30}" rx="${p.rx * 82}" ry="${p.ry * 82}" fill="#cfe3ea" opacity="${p.opacity}">${still ? "" : `<animateTransform attributeName="transform" type="translate" values="0 0; ${p.driftX * 82} ${p.driftY * 82}; 0 0" dur="${(p.period * 2) / 1000}s" repeatCount="indefinite" calcMode="spline" keySplines="0.45 0 0.55 1; 0.45 0 0.55 1"/><animate attributeName="opacity" values="${p.opacity};${p.opacity * 1.8};${p.opacity}" dur="${(p.period * 2) / 1000}s" repeatCount="indefinite"/>`}</ellipse>`).join("")}
       </svg></div>`;
   }
-  function openScry() {
+  /** The scrying mirror: black glass in a dark frame, the altar's candlelight caught in it. */
+  function mirrorHtml(still, candles) {
+    const n = Math.max(1, Math.min(5, candles || 0));
+    const flames = Array.from({ length: n }, (_, i) => {
+      const x = 50 + (i - (n - 1) / 2) * 9;
+      const y = 48 - 3 * (i % 2);
+      return `<g opacity="0.55"><ellipse cx="${x}" cy="${y + 1}" rx="5" ry="6" fill="#ffb347" opacity="0.25"/><ellipse cx="${x}" cy="${y}" rx="1.6" ry="4" fill="#ffe0a0"/>${still ? "" : `<animate attributeName="opacity" values="0.35;0.7;0.35" dur="${2.4 + i * 0.7}s" repeatCount="indefinite"/>`}</g>`;
+    }).join("");
+    return `<div class="app-scry__water" role="img" aria-label="${esc(A().scrying.SCRY_VESSELS.mirror.image)}" style="position:relative;width:min(340px,80vw);aspect-ratio:100/80">
+      <svg viewBox="0 0 100 80" width="100%" height="100%" style="position:absolute;inset:0"><defs><radialGradient id="mirror-glass" cx="45%" cy="40%" r="60%"><stop offset="0" stop-color="#14161c"/><stop offset="1" stop-color="#020203"/></radialGradient></defs>
+        <ellipse cx="50" cy="40" rx="30" ry="38" fill="#2b2420"/><ellipse cx="50" cy="40" rx="27" ry="35" fill="url(#mirror-glass)"/><ellipse cx="42" cy="22" rx="6" ry="12" fill="#fff" opacity="0.035"/>${flames}
+      </svg></div>`;
+  }
+  /** Scry: the water bowl, or (craftTools on the altar) the scrying mirror or the cauldron filled with water. */
+  function openScry(vesselId = "bowl", candles = 0, onDone = null) {
     if (needSaved("scrying")) return;
     const core = A();
     const SC = core.scrying;
+    const vessel = SC.scryVessel(vesselId);
+    const V = SC.SCRY_VESSELS[vessel];
+    const picture = (still) => (vessel === "mirror" ? mirrorHtml(still, candles) : bowlHtml(still));
     let phase = "choose";
     let minutes = SC.SCRYING_MINUTES[0];
     let startedAt = 0;
     let sat = 0;
     let timer = 0;
     const notes = { saw: "", symbols: "", feelings: "" };
-    const sheet = B().openSheet({ eyebrow: "Water-bowl scrying", title: "The scrying bowl", wide: true, html: "", onClose: () => clearInterval(timer) });
+    const sheet = B().openSheet({ eyebrow: V.title, title: vessel === "mirror" ? "The scrying mirror" : vessel === "cauldron" ? "The cauldron" : "The scrying bowl", wide: true, html: "", onClose: () => { clearInterval(timer); onDone?.(); } });
     sheet.dialog.classList.add("app-sheet--scry");
     const draw = () => {
       if (phase === "choose") {
-        sheet.setBody(`<div class="app-scry">${bowlHtml(true)}<p>Dim the lights. Let your eyes soften on the water, and let whatever comes, come.</p>${B().chips(SC.SCRYING_MINUTES.map((m) => ({ label: `${m} minutes`, action: "minutes", pressed: minutes === m, data: { v: m } })))}<button type="button" class="app-button" data-begin>Begin</button></div>`);
+        sheet.setBody(`<div class="app-scry">${picture(true)}<p>${esc(V.lede)}</p>${B().chips(SC.SCRYING_MINUTES.map((m) => ({ label: `${m} minutes`, action: "minutes", pressed: minutes === m, data: { v: m } })))}<button type="button" class="app-button" data-begin>Begin</button></div>`);
       } else if (phase === "sit") {
         const left = SC.secondsLeft(minutes, startedAt, Date.now());
-        sheet.setBody(`<div class="app-scry">${bowlHtml(reduce())}<p class="app-scry__clock" aria-live="polite" aria-label="${Math.ceil(left / 60)} minutes left" data-clock>${esc(SC.clock(left))}</p><button type="button" class="app-chip" data-finished>I’m finished</button></div>`);
+        sheet.setBody(`<div class="app-scry">${picture(reduce())}<p class="app-scry__clock" aria-live="polite" aria-label="${Math.ceil(left / 60)} minutes left" data-clock>${esc(SC.clock(left))}</p><button type="button" class="app-chip" data-finished>I’m finished</button></div>`);
       } else if (phase === "write") {
         sheet.setBody(`<p>Before it fades: a few words.</p>${SC.SCRYING_PROMPTS.map((p) => `<label class="app-field"><span class="app-label">${esc(p.label)}</span><textarea data-prompt="${esc(p.key)}" maxlength="2000" placeholder="${esc(p.placeholder)}">${esc(notes[p.key])}</textarea></label>`).join("")}
           <button type="button" class="app-button" data-save${SC.hasNotes(notes) ? "" : " disabled"}>Save to my journal</button><button type="button" class="app-chip" data-sheet-close>Close without saving</button>`);
@@ -491,13 +508,16 @@
         const moonPhase = core.moon.moonState(at).name;
         let where = "journal";
         try {
-          await global.AltarLiving.saveJournal(SC.scryingJournalAnswers(notes, { minutes: Math.max(1, Math.round(sat)), moonPhase, altarName: B().altarName(), date: at }));
+          await global.AltarLiving.saveJournal(SC.scryingJournalAnswers(notes, { minutes: Math.max(1, Math.round(sat)), moonPhase, altarName: B().altarName(), date: at, vessel }));
         } catch {
           where = "craft";
-          try { await global.SaltCraft.add(SC.SCRYING_COLLECTION, SC.scryingEntry(notes, { altarId: B().altarId(), minutes, satMinutes: sat, moonPhase, at: at.toISOString() })); } catch { /* nothing more to try */ }
+          try { await global.SaltCraft.add(SC.SCRYING_COLLECTION, SC.scryingEntry(notes, { altarId: B().altarId(), minutes, satMinutes: sat, moonPhase, at: at.toISOString(), vessel })); } catch { /* nothing more to try */ }
         }
         sheet.setBody(`<p>${where === "journal" ? "Saved to your ritual journal." : "Saved with this altar."} Drink some water, and come back to the room.</p><button type="button" class="app-button" data-sheet-close>Close</button>`);
-        notice(where === "journal" ? "What came in the water is in your journal." : "What came in the water is kept with this altar.");
+        const what = vessel === "mirror" ? "in the glass" : "in the water";
+        const altarId = B().altarId();
+        if (altarId) global.SaltCraft?.add?.("altar.history", { altarId, text: SC.scryLine(vessel, sat), at: at.toISOString() })?.catch?.(() => {});
+        notice(where === "journal" ? `What came ${what} is in your journal.` : `What came ${what} is kept with this altar.`);
       }
     });
     draw();

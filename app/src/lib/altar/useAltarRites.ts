@@ -14,6 +14,7 @@ import type { SharedAltar } from '../covens/altarSync';
 import { ringAllowed } from './bell';
 import { BOWL_SOUND_OFF, bowlTone, clampEvery, everyLine, nextStrikeAt, STRIKE_GAP_MS, strikeLine, type BowlToneId } from './bowl';
 import { fireSound, strikeBowl } from './feel';
+import { CRAFT_HEARD } from './craftTools';
 import type { RiteWire } from './toolRites';
 
 /** What a moment from someone else looks like on the stage (charge.ts momentFor methods). */
@@ -24,6 +25,7 @@ const HEARD: Record<RiteWire['kind'], { methods: string[]; line: string }> = {
   toast: { methods: ['Moon'], line: 'The chalice is raised.' },
   pour: { methods: ['Water'], line: 'A libation is poured.' },
   sweep: { methods: ['Salt'], line: 'The altar is swept.' },
+  ...CRAFT_HEARD,
 };
 
 export type BowlRinging = { tone: BowlToneId; every: number; startedAt: number; uid: string } | null;
@@ -119,8 +121,8 @@ export function useAltarRites(
     fire(how: 'match' | 'lighter', uid: string) {
       shared?.rite?.({ kind: how === 'match' ? 'strike' : 'click', key: uid });
     },
-    /** A toast, a libation or a sweep: its moment here, and for the others. */
-    show(kind: 'toast' | 'pour' | 'sweep', uid: string) {
+    /** A toast, a libation, a sweep or a round-two tool's moment (craftTools.ts): here, and for the others. */
+    show(kind: Exclude<RiteWire['kind'], 'bowl' | 'strike' | 'click'>, uid: string) {
       latest.current.moment(uid, HEARD[kind].methods);
       shared?.rite?.({ kind, key: uid });
     },
