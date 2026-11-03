@@ -149,7 +149,27 @@ function reply(status: number, body: Record<string, unknown>) {
   return new Response(JSON.stringify(body), { status, headers: { "content-type": "application/json" } });
 }
 
+// The website calls from the browser, so it needs CORS (the app sends no Origin).
+const ALLOWED_ORIGINS = new Set([
+  "https://saltandsovereignty.com",
+  "https://www.saltandsovereignty.com",
+  "https://dev.saltandsovereignty.com",
+  "https://app.saltandsovereignty.com",
+  "https://saltandsovereigntypod.github.io",
+]);
+
 Deno.serve(async (request) => {
+  const origin = request.headers.get("origin") || "";
+  const cors: Record<string, string> = ALLOWED_ORIGINS.has(origin)
+    ? { "access-control-allow-origin": origin, "access-control-allow-headers": "authorization, content-type, apikey, x-client-info, x-cron-secret", "access-control-allow-methods": "POST, OPTIONS", "vary": "Origin" }
+    : {};
+  if (request.method === "OPTIONS") return new Response(null, { status: 204, headers: cors });
+  const res = await handle(request);
+  for (const [k, v] of Object.entries(cors)) res.headers.set(k, v);
+  return res;
+});
+
+async function handle(request: Request): Promise<Response> {
   if (request.method !== "POST") return reply(405, { error: "method_not_allowed" });
   const authorization = request.headers.get("authorization") || "";
   if (!authorization.startsWith("Bearer ")) return reply(401, { error: "authentication_required" });
@@ -306,7 +326,7 @@ Deno.serve(async (request) => {
   if (Date.now() - new Date(message.created_at).getTime() > 5 * 60 * 1000) return reply(409, { error: "too_old" });
 
   return reply(200, { sent: await messagePush(admin, message, sender) });
-});
+}
 
 type MessageRow = { id: string; coven_id: string; conversation_id: string | null; user_id: string | null; body: string; created_at: string; deleted_at: string | null };
 
