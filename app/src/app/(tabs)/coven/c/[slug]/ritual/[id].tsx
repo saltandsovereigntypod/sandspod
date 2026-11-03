@@ -5,6 +5,7 @@ import { Alert, StyleSheet, Text, View } from 'react-native';
 import { Button } from '../../../../../../components/Button';
 import { CovenScreen, covenHref } from '../../../../../../components/covens/CovenScreen';
 import { MyContribution } from '../../../../../../components/covens/Contributions';
+import { takeToAltarOnce } from '../../../../../../components/covens/AltarRitual';
 import { askEndRitual, LeadSteps, LiveStepCard, StepList, StepPopups, useLiveRitual, type AltarAccessChoice } from '../../../../../../components/covens/LiveRitual';
 import { ApologyNote } from '../../../../../../components/covens/Record';
 import { MeetingScreen } from '../../../../../../components/covens/meeting/MeetingScreen';
@@ -65,6 +66,12 @@ function RitualScreen() {
   const covenId = coven.snapshot?.coven.id;
   const currentId = ritual?.current_step_id ?? null;
   const { loadNames } = coven;
+  // A live rite happens at its altar: opened from anywhere else, it takes you there once (AltarRitual.tsx).
+  const altarHere = altar?.id ?? null;
+  useEffect(() => {
+    if (!isLive || !id || !altarHere || kind === 'meeting' || !takeToAltarOnce(id)) return;
+    router.push(covenHref(coven.slug, `altars/${altarHere}`));
+  }, [isLive, id, altarHere, kind, coven.slug]);
   // Where you are, for the others: here while it's under way.
   useEffect(() => {
     if (!isLive || !id) return;

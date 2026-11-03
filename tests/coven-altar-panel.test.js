@@ -121,3 +121,21 @@ test("the altar's Messages and Ritual share one panel, and a rite's steps run as
   // The same rules as the app's (lib/covens/stepFlow.ts, built into js/core/covens.js).
   assert.match(read("js/core/covens.js"), /Everyone(’|\\u2019)s done\. Move to step/);
 });
+
+test("a live rite stays at the altar: the Ritual tab holds the step, opens by itself, lights what to tap and runs sits in step", () => {
+  const page = read("altar/js/features/coven-altar.js");
+  assert.ok(page.indexOf('"/covens/coven/ritual-sit.js"') < page.indexOf('"/covens/coven/chat-panel.js"'), "the sit loads before the panel");
+  assert.ok(page.includes('"/js/core/meditation.js"'), "the meditation core loads with it");
+  assert.match(page, /CovenAltarDeed = \{ start: startDeed, arm: armDeed, glow: glowFor/);
+  const panel = read("covens/coven/chat-panel.js");
+  assert.match(panel, /data-bar-line/);
+  assert.match(panel, /panelCue\(/);
+  assert.match(panel, /glowsForMe\(/);
+  assert.match(panel, /CovenRitualSit\?\.mount/);
+  assert.doesNotMatch(read("covens/coven/step-popups.js"), /practice\/meditation\/sit/, "no sit away from the altar");
+  assert.match(read("covens/coven/ritual-sit.js"), /sitSync\(/);
+  assert.match(read("js/settings-more.js"), /During coven rituals/);
+  assert.match(read("altar/app-altar.css"), /\.altar-object\.is-step-target/);
+  // The same rules as the app's (lib/covens/ritualPanel.ts, built into js/core/covens.js).
+  assert.match(read("js/core/covens.js"), /Gaze at the lit candle on the altar/);
+});

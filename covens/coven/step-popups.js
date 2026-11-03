@@ -57,16 +57,48 @@
    * to the altar and opens it there; without one (already at the altar) it is
    * a button handlers.deed answers.
    */
-  /** A timed sit for everyone (altarActions.sitStepOf): each person starts it on their own screen. */
-  function sitStepHtml(flow) {
+  const RP = () => global.SaltCore?.covens?.ritualPanel || null;
+  /**
+   * A timed sit for everyone (altarActions.sitStepOf). It runs in the Ritual
+   * panel at the altar (covens/coven/ritual-sit.js), so away from the altar
+   * the button goes there; at the altar the panel holds it.
+   */
+  function sitStepHtml(flow, altarHref) {
     const sit = global.SaltCore?.covens?.altarActions?.sitStepOf?.(flow.step);
-    return sit ? `<div class="sp-actions"><a class="button button--ghost" href="${esc(`/practice/meditation/sit/?${new URLSearchParams(sit.params)}`)}">${esc(sit.button)}</a></div>` : "";
+    return sit && altarHref ? `<div class="sp-actions"><a class="button button--ghost" href="${esc(altarHref)}">Go to the altar for the sit</a></div>` : "";
+  }
+  /** "How to": the planner's own directions, or a plain default for the step's kind (SaltCore.covens.ritualPanel). */
+  function howHtml(flow) {
+    const how = RP()?.stepHowTo(flow.step, flow.kind) || { text: flow.step.instructions || "", builder: true };
+    if (!how.text) return "";
+    return `<p class="sp-label">How to</p>${how.builder ? `<div class="cv-doc">${global.CovenUI.prose(how.text)}</div>` : `<p>${esc(how.text)}</p>`}`;
+  }
+  /** The step's items as tiles: a tap sets one on the altar as the cabinet does. */
+  function tilesHtml(flow) {
+    const items = flow.step.items || [];
+    if (!items.length) return "";
+    const thumb = (src) => (src ? `<img src="${esc(global.SanctuaryAssetCatalog?.thumbnailPath?.(src) || src)}" alt="" loading="lazy" />` : "");
+    return `<p class="sp-label">To place</p><div class="cv-tiles">${items
+      .map((it, i) => {
+        const on = (flow.items || []).find((p) => p.name === it.name)?.placed;
+        return `<button type="button" class="cv-tile${on ? " is-on" : ""}" data-tile="${i}" aria-label="${esc(`Set ${it.name} on the altar${on ? " (one is there already)" : ""}`)}">${thumb(it.image)}<span>${on ? "✓ " : ""}${esc(it.name)}</span></button>`;
+      })
+      .join("")}</div><p class="sp-caption">Tap a tile to set it on the altar, then move it where it belongs.</p>`;
   }
   function deedHtml(flow, altarHref) {
     const row = global.SaltCore?.covens?.altarActions?.atAltarOf(flow.step);
     if (!row || !flow.mine || flow.iDone || (flow.kind === "turns" && (flow.step.turn_order || []).length && !flow.myTurn)) return "";
     if (altarHref) return `<div class="sp-actions"><a class="button button--primary" href="${esc(`${altarHref}&${global.SaltCore.covens.altarActions.deedQuery(row.deed, flow.step.id)}`)}">${esc(row.button)}</a></div>`;
-    return `<div class="sp-actions"><button class="button button--primary" type="button" data-flow="deed" data-deed="${esc(row.deed)}">${esc(row.button)}</button></div>`;
+    // At the altar: a petition is written here; the rest begin with the altar's own hands, and what to tap glows.
+    if (row.deed === "petition") {
+      return `<form class="cv-petition" data-flow-petition>
+        <label class="sp-field"><span>Your petition</span><input name="title" maxlength="120" required placeholder="What you ask, in a few words" /></label>
+        <label class="sp-field"><span>In full (if you like)</span><textarea name="words" rows="2" placeholder="The words of your petition"></textarea></label>
+        <div class="sp-actions"><button class="button button--primary" type="submit">Place it on the altar</button></div></form>`;
+    }
+    const target = RP()?.DEED_TARGET?.[row.deed] || "";
+    return `<div class="sp-actions"><button class="button ${target ? "button--ghost" : "button--primary"}" type="button" data-flow="deed" data-deed="${esc(row.deed)}">${esc(target ? `Show me: ${row.button.toLowerCase()}` : row.button)}</button></div>
+      ${target ? `<p class="sp-caption">On the altar, ${esc(target)} glows for you until it’s done.</p>` : ""}`;
   }
 
   /** In the step's card: the pop-up's words kept, the items ticked, the step's altar deed, Done, and moving on. */
@@ -83,9 +115,10 @@
         ? `<p>${esc(flow.complete.heading)}</p><button class="button button--primary" type="button" data-flow="move">${esc(flow.complete.button || "Move on")}</button>`
         : `<button class="button button--ghost button--small" type="button" data-flow="move">Move on anyway</button>`
       : `<p class="sp-caption">${esc(flow.progress.complete ? flow.complete.heading : `${flow.enderName} moves us on when this step is finished.`)}</p>`;
+    const atAltar = options.altarHref === "";
     return `<div class="cv-flow">${flow.start.lines.map((line) => `<p class="sp-caption">${esc(line)}</p>`).join("")}
-      ${sitStepHtml(flow)}${options.altarHref !== undefined ? deedHtml(flow, options.altarHref) : ""}
-      ${flow.items?.length ? `<p class="sp-caption">${flow.items.map((i) => `${i.placed ? "✓" : "○"} ${esc(i.name)}`).join("&nbsp;&nbsp; ")}</p>` : ""}
+      ${sitStepHtml(flow, options.altarHref)}${options.altarHref !== undefined ? deedHtml(flow, options.altarHref) : ""}
+      ${atAltar ? tilesHtml(flow) : flow.items?.length ? `<p class="sp-caption">${flow.items.map((i) => `${i.placed ? "✓" : "○"} ${esc(i.name)}`).join("&nbsp;&nbsp; ")}</p>` : ""}
       <div class="sp-actions">${done}</div>
       ${flow.progress.waiting ? `<p class="sp-caption">${esc(flow.progress.waiting)}</p>` : ""}
       <div class="sp-actions">${move}</div></div>`;
@@ -102,6 +135,12 @@
         else if (how === "deed") handlers.deed?.(button.dataset.deed, flow.step.id);
       })
     );
+    root?.querySelectorAll("[data-tile]").forEach((button) => button.addEventListener("click", () => handlers.tile?.((flow.step.items || [])[Number(button.dataset.tile)])));
+    root?.querySelector("[data-flow-petition]")?.addEventListener("submit", (event) => {
+      event.preventDefault();
+      const form = event.currentTarget;
+      handlers.petition?.({ title: form.title.value, words: form.words.value }, form);
+    });
   }
 
   // ── The pop-ups ──────────────────────────────────────────────────────
@@ -171,5 +210,5 @@
     render(null, null);
   }
 
-  global.CovenStepPopups = { flowOf, cardHtml, wire, render, clear };
+  global.CovenStepPopups = { flowOf, cardHtml, howHtml, wire, render, clear };
 })(window);

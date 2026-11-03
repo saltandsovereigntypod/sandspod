@@ -7,7 +7,7 @@ import { Button } from '../Button';
 import { covenHref } from './CovenScreen';
 import { ContributionList, MyContribution, Participation } from './Contributions';
 import { StepLines, TurnBox, VoteBox } from './builder/LiveParts';
-import { Spoken, Words } from './ui';
+import { Spoken } from './ui';
 import { Card, Chips, Notice } from '../more/ui';
 import * as api from '../../lib/covens/api';
 import { turnLine } from '../../lib/covens/altarPanel';
@@ -21,7 +21,9 @@ import { clearNamed, nameNewThings, offerPaper, paperCount, placeOffering, snuff
 import { builderStepFrom, cleanPlan, linkedEffect, stepThingName, type GatheringKind } from '../../lib/covens/builder';
 import { liveFlow } from '../../lib/covens/stepFlow';
 import { atAltarOf, deedQuery, sitStepOf } from '../../lib/covens/altarActions';
-import { presetParams } from '../../lib/meditation/scripts';
+import { DEED_TARGET, glowsForMe, RESULT_DEEDS, stepHowTo } from '../../lib/covens/ritualPanel';
+import { useAltarDesk } from '../altar/altarDesk';
+import { HowTo, ItemTiles, PetitionBox, RitualSit } from './RitualPanelParts';
 import { buildScript, mayVote, voteOptions } from '../../lib/covens/script';
 import { actionForStep } from '../../lib/covens/stepActions';
 import { useCoven } from '../../lib/covens/CovenContext';
@@ -310,6 +312,7 @@ export function moveStep(live: LiveRitual, to: 'back' | 'next') {
  */
 export function LiveStepCard({ live, atAltar = false }: { live: LiveRitual; atAltar?: boolean }) {
   const coven = useCoven();
+  const deskHere = useAltarDesk();
   const { ritual, steps, current, at, mine, canLead, steers, busy, act, altar } = live;
   if (!ritual || !current) return null;
   const { loadMarks } = coven;
@@ -330,6 +333,11 @@ export function LiveStepCard({ live, atAltar = false }: { live: LiveRitual; atAl
   const who = stepAssignee(current, coven.snapshot?.ranks ?? [], coven.nameOf);
   const deed = atAltarOf(currentBuilder);
   const sitStep = sitStepOf(currentBuilder);
+  const how = stepHowTo({ instructions: current.instructions, action: current.action, details: currentBuilder?.details, contribution: currentAsk }, live.flow?.kind ?? 'together');
+  // At the altar, everything happens here: the deed begun with the altar's own hands (altarDesk.ts), never by leaving.
+  const desk = atAltar ? deskHere : null;
+  const glows = !!live.flow && glowsForMe({ kind: live.flow.kind, mine, myTurn: live.flow.myTurn, hasOrder: turnOrderNow.length > 0, iDone: live.flow.iDone, complete: live.flow.progress.complete });
+  const canDeed = !!deed && !!altar && mine && coven.standing.ok && !live.flow?.iDone && !waitingTurn;
 
   return (
     <Card tone="gold">
@@ -347,7 +355,7 @@ export function LiveStepCard({ live, atAltar = false }: { live: LiveRitual; atAl
       {!!live.flow?.items?.length && <Text style={type.caption}>{live.flow.items.map((i) => `${i.placed ? '✓' : '○'} ${i.name}`).join('   ')}</Text>}
       {atAltar && <Text style={type.caption}>{`Whose step: ${who.label}${mine && who.kind !== 'everyone' ? ' (yours)' : ''}`}</Text>}
       {atAltar && <Text style={type.caption}>{turnLine(current, coven.userId, coven.nameOf)}</Text>}
-      <Words text={current.instructions} />
+      <HowTo text={how.text} builder={how.builder} />
       {lines ? <StepLines step={lines} /> : !!current.spoken_text && <Spoken text={current.spoken_text} />}
       {inTurn && (
         <TurnBox
@@ -385,7 +393,7 @@ export function LiveStepCard({ live, atAltar = false }: { live: LiveRitual; atAl
         />
       )}
       {!!current.duration_minutes && <Text style={type.caption}>About {current.duration_minutes} min</Text>}
-      {!!current.items?.length && <Text style={type.caption}>Items: {stepItemsLabel(current)}</Text>}
+      {!!current.items?.length && (desk ? <ItemTiles items={current.items} placed={live.flow?.items ?? null} /> : <Text style={type.caption}>Items: {stepItemsLabel(current)}</Text>)}
       {!!current.altar_action && <Text style={type.caption}>{altarActionNote(current)}</Text>}
       {!!currentAsk && canWriteCurrent && (
         <MyContribution
@@ -406,17 +414,38 @@ export function LiveStepCard({ live, atAltar = false }: { live: LiveRitual; atAl
       {!!currentAsk && <Participation row={live.rowFor(current.id)} ask={currentAsk} nameOf={coven.nameOf} />}
       {!!currentAsk && <ContributionList list={live.othersFor(current.id)} reader={live.reader} nameOf={coven.nameOf} busy={busy} onSupport={live.support} onTend={live.tend} />}
       {showAltarButton && <Button label={altarActionButton(current)} onPress={() => void act(() => live.doAltarAction(current), () => loadMarks(ritual.id))} disabled={busy} />}
-      {!!deed && !!altar && mine && coven.standing.ok && !live.flow?.iDone && !waitingTurn && (
-        <Button
-          label={deed.button}
-          onPress={() =>
-            // At the altar already: its screen opens the deed's sheet; otherwise go there and it opens.
-            atAltar ? router.setParams({ do: deed.deed, step: current.id, n: String(Date.now()) }) : router.push(`${covenHref(coven.slug, `altars/${altar.id}`)}?${deedQuery(deed.deed, current.id)}` as Href)
-          }
-          disabled={busy}
-        />
+      {canDeed && !!deed && !!desk && deed.deed === 'petition' ? (
+        <PetitionBox />
+      ) : (
+        canDeed &&
+        !!deed && (
+          <Button
+            label={desk && DEED_TARGET[deed.deed] ? `Show me: ${deed.button.toLowerCase()}` : deed.button}
+            variant={desk && DEED_TARGET[deed.deed] ? 'outline' : 'primary'}
+            onPress={() =>
+              // At the altar: its own handler begins it (and does it for you where it can). Elsewhere: to the altar, which opens it.
+              desk ? desk.start(deed.deed) : atAltar ? router.setParams({ do: deed.deed, step: current.id, n: String(Date.now()) }) : router.push(`${covenHref(coven.slug, `altars/${altar!.id}`)}?${deedQuery(deed.deed, current.id)}` as Href)
+            }
+            disabled={busy}
+          />
+        )
       )}
-      {!!sitStep && coven.standing.ok && <Button label={sitStep.button} variant="outline" onPress={() => router.push({ pathname: '/rituals/craft/meditation/sit', params: presetParams(sitStep.id) })} />}
+      {!!desk && !!deed && glows && !!DEED_TARGET[deed.deed] && <Text style={type.caption}>{`On the altar, ${DEED_TARGET[deed.deed]} glows for you until it’s done.`}</Text>}
+      {!!desk && !!deed && RESULT_DEEDS.includes(deed.deed) && !!desk.notice && <Notice>{desk.notice}</Notice>}
+      {!!sitStep &&
+        coven.standing.ok &&
+        (atAltar ? (
+          <RitualSit
+            key={current.id}
+            preset={sitStep.id}
+            startedAt={current.started_at}
+            onFinished={() => {
+              if (live.flow && !live.flow.iDone && live.flow.kind === 'together') coven.markDone(current.id);
+            }}
+          />
+        ) : (
+          !!altar && <Button label="Go to the altar for the sit" variant="outline" onPress={() => router.push(covenHref(coven.slug, `altars/${altar.id}`))} />
+        ))}
       {!!altar && !atAltar && <Button label="Go to the altar" variant="outline" onPress={() => router.push(covenHref(coven.slug, `altars/${altar.id}`))} />}
       <Text style={type.caption}>
         {current.altar_access === 'everyone'

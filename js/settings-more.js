@@ -145,6 +145,7 @@
   function covensHtml(settings) {
     return `${group("Your coven profile", `<p class="settings-more-detail">The name, pronouns and few words other members see. It’s under Coven → Find a coven.</p><p><a class="button button--ghost" href="/covens/?tab=find">Open your coven profile</a></p>`)}
       ${covenPathsHtml(settings)}
+      ${ritualSitHtml(settings)}
       ${group("Notifications", `<p class="settings-more-detail">Coven gatherings and applications are chosen with your other reminders; chat notifications ring in the app.</p><p><a class="button button--ghost" href="/reminders/#gd-covens">Coven notifications</a></p>`)}`;
   }
 
@@ -212,6 +213,32 @@
       "Your covens",
       check("data-coven-paths", "Count me in my covens’ paths overview", "Off: your practice, path and deities are left out of every coven’s count.", countsInCovens(settings)),
       "Covens can see what share of their members practise each way, keep each path and honour each deity, never who. Anything fewer than three share is gathered under Other."
+    );
+  }
+
+  // How a sit runs for you in the Ritual panel over a coven altar (the app's
+  // Settings → Covens & privacy → During coven rituals; SaltCore.covens.ritualPanel).
+  const RITUAL_SIT = { guidance: "ritual_sit_guidance", breath: "ritual_sit_breath", bells: "ritual_sit_bells", sound: "ritual_sit_sound", layers: "ritual_sit_layers" };
+  const SIT_LAYERS = [
+    ["drone", "Drone"], ["pink", "Pink noise"], ["brown", "Brown noise"], ["rain", "Rain"], ["wind", "Wind"], ["fire", "Fire"], ["drum", "Frame drum"], ["bowls", "Singing bowls"], ["binaural", "Binaural layers"]
+  ];
+  function ritualSitOf(settings) {
+    const RP = global.SaltCore?.covens?.ritualPanel;
+    if (RP) return RP.ritualSitPrefs(settings || {});
+    const flag = (v, d) => (v === true || v === "true" ? true : v === false || v === "false" ? false : d);
+    const s = settings || {};
+    return { guidance: flag(s[RITUAL_SIT.guidance], true), breath: flag(s[RITUAL_SIT.breath], true), bells: flag(s[RITUAL_SIT.bells], true), sound: flag(s[RITUAL_SIT.sound], false), layers: typeof s[RITUAL_SIT.layers] === "string" ? s[RITUAL_SIT.layers].split(",").filter(Boolean) : ["drone"] };
+  }
+  function ritualSitHtml(settings) {
+    const sit = ritualSitOf(settings);
+    return group(
+      "During coven rituals",
+      check("data-ritual-sit=\"guidance\"", "Guidance", "The sit’s written guidance, a line at a time", sit.guidance) +
+        check("data-ritual-sit=\"breath\"", "Breath circle", "A slow circle to breathe with: in for four, out for six", sit.breath) +
+        check("data-ritual-sit=\"bells\"", "Bells", "A bell to begin the sit and to end it", sit.bells) +
+        check("data-ritual-sit=\"sound\"", "Sound", "Sound layers under the sit, from this device", sit.sound) +
+        (sit.sound ? SIT_LAYERS.map(([id, label]) => check(`data-ritual-layer="${id}"`, label, "", sit.layers.includes(id))).join("") : ""),
+      "When a ritual step is a sit (Ground & centre, Clearing, Candle gazing), it runs in the Ritual panel at the altar, for everyone at once from the moment the leader starts the step. These choices are yours alone."
     );
   }
 
@@ -487,6 +514,12 @@
         return save({ my_practice: G.practicesValue(t.checked ? [...chosen, t.dataset.practice] : chosen.filter((p) => p !== t.dataset.practice)) }, "practice");
       }
       if (t.hasAttribute("data-coven-paths")) return save({ [COVEN_PATHS_KEY]: t.checked }, "covens");
+      if (t.dataset.ritualSit) return save({ [RITUAL_SIT[t.dataset.ritualSit]]: t.checked }, "covens");
+      if (t.dataset.ritualLayer) {
+        const now = ritualSitOf(settings).layers;
+        const next = SIT_LAYERS.map(([id]) => id).filter((id) => (id === t.dataset.ritualLayer ? t.checked : now.includes(id)));
+        return save({ [RITUAL_SIT.layers]: next.join(",") }, "covens");
+      }
       if (t.dataset.drawKind && G.divinationKinds) {
         const K = G.divinationKinds;
         return save({ [K.HIDDEN_KINDS_KEY]: K.withKindShown(settings, t.dataset.drawKind, t.checked) }, "kinds");

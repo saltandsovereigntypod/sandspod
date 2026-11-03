@@ -734,7 +734,16 @@
     return !!global.AltarCraft?.deed(kind, done, toCabinet);
   }
 
-  global.AltarRites = { deed, dropAsh, openCirclePanel, redraw };
+  /** A live ritual step's deed, waiting: done by hand on the altar (the circle traced, the bowl struck…) it counts (coven-altar.js arm). */
+  const OWN = ["circle", "release_circle", "quarters", "release_quarters", "bowl", "toast", "libation", "sweep", "match"];
+  function arm(kind, done) {
+    if (OWN.includes(kind)) {
+      pending = kind ? { kind, done } : null;
+      return true;
+    }
+    return !!global.AltarCraft?.arm?.(kind, done);
+  }
+  global.AltarRites = { deed, arm, dropAsh, openCirclePanel, redraw };
 
   // ── In the object's actions ──────────────────────────────────────────
   const registry = global.altarObjectActionRegistry;

@@ -588,7 +588,13 @@
     return false;
   }
 
-  global.AltarCraft = { deed, gridOf, redraw, setRitual };
+  /** A live ritual step's deed, waiting: done by hand with the tool, it counts (coven-altar.js arm). */
+  function arm(kind, done) {
+    if (!["pendulum", "scry_mirror", "grind", "cut_cord", "simmer", "grid", "draw_deck"].includes(kind)) return false;
+    pending = { kind, done };
+    return true;
+  }
+  global.AltarCraft = { deed, arm, gridOf, redraw, setRitual };
 
   // ── In the object's actions ──────────────────────────────────────────
   const registry = global.altarObjectActionRegistry;

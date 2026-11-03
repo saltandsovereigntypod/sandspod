@@ -32,6 +32,8 @@ export * as builder from '../../app/src/lib/covens/builder.ts';
 // How a step runs: who moves it on, the pop-ups while it runs, when it's finished by itself.
 export * as stepFlow from '../../app/src/lib/covens/stepFlow.ts';
 export * as altarActions from '../../app/src/lib/covens/altarActions.ts';
+// The live step at the altar: its how-to, whose altar glows, the panel opening by itself, sits in step.
+export * as ritualPanel from '../../app/src/lib/covens/ritualPanel.ts';
 export * as fields from '../../app/src/lib/covens/fields.ts';
 export * as templates from '../../app/src/lib/covens/templates.ts';
 export * as script from '../../app/src/lib/covens/script.ts';
