@@ -226,22 +226,27 @@ export function sizeLimitsOf(object: Pick<SavedObject, 'type' | 'tool'>): { min:
  * Where the salt lies in a border's picture, in fractions of the picture's
  * width and height: an ellipse (the painted circle, seen at a slant) whose
  * line runs `band` either side of its radius, or a rectangle whose line runs
- * `inset` in from each edge, `band` either side (fractions of the width, so
- * the line is as thick across as down). `ratio` is the picture's height / width.
+ * `inset` in from each side (and `insetY` from the near and far edges), `band`
+ * either side (fractions of the width). The rectangle is drawn in perspective,
+ * as the altar table is: a flat rectangle `flat` (depth / width) deep is seen
+ * with its far edge `taper` times as wide as its near edge, squeezed into a
+ * picture `ratio` (height / width) tall; so its salt line is a trapezoid.
  */
 export type SaltLine =
   | { kind: 'ellipse'; ratio: number; cx: number; cy: number; rx: number; ry: number; band: number }
-  | { kind: 'rect'; ratio: number; inset: number; band: number };
+  | { kind: 'rect'; ratio: number; flat: number; taper: number; inset: number; insetY: number; band: number };
 
 const SALT_CIRCLE: SaltLine = { kind: 'ellipse', ratio: 1024 / 1536, cx: 0.507, cy: 0.613, rx: 0.335, ry: 0.162, band: 0.17 };
-// scratch art script: lines 0.03 of the width in, 0.0125 either side, a little more for the stray grains.
-const saltRect = (ratio: number): SaltLine => ({ kind: 'rect', ratio, inset: 0.03, band: 0.017 });
+// Art script (make_salt.py): lines 0.03 of the width in (0.018 from the near and far edges), 0.0125 either side, a little more
+// for the stray grains. Seen at the altar's angle: the picture is 0.32 (square) or 0.25 (altar-wide, the table top's own
+// depth) as tall as wide, and its far edge 1 - 0.98 * that fraction of the near edge's width (0.755 for the table top).
+const saltRect = (flat: number, ratio: number): SaltLine => ({ kind: 'rect', ratio, flat, taper: 1 - 0.98 * ratio, inset: 0.03, insetY: 0.018, band: 0.017 });
 
 /** The salt line of a salt border, or null for anything else. */
 export function saltLineOf(object: Pick<SavedObject, 'type' | 'tool' | 'form'>): SaltLine | null {
   if (!isSaltBorder(object)) return null;
   if (String(object.tool).endsWith('circle')) return SALT_CIRCLE;
-  return saltRect(object.form === 'altar' ? 9 / 16 : 1);
+  return object.form === 'altar' ? saltRect(9 / 16, 0.25) : saltRect(1, 0.32);
 }
 
 /**
@@ -252,12 +257,22 @@ export function saltLineOf(object: Pick<SavedObject, 'type' | 'tool' | 'form'>):
 export function onSaltLine(line: SaltLine, x: number, y: number, width: number, slack = 0): boolean {
   const height = width * line.ratio;
   if (line.kind === 'rect') {
+    // Undo the perspective: back to the flat rectangle, then the distance to its line.
+    const k = 1 / line.taper - 1;
+    const scale = 1 - (1 - line.taper) * (1 - (y + height / 2) / height); // horizontal scale at this row
+    if (scale <= 0) return false;
+    const depth = line.flat * width;
+    const fy = (depth * (1 / scale - 1)) / k - depth / 2; // flat distance from the middle (the near edge is at -depth / 2)
+    const fx = x / scale;
     const hx = width / 2 - line.inset * width;
-    const hy = height / 2 - line.inset * width;
-    const ax = Math.abs(x);
-    const ay = Math.abs(y);
-    const distance = ax <= hx && ay <= hy ? Math.min(hx - ax, hy - ay) : Math.hypot(Math.max(ax - hx, 0), Math.max(ay - hy, 0));
-    return distance <= line.band * width + slack;
+    const hy = depth / 2 - line.insetY * width;
+    const ax = Math.abs(fx);
+    const ay = Math.abs(fy);
+    const sx = slack / scale;
+    const sy = slack / (scale * (line.ratio / line.flat)); // the picture's depth is squeezed
+    const reach = line.band * width;
+    if (ax <= hx && ay <= hy) return Math.min(hx - ax, hy - ay) <= reach + Math.min(sx, sy);
+    return Math.hypot(Math.max(ax - hx - sx, 0), Math.max(ay - hy - sy, 0)) <= reach;
   }
   const rx = line.rx * width;
   const ry = line.ry * height;
@@ -280,11 +295,19 @@ export function saltLinePath(line: SaltLine): string {
   const h = w * line.ratio;
   const f = (n: number) => String(Math.round(n * 10) / 10);
   if (line.kind === 'rect') {
-    const rect = (d: number) => {
-      const i = line.inset * w + d;
-      return `M${f(i)} ${f(i)}H${f(w - i)}V${f(h - i)}H${f(i)}Z`;
+    // The line's outer and inner edges, each a trapezoid: the far edge narrower, at the top.
+    const depth = line.flat * w;
+    const k = 1 / line.taper - 1;
+    const corner = (fx: number, fy: number) => {
+      const scale = 1 / (1 + (k * fy) / depth);
+      return `${f(w / 2 + (fx - w / 2) * scale)} ${f(h * (1 - (1 - scale) / (1 - line.taper)))}`;
     };
-    return rect(-line.band * w) + rect(line.band * w);
+    const trapezoid = (d: number) => {
+      const ix = line.inset * w + d;
+      const iy = line.insetY * w + d;
+      return `M${corner(ix, depth - iy)}L${corner(w - ix, depth - iy)}L${corner(w - ix, iy)}L${corner(ix, iy)}Z`;
+    };
+    return trapezoid(-line.band * w) + trapezoid(line.band * w);
   }
   const ellipse = (k: number) => {
     const cx = line.cx * w;

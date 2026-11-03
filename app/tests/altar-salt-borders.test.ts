@@ -57,8 +57,16 @@ test('a salt border is hollow: a tap inside goes to what lies within', () => {
   // On the line itself: the salt.
   const line = saltLineOf(salt)!;
   assert.equal(line.kind, 'rect');
-  assert.ok(onSaltLine(line, 100 - line.inset * 200, 0, 200));
-  assert.ok(!onSaltLine(line, 0, 0, 200));
+  if (line.kind !== 'rect') throw new Error('rect');
+  // Seen in perspective: the near line (bottom) is the full width, the far line (top) is narrower.
+  const w = 200;
+  const h = w * line.ratio;
+  const nearY = h / 2 - line.insetY * w * (line.ratio / line.flat);
+  assert.ok(onSaltLine(line, w / 2 - line.inset * w, h / 2 - 1, w));
+  assert.ok(onSaltLine(line, 0, nearY, w));
+  assert.ok(onSaltLine(line, (w / 2 - line.inset * w) * line.taper, -h / 2 + 1, w));
+  assert.ok(!onSaltLine(line, w / 2 - line.inset * w, -h / 2 + 1, w), 'the far corner is drawn in');
+  assert.ok(!onSaltLine(line, 0, 0, w));
   assert.match(saltLinePath(line), /^M.*Z.*M.*Z$/);
 });
 
