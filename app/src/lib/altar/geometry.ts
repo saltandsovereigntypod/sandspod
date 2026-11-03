@@ -241,14 +241,15 @@ export type SaltLine =
 const SALT_CIRCLE: SaltLine = { kind: 'ellipse', ratio: 1024 / 1536, cx: 0.507, cy: 0.613, rx: 0.335, ry: 0.162, band: 0.17 };
 // Art script (make_salt.py): lines 0.03 of the width in (0.018 from the near and far edges), 0.0125 either side, a little more
 // for the stray grains. Seen at the altar's angle: the picture is 0.32 (square) or 0.25 (altar-wide, the table top's own
-// depth) as tall as wide, and its far edge 1 - 0.98 * that fraction of the near edge's width (0.755 for the table top).
-const saltRect = (flat: number, ratio: number): SaltLine => ({ kind: 'rect', ratio, flat, taper: 1 - 0.98 * ratio, inset: 0.03, insetY: 0.018, band: 0.017 });
+// depth) as tall as wide; its far edge is exaggerated beyond the table top's 0.755 to 0.60 (altar-wide) / 0.68 (square) of the
+// near edge's width, so the sides visibly converge.
+const saltRect = (flat: number, ratio: number, taper: number): SaltLine => ({ kind: 'rect', ratio, flat, taper, inset: 0.03, insetY: 0.018, band: 0.017 });
 
 /** The salt line of a salt border, or null for anything else. */
 export function saltLineOf(object: Pick<SavedObject, 'type' | 'tool' | 'form'>): SaltLine | null {
   if (!isSaltBorder(object)) return null;
   if (String(object.tool).endsWith('circle')) return SALT_CIRCLE;
-  return object.form === 'altar' ? saltRect(9 / 16, 0.25) : saltRect(1, 0.32);
+  return object.form === 'altar' ? saltRect(9 / 16, 0.25, 0.6) : saltRect(1, 0.32, 0.68);
 }
 
 /**
