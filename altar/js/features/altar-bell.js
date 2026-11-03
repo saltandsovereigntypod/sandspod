@@ -150,8 +150,29 @@
     if (B && B.ringAllowed(rung, r.from, Date.now())) sound(r.kind, findByKey(r.key), false);
   });
 
+  /**
+   * A meditation's bells at this altar ("Meditate here", altar-reading.js):
+   * `times` chimes (or only a vibration, `vibrateOnly`), under Candle sounds
+   * and Vibration. Call it once from a tap first (`unlockOnly`) so the browser
+   * lets the later chimes sound.
+   */
+  function toll(times, { vibrateOnly = false, unlockOnly = false } = {}) {
+    const { candleSounds, haptics } = prefs();
+    const context = unlock();
+    if (unlockOnly) return;
+    const gap = 2.6;
+    const html = !vibrateOnly && candleSounds && !(context && context.state === "running");
+    if (!vibrateOnly && candleSounds && !html) scheduleChimes(times, gap);
+    for (let i = 0; i < times; i++) {
+      global.setTimeout(() => {
+        if (html) htmlChime();
+        if (haptics && typeof navigator.vibrate === "function") { try { navigator.vibrate(vibrateOnly ? 400 : 12); } catch (_) {} }
+      }, i * gap * 1000);
+    }
+  }
+
   // A coven ritual step can ring it too (coven-altar.js).
-  global.AltarBell = { ring };
+  global.AltarBell = { ring, toll };
 
   const registry = global.altarObjectActionRegistry;
   if (!Array.isArray(registry)) return;

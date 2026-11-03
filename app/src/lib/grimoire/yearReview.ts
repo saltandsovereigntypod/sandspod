@@ -26,6 +26,7 @@ import { offeringsOf } from '../altar/devotion.ts';
 import { placedAtOf } from '../altar/livingState.ts';
 import type { AltarData } from '../altar/types.ts';
 import type { YearSpan } from './yearSpan.ts';
+import { kindLabel, type SitEntry } from '../meditation/log.ts';
 
 /** Something dated, from wherever it's kept: an offering, a gathering, a change at the altar. */
 export type Dated = { at: string; label: string; detail?: string; id?: string };
@@ -49,6 +50,8 @@ export type YearInput = {
   /** Cycle & Moon, only when kept and open on this device; null otherwise. */
   cycle: CycleData | null;
   south?: boolean;
+  /** Meditation sits (meditation.sits). */
+  sits?: SitEntry[];
 };
 
 const DAY_MS = 86_400_000;
@@ -95,6 +98,7 @@ export type YearReview = {
   offerings: { count: number; to: { label: string; count: number }[] };
   gatherings: { count: number; list: Dated[] };
   altar: { count: number; list: Dated[] };
+  meditation: { sits: number; minutes: number; kinds: { label: string; count: number }[] };
   /** Is there anything at all in the year? */
   empty: boolean;
 };
@@ -187,6 +191,7 @@ export function yearReview(input: YearInput, span: YearSpan, now: Date): YearRev
 
   const pages = input.pages.filter((p) => within(dayKeyOf(p.created_at), span));
   const dreams = input.dreams.filter((d) => within(d.data.date, span));
+  const sits = (input.sits ?? []).filter((e) => within(dayKeyOf(e.data.at), span));
 
   const cycle = input.cycle ? cycleSummary(input.cycle, span) : null;
 
@@ -260,10 +265,11 @@ export function yearReview(input: YearInput, span: YearSpan, now: Date): YearRev
     offerings: { count: offerings.length, to: counted(offerings.map((o) => o.detail || o.label), 5) },
     gatherings: { count: gatherings.length, list: gatherings },
     altar: { count: altar.length, list: altar },
+    meditation: { sits: sits.length, minutes: sits.reduce((n, e) => n + e.data.minutes, 0), kinds: counted(sits.map((e) => kindLabel(e.data)), 3) },
     empty: false,
   };
   review.empty =
-    !journal.length && !plans.length && !readings.length && !dreams.length && !pages.length && !offerings.length && !gatherings.length && !altar.length && !journeys.length && !courses.length && !(cycle && cycle.bleeds);
+    !journal.length && !plans.length && !readings.length && !dreams.length && !pages.length && !offerings.length && !gatherings.length && !altar.length && !journeys.length && !courses.length && !sits.length && !(cycle && cycle.bleeds);
   return review;
 }
 
@@ -361,6 +367,7 @@ export function yearLines(r: YearReview): string[] {
   if (r.holidays.kept) out.push(`You kept ${n(r.holidays.kept, 'holiday', 'holidays')} of ${r.holidays.total}.`);
   if (r.readings.count) out.push(`You drew ${n(r.readings.count, 'reading', 'readings')}${r.readings.top[0] && r.readings.top[0].count >= 2 ? `; ${r.readings.top[0].name} came most` : ''}.`);
   if (r.dreams.count) out.push(`You wrote down ${n(r.dreams.count, 'dream', 'dreams')}${r.dreams.symbols[0] ? `; ${r.dreams.symbols[0].symbol} came back most` : ''}.`);
+  if (r.meditation.sits) out.push(`You sat ${n(r.meditation.sits, 'time', 'times')}, ${n(r.meditation.minutes, 'minute', 'minutes')} in all${r.meditation.kinds[0] && r.meditation.kinds[0].count >= 2 ? `, most often ${r.meditation.kinds[0].label.toLowerCase()}` : ''}.`);
   if (r.pages.made) out.push(`Your Grimoire gained ${n(r.pages.made, 'page', 'pages')}.`);
   if (r.offerings.count) out.push(`You made ${n(r.offerings.count, 'offering', 'offerings')}.`);
   if (r.gatherings.count) out.push(`You gathered with your coven ${n(r.gatherings.count, 'time', 'times')}.`);
@@ -393,6 +400,7 @@ export function shareCard(r: YearReview): { title: string; lines: string[] } {
     r.holidays.kept ? `${r.holidays.kept} ${r.holidays.kept === 1 ? 'holiday' : 'holidays'} kept` : null,
     r.readings.count ? `${r.readings.count} ${r.readings.count === 1 ? 'reading' : 'readings'}` : null,
     r.dreams.count ? `${r.dreams.count} ${r.dreams.count === 1 ? 'dream' : 'dreams'} written down` : null,
+    r.meditation.sits ? `${r.meditation.minutes} ${r.meditation.minutes === 1 ? 'minute' : 'minutes'} of meditation` : null,
     r.pages.made ? `${r.pages.made} Grimoire ${r.pages.made === 1 ? 'page' : 'pages'}` : null,
     r.offerings.count ? `${r.offerings.count} ${r.offerings.count === 1 ? 'offering' : 'offerings'}` : null,
     r.gatherings.count ? `${r.gatherings.count} coven ${r.gatherings.count === 1 ? 'gathering' : 'gatherings'}` : null,

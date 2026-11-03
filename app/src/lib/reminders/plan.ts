@@ -471,6 +471,7 @@ const PRIORITY: Record<ReminderKind, number> = {
   year: 2,
   devotion: 1,
   dream: 1,
+  meditation: 1,
 };
 export const priorityOf = (r: Pick<Reminder, 'kind' | 'key'>) => (isUrgent(r) ? 5 : PRIORITY[r.kind] ?? 1);
 

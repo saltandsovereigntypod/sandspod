@@ -30,12 +30,14 @@ export type LiveStep = { title: string; body: string; spoken: string; minutes: n
 export type LiveStatus = 'gathering' | 'live' | 'closing' | 'ended';
 /** Where the ritual came from, so the page can link back to it. */
 export type LiveSource = {
-  kind: 'premade' | 'template' | 'spell' | 'gathering' | 'community' | 'free';
+  kind: 'premade' | 'template' | 'spell' | 'gathering' | 'community' | 'free' | 'sit';
   ref?: string | null;
   /** A coven gathering's coven, for its link. */
   coven_slug?: string | null;
   preparation?: string;
   closing?: string;
+  /** A sit together (meditation/together.ts): its plan, and the shared start time (null: when the leader begins). */
+  sit?: { plan: Record<string, unknown>; startAt: string | null };
 };
 
 export type LiveRitual = {
@@ -273,6 +275,7 @@ export function startFromGathering(ritual: { id: string; title: string; intentio
 
 /** Where the ritual came from, on the app (`app`) or the website. Null when there's nowhere to go back to. */
 export function sourceHref(source: LiveSource | null | undefined, app: boolean): string | null {
+  if (source?.kind === 'sit') return app ? '/rituals/craft/meditation' : '/practice/meditation/';
   if (!source?.ref) return null;
   const ref = encodeURIComponent(source.ref);
   switch (source.kind) {

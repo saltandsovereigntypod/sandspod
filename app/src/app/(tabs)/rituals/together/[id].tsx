@@ -4,6 +4,7 @@ import { ActivityIndicator, Share, StyleSheet, Text, View } from 'react-native';
 
 import { Button } from '../../../../components/Button';
 import { Pill, Spoken, useReport, Words } from '../../../../components/covens/ui';
+import { SitTogetherCard } from '../../../../components/meditation/SitTogetherCard';
 import { Card, CheckRow, Field, MoreScreen, Notice, Section } from '../../../../components/more/ui';
 import { copyText } from '../../../../lib/copyText';
 import * as covens from '../../../../lib/covens/api';
@@ -191,6 +192,8 @@ export default function RitualTogether() {
               <Words text={live.source.preparation} />
             </Section>
           )}
+
+          {!over && <SitTogetherCard live={live} />}
 
           {step && (
             <Card>

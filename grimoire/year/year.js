@@ -18,7 +18,7 @@
   const root = kit?.root();
   if (!kit || !core || !B || !root) return;
 
-  const { yearSpan: YS, yearReview: YR, readings: R, dreams: D, holidays: HD, calendars: CAL, links: LK } = core;
+  const { yearSpan: YS, yearReview: YR, readings: R, dreams: D, meditation: MD, holidays: HD, calendars: CAL, links: LK } = core;
   const esc = kit.esc;
   const plural = (n, one, many) => `${n} ${n === 1 ? one : many}`;
   const shortDay = (value) => kit.dayMonth(String(value || "").slice(0, 10));
@@ -155,7 +155,7 @@
   }
 
   async function load() {
-    const [journal, plans, readings, dreams, journeys, course, pages, altars, covens, cyc] = await Promise.all([
+    const [journal, plans, readings, dreams, journeys, course, pages, altars, covens, cyc, sits] = await Promise.all([
       safe(loadJournal, []),
       safe(loadPlans, []),
       kit.entries(R.READINGS),
@@ -165,7 +165,8 @@
       safe(loadPages, []),
       safe(loadAltars, []),
       safe(loadCovens, { gatherings: [], courses: [] }),
-      safe(loadCycle, { phase: "new", data: null })
+      safe(loadCycle, { phase: "new", data: null }),
+      kit.entries(MD.SITS)
     ]);
     const fromAltars = YR.altarRecords(altars, new Date());
     const latestCourse = [...course].sort((a, b) => String(b.updatedAt || "").localeCompare(String(a.updatedAt || "")))[0];
@@ -176,6 +177,7 @@
       plans,
       readings: readings.map((e) => ({ ...e, data: R.normalizeReading(e.data) })),
       dreams: dreams.map((e) => ({ ...e, data: D.normalizeDream(e.data) })),
+      sits: sits.map((e) => ({ id: e.id, data: MD.normalizeSit(e.data) })),
       pages,
       offerings: fromAltars.offerings,
       altarChanges: fromAltars.changes,
@@ -311,6 +313,19 @@
               (r.dreams.count ? kit.p(`${plural(r.dreams.count, "dream", "dreams")} written down${r.dreams.lucid ? `, ${r.dreams.lucid} lucid` : ""}${r.dreams.recurring ? `, ${r.dreams.recurring} recurring` : ""}.`) : "") +
               (r.dreams.symbols.length ? `<div class="sp-chips">${r.dreams.symbols.map((d) => `<a class="sp-chip" href="/grimoire/dreams/symbols/">${esc(`${d.symbol} · ${d.count}`)}</a>`).join("")}</div>` : "") +
               (r.dreams.count ? kit.list([kit.row({ url: "/grimoire/dreams/symbols/", title: "Your dreams and their symbols" })]) : "")
+          )
+        )
+      );
+    }
+
+    if (r.meditation && r.meditation.sits) {
+      out.push(
+        kit.section(
+          "Meditation",
+          kit.card(
+            kit.p(`${plural(r.meditation.sits, "sit", "sits")}, ${plural(r.meditation.minutes, "minute", "minutes")} in all.`) +
+              (r.meditation.kinds.length ? kit.muted(`Most often: ${r.meditation.kinds.map((k) => `${k.label} (${k.count})`).join(", ")}`) : "") +
+              kit.list([kit.row({ url: "/practice/meditation/patterns/", title: "Your meditation patterns" })])
           )
         )
       );

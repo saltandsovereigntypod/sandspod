@@ -341,12 +341,13 @@ function OwnForm({ ctx, item, onDone }: { ctx: TendContext; item?: ListItem; onD
   const [notes, setNotes] = useState(own?.notes ?? '');
   const [rhythm, setRhythm] = useState<Rhythm>(item?.record?.rhythm ?? { kind: 'weekly' });
   const [noteIt, setNoteIt] = useState(own?.grimoire ?? false);
+  const [meditations, setMeditations] = useState(own?.meditations ?? false);
   const [busy, setBusy] = useState(false);
   const [status, setStatus] = useState<string | null>(null);
 
   const save = async () => {
     setBusy(true);
-    const outcome = await act.saveOwn({ name, type: kind, other, notes, rhythm, grimoire: noteIt }, item);
+    const outcome = await act.saveOwn({ name, type: kind, other, notes, rhythm, grimoire: noteIt, meditations }, item);
     setBusy(false);
     if (outcome.ok) onDone(outcome.message);
     else setStatus(outcome.message);
@@ -377,6 +378,7 @@ function OwnForm({ ctx, item, onDone }: { ctx: TendContext; item?: ListItem; onD
       ) : (
         <Body muted>Signed in, each time can also be noted in your Grimoire.</Body>
       )}
+      <Toggle label="Count my meditations" detail="When you finish a sit in Meditation, this is marked done for the day. Off unless you turn it on." value={meditations} onChange={setMeditations} />
       <Button label={busy ? 'Saving…' : item ? 'Save' : 'Add it'} disabled={busy || (!name.trim() && kind === 'other' && !other.trim())} onPress={() => void save()} />
       {item && <Button label="Take it off my list" variant="text" onPress={() => void remove()} />}
       <Button label="Cancel" variant="text" onPress={() => onDone(null)} />

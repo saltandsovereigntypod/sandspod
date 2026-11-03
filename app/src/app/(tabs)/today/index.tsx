@@ -1,4 +1,4 @@
-import { router, useLocalSearchParams, useNavigation } from 'expo-router';
+import { router, useLocalSearchParams, useNavigation, type Href } from 'expo-router';
 import { useEffect, useMemo, useState } from 'react';
 import { Pressable, StyleSheet, Text, useWindowDimensions, View } from 'react-native';
 
@@ -235,6 +235,7 @@ export default function Today() {
             accessibilityHint="Opens a starter altar for today's planet, moon or holiday"
             onPress={() => router.navigate({ pathname: '/altar/[altarId]', params: { altarId: 'tonight', from: 'today' } })}
           />
+          <Button label="Sit for a while" variant="text" accessibilityHint="Opens the meditation timer" onPress={() => router.navigate('/rituals/craft/meditation' as Href)} />
           <View style={styles.prompt}>
             <Text style={[type.eyebrow, styles.gold]}>Reflect</Text>
             <Text style={styles.promptText}>{today.prompt}</Text>

@@ -46,6 +46,10 @@ export type ReminderSettings = {
   dreamMorning: boolean;
   /** Minutes after midnight. */
   dreamMorningAt: number;
+  /** A daily nudge to sit for a while (Craft → Meditation). Off unless chosen. */
+  meditation?: boolean;
+  /** Minutes after midnight. */
+  meditationAt?: number;
   /** Offerings on your altars that want refreshing (water drying, flowers wilting). Off unless chosen. */
   offerings: boolean;
   /** Minutes after midnight: offerings that go over during the day are mentioned at this time. */
@@ -76,6 +80,8 @@ export const DEFAULT_SETTINGS: ReminderSettings = {
   sacredAt: 9 * 60,
   dreamMorning: false,
   dreamMorningAt: 7 * 60,
+  meditation: false,
+  meditationAt: 7 * 60 + 30,
   offerings: false,
   offeringsAt: 18 * 60,
   watering: false,
@@ -123,6 +129,8 @@ export function normalizeSettings(raw: unknown): ReminderSettings {
     sacredAt: minuteOfDay(value.sacredAt, DEFAULT_SETTINGS.sacredAt),
     dreamMorning: value.dreamMorning === true,
     dreamMorningAt: minuteOfDay(value.dreamMorningAt, DEFAULT_SETTINGS.dreamMorningAt),
+    meditation: value.meditation === true,
+    meditationAt: minuteOfDay(value.meditationAt, DEFAULT_SETTINGS.meditationAt!),
     offerings: value.offerings === true,
     offeringsAt: minuteOfDay(value.offeringsAt, DEFAULT_SETTINGS.offeringsAt),
     watering: value.watering === true,
@@ -136,7 +144,7 @@ function minuteOfDay(raw: unknown, fallback: number): number {
 }
 
 export function anyReminders(settings: ReminderSettings): boolean {
-  return settings.rituals || settings.lookBacks || settings.devotionMorning || settings.devotionEvening || settings.sacredDays || settings.dreamMorning || settings.offerings || settings.watering || PHASE_ORDER.some((p) => settings.phases[p]);
+  return settings.rituals || settings.lookBacks || settings.devotionMorning || settings.devotionEvening || settings.sacredDays || settings.dreamMorning || !!settings.meditation || settings.offerings || settings.watering || PHASE_ORDER.some((p) => settings.phases[p]);
 }
 
 /** What a reminder is about (plan.ts adds holidays, tending, planning, coven rites and the day's summary). */
@@ -146,6 +154,7 @@ export type ReminderKind =
   | 'devotion'
   | 'sacred'
   | 'dream'
+  | 'meditation'
   | 'lookback'
   | 'offering'
   | 'watering'
@@ -341,6 +350,22 @@ export function buildSchedule(
         title: 'Last night’s dream',
         body: 'Write down last night’s dream, before it fades.',
         url: '/grimoire/dreams/edit',
+      });
+    }
+  }
+
+  // A daily time to sit, two weeks ahead like the devotions.
+  if (settings.meditation) {
+    const at = settings.meditationAt ?? DEFAULT_SETTINGS.meditationAt!;
+    for (let d = 0; d <= Math.min(DEVOTION_DAYS, horizonDays); d++) {
+      const day = new Date(now.getFullYear(), now.getMonth(), now.getDate() + d, Math.floor(at / 60), at % 60, 0, 0);
+      reminders.push({
+        key: `meditation:${dateKey(day)}`,
+        kind: 'meditation',
+        at: day,
+        title: 'A time to sit',
+        body: 'A few quiet minutes, if you have them.',
+        url: '/rituals/craft/meditation',
       });
     }
   }

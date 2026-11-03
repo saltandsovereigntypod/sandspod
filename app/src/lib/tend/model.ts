@@ -212,6 +212,8 @@ export type OwnDetails = {
   notes: string;
   /** Also note each time in your Grimoire. */
   grimoire: boolean;
+  /** Count my meditations: a finished sit marks it done (off unless you turn it on). */
+  meditations?: boolean;
 };
 export type Completion = { at: string; how: string[]; note: string };
 
@@ -225,7 +227,7 @@ export const ownHows = (type: OwnType) => OWN_TYPES.find((t) => t.value === type
 
 function cleanOwn(raw: unknown): OwnDetails {
   const o = (raw && typeof raw === 'object' ? raw : {}) as Partial<OwnDetails>;
-  return { type: OWN_TYPES.some((t) => t.value === o.type) ? (o.type as OwnType) : 'other', other: String(o.other || '').slice(0, 80), notes: String(o.notes || '').slice(0, NOTE_MAX), grimoire: o.grimoire === true };
+  return { type: OWN_TYPES.some((t) => t.value === o.type) ? (o.type as OwnType) : 'other', other: String(o.other || '').slice(0, 80), notes: String(o.notes || '').slice(0, NOTE_MAX), grimoire: o.grimoire === true, ...(o.meditations === true ? { meditations: true } : {}) };
 }
 
 function cleanDone(raw: unknown): Completion[] {
@@ -241,7 +243,7 @@ function cleanDone(raw: unknown): Completion[] {
     .slice(-DONE_MAX);
 }
 
-export type OwnInput = { name: string; type: OwnType; other?: string; notes?: string; rhythm: Rhythm; grimoire?: boolean };
+export type OwnInput = { name: string; type: OwnType; other?: string; notes?: string; rhythm: Rhythm; grimoire?: boolean; meditations?: boolean };
 
 /** A new thing of your own, keyed by an id of its own. */
 export function newOwnRecord(input: OwnInput, id: string): TendRecord {
@@ -250,7 +252,7 @@ export function newOwnRecord(input: OwnInput, id: string): TendRecord {
 
 /** What it is and how often, changed. */
 export function editOwn(record: TendRecord, input: OwnInput): TendRecord {
-  const own = cleanOwn({ type: input.type, other: input.other ?? '', notes: input.notes ?? '', grimoire: input.grimoire === true });
+  const own = cleanOwn({ type: input.type, other: input.other ?? '', notes: input.notes ?? '', grimoire: input.grimoire === true, meditations: input.meditations === true });
   return { ...record, title: input.name.trim().slice(0, OWN_NAME_MAX) || ownTypeLabel(own), rhythm: cleanRhythm(input.rhythm) ?? defaultRhythm('own'), own };
 }
 
@@ -260,6 +262,23 @@ export function recordDone(record: TendRecord, at: Date, how: string[] = [], not
   const latest = done[done.length - 1]?.at ?? '';
   const tendedAt = record.tendedAt && record.tendedAt > latest ? record.tendedAt : latest;
   return { ...record, done, tendedAt, times: (record.times ?? 0) + 1 };
+}
+
+/**
+ * A sit finished: each of your own things you asked to count your
+ * meditations ("Count my meditations", off unless you turned it on) is marked
+ * done, once a day. Nothing else is ever touched. Returns only the records
+ * that changed.
+ */
+export function meditationDone(records: TendRecord[], at: Date): TendRecord[] {
+  const day = (iso: string) => {
+    const d = new Date(iso);
+    return `${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`;
+  };
+  const today = day(at.toISOString());
+  return records
+    .filter((r) => r.kind === 'own' && !r.ended && r.own?.meditations === true && !(r.done ?? []).some((c) => day(c.at) === today))
+    .map((r) => recordDone(r, at, ['Meditation'], ''));
 }
 
 /** A time taken out of its history (marked by mistake): the last time goes back to the one before. */

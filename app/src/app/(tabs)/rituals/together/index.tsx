@@ -3,9 +3,12 @@ import { useCallback, useEffect, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
 import { Button } from '../../../../components/Button';
+import { PlanForm, useLastPlan } from '../../../../components/meditation/PlanForm';
+import { Chip, Chips } from '../../../../components/rituals/ui';
 import { Card, Field, MenuList, MenuRow, MoreScreen, Notice, Section } from '../../../../components/more/ui';
 import * as covens from '../../../../lib/covens/api';
 import { errorMessage } from '../../../../lib/covens/model';
+import { sitTogetherStart, START_CHOICES, startIn } from '../../../../lib/meditation/together';
 import { useSession } from '../../../../lib/session';
 import * as api from '../../../../lib/together/api';
 import { isOver, parseLiveCode, statusLine, TOGETHER_GUIDANCE, type LiveRitual } from '../../../../lib/together/live';
@@ -16,7 +19,7 @@ import { type } from '../../../../theme';
 // by its code or link, and the ones you're in. The ritual itself is ./[id].tsx.
 // Website: rituals/together/ (rituals/together/together.js).
 export default function RitualsTogether() {
-  const params = useLocalSearchParams<{ code?: string; start?: string }>();
+  const params = useLocalSearchParams<{ code?: string; start?: string; sit?: string }>();
   const { session } = useSession();
   const userId = session?.user.id ?? null;
   const [me, setMe] = useState<covens.Me | null>(null);
@@ -26,6 +29,10 @@ export default function RitualsTogether() {
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
   const start = params.start ? api.takePendingStart() : null;
+  const [plan, setPlan] = useLastPlan();
+  const [sitOpen, setSitOpen] = useState(params.sit === '1');
+  const [startAfter, setStartAfter] = useState<number | null>(5);
+  const [sitTitle, setSitTitle] = useState('');
 
   const load = useCallback(async () => {
     if (!userId) return;
@@ -102,6 +109,33 @@ export default function RitualsTogether() {
               {start.gathering_id ? ' · everyone the gathering is for can join from its page, and hears it has begun' : ' · you’ll have a link to invite people'}
             </Text>
             <Button label={busy ? 'Beginning…' : 'Open the ritual for others to join'} disabled={busy} onPress={() => void act(() => api.startLive(start, start))} />
+          </Card>
+        </Section>
+      )}
+
+      {profiled && !me?.banned && !start && (
+        <Section label="Sit together">
+          <Card>
+            <Text style={type.body}>A meditation with your coven or friends, each where you are. Everyone’s timer starts at the same moment and the bells ring for each of you.</Text>
+            {sitOpen ? (
+              <>
+                <Field label="A name for it (optional)" value={sitTitle} onChangeText={setSitTitle} />
+                <PlanForm plan={plan} onChange={setPlan} brief />
+                <Text style={type.caption}>When everyone begins</Text>
+                <Chips>
+                  {START_CHOICES.map((c) => (
+                    <Chip key={c.label} label={c.label} selected={startAfter === c.minutes} onPress={() => setStartAfter(c.minutes)} />
+                  ))}
+                </Chips>
+                <Button
+                  label={busy ? 'Opening…' : 'Open the sit for others to join'}
+                  disabled={busy}
+                  onPress={() => void act(() => api.startLive(sitTogetherStart(plan, startAfter === null ? null : startIn(startAfter, new Date()), sitTitle)))}
+                />
+              </>
+            ) : (
+              <Button label="Set up a sit together" variant="outline" onPress={() => setSitOpen(true)} />
+            )}
           </Card>
         </Section>
       )}

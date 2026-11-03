@@ -438,6 +438,8 @@ export function PracticeSection({ settings, change }: { settings: ReminderSettin
       {settings.devotionEvening && <TimeRow minutes={settings.devotionEveningAt} onChange={(devotionEveningAt) => change({ devotionEveningAt })} />}
       <Toggle label="Last night’s dream" detail="A gentle morning nudge to write it down, for Dreams in your Grimoire" value={settings.dreamMorning} onChange={(dreamMorning) => change({ dreamMorning })} />
       {settings.dreamMorning && <TimeRow minutes={settings.dreamMorningAt} onChange={(dreamMorningAt) => change({ dreamMorningAt })} />}
+      <Toggle label="A time to sit" detail="A daily nudge for a few quiet minutes, for Meditation under Craft" value={!!settings.meditation} onChange={(meditation) => change({ meditation })} />
+      {settings.meditation && <TimeRow minutes={settings.meditationAt ?? 450} onChange={(meditationAt) => change({ meditationAt })} />}
       <Body muted>Kept on this phone.</Body>
     </Card>
   );

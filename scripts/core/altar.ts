@@ -38,6 +38,8 @@ export * as shelf from '../../app/src/lib/altar/shelf.ts';
 export * as pottedPlants from '../../app/src/lib/altar/pottedPlants.ts';
 export * as pottedSprig from '../../app/src/lib/altar/pottedSprig.ts';
 export * as editor from '../../app/src/lib/altar/editor.ts';
+// "Meditate here": the meditation timer's clock and bells (Craft → Meditation).
+export * as meditation from '../../app/src/lib/meditation/timer.ts';
 // Choosing several things at once, and cord cutting between two candles.
 export * as selection from '../../app/src/lib/altar/selection.ts';
 export * as cord from '../../app/src/lib/altar/cord.ts';

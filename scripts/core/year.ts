@@ -8,6 +8,7 @@ export * as yearSpan from '../../app/src/lib/grimoire/yearSpan.ts';
 export * as yearReview from '../../app/src/lib/grimoire/yearReview.ts';
 export * as readings from '../../app/src/lib/craft/hedge/readings.ts';
 export * as dreams from '../../app/src/lib/craft/hedge/dreams.ts';
+export * as meditation from '../../app/src/lib/meditation/log.ts';
 export * as holidays from '../../app/src/lib/holidays.ts';
 export * as calendars from '../../app/src/lib/calendars/index.ts';
 export * as calendar from '../../app/src/lib/calendar.ts';

@@ -16,3 +16,4 @@
 .tg-chip[aria-pressed="true"] { background: #e2c36d; color: #102118; border-color: #e2c36d; }
 .tg-item { padding: 0.4rem 0; }
 .tg-step { overflow-wrap: anywhere; }
+.tg-sit-clock { font-family: "Cormorant Garamond", serif; font-size: clamp(2.6rem, 14vw, 4rem); line-height: 1.1; margin: 0.25rem 0; font-variant-numeric: tabular-nums; }

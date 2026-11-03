@@ -1,0 +1,7 @@
+/* Meditation (/practice/meditation/): the timer's face and the breath circle. */
+.md-face { text-align: center; padding: 1.5rem 0; }
+.md-phase { letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted, #cabf9d); margin: 0; }
+.md-clock { font-family: "Cormorant Garamond", serif; font-size: clamp(3.5rem, 18vw, 5.5rem); line-height: 1.1; margin: 0.25rem 0; font-variant-numeric: tabular-nums; }
+.md-stage { position: relative; height: 280px; display: flex; flex-direction: column; align-items: center; justify-content: center; overflow: hidden; }
+.md-circle { position: absolute; width: 240px; height: 240px; max-width: 80vw; max-height: 80vw; border-radius: 50%; border: 2px solid var(--gold, #e2c36d); background: rgba(226, 195, 109, 0.18); transform: scale(0.35); }
+.md-word { position: relative; font-family: "Cormorant Garamond", serif; font-size: 1.9rem; margin: 0; }

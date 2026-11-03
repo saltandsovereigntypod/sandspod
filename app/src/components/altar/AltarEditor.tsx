@@ -21,6 +21,7 @@ import { AltarListing } from '../tend/AltarListing';
 import type { WhoseContext } from '../../lib/tend/altar';
 import { AltarStage, clampViewport, type AgingLooks, type ChargeGlows, type StageMoment, type StageSky, type Viewport } from './AltarStage';
 import { MoreSheet, type MoreAction } from './MoreSheet';
+import { MeditateOverlay } from '../meditation/MeditateOverlay';
 import { AltarHistorySheet, useAltarSnapshots } from './connect/AltarHistorySheet';
 import { AltarRitualOverlay } from './connect/AltarRitualOverlay';
 import { AncestorPanelSection, AncestorShrineSheet } from './connect/AncestorSheets';
@@ -298,6 +299,7 @@ type SheetName =
   | 'stone'
   | 'plant'
   | 'drawn'
+  | 'meditate'
   | 'page'
   | 'share'
   | 'history'
@@ -1155,6 +1157,7 @@ export function AltarEditor({
       else if (action === 'tonight') setSheet('tonight');
       else if (action === 'ritual') openSaved('ritual', 'ritual');
       else if (action === 'cord') openCord(null);
+      else if (action === 'meditate') setSheet('meditate');
       else if (action === 'ancestor' || action === 'stone' || action === 'plant' || action === 'drawn') setSheet(action);
     });
   };
@@ -1864,6 +1867,18 @@ export function AltarEditor({
 
   const sheets = doc ? (
     <>
+          {!shared && (
+            <MeditateOverlay
+              visible={sheet === 'meditate'}
+              altarId={sourceId}
+              candles={doc.objects.map((o, index) => ({ o, index })).filter(({ o }) => isCandle(o) && !isLit(o) && !candleLife(o).spent).map(({ o, index }) => ({ index, label: shortLabel(o.label, 'Candle') }))}
+              onLight={(i) => {
+                commit((d) => toggleLight(d, i, nowIso()));
+                finishDeed('light');
+              }}
+              onClose={() => setSheet(null)}
+            />
+          )}
           {shared ? (
             <WidgetSheet
               visible={sheet === 'widget'}
@@ -2247,6 +2262,7 @@ export function AltarEditor({
             section={sheet === 'more-reading' ? 'reading' : 'workings'}
             saved={!!sourceId}
             tonight={!!tonight}
+            personal={!shared}
             intention={intention.text}
             snap={options.snapToMeaning}
             onSnap={(on) => {

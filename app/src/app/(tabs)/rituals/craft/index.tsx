@@ -111,6 +111,13 @@ export default function CraftHome() {
       </View>
 
       <View style={ui.gapSmall}>
+        <SectionLabel>Meditation</SectionLabel>
+        <List>
+          <Row icon="wheel" title="Meditation" detail="A timer with gentle bells, breath pacing, a log of your sits and their patterns" last onPress={go('/rituals/craft/meditation')} />
+        </List>
+      </View>
+
+      <View style={ui.gapSmall}>
         <SectionLabel>Hearth & land</SectionLabel>
         <List>
           <Row icon="wheel" title="Land journal" detail="Your places through the year: frosts, birdsong, blooms, water, offerings · this time last year" onPress={go('/rituals/craft/hearth/land')} />

@@ -167,6 +167,7 @@
       <div class="sp-field" data-when-rhythm="moon"${rhythm.kind === "moon" ? "" : " hidden"}><label for="tn-own-moon-${id}">Which moon</label><select id="tn-own-moon-${id}" name="moon">${M.MOON_MARKS.map((m) => `<option value="${m.value}"${rhythm.moon === m.value ? " selected" : ""}>${esc(m.label)}</option>`).join("")}</select></div>
       <div class="sp-field" data-when-rhythm="until"${rhythm.kind === "until" ? "" : " hidden"}><label for="tn-own-until-${id}">Until</label><select id="tn-own-until-${id}" name="until">${choices.map((c) => `<option value="${c.date}" data-why="${esc(c.why)}"${rhythm.until === c.date ? " selected" : ""}>${esc(`${c.label} · ${shortDay(c.date)}`)}</option>`).join("")}</select></div>
       ${state.account ? `<label class="tn-check"><input type="checkbox" name="grimoire"${own.grimoire ? " checked" : ""} /> Also note it in my Grimoire <span class="sp-caption">Each time it’s done, a short page under Tending.</span></label>` : `<p class="sp-caption">Signed in, each time can also be noted in your Grimoire.</p>`}
+      <label class="tn-check"><input type="checkbox" name="meditations"${own.meditations ? " checked" : ""} /> Count my meditations <span class="sp-caption">When you finish a sit in Meditation, this is marked done for the day. Off unless you turn it on.</span></label>
       <div class="sp-actions"><button class="button" type="submit">${item ? "Save" : "Add it"}</button>${item ? `<button type="button" class="button button--ghost" data-remove-own>Take it off my list</button>` : ""}<button type="button" class="button button--ghost" data-cancel-own>Cancel</button></div>
     </form>`;
   }
@@ -183,7 +184,7 @@
           : kind === "until"
             ? { kind, until: String(data.get("until") || ""), untilWhy: until?.selectedOptions[0]?.dataset.why || "" }
             : { kind };
-    return { name: String(data.get("name") || ""), type: String(data.get("type") || "other"), other: String(data.get("other") || ""), notes: String(data.get("notes") || ""), rhythm, grimoire: data.get("grimoire") === "on" };
+    return { name: String(data.get("name") || ""), type: String(data.get("type") || "other"), other: String(data.get("other") || ""), notes: String(data.get("notes") || ""), rhythm, grimoire: data.get("grimoire") === "on", meditations: data.get("meditations") === "on" };
   }
 
   const dateWords = (iso) => new Date(iso).toLocaleDateString(undefined, { weekday: "short", day: "numeric", month: "short", year: "numeric" });
