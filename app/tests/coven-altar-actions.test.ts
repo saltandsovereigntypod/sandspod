@@ -76,7 +76,9 @@ test('the step’s one "At the altar" choice: done there, asked of people, or th
 
   const blank = { ...blankBuilderStep('work'), instructions: '' };
   const libation = applyAltarChoice(blank, 'deed:pour_libation');
-  assert.equal(libation.details.at_altar, 'offering');
+  assert.equal(libation.details.at_altar, 'libation');
+  // A libation step saved when it was an offering still finds its own row.
+  assert.equal(atAltarOf({ action: 'custom', details: { at_altar: 'offering', at_altar_as: 'pour_libation' } })?.deed, 'libation');
   assert.equal(atAltarOf({ ...blank, ...libation, action: 'custom' })?.button, 'Pour your libation');
   assert.ok(libation.instructions && libation.instructions.length > 10, 'fills in what to do when empty');
   assert.equal(applyAltarChoice({ ...blank, instructions: 'Mine.' }, 'deed:pour_libation').instructions, undefined, 'keeps what was written');

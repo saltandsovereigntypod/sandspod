@@ -33,11 +33,11 @@ export const CIRCLE_COLORS = [
   { id: 'white', label: 'White', color: '#fffaf0' },
   { id: 'red', label: 'Red', color: '#ff7b67' },
 ] as const;
-export const DEFAULT_CIRCLE_COLOR = CIRCLE_COLORS[0].color;
+export const DEFAULT_CIRCLE_COLOR: string = CIRCLE_COLORS[0].color;
 
 const HEX = /^#[0-9a-f]{6}$/i;
 /** A colour as `#rrggbb`, or the fallback. Accepts `rrggbb` and `#rgb`. */
-export function cleanColor(raw: unknown, fallback = DEFAULT_CIRCLE_COLOR): string {
+export function cleanColor(raw: unknown, fallback: string = DEFAULT_CIRCLE_COLOR): string {
   let s = String(raw ?? '').trim();
   if (!s) return fallback;
   if (!s.startsWith('#')) s = `#${s}`;
@@ -138,7 +138,7 @@ export function circleOf(extra: Extra | null | undefined): CircleState | null {
 }
 
 /** The ring a whole-altar "Cast it for me" draws, as stage fractions. */
-export const DEFAULT_RING = { cx: 0.5, cy: 0.54, r: 0.3 };
+export const DEFAULT_RING = { cx: 0.5, cy: 0.52, r: 0.24 };
 
 export function castCircle(extra: Extra, ring: { cx: number; cy: number; r: number }, color: string, now: string, by?: string, auto = false): Extra {
   const circle: CircleState = {

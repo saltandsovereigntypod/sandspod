@@ -35,7 +35,10 @@ export type AltarDeed =
   | 'scry'
   | 'bell'
   | 'circle'
+  | 'release_circle'
   | 'quarters'
+  | 'release_quarters'
+  | 'match'
   | 'bowl'
   | 'toast'
   | 'libation'
@@ -76,6 +79,7 @@ export const AT_ALTAR: AtAltar[] = [
   { action: 'pour_libation', name: 'Pour a libation', deed: 'libation', group: 'give', button: 'Pour your libation', withItems: 'Pour it from the chalice into a bowl on the altar.' },
   { action: 'toast_blessing', name: 'Raise the chalice', deed: 'toast', group: 'give', button: 'Raise the chalice at the altar' },
   { action: 'light_candle', name: 'Light a candle', deed: 'light', group: 'fire', button: 'Light a candle at the altar', turn: 'in_turn' },
+  { action: 'light_with_match', name: 'Light a candle with a match', deed: 'match', group: 'fire', button: 'Strike a match at the altar', turn: 'in_turn' },
   { action: 'burn_incense', name: 'Burn incense', deed: 'incense', group: 'fire', button: 'Light the incense' },
   { action: 'set_item', name: 'Place an item', deed: 'place', group: 'give', button: 'Choose something to place', withItems: 'Set it on the altar and say what it is there for.' },
   { action: 'draw_card', name: 'Draw a card', deed: 'card', group: 'work', button: 'Lay your card on the altar' },
@@ -93,9 +97,9 @@ export const AT_ALTAR: AtAltar[] = [
   { action: 'ring_bell', name: 'Ring the bell', deed: 'bell', group: 'work', button: 'Ring the bell at the altar' },
   { action: 'strike_bowl', name: 'Strike the singing bowl', deed: 'bowl', group: 'work', button: 'Strike the bowl at the altar' },
   { action: 'cast_circle', name: 'Cast the circle', deed: 'circle', group: 'circle', button: 'Cast the circle at the altar' },
-  { action: 'open_circle', name: 'Release the circle', deed: 'circle', group: 'circle', button: 'Release the circle at the altar' },
+  { action: 'open_circle', name: 'Release the circle', deed: 'release_circle', group: 'circle', button: 'Release the circle at the altar' },
   { action: 'call_quarters', name: 'Call the quarters', deed: 'quarters', group: 'circle', button: 'Call the quarters at the altar' },
-  { action: 'release_quarters', name: 'Release the quarters', deed: 'quarters', group: 'circle', button: 'Release the quarters at the altar' },
+  { action: 'release_quarters', name: 'Release the quarters', deed: 'release_quarters', group: 'circle', button: 'Release the quarters at the altar' },
   { action: 'cleanse_space', name: 'Sweep the altar', deed: 'sweep', group: 'let_go', button: 'Sweep the altar with the besom' },
 ];
 
@@ -110,7 +114,8 @@ export function atAltarOf(step: { action?: string | null; details?: unknown } | 
   const d = detailsOf(step);
   if (!isAltarDeed(d.at_altar)) return null;
   const deed = d.at_altar;
-  return AT_ALTAR.find((a) => a.deed === deed && a.action === d.at_altar_as) ?? AT_ALTAR.find((a) => a.deed === deed && a.action === step?.action) ?? AT_ALTAR.find((a) => a.deed === deed) ?? null;
+  // A row moved to a deed of its own (a libation was once an offering) is still found by its action.
+  return AT_ALTAR.find((a) => a.deed === deed && a.action === d.at_altar_as) ?? AT_ALTAR.find((a) => a.action === d.at_altar_as) ?? AT_ALTAR.find((a) => a.deed === deed && a.action === step?.action) ?? AT_ALTAR.find((a) => a.deed === deed) ?? null;
 }
 
 /**

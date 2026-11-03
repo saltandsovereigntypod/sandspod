@@ -87,6 +87,7 @@ import { PetitionBoxSheet, WritePetitionSheet } from './PetitionSheets';
 import { useCandleAmbience, useCandleFeel } from '../../lib/altar/feel';
 import { CLEANSE_LABEL, isBell, RING_LABEL } from '../../lib/altar/bell';
 import { useAltarBell } from '../../lib/altar/useAltarBell';
+import { useToolRites } from './useToolRites';
 import { ALTAR_OPTIONS, altarOptionsFor, defaultAltarOptions, type AltarOptions } from '../../lib/altar/altarOptions';
 import { ambientAt, moonMirrored, nextAmbientCheck } from '../../lib/altar/ambient';
 import { burnToRead, lastBurn, linkReadingJournal, readingsOf, readingText, recordReading, remnantOf, setRemnant, type ReadingInput } from '../../lib/altar/ceromancy';
@@ -1116,6 +1117,8 @@ export function AltarEditor({
       const candleAt = entry.data.candleId ? d.objects.findIndex((o) => o.altarObjectId === entry.data.candleId) : -1;
       if (candleAt >= 0) next = updateObjects(next, [candleAt], (o) => logAppEvent(o, { kind: 'petition', text: `The petition “${entry.data.title}” was ${words}.` }, now.toISOString()));
       const paperAt = next.objects.findIndex((o) => isPetitionPaper(o) && petitionEntryOf(o) === entry.id);
+      // A burned petition leaves a little ash on the altar, for the besom.
+      if (how === 'burned') next = toolRites.ashAt(next, paperAt >= 0 ? next.objects[paperAt] : candleAt >= 0 ? next.objects[candleAt] : null, now.toISOString());
       return paperAt >= 0 ? removeObject(next, paperAt) : next;
     });
     setSelected(null);
@@ -1405,7 +1408,7 @@ export function AltarEditor({
     const pending = pendingDeed.current;
     if (!pending || pending.kind !== kind) return;
     // A coven altar you can't tend right now keeps it as it was (commit says why): not done yet.
-    if (sharedRef.current && !sharedRef.current.canEdit && kind !== 'intention' && kind !== 'gratitude' && kind !== 'scry' && kind !== 'bell') return;
+    if (sharedRef.current && !sharedRef.current.canEdit && kind !== 'intention' && kind !== 'gratitude' && kind !== 'scry' && kind !== 'bell' && kind !== 'bowl') return;
     pendingDeed.current = null;
     pending.onDone();
   };
@@ -1413,7 +1416,26 @@ export function AltarEditor({
     setNotice(`There’s no ${what} on the altar yet. Set one down from the cabinet first.`);
     setSheet('cabinet');
   };
+  // The circle, the quarters, the singing bowl, the chalice, the besom, and lighting by hand.
+  const toolRites = useToolRites({
+    doc,
+    docRef,
+    commit,
+    selected,
+    setSelected,
+    say: setNotice,
+    log: logAltar,
+    moment: (uids, methods) => playMoment(uids, methods),
+    shared,
+    me: workshop.userId ?? '',
+    stageWidth,
+    viewport,
+    finishDeed,
+    toCabinet,
+    canEdit: !shared || shared.canEdit,
+  });
   const startDeed = (kind: AltarDeed) => {
+    if (toolRites.startDeed(kind)) return;
     const objects = docRef.current?.objects ?? [];
     const find = (test: (o: (typeof objects)[number]) => boolean) => objects.findIndex(test);
     const candle = () => find((o) => isCandle(o) && !candleLife(o).spent);
@@ -1491,6 +1513,7 @@ export function AltarEditor({
 
   const stage =
     doc && stageWidth > 0 ? (
+      <View>
           <AltarStage
             doc={doc}
             width={stageWidth}
@@ -1543,7 +1566,11 @@ export function AltarEditor({
             moment={moment}
             guide={guide}
             now={minute * 60_000}
+            onTrace={toolRites.stage.onTrace}
+            trail={toolRites.stage.trail}
           />
+          {toolRites.floating}
+      </View>
     ) : null;
 
   const panelBody = (
@@ -1567,6 +1594,8 @@ export function AltarEditor({
             />
           </View>
         )}
+
+        {doc && toolRites.panels}
 
         {doc && selecting ? (
           <SelectionPanel

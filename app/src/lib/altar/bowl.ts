@@ -72,6 +72,8 @@ export function strikesBy(startedAt: number, everyMin: number, now: number): num
 /** One strike per person per this long, heard by the others on a coven altar. */
 export const STRIKE_GAP_MS = 1500;
 
+export const BOWL_SOUND_OFF = 'Candle sounds are off in Accessibility, so the bowl is silent here.';
+export const STOP_LABEL = 'Stop ringing';
 export const STRIKE_LABEL = 'Strike once';
 export const EVERY_LABEL = 'Ring every few minutes';
 export const strikeLine = (t: BowlTone) => `The singing bowl was struck (${toneLabel(t)}).`;

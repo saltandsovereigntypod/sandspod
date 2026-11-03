@@ -94,3 +94,7 @@ export * as screenTabs from '../../app/src/lib/screenTabs.ts';
 export * as altarsAcross from '../../app/src/lib/covens/altarsAcross.ts';
 // The altar bell: ringing it, ringing to cleanse (kept in the altar’s History) and the coven altar hearing it.
 export * as bell from '../../app/src/lib/altar/bell.ts';
+// The circle and the quarters, the singing bowl, and the chalice, besom, matches, lighter and snuffer.
+export * as circle from '../../app/src/lib/altar/circle.ts';
+export * as bowl from '../../app/src/lib/altar/bowl.ts';
+export * as toolRites from '../../app/src/lib/altar/toolRites.ts';
