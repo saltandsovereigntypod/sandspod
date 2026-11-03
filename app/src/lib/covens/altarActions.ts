@@ -13,6 +13,7 @@
 
 import { actionOf, ALTAR_EFFECTS, applyAction, type AltarEffect, type StepAction } from './stepActions.ts';
 import { CONTRIBUTION_KINDS, defaultContribution, type ContributionKind, type StepContribution } from './contributions.ts';
+import { presetOf, presetParams, PRESETS, type PresetId } from '../meditation/scripts.ts';
 
 /** What the altar opens or does. */
 export type AltarDeed =
@@ -112,6 +113,17 @@ export function atAltarOf(step: { action?: string | null; details?: unknown } | 
   return AT_ALTAR.find((a) => a.deed === deed && a.action === d.at_altar_as) ?? AT_ALTAR.find((a) => a.deed === deed && a.action === step?.action) ?? AT_ALTAR.find((a) => a.deed === deed) ?? null;
 }
 
+/**
+ * A timed sit for everyone in the step: a meditation preset (Ground &
+ * centre, Clearing; meditation/scripts.ts), kept on the step's details as
+ * `sit_preset`. Each person's step shows a button that starts the sit's
+ * timer and guidance on their own screen.
+ */
+export function sitStepOf(step: { details?: unknown } | null | undefined): { id: PresetId; label: string; minutes: number; button: string; params: Record<string, string> } | null {
+  const p = presetOf(detailsOf(step).sit_preset);
+  return p ? { id: p.id, label: p.label, minutes: p.minutes, button: `Begin the sit: ${p.label}`, params: presetParams(p.id) } : null;
+}
+
 /** A kept "which row" is one of the table's actions. */
 export const isAtAltarAction = (v: unknown): v is string => typeof v === 'string' && AT_ALTAR.some((a) => a.action === v);
 
@@ -186,6 +198,8 @@ export function altarChoicesOf(step: { action?: string | null; details?: unknown
   if (row) out.push(`deed:${row.action}`);
   if (step.contribution?.kind) out.push(`ask:${step.contribution.kind}`);
   if (step.altar_action) out.push(`effect:${step.altar_action}`);
+  const sit = sitStepOf(step);
+  if (sit) out.push(`sit:${sit.id}`);
   return out;
 }
 
@@ -201,6 +215,7 @@ export function altarChoiceGroups(current: string[] = []): AltarChoiceGroup[] {
     })),
     { id: 'ask', label: 'Asked of each person in the ritual', detail: '', options: asked.map((k) => ({ value: `ask:${k.id}`, label: k.label })) },
     { id: 'effect', label: 'The altar by itself', detail: '', options: ALTAR_EFFECTS.filter((e) => e.value).map((e) => ({ value: `effect:${e.value}`, label: EFFECT_WORDS[e.value] ?? e.label })) },
+    { id: 'sit', label: 'A timed sit for everyone', detail: '', options: PRESETS.map((p) => ({ value: `sit:${p.id}`, label: `${p.label} (${p.minutes} min)` })) },
   ];
 }
 
@@ -213,6 +228,10 @@ export function altarChoiceNote(step: Parameters<typeof altarChoicesOf>[0]): str
     const row = atAltarOf(step)!;
     return `Each person’s step shows “${row.button}”, which opens it at the coven’s altar. Doing it there counts as their Done.`;
   }
+  if (kind === 'sit') {
+    const sit = sitStepOf(step)!;
+    return `Each person’s step shows “${sit.button}”, which starts a ${sit.minutes}-minute timer with its guidance on their own screen, from Meditation.`;
+  }
   if (kind === 'ask') return `Each person is asked for ${(CONTRIBUTION_KINDS.find((k) => k.id === id)?.label ?? 'something').toLowerCase()} during the step, and it is kept with the ritual.`;
   return ALTAR_EFFECTS.find((e) => e.value === id)?.detail ?? '';
 }
@@ -224,7 +243,7 @@ export function altarChoiceNote(step: Parameters<typeof altarChoicesOf>[0]): str
  */
 export function applyAltarChoice(step: { instructions?: string; details: object; contribution?: StepContribution | null }, value: string) {
   const [kind, id] = value.split(':');
-  const details = { ...step.details, at_altar: undefined, at_altar_as: undefined } as Record<string, unknown>;
+  const details = { ...step.details, at_altar: undefined, at_altar_as: undefined, sit_preset: undefined } as Record<string, unknown>;
   const patch: { altar_action: AltarEffect; contribution: StepContribution | null; details: Record<string, unknown>; instructions?: string } = { altar_action: '', contribution: null, details };
   if (kind === 'deed') {
     const row = AT_ALTAR.find((a) => a.action === id);
@@ -237,6 +256,8 @@ export function applyAltarChoice(step: { instructions?: string; details: object;
     patch.contribution = step.contribution?.kind === id ? step.contribution : defaultContribution(id as ContributionKind, step.contribution ? { timing: step.contribution.timing } : {});
   } else if (kind === 'effect' && ALTAR_EFFECTS.some((e) => e.value === id)) {
     patch.altar_action = id as AltarEffect;
+  } else if (kind === 'sit' && presetOf(id)) {
+    details.sit_preset = id;
   }
   return patch;
 }

@@ -9,7 +9,22 @@
 
 import type { CabinetItem, SavedObject } from './types.ts';
 
-export type ShelfObject = { id: string; name: string; group: string; description: string; keywords: string[]; /** Placed glowing, as a lit lamp. */ glows?: boolean };
+/** A Living Library page something on the altar is made of or kin to: its entity id (traditional:<type>:<key>) and name. */
+export type LibraryLink = { entity: string; name: string };
+
+export type ShelfObject = {
+  id: string;
+  name: string;
+  group: string;
+  description: string;
+  keywords: string[];
+  /** Placed glowing, as a lit lamp. */
+  glows?: boolean;
+  /** The Living Library pages it's linked to, shown on its panel. */
+  library?: LibraryLink[];
+};
+
+const lib = (type: string, key: string, name: string): LibraryLink => ({ entity: `traditional:${type}:${key}`, name });
 
 export const SHELF_TOOLS: ShelfObject[] = [
   // Divination
@@ -32,6 +47,8 @@ export const SHELF_TOOLS: ShelfObject[] = [
   { id: 'crossroads', name: 'Crossroads', group: 'Ritual', keywords: ['crossroads', 'Hekate', 'Deipnon', 'the dark moon', 'thresholds'], description: 'A stone where three roads meet, with a key and a torch at its foot. For Hekate, the Deipnon at the dark moon, and any threshold you stand at.' },
   { id: 'frame-drum', name: 'Frame Drum', group: 'Ritual', keywords: ['drumming', 'trance', 'journeying', 'rhythm'], description: 'A hand drum for raising energy and for the steady beat of a journey.' },
   { id: 'rattle', name: 'Rattle', group: 'Ritual', keywords: ['clearing', 'calling', 'spirits', 'rhythm'], description: 'Shaken to clear a space, to call in spirits, or to keep the rhythm of a working.' },
+  { id: 'selenite-athame', name: 'Selenite Athame', group: 'Ritual', keywords: ['athame', 'selenite', 'cleansing', 'boundary', 'circle casting', 'crystal'], description: 'An athame with a blade of milky satin selenite, for directing energy, casting and closing the circle and cutting cords rather than for cutting. Selenite is valued for cleansing; it is soft and water spoils it, so keep it dry.', library: [lib('tool', 'athame', 'Athame'), lib('crystal', 'selenite', 'Selenite')] },
+  { id: 'crystal-wand', name: 'Labradorite & Aspen Crystal Wand', group: 'Ritual', keywords: ['wand', 'labradorite', 'black tourmaline', 'clear quartz', 'aspen', 'copper', 'triple moon', 'crystal'], description: 'A wand of aspen wood wrapped in copper wire, set with labradorite cabochons and black tourmaline, with clear quartz points at both ends, a triple moon at its head, and key and moon charms. For directing energy, casting a circle and calling in.', library: [lib('tool', 'wand', 'Wand'), lib('crystal', 'labradorite', 'Labradorite'), lib('crystal', 'black_tourmaline', 'Black Tourmaline'), lib('crystal', 'clear_quartz', 'Clear Quartz')] },
   { id: 'singing-bowl', name: 'Singing Bowl', group: 'Ritual', keywords: ['sound', 'cleansing', 'meditation', 'tone'], description: 'A bowl that rings when struck or circled, its tone used to cleanse a space and settle the mind.' },
   // Light
   { id: 'oil-lamp', name: 'Oil Lamp', group: 'Light', keywords: ['flame', 'devotion', 'light', 'vigil'], description: 'An old way of keeping a light for a god or the dead, a small steady flame over oil.', glows: true },
@@ -59,6 +76,23 @@ export const NATURAL_OBJECTS: ShelfObject[] = [
 ];
 
 const byId = (list: ShelfObject[], id: string) => list.find((o) => o.id === id) ?? null;
+
+// The salt borders (geometry.ts SALT_BORDER_TOOLS) beyond the Salt Circle, which has its own page.
+const SALT_LINKS: Record<string, LibraryLink[]> = {
+  'black-salt-circle': [lib('tool', 'black_salt', 'Black Salt'), lib('tool', 'salt_circle', 'Salt Circle')],
+  'salt-rectangle': [lib('tool', 'salt_circle', 'Salt Circle')],
+  'black-salt-rectangle': [lib('tool', 'black_salt', 'Black Salt'), lib('tool', 'salt_circle', 'Salt Circle')],
+};
+
+/**
+ * The Living Library pages linked from something on the altar that has no
+ * page of its own (a crystal wand's stones, a black salt line's salt): the app
+ * opens /altar/library/<entity>, the website /library/entry/?entity=<entity>.
+ */
+export function libraryLinksOf(object: Pick<SavedObject, 'type' | 'tool' | 'form'>): LibraryLink[] {
+  if (object.type === 'tool' && SALT_LINKS[String(object.tool || '')]) return SALT_LINKS[String(object.tool)];
+  return shelfObjectOf(object)?.library ?? [];
+}
 
 /** The cabinet's extra tools that have a picture (`images`: id → picture), placed as tools. */
 export function shelfToolItems(images: Record<string, string>): CabinetItem[] {

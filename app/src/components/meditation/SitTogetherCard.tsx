@@ -8,6 +8,7 @@ import { Text } from 'react-native';
 
 import { markTendForSit } from '../../lib/meditation/afterSit';
 import { fromTimer } from '../../lib/meditation/log';
+import { mixLine, sharedMix } from '../../lib/meditation/sound';
 import { clockLabel, planLine, sitStateAt } from '../../lib/meditation/timer';
 import { sharedClock, sitTogetherOf, startLine } from '../../lib/meditation/together';
 import type { LiveRitual } from '../../lib/together/live';
@@ -30,6 +31,7 @@ export function SitTogetherCard({ live }: { live: LiveRitual }) {
   }, [waiting]);
   if (!sit) return null;
   const { plan, startAt } = sit;
+  const sound = sharedMix(sit.sound);
 
   const finish = (sitMs: number) => {
     if (done || startAt === null) return;
@@ -43,7 +45,7 @@ export function SitTogetherCard({ live }: { live: LiveRitual }) {
   return (
     <Card tone="gold">
       <Text style={type.eyebrow}>Sit together</Text>
-      <Text style={type.body}>{planLine(plan)}</Text>
+      <Text style={type.body}>{[planLine(plan), sound ? mixLine(sound) : ''].filter(Boolean).join(' · ')}</Text>
       <Text style={type.caption}>{startLine(startAt, now)}</Text>
       {done ? (
         <>
@@ -53,7 +55,7 @@ export function SitTogetherCard({ live }: { live: LiveRitual }) {
       ) : startAt === null ? null : waiting ? (
         <Text style={type.cardTitle}>{`Beginning in ${clockLabel(startAt - now)}`}</Text>
       ) : (
-        <SitTimer shared plan={plan} clock={sharedClock(startAt)} endedAtMs={endedAt} onEnd={(ms) => (plan.minutes === null ? setEndedAt(ms) : finish(sitStateAt(plan, ms).sitMs))} onFinished={finish} />
+        <SitTimer shared sound={sound} plan={plan} clock={sharedClock(startAt)} endedAtMs={endedAt} onEnd={(ms) => (plan.minutes === null ? setEndedAt(ms) : finish(sitStateAt(plan, ms).sitMs))} onFinished={finish} />
       )}
     </Card>
   );

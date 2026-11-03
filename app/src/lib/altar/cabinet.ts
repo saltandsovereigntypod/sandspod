@@ -4,8 +4,8 @@
 // Image paths are kept exactly as the website writes them, so a save made in
 // the app loads the same artwork on the website.
 
-import { NEW_CLOTH_SIZE, NEW_OBJECT_SIZE, objectAspect, savedFromBox, type Box } from './geometry.ts';
-import { nextLayer } from './layers.ts';
+import { isSaltBorder, NEW_CLOTH_SIZE, NEW_OBJECT_SIZE, objectAspect, savedFromBox, type Box } from './geometry.ts';
+import { bottomLayer, nextLayer } from './layers.ts';
 import { ensureLivingState } from './livingState.ts';
 import type { AltarBackground, CabinetCategoryId, CabinetForm, CabinetItem, SavedObject } from './types.ts';
 import { ALTAR_ARTWORK } from './artworkData.ts';
@@ -91,6 +91,36 @@ function candleFormImage(color: string, formId: string): string {
 const fromArtwork = (list: (typeof ALTAR_ARTWORK.items)[keyof typeof ALTAR_ARTWORK.items]): CabinetItem[] =>
   list.map((item) => ({ ...item, id: `${item.category}:${slug(item.name)}`, keywords: [...item.keywords], forms: item.forms.map((f) => ({ ...f })) }));
 
+const saltPicture = (tool: string, form: string) => `../assets/altar/objects/tools/${tool}/${tool}-${form}.png`;
+const saltRectangle = (name: string, tool: string, keywords: string[], description: string): CabinetItem => ({
+  id: `tools:${tool}`,
+  category: 'tools',
+  name,
+  keywords,
+  description,
+  forms: [
+    { label: 'Square', image: saltPicture(tool, 'square'), type: 'tool', tool, form: 'square' },
+    { label: 'Altar-wide', image: saltPicture(tool, 'altar'), type: 'tool', tool, form: 'altar', aliases: ['whole altar', 'border'] },
+  ],
+});
+
+/**
+ * The salt borders beyond the Salt Circle: the website's cabinet.js lists
+ * these from js/core/altar.js (cabinet.SALT_BORDERS), so both offer the same.
+ */
+export const SALT_BORDERS: CabinetItem[] = [
+  {
+    id: 'tools:black-salt-circle',
+    category: 'tools',
+    name: 'Black Salt Circle',
+    keywords: ['protection', 'banishing', 'warding', 'boundary', 'circle'],
+    description: 'A ring of black salt, salt mixed with ash or charcoal, laid round what you protect. Make it as large as the altar.',
+    forms: [{ label: 'Place', image: '../assets/altar/objects/tools/black-salt-circle/black-salt-circle.png', type: 'tool', tool: 'black-salt-circle', form: 'pile' }],
+  },
+  saltRectangle('Salt Rectangle', 'salt-rectangle', ['protection', 'cleansing', 'warding', 'boundary', 'border'], 'A line of white salt laid in a square or round the whole altar, to mark and guard the space within it.'),
+  saltRectangle('Black Salt Rectangle', 'black-salt-rectangle', ['protection', 'banishing', 'warding', 'boundary', 'border'], 'A line of black salt, salt mixed with ash or charcoal, laid in a square or round the whole altar, to keep harm out.'),
+];
+
 const single = (
   category: CabinetCategoryId,
   name: string,
@@ -158,6 +188,8 @@ export const builtInCabinet: CabinetItem[] = [
     tool: 'salt-circle',
     form: 'pile',
   }),
+  // More salt borders, laid under everything and as large as the whole altar (geometry.ts SALT_BORDER_TOOLS).
+  ...SALT_BORDERS.map((border) => ({ ...border, forms: border.forms.map((form) => ({ ...form })) })),
   single('deities', 'Hekate Statue', ['crossroads', 'torches', 'keys'], {
     image: '../assets/altar/objects/tools/deities/hekate/hekate-statue.png',
     type: 'deity',
@@ -372,7 +404,9 @@ export function objectFromForm(
   center: { cx: number; cy: number } = { cx: 0.5, cy: 0.5 },
 ): SavedObject {
   const type = form.type || '';
-  const size = type === 'cloth' ? NEW_CLOTH_SIZE : NEW_OBJECT_SIZE;
+  // A salt border is set down at a cloth's size, under what's already there (geometry.ts).
+  const border = isSaltBorder({ type, tool: form.tool });
+  const size = type === 'cloth' || border ? NEW_CLOTH_SIZE : NEW_OBJECT_SIZE;
   const imagePath = formImage(item, form, overrides);
   const box: Box = { cx: center.cx, cy: center.cy, size, aspect: objectAspect({ imagePath }) };
   const object: SavedObject = {
@@ -396,7 +430,7 @@ export function objectFromForm(
     apothecaryNotes: '',
     apothecaryLogToGrimoire: 'false',
     apothecaryGrimoireStatus: '',
-    scale: type === 'cloth' ? '3' : '1',
+    scale: type === 'cloth' || border ? '3' : '1',
     rotation: '0',
     flipped: 'false',
     locked: 'false',
@@ -408,7 +442,7 @@ export function objectFromForm(
     altarObjectId: '',
     groupId: '',
     ...savedFromBox(box),
-    zIndex: String(nextLayer(existing)),
+    zIndex: String(border ? bottomLayer(existing) : nextLayer(existing)),
   };
   const placed = ensureLivingState(object, now);
   // A filled vessel from the Offerings drawer is set down with its offering already set out.

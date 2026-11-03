@@ -49,7 +49,7 @@ import {
 import { harvestSprig } from '../../lib/altar/pottedSprig';
 import { keepImageOnDevice, pickImage, uploadImage } from '../../lib/altar/images';
 import { festivalsTonight, seasonalDescription, seasonalNear, withoutHiddenCalendars } from '../../lib/altar/seasonal';
-import { shelfDescription } from '../../lib/altar/shelf';
+import { libraryLinksOf, shelfDescription } from '../../lib/altar/shelf';
 import { RitualPickerSheet, useBeginOnAltar } from './connect/BeginOnAltar';
 import type { AltarRef } from './connect/common';
 import { GrimoireLinkSheet, GrimoirePageLink } from './connect/GrimoireLink';
@@ -243,7 +243,7 @@ import type { AltarDeed } from '../../lib/covens/altarActions';
 import { altarSummary, documentFromAltar, emptyDocument, ritualAltarSnapshot, type AltarDocument } from '../../lib/altar/snapshot';
 import { useAltars } from '../../lib/altar/store';
 import type { CabinetForm, CabinetItem } from '../../lib/altar/types';
-import { useLibrary } from '../../lib/library';
+import { altarLibraryHref, useLibrary } from '../../lib/library';
 import { setAltarFullScreen } from '../../lib/altarFullScreen';
 import { canTurnScreen, turnScreen } from '../../lib/screenOrientation';
 import { cachedSettings, useMySettings } from '../../lib/settings/store';
@@ -2722,6 +2722,22 @@ function ObjectPanel({
           <Text style={type.eyebrow}>{locked ? 'Locked in place' : lit || incense?.lit ? 'Burning' : life?.spent ? 'Spent' : incense?.ash ? 'Ash' : 'Selected'}</Text>
           <Text style={type.cardTitle}>{objectLabel}</Text>
           {!!glance && <Text style={styles.glance}>{glance}</Text>}
+          {libraryLinksOf(object).length > 0 && (
+            <>
+              <Text style={type.caption}>In the Living Library</Text>
+              <ChipRow>
+                {libraryLinksOf(object).map((link) => (
+                  <Chip
+                    key={link.entity}
+                    label={link.name}
+                    symbol="❧"
+                    accessibilityLabel={`${link.name}, in the Living Library`}
+                    onPress={() => router.push(altarLibraryHref({ id: link.entity }))}
+                  />
+                ))}
+              </ChipRow>
+            </>
+          )}
           {!!group && <Text style={type.caption}>{`In the group “${group}”`}</Text>}
           {attunement.attuned && (
             <Text style={styles.attuned} accessibilityLabel={attunement.line}>

@@ -117,6 +117,8 @@ export type StepDetails = {
   at_altar?: AltarDeed;
   /** Which of that deed's steps ("pour_libation" of the offering): its name and button. */
   at_altar_as?: string;
+  /** A timed sit for everyone (altarActions.ts sitStepOf): the meditation preset. */
+  sit_preset?: string;
 };
 
 /** One step as the builder edits it. */
@@ -418,6 +420,7 @@ function cleanDetails(raw: unknown): StepDetails {
   if (cleanEnder(d.ender) !== LEADER_ENDER) out.ender = cleanEnder(d.ender);
   if (isAltarDeed(d.at_altar)) out.at_altar = d.at_altar;
   if (isAltarDeed(d.at_altar) && isAtAltarAction(d.at_altar_as)) out.at_altar_as = d.at_altar_as;
+  if (d.sit_preset === 'ground' || d.sit_preset === 'clearing') out.sit_preset = d.sit_preset;
   return out;
 }
 

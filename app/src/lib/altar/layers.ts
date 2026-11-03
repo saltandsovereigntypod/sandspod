@@ -22,6 +22,16 @@ export function stackOrder(objects: SavedObject[]): number[] {
     .map((entry) => entry.index);
 }
 
+/**
+ * The layer a salt border is set down at: under everything already on the
+ * altar except its cloths, so things can be placed within its line (never
+ * below 1, so it stays above the altar itself).
+ */
+export function bottomLayer(objects: SavedObject[]): number {
+  const layers = objects.filter((object) => object.type !== 'cloth').map(layerOf);
+  return Math.max(1, (layers.length ? Math.min(...layers) : BASE_LAYER) - 1);
+}
+
 /** The next layer a newly placed object gets (website: ++highestLayer). */
 export function nextLayer(objects: SavedObject[]): number {
   return objects.reduce((highest, object) => Math.max(highest, layerOf(object)), BASE_LAYER) + 1;

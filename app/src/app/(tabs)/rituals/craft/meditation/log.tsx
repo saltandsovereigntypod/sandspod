@@ -6,7 +6,7 @@ import { Button } from '../../../../../components/Button';
 import { Body, Card, Chip, Chips, confirmAction, Field, Notice, RitualScreen, SectionLabel, Title, Toggle, ui } from '../../../../../components/rituals/ui';
 import { addEntry, removeEntry, updateEntry, useCraft } from '../../../../../lib/craft/store';
 import { useGrimoire } from '../../../../../lib/grimoire/store';
-import { CAME_UP_TAGS, findSitPage, newSit, normalizeSit, SETTLED_WORDS, SIT_KINDS, sitPage, SITS, type Sit, type SitKind } from '../../../../../lib/meditation/log';
+import { CAME_UP_TAGS, findSitPage, MOOD_WORDS, newSit, normalizeSit, promptsFor, SETTLED_WORDS, SIT_KINDS, sitPage, SITS, type Sit } from '../../../../../lib/meditation/log';
 import { localDateKey } from '../../../../../lib/rituals/lifecycle';
 
 const pad = (n: number) => String(n).padStart(2, '0');
@@ -21,10 +21,16 @@ function moment(day: string, time: string): Date | null {
   return Number.isNaN(at.getTime()) || +t[1] > 23 || +t[2] > 59 ? null : at;
 }
 
+/** What a sit's params bring to a new log entry (extras.ts logParams). */
+function fromParams(p: Record<string, string>): Partial<Sit> {
+  const n = (v?: string) => (v ? Number(v) : undefined);
+  return { kind: (p.kind as Sit['kind']) || 'breath', altar: p.altar, together: p.together, intention: p.intention, before: n(p.before), after: n(p.after), mantra: p.mantra, count: n(p.count), steps: n(p.steps), programme: p.programme, step: p.step, script: p.script };
+}
+
 // Log a sit, or change one: when, how long, the kind of practice, how
 // settled, a note and what came up, and whether to keep it in the Grimoire.
 export default function SitLog() {
-  const params = useLocalSearchParams<{ id?: string; at?: string; minutes?: string; timed?: string; kind?: string; altar?: string; together?: string }>();
+  const params = useLocalSearchParams<Record<string, string>>();
   const { entries, ready } = useCraft<unknown>(SITS);
   const grimoire = useGrimoire();
   const existing = params.id ? entries.find((e) => e.id === params.id) : null;
@@ -39,7 +45,7 @@ export default function SitLog() {
     if (draft || !ready) return;
     const start = existing
       ? normalizeSit(existing.data)
-      : newSit({ at: params.at && Number.isFinite(Date.parse(params.at)) ? params.at : new Date().toISOString(), minutes: Number(params.minutes) || 10, kind: (params.kind as SitKind) || 'breath', timed: params.timed === '1', altar: params.altar, together: params.together });
+      : newSit({ ...fromParams(params), at: params.at && Number.isFinite(Date.parse(params.at)) ? params.at : new Date().toISOString(), minutes: Number(params.minutes) || 10, timed: params.timed === '1' });
     const at = new Date(start.at);
     // Set once, when the entry has loaded.
     // eslint-disable-next-line react-hooks/set-state-in-effect
@@ -47,7 +53,7 @@ export default function SitLog() {
     setDay(localDateKey(at));
     setTime(timeOf(at));
     setMinutes(String(start.minutes));
-  }, [draft, ready, existing, params.at, params.minutes, params.kind, params.timed, params.altar, params.together]);
+  }, [draft, ready, existing, params]);
 
   if (!draft) {
     return (
@@ -97,6 +103,33 @@ export default function SitLog() {
         {draft.kind === 'other' && <Field label="In your own words" value={draft.other} onChange={(other) => set({ other })} />}
       </View>
 
+      {(draft.kind === 'mantra' || !!draft.mantra || !!draft.count) && (
+        <View style={ui.gapSmall}>
+          <SectionLabel>Mantra or chant</SectionLabel>
+          <Field label="The words" value={draft.mantra ?? ''} onChange={(mantra) => set({ mantra })} />
+          {!!draft.count && <Body muted>{`${draft.count} counted on the mala`}</Body>}
+        </View>
+      )}
+      {!!draft.steps && <Body muted>{`${draft.steps} steps`}</Body>}
+
+      <View style={ui.gapSmall}>
+        <SectionLabel>Before and after</SectionLabel>
+        <Field label="Your intention" value={draft.intention ?? ''} onChange={(intention) => set({ intention })} />
+        <Body muted>How you felt before</Body>
+        <Chips>
+          {[1, 2, 3, 4, 5].map((n) => (
+            <Chip key={n} label={String(n)} a11yLabel={`Before: ${n}, ${MOOD_WORDS[n]}`} selected={draft.before === n} onPress={() => set({ before: draft.before === n ? undefined : n })} />
+          ))}
+        </Chips>
+        <Body muted>How you feel after</Body>
+        <Chips>
+          {[1, 2, 3, 4, 5].map((n) => (
+            <Chip key={n} label={String(n)} a11yLabel={`After: ${n}, ${MOOD_WORDS[n]}`} selected={draft.after === n} onPress={() => set({ after: draft.after === n ? undefined : n })} />
+          ))}
+        </Chips>
+        <Body muted>1 low, 5 bright.</Body>
+      </View>
+
       <View style={ui.gapSmall}>
         <SectionLabel>How settled</SectionLabel>
         <Chips>
@@ -109,6 +142,11 @@ export default function SitLog() {
 
       <View style={ui.gapSmall}>
         <SectionLabel>What came up</SectionLabel>
+        {promptsFor(draft.kind).map((q) => (
+          <Body key={q} muted>
+            {q}
+          </Body>
+        ))}
         <Field label="Anything that came: images, words, feelings" value={draft.cameUp} onChange={(cameUp) => set({ cameUp })} multiline />
         <Chips>
           {CAME_UP_TAGS.map((t) => (

@@ -134,6 +134,9 @@ function ensureSeasonalCabinetItems() {
   const core = window.SaltCore?.altar;
   if (!core?.seasonal || !core.shelf) return;
   seasonalCabinetAdded = true;
+  // The black salt circle and the salt rectangles, just after the Salt Circle, as in the app (cabinet.ts SALT_BORDERS).
+  const afterSaltCircle = cabinetItems.findIndex((item) => item.name === "Salt Circle") + 1 || cabinetItems.length;
+  cabinetItems.splice(afterSaltCircle, 0, ...(core.cabinet?.SALT_BORDERS || []).map((item) => ({ ...item, icon: "⭕️", forms: item.forms.map((form) => ({ ...form })) })));
   core.shelf.shelfToolItems(altarArtwork.shelfTools || {}).forEach((item) => cabinetItems.push({ ...item, icon: "🗝️" }));
   core.shelf.naturalItems(altarArtwork.natural || {}).forEach((item) => cabinetItems.push({ ...item, icon: "🪶" }));
   core.seasonal.seasonalCabinetItems(altarArtwork.seasonal || {}).forEach((item) => cabinetItems.push({ ...item, icon: "🌾" }));

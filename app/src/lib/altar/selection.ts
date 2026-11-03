@@ -5,7 +5,7 @@
 // snuffed in one step (one undo). Objects are addressed by their index in
 // `objects`, as in editor.ts. Pure.
 
-import { clampBox, displayBox, withCenter, boxHeightFraction, type Box } from './geometry.ts';
+import { boundsType, clampBox, displayBox, withCenter, boxHeightFraction, type Box } from './geometry.ts';
 import { BASE_LAYER, stackOrder } from './layers.ts';
 import { isCandle, lightCandle, snuffCandle } from './livingState.ts';
 import { withoutCordsFor } from './cord.ts';
@@ -75,14 +75,14 @@ export function clampMove(boxes: { box: Box; type?: string }[], dx: number, dy: 
 export function moveTogether(doc: AltarDocument, indices: number[], dx: number, dy: number): AltarDocument {
   const moving = cleanSelection(doc, indices).filter((i) => !isLocked(doc.objects[i]));
   if (!moving.length || (!dx && !dy)) return doc;
-  const boxes = moving.map((i) => ({ box: displayBox(doc.objects[i]), type: doc.objects[i].type }));
+  const boxes = moving.map((i) => ({ box: displayBox(doc.objects[i]), type: boundsType(doc.objects[i]) }));
   const move = clampMove(boxes, dx, dy);
   if (!move.dx && !move.dy) return doc;
   const updates = new Map<number, SavedObject>();
   moving.forEach((i, k) => {
     const box = boxes[k].box;
     // Already inside, so withCenter's own clamp leaves it where it's put.
-    const placed = clampBox({ ...box, cx: box.cx + move.dx, cy: box.cy + move.dy }, doc.objects[i].type, 'drag');
+    const placed = clampBox({ ...box, cx: box.cx + move.dx, cy: box.cy + move.dy }, boundsType(doc.objects[i]), 'drag');
     updates.set(i, withCenter(doc.objects[i], placed.cx, placed.cy));
   });
   return { ...doc, objects: doc.objects.map((o, i) => updates.get(i) ?? o) };

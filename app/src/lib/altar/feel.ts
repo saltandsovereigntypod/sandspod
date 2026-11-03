@@ -52,11 +52,18 @@ let modeSet = false;
 
 /** Whether a bell is ringing out (it plays through the silent switch meanwhile). */
 let bellRinging = false;
+/** Sounds the person chose to hear (a sit's layers) hold the silent switch open until they stop. */
+let loudHolds = 0;
+export function holdLoud(on: boolean) {
+  loudHolds = Math.max(0, loudHolds + (on ? 1 : -1));
+  if (on) void setAudioModeAsync({ playsInSilentMode: true, interruptionMode: 'mixWithOthers', shouldPlayInBackground: false }).catch(() => {});
+  else if (!bellRinging) void setAudioModeAsync({ playsInSilentMode: false, interruptionMode: 'mixWithOthers', shouldPlayInBackground: false }).catch(() => {});
+}
 
 function setMode() {
   if (modeSet) return;
   modeSet = true;
-  if (bellRinging) return; // set back to quiet once the bell has rung out
+  if (bellRinging || loudHolds) return; // set back to quiet once the bell has rung out or the sit's sound stops
   // Sound effects: alongside music or a podcast, and quiet with the ring switch off.
   void setAudioModeAsync({ playsInSilentMode: false, interruptionMode: 'mixWithOthers', shouldPlayInBackground: false }).catch(() => {});
 }
@@ -147,6 +154,7 @@ export function ringBell(times: number, gapMs: number, sound: boolean, haptics: 
       if (seq !== ringSeq) return;
       bellRinging = false;
       modeSet = true;
+      if (loudHolds) return;
       void setAudioModeAsync({ playsInSilentMode: false, interruptionMode: 'mixWithOthers', shouldPlayInBackground: false }).catch(() => {});
     }, (times - 1) * gapMs + RING_OUT_MS);
   }

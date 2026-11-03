@@ -311,7 +311,7 @@
       [
         "expo-sensors",
         {
-          "motionPermission": "Salt & Sovereignty uses the tilt of your phone to give the altar depth. Your movement isn't saved or sent anywhere."
+          "motionPermission": "Salt & Sovereignty uses the tilt of your phone to give the altar depth, and its step counter to count your steps on a walking meditation. Your movement isn't sent anywhere, and your steps are kept only if you log the walk."
         }
       ],
       [

@@ -8,7 +8,8 @@ import { Chip, Chips } from '../../../../components/rituals/ui';
 import { Card, Field, MenuList, MenuRow, MoreScreen, Notice, Section } from '../../../../components/more/ui';
 import * as covens from '../../../../lib/covens/api';
 import { errorMessage } from '../../../../lib/covens/model';
-import { sitTogetherStart, START_CHOICES, startIn } from '../../../../lib/meditation/together';
+import { DEFAULT_TEMPO, TEMPOS, type SharedSound } from '../../../../lib/meditation/sound';
+import { SHARED_CHOICES, sitTogetherStart, START_CHOICES, startIn } from '../../../../lib/meditation/together';
 import { useSession } from '../../../../lib/session';
 import * as api from '../../../../lib/together/api';
 import { isOver, parseLiveCode, statusLine, TOGETHER_GUIDANCE, type LiveRitual } from '../../../../lib/together/live';
@@ -32,6 +33,9 @@ export default function RitualsTogether() {
   const [plan, setPlan] = useLastPlan();
   const [sitOpen, setSitOpen] = useState(params.sit === '1');
   const [startAfter, setStartAfter] = useState<number | null>(5);
+  const [shared, setShared] = useState<'' | 'drum' | 'bowls'>('');
+  const [tempo, setTempo] = useState<number>(DEFAULT_TEMPO);
+  const sharedSound: SharedSound = shared ? { layer: shared, tempo, bowlSet: 'chakras', bowlEvery: 30 } : null;
   const [sitTitle, setSitTitle] = useState('');
 
   const load = useCallback(async () => {
@@ -127,10 +131,24 @@ export default function RitualsTogether() {
                     <Chip key={c.label} label={c.label} selected={startAfter === c.minutes} onPress={() => setStartAfter(c.minutes)} />
                   ))}
                 </Chips>
+                <Text style={type.caption}>Sound for everyone, in step</Text>
+                <Chips>
+                  {SHARED_CHOICES.map((c) => (
+                    <Chip key={c.value || 'none'} label={c.label} selected={shared === c.value} onPress={() => setShared(c.value)} />
+                  ))}
+                </Chips>
+                {shared === 'drum' && (
+                  <Chips>
+                    {TEMPOS.map((t) => (
+                      <Chip key={t} label={`${t} a second`} selected={tempo === t} onPress={() => setTempo(t)} />
+                    ))}
+                  </Chips>
+                )}
+                {!!shared && <Text style={type.caption}>Each person hears it on their own device, started from the same moment. Each can turn their own volume down.</Text>}
                 <Button
                   label={busy ? 'Opening…' : 'Open the sit for others to join'}
                   disabled={busy}
-                  onPress={() => void act(() => api.startLive(sitTogetherStart(plan, startAfter === null ? null : startIn(startAfter, new Date()), sitTitle)))}
+                  onPress={() => void act(() => api.startLive(sitTogetherStart(plan, startAfter === null ? null : startIn(startAfter, new Date()), sitTitle, '', sharedSound)))}
                 />
               </>
             ) : (

@@ -10,6 +10,8 @@ export * as mentorship from '../../app/src/lib/together/mentorship.ts';
 // Sit together: a meditation whose shared start time starts everyone's timer.
 export * as sitTimer from '../../app/src/lib/meditation/timer.ts';
 export * as sitTogether from '../../app/src/lib/meditation/together.ts';
+export * as sitSound from '../../app/src/lib/meditation/sound.ts';
+export * as webSound from '../../app/src/lib/meditation/webSound.ts';
 export * as notes from '../../supabase/functions/coven-notify/together.ts';
 export { courseLinkLabel } from '../../app/src/lib/covens/courseLinks.ts';
 export { JOURNEY_CATALOG } from '../../app/src/lib/journeys/catalog.ts';

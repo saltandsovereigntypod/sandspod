@@ -84,7 +84,7 @@ test("every object picture has both WebP twins, the same shape, with alpha", () 
     assert.equal(Catalog.displayPath(posix), display);
     assert.equal(Catalog.assetPath(display), posix);
     const original = pngSize(file);
-    for (const [copy, longest] of [[display, posix.includes("/cloths/") ? 2400 : 840], [thumb, 290]]) {
+    for (const [copy, longest] of [[display, posix.includes("/cloths/") || /\/tools\/(black-)?salt-(circle|rectangle)\//.test(posix) ? 2400 : 840], [thumb, 290]]) {
       assert.ok(fs.existsSync(copy), `${copy} is missing: run python3 scripts/build-altar-object-webp.py`);
       const size = webpSize(copy);
       assert.ok(size.alpha, `${copy} keeps its transparency`);
