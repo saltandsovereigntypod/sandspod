@@ -185,7 +185,7 @@ test('sit together: everyone starts from the same moment', () => {
   assert.equal(start.source.kind, 'sit');
   assert.equal(start.steps[0].minutes, 22);
   const live = { source: start.source, started_at: '2026-11-03T19:25:00Z', status: 'live' as const };
-  assert.deepEqual(sitTogetherOf(live), { plan: p, startAt: Date.parse('2026-11-03T19:30:00Z') });
+  assert.deepEqual(sitTogetherOf(live), { plan: p, startAt: Date.parse('2026-11-03T19:30:00Z'), sound: null });
   // Without a set time: when the leader began, and nothing before that.
   const open = sitTogetherStart(plan({ minutes: null }), null);
   assert.equal(open.steps[0].minutes, null);

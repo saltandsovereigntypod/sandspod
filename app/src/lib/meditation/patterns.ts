@@ -123,3 +123,51 @@ export function minutesWords(m: number): string {
   if (!h) return mins;
   return `${h} ${h === 1 ? 'hour' : 'hours'}${r ? ` ${mins}` : ''}`;
 }
+
+export type BeforeAfter = {
+  /** Sits that said how you felt both before and after. */
+  pairs: number;
+  /** Averages, 1 to 5, and the average change (after less before); null with no pairs. */
+  before: number | null;
+  after: number | null;
+  change: number | null;
+  /** Sits that left you better, the same, and lower. */
+  up: number;
+  same: number;
+  down: number;
+  /** The change by kind of practice, for kinds with enough pairs. */
+  byKind: { label: string; pairs: number; change: number }[];
+};
+
+const avg = (ns: number[]) => (ns.length ? Math.round((ns.reduce((a, b) => a + b, 0) / ns.length) * 10) / 10 : null);
+
+/** How you felt before a sit and after it, from the sits that said both. */
+export function beforeAfter(list: SitEntry[]): BeforeAfter {
+  const pairs = list.filter((e) => e.data.before && e.data.after);
+  const diffs = pairs.map((e) => e.data.after! - e.data.before!);
+  const kinds = new Map<string, number[]>();
+  for (const e of pairs) kinds.set(kindLabel(e.data), [...(kinds.get(kindLabel(e.data)) ?? []), e.data.after! - e.data.before!]);
+  return {
+    pairs: pairs.length,
+    before: avg(pairs.map((e) => e.data.before!)),
+    after: avg(pairs.map((e) => e.data.after!)),
+    change: avg(diffs),
+    up: diffs.filter((d) => d > 0).length,
+    same: diffs.filter((d) => d === 0).length,
+    down: diffs.filter((d) => d < 0).length,
+    byKind: [...kinds.entries()]
+      .filter(([, ds]) => ds.length >= MIN_FOR_PATTERN)
+      .map(([label, ds]) => ({ label, pairs: ds.length, change: avg(ds)! }))
+      .sort((a, b) => b.change - a.change),
+  };
+}
+
+/** Before and after, in a sentence or two (none until there are enough). */
+export function beforeAfterLines(b: BeforeAfter): string[] {
+  if (b.pairs < MIN_FOR_PATTERN || b.change === null) return [];
+  const out = [`Before a sit you’ve felt ${b.before} of 5 on average, and after, ${b.after}.`];
+  if (b.change > 0) out.push(`${b.up} of ${b.pairs} sits left you feeling better than when you began.`);
+  else if (b.change < 0) out.push('On average you’ve felt a little lower afterwards. That happens; it may be worth noting what came up.');
+  if (b.byKind.length > 1 && b.byKind[0].change > 0) out.push(`${b.byKind[0].label} has lifted you most (by ${b.byKind[0].change} on average).`);
+  return out;
+}

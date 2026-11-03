@@ -13,7 +13,7 @@ import { cleanPlan, minutesSat, type SitPlan } from './timer.ts';
 
 export const SITS = 'meditation.sits';
 
-export type SitKind = 'breath' | 'grounding' | 'candle' | 'visualisation' | 'pathworking' | 'trance' | 'walking' | 'body' | 'scrying' | 'devotional' | 'other';
+export type SitKind = 'breath' | 'grounding' | 'candle' | 'visualisation' | 'pathworking' | 'trance' | 'walking' | 'body' | 'scrying' | 'devotional' | 'mantra' | 'other';
 
 export const SIT_KINDS: { value: SitKind; label: string }[] = [
   { value: 'breath', label: 'Breath' },
@@ -26,6 +26,7 @@ export const SIT_KINDS: { value: SitKind; label: string }[] = [
   { value: 'body', label: 'Body scan' },
   { value: 'scrying', label: 'Scrying' },
   { value: 'devotional', label: 'Devotional' },
+  { value: 'mantra', label: 'Mantra & mala' },
   { value: 'other', label: 'Other' },
 ];
 
@@ -38,6 +39,25 @@ export const CAME_UP_TAGS: { value: string; label: string }[] = [
 ];
 
 export const SETTLED_WORDS = ['', 'Restless', 'Unsettled', 'Somewhat settled', 'Settled', 'Deeply settled'];
+/** How you feel, before and after, 1 to 5. */
+export const MOOD_WORDS = ['', 'Low', 'Heavy', 'Middling', 'Good', 'Bright'];
+
+/** Questions to write to after a sit, matched to its kind. */
+export const PROMPTS: Record<SitKind, string[]> = {
+  breath: ['Where did the breath move most easily, and where did it catch?', 'What changed between the first breath and the last?'],
+  grounding: ['Where did you feel most held by the earth?', 'What did you let sink away, and what did you draw up?'],
+  candle: ['What did the flame do as you watched it?', 'What stayed with you when you closed your eyes?'],
+  visualisation: ['Which image was clearest, and which wouldn’t come?', 'What would you like to return to?'],
+  pathworking: ['What did you meet, and what did it show or tell you?', 'Is there anything to do, give or look into now?'],
+  trance: ['What came as the rhythm carried you?', 'How did the callback feel, coming back?'],
+  walking: ['What did you notice underfoot and around you?', 'How did your pace change as you went?'],
+  body: ['Where in your body did you feel most at ease, and where least?', 'What did your body seem to ask for?'],
+  scrying: ['What shapes, colours or pictures came?', 'What do they bring to mind now?'],
+  devotional: ['Did you feel a presence, or a quiet?', 'What would you like to offer or say next time?'],
+  mantra: ['How did the words feel by the end?', 'Did the counting settle you, or busy you?'],
+  other: ['What came up?', 'What would you keep from this sit?'],
+};
+export const promptsFor = (kind: SitKind) => PROMPTS[kind] ?? PROMPTS.other;
 
 export const NOTE_MAX = 4000;
 
@@ -60,11 +80,34 @@ export type Sit = {
   /** Sat at an altar ("Meditate here"), or together (a ritual together's id). */
   altar?: string;
   together?: string;
+  /** What you brought to it, written before you began. */
+  intention?: string;
+  /** How you felt before and after, 1 to 5 (MOOD_WORDS). */
+  before?: number;
+  after?: number;
+  /** The mantra or chant, and how many beads were counted (mala.ts). */
+  mantra?: string;
+  count?: number;
+  /** Steps counted on a walking meditation. */
+  steps?: number;
+  /** Sat as part of a programme (programmes.ts), and which day or festival. */
+  programme?: string;
+  step?: string;
+  /** The guidance followed (scripts.ts). */
+  script?: string;
 };
 
 export type SitEntry = { id: string; createdAt?: string; data: Sit };
 
 const text = (v: unknown, max: number) => String(v ?? '').trim().slice(0, max);
+const mood = (v: unknown) => {
+  const n = Math.round(Number(v));
+  return n >= 1 && n <= 5 ? n : null;
+};
+const count = (v: unknown, max: number) => {
+  const n = Math.round(Number(v));
+  return n > 0 ? Math.min(n, max) : null;
+};
 const isKind = (v: unknown): v is SitKind => SIT_KINDS.some((k) => k.value === v);
 
 export function normalizeSit(raw: unknown): Sit {
@@ -86,6 +129,15 @@ export function normalizeSit(raw: unknown): Sit {
     timed: s.timed === true,
     ...(typeof s.altar === 'string' && s.altar ? { altar: s.altar.slice(0, 80) } : {}),
     ...(typeof s.together === 'string' && s.together ? { together: s.together.slice(0, 80) } : {}),
+    ...(text(s.intention, 300) ? { intention: text(s.intention, 300) } : {}),
+    ...(mood(s.before) ? { before: mood(s.before)! } : {}),
+    ...(mood(s.after) ? { after: mood(s.after)! } : {}),
+    ...(text(s.mantra, 120) ? { mantra: text(s.mantra, 120) } : {}),
+    ...(count(s.count, 100_000) ? { count: count(s.count, 100_000)! } : {}),
+    ...(count(s.steps, 200_000) ? { steps: count(s.steps, 200_000)! } : {}),
+    ...(text(s.programme, 40) ? { programme: text(s.programme, 40) } : {}),
+    ...(text(s.step, 80) ? { step: text(s.step, 80) } : {}),
+    ...(text(s.script, 40) ? { script: text(s.script, 40) } : {}),
   };
 }
 
@@ -125,6 +177,10 @@ export function sitPage(id: string, s: Sit): { ref: string; title: string; secti
   const d = new Date(s.at);
   const facts = [kindLabel(s), `${s.minutes} ${s.minutes === 1 ? 'minute' : 'minutes'}`, s.moonPhase, s.settled ? `${SETTLED_WORDS[s.settled]} (${s.settled} of 5)` : ''].filter(Boolean);
   const blocks: { type: string; content: string }[] = [{ type: 'callout', content: html(facts.join(' · ')) }];
+  if (s.intention) blocks.push({ type: 'text', content: html(`Intention: ${s.intention}`) });
+  if (s.before || s.after) blocks.push({ type: 'text', content: html([s.before ? `Before: ${MOOD_WORDS[s.before]} (${s.before} of 5)` : '', s.after ? `After: ${MOOD_WORDS[s.after]} (${s.after} of 5)` : ''].filter(Boolean).join(' · ')) });
+  if (s.mantra || s.count) blocks.push({ type: 'text', content: html([s.mantra ? `Mantra: ${s.mantra}` : '', s.count ? `${s.count} counted` : ''].filter(Boolean).join(' · ')) });
+  if (s.steps) blocks.push({ type: 'text', content: html(`${s.steps} steps`) });
   if (s.cameUp) blocks.push({ type: 'heading', content: 'What came up' }, ...s.cameUp.split(/\n\s*\n/).map((p) => ({ type: 'text', content: html(p.trim()) })));
   if (s.tags.length) blocks.push({ type: 'text', content: html(`Tags: ${s.tags.map((t) => CAME_UP_TAGS.find((x) => x.value === t)?.label ?? t).join(', ')}`) });
   if (s.note) blocks.push({ type: 'heading', content: 'Notes' }, ...s.note.split(/\n\s*\n/).map((p) => ({ type: 'text', content: html(p.trim()) })));

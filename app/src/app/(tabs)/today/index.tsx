@@ -7,6 +7,7 @@ import { CovenToday } from '../../../components/covens/CovenToday';
 import { TendToday } from '../../../components/tend/TendToday';
 import { CycleToday } from '../../../components/cycle/CycleToday';
 import { JournalToday } from '../../../components/journals/JournalToday';
+import { MeditationToday } from '../../../components/meditation/MeditationToday';
 import { YearTurnToday } from '../../../components/grimoire/YearTurnToday';
 import { CalendarLineList, LeadCalendarLine } from '../../../components/CalendarLines';
 import { Icon } from '../../../components/Icon';
@@ -235,6 +236,7 @@ export default function Today() {
             accessibilityHint="Opens a starter altar for today's planet, moon or holiday"
             onPress={() => router.navigate({ pathname: '/altar/[altarId]', params: { altarId: 'tonight', from: 'today' } })}
           />
+          <MeditationToday settings={settings} now={clock} />
           <Button label="Sit for a while" variant="text" accessibilityHint="Opens the meditation timer" onPress={() => router.navigate('/rituals/craft/meditation' as Href)} />
           <View style={styles.prompt}>
             <Text style={[type.eyebrow, styles.gold]}>Reflect</Text>

@@ -4,7 +4,7 @@ import { View } from 'react-native';
 import { Body, Card, RitualScreen, SectionLabel, Title, ui } from '../../../../../components/rituals/ui';
 import { useCraft } from '../../../../../lib/craft/store';
 import { normalizeSit, SITS } from '../../../../../lib/meditation/log';
-import { MIN_FOR_PATTERN, minutesWords, sitStats, type Group } from '../../../../../lib/meditation/patterns';
+import { beforeAfter, beforeAfterLines, MIN_FOR_PATTERN, minutesWords, sitStats, type Group } from '../../../../../lib/meditation/patterns';
 
 function Groups({ label, groups }: { label: string; groups: Group[] }) {
   const shown = groups.filter((g) => g.sits > 0);
@@ -26,7 +26,10 @@ function Groups({ label, groups }: { label: string; groups: Group[] }) {
 // Website: /practice/meditation/patterns/.
 export default function MeditationPatterns() {
   const { entries, ready } = useCraft<unknown>(SITS);
-  const stats = useMemo(() => sitStats(entries.map((e) => ({ id: e.id, data: normalizeSit(e.data) })), new Date()), [entries]);
+  const list = useMemo(() => entries.map((e) => ({ id: e.id, data: normalizeSit(e.data) })), [entries]);
+  const stats = useMemo(() => sitStats(list, new Date()), [list]);
+  const change = useMemo(() => beforeAfter(list), [list]);
+  const changeLines = beforeAfterLines(change);
   return (
     <RitualScreen back="Meditation">
       <Title eyebrow="Meditation">Your patterns</Title>
@@ -48,6 +51,16 @@ export default function MeditationPatterns() {
               ))}
             </Card>
           )}
+          <View style={ui.gapSmall}>
+            <SectionLabel>Before and after</SectionLabel>
+            <Card>
+              {changeLines.length ? (
+                changeLines.map((l) => <Body key={l}>{l}</Body>)
+              ) : (
+                <Body muted>{`Say how you feel before you begin and again afterwards, and once ${MIN_FOR_PATTERN} sits have both, the change shows here.${change.pairs ? ` ${change.pairs} so far.` : ''}`}</Body>
+              )}
+            </Card>
+          </View>
           <View style={ui.gapSmall}>
             <SectionLabel>The kinds you come back to</SectionLabel>
             <Card>
