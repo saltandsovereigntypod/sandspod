@@ -22,6 +22,7 @@
   const LV = T.live;
   const ST = T.sitTogether;
   const SM = T.sitTimer;
+  const SS = T.sitSound;
   const START_KEY = "together.start";
   const params = new URLSearchParams(global.location.search);
   const liveId = /^[0-9a-f-]{36}$/i.test(params.get("id") || "") ? params.get("id") : null;
@@ -114,6 +115,9 @@
                 <label class="tn-check"><input type="checkbox" name="startBell" checked /> A bell to begin</label>
                 <label class="tn-check"><input type="checkbox" name="endBell" checked /> Three bells to end</label>
                 <div class="sp-field"><label for="tg-sit-start">When everyone begins</label><select id="tg-sit-start" name="start">${ST.START_CHOICES.map((c) => `<option value="${c.minutes ?? ""}"${c.minutes === 5 ? " selected" : ""}>${esc(c.label)}</option>`).join("")}</select></div>
+                <div class="sp-field"><label for="tg-sit-sound">Sound for everyone, in step</label><select id="tg-sit-sound" name="sound">${ST.SHARED_CHOICES.map((c) => `<option value="${c.value}">${esc(c.label)}</option>`).join("")}</select></div>
+                <div class="sp-field"><label for="tg-sit-tempo">The drum’s beats a second</label><select id="tg-sit-tempo" name="tempo">${SS.TEMPOS.map((t) => `<option value="${t}"${t === SS.DEFAULT_TEMPO ? " selected" : ""}>${t}</option>`).join("")}</select></div>
+                <p class="sp-caption">A shared drum or bowls is heard by each person on their own device, started from the same moment. Each can turn their own volume down.</p>
                 <div class="sp-actions"><button class="button button--primary" type="submit">Open the sit for others to join</button></div>
               </form></details></article></section>`
           : ""
@@ -159,7 +163,8 @@
       event.preventDefault();
       const f = event.target.elements;
       const plan = SM.cleanPlan({ minutes: f.minutes.value, every: f.every.value, startBell: f.startBell.checked, endBell: f.endBell.checked });
-      const s = ST.sitTogetherStart(plan, f.start.value ? ST.startIn(Number(f.start.value), new Date()) : null, f.title.value);
+      const shared = f.sound.value ? { layer: f.sound.value, tempo: Number(f.tempo.value), bowlSet: "chakras", bowlEvery: 30 } : null;
+      const s = ST.sitTogetherStart(plan, f.start.value ? ST.startIn(Number(f.start.value), new Date()) : null, f.title.value, "", shared);
       const row = await attempt(() => rpc("start_live_ritual", { p_title: s.title, p_intention: s.intention, p_steps: s.steps, p_source: s.source, p_coven: null, p_gathering: null }));
       if (row) global.location.href = `/rituals/together/?id=${encodeURIComponent(row.id)}`;
     });
@@ -340,7 +345,22 @@
   // ─── Sit together ───────────────────────────────────────────────────────
   // Everyone's timer starts at the shared moment (meditation/together.ts) and
   // rings its own bells here, under Candle sounds and Vibration in Accessibility.
-  const sit = { last: null, endedAt: null, done: null, players: [], next: 0 };
+  const sit = { last: null, endedAt: null, done: null, players: [], next: 0, sound: null, soundLast: null };
+  /** The shared drum or bowls (meditation/sound.ts), in step for everyone from the shared start. */
+  function sitSound(s, elapsed) {
+    const mix = SS.sharedMix(s.sound);
+    if (!mix || sit.done) {
+      sit.sound?.stop();
+      sit.sound = null;
+      return;
+    }
+    if (!sit.sound) sit.sound = T.webSound.createWebSound((bed) => `/assets/sounds/meditation/${bed}.wav`);
+    if (!sit.sound) return;
+    const r = SS.soundTick(mix, s.plan, SS.bowlStrikes(mix, s.plan), sit.soundLast ?? -1, elapsed, sit.endedAt);
+    sit.soundLast = elapsed;
+    sit.sound.update(r.voices);
+    if (r.strike) sit.sound.strike(r.strike.key, r.strike.volume);
+  }
   function chime(times, plan) {
     const prefs = global.SaltAccessibility?.getState?.() || { candleSounds: true, haptics: true };
     for (let i = 0; i < times; i++) {
@@ -369,7 +389,10 @@
     const s = state.live && ST.sitTogetherOf(state.live);
     if (!s) return "";
     const now = Date.now();
-    const head = `<p class="sp-eyebrow">Sit together</p><p>${esc(SM.planLine(s.plan))}</p><p class="sp-caption">${esc(ST.startLine(s.startAt, now))}</p>`;
+    const mix = SS.sharedMix(s.sound);
+    const head = `<p class="sp-eyebrow">Sit together</p><p>${esc([SM.planLine(s.plan), mix ? SS.mixLine(mix) : ""].filter(Boolean).join(" · "))}</p><p class="sp-caption">${esc(ST.startLine(s.startAt, now))}</p>${
+      sit.sound?.needsTap() ? `<div class="sp-actions"><button type="button" class="button button--ghost" data-tg-sit-unlock>Let the sound play</button></div>` : ""
+    }`;
     if (sit.done) {
       const q = new URLSearchParams({ at: sit.done.at, minutes: String(sit.done.minutes), timed: "1", together: state.live.id });
       return `${head}<p>${esc(`${sit.done.minutes} ${sit.done.minutes === 1 ? "minute" : "minutes"}, sat together.`)}</p><div class="sp-actions"><a class="button button--primary" href="/practice/meditation/log/?${q}">Keep it in your log</a></div>`;
@@ -391,6 +414,7 @@
       sit.last = elapsed;
       const st = SM.sitStateAt(s.plan, elapsed, sit.endedAt);
       if (st.phase === "done") sit.done = { at: new Date(s.startAt + s.plan.settle * 60000).toISOString(), minutes: SM.minutesSat(st.sitMs) };
+      sitSound(s, elapsed);
     }
     const el = root.querySelector("[data-tg-sit]");
     if (el) el.innerHTML = sitHtml();
@@ -404,6 +428,11 @@
       const live = state.live;
       const me = context.user.id;
       const a = el.dataset.tgAct;
+      if (el.hasAttribute("data-tg-sit-unlock")) {
+        sit.sound?.unlock();
+        el.remove();
+        return;
+      }
       if (el.hasAttribute("data-tg-sit-end")) {
         const s = ST.sitTogetherOf(live);
         if (s && s.startAt !== null) {

@@ -20,7 +20,8 @@ import { seedPetitionAltar } from '../../lib/covens/petitionAltar';
 import { clearNamed, nameNewThings, offerPaper, paperCount, placeOffering, snuffNamed, stepAltarChange } from '../../lib/covens/ritualAltar';
 import { builderStepFrom, cleanPlan, linkedEffect, stepThingName, type GatheringKind } from '../../lib/covens/builder';
 import { liveFlow } from '../../lib/covens/stepFlow';
-import { atAltarOf, deedQuery } from '../../lib/covens/altarActions';
+import { atAltarOf, deedQuery, sitStepOf } from '../../lib/covens/altarActions';
+import { presetParams } from '../../lib/meditation/scripts';
 import { buildScript, mayVote, voteOptions } from '../../lib/covens/script';
 import { actionForStep } from '../../lib/covens/stepActions';
 import { useCoven } from '../../lib/covens/CovenContext';
@@ -328,6 +329,7 @@ export function LiveStepCard({ live, atAltar = false }: { live: LiveRitual; atAl
   const voteRow = live.votes.find((v) => v.step_id === current.id);
   const who = stepAssignee(current, coven.snapshot?.ranks ?? [], coven.nameOf);
   const deed = atAltarOf(currentBuilder);
+  const sitStep = sitStepOf(currentBuilder);
 
   return (
     <Card tone="gold">
@@ -414,6 +416,7 @@ export function LiveStepCard({ live, atAltar = false }: { live: LiveRitual; atAl
           disabled={busy}
         />
       )}
+      {!!sitStep && coven.standing.ok && <Button label={sitStep.button} variant="outline" onPress={() => router.push({ pathname: '/rituals/craft/meditation/sit', params: presetParams(sitStep.id) })} />}
       {!!altar && !atAltar && <Button label="Go to the altar" variant="outline" onPress={() => router.push(covenHref(coven.slug, `altars/${altar.id}`))} />}
       <Text style={type.caption}>
         {current.altar_access === 'everyone'
