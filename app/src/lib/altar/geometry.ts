@@ -158,8 +158,10 @@ export function clampBox(box: Box, type: string | undefined, mode: 'load' | 'dra
     if (mode === 'load') return box;
     return {
       ...box,
-      cx: clampLikeWebsite(box.cx, -w * 0.75, 1 - w * 0.25),
-      cy: clampLikeWebsite(box.cy, -h * 0.75, 1 - h * 0.25),
+      // The website's rule is for the box's left/top edge (-¾ to stage − ¼ of
+      // the box); cx/cy are its centre, so the same rule shifts by half a box.
+      cx: clampLikeWebsite(box.cx, -w * 0.25, 1 + w * 0.25),
+      cy: clampLikeWebsite(box.cy, -h * 0.25, 1 + h * 0.25),
     };
   }
   return {
