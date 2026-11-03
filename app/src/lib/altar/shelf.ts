@@ -26,6 +26,7 @@ export const SHELF_TOOLS: ShelfObject[] = [
   // Candle care
   { id: 'candle-snuffer', name: 'Candle Snuffer', group: 'Candle care', keywords: ['snuffing', 'candles', 'closing'], description: 'Many prefer to snuff a candle rather than blow it out, so the working isn’t scattered.' },
   { id: 'matches', name: 'Matches', group: 'Candle care', keywords: ['fire', 'lighting', 'candles'], description: 'Plain matches, often kept for the altar alone, to light its candles and incense.' },
+  { id: 'lighter', name: 'Lighter', group: 'Candle care', keywords: ['fire', 'lighting', 'candles', 'incense'], description: 'A plain lighter, for candles and incense when matches won’t do. Bring it near a candle to light it.' },
   // Ritual
   { id: 'stang', name: 'Stang', group: 'Ritual', keywords: ['traditional witchcraft', 'the horned one', 'crossroads', 'staff'], description: 'A forked staff of traditional witchcraft, set up as an altar of its own at the edge of a circle.' },
   { id: 'crossroads', name: 'Crossroads', group: 'Ritual', keywords: ['crossroads', 'Hekate', 'Deipnon', 'the dark moon', 'thresholds'], description: 'A stone where three roads meet, with a key and a torch at its foot. For Hekate, the Deipnon at the dark moon, and any threshold you stand at.' },

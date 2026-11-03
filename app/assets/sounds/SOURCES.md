@@ -16,3 +16,12 @@ one of them: trimmed, filtered and faded, nothing synthesized.
 recorded: six inharmonic partials of a small bell (0.5, 1, 2.76, 5.40, 8.93 and
 13.34 times 880 Hz), each a slowly beating pair, decaying over about 3.5 s,
 with a 6 ms attack, normalised to -3 dBFS, mono 44.1 kHz, 4 s, 64 kb/s.
+
+# The singing bowl and the lighter
+
+`bowl-<tone>.mp3` (root, sacral, solar, heart, throat, third-eye, crown and
+432) and `lighter-click.mp3`, also at the website's `assets/sounds/`, are
+synthesised by `scripts/build-bowl-sounds.py`, nothing recorded: each bowl is
+four inharmonic partials (1, 2.71, 5.13 and 8.42 times its tone), each a slowly
+beating pair, fading over about 9 s after a soft mallet thump. The website's
+`match-strike.mp3` is the match strike above, as MP3.

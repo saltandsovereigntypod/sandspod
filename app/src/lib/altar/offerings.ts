@@ -362,6 +362,8 @@ export type OfferingContents = {
   since: string;
   /** When you chose to leave it as it is (it still ages, but stops asking to be tended), or absent. */
   leftAt?: string;
+  /** How full a cup is, 0 to 1 (a chalice drunk from or poured out); absent means full. */
+  fill?: number;
 };
 
 /** What the object holds or is, as an offering, or null (an empty bowl, or not an offering at all). */
@@ -371,7 +373,8 @@ export function offeringOf(object: SavedObject): OfferingContents | null {
   if (raw && typeof raw === 'object') {
     const kind = offeringKind(String(raw.kind || ''));
     if (!kind) return null;
-    return { kind: kind.id, label: String(raw.label || ''), since: String(raw.since || ''), ...(raw.leftAt ? { leftAt: String(raw.leftAt) } : {}) };
+    const fill = typeof raw.fill === 'number' && Number.isFinite(raw.fill) ? Math.max(0, Math.min(1, raw.fill)) : null;
+    return { kind: kind.id, label: String(raw.label || ''), since: String(raw.since || ''), ...(raw.leftAt ? { leftAt: String(raw.leftAt) } : {}), ...(fill != null && fill < 1 ? { fill } : {}) };
   }
   if (raw === null) return null;
   // Until it's tended, something that is the offering itself has been out since it was placed.
