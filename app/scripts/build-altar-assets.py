@@ -122,8 +122,10 @@ def main():
             groups.setdefault(group[:2], []).append((group[2], rel, path))
             continue
         is_background = rel.startswith("backgrounds/")
-        # Objects at 1024px stay sharp on 3x screens, even zoomed in on the altar.
-        image, original_size = shrink(path, 1600 if is_background else 1024)
+        # Objects at 1024px stay sharp on 3x screens, even zoomed in on the altar;
+        # salt circles and rectangles can span the whole altar, so keep 1600px as backgrounds do.
+        is_salt_border = re.match(r"objects/tools/(black-)?salt-(circle|rectangle)/", rel) is not None
+        image, original_size = shrink(path, 1600 if is_background or is_salt_border else 1024)
         target = OUT / Path(rel).with_suffix(".webp")
         target.parent.mkdir(parents=True, exist_ok=True)
         if is_background:

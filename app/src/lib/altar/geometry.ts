@@ -171,7 +171,7 @@ export function clampBox(box: Box, type: string | undefined, mode: 'load' | 'dra
 
 /** Where an object is drawn on screen, after the website's load-time clamp. */
 export function displayBox(object: SavedObject): Box {
-  return clampBox(boxFromSaved(object), object.type, 'load');
+  return clampBox(boxFromSaved(object), boundsType(object), 'load');
 }
 
 export type PixelRect = { left: number; top: number; width: number; height: number; centerX: number; centerY: number };
@@ -194,10 +194,112 @@ export function sizeLimits(type: string | undefined): { min: number; max: number
   return { min: toSize(minScale), max: toSize(maxScale) };
 }
 
+// Salt circles and salt rectangles: a line of salt (white, or black salt
+// mixed with ash) laid around what's on the altar. They can grow past the
+// altar's edges so the line frames all of it, are set down under everything
+// else, and are hollow: only the line itself is touched, so a tap inside goes
+// to whatever sits within it (hitTest here; altar/js/features/objects.js
+// markSaltLine draws the same line as the website's touch area).
+
+/** The tools that are salt borders. */
+export const SALT_BORDER_TOOLS = ['salt-circle', 'black-salt-circle', 'salt-rectangle', 'black-salt-rectangle'] as const;
+
+/** How wide a salt border may grow, as a fraction of the altar's width (twice the altar, so even a circle's line can frame it). */
+export const SALT_BORDER_MAX_SIZE = 2;
+
+export function isSaltBorder(object: Pick<SavedObject, 'type' | 'tool'>): boolean {
+  return object.type === 'tool' && (SALT_BORDER_TOOLS as readonly string[]).includes(String(object.tool || ''));
+}
+
+/** How the stage holds an object when it moves: salt borders may hang off its edges as a cloth does. */
+export function boundsType(object: Pick<SavedObject, 'type' | 'tool'>): string | undefined {
+  return isSaltBorder(object) ? 'cloth' : object.type;
+}
+
+/** An object's size limits: its type's, but a salt border may span the whole altar. */
+export function sizeLimitsOf(object: Pick<SavedObject, 'type' | 'tool'>): { min: number; max: number } {
+  const limits = sizeLimits(object.type);
+  return isSaltBorder(object) ? { min: limits.min, max: SALT_BORDER_MAX_SIZE } : limits;
+}
+
+/**
+ * Where the salt lies in a border's picture, in fractions of the picture's
+ * width and height: an ellipse (the painted circle, seen at a slant) whose
+ * line runs `band` either side of its radius, or a rectangle whose line runs
+ * `inset` in from each edge, `band` either side (fractions of the width, so
+ * the line is as thick across as down). `ratio` is the picture's height / width.
+ */
+export type SaltLine =
+  | { kind: 'ellipse'; ratio: number; cx: number; cy: number; rx: number; ry: number; band: number }
+  | { kind: 'rect'; ratio: number; inset: number; band: number };
+
+const SALT_CIRCLE: SaltLine = { kind: 'ellipse', ratio: 1024 / 1536, cx: 0.507, cy: 0.613, rx: 0.335, ry: 0.162, band: 0.17 };
+// scratch art script: lines 0.03 of the width in, 0.0125 either side, a little more for the stray grains.
+const saltRect = (ratio: number): SaltLine => ({ kind: 'rect', ratio, inset: 0.03, band: 0.017 });
+
+/** The salt line of a salt border, or null for anything else. */
+export function saltLineOf(object: Pick<SavedObject, 'type' | 'tool' | 'form'>): SaltLine | null {
+  if (!isSaltBorder(object)) return null;
+  if (String(object.tool).endsWith('circle')) return SALT_CIRCLE;
+  return saltRect(object.form === 'altar' ? 9 / 16 : 1);
+}
+
+/**
+ * Whether a point is on the salt line: (x, y) in px from the centre of the
+ * picture as drawn `width` px wide, with `slack` px to spare either side so a
+ * thin line is still easy to touch.
+ */
+export function onSaltLine(line: SaltLine, x: number, y: number, width: number, slack = 0): boolean {
+  const height = width * line.ratio;
+  if (line.kind === 'rect') {
+    const hx = width / 2 - line.inset * width;
+    const hy = height / 2 - line.inset * width;
+    const ax = Math.abs(x);
+    const ay = Math.abs(y);
+    const distance = ax <= hx && ay <= hy ? Math.min(hx - ax, hy - ay) : Math.hypot(Math.max(ax - hx, 0), Math.max(ay - hy, 0));
+    return distance <= line.band * width + slack;
+  }
+  const rx = line.rx * width;
+  const ry = line.ry * height;
+  const dx = x - (line.cx - 0.5) * width;
+  const dy = y - (line.cy - 0.5) * height;
+  const r = Math.hypot(dx / rx, dy / ry);
+  if (r === 0) return false;
+  // The ellipse's own radius in this direction, in px: how far off the line the point is, in px.
+  const reach = Math.hypot(dx, dy) / r;
+  return Math.abs(r - 1) * reach <= line.band * reach + slack;
+}
+
+/**
+ * The salt line as an SVG path in a `1000` by `1000 * ratio` box, the line's
+ * outer and inner edges together, to be filled even-odd (the website's touch
+ * area for a salt border).
+ */
+export function saltLinePath(line: SaltLine): string {
+  const w = 1000;
+  const h = w * line.ratio;
+  const f = (n: number) => String(Math.round(n * 10) / 10);
+  if (line.kind === 'rect') {
+    const rect = (d: number) => {
+      const i = line.inset * w + d;
+      return `M${f(i)} ${f(i)}H${f(w - i)}V${f(h - i)}H${f(i)}Z`;
+    };
+    return rect(-line.band * w) + rect(line.band * w);
+  }
+  const ellipse = (k: number) => {
+    const cx = line.cx * w;
+    const cy = line.cy * h;
+    const rx = line.rx * w * k;
+    const ry = line.ry * h * k;
+    return `M${f(cx - rx)} ${f(cy)}A${f(rx)} ${f(ry)} 0 1 0 ${f(cx + rx)} ${f(cy)}A${f(rx)} ${f(ry)} 0 1 0 ${f(cx - rx)} ${f(cy)}Z`;
+  };
+  return ellipse(1 + line.band) + ellipse(1 - line.band);
+}
+
 /** Move an object so its visual centre is at (cx, cy); nothing else changes. */
 export function withCenter(object: SavedObject, cx: number, cy: number): SavedObject {
   const size = objectSize(object);
-  const clamped = clampBox({ cx, cy, size, aspect: objectAspect(object) }, object.type, 'drag');
+  const clamped = clampBox({ cx, cy, size, aspect: objectAspect(object) }, boundsType(object), 'drag');
   return { ...object, ...savedFromBox(clamped) };
 }
 
@@ -206,12 +308,12 @@ export function withCenter(object: SavedObject, cx: number, cy: number): SavedOb
  * the website's own scale field stays consistent with the new size.
  */
 export function withSize(object: SavedObject, nextSize: number): SavedObject {
-  const { min, max } = sizeLimits(object.type);
+  const { min, max } = sizeLimitsOf(object);
   const size = Math.max(min, Math.min(nextSize, max));
   const current = displayBox(object);
   const oldScale = num(object.scale) ?? (current.size * WEB_REFERENCE_WIDTH) / WEB_OBJECT_BOX;
   const scale = current.size > 0 ? oldScale * (size / current.size) : oldScale;
-  const clamped = clampBox({ ...current, size }, object.type, 'drag');
+  const clamped = clampBox({ ...current, size }, boundsType(object), 'drag');
   return { ...object, ...savedFromBox(clamped), scale: String(scale) };
 }
 
@@ -254,7 +356,17 @@ export function hitTest<T extends { object: SavedObject }>(
     const dy = y - rect.centerY;
     const localX = dx * Math.cos(angle) - dy * Math.sin(angle);
     const localY = dx * Math.sin(angle) + dy * Math.cos(angle);
-    if (Math.abs(localX) <= halfW && Math.abs(localY) <= halfH) return entry;
+    if (Math.abs(localX) > halfW || Math.abs(localY) > halfH) continue;
+    // A salt border is hollow: only its line is touched, and a tap inside goes to what's beneath.
+    const line = saltLineOf(entry.object);
+    if (line) {
+      const contentW = rect.width * (1 - 2 * IMAGE_INSET.x);
+      const contentH = rect.height - 2 * IMAGE_INSET.y * rect.width;
+      const drawW = Math.min(contentW, contentH / line.ratio);
+      const x = entry.object.flipped === 'true' ? -localX : localX;
+      if (!onSaltLine(line, x, localY, drawW, Math.max(8, minTouch / 5))) continue;
+    }
+    return entry;
   }
   return null;
 }

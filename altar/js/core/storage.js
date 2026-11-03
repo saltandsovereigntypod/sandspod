@@ -480,6 +480,8 @@ function createSavedObject(savedObject) {
   }
 
   updateCandleDressingVisuals(object);
+  // A salt circle or rectangle is touched only on its line (objects.js).
+  if (typeof markSaltLine === "function") markSaltLine(object);
   makeDraggable(object);
 
   return object;

@@ -562,9 +562,11 @@
       "yule-log": "../assets/altar/objects/seasonal/yule-log/yule-log.png"
     },
     "shelfTools": {
+      "black-salt-circle": "../assets/altar/objects/tools/black-salt-circle/black-salt-circle.png",
       "candle-snuffer": "../assets/altar/objects/tools/candle-snuffer/candle-snuffer.png",
       "crossroads": "../assets/altar/objects/tools/crossroads/crossroads.png",
       "crystal-ball": "../assets/altar/objects/tools/crystal-ball/crystal-ball.png",
+      "crystal-wand": "../assets/altar/objects/tools/crystal-wand/crystal-wand.png",
       "frame-drum": "../assets/altar/objects/tools/frame-drum/frame-drum.png",
       "goddess-figure": "../assets/altar/objects/tools/goddess-figure/goddess-figure.png",
       "green-man": "../assets/altar/objects/tools/green-man/green-man.png",
@@ -578,6 +580,7 @@
       "rune-bag": "../assets/altar/objects/tools/rune-bag/rune-bag.png",
       "salt-lamp": "../assets/altar/objects/tools/salt-lamp/salt-lamp.png",
       "scrying-mirror": "../assets/altar/objects/tools/scrying-mirror/scrying-mirror.png",
+      "selenite-athame": "../assets/altar/objects/tools/selenite-athame/selenite-athame.png",
       "singing-bowl": "../assets/altar/objects/tools/singing-bowl/singing-bowl.png",
       "stang": "../assets/altar/objects/tools/stang/stang.png",
       "tea-leaf-cup": "../assets/altar/objects/tools/tea-leaf-cup/tea-leaf-cup.png",
@@ -13574,6 +13577,17 @@
           "fire-safe",
           "spell work",
           "creation"
+        ],
+        "cord": [
+          "knot work",
+          "or letting something go",
+          "spirit",
+          "cord cutting",
+          "release",
+          "endings",
+          "knot magic",
+          "binding",
+          "boundaries"
         ],
         "key": [
           "opening the way",
