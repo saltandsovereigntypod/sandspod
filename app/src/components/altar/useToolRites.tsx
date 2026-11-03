@@ -423,6 +423,8 @@ export function useToolRites(deps: Deps) {
     panels,
     floating,
     startDeed,
+    /** A moment here and for the others at a coven altar (the round-two tools use it: useCraftTools). */
+    show: rites.show,
     stage: { onTrace: tracing && deps.canEdit ? onTrace : undefined, trail: tracing && trail.length ? { points: trail, color: circleOf(extra)?.color ?? color } : null },
     /** Leave a burned petition's ash on the altar (the besom sweeps it). */
     ashAt: (d: AltarDocument, near: SavedObject | null, at: string): AltarDocument => ({ ...d, extra: dropDebris(d.extra, 'ash', near, at) }),

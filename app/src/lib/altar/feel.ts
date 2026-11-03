@@ -48,6 +48,12 @@ const CRACKLES: Sound[] = ['crackle1', 'crackle2', 'crackle3', 'crackle4', 'crac
 const POPS: Sound[] = ['pop1', 'pop2', 'pop3', 'pop4', 'pop5'];
 const SPUTTERS: Sound[] = ['sputter1', 'sputter2', 'sputter3', 'sputter4'];
 
+/** Ritual mode softens every altar sound (craftTools.ts RITUAL_SOFT); 1 otherwise. */
+let soft = 1;
+export function softenSounds(factor: number | null) {
+  soft = factor == null ? 1 : Math.max(0.1, Math.min(1, factor));
+}
+
 const players = new Map<Sound, AudioPlayer>();
 let modeSet = false;
 
@@ -87,7 +93,7 @@ function play(sound: Sound, volume: number) {
   const p = player(sound);
   if (!p) return;
   try {
-    p.volume = Math.max(0, Math.min(1, volume));
+    p.volume = Math.max(0, Math.min(1, volume * soft));
     void p.seekTo(0).then(() => p.play()).catch(() => p.play());
   } catch {
     // A sound that can't play is simply not heard.
@@ -109,7 +115,7 @@ function chime(volume: number) {
     const i = nextBell++ % 3;
     if (!bells[i]) bells[i] = createAudioPlayer(BELL);
     const p = bells[i];
-    p.volume = volume;
+    p.volume = volume * soft;
     if (played.has(p)) void p.seekTo(0).then(() => p.play()).catch(() => p.play());
     else {
       played.add(p);
@@ -196,7 +202,7 @@ export function strikeBowl(tone: BowlToneId, sound: boolean, haptics: boolean) {
       bowlPlayers.set(tone, p);
     }
     const player = p;
-    player.volume = 0.85;
+    player.volume = 0.85 * soft;
     void player.seekTo(0).then(() => player.play()).catch(() => player.play());
   } catch {
     // A bowl that can't sound is simply not heard.
@@ -225,7 +231,7 @@ export function fireSound(how: 'match' | 'lighter', sound: boolean, haptics: boo
     setMode();
     if (!lighterPlayer) lighterPlayer = createAudioPlayer(LIGHTER);
     const p = lighterPlayer;
-    p.volume = 0.7;
+    p.volume = 0.7 * soft;
     void p.seekTo(0).then(() => p.play()).catch(() => p.play());
   } catch {
     // Not heard.
@@ -310,7 +316,7 @@ export function useCandleAmbience(objects: SavedObject[]) {
       player('crackle1'); // sets the audio mode (mixed with other audio, quiet on silent)
       bed = createAudioPlayer(BURNING);
       bed.loop = true;
-      bed.volume = Math.min(0.55, 0.3 + 0.06 * latest.current.filter((o) => isCandle(o) && isLit(o)).length);
+      bed.volume = Math.min(0.55, 0.3 + 0.06 * latest.current.filter((o) => isCandle(o) && isLit(o)).length) * soft;
       if (active) bed.play();
     } catch {
       bed = null;

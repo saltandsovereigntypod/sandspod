@@ -981,6 +981,98 @@ export const HELP: HelpSection[] = [
         keywords: ['match', 'matches', 'lighter', 'snuffer', 'light candle', 'snuff', 'strike'],
       },
       {
+        id: 'altar-pendulum',
+        title: 'Ask the pendulum',
+        summary: 'Show it once how it says yes, no and maybe, then ask your question and watch it swing.',
+        steps: [
+          'Set a pendulum on the altar from the cabinet’s Tools, and select it.',
+          'The first time, choose the swing for each answer: towards and away from you, side to side, or in a circle either way. "Use the usual ones" sets yes to and fro, no side to side and maybe clockwise. It’s kept in your settings, so the website knows it too; "Change how it answers" sets it again.',
+          'Type your question, for a yes or no, and tap "Ask". The pendulum swings its answer.',
+        ],
+        tips: [
+          'Each answer is kept in your readings (Craft, Divination) and in the altar’s History, like any draw.',
+          'On the screen the swing is chosen at random. A real pendulum moves with tiny movements of your own hand that you don’t notice making (the ideomotor effect), so take it as a way to hear what you already sense.',
+        ],
+        keywords: ['pendulum', 'dowsing', 'yes or no', 'calibrate', 'divination', 'ask'],
+      },
+      {
+        id: 'altar-scrying-mirror',
+        title: 'Scry in a mirror, the cauldron or a crystal ball',
+        summary: 'The altar dims, the candlelight shows in the glass, a timer keeps the time, then a few words on what you saw.',
+        steps: [
+          'Set a scrying mirror or crystal ball on the altar from the cabinet’s Tools, select it and tap "Scry in the mirror". Light a candle first and its flame shows in the glass.',
+          'Or select a cauldron and tap "Fill it with water to scry", then sit with the dark water.',
+          'Choose 5, 10 or 15 minutes and tap Begin. When the time is up (or you tap "I’m finished"), write what you saw, any symbols and how it felt.',
+        ],
+        tips: ['What you write goes to your ritual journal, and the sit is kept in the altar’s History. The water bowl in Workings is the same sit with a bowl of water.'],
+        keywords: ['scrying', 'scry', 'mirror', 'black mirror', 'crystal ball', 'cauldron', 'gaze', 'visions'],
+      },
+      {
+        id: 'altar-mortar',
+        title: 'Grind herbs in the mortar and pestle',
+        summary: 'Add herbs and resins, grind them into a loose blend, and place, burn, bag or keep it.',
+        steps: [
+          'Set a mortar and pestle on the altar from the cabinet’s Tools, and select it.',
+          'Add herbs, resins and incense from the altar or the cabinet (or type your own), then tap "Grind".',
+          'Choose what to do with the blend: set it on the altar as a herb mix, burn it as loose incense, bag it as a sachet, or "Save as an Apothecary recipe" to keep it in My Apothecary.',
+        ],
+        tips: ['What went in and what you did with it are kept in the altar’s History. On a coven altar the others see it ground.'],
+        keywords: ['mortar', 'pestle', 'grind', 'herbs', 'resin', 'blend', 'loose incense', 'sachet', 'apothecary', 'recipe'],
+      },
+      {
+        id: 'altar-bolline-cauldron',
+        title: 'The bolline and the cauldron',
+        summary: 'Cut a cord, harvest a sprig or carve a candle with the bolline; simmer, burn or scry in the cauldron.',
+        steps: [
+          'Select a bolline: tap a tied cord to cut it by hand (the besom sweeps it later), "Harvest a sprig" to take one from a potted plant, or "Carve a candle" to carve a name or sigil into an unlit candle.',
+          'Select a cauldron: choose a few things for a simmer pot and tap "Start the simmer pot"; steam rises from it for about three hours, then it wants topping up. "Take it off" stops it.',
+          '"Burn a petition in it" opens the petition box to burn one. "Fill it with water to scry" begins a scrying sit.',
+        ],
+        tips: [
+          'The bolline as the white-handled working knife, kept apart from the athame, comes from modern Wicca, after the Key of Solomon. Simmer pots are a modern kitchen-witch habit.',
+          'For real fire, keep a cauldron on a heatproof surface with sand or salt in the bottom, and never leave a simmer pot unattended.',
+        ],
+        keywords: ['bolline', 'boline', 'knife', 'cut', 'cord', 'harvest', 'carve', 'cauldron', 'simmer pot', 'steam', 'burn petition'],
+      },
+      {
+        id: 'altar-crystal-charge-grid',
+        title: 'Charge a crystal by moon, sun or selenite, and make a grid',
+        summary: 'Set a stone to charge and watch its glow build; join stones into a grid with the wand.',
+        steps: [
+          'Select a crystal and choose "Under the moon", "In the sun" or "On selenite". Its glow builds as it sits (about three hours, one hour or two). Tap "Take it up" and the charge is kept in its own charging history.',
+          'For a grid: tap Select, choose three or more crystals, and tap "Activate with the wand". Lines of light join them, round the outside and out from the middle stone. Or select a wand and tap "Activate every crystal here as a grid".',
+          'To end it, select a stone in the grid, or the wand, and tap "Let the grid rest".',
+        ],
+        tips: [
+          'Some stones fade in strong sun (amethyst, rose quartz, fluorite and citrine among them). Charging by light and crystal grids are modern crystal practice.',
+          'On a coven altar the grid and each stone’s glow are shared with everyone there.',
+        ],
+        keywords: ['crystal', 'charge', 'moon', 'sun', 'selenite', 'grid', 'crystal grid', 'wand', 'glow'],
+      },
+      {
+        id: 'altar-draw-deck',
+        title: 'Draw from a deck, rune bag or ogham staves on the altar',
+        summary: 'Tap the deck where it sits to draw one; it’s laid beside it and kept in your readings.',
+        steps: [
+          'Set a tarot deck, rune bag or ogham staves on the altar from the cabinet’s Tools, and select it.',
+          'Type a question if you have one, and tap "Draw a card" (or rune, or stave). It’s drawn as in Divination, laid on the altar beside the deck, and kept in your readings.',
+        ],
+        tips: ['The tarot draws from your chosen deck, with reversals if you’ve turned them on in Divination settings.'],
+        keywords: ['tarot', 'deck', 'card', 'rune', 'rune bag', 'ogham', 'staves', 'draw', 'reading'],
+      },
+      {
+        id: 'altar-ritual-mode',
+        title: 'Ritual mode',
+        summary: 'Dim everything around the altar, keep one small bar, and soften the sounds while you work.',
+        steps: [
+          'Tap "Ritual mode" in the altar’s toolbar. The room goes dark round the altar and the tools step back.',
+          'Tap anything on the altar, then "Tools", to use it; "Hide tools" puts them away again.',
+          'Tap "Leave ritual mode" when you’re done. Leaving the altar ends it too.',
+        ],
+        tips: ['Candle sounds, the bell and the singing bowl play more softly while it’s on.'],
+        keywords: ['ritual mode', 'focus', 'dim', 'quiet', 'minimal', 'distraction'],
+      },
+      {
         id: 'altar-glow-duplicate-rename-remove',
         title: 'Glow, duplicate, rename or remove an object',
         summary: 'The More row holds the everyday editing tools.',

@@ -789,7 +789,10 @@
     // Offerings going over, and charges (the app's offeringArt and ChargeAura).
     const ratio = saved.imagePath ? bridge.ratioOf(saved.imagePath) : null;
     const art = A.offeringArt.offeringArt(saved, width, height, minute, ratio);
-    const charge = saved.altarObjectId ? A.charge.chargeOf(saved, minute) : null;
+    const kept = saved.altarObjectId ? A.charge.chargeOf(saved, minute) : null;
+    // A stone set to charge by moon, sun or selenite glows brighter as it sits (craftTools).
+    const building = saved.altarObjectId && A.craftTools?.chargingOf(saved) ? Math.max(0.15, A.craftTools.chargingGlow(saved, minute)) : 0;
+    const charge = building > (kept?.strength || 0) ? { ...(kept || {}), strength: building } : kept;
     const incense = A.incense.isIncense(saved) ? A.incense.incenseLife(saved, now) : null;
     // A stick of incense burns shorter from its tip and drops its ash at its foot.
     const stick = incense ? A.offeringArt.incenseStickArt(saved, width, height, now) : null;

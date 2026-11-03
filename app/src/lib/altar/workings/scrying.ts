@@ -9,12 +9,30 @@ export const SCRYING_MINUTES = [5, 10, 15] as const;
 
 export type ScryingNotes = { saw: string; symbols: string; feelings: string };
 
+/** What you scry in: the water bowl, a dark mirror (or crystal ball) on the altar, or the cauldron filled with water. */
+export type ScryVessel = 'bowl' | 'mirror' | 'cauldron';
+export const SCRY_VESSELS: Record<ScryVessel, { title: string; lede: string; with: string; image: string }> = {
+  bowl: { title: 'Water-bowl scrying', lede: 'Dim the lights. Let your eyes soften on the water, and let whatever comes, come.', with: 'the water bowl', image: 'A dark bowl of still water, faint light moving on its surface' },
+  mirror: {
+    title: 'Mirror scrying',
+    lede: 'The altar dims. Let your eyes rest on the dark glass, past the candlelight in it, and let whatever comes, come.',
+    with: 'the scrying mirror',
+    image: 'A black mirror in the dark, candlelight reflected in the glass',
+  },
+  cauldron: { title: 'Cauldron scrying', lede: 'The altar dims. Let your eyes soften on the water in the cauldron, and let whatever comes, come.', with: 'the cauldron', image: 'Dark water in a cauldron, faint light moving on its surface' },
+};
+export const scryVessel = (v: unknown): ScryVessel => (v === 'mirror' || v === 'cauldron' ? v : 'bowl');
+/** The altar's History line. */
+export const scryLine = (vessel: ScryVessel, minutes: number) => `Scried with ${SCRY_VESSELS[vessel].with} for ${Math.max(1, Math.round(minutes))} minute${Math.round(minutes) > 1 ? 's' : ''}.`;
+
 /** One entry of `altar.scrying` (the fallback store). */
 export type ScryingEntry = ScryingNotes & {
   altarId: string;
   minutes: number;
   /** Minutes actually sat, if it was ended early. */
   satMinutes: number;
+  /** What it was scried in (missing on older entries: the water bowl). */
+  vessel?: ScryVessel;
   moonPhase: string;
   at: string;
 };
@@ -37,11 +55,12 @@ export const secondsLeft = (minutes: number, startedAt: number, now: number) => 
 export const hasNotes = (notes: ScryingNotes) => !!(notes.saw.trim() || notes.symbols.trim() || notes.feelings.trim());
 
 /** The ritual journal's answers for a scrying (saveJournal({ session: null, answers })). */
-export function scryingJournalAnswers(notes: ScryingNotes, input: { minutes: number; moonPhase: string; altarName?: string; date: Date }): JournalAnswers {
+export function scryingJournalAnswers(notes: ScryingNotes, input: { minutes: number; moonPhase: string; altarName?: string; date: Date; vessel?: ScryVessel }): JournalAnswers {
   const d = input.date;
+  const v = SCRY_VESSELS[scryVessel(input.vessel)];
   const pad = (n: number) => String(n).padStart(2, '0');
   return {
-    title: 'Water-bowl scrying',
+    title: v.title,
     intention: input.altarName ? `Scrying at ${input.altarName}` : 'Scrying',
     moon_phase: input.moonPhase,
     feelings_before: '',
@@ -53,14 +72,15 @@ export function scryingJournalAnswers(notes: ScryingNotes, input: { minutes: num
     dreams_and_follow_up: '',
     results: '',
     changes_for_next_time: '',
-    notes: `${input.minutes} minutes with the water bowl.`,
+    notes: `${input.minutes} minutes with ${v.with}.`,
     manual_minutes: String(input.minutes),
     ritual_date: `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`,
   };
 }
 
-export function scryingEntry(notes: ScryingNotes, input: { altarId: string; minutes: number; satMinutes: number; moonPhase: string; at: string }): ScryingEntry {
+export function scryingEntry(notes: ScryingNotes, input: { altarId: string; minutes: number; satMinutes: number; moonPhase: string; at: string; vessel?: ScryVessel }): ScryingEntry {
   return {
+    ...(input.vessel && input.vessel !== 'bowl' ? { vessel: input.vessel } : {}),
     altarId: input.altarId,
     minutes: input.minutes,
     satMinutes: Math.max(0, Math.round(input.satMinutes)),
