@@ -68,6 +68,11 @@
         { id: "divination" }
       ),
       kit.section(
+        "Meditation",
+        kit.list([kit.row({ url: "/practice/meditation/", title: "Meditation", detail: "A timer with gentle bells, breath pacing, a log of your sits and their patterns" })]),
+        { id: "meditation" }
+      ),
+      kit.section(
         "Hearth & land",
         kit.list([
           kit.row({ url: "/practice/hearth/land/", title: "Land journal", detail: "Your places through the year: frosts, birdsong, blooms, water, offerings · this time last year" }),

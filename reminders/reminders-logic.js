@@ -151,6 +151,21 @@
     }));
   }
 
+  /** The daily time to sit (Craft → Meditation), two weeks at a time as the app keeps it. */
+  function meditationReminderEvents(settings, now, G) {
+    if (!settings.meditation) return [];
+    const only = { ...G.schedule.DEFAULT_SETTINGS, rituals: false, meditation: true, meditationAt: settings.meditationAt };
+    return G.schedule.buildSchedule(only, [], now).map((r) => ({
+      key: `reminder-${r.key.replace(/:/g, "-")}`,
+      title: r.title,
+      start: r.at,
+      end: new Date(r.at.getTime() + 15 * 60000),
+      allDay: false,
+      notes: `${r.body}\nhttps://saltandsovereignty.com/practice/meditation/\n${FOOTER}`,
+      alarms: [0],
+    }));
+  }
+
   /** The synced choices (holidays, tending, planning, quiet hours, the pause), or worked out from the older ones before they're saved. */
   const loadPrefs = (appSettings, settings, G) => G.reminderPrefs.readPrefs(appSettings || {}, settings || null);
 
@@ -201,7 +216,7 @@
   function reminderEvents({ settings, plans, appSettings, now, templateFor, prefs, sources, covens, tend, place }, G) {
     const chosen = prefs || loadPrefs(appSettings, settings, G);
     const fromPrefs = preferenceEvents({ settings, prefs: chosen, appSettings, plans, sources, covens, tend, place, now }, G);
-    const device = [...moonReminderEvents(settings, now, G), ...ritualReminderEvents(settings, plans, now, G, templateFor), ...devotionReminderEvents(settings, now, G), ...dreamReminderEvents(settings, now, G)];
+    const device = [...moonReminderEvents(settings, now, G), ...ritualReminderEvents(settings, plans, now, G, templateFor), ...devotionReminderEvents(settings, now, G), ...dreamReminderEvents(settings, now, G), ...meditationReminderEvents(settings, now, G)];
     const paused = G.reminderPrefs.isPaused(chosen, now);
     const until = chosen.pausedUntil ? new Date(`${chosen.pausedUntil}T00:00:00`) : null;
     const kept = paused ? (until ? device.filter((e) => e.start.getTime() >= until.getTime()) : []) : device;
@@ -254,7 +269,7 @@
     return before === 60 ? "An hour before" : `${Math.round(before / 60)} hours before`;
   }
 
-  const api = { KEYS, SKY_KINDS, HORIZON, readJson, writeJson, loadReminders, saveReminders, loadCalendar, saveCalendar, loadPrefs, prefsPatch, eventOf, preferenceEvents, clock, minutesLabel, moonReminderEvents, ritualReminderEvents, devotionReminderEvents, dreamReminderEvents, sacredReminderEvents, deipnonReminderEvents, reminderEvents, skyEvents, sampleEvent, plansFrom, whenLabel, alarmLabel };
+  const api = { KEYS, SKY_KINDS, HORIZON, readJson, writeJson, loadReminders, saveReminders, loadCalendar, saveCalendar, loadPrefs, prefsPatch, eventOf, preferenceEvents, clock, minutesLabel, moonReminderEvents, ritualReminderEvents, devotionReminderEvents, dreamReminderEvents, meditationReminderEvents, sacredReminderEvents, deipnonReminderEvents, reminderEvents, skyEvents, sampleEvent, plansFrom, whenLabel, alarmLabel };
   global.RemindersLogic = api;
   if (typeof module !== "undefined" && module.exports) module.exports = api;
 })(typeof window !== "undefined" ? window : globalThis);

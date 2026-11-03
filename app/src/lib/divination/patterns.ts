@@ -13,6 +13,7 @@
 // some readers swap Wands and Swords. The pages say so.
 
 import { dayRuler } from '../calendar.ts';
+import { dayStreaks } from '../streaks.ts';
 import { methodLabel, type ReadingEntry, type ReadingMethod } from '../craft/hedge/readings.ts';
 import type { PhaseName } from '../moon.ts';
 import { dateFromKey, localDateKey } from '../rituals/lifecycle.ts';
@@ -22,8 +23,6 @@ import { KIPPER } from './oracle/kipper.ts';
 import { LENORMAND } from './oracle/lenormand.ts';
 import { FEDA, RUNES } from './staves.ts';
 import { TAROT_DECK } from './tarot.ts';
-
-const DAY_MS = 86_400_000;
 
 /** How far back to look. */
 export type PatternRange = 'all' | '365' | '90' | '30';
@@ -363,24 +362,8 @@ export function divinationPatterns(list: ReadingEntry[], now: Date, { limit = 10
   };
 }
 
-/** Runs of days with a reading: the one going now (ending today or yesterday) and the longest. */
-export function dayStreaks(dateKeys: string[], now: Date): Omit<Streaks, 'card'> {
-  const days = [...new Set(dateKeys)].filter((k) => dateFromKey(k)).sort();
-  let longest = 0;
-  let longestEnd: string | null = null;
-  let run = 0;
-  let prev: Date | null = null;
-  for (const key of days) {
-    const day = dateFromKey(key)!;
-    run = prev && Math.round((day.getTime() - prev.getTime()) / DAY_MS) === 1 ? run + 1 : 1;
-    if (run > longest) [longest, longestEnd] = [run, key];
-    prev = day;
-  }
-  const today = localDateKey(now);
-  const yesterday = localDateKey(new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1));
-  const last = days[days.length - 1];
-  return { current: last === today || last === yesterday ? run : 0, longest, longestEnd, days: days.length };
-}
+// dayStreaks lives in ../streaks.ts, shared with the meditation patterns.
+export { dayStreaks };
 
 /** A few plain sentences to open the page with. */
 export function patternLines(p: Patterns): string[] {

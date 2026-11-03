@@ -119,6 +119,25 @@ export async function setStepAlarm(alarm: { at: Date; title: string; body: strin
   }
 }
 
+const SIT_SOURCE = 'sanctuary-meditation';
+const SIT_ID = 'meditation-end-bell';
+
+/** The end of a sit while the app is away (meditation/timer.ts endBellAt), or cancel it. Only one is ever waiting. */
+export async function setSitAlarm(alarm: { at: Date; title: string; body: string } | null): Promise<void> {
+  try {
+    await Notifications.cancelScheduledNotificationAsync(SIT_ID);
+    if (!alarm || (await permissionState()) !== 'granted') return;
+    await ensureChannel();
+    await Notifications.scheduleNotificationAsync({
+      identifier: SIT_ID,
+      content: { title: alarm.title, body: alarm.body, sound: true, data: { source: SIT_SOURCE, url: '/rituals/craft/meditation' } },
+      trigger: { type: Notifications.SchedulableTriggerInputTypes.DATE, date: alarm.at, channelId: CHANNEL },
+    });
+  } catch {
+    // The timer on the screen still keeps time.
+  }
+}
+
 /** Open the screen a tapped reminder points at. */
 export function useReminderTaps() {
   useEffect(() => {

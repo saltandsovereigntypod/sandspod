@@ -34,6 +34,7 @@ const BY_KIND: Record<ReminderKind, string> = {
   coven: 'planning-reminders',
   devotion: 'practice-reminders',
   dream: 'practice-reminders',
+  meditation: 'practice-reminders',
   year: 'practice-reminders',
   summary: 'summary-reminders',
   cycle: 'private-reminders',

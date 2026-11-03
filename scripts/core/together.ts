@@ -7,6 +7,9 @@
 // Keep it to pure modules from app/src/lib.
 export * as live from '../../app/src/lib/together/live.ts';
 export * as mentorship from '../../app/src/lib/together/mentorship.ts';
+// Sit together: a meditation whose shared start time starts everyone's timer.
+export * as sitTimer from '../../app/src/lib/meditation/timer.ts';
+export * as sitTogether from '../../app/src/lib/meditation/together.ts';
 export * as notes from '../../supabase/functions/coven-notify/together.ts';
 export { courseLinkLabel } from '../../app/src/lib/covens/courseLinks.ts';
 export { JOURNEY_CATALOG } from '../../app/src/lib/journeys/catalog.ts';

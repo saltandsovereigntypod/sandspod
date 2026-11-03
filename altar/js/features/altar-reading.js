@@ -128,7 +128,8 @@
     { id: "cord", symbol: "➰", title: "Cord cutting", line: "A cord tied between two candles burns through when they burn down to it." },
     { id: "spell", symbol: "◔", title: "Spell over days", line: "A seven-day candle, nine nights, a moon’s jar: the altar keeps count.", needsSave: true },
     { id: "scry", symbol: "◉", title: "Scrying bowl", line: "A quiet, timed sit with dark water, then a few words on what came.", needsSave: true },
-    { id: "gratitude", symbol: "❂", title: "Gratitude bowl", line: "A bead for each thing you’re thankful for, filling through the moon.", needsSave: true }
+    { id: "gratitude", symbol: "❂", title: "Gratitude bowl", line: "A bead for each thing you’re thankful for, filling through the moon.", needsSave: true },
+    { id: "meditate", symbol: "◯", title: "Meditate here", line: "A timed sit with its bells, the altar before you, a candle lit as you begin if you like." }
   ];
   const PRACTICE = [
     { id: "ancestor", symbol: "✿", title: "Ancestor", line: "A memorial candle for one of your dead, from Hedge → Ancestors." },
@@ -147,7 +148,9 @@
   }
   function openMore(section) {
     const reading = section === "reading";
-    const rows = reading ? (state.tonight ? [{ id: "tonight", symbol: "☾", title: "Why these pieces", line: "Why each piece of tonight’s altar is there, and what could stand in for it." }, ...READING] : READING) : WORKINGS;
+    // Meditate here is for your own altars, not a coven's.
+    const workings = global.CovenAltarPage?.altarId ? WORKINGS.filter((r) => r.id !== "meditate") : WORKINGS;
+    const rows = reading ? (state.tonight ? [{ id: "tonight", symbol: "☾", title: "Why these pieces", line: "Why each piece of tonight’s altar is there, and what could stand in for it." }, ...READING] : READING) : workings;
     const intention = state.intention?.data?.text || "";
     const snap = !!state.options?.snapToMeaning;
     B().openSheet({
@@ -191,6 +194,88 @@
     else if (action === "drawn") openDrawn();
     else if (action === "ritual") openRitualPicker();
     else if (action === "cord") global.AltarCords?.openSheet();
+    else if (action === "meditate") openMeditate();
+  }
+
+  // ── Meditate here (the app's MeditateOverlay) ───────────────────────────
+  /**
+   * A timed sit at this altar, the altar in view behind a small sheet: the
+   * meditation timer's own clock and bells (SaltCore.altar.meditation), a
+   * candle lit as you begin if you like, and the sit kept in the meditation
+   * log afterwards (/practice/meditation/log/).
+   */
+  function openMeditate() {
+    const T = A()?.meditation;
+    if (!T) return;
+    let plan = T.cleanPlan((() => { try { return JSON.parse(global.localStorage.getItem("meditation.plan") || "{}"); } catch { return {}; } })());
+    let clock = null;
+    let endedAt = null;
+    let last = null;
+    let timer = 0;
+    let done = null;
+    let candle = "";
+    const bells = () => T.bellsOf(plan);
+    const candles = () => Array.from(document.querySelectorAll('.altar-object[data-type="candle"]')).filter((o) => o.dataset.lit !== "true" && o.dataset.candleStatus !== "spent" && o.dataset.candleStatus !== "archived");
+    const nameOf = (o) => o.dataset.label || o.getAttribute("aria-label") || "Candle";
+    const ringNow = (times) => global.AltarBell?.toll?.(times, { vibrateOnly: plan.signal === "vibrate" });
+    const sheet = B().openSheet({ eyebrow: "Meditate here", title: "A sit at your altar", html: "", onClose: () => clearInterval(timer) });
+    const finish = (sitMs) => {
+      clearInterval(timer);
+      done = { at: new Date(clock.startedAt + plan.settle * 60000).toISOString(), minutes: T.minutesSat(sitMs) };
+      draw();
+    };
+    const tick = () => {
+      if (!clock || done) return;
+      const elapsed = T.elapsedOf(clock, Date.now());
+      for (const b of T.bellsDue(bells(), last ?? -1, elapsed)) ringNow(b.times);
+      last = elapsed;
+      const s = T.sitStateAt(plan, elapsed, endedAt);
+      if (s.phase === "done") return finish(s.sitMs);
+      const face = sheet.body.querySelector("[data-face]");
+      if (face) face.innerHTML = `<p class="app-caption">${esc(T.PHASE_WORDS[s.phase])}</p><p class="app-scry__clock" role="timer">${esc(T.clockLabel(s.phaseLeftMs === null ? s.sitMs : s.phaseLeftMs))}</p>`;
+    };
+    const draw = () => {
+      if (done) {
+        const q = new URLSearchParams({ at: done.at, minutes: String(done.minutes), timed: "1", kind: candle ? "candle" : "devotional", ...(B().altarId() ? { altar: B().altarId() } : {}) });
+        sheet.setBody(`<p>${esc(`${done.minutes} ${done.minutes === 1 ? "minute" : "minutes"} at your altar. Take a breath or two before you move.`)}</p><a class="app-button" href="/practice/meditation/log/?${q}">Keep it in your log</a><button type="button" class="app-chip" data-sheet-close>Back to the altar</button>`);
+      } else if (clock) {
+        sheet.setBody(`<div class="app-scry"><div data-face></div>${plan.minutes === null ? `<button type="button" class="app-button" data-md="end">End the sit</button>` : `<button type="button" class="app-chip" data-md="stop">Stop here</button>`}</div>`);
+        tick();
+      } else {
+        const lengths = [...T.LENGTHS.map((m) => ({ label: `${m} min`, action: "md-minutes", pressed: plan.minutes === m, data: { v: m } })), { label: "Open-ended", action: "md-minutes", pressed: plan.minutes === null, data: { v: "open" } }];
+        const list = candles();
+        sheet.setBody(`${label("How long")}${B().chips(lengths)}${label("Bells")}${B().chips([
+          { label: "A bell to begin", action: "md-flag", pressed: plan.startBell, data: { f: "startBell" } },
+          { label: "Three to end", action: "md-flag", pressed: plan.endBell, data: { f: "endBell" } },
+          { label: plan.every ? `Every ${plan.every} min` : "None along the way", action: "md-every", pressed: !!plan.every },
+          { label: "Vibrate instead", action: "md-flag", pressed: plan.signal === "vibrate", data: { f: "signal" } }
+        ])}${list.length ? `${label("Light a candle as you begin")}${B().chips([{ label: "None", action: "md-candle", pressed: !candle, data: { v: "" } }, ...list.map((o, i) => ({ label: nameOf(o), action: "md-candle", pressed: candle === String(i), data: { v: String(i) } }))])}` : ""}
+          <p class="app-caption">${esc(T.planLine(plan))}</p><button type="button" class="app-button" data-md="begin">Begin</button><a class="app-chip" href="/practice/meditation/">More choices</a>`);
+      }
+    };
+    sheet.body.addEventListener("click", (event) => {
+      const b = event.target.closest("button");
+      if (!b) return;
+      const act = b.dataset.appAction;
+      if (act === "md-minutes") plan = { ...plan, minutes: b.dataset.v === "open" ? null : Number(b.dataset.v) };
+      else if (act === "md-flag") plan = b.dataset.f === "signal" ? { ...plan, signal: plan.signal === "vibrate" ? "bell" : "vibrate" } : { ...plan, [b.dataset.f]: !plan[b.dataset.f] };
+      else if (act === "md-every") plan = { ...plan, every: T.INTERVAL_CHOICES[(T.INTERVAL_CHOICES.indexOf(plan.every) + 1) % T.INTERVAL_CHOICES.length] };
+      else if (act === "md-candle") candle = b.dataset.v;
+      else if (b.dataset.md === "begin") {
+        global.AltarBell?.toll?.(0, { unlockOnly: true });
+        const lit = candle !== "" ? candles()[Number(candle)] : null;
+        if (lit && typeof global.toggleLight === "function") global.toggleLight(lit);
+        try { global.localStorage.setItem("meditation.plan", JSON.stringify(plan)); } catch { /* this visit only */ }
+        clock = T.startClock(Date.now());
+        timer = setInterval(tick, 500);
+      } else if (b.dataset.md === "end") {
+        if (plan.endBell) ringNow(3);
+        endedAt = T.elapsedOf(clock, Date.now());
+      } else if (b.dataset.md === "stop") return finish(T.sitStateAt(plan, T.elapsedOf(clock, Date.now())).sitMs);
+      else return;
+      draw();
+    });
+    draw();
   }
 
   // ── Reading the altar ───────────────────────────────────────────────────

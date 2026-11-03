@@ -20,6 +20,8 @@
   const { header } = global.GuidesUI;
   const T = global.SaltCore.together;
   const LV = T.live;
+  const ST = T.sitTogether;
+  const SM = T.sitTimer;
   const START_KEY = "together.start";
   const params = new URLSearchParams(global.location.search);
   const liveId = /^[0-9a-f-]{36}$/i.test(params.get("id") || "") ? params.get("id") : null;
@@ -102,6 +104,21 @@
           : ""
       }
       ${
+        context.profile && !context.banned && !start
+          ? `<section class="sp-section" id="sit"><h2 class="sp-label">Sit together</h2><article class="sp-card">
+              <p>A meditation with your coven or friends, each where you are. Everyone’s timer starts at the same moment and the bells ring for each of you.</p>
+              <details${params.get("sit") ? " open" : ""}><summary>Set up a sit together</summary><form data-tg-sit-form>
+                <div class="sp-field"><label for="tg-sit-title">A name for it (optional)</label><input id="tg-sit-title" name="title" maxlength="120" autocomplete="off" /></div>
+                <div class="sp-field"><label for="tg-sit-minutes">How long</label><select id="tg-sit-minutes" name="minutes">${SM.LENGTHS.map((m) => `<option value="${m}"${m === 20 ? " selected" : ""}>${m} minutes</option>`).join("")}<option value="open">Open-ended</option></select></div>
+                <div class="sp-field"><label for="tg-sit-every">A bell along the way</label><select id="tg-sit-every" name="every">${SM.INTERVAL_CHOICES.map((m) => `<option value="${m}">${m ? `Every ${m} minutes` : "None"}</option>`).join("")}</select></div>
+                <label class="tn-check"><input type="checkbox" name="startBell" checked /> A bell to begin</label>
+                <label class="tn-check"><input type="checkbox" name="endBell" checked /> Three bells to end</label>
+                <div class="sp-field"><label for="tg-sit-start">When everyone begins</label><select id="tg-sit-start" name="start">${ST.START_CHOICES.map((c) => `<option value="${c.minutes ?? ""}"${c.minutes === 5 ? " selected" : ""}>${esc(c.label)}</option>`).join("")}</select></div>
+                <div class="sp-actions"><button class="button button--primary" type="submit">Open the sit for others to join</button></div>
+              </form></details></article></section>`
+          : ""
+      }
+      ${
         context.profile && !context.banned
           ? `<section class="sp-section"><h2 class="sp-label">Join with a code</h2>
               <form class="sp-field" data-tg-code><label for="tg-code">The code or link you were sent</label>
@@ -137,6 +154,14 @@
       const next = LV.parseLiveCode(event.target.elements.code.value);
       if (!next) return status("That doesn’t look like a ritual together code.");
       global.location.search = `?code=${encodeURIComponent(next)}`;
+    });
+    root.querySelector("[data-tg-sit-form]")?.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      const f = event.target.elements;
+      const plan = SM.cleanPlan({ minutes: f.minutes.value, every: f.every.value, startBell: f.startBell.checked, endBell: f.endBell.checked });
+      const s = ST.sitTogetherStart(plan, f.start.value ? ST.startIn(Number(f.start.value), new Date()) : null, f.title.value);
+      const row = await attempt(() => rpc("start_live_ritual", { p_title: s.title, p_intention: s.intention, p_steps: s.steps, p_source: s.source, p_coven: null, p_gathering: null }));
+      if (row) global.location.href = `/rituals/together/?id=${encodeURIComponent(row.id)}`;
     });
     root.querySelector("[data-tg-join]")?.addEventListener("click", async (event) => {
       const row = await attempt(() => rpc("join_live_ritual", { p_live: event.target.dataset.tgJoin, p_code: code }));
@@ -226,6 +251,7 @@
           <p>${esc(live.candle_lit_at ? `The candle is lit${live.candle_lit_by ? ` by ${nameOf(live.candle_lit_by)}` : ""}. Light yours now, wherever you are.` : "When the leader lights the candle, everyone lights their own together.")}</p></article>
         ${(leads || hosts) && !live.candle_lit_at && !over ? `<div class="sp-actions">${btn("Light the candle together", 'data-tg-act="light"')}</div>` : ""}
         ${live.status === "gathering" && live.source?.preparation ? `<section class="sp-section"><h2 class="sp-label">Before you begin</h2><p>${prose(live.source.preparation)}</p></section>` : ""}
+        ${!over && ST.isSitTogether(live) ? `<article class="sp-card" data-tg-sit>${sitHtml()}</article>` : ""}
         ${
           step
             ? `<article class="sp-card tg-step" aria-live="polite"><p class="sp-eyebrow">Step ${live.current_step + 1} of ${live.steps.length}</p><h2>${esc(step.title)}</h2>
@@ -311,6 +337,66 @@
       <p class="cv-status" role="status" aria-live="polite" data-tg-status></p>`);
   }
 
+  // ─── Sit together ───────────────────────────────────────────────────────
+  // Everyone's timer starts at the shared moment (meditation/together.ts) and
+  // rings its own bells here, under Candle sounds and Vibration in Accessibility.
+  const sit = { last: null, endedAt: null, done: null, players: [], next: 0 };
+  function chime(times, plan) {
+    const prefs = global.SaltAccessibility?.getState?.() || { candleSounds: true, haptics: true };
+    for (let i = 0; i < times; i++) {
+      global.setTimeout(() => {
+        if (plan.signal === "bell" && prefs.candleSounds) {
+          try {
+            const k = sit.next++ % 3;
+            if (!sit.players[k]) sit.players[k] = new Audio("/assets/sounds/bell-chime.mp3");
+            sit.players[k].currentTime = 0;
+            void sit.players[k].play()?.catch?.(() => {});
+          } catch {
+            // Not heard.
+          }
+        }
+        if (prefs.haptics && typeof navigator.vibrate === "function") {
+          try {
+            navigator.vibrate(plan.signal === "vibrate" ? 400 : 12);
+          } catch {
+            // No vibration here.
+          }
+        }
+      }, i * 2600);
+    }
+  }
+  function sitHtml() {
+    const s = state.live && ST.sitTogetherOf(state.live);
+    if (!s) return "";
+    const now = Date.now();
+    const head = `<p class="sp-eyebrow">Sit together</p><p>${esc(SM.planLine(s.plan))}</p><p class="sp-caption">${esc(ST.startLine(s.startAt, now))}</p>`;
+    if (sit.done) {
+      const q = new URLSearchParams({ at: sit.done.at, minutes: String(sit.done.minutes), timed: "1", together: state.live.id });
+      return `${head}<p>${esc(`${sit.done.minutes} ${sit.done.minutes === 1 ? "minute" : "minutes"}, sat together.`)}</p><div class="sp-actions"><a class="button button--primary" href="/practice/meditation/log/?${q}">Keep it in your log</a></div>`;
+    }
+    if (s.startAt === null) return head;
+    if (s.startAt > now) return `${head}<p class="tg-sit-clock" role="timer">Beginning in ${esc(SM.clockLabel(s.startAt - now))}</p>`;
+    const elapsed = now - s.startAt;
+    const st = SM.sitStateAt(s.plan, elapsed, sit.endedAt);
+    return `${head}<p class="sp-caption">${esc(SM.PHASE_WORDS[st.phase])}</p><p class="tg-sit-clock" role="timer">${esc(SM.clockLabel(st.phaseLeftMs === null ? st.sitMs : st.phaseLeftMs))}</p>${
+      st.phaseLeftMs === null ? `<div class="sp-actions"><button type="button" class="button button--ghost" data-tg-sit-end>End the sit</button></div>` : ""
+    }`;
+  }
+  function sitTick() {
+    const s = state.live && ST.sitTogetherOf(state.live);
+    if (!s || s.startAt === null || sit.done) return;
+    const elapsed = Date.now() - s.startAt;
+    if (elapsed >= 0) {
+      for (const b of SM.bellsDue(SM.bellsOf(s.plan), sit.last ?? -1, elapsed)) chime(b.times, s.plan);
+      sit.last = elapsed;
+      const st = SM.sitStateAt(s.plan, elapsed, sit.endedAt);
+      if (st.phase === "done") sit.done = { at: new Date(s.startAt + s.plan.settle * 60000).toISOString(), minutes: SM.minutesSat(st.sitMs) };
+    }
+    const el = root.querySelector("[data-tg-sit]");
+    if (el) el.innerHTML = sitHtml();
+  }
+  global.setInterval(sitTick, 500);
+
   function wireRitual() {
     root.addEventListener("click", async (event) => {
       const el = event.target.closest("button");
@@ -318,6 +404,15 @@
       const live = state.live;
       const me = context.user.id;
       const a = el.dataset.tgAct;
+      if (el.hasAttribute("data-tg-sit-end")) {
+        const s = ST.sitTogetherOf(live);
+        if (s && s.startAt !== null) {
+          if (s.plan.endBell) chime(3, s.plan);
+          sit.endedAt = Date.now() - s.startAt;
+          sitTick();
+        }
+        return;
+      }
       if (a === "join") {
         if (await attempt(() => rpc("join_live_ritual", { p_live: liveId, p_code: null }))) {
           await load();

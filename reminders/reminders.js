@@ -127,6 +127,15 @@
       </div></section>`;
   }
 
+  function meditationHtml() {
+    return `<section class="sp-section" id="gd-meditation" aria-labelledby="gd-meditation-label"><h2 class="sp-label" id="gd-meditation-label">Meditation</h2>
+      <div class="sp-card">
+        ${toggle("gd-meditation-on", "A time to sit", "A daily nudge for a few quiet minutes", !!settings.meditation, 'data-meditation')}
+        ${settings.meditation ? timeField("gd-meditation-at", "Each day at", settings.meditationAt ?? 450, 'data-minutes="meditationAt"') : ""}
+        <p class="sp-caption">Two weeks at a time, for <a class="gd-link" href="/practice/meditation/">Meditation</a> under Craft.</p>
+      </div></section>`;
+  }
+
   // ── Holidays, tending, planning, quiet hours: the synced choices ─────────
 
   const get = (path) => path.split(".").reduce((o, k) => (o == null ? undefined : o[k]), prefs);
@@ -480,7 +489,7 @@
     root.innerHTML = `${header({ title: "Notifications & reminders", eyebrow: "Settings", back: "/?sanctuary=settings&settings=notifications", backLabel: "Back to Settings" })}
       <p class="sp-muted">No account needed. Choose what you’d like to hear about, and when: the moon, your rituals, your holidays, tending, and planning.</p>
       <div class="sp-card sp-card--gold"><p>A browser can’t ring at a set time, so here your reminders go into your own calendar, which does the reminding. The Salt &amp; Sovereignty app can remind you on your phone instead.</p></div>
-      ${overviewHtml()}${moonHtml()}${ritualsHtml()}${devotionHtml()}${dreamsHtml()}${holidaysHtml()}${tendingHtml()}${planningHtml()}${covensHtml()}${quietHtml()}${yourCalendarHtml()}${skyHtml()}`;
+      ${overviewHtml()}${moonHtml()}${ritualsHtml()}${devotionHtml()}${dreamsHtml()}${meditationHtml()}${holidaysHtml()}${tendingHtml()}${planningHtml()}${covensHtml()}${quietHtml()}${yourCalendarHtml()}${skyHtml()}`;
     if (focus) root.querySelector(focus)?.focus({ preventScroll: true });
   }
 
@@ -546,6 +555,7 @@
     if (t.hasAttribute("data-rituals")) return update({ rituals: t.checked });
     if (t.dataset.devotion) return update({ [t.dataset.devotion]: t.checked });
     if (t.hasAttribute("data-dream-morning")) return update({ dreamMorning: t.checked });
+    if (t.hasAttribute("data-meditation")) return update({ meditation: t.checked });
     if (t.hasAttribute("data-phase-time")) {
       const minutes = fromTime(t.value);
       if (minutes == null) return undefined;

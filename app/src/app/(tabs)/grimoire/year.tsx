@@ -18,6 +18,7 @@ import { useCraft } from '../../../lib/craft/store';
 import { useCycle } from '../../../lib/cycle/store';
 import { divinationReadingRoute } from '../../../lib/divination/links';
 import { DREAM_ROUTES } from '../../../lib/grimoire/dreams';
+import { normalizeSit, SITS } from '../../../lib/meditation/log';
 import { useGrimoire } from '../../../lib/grimoire/store';
 import {
   altarRecords,
@@ -106,6 +107,7 @@ export default function YearInReview() {
   const rituals = useRituals();
   const { entries: readingRows } = useCraft<unknown>(READINGS);
   const { entries: dreamRows } = useCraft<unknown>(DREAMS);
+  const { entries: sitRows } = useCraft<unknown>(SITS);
   const { entries: courseRows } = useCraft<CourseProgress>(COURSE_COLLECTION);
   const { entries: journeyRows } = useJourneyProgress();
   const { snapshot, actions } = useGrimoire();
@@ -124,6 +126,7 @@ export default function YearInReview() {
         plans: rituals.plans,
         readings: readingRows.map((e) => ({ ...e, data: normalizeReading(e.data) })),
         dreams: dreamRows.map((e) => ({ ...e, data: normalizeDream(e.data) })),
+        sits: sitRows.map((e) => ({ id: e.id, data: normalizeSit(e.data) })),
         pages: snapshot?.pages ?? [],
         holidayChoice: holidayChoice(s),
         offerings: fromAltars.offerings,
@@ -138,7 +141,7 @@ export default function YearInReview() {
       now,
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps -- startKey stands in for the settings it reads
-  }, [altars, courseRows, rituals.journal, rituals.plans, readingRows, dreamRows, snapshot, coven, journeyRows, cycle.phase, cycle.data, span, startKey, now]);
+  }, [altars, courseRows, rituals.journal, rituals.plans, readingRows, dreamRows, sitRows, snapshot, coven, journeyRows, cycle.phase, cycle.data, span, startKey, now]);
 
   const lines = yearLines(review);
   const prompts = reflectionPrompts(review);
@@ -304,6 +307,17 @@ export default function YearInReview() {
               </Chips>
             )}
             {r.dreams.count > 0 && <Row icon="today" title="Your dreams and their symbols" last onPress={() => router.push(DREAM_ROUTES.patterns as Href)} />}
+          </Card>
+        </View>
+      )}
+
+      {r.meditation.sits > 0 && (
+        <View style={ui.gapSmall}>
+          <SectionLabel>Meditation</SectionLabel>
+          <Card>
+            <Body>{`${plural(r.meditation.sits, 'sit', 'sits')}, ${plural(r.meditation.minutes, 'minute', 'minutes')} in all.`}</Body>
+            {r.meditation.kinds.length > 0 && <Body muted>{`Most often: ${r.meditation.kinds.map((k) => `${k.label} (${k.count})`).join(', ')}`}</Body>}
+            <Row icon="today" title="Your meditation patterns" last onPress={() => router.push('/rituals/craft/meditation/patterns' as Href)} />
           </Card>
         </View>
       )}

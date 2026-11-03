@@ -23,7 +23,8 @@ export type MoreAction =
   | 'ancestor'
   | 'stone'
   | 'plant'
-  | 'drawn';
+  | 'drawn'
+  | 'meditate';
 
 type Row = { id: MoreAction; symbol: string; title: string; line: string; needsSave?: boolean };
 
@@ -35,6 +36,7 @@ const WORKINGS: Row[] = [
   { id: 'spell', symbol: '◔', title: 'Spell over days', line: 'A seven-day candle, nine nights, a moon’s jar: the altar keeps count.', needsSave: true },
   { id: 'scry', symbol: '◉', title: 'Scrying bowl', line: 'A quiet, timed sit with dark water, then a few words on what came.', needsSave: true },
   { id: 'gratitude', symbol: '❂', title: 'Gratitude bowl', line: 'A bead for each thing you’re thankful for, filling through the moon.', needsSave: true },
+  { id: 'meditate', symbol: '◯', title: 'Meditate here', line: 'A timed sit with its bells, the altar before you, a candle lit as you begin if you like.' },
 ];
 
 // Things from the rest of your practice, set on the altar.
@@ -58,6 +60,8 @@ type Props = {
   saved: boolean;
   /** The altar came from Tonight's altar: offer why each piece is there. */
   tonight: boolean;
+  /** Your own altar (Meditate here is for your own, not a coven's). */
+  personal?: boolean;
   intention: string;
   snap: boolean;
   onSnap: (on: boolean) => void;
@@ -65,12 +69,13 @@ type Props = {
   onClose: () => void;
 };
 
-export function MoreSheet({ visible, section, saved, tonight, intention, snap, onSnap, onPick, onClose }: Props) {
+export function MoreSheet({ visible, section, saved, tonight, personal = true, intention, snap, onSnap, onPick, onClose }: Props) {
   const rows = section === 'workings' ? WORKINGS : tonight ? [{ id: 'tonight' as const, symbol: '☾', title: 'Why these pieces', line: 'Why each piece of tonight’s altar is there, and what could stand in for it.' }, ...READING] : READING;
+  const shown = section === 'workings' && !personal ? rows.filter((r) => r.id !== 'meditate') : rows;
   return (
     <Sheet visible={visible} size="half" eyebrow={section === 'workings' ? 'Workings' : 'Read & arrange'} title={section === 'workings' ? 'Work at this altar' : 'Read and arrange it'} onClose={onClose}>
       {section === 'reading' && !!intention && <Text style={styles.intention}>{`“${intention}”`}</Text>}
-      <RowList rows={rows} saved={saved} onPick={onPick} />
+      <RowList rows={shown} saved={saved} onPick={onPick} />
       {section === 'workings' && (
         <>
           <Text style={type.eyebrow} accessibilityRole="header">
