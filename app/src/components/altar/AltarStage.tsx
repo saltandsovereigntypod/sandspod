@@ -15,6 +15,7 @@ import { CandleMarks, CandlePicture, candleGeometry, drawsBurnedDown } from './C
 import { ChargeAura, Moment, SnapGuide } from './StageEffects';
 import { CordLayer } from './CordLayer';
 import { RiteLayer } from './RiteLayer';
+import { CraftLayer } from './CraftLayer';
 import { FlameFire, HAS_FIRE } from './FlameFire';
 import { HAS_LIT, LitPicture } from './LitPicture';
 import { HAS_SMOKE, SmokeFire } from './SmokeFire';
@@ -348,6 +349,7 @@ export function AltarStage(props: Props) {
           ))}
           <CordLayer doc={doc} stageWidth={stageWidth} stageHeight={stageHeight} />
           <RiteLayer doc={doc} stageWidth={stageWidth} stageHeight={stageHeight} trail={props.trail} />
+          <CraftLayer doc={doc} stageWidth={stageWidth} stageHeight={stageHeight} now={now} />
           </Animated.View>
 
           {!!sky?.darkness && <NightVeil objects={doc.objects} stageWidth={stageWidth} now={now} darkness={sky.darkness} />}

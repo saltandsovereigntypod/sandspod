@@ -42,7 +42,14 @@ export type AltarDeed =
   | 'bowl'
   | 'toast'
   | 'libation'
-  | 'sweep';
+  | 'sweep'
+  | 'pendulum'
+  | 'scry_mirror'
+  | 'grind'
+  | 'cut_cord'
+  | 'simmer'
+  | 'grid'
+  | 'draw_deck';
 
 /** How the builder's "At the altar" choice groups them. */
 export type DeedGroup = 'circle' | 'write' | 'give' | 'fire' | 'work' | 'let_go';
@@ -101,6 +108,13 @@ export const AT_ALTAR: AtAltar[] = [
   { action: 'call_quarters', name: 'Call the quarters', deed: 'quarters', group: 'circle', button: 'Call the quarters at the altar' },
   { action: 'release_quarters', name: 'Release the quarters', deed: 'release_quarters', group: 'circle', button: 'Release the quarters at the altar' },
   { action: 'cleanse_space', name: 'Sweep the altar', deed: 'sweep', group: 'let_go', button: 'Sweep the altar with the besom' },
+  { action: 'ask_pendulum', name: 'Ask the pendulum', deed: 'pendulum', group: 'work', button: 'Ask the pendulum at the altar' },
+  { action: 'scry_mirror', name: 'Scry in the mirror', deed: 'scry_mirror', group: 'work', button: 'Scry in the mirror at the altar' },
+  { action: 'grind_herbs', name: 'Grind herbs in the mortar', deed: 'grind', group: 'work', button: 'Grind your herbs at the altar' },
+  { action: 'cut_cord', name: 'Cut a cord with the bolline', deed: 'cut_cord', group: 'let_go', button: 'Cut the cord at the altar' },
+  { action: 'simmer_pot', name: 'Set a simmer pot going', deed: 'simmer', group: 'give', button: 'Set the simmer pot going in the cauldron' },
+  { action: 'crystal_grid', name: 'Activate a crystal grid', deed: 'grid', group: 'work', button: 'Activate the grid with the wand' },
+  { action: 'draw_from_deck', name: 'Draw from the deck on the altar', deed: 'draw_deck', group: 'work', button: 'Draw from the deck at the altar' },
 ];
 
 export const ALTAR_DEEDS = [...new Set(AT_ALTAR.map((a) => a.deed))];

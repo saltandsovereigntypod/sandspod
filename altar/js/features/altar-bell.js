@@ -88,7 +88,7 @@
       const i = next++ % 3;
       if (!players[i]) players[i] = new Audio(SRC);
       const p = players[i];
-      p.volume = VOLUME;
+      p.volume = VOLUME * (global.AltarSoftSounds || 1);
       p.currentTime = 0;
       p.play()?.catch?.(() => {});
     } catch (_) {
