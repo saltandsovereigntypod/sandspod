@@ -58,6 +58,7 @@ import { drawOnToday, todaysCard, todaysCardLabel } from '../../../lib/divinatio
 import { MIN_READINGS } from '../../../lib/divination/patterns';
 import { deipnonToday } from '../../../lib/deipnon';
 import { keepsSouthernWheel, seasonalSpreads } from '../../../lib/divination/seasonal';
+import { TonightsKit } from '../../../components/rituals/Kit';
 import { deityLines } from '../../../lib/patron';
 import { hasHolyPage, holyRef, moonRef, principalRef } from '../../../lib/holy';
 import { forYou, forYouContext, myPractices } from '../../../lib/rituals/premade';
@@ -228,6 +229,7 @@ export default function Today() {
           <YearTurnToday now={now} settings={mySettings as Record<string, unknown> | null} />
 
           <LookBackDue journal={rituals.journal} now={now} />
+          <TonightsKit now={clock} south={keepsSouthernWheel(settings)} />
 
           <DreamCapture settings={settings} now={clock} reminderOn={reminders.settings.dreamMorning} />
           <DeipnonCard settings={settings} now={clock} />

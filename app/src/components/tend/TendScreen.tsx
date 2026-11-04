@@ -44,6 +44,7 @@ import { colors, fonts, radius, type } from '../../theme';
 export const KIND_MARK: Record<ListItem['kind'], string> = {
   petition: '✉',
   candle: '🕯',
+  jar: '⚱',
   offering: '❦',
   plant: '❧',
   'coven-petition': '✦',

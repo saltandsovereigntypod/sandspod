@@ -16,6 +16,7 @@ import { offeringsDue } from '../altar/offerings.ts';
 import { isOpen, releaseDue, type Petition } from '../altar/petitions.ts';
 import { wateringDue } from '../altar/pottedPlants.ts';
 import { documentFromAltar } from '../altar/snapshot.ts';
+import { jarTendingAt, jarWantsShaking } from '../altar/workings/jarTending.ts';
 import type { SavedAltar, SavedObject } from '../altar/types.ts';
 import { itemLookBack, type ApothecaryLike } from '../altar/apothecaryLookBack.ts';
 import { cleanContribution, contributionNote, kindOf, ownerActions, ritualTasks, type ContributionFate, type ContributionKind, type ContributionStatus, type ContributionVisibility } from '../covens/contributions.ts';
@@ -129,6 +130,31 @@ export function altarTendables({ altars, petitions }: AltarPart, now: Date): Ten
         ends: ['let-go'],
         private: true,
         keywords: [String(object.plaqueText || '')].filter(Boolean),
+        href: `/altar/${altar.id}`,
+        webHref: '/altar/',
+        ref: { altarId: altar.id, objectId: id },
+      });
+    }
+  }
+
+  // Sealed spell jars whose day for a shake has come (Shake to renew on the altar moves it on).
+  for (const { altar, doc } of docs) {
+    for (const object of doc.objects) {
+      if (!object.altarObjectId || !jarWantsShaking(object, now)) continue;
+      const id = String(object.altarObjectId);
+      out.push({
+        key: `jar:${altar.id}:${id}`,
+        kind: 'jar',
+        group: 'altar',
+        title: shorten(String(object.label || 'A spell jar'), 60),
+        detail: 'Would like a shake to renew it',
+        source: altarWhere(altar.name),
+        dueAt: jarTendingAt(object),
+        tendedAt: null,
+        actions: ['open'],
+        ends: ['let-go'],
+        private: true,
+        keywords: [String(object.apothecaryIntention || '')].filter(Boolean),
         href: `/altar/${altar.id}`,
         webHref: '/altar/',
         ref: { altarId: altar.id, objectId: id },

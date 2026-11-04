@@ -267,6 +267,7 @@ import { canTurnScreen, turnScreen } from '../../lib/screenOrientation';
 import { cachedSettings, patchMySettings, useMySettings } from '../../lib/settings/store';
 import { CABINET_FAVOURITES_SETTING, encodeFavourites, readFavourites, toggleFavourite } from '../../lib/altar/cabinetFavourites';
 import { moonTimeAltar, planetAltar, shrineAltar, tonightAltar } from '../../lib/altar/tonight';
+import { kitAltar, kitFor } from '../../lib/rituals/kits';
 import { TRADITIONAL_LIBRARY } from '../../lib/library/traditionalData';
 import { hiddenTraditions, holidayChoice, holidaysToday } from '../../lib/holidays';
 import { moonState } from '../../lib/moon';
@@ -379,9 +380,9 @@ export function AltarEditor({
   whose,
   deed,
 }: { shared?: SharedAltar; header?: ReactNode; overlay?: ReactNode; onBack?: () => void; whose?: WhoseContext | null; deed?: AltarDeedRequest | null } = {}) {
-  const params = useLocalSearchParams<{ altarId: string; from?: string; deity?: string; planet?: string; shelf?: string }>();
+  const params = useLocalSearchParams<{ altarId: string; from?: string; deity?: string; planet?: string; shelf?: string; kit?: string }>();
   const altarId = shared ? `coven:${shared.key}` : params.altarId;
-  const { from, deity, planet } = params;
+  const { from, deity, planet, kit } = params;
   const store = useAltars();
   const { settings, save: saveSettings } = useMySettings();
   const { altars, draft, draftSourceId, status, backgrounds, overrides, signedIn } = store;
@@ -505,6 +506,16 @@ export function AltarEditor({
         return;
       }
     }
+    if (altarId === 'kit' && kit) {
+      // A moon or sabbat kit's altar (rituals/kits.ts): Tonight's altar for that night. Nothing is saved until Save.
+      const chosen = kitFor(kit);
+      if (chosen) {
+        const set = kitAltar(chosen, new Date());
+        start(set.doc, null, `${chosen.title} Altar`);
+        setNotice(`Set for ${set.reason}, from the ${chosen.title} kit. Move, swap or add anything, then Save to keep it.`);
+        return;
+      }
+    }
     if (altarId === 'moon-time') {
       // From Cycle & Moon, while bleeding (when chosen there): a starter altar from the cabinet. Nothing is saved until Save.
       start(moonTimeAltar(new Date()).doc, null, 'Moon-Time Altar');
@@ -532,7 +543,7 @@ export function AltarEditor({
     const altar = altars.find((a) => a.id === altarId);
     if (altar) return start(documentFromAltar(altar), altar.id, altar.name || 'My Altar');
     if (status === 'ready' || status === 'offline' || status === 'error') setMissing(true);
-  }, [altarId, deity, planet, altars, backgrounds, draft, draftSourceId, status, settings, optionEntries, shared]);
+  }, [altarId, deity, planet, kit, altars, backgrounds, draft, draftSourceId, status, settings, optionEntries, shared]);
 
   // A shared altar is saved for the coven as it changes; there's nothing unsaved.
   const dirty = !shared && !!doc && doc !== baseline;

@@ -140,6 +140,12 @@ function MoonSection({ settings, loaded }: { settings: ReminderSettings; loaded:
             value={settings.lookBacks}
             onChange={(lookBacks) => void updateReminderSettings({ lookBacks })}
           />
+          <Toggle
+            label="Check in on spells and workings"
+            detail="A day, a week and four weeks after a working you asked to check in on: how is it going, any signs? At the time set for moon reminders"
+            value={settings.checkIns !== false}
+            onChange={(checkIns) => void updateReminderSettings({ checkIns })}
+          />
         </Card>
       </View>
       <Body muted>Kept on this phone.</Body>

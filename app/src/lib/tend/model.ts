@@ -28,6 +28,7 @@ export const TEND_COLLECTION = 'tend.rhythms';
 export type TendKind =
   | 'petition'
   | 'candle'
+  | 'jar'
   | 'offering'
   | 'plant'
   | 'coven-petition'
@@ -99,6 +100,7 @@ export type Tendable = {
 export const KIND_LABEL: Record<TendKind, { label: string; plural: string; one: string; many: string }> = {
   petition: { label: 'Petition', plural: 'Petitions', one: 'petition', many: 'petitions' },
   candle: { label: 'Candle', plural: 'Candles', one: 'candle', many: 'candles' },
+  jar: { label: 'Spell jar', plural: 'Spell jars', one: 'spell jar', many: 'spell jars' },
   offering: { label: 'Offering', plural: 'Offerings', one: 'offering', many: 'offerings' },
   plant: { label: 'Plant', plural: 'Plants', one: 'plant', many: 'plants' },
   'coven-petition': { label: 'Coven petition', plural: 'Coven petitions', one: 'coven petition', many: 'coven petitions' },

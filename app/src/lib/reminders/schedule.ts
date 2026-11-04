@@ -32,6 +32,8 @@ export type ReminderSettings = {
   ritualLeadMinutes: number;
   /** Ask "Did it work?" on the day you chose to look back on a ritual or spell. */
   lookBacks: boolean;
+  /** Check in on a spell or working a day, a week and four weeks after (rituals/checkIns.ts), when asked for on the working. */
+  checkIns?: boolean;
   /** Daily devotion (My practice → Solitary): a morning and an evening nudge. */
   devotionMorning: boolean;
   /** Minutes after midnight. */
@@ -72,6 +74,7 @@ export const DEFAULT_SETTINGS: ReminderSettings = {
   rituals: true,
   ritualLeadMinutes: 60,
   lookBacks: true,
+  checkIns: true,
   devotionMorning: false,
   devotionMorningAt: 7 * 60,
   devotionEvening: false,
@@ -121,6 +124,7 @@ export function normalizeSettings(raw: unknown): ReminderSettings {
     rituals: value.rituals !== false,
     ritualLeadMinutes: Number.isFinite(lead) && lead >= 0 && lead <= 24 * 60 ? lead : DEFAULT_SETTINGS.ritualLeadMinutes,
     lookBacks: value.lookBacks !== false,
+    checkIns: value.checkIns !== false,
     devotionMorning: value.devotionMorning === true,
     devotionMorningAt: minuteOfDay(value.devotionMorningAt, DEFAULT_SETTINGS.devotionMorningAt),
     devotionEvening: value.devotionEvening === true,
@@ -371,8 +375,10 @@ export function buildSchedule(
   }
 
   // "Did it work?" on each look-back day, at the time chosen for moon reminders.
-  if (settings.lookBacks) {
+  // Check-ins on a working (keys "checkin:…") ring under their own switch.
+  if (settings.lookBacks || settings.checkIns !== false) {
     for (const lookBack of lookBacks) {
+      if (lookBack.key.startsWith('checkin:') ? settings.checkIns === false : !settings.lookBacks) continue;
       const day = dateFromKey(lookBack.date);
       if (!day) continue;
       reminders.push({

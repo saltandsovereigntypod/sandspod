@@ -15,6 +15,7 @@ import { offersDeipnon } from '../deipnon';
 import { itemLookBackReminder } from '../altar/apothecaryLookBack';
 import { getWorkshop, subscribeWorkshop } from '../altar/workshop';
 import { readPlace } from '../location';
+import { checkInReminders } from '../rituals/checkIns';
 import { lookBackReminder } from '../rituals/lookBack';
 import { getRituals, loadPlans, subscribeRituals } from '../rituals/store';
 import { cachedSettings, subscribeSettings } from '../settings/store';
@@ -92,9 +93,11 @@ export function syncReminders(): Promise<void> {
     if (!state.loaded) return;
     try {
       // Rituals and spells in the journal, and the spell jars, sachets and the rest of My Apothecary.
-      const lookBacks = [...getRituals().journal.map(lookBackReminder), ...getWorkshop().apothecary.map(itemLookBackReminder)].filter(
-        (r): r is NonNullable<typeof r> => !!r,
-      );
+      const lookBacks = [
+        ...getRituals().journal.map(lookBackReminder),
+        ...getWorkshop().apothecary.map(itemLookBackReminder),
+        ...getRituals().journal.flatMap(checkInReminders),
+      ].filter((r): r is NonNullable<typeof r> => !!r);
       const prefs = currentPrefs();
       const place = await readPlace().catch(() => null);
       const reminders = planReminders({
@@ -123,7 +126,11 @@ export function syncReminders(): Promise<void> {
 
 /** Every look-back day waiting to be asked, as one string, to notice when it changes. */
 function lookBackKeys(): string {
-  return [...getRituals().journal.map((entry) => lookBackReminder(entry)?.key ?? ''), ...getWorkshop().apothecary.map((item) => itemLookBackReminder(item)?.key ?? '')]
+  return [
+    ...getRituals().journal.map((entry) => lookBackReminder(entry)?.key ?? ''),
+    ...getWorkshop().apothecary.map((item) => itemLookBackReminder(item)?.key ?? ''),
+    ...getRituals().journal.flatMap((entry) => checkInReminders(entry).map((c) => c.key)),
+  ]
     .filter(Boolean)
     .join(',');
 }
