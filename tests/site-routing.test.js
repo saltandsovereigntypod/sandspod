@@ -11,7 +11,7 @@ const load = () => import("../worker/routing.js");
 
 test("the brand's own pages stay static", async () => {
   const { decideRoute } = await load();
-  for (const p of ["/", "/index.html", "/blog/herbs/sage-history.html", "/blog/website-launch.html", "/submit/", "/help/", "/privacy.html", "/submission-terms.html", "/delete-account.html", "/admin/submissions/", "/css/styles.css", "/js/site-nav.js", "/covens/guidelines/", "/covens/covens.css"]) {
+  for (const p of ["/", "/index.html", "/blog/spells/healing-spell.html", "/blog/website-launch.html", "/blog/", "/blog/herbs/", "/blog/herbs/rosemary/", "/submit/", "/help/", "/privacy.html", "/submission-terms.html", "/delete-account.html", "/admin/submissions/", "/css/styles.css", "/js/site-nav.js", "/covens/guidelines/", "/covens/covens.css"]) {
     assert.deepEqual(decideRoute(p, ""), { action: "static" }, p);
   }
 });

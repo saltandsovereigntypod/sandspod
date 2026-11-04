@@ -211,3 +211,19 @@
     order: 2;
   }
 }
+
+/* A history essay's link to its Living Library post. */
+.essay-library-link {
+  max-width: 78ch;
+  margin: 0 auto 2.5rem;
+  padding: 1rem 1.25rem;
+  border: 1px solid rgba(185, 160, 93, 0.38);
+  border-radius: 0.85rem;
+  background: rgba(185, 160, 93, 0.08);
+}
+
+.essay-library-link p {
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.6;
+}

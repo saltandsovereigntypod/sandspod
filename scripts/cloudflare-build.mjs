@@ -14,9 +14,11 @@
 // original PNGs (saved altars name them) and the WebP twins the pages show
 // (scripts/build-altar-object-webp.py). Workers static assets take at most
 // 20,000 files of at most 25 MiB each; the build stops if dist/ outgrows that.
+import { execFileSync } from "node:child_process";
 import { cpSync, mkdirSync, readdirSync, rmSync, statSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { KEPT_IN_REPLACED, REPLACED_SECTIONS } from "../worker/routing.js";
+import { buildLibraryBlog } from "./build-library-blog.mjs";
 
 const root = new URL("..", import.meta.url).pathname;
 const out = join(root, "dist");
@@ -33,20 +35,43 @@ for (const kept of KEPT_IN_REPLACED) {
   cpSync(join(root, kept), join(out, kept), { recursive: true });
 }
 
+// The journal: a post for every Living Library entry, its index pages and the
+// home page's posts.json (scripts/build-library-blog.mjs), built from the Library.
+const journal = buildLibraryBlog({ root, out });
+console.log(`Library journal: ${journal.posts.length} posts; ${journal.skipped.length} too short to post (${journal.skipped.map((s) => s.name).join(", ") || "none"})`);
+
 // sitemap.xml and robots.txt: the static pages that ship, and the app's main screens.
 const ORIGIN = "https://saltandsovereignty.com";
 const APP_PAGES = ["/today", "/altar", "/grimoire", "/grimoire/library", "/rituals", "/rituals/craft", "/coven", "/sign-in"];
-const blogPages = [];
+/** When a file last changed (its last commit), if git knows. */
+const changed = (file) => {
+  try {
+    return execFileSync("git", ["log", "-1", "--format=%cs", "--", file], { cwd: root, encoding: "utf8", stdio: ["ignore", "pipe", "ignore"] }).trim() || null;
+  } catch {
+    return null;
+  }
+};
+const generated = new Set([...journal.indexes, ...journal.posts.map((post) => post.path)]);
+const handWritten = [];
 const findPages = (dir) => {
   for (const entry of readdirSync(join(out, dir), { withFileTypes: true })) {
     const rel = `${dir}/${entry.name}`;
     if (entry.isDirectory()) findPages(rel);
-    else if (entry.name.endsWith(".html")) blogPages.push(`/${rel.replace(/\.html$/, "")}`);
+    else if (entry.name.endsWith(".html")) {
+      const page = `/${rel.replace(/(^|\/)index\.html$/, "$1").replace(/\.html$/, "")}`;
+      if (!generated.has(page)) handWritten.push({ page, lastmod: changed(rel) });
+    }
   }
 };
 findPages("blog");
-const pages = ["/", "/submit/", "/help/", "/covens/guidelines/", "/privacy", "/submission-terms", "/delete-account", ...blogPages.sort(), ...APP_PAGES];
-writeFileSync(join(out, "sitemap.xml"), `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${pages.map((page) => `  <url><loc>${ORIGIN}${page}</loc></url>`).join("\n")}\n</urlset>\n`);
+const pages = [
+  ...[["/", "index.html"], ["/submit/", "submit"], ["/help/", "help"], ["/covens/guidelines/", "covens/guidelines"], ["/privacy", "privacy.html"], ["/submission-terms", "submission-terms.html"], ["/delete-account", "delete-account.html"]].map(([page, file]) => ({ page, lastmod: changed(file) })),
+  ...journal.indexes.map((page) => ({ page, lastmod: journal.date })),
+  ...handWritten.sort((a, b) => a.page.localeCompare(b.page)),
+  ...journal.posts.map((post) => ({ page: post.path, lastmod: journal.date })),
+  ...APP_PAGES.map((page) => ({ page })),
+];
+writeFileSync(join(out, "sitemap.xml"), `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${pages.map(({ page, lastmod }) => `  <url><loc>${ORIGIN}${page}</loc>${lastmod ? `<lastmod>${lastmod}</lastmod>` : ""}</url>`).join("\n")}\n</urlset>\n`);
 writeFileSync(join(out, "robots.txt"), `User-agent: *\nDisallow: /admin/\n\nSitemap: ${ORIGIN}/sitemap.xml\n`);
 
 const MAX_FILES = 20000;

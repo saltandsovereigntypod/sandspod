@@ -140,7 +140,12 @@ async function loadBlogPosts() {
     const response = await fetch("posts.json");
     allBlogPosts = await response.json();
 
-    allBlogPosts.sort((a, b) => new Date(b.date) - new Date(a.date));
+    // The hand-written posts lead, newest first; then the Living Library's
+    // posts (marked "library", added by scripts/build-library-blog.mjs), A to Z.
+    allBlogPosts.sort((a, b) =>
+      (a.library ? 1 : 0) - (b.library ? 1 : 0) ||
+      (a.library ? a.title.localeCompare(b.title) : new Date(b.date) - new Date(a.date))
+    );
 
     buildCategoryFilter();
     renderBlogPosts();

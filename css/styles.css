@@ -688,6 +688,25 @@ p {
   margin-top: 2rem;
 }
 
+/* The home page's way into the journal's sections. */
+.blog-sections {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.35rem 0.6rem;
+  margin: 1rem auto 0;
+  color: var(--muted);
+}
+
+.blog-sections a {
+  color: var(--cream);
+}
+
+.blog-see-all {
+  margin-top: 1rem;
+  text-align: center;
+}
+
 .blog-empty-message,
 .blog-error {
   text-align: center;
