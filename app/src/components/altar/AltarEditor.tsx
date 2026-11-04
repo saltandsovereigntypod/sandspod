@@ -66,6 +66,7 @@ import type { AltarContext } from './workings/common';
 import { DressingSheet } from './workings/DressingSheet';
 import { GratitudeSheet } from './workings/GratitudeSheet';
 import { IntentionSheet, useAltarIntention } from './workings/IntentionSheet';
+import { isProtectiveSpell, useCrystalWear, WearCard } from './CrystalWear';
 import { LayoutSheet } from './workings/LayoutSheet';
 import { SachetFeedSheet, SachetSheet } from './workings/SachetSheet';
 import { ScryingScreen } from './workings/ScryingScreen';
@@ -1148,6 +1149,18 @@ export function AltarEditor({
   );
   const intention = useAltarIntention(sourceId ?? '');
   const { entries: spellEntries } = useCraft<SpellEntry>(SPELLS_COLLECTION);
+  // Crystals worn by use, and "Something came at me" (crystalCare.ts).
+  const wear = useCrystalWear({
+    doc,
+    commit,
+    settings: (settings as Record<string, unknown> | null) ?? null,
+    altarId: sourceId ?? null,
+    altarIntention: intention.text,
+    spells: spellEntries,
+    minute,
+    say: setNotice,
+    log: logAltar,
+  });
   const selectedUid = String(selectedObject?.altarObjectId || '');
   const selectedSpells = useMemo(
     () => (sourceId && selectedUid ? spellEntries.filter((e) => e.data?.altarId === sourceId && e.data.objectUid === selectedUid && !e.data.closedAt) : []),
@@ -1655,6 +1668,7 @@ export function AltarEditor({
             sky={sky}
             aging={aging}
             charges={withBuilding(charges, craft.building(minute * 60_000))}
+            wear={wear.looks}
             moment={moment}
             guide={guide}
             now={minute * 60_000}
@@ -1717,6 +1731,8 @@ export function AltarEditor({
             wisdom={wisdom}
             tonightWhy={tonightWhy}
             spells={selectedSpells}
+            wearCard={<WearCard object={selectedObject} mode={wear.mode} ctx={wear.ctx} now={minute * 60_000} onChoose={wear.choose} onCameAt={wear.cameAtMe} />}
+            onCameAt={wear.cameAtMe}
             canMirror={canMirror}
             cord={
               selectedObject && isCandle(selectedObject)
@@ -1909,6 +1925,12 @@ export function AltarEditor({
                   symbol="✶"
                   accessibilityLabel="Workings: begin a ritual here, spell jar, sachet, cord cutting, spells over days, scrying, the gratitude bowl, and things from your practice"
                   onPress={() => setSheet('more-workings')}
+                />
+                <Chip
+                  label="Something came at me"
+                  symbol="◈"
+                  accessibilityLabel="Something came at me: log it, and the stones doing protective work take the brunt"
+                  onPress={wear.cameAtMe}
                 />
               </ChipRow>
             </ToolGroup>
@@ -2825,7 +2847,13 @@ function ObjectPanel({
   onCloser,
   onDone,
   framing = false,
+  wearCard,
+  onCameAt,
 }: {
+  /** A crystal's wear, and what to do with a broken one (CrystalWear.tsx). */
+  wearCard?: ReactNode;
+  /** Something came at me (on a protective spell's card). */
+  onCameAt?: () => void;
   /** Links to the rest of your practice: ancestors, stones, the Book of Shadows. */
   connect: {
     altarId: string | null;
@@ -2995,6 +3023,7 @@ function ObjectPanel({
           <Text style={type.caption}>{chargeDetail(charge)}</Text>
         </View>
       )}
+      {wearCard}
 
       {spells.map((e) => {
         const today = spellToday(e.data, now);
@@ -3005,6 +3034,11 @@ function ObjectPanel({
             {today.status === 'tend' && (
               <ChipRow>
                 <Chip label="Tended today" symbol="✓" accessibilityLabel={`Mark today’s tending of ${e.data.title} done`} onPress={() => act.tendSpell(e.id)} />
+              </ChipRow>
+            )}
+            {!!onCameAt && isProtectiveSpell(e.data) && (
+              <ChipRow>
+                <Chip label="Something came at me" symbol="◈" accessibilityLabel="Something came at me: log it, and the stones doing protective work take the brunt" onPress={onCameAt} />
               </ChipRow>
             )}
           </View>

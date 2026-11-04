@@ -1,10 +1,11 @@
 import { router } from 'expo-router';
 import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
 
-import { MenuList, MenuRow, Section } from '../../../../components/more/ui';
+import { Chips, MenuList, MenuRow, Section } from '../../../../components/more/ui';
 import { SettingsForm } from '../../../../components/more/SettingsForm';
 import { altarImageSource } from '../../../../lib/altar/assets';
 import { builtInBackgrounds, defaultAltarBackground } from '../../../../lib/altar/cabinet';
+import { WEAR_MODES, wearModeOf } from '../../../../lib/altar/crystalCare';
 import { colors, fonts, radius, type } from '../../../../theme';
 
 type Choice = { value: string; label: string; image: string };
@@ -24,7 +25,7 @@ function choicesFor(saved: string): Choice[] {
 }
 
 // Settings → Altar: the background a new altar starts on (once Appearance),
-// what the About sheet shows (Companion panel and Living Objects together),
+// how crystals wear (crystalCare.ts), what the About sheet shows (Companion panel and Living Objects together),
 // and the Home screen widget.
 export default function AltarSettings() {
   return (
@@ -62,6 +63,12 @@ export default function AltarSettings() {
                 );
               })}
             </View>
+          </Section>
+          <Section label="Crystal wear">
+            <Chips label="Crystal wear" options={WEAR_MODES} value={wearModeOf(draft.crystal_wear)} onChange={(v) => set('crystal_wear', v)} />
+            <Text style={type.caption}>
+              {`${WEAR_MODES.find((m) => m.value === wearModeOf(draft.crystal_wear))?.detail ?? ''} Crystals on your altars dull, cloud and may crack with use, faster in protective work; cleansing clears most of it.`}
+            </Text>
           </Section>
           <Section label="On your altars">
             <MenuList>

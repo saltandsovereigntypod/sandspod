@@ -13,7 +13,9 @@
    - The bolline: cut a tied cord by hand, harvest a sprig, carve a candle.
    - The cauldron: a simmer pot steaming for about three hours, a petition
      burned in it (the petition box), or filled with water to scry.
-   - Crystals set to charge under the moon, in the sun or on selenite, their
+   - Crystals set to charge under the moon (by night), in the sun (by day)
+     or on selenite (touching it; a piece set down from the cabinet if
+     there's none), renewing the stone's intention or a general charge, their
      glow building (living-art.js), and the crystal grid lit with the wand:
      lines of light between its stones, kept with the altar (`grid`).
    - A tarot deck, rune bag or ogham staves drawn from where it sits.
@@ -422,8 +424,18 @@
           const grid = t.gridOf(extra());
           const inGrid = !!grid?.ids.includes(uidOf(el));
           const crystals = els().map(saved).filter((x) => x?.type === "crystal").length;
+          // When each way may charge (crystalCare): the moon by night, the sun by day, selenite touching.
+          const cc = K().crystalCare;
+          const now = new Date();
+          const gates = t.CHARGE_PLACES.map((p) => ({ p, gate: cc.chargeGate(o, p.id, ui.doc().objects, now, ui.place()) }));
+          const held = K().devotion.crystalIntention(o, now.toISOString());
           body.innerHTML = `${c ? `<p class="app-caption">Charging ${esc(t.chargePlace(c.how).label.toLowerCase())}: ${glow >= 1 ? "fully charged. Take it up when you’re ready." : `about ${Math.round(glow * 100)}% so far; the glow builds as it sits.`}</p>${ui.chips([{ label: "Take it up", action: "up", primary: true }])}`
-            : `<p class="app-label">Charge it</p>${ui.chips(t.CHARGE_PLACES.map((p) => ({ label: p.label, action: "charge", data: { how: p.id } })))}<p class="app-caption">${esc(t.CHARGE_NOTE)}</p>`}
+            : `<p class="app-label">Charge it</p>${ui.chips(gates.map(({ p, gate }) => ({ label: p.label, action: "charge", data: { how: p.id }, hint: gate.ok ? "" : `${p.label}: ${gate.line}` })))}
+              ${gates.map(({ p, gate }) => `<p class="app-caption">${esc(`${p.label}: ${gate.line}${gate.warn ? ` ${gate.warn}` : ""}`)}</p>`).join("")}
+              ${gates.some(({ gate }) => gate.offerSelenite) ? ui.chips([{ label: "Place selenite from the cabinet", action: "selenite" }]) : ""}
+              <p class="app-caption">${esc(cc.chargeIntentionLine(o, now.toISOString()))}</p><p class="app-caption">${esc(t.CHARGE_NOTE)}</p>`}
+            <label class="app-field"><span class="app-label">${held ? "Change its intention" : "Add an intention"}</span><input type="text" maxlength="160" data-stone-intention placeholder="${esc(held || "What is it for?")}"></label>
+            ${ui.chips([{ label: held ? "Change its intention" : "Add an intention", action: "intention" }])}
             ${inGrid ? ui.chips([{ label: "Let the grid rest", action: "rest" }]) : crystals >= t.GRID_MIN ? `<p class="app-caption">For a crystal grid, choose ${t.GRID_MIN} or more crystals with Select and activate them with the wand.</p>` : ""}`;
         };
         render();
@@ -434,11 +446,24 @@
           const at = nowIso();
           const name = ui.shortLabel(el.dataset.label, "The crystal");
           if (action === "charge") {
-            ui.update(el, (o) => t.startCharging(o, b.dataset.how, at));
+            const gate = K().crystalCare.chargeGate(saved(el), b.dataset.how, ui.doc().objects, new Date(), ui.place());
+            if (!gate.ok) { say(gate.line); return; }
+            ui.update(el, (o) => t.startCharging(o, b.dataset.how, at, gate.strength));
             const line = t.chargeLineFor(name, b.dataset.how);
             logAltar(line);
             show("charge", el);
-            say(`${line} Its glow builds as it sits.`);
+            say(`${line} ${gate.line}${gate.warn ? ` ${gate.warn}` : ""} Its glow builds as it sits.`);
+          } else if (action === "selenite") {
+            const piece = K().crystalCare.seleniteUnder(saved(el), ui.doc().objects, at);
+            if (piece) ui.addSaved(piece, { select: false });
+            logAltar("Set a selenite cluster on the altar, under the stone, to charge it on.");
+            say("A selenite cluster is set under the stone. Now choose On selenite.");
+          } else if (action === "intention") {
+            const text = body.querySelector("[data-stone-intention]")?.value?.trim() || "";
+            if (!text) return;
+            ui.update(el, (o) => K().crystalCare.setStoneIntention(o, text, at));
+            logAltar(`${name} was given an intention: ${text}.`);
+            say(`${name} holds it now. Charging it will renew it.`);
           } else if (action === "up") {
             const full = t.chargingGlow(saved(el)) >= 1;
             ui.update(el, (o) => t.finishCharging(o, at));

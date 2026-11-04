@@ -41,7 +41,10 @@ import {
   type PendulumAnswer,
   type Swing,
 } from '../../lib/altar/craftTools';
+import { chargeGate, chargeIntentionLine } from '../../lib/altar/crystalCare';
+import { crystalIntention } from '../../lib/altar/devotion';
 import { offeringOf } from '../../lib/altar/offerings';
+import { usePlace } from '../../lib/location';
 import type { SavedObject } from '../../lib/altar/types';
 import { colors, type } from '../../theme';
 import { Button } from '../Button';
@@ -67,6 +70,10 @@ export type CraftActs = {
   fillToScry: () => void;
   scry: (vessel: 'mirror' | 'cauldron') => void;
   charge: (how: ChargePlace) => void;
+  /** Set a piece of selenite from the cabinet under the stone. */
+  placeSelenite: () => void;
+  /** Give the stone an intention, or change it. */
+  setIntention: (text: string) => void;
   takeUp: () => void;
   gridAll: () => void;
   releaseGrid: () => void;
@@ -272,9 +279,16 @@ function Cauldron({ object, act }: { object: SavedObject; act: CraftActs }) {
   );
 }
 
-function Crystal({ object, inGrid, crystals, act }: { object: SavedObject; inGrid: boolean; crystals: number; act: CraftActs }) {
+function Crystal({ object, objects, inGrid, crystals, act }: { object: SavedObject; objects: SavedObject[]; inGrid: boolean; crystals: number; act: CraftActs }) {
   const c = chargingOf(object);
   const glow = chargingGlow(object);
+  const place = usePlace();
+  const [intention, setIntention] = useState('');
+  const now = new Date();
+  const at = now.toISOString();
+  // When each way may charge (crystalCare.ts): the moon by night, the sun by day, selenite touching.
+  const gates = CHARGE_PLACES.map((p) => ({ p, gate: chargeGate(object, p.id, objects, now, place) }));
+  const held = crystalIntention(object, at);
   return (
     <View style={styles.box}>
       {c ? (
@@ -288,13 +302,37 @@ function Crystal({ object, inGrid, crystals, act }: { object: SavedObject; inGri
         <>
           <Text style={styles.label}>Charge it</Text>
           <ChipRow>
-            {CHARGE_PLACES.map((p) => (
-              <Chip key={p.id} label={p.label} onPress={() => act.charge(p.id)} />
+            {gates.map(({ p, gate }) => (
+              <Chip key={p.id} label={p.label} onPress={() => act.charge(p.id)} accessibilityLabel={gate.ok ? p.label : `${p.label}: ${gate.line}`} />
             ))}
           </ChipRow>
+          {gates.map(({ p, gate }) => (
+            <Text key={p.id} style={type.caption}>{`${p.label}: ${gate.line}${gate.warn ? ` ${gate.warn}` : ''}`}</Text>
+          ))}
+          {gates.some(({ gate }) => gate.offerSelenite) && <Button label="Place selenite from the cabinet" variant="outline" onPress={act.placeSelenite} />}
+          <Text style={type.caption}>{chargeIntentionLine(object, at)}</Text>
           <Text style={type.caption}>{CHARGE_NOTE}</Text>
         </>
       )}
+      <Text style={styles.label}>{held ? 'Change its intention' : 'Add an intention'}</Text>
+      <TextInput
+        value={intention}
+        onChangeText={setIntention}
+        placeholder={held || 'What is it for?'}
+        placeholderTextColor={colors.muted}
+        accessibilityLabel={held ? 'Change the stone’s intention' : 'Add an intention to the stone'}
+        style={styles.input}
+        maxLength={160}
+      />
+      <Button
+        label={held ? 'Change its intention' : 'Add an intention'}
+        variant="outline"
+        disabled={!intention.trim()}
+        onPress={() => {
+          act.setIntention(intention);
+          setIntention('');
+        }}
+      />
       {inGrid ? (
         <Button label="Let the grid rest" variant="outline" onPress={act.releaseGrid} />
       ) : (
@@ -327,7 +365,7 @@ export function CraftPanel({
   if (isPendulum(object)) return <Pendulum calibration={calibration} act={act} />;
   if (isMortar(object)) return <Mortar object={object} choices={choices} act={act} />;
   if (isCauldron(object)) return <Cauldron object={object} act={act} />;
-  if (object.type === 'crystal') return <Crystal object={object} inGrid={!!grid?.ids.includes(String(object.altarObjectId))} crystals={crystals} act={act} />;
+  if (object.type === 'crystal') return <Crystal object={object} objects={objects} inGrid={!!grid?.ids.includes(String(object.altarObjectId))} crystals={crystals} act={act} />;
   if (isBolline(object)) {
     return (
       <View style={styles.box}>

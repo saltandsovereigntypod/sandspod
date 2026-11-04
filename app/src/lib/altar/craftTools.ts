@@ -13,6 +13,7 @@
 // sit. Everything done is kept in the altar's History by the editor. Pure,
 // so it can be tested; shared with the website (js/core/altar.js craftTools).
 
+import { chargeCare } from './crystalCare.ts';
 import { careForCrystal } from './devotion.ts';
 import { displayBox, STAGE_ASPECT } from './geometry.ts';
 import { appStateOf, isCandle, logAppEvent, setAppState } from './livingState.ts';
@@ -292,19 +293,19 @@ export type ChargePlace = 'moon' | 'sun' | 'selenite';
 export const CHARGE_PLACES: { id: ChargePlace; label: string; method: string; hours: number; line: string }[] = [
   { id: 'moon', label: 'Under the moon', method: 'Moonlight', hours: 3, line: 'set under the moon' },
   { id: 'sun', label: 'In the sun', method: 'Sunlight', hours: 1, line: 'set in the sun' },
-  { id: 'selenite', label: 'On selenite', method: 'Another crystal', hours: 2, line: 'set on selenite' },
+  { id: 'selenite', label: 'On selenite', method: 'Selenite', hours: 2, line: 'set on selenite' },
 ];
 export const chargePlace = (id: unknown) => CHARGE_PLACES.find((p) => p.id === id) ?? null;
 
 export const CHARGE_NOTE =
-  'Charging by moonlight, sunlight or selenite is modern crystal practice; the times here are only a gentle guide. Some stones fade in strong sun (amethyst, rose quartz, fluorite and citrine among them), so the moon or selenite suits those better.';
+  'Charging by moonlight, sunlight or selenite is modern crystal practice; the times here are only a gentle guide. The moon charges between your sunset and sunrise, more strongly near the full moon; the sun in daylight; selenite when the stone rests on a piece of it. Some stones fade in strong sun (amethyst, rose quartz, fluorite and citrine among them), so the moon or selenite suits those better.';
 
-export type Charging = { how: ChargePlace; since: string };
+export type Charging = { how: ChargePlace; since: string; /** Moonlight's strength when it was set out (crystalCare.ts moonChargeStrength). */ strength?: number };
 
 export function chargingOf(o: SavedObject): Charging | null {
   const c = appStateOf(o).charging as Partial<Charging> | null | undefined;
   if (!c || !chargePlace(c.how) || typeof c.since !== 'string' || !Number.isFinite(Date.parse(c.since))) return null;
-  return { how: c.how as ChargePlace, since: c.since };
+  return { how: c.how as ChargePlace, since: c.since, ...(typeof c.strength === 'number' ? { strength: c.strength } : {}) };
 }
 
 /** How far a charge has built, 0 to 1. */
@@ -315,18 +316,19 @@ export function chargingGlow(o: SavedObject, now = Date.now()): number {
   return Math.max(0, Math.min(1, (now - Date.parse(c.since)) / ms));
 }
 
-export function startCharging(o: SavedObject, how: ChargePlace, now: string): SavedObject {
+/** Set it to charge (check crystalCare.ts chargeGate first: the moon by night, the sun by day, selenite touching). */
+export function startCharging(o: SavedObject, how: ChargePlace, now: string, strength?: number): SavedObject {
   const place = chargePlace(how);
   if (!place || o.type !== 'crystal') return o;
-  return logAppEvent(o, { kind: 'charge', text: `${String(o.label || 'The crystal')} was ${place.line} to charge.` }, now, { charging: { how, since: now } });
+  return logAppEvent(o, { kind: 'charge', text: `${String(o.label || 'The crystal')} was ${place.line} to charge.` }, now, { charging: { how, since: now, ...(strength != null ? { strength } : {}) } });
 }
 
-/** Take it up: kept as a charge in the stone's own history (the charge glow follows), the building glow cleared. */
+/** Take it up: kept as a charge in the stone's own history (renewing its intention, or a general charge), the building glow cleared. */
 export function finishCharging(o: SavedObject, now: string): SavedObject {
   const c = chargingOf(o);
   if (!c) return o;
   const place = chargePlace(c.how)!;
-  const charged = careForCrystal(o, 'charge', { decision: 'Keep current intentions', purpose: 'General recharge', methods: [place.method], supports: [], notes: `Charged ${place.label.toLowerCase()} on the altar.`, occurredAt: now }, now);
+  const charged = careForCrystal(o, 'charge', chargeCare(o, place.method, place.label.toLowerCase(), now, c.how === 'moon' ? c.strength : undefined), now);
   return setAppState(charged, { charging: null }, now);
 }
 
