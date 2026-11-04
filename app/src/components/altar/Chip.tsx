@@ -11,10 +11,12 @@ type Props = {
   active?: boolean;
   disabled?: boolean;
   tone?: 'default' | 'danger';
+  /** Symbol only (the label still read aloud): the computer screen's side panel toolbar. */
+  compact?: boolean;
 };
 
 /** A wrapping action chip (44pt tall). Rows of these wrap; nothing scrolls sideways. */
-export function Chip({ label, onPress, accessibilityLabel, symbol, active, disabled, tone = 'default' }: Props) {
+export function Chip({ label, onPress, accessibilityLabel, symbol, active, disabled, tone = 'default', compact }: Props) {
   return (
     <Pressable
       onPress={onPress}
@@ -30,7 +32,7 @@ export function Chip({ label, onPress, accessibilityLabel, symbol, active, disab
             {symbol}
           </Text>
         ) : null}
-        <Text style={[styles.label, active && styles.activeText, tone === 'danger' && styles.danger]}>{label}</Text>
+        {compact && symbol ? null : <Text style={[styles.label, active && styles.activeText, tone === 'danger' && styles.danger]}>{label}</Text>}
       </View>
     </Pressable>
   );

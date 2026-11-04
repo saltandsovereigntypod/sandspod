@@ -1812,18 +1812,19 @@ export function AltarEditor({
   // The altar's tools, in groups: one under the other on a phone, in the side panel's tabs on a computer screen.
   const toolbarChips = doc ? (
     <>
-              <Chip label="Undo" symbol="↶" onPress={() => stepHistory(undo, redo)} disabled={undo.current.length === 0} />
-              <Chip label="Redo" symbol="↷" onPress={() => stepHistory(redo, undo)} disabled={redo.current.length === 0} />
+              <Chip compact={desktop} label="Undo" symbol="↶" onPress={() => stepHistory(undo, redo)} disabled={undo.current.length === 0} />
+              <Chip compact={desktop} label="Redo" symbol="↷" onPress={() => stepHistory(redo, undo)} disabled={redo.current.length === 0} />
               <Chip
+                compact={desktop}
                 label="Select"
                 symbol="☑"
                 accessibilityLabel="Choose several things on the altar, to move, group or delete them together"
                 onPress={() => startSelecting(null)}
                 disabled={doc.objects.length === 0}
               />
-              <Chip label="Zoom in" symbol="+" onPress={() => zoomBy(1.5)} disabled={viewport.zoom >= 4} />
-              <Chip label="Zoom out" symbol="−" onPress={() => zoomBy(1 / 1.5)} disabled={viewport.zoom <= 1} />
-              {!full ? <Chip label="Full screen" symbol="⤢" accessibilityLabel={canTurnScreen ? 'Turn the altar sideways to fill the screen' : 'Fill the screen with the altar'} onPress={() => enterFullScreen(true)} /> : null}
+              <Chip compact={desktop} label="Zoom in" symbol="+" onPress={() => zoomBy(1.5)} disabled={viewport.zoom >= 4} />
+              <Chip compact={desktop} label="Zoom out" symbol="−" onPress={() => zoomBy(1 / 1.5)} disabled={viewport.zoom <= 1} />
+              {!full ? <Chip compact={desktop} label="Full screen" symbol="⤢" accessibilityLabel={canTurnScreen ? 'Turn the altar sideways to fill the screen' : 'Fill the screen with the altar'} onPress={() => enterFullScreen(true)} /> : null}
     </>
   ) : null;
   const ritualChip = !full ? (
