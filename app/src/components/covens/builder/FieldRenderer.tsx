@@ -18,6 +18,8 @@ export type FieldContext = {
   /** Things named by earlier steps, for "which candle". */
   named: NamedThing[];
   actionId: string;
+  /** The order to list a parts field's parts in (the ritual's order for the quarters), if its own. */
+  partOrder?: string[] | null;
   /** Pages of the coven's Book this person can open, for papers a report or an item links. */
   pages?: { id: string; title: string; section: string | null; hidden?: boolean }[];
 };
@@ -171,7 +173,7 @@ export function FieldRenderer({ specs, values, onChange, ctx, only }: { specs: F
             );
           }
           case 'parts': {
-            const parts = partsOf(spec, values, specs);
+            const parts = partsOf(spec, values, specs, ctx.partOrder);
             const source = specs.find((s) => s.key === spec.partsFrom);
             if (!parts.length) return <Text key={spec.key} style={type.caption}>Choose {source?.label.toLowerCase() ?? 'the parts'} first.</Text>;
             const setPart = (part: string, patch: Partial<PartValue>) => set(spec.key, parts.map((p) => (p.part === part ? { ...p, ...patch } : p)));
