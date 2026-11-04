@@ -7,7 +7,7 @@ import { imageRatio } from '../../lib/altar/geometry';
 import { cabinetEntry, topUses } from '../../lib/altar/companion';
 import { cabinetCategoriesFor, cabinetItemsFor, deityPantheon, formImage, formObjectLabel, overrideKey, PANTHEON_GROUPS, placeableForms, shortLabel } from '../../lib/altar/cabinet';
 import { pickImage, type PickedImage } from '../../lib/altar/images';
-import { FAVOURITES_CATEGORY, favouriteItems } from '../../lib/altar/cabinetFavourites';
+import { FAVOURITES_CATEGORY, favouriteItems, favouriteKey } from '../../lib/altar/cabinetFavourites';
 import { cabinetFormOf, itemIndex, searchItems } from '../../lib/altar/itemIndex';
 import { festivalWhen, nearWithThings, seasonalSections, type FestivalNear } from '../../lib/altar/seasonal';
 import type { CabinetForm, CabinetItem, SavedObject } from '../../lib/altar/types';
@@ -173,8 +173,8 @@ export function CabinetSheet({
       count={countOf(item, forms[0])}
       onPress={() => placeIt(item, forms[0])}
       onLongPress={choosePicture(item, forms[0])}
-      starred={favourites.includes(item.id)}
-      onStar={onToggleFavourite ? () => onToggleFavourite(item.id) : undefined}
+      starred={favourites.includes(favouriteKey(item))}
+      onStar={onToggleFavourite ? () => onToggleFavourite(favouriteKey(item)) : undefined}
     />
   );
 
@@ -265,8 +265,8 @@ export function CabinetSheet({
                 count={countOf(place.item, place.form)}
                 onPress={() => placeIt(place.item, place.form)}
                 onLongPress={choosePicture(place.item, place.form)}
-                starred={favourites.includes(place.item.id)}
-                onStar={onToggleFavourite ? () => onToggleFavourite(place.item.id) : undefined}
+                starred={favourites.includes(favouriteKey(place.item))}
+                onStar={onToggleFavourite ? () => onToggleFavourite(favouriteKey(place.item)) : undefined}
               />
             ))}
           </View>
@@ -302,7 +302,7 @@ export function CabinetSheet({
                 </Text>
                 {!!uses && <Text style={[styles.uses, styles.usesLeft]}>{uses}</Text>}
               </View>
-              {!!onToggleFavourite && <Star on={favourites.includes(item.id)} label={item.name} onPress={() => onToggleFavourite(item.id)} />}
+              {!!onToggleFavourite && <Star on={favourites.includes(favouriteKey(item))} label={item.name} onPress={() => onToggleFavourite(favouriteKey(item))} />}
               {!!item.customCabinetItemId && !!onEditOwn && (
                 <Pressable accessibilityRole="button" accessibilityLabel={`Edit ${item.name}`} onPress={() => onEditOwn(item)} hitSlop={8} style={styles.edit}>
                   <Text style={styles.editText}>Edit</Text>
