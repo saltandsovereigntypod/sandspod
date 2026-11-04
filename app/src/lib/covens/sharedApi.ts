@@ -96,7 +96,13 @@ export async function fetchRota(covenIds: string[]): Promise<RotaData> {
   return { duties: duties.rows, swaps: swaps.rows, gatherings: gatherings.rows, away, ready: true };
 }
 
-export const saveDuty = (covenId: string, id: string | null, row: Record<string, unknown>) =>
+/** Active members of these covens (for the rota on Today). */
+export const fetchActiveMembers = (covenIds: string[]) =>
+  read<{ coven_id: string; user_id: string }[]>(supabase.from('coven_members').select('coven_id,user_id').in('coven_id', covenIds).eq('status', 'active').limit(2000), [])
+    .then((r) => r.rows)
+    .catch(() => [] as { coven_id: string; user_id: string }[]);
+
+export const saveDuty =(covenId: string, id: string | null, row: Record<string, unknown>) =>
   id ? write<RotaDuty>(supabase.from('coven_rota_duties').update(row).eq('id', id).select().single()) : write<RotaDuty>(supabase.from('coven_rota_duties').insert({ ...row, coven_id: covenId }).select().single());
 export const removeDuty = (id: string) => write(supabase.from('coven_rota_duties').update({ active: false }).eq('id', id));
 
