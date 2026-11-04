@@ -187,7 +187,7 @@ export const HELP: HelpSection[] = [
         steps: [
           'Open More, then Settings.',
           'You: Identity, and Location & hemisphere. Your practice: Your crafts, Path & traditions, My deities, Calendars & holidays.',
-          'Screens: Today, Grimoire, Living Library, Divination and Altar. Then Notifications & reminders, Accessibility, Covens & privacy, and Account & data.',
+          'Screens: Today, Grimoire, Living Library, Divination and Altar. Then Reminders, Accessibility, Covens & privacy, and Account & data.',
           'Change what you like. Each change saves itself, with a quiet "Saved" beneath.',
         ],
         tips: ['Signed in, settings are shared with the website. As a guest they stay on this device.'],
@@ -540,15 +540,15 @@ export const HELP: HelpSection[] = [
   // ─── Reminders ────────────────────────────────────────────────────────
   {
     id: 'reminders',
-    title: 'Notifications & reminders',
+    title: 'Reminders',
     intro: 'Gentle notes on this phone for the moon, your plans, your holidays, tending your altar and its plants, offerings, crystals and candles, planning rituals, and your covens. Each kind can be shaped as you like.',
     topics: [
       {
         id: 'reminders-everything',
         title: 'Choose which reminders you get',
-        summary: 'One Notifications & reminders page in Settings, a line for each kind, and a page for each.',
+        summary: 'One Reminders page in Settings, a line for each kind, and a page for each.',
         steps: [
-          'Open More, then Settings, then "Notifications & reminders". (Practice → Rituals has a "Reminders" row that opens the same page.)',
+          'Open More, then Settings, then "Reminders". (Practice → Rituals has a "Reminders" row that opens the same page.)',
           'Each row says what is on: "Moon and rituals", "Holidays", "Tending", "Ritual planning", "Daily practice", "Covens", "Quiet hours and pause" and "Your calendar".',
           'Tap a row to open its page and choose.',
         ],
@@ -564,7 +564,7 @@ export const HELP: HelpSection[] = [
         title: 'Get reminded of the moon',
         summary: 'Choose which phases to hear about, and when.',
         steps: [
-          'On Today, tap "Remind me of the moon", or open Settings → Notifications & reminders, then "Moon and rituals".',
+          'On Today, tap "Remind me of the moon", or open Settings → Reminders, then "Moon and rituals".',
           'Under "Moon phases", switch on New Moon, First Quarter, Full Moon or Last Quarter.',
           'Add earlier heads-ups under "Also remind me": "The day before", "A week before", or "At the exact moment".',
           'Under "At", choose the time of day the reminders arrive.',
@@ -579,7 +579,7 @@ export const HELP: HelpSection[] = [
         title: 'Be reminded of your holidays',
         summary: 'Every holiday in the calendars you keep, or just the ones you pick, as far ahead as you like.',
         steps: [
-          'Open Settings → Notifications & reminders, then "Holidays", and switch on "Remind me of my holidays".',
+          'Open Settings → Reminders, then "Holidays", and switch on "Remind me of my holidays".',
           'Under "How far ahead", choose any of "On the day", "The day before", "3 days before" and "A week before", and under "At" the time of day.',
           'Under "Calendars", tap a calendar to turn it on or off, give it its own timing, or pick its holidays: "All", "None", or one by one. Long calendars have "Find a holiday".',
           'Under a holiday, tap "Change its timing ›" to give that one day its own heads-ups.',
@@ -596,7 +596,7 @@ export const HELP: HelpSection[] = [
         title: 'Be reminded to tend plants, altars, offerings, crystals and candles',
         summary: 'Each on its own schedule, at its own time.',
         steps: [
-          'Open Settings → Notifications & reminders, then "Tending".',
+          'Open Settings → Reminders, then "Tending".',
           'Plants: choose "When it’s thirsty" (by how often you water each and when you last did) or "On a schedule" (every few days, or on chosen days). Tap "Its own way ›" under a plant to give it its own. A plant taken off its altar stops asking.',
           'Altars: how often, at what time, and which altars.',
           'Offerings: when one is going over (on the day, or the day before), and a regular refresh if you like.',
@@ -628,7 +628,7 @@ export const HELP: HelpSection[] = [
         title: 'Be reminded to plan a ritual',
         summary: 'Before your holidays, and before your coven’s, earlier if you lead it.',
         steps: [
-          'Open Settings → Notifications & reminders, then "Ritual planning".',
+          'Open Settings → Reminders, then "Ritual planning".',
           'Switch on "Remind me to plan a ritual" and choose how many days before each holiday. A holiday you’ve already planned a ritual for doesn’t ask.',
           'Under "Your covens", reminders are on for covens you lead (as head of the coven, or in a position that leads or schedules rites), two weeks ahead unless you choose otherwise. Turn each coven on or off, and choose how far ahead.',
         ],
@@ -641,7 +641,7 @@ export const HELP: HelpSection[] = [
         title: 'Quiet hours, a pause, and busy days',
         summary: 'Keep the nights quiet, pause everything for a while, and gather a busy day into one note.',
         steps: [
-          'Open Settings → Notifications & reminders, then "Quiet hours and pause".',
+          'Open Settings → Reminders, then "Quiet hours and pause".',
           'Switch on "Pause all reminders" and choose how long: a day, a week, a month, or until you turn them back on.',
           'Switch on "Keep quiet at night" and choose when quiet hours begin and end.',
           'Leave "Gather a busy day into one note" on to hear about a busy day once, in the morning.',
@@ -655,7 +655,7 @@ export const HELP: HelpSection[] = [
         title: 'Be reminded before a planned ritual',
         summary: 'Ritual reminders ring before the night you planned.',
         steps: [
-          'Open Settings → Notifications & reminders, then "Moon and rituals".',
+          'Open Settings → Reminders, then "Moon and rituals".',
           'Under "Planned rituals", switch on "Remind me before a planned ritual".',
           'Choose "15 minutes before", "An hour before" or "Three hours before".',
         ],
@@ -667,7 +667,7 @@ export const HELP: HelpSection[] = [
         title: 'Add moon phases, holidays and eclipses to your phone calendar',
         summary: 'Let your phone’s calendar show the sky.',
         steps: [
-          'Open Settings → Notifications & reminders, then "Your calendar".',
+          'Open Settings → Reminders, then "Your calendar".',
           'Switch on "Moon phases you chose", "Holidays" or "Eclipses & retrogrades".',
           'Allow calendar access when asked. If you have several calendars, choose one under "Add events to".',
           'Tap "Event settings ›" beside a switch to change how those events look.',
@@ -806,7 +806,7 @@ export const HELP: HelpSection[] = [
           'Tap "Add to its journal" for a feed, repotting, a new leaf, a cutting or a note. Each entry keeps that day’s moon.',
         ],
         tips: [
-          'Notifications & reminders → "Remind me when a plant would like water" sends a note on the day one comes due. It is off unless you turn it on.',
+          'Reminders → "Remind me when a plant would like water" sends a note on the day one comes due. It is off unless you turn it on.',
           'Its notes say what it is kept for, and honestly whether it is safe around cats and dogs.',
           'Signed in, the photo of your plant is kept with your account and shows on the website too. As a guest it stays on this device.',
         ],
@@ -1340,7 +1340,7 @@ export const HELP: HelpSection[] = [
           'Select it to tend it: "Refresh", "Leave it be", "Return to nature" or "Remove".',
         ],
         tips: [
-          'Notifications & reminders → "Remind me when an offering wants tending" sends one gentle note on a day something on your altars goes over. Offerings you chose to leave be won’t ask.',
+          'Reminders → "Remind me when an offering wants tending" sends one gentle note on a day something on your altars goes over. Offerings you chose to leave be won’t ask.',
         ],
         keywords: ['offerings', 'offering drawer', 'food', 'bread', 'fruit', 'flowers', 'wine', 'milk', 'honey', 'water', 'libation', 'goes off', 'ages', 'wilts'],
       },
@@ -1814,7 +1814,7 @@ export const HELP: HelpSection[] = [
         title: 'Keep a shadow, deity, ancestor or omen journal',
         summary: 'Four private journals for the inner work of the craft, each kept with your account like your dreams.',
         steps: [
-          'Open the Grimoire and tap "Journals", or open Practice, then Rituals, and tap "Journals" under Record.',
+          'Open Journal (Practice → Rituals → Journal, the Grimoire, or More → Journal): every journal is there, newest first; tap a kind to see only it, or "New entry" to write one.',
           'Choose Shadow work, Deity & spirit, Ancestors or Omens & signs.',
           'Tap the write button at the top, or "Write to this prompt" for a gentle prompt.',
           'Fill in what you like, add tags, and link a Grimoire page or a dream if it belongs with one. The moon at the time is noted for you.',
@@ -2236,7 +2236,7 @@ export const HELP: HelpSection[] = [
           'Check the title, kind, tradition, deities, occasion, moon, materials, steps, safety notes and "Its roots", and change anything you like.',
           'Under "Credit it to", choose your preferred or magical name, Anonymous, or the coven.',
           'Read the community guidelines, switch on "I agree to the Submission Terms and these guidelines", and tap "Send for review".',
-          'Follow it under "My shared rituals": waiting, returned for changes (with the moderators’ note), published or not accepted.',
+          'Follow it under Community → Mine: waiting, returned for changes (with the moderators’ note), published or not accepted.',
         ],
         tips: [
           'A copy is shared: your template stays yours. A coven’s roles, members and notes are never shared.',
@@ -2252,7 +2252,7 @@ export const HELP: HelpSection[] = [
         title: 'Find and use community rituals',
         summary: 'Search rituals the community has shared, then add one to yours, do it once, or add it to a coven.',
         steps: [
-          'Open Rituals and, under Learn, tap "Community Rituals".',
+          'Open Rituals and, under Learn, tap "Community" (or More → Community); Rituals is the first part.',
           'Search by sharer, title, deity, herb or holiday, and filter by Kind and Moon. Tap "More filters" for tradition, deity, occasion and what it needs, and choose a Sort: Newest, Most saved or A to Z.',
           'Tap a ritual to read it all: who shared it, safety notes, its roots, what you’ll need and the steps.',
           'Tap "Add to my rituals" for your own copy (credited to the sharer, yours to change), "Do it once" to begin it without saving, or "Plan a night for it".',
@@ -2928,9 +2928,9 @@ export const HELP: HelpSection[] = [
       {
         id: 'practice-hub',
         title: 'Open the tools for your practice',
-        summary: 'The Craft home lists each kind of craft and its tools, under "Craft tools by path".',
+        summary: 'The Craft home lists each kind of craft and its tools, under "Craft tools by path": your own crafts with each tool listed, and a row for every other practice.',
         steps: [
-          'Open Practice → Craft and look under "Craft tools by path".',
+          'Open Practice → Craft (My practice) and look under "Craft tools by path".',
           'Tap one of your crafts under "Your crafts", or any under "Other practices".',
           'Tap a tool on that practice’s page.',
           'Tap its premade workings row, such as "Green workings", for rituals and spells made for it.',
@@ -3535,7 +3535,7 @@ export const HELP: HelpSection[] = [
         tips: [
           'Tap a sit in "Your sits" to change or delete it.',
           'On To tend, turn on "Count my meditations" for a thing of your own, and each finished sit marks it done for the day.',
-          'A daily reminder to sit is in Settings → Notifications & reminders, under your practice.',
+          'A daily reminder to sit is in Settings → Reminders, under your practice.',
           'Your year in review counts your sits too.',
         ],
         href: '/rituals/craft/meditation',
@@ -3905,7 +3905,7 @@ export const HELP: HelpSection[] = [
           'Those who lead or review the coven can always invite; other members can when the coven’s leaders turn on "Members may invite people".',
           'Whoever joins still makes a coven profile (confirming they are 18 or older) and signs the coven’s agreements first. They join at the coven’s first position.',
           'Someone removed from the coven can come back only through an invitation sent to them by name, never a link. Someone banned from it can’t.',
-          'The link opens the website’s invitation page, which opens the app for those who have it. Choose whether you hear when someone accepts in Settings → Notifications & reminders → Covens.',
+          'The link opens the website’s invitation page, which opens the app for those who have it. Choose whether you hear when someone accepts in Settings → Reminders → Covens.',
         ],
         href: '/coven',
         keywords: ['invite', 'invitation', 'invite link', 'share link', 'add member', 'bring a friend', 'code', 'unlisted', 'revoke'],
@@ -4014,7 +4014,7 @@ export const HELP: HelpSection[] = [
         ],
         tips: [
           'Only the trainee, their mentor, those who manage the coven’s programs and the coven’s head read a step’s conversation. No one else in the coven does.',
-          '"Initiation & training" on the coven’s page counts new messages. Choose whether they reach your phone with "Training messages" in Settings → Notifications & reminders → Covens.',
+          '"Initiation & training" on the coven’s page counts new messages. Choose whether they reach your phone with "Training messages" in Settings → Reminders → Covens.',
           'You can remove a message you wrote.',
         ],
         href: '/more/settings/notifications?section=covens',
@@ -4106,7 +4106,7 @@ export const HELP: HelpSection[] = [
         steps: [
           'Tap "Messages" on any coven screen. The coven’s chat is first, then your conversations.',
           'Tap "New message" and choose one person for a one-to-one chat, or several for a group.',
-          'Under "Phone notifications", tap "Notification settings ›" to choose whether the coven’s chat and your conversations notify your phone (Settings → Notifications & reminders → Covens). Mute one conversation from its ⓘ button.',
+          'Under "Phone notifications", tap "Notification settings ›" to choose whether the coven’s chat and your conversations notify your phone (Settings → Reminders → Covens). Mute one conversation from its ⓘ button.',
           'Press and hold a message (on the website, tap or hover it and tap "React") to react: 🕯️ 🌙 ✨ 🔥 🙏 ❤️ 😂 👍, or "More" for any emoji. Tap a reaction under a message to add or take back yours, and its number to see who.',
           'From the same place, "Remove, report or block…" reports a message, blocks its writer, or removes your own.',
         ],
@@ -4122,7 +4122,7 @@ export const HELP: HelpSection[] = [
           'In the coven’s chat, Gathering buttons can be linked to one of the coven’s upcoming gatherings: then Coming and Running late also set that person’s RSVP to going, and Can’t make it to not going.',
           'Under the message, a tally such as "Coming 5 · Late 1 · Can’t 2" shows how people answered. Tap it to see who. Tap another button to change your answer, or yours again to take it back.',
           'When planning a gathering, under Details choose "Post a reminder in Messages before it starts": 10, 15 or 30 minutes, or an hour, before. A gentle reminder then appears in the coven’s chat, from whoever planned it, with the Gathering buttons linked to it.',
-          'In Settings → Notifications & reminders → Covens, "Reactions to my messages" (off at first) and "Answers to my reply buttons" (on at first) choose what reaches your phone. Answers are gathered into one note every few minutes.',
+          'In Settings → Reminders → Covens, "Reactions to my messages" (off at first) and "Answers to my reply buttons" (on at first) choose what reaches your phone. Answers are gathered into one note every few minutes.',
         ],
         href: '/coven',
         keywords: ['reply buttons', 'quick reply', 'poll', 'yes no', 'coming', 'running late', 'rsvp', 'reminder', 'gentle reminder', 'answers', 'tally', 'reactions'],
@@ -4326,12 +4326,12 @@ export const HELP: HelpSection[] = [
         title: 'Hear about new applications and answers',
         summary: 'A note on your phone when someone asks to join or advance in a coven you review, and when your own is answered.',
         steps: [
-          'Open Settings → Notifications & reminders, then "Covens". A coven’s "Review" and "Messages" have a "Notification settings ›" link to the same page.',
+          'Open Settings → Reminders, then "Covens". A coven’s "Review" and "Messages" have a "Notification settings ›" link to the same page.',
           'Under each coven you review, switch on "New applications". "Tell me about new applications" under "Every coven" turns them all on or off.',
           'Switch on "When my own is answered" to hear back about your application or your request to advance. A tap opens the coven.',
           'These come as coven notifications: "On this phone" at the top says whether this phone gets them, and turns them on or off.',
         ],
-        tips: ['The website shows the same counts on a coven’s Review tab and your covens list while the page is open, and keeps the same choices under Notifications & reminders.', 'Pausing reminders pauses these too.'],
+        tips: ['The website shows the same counts on a coven’s Review tab and your covens list while the page is open, and keeps the same choices under Reminders.', 'Pausing reminders pauses these too.'],
         href: '/more/settings/notifications?section=covens',
         keywords: ['applications', 'notification', 'coven requests', 'advance', 'approved', 'declined', 'badge', 'count', 'review'],
       },
@@ -4347,7 +4347,7 @@ export const HELP: HelpSection[] = [
           'Under "Leaving", tap the button to leave the coven.',
         ],
         tips: [
-          'Open positions also show on the coven’s home. Choose whether you hear when one opens in Settings → Notifications & reminders → Covens, under "Positions opening".',
+          'Open positions also show on the coven’s home. Choose whether you hear when one opens in Settings → Reminders → Covens, under "Positions opening".',
           'One request at a time. While it waits, its checklist shows under "Rise to a higher position".',
           'If you’re on a position’s waiting list, My standing says where: "You’re 2nd in line for Initiate". Tap "Leave the waiting list" to take yourself off it.',
         ],
@@ -4442,7 +4442,7 @@ export const HELP: HelpSection[] = [
         title: 'Read the Community Grimoire',
         summary: 'Browse pages the community has shared.',
         steps: [
-          'Open More and tap "Community Grimoire".',
+          'Open More, tap "Community" and choose Writings.',
           'Search by title, tag or keyword, and use "Filter by type".',
           'Tap a page to read it.',
         ],
@@ -4507,7 +4507,7 @@ export const HELP: HelpSection[] = [
         title: 'See the status of your submissions and read replies',
         summary: 'Follow the review of each offering and reply to us.',
         steps: [
-          'Sign in, open More, and tap "My submissions".',
+          'Sign in, open More, tap "Community" and choose Mine.',
           'Tap a submission.',
           'Read "Response from Salt & Sovereignty" and the Conversation.',
           'Type under "Reply or ask a question" and tap "Send reply".',

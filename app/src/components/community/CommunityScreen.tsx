@@ -10,6 +10,7 @@ import { router, useLocalSearchParams } from 'expo-router';
 import { useState } from 'react';
 import { RefreshControl } from 'react-native';
 
+import { Button } from '../Button';
 import { MoreScreen } from '../more/ui';
 import { SegmentedSwitch } from '../SegmentedSwitch';
 import { useMySubmissions, usePublished } from '../../lib/community/api';
@@ -72,6 +73,7 @@ export function CommunityScreen({ initial, back }: { initial: CommunityTab; back
         <>
           <MyRituals />
           <MyWritings />
+          <Button label="Make an offering" variant="outline" onPress={() => router.push('/more/community/offer')} />
         </>
       )}
     </MoreScreen>
