@@ -75,6 +75,9 @@ type Params = {
   templateId?: string;
   premade?: string;
   fresh?: string;
+  moon?: string;
+  own?: string;
+  from?: string;
 };
 
 const entryIdOf = (ref: string) => ref.replace(/\//g, ':');
@@ -85,7 +88,7 @@ const starters = (intent: string | null) => starterIngredients(spellIntent(inten
 function fromLink(params: Params): SpellSpec | null {
   const premade = premadeById(params.premade);
   if (premade) return specFromPremade(premade);
-  if (params.intent || params.intention || params.method || params.add || params.deity || params.planet || params.fresh) return specFromParams(params, starters, deityName);
+  if (params.intent || params.intention || params.method || params.add || params.deity || params.planet || params.fresh || params.from || params.own || params.moon) return specFromParams(params, starters, deityName);
   return null;
 }
 
@@ -260,6 +263,12 @@ export default function SpellBuilder() {
     <RitualScreen back="Rituals">
       <Title eyebrow={saved ? 'Spell builder · saved spell' : 'Spell builder'}>{draft.title}</Title>
       <Body muted>Work through it in order or jump about: every choice can be changed, and the steps follow along until you make them your own.</Body>
+      <Button
+        label="Find by correspondence"
+        variant="text"
+        accessibilityHint="Look by intention, herb, stone, colour, planet, day or moon, then build a spell from what you choose"
+        onPress={() => router.push('/rituals/finder' as Href)}
+      />
 
       <View style={ui.gapSmall}>
         <SectionLabel>1 · What is it for?</SectionLabel>

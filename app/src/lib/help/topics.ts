@@ -2173,6 +2173,19 @@ export const HELP: HelpSection[] = [
         keywords: ['spell builder', 'create spell', 'petition', 'candle spell', 'custom spell', 'spell jar', 'sachet', 'sigil', 'ritual oil', 'charm bag', 'correspondences', 'substitute'],
       },
       {
+        id: 'ritual-correspondence-finder',
+        title: 'Find correspondences, then build a spell',
+        summary: 'Look by intention, herb, stone, colour, planet, day or moon, choose what suits, and open the spell builder with it.',
+        steps: [
+          'Open Rituals and tap "Correspondence finder", or tap "Find by correspondence" at the top of the spell builder.',
+          'Choose what the work is for, type a word (a herb, a stone, a use), or open "By planet, day, colour or moon".',
+          'Tap herbs, stones and candle colours to choose them. Your own correspondences are included and marked "Yours", and your pairings are offered once you choose their entry.',
+          'Read the suggested moon and day, and the timing advisor’s best time this week, then tap "Build a spell". The builder opens with your choices, the intention and that moon and day.',
+        ],
+        href: '/rituals/finder',
+        keywords: ['correspondence finder', 'correspondences', 'find herbs', 'what herb for', 'colour', 'planet', 'moon phase', 'build a spell', 'ingredients'],
+      },
+      {
         id: 'ritual-templates-use',
         title: 'Begin a ritual from one of your templates',
         summary: 'Templates are your own written rituals, kept in your account.',

@@ -157,21 +157,34 @@ export type BuilderParams = {
   deity?: string | null;
   /** A planet whose day it's for ("Venus"). */
   planet?: string | null;
+  /** The moon it's meant for ("waxing"). */
+  moon?: string | null;
+  /** Things of your own by name, "|"-separated ("my grandmother's ring|bay"). */
+  own?: string | null;
+  /** "finder": the correspondence finder chose the ingredients, so no starters are added. */
+  from?: string | null;
 };
 
-/** A fresh spell from a link's params: the planet guide, a Library page, the timing advisor… */
+const BUILDER_TIDES = ['new', 'waxing', 'full', 'waning'] as const;
+
+/** A fresh spell from a link's params: the planet guide, a Library page, the timing advisor, the correspondence finder… */
 export function specFromParams(params: BuilderParams, starters: (intent: string | null) => Ingredient[], deityName: (key: string) => string | null): SpellSpec {
   const intent = spellIntent(params.intent ?? params.intention)?.key ?? null;
   const method = (SPELL_METHODS.find((m) => m.key === params.method)?.key ?? 'candle') as SpellMethodKey;
   const spec = blankSpec(intent, method);
-  const ingredients = [...starters(intent)];
+  const ingredients = params.from === 'finder' ? [] : [...starters(intent)];
   for (const ref of String(params.add ?? '').split(',').map((r) => r.trim()).filter(Boolean)) {
     const entry = libraryEntryOf(ref);
     if (entry && !ingredients.some((i) => i.ref === entry.ref)) ingredients.push({ ref: entry.ref, name: entry.name, type: entry.type });
   }
+  for (const own of String(params.own ?? '').split('|').map((n) => n.trim()).filter(Boolean)) {
+    const ref = `own/${own.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`;
+    if (!ingredients.some((i) => i.ref === ref || i.name.toLowerCase() === own.toLowerCase())) ingredients.push({ ref, name: own, type: 'item' });
+  }
   const name = params.deity ? deityName(params.deity) : null;
   const planet = params.planet && WEEKDAY_OF[params.planet] ? params.planet : null;
-  return { ...spec, ingredients, deities: params.deity && name ? [{ key: params.deity, name }] : [], planet };
+  const moon = (BUILDER_TIDES as readonly string[]).includes(String(params.moon)) ? (params.moon as SpellSpec['moon']) : null;
+  return { ...spec, ingredients, deities: params.deity && name ? [{ key: params.deity, name }] : [], planet, moon };
 }
 
 // ── "Did it work?" ────────────────────────────────────────────────────────

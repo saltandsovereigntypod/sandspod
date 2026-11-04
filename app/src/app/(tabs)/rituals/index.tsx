@@ -86,6 +86,7 @@ export default function RitualsHome() {
           />
           <Row icon="calendar" title="Plan a ritual" detail="The moon phase and weekday for your intention" onPress={() => router.push('/rituals/planner')} />
           <Row icon="altar" title="Build a spell" detail="Purpose, form, Library ingredients, timing and words" onPress={() => router.push('/rituals/spell')} />
+          <Row icon="grimoire" title="Correspondence finder" detail="By intention, herb, stone, colour, planet, day or moon, then build a spell" onPress={() => router.push('/rituals/finder' as Href)} />
           <Row
             icon="wheel"
             title="Cycle, astrology, divination and more"
