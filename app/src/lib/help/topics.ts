@@ -2720,6 +2720,23 @@ export const HELP: HelpSection[] = [
         keywords: ['tarot', 'draw a card', 'card of the day', 'daily card', 'celtic cross', 'three card spread', 'rune cast', 'ogham', 'reversed cards', 'blank rune', 'spreads', 'horseshoe', 'tree of life', 'new moon spread', 'full moon spread', 'samhain spread', 'make your own spread', 'custom spread'],
       },
       {
+        id: 'divination-study',
+        title: 'Learn the cards with flashcards and a quiz',
+        summary: 'Study the tarot (in your deck’s own reading), runes, ogham, Lenormand, Kipper or a deck of your own, a few cards a day.',
+        steps: [
+          'Open Practice → Craft → Divination and tap "Learn the cards".',
+          'Read today’s card to learn, then choose a deck.',
+          'Tap "Flashcards": look at the card, tap "Show the meaning", then "I knew it" or "Not yet". Or tap "Quiz" and choose the right meaning.',
+        ],
+        tips: [
+          'Cards move through five boxes. One you know comes back after a day, then three, seven, fourteen and thirty; one you miss goes back to the first box.',
+          'Seven new cards join each day, so a deck of 78 is met in under a fortnight.',
+          'Your progress is kept with your account, per deck.',
+        ],
+        href: '/rituals/divination/study',
+        keywords: ['learn tarot', 'flashcards', 'quiz', 'study', 'spaced repetition', 'memorise', 'runes', 'ogham', 'lenormand'],
+      },
+      {
         id: 'divination-deck',
         title: 'Choose a tarot deck',
         summary: 'Draw with the Rider–Waite–Smith, the Tarot de Marseille or the Sola Busca: the same 78 cards, each deck with its own pictures and its own way of reading them.',
