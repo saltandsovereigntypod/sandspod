@@ -110,7 +110,7 @@ test("no internal link among the generated pages is broken", async () => {
     for (const [, ref] of html.matchAll(/\b(?:href|src)="(\/[^"#?]*)/g)) {
       if (ref === "/" || isAppRoute(ref) || ref === "/blog/") continue;
       if (ref.startsWith("/blog/") && ref.endsWith("/")) assert.ok(pages.has(ref), `${page}: broken link ${ref}`);
-      else assert.ok(tracked.has(ref.slice(1)) || ref === "/more/research", `${page}: missing ${ref}`);
+      else assert.ok(tracked.has(ref.slice(1)) || tracked.has(`${ref.slice(1)}.html`) || ref === "/more/research", `${page}: missing ${ref}`);
     }
   }
 });
@@ -142,14 +142,21 @@ test("the home page's journal links every section and the whole journal", async 
   assert.ok(section.includes('href="/blog/"'));
 });
 
-test("old hand-written posts a Library post replaced are gone and redirect to it", async () => {
-  const { pages, routing } = await build();
-  for (const [from, to] of Object.entries(routing.BLOG_REDIRECTS)) {
-    assert.ok(pages.has(to), `${from} → ${to}, which isn't built`);
-    assert.ok(!fs.existsSync(path.join(root, `${from.slice(1)}.html`)), `${from}.html should be deleted`);
-    for (const variant of [`${from}.html`, from, `${from}/`]) {
-      assert.deepEqual(routing.decideRoute(variant, ""), { action: "redirect", location: to }, variant);
-    }
+test("each history essay and its Library post link to each other, each canonical to itself", async () => {
+  const { result, pages } = await build();
+  const essays = JSON.parse(fs.readFileSync(path.join(root, "posts.json"), "utf8")).filter((p) => p.libraryEntry);
+  assert.ok(essays.length >= 19);
+  for (const essay of essays) {
+    const post = result.posts.find((p) => p.entry.id === essay.libraryEntry);
+    assert.ok(post, `${essay.url}: no post for ${essay.libraryEntry}`);
+    const html = pages.get(post.path);
+    const links = html.split(`href="/${essay.url.replace(/\.html$/, "")}"`).length - 1;
+    assert.ok(links >= 2, `${post.path}: links ${essay.url} near the top and in Connected`);
+    assert.match(html, new RegExp(`Read the full history of ${post.name}`));
+    const source = fs.readFileSync(path.join(root, essay.url), "utf8");
+    assert.ok(source.includes(`href="${post.path}"`), `${essay.url} links ${post.path}`);
+    assert.match(source, /magical properties &amp; correspondences/);
+    assert.ok(source.includes(`<link rel="canonical" href="https://saltandsovereignty.com/${essay.url.replace(/\.html$/, "")}" />`), `${essay.url} is canonical to itself`);
+    assert.match(html, new RegExp(`<link rel="canonical" href="https://saltandsovereignty.com${post.path}" />`));
   }
-  assert.deepEqual(routing.decideRoute("/blog/herbs/rosemary-history.html", "?ref=x"), { action: "redirect", location: "/blog/herbs/rosemary/?ref=x" });
 });

@@ -7,9 +7,9 @@
 // editing the Library changes the posts on the next deploy. Nothing here is
 // committed: scripts/cloudflare-build.mjs runs this into dist/.
 //
-// The hand-written posts (posts.json) lead the journal; the old hand-written
-// pages that a Library post replaced redirect to it (worker/routing.js
-// BLOG_REDIRECTS).
+// The hand-written posts (posts.json) lead the journal. An essay on an
+// entry's history names it as "libraryEntry"; the two link to each other and
+// each stays canonical to itself.
 //
 //   node scripts/build-library-blog.mjs <out-dir>
 import { execFileSync } from "node:child_process";
@@ -468,9 +468,14 @@ function renderPost(lib, post, ctx) {
     for (const s of BLOG_TYPES) picked.push(...same.filter((p) => p.section === s).slice(0, s.type === entry.type ? 4 : 2));
     if (picked.length) groups.push([`More ${value} correspondences`, picked.slice(0, 10).map((p) => p.entry)]);
   }
-  const connected = groups
-    .map(([title, items]) => `<div class="lib-connected__group"><h3>${esc(title)}</h3><ul>${items.map((e) => `<li>${linkTo(e)} <span>${esc(ctx.byId.get(e.id).section.singular)}</span></li>`).join("")}</ul></div>`)
-    .join("");
+  // The owner's long history of this entry (posts.json "libraryEntry"), if there is one.
+  const essay = ctx.essays.get(entry.id);
+  const essayLink = essay ? `<a href="/${esc(essay.url.replace(/\.html$/, ""))}">Read the full history of ${esc(name)}</a>` : "";
+  const connected =
+    (essay ? `<div class="lib-connected__group"><h3>Further reading</h3><ul><li>${essayLink} <span>journal essay</span></li></ul></div>` : "") +
+    groups
+      .map(([title, items]) => `<div class="lib-connected__group"><h3>${esc(title)}</h3><ul>${items.map((e) => `<li>${linkTo(e)} <span>${esc(ctx.byId.get(e.id).section.singular)}</span></li>`).join("")}</ul></div>`)
+      .join("");
 
   const appHref = `/grimoire/library/${entry.id}`;
   const mail = research.researchNoteUrl(name, `Living Library ${post.section.singular}`);
@@ -518,7 +523,7 @@ ${rows.length ? `          <div class="sidebar-section"><h3>At a glance</h3><tab
             <p class="entry-date">From the Living Library · updated <time datetime="${ctx.date}">${ctx.dateLabel}</time></p>
             <div class="grimoire-divider" aria-hidden="true">✦ ☽ ✦ ☾ ✦</div>
           </header>
-${image ? `          <figure class="lib-figure"><img src="${esc(image.src)}" alt="${esc(image.alt)}"${image.width ? ` width="${image.width}" height="${image.height}"` : ""} fetchpriority="high" decoding="async" /></figure>\n` : ""}${opening ? `          <blockquote class="opening-quote"><p>${esc(opening)}</p></blockquote>\n` : ""}          ${overview ? prose(library, overview) : ""}
+${image ? `          <figure class="lib-figure"><img src="${esc(image.src)}" alt="${esc(image.alt)}"${image.width ? ` width="${image.width}" height="${image.height}"` : ""} fetchpriority="high" decoding="async" /></figure>\n` : ""}${opening ? `          <blockquote class="opening-quote"><p>${esc(opening)}</p></blockquote>\n` : ""}${essay ? `          <aside class="lib-essay" aria-label="The full history"><p>${essayLink}: ${esc(essay.title.replace(/^[^:]+:\s*/, ""))}</p></aside>\n` : ""}          ${overview ? prose(library, overview) : ""}
           ${sections.join("\n          ")}
 ${connected ? `          <section class="lib-connected" aria-labelledby="connected-heading"><h2 id="connected-heading">Connected in the Library</h2>${connected}</section>\n` : ""}          <section class="lib-research" aria-label="${esc(research.RESEARCH_NOTE_TITLE)}">
             <p>${esc(research.RESEARCH_LINE)}</p>
@@ -675,7 +680,10 @@ export function buildLibraryBlog({ root = defaultRoot, out, date = libraryDate(r
     BLOG_TYPES.filter((s) => counts[s.type])
       .map((s) => (s.type === current ? `<a href="/blog/${s.dir}/" aria-current="page">${esc(s.label)}</a>` : `<a href="/blog/${s.dir}/">${esc(s.label)}</a>`))
       .join("");
-  const ctx = { entries: lib.entries, posts, byId, namedBy, resolve, date, dateLabel: longDate(date), typeLinks };
+  const handWritten = JSON.parse(readFileSync(join(root, "posts.json"), "utf8")).sort((a, b) => String(b.date).localeCompare(String(a.date)));
+  // The hand-written essays that tell an entry's history (posts.json "libraryEntry"), linked both ways.
+  const essays = new Map(handWritten.filter((p) => p.libraryEntry && byId.has(p.libraryEntry)).map((p) => [p.libraryEntry, p]));
+  const ctx = { entries: lib.entries, posts, byId, namedBy, resolve, essays, date, dateLabel: longDate(date), typeLinks };
 
   const write = (path, html) => {
     const file = join(out, path, "index.html");
@@ -690,7 +698,6 @@ export function buildLibraryBlog({ root = defaultRoot, out, date = libraryDate(r
     write(`/blog/${section.dir}/`, renderTypeIndex(section, items, ctx));
     indexes.push(`/blog/${section.dir}/`);
   }
-  const handWritten = JSON.parse(readFileSync(join(root, "posts.json"), "utf8")).sort((a, b) => String(b.date).localeCompare(String(a.date)));
   write("/blog/", renderBlogIndex(posts, handWritten, ctx));
   indexes.unshift("/blog/");
 

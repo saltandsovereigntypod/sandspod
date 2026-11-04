@@ -311,3 +311,22 @@
 .lib-filter[hidden] {
   display: none;
 }
+
+/* The owner's full history of this entry, when the journal has one. */
+.lib-essay {
+  margin: 0 0 2.5rem;
+  padding: 1rem 1.25rem;
+  border: 1px solid rgba(185, 160, 93, 0.38);
+  border-radius: 0.85rem;
+  background: rgba(185, 160, 93, 0.08);
+}
+
+.lib-essay p {
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.lib-essay a {
+  font-weight: 600;
+}
