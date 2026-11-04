@@ -84,6 +84,7 @@ export default function Covens() {
     <MoreScreen
       title="Covens"
       eyebrow="Practise together"
+      tools
       scrollKey={tab}
       refreshControl={
         <RefreshControl

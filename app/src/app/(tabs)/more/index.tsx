@@ -52,7 +52,7 @@ export default function More() {
   const unread = review?.unread.byFolder.all ?? 0;
 
   return (
-    <MoreScreen title="More" eyebrow={name ? `Welcome, ${name}` : 'Your Sanctuary'}>
+    <MoreScreen title="More" eyebrow={name ? `Welcome, ${name}` : 'Your Sanctuary'} tools>
       <MenuList>
         <MenuRow
           label="Search your practice"

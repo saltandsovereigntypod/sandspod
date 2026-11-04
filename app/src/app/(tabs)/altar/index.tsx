@@ -7,6 +7,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Button } from '../../../components/Button';
 import { CovenAltars } from '../../../components/altar/CovenAltars';
 import { ShelvesView } from '../../../components/shelves/ShelvesView';
+import { HeaderTools } from '../../../components/HeaderTools';
 import { SegmentedSwitch } from '../../../components/SegmentedSwitch';
 import { Icon } from '../../../components/Icon';
 import { altarImageSource } from '../../../lib/altar/assets';
@@ -125,6 +126,7 @@ export default function AltarList() {
               Altar
             </Text>
           </View>
+          <HeaderTools />
         </View>
 
         <SegmentedSwitch label="Altar" options={ALTAR_TABS} value={tab} onChange={rememberTab} />
