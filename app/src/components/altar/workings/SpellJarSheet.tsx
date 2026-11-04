@@ -26,6 +26,8 @@ import {
   jarObject,
   jarProblem,
   jarStateOf,
+  JAR_VESSELS,
+  petitionLayer,
   layerBands,
   removeLayer,
   sealHex,
@@ -37,6 +39,8 @@ import {
   type JarDraft,
 } from '../../../lib/altar/workings/spellJar';
 import { useLibrary } from '../../../lib/library';
+import { useAccessibility } from '../../../lib/accessibility/store';
+import { shakeJarFeel } from '../../../lib/altar/feel';
 import { type } from '../../../theme';
 import { Chip, ChipRow } from '../Chip';
 import { Sheet } from '../Sheet';
@@ -74,6 +78,7 @@ function JarBuilder({ altar, onPlace, center }: Props) {
   const [jar, setJar] = useState<JarDraft>(() => emptyJar());
   const [step, setStep] = useState<Step>('intention');
   const [spoken, setSpoken] = useState('');
+  const [petition, setPetition] = useState('');
   const [busy, setBusy] = useState(false);
   const [problem, setProblem] = useState<string | null>(null);
   // "Did it work?": the day that suits its intention, unless another is chosen.
@@ -117,6 +122,12 @@ function JarBuilder({ altar, onPlace, center }: Props) {
             ))}
           </ChipRow>
           <Field label="The jar’s intention, in your words" value={jar.intention} onChangeText={(intention) => setJar((j) => ({ ...j, intention }))} placeholder="Or in your own words" maxLength={120} />
+          <Label>The glass</Label>
+          <ChipRow>
+            {JAR_VESSELS.map((v) => (
+              <Chip key={v.id} label={v.label} active={(jar.vessel ?? 'jar') === v.id} onPress={() => setJar((j) => ({ ...j, vessel: v.id }))} />
+            ))}
+          </ChipRow>
           <Button label="Begin the layers" onPress={() => setStep('layers')} disabled={!jar.intention.trim()} />
         </View>
       )}
@@ -131,6 +142,20 @@ function JarBuilder({ altar, onPlace, center }: Props) {
             <IngredientPicker onPick={add} suggestFor={jar.intention} chosen={jar.layers.map((l) => l.label)} />
           ) : (
             <Text style={type.caption}>The jar is full to its neck.</Text>
+          )}
+          {jar.layers.length < JAR_LAYER_MAX && (
+            <View style={sheetStyles.section}>
+              <Field label="A petition to roll and put in" value={petition} onChangeText={setPetition} placeholder="What you ask, in a line or two" maxLength={SPOKEN_MAX} />
+              <Button
+                label="Roll it in"
+                variant="outline"
+                disabled={!petition.trim()}
+                onPress={() => {
+                  setJar((j) => addLayer(j, petitionLayer(petition, nowIso())));
+                  setPetition('');
+                }}
+              />
+            </View>
           )}
           {jar.layers.length > 0 && (
             <View style={sheetStyles.section}>
@@ -229,9 +254,11 @@ export function JarRenewSheet({ visible, object, onClose, onUpdate }: RenewProps
   const jar = object ? jarStateOf(object) : null;
   const [note, setNote] = useState('');
   const [shakes, setShakes] = useState(0);
+  const { haptics } = useAccessibility();
   const renew = () => {
     if (!object) return;
     setShakes((n) => n + 1);
+    shakeJarFeel(haptics);
     onUpdate(shakeToRenew(object, nowIso(), note));
     setNote('');
   };

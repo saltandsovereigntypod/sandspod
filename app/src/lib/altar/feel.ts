@@ -245,6 +245,12 @@ function tap(style: Haptics.ImpactFeedbackStyle) {
   void Haptics.impactAsync(style).catch(() => {});
 }
 
+/** A spell jar shaken to renew it: three quick taps, like its contents settling (silent with haptics off). */
+export function shakeJarFeel(haptics: boolean) {
+  if (!haptics) return;
+  [0, 110, 220].forEach((ms) => setTimeout(() => tap(Haptics.ImpactFeedbackStyle.Light), ms));
+}
+
 const uidOf = (o: SavedObject) => String(o.altarObjectId || '');
 
 /**

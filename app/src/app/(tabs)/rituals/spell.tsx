@@ -4,6 +4,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { Share, StyleSheet, Text, View } from 'react-native';
 
 import { Button } from '../../../components/Button';
+import { ShareCardButton } from '../../../components/share/ShareCard';
 import { AltarChoiceSheet, useBeginOnAltar } from '../../../components/altar/connect/BeginOnAltar';
 import { BeginTogetherButton } from '../../../components/together/BeginTogether';
 import { startFromDraft } from '../../../lib/together/live';
@@ -75,6 +76,9 @@ type Params = {
   templateId?: string;
   premade?: string;
   fresh?: string;
+  moon?: string;
+  own?: string;
+  from?: string;
 };
 
 const entryIdOf = (ref: string) => ref.replace(/\//g, ':');
@@ -85,7 +89,7 @@ const starters = (intent: string | null) => starterIngredients(spellIntent(inten
 function fromLink(params: Params): SpellSpec | null {
   const premade = premadeById(params.premade);
   if (premade) return specFromPremade(premade);
-  if (params.intent || params.intention || params.method || params.add || params.deity || params.planet || params.fresh) return specFromParams(params, starters, deityName);
+  if (params.intent || params.intention || params.method || params.add || params.deity || params.planet || params.fresh || params.from || params.own || params.moon) return specFromParams(params, starters, deityName);
   return null;
 }
 
@@ -260,6 +264,12 @@ export default function SpellBuilder() {
     <RitualScreen back="Rituals">
       <Title eyebrow={saved ? 'Spell builder · saved spell' : 'Spell builder'}>{draft.title}</Title>
       <Body muted>Work through it in order or jump about: every choice can be changed, and the steps follow along until you make them your own.</Body>
+      <Button
+        label="Find by correspondence"
+        variant="text"
+        accessibilityHint="Look by intention, herb, stone, colour, planet, day or moon, then build a spell from what you choose"
+        onPress={() => router.push('/rituals/finder' as Href)}
+      />
 
       <View style={ui.gapSmall}>
         <SectionLabel>1 · What is it for?</SectionLabel>
@@ -548,6 +558,15 @@ export default function SpellBuilder() {
             </>
           )}
           <Button label="Share or print as text" variant="text" onPress={() => void Share.share({ title: draft.title, message: spellText(spec) }).catch(() => undefined)} />
+          <ShareCardButton
+            variant="text"
+            card={{
+              eyebrow: 'A spell',
+              title: draft.title,
+              subtitle: draft.intention || undefined,
+              lines: [draft.ingredients.length ? `You need: ${draft.ingredients.map((i) => i.name).join(', ')}` : '', ...draft.steps.map((s, i) => `${i + 1}. ${s.title}${s.instructions ? `: ${s.instructions}` : ''}`)],
+            }}
+          />
           <Button label="Start a new spell" variant="text" onPress={startOver} />
         </View>
         {!!rituals.active && <Notice>A ritual is under way. Finish it before beginning this one.</Notice>}

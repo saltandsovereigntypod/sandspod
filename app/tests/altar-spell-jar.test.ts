@@ -91,7 +91,8 @@ test('the finished jar is an apothecary spell jar the website can show, layers i
   assert.equal(object.apothecaryType, 'Spell Jar');
   assert.equal(object.apothecaryItemId, 'jar-1');
   assert.equal(object.apothecaryIntention, 'Money');
-  assert.match(String(object.imagePath), /spell-jar-two/);
+  // Built in the cabinet's clear glass jar (the glass you choose), so its layers show through on the altar.
+  assert.match(String(object.imagePath), /containers\/jar/);
   const ingredients = JSON.parse(String(object.apothecaryIngredients));
   assert.deepEqual(ingredients.map((i: { label: string }) => i.label), ['Rice', 'Basil', 'Citrine']);
   assert.equal(ingredients[1].spoken, 'Grow, and keep growing');

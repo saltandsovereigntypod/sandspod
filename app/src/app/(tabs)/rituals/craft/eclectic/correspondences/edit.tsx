@@ -38,7 +38,8 @@ function Picked({ label, value, onChange, options, placeholder }: { label: strin
 }
 
 export default function CorrespondenceForm() {
-  const { id } = useLocalSearchParams<{ id?: string }>();
+  // `ref` and `name` start a new one about a Library entry ("Add your own", on the entry's page).
+  const { id, ref, name } = useLocalSearchParams<{ id?: string; ref?: string; name?: string }>();
   const { entries, ready } = useCraft<MyCorrespondence>(CORRESPONDENCES);
   const existing = id ? entries.find((e) => e.id === id) ?? null : null;
 
@@ -51,11 +52,15 @@ export default function CorrespondenceForm() {
     );
   }
   // Keyed, so the form starts from the entry once it's arrived and typing is never overwritten.
-  return <CorrespondenceEditor key={existing?.id ?? 'new'} existing={existing} />;
+  return <CorrespondenceEditor key={existing?.id ?? 'new'} existing={existing} start={{ ref: ref ?? null, name: name ?? '' }} />;
 }
 
-function CorrespondenceEditor({ existing }: { existing: CraftEntry<MyCorrespondence> | null }) {
-  const [c, setC] = useState<MyCorrespondence>(() => (existing ? { ...blankCorrespondence(), ...existing.data } : blankCorrespondence()));
+function CorrespondenceEditor({ existing, start }: { existing: CraftEntry<MyCorrespondence> | null; start: { ref: string | null; name: string } }) {
+  const [c, setC] = useState<MyCorrespondence>(() => {
+    if (existing) return { ...blankCorrespondence(), ...existing.data };
+    const linked = entryById(start.ref);
+    return { ...blankCorrespondence(), ref: linked ? linked.id : null, name: linked?.name ?? start.name.trim() };
+  });
   const [shelf, setShelf] = useState<string | null>(null);
   const [search, setSearch] = useState('');
   const [saving, setSaving] = useState(false);
@@ -91,6 +96,7 @@ function CorrespondenceEditor({ existing }: { existing: CraftEntry<MyCorresponde
       day: c.day.trim(),
       colour: c.colour.trim(),
       sourceNote: c.sourceNote.trim(),
+      pairs: (c.pairs ?? '').trim(),
     };
     try {
       if (existing) {
@@ -172,6 +178,12 @@ function CorrespondenceEditor({ existing }: { existing: CraftEntry<MyCorresponde
           placeholder="What it does in your work, what it calls up, when you reach for it"
           multiline
         />
+      </View>
+
+      <View style={ui.gap}>
+        <SectionLabel>What you pair it with</SectionLabel>
+        <Field label="Pairs with" value={c.pairs ?? ''} onChange={(pairs) => set({ pairs })} placeholder="Bay, a white candle, my grandmother’s ring" />
+        <Body muted>Separate them with commas. Each shows on that thing’s Library page, and the correspondence finder uses them.</Body>
       </View>
 
       <Expander title="Element, planet, day and colour" initiallyOpen={!!(c.element || c.planet || c.day || c.colour)}>

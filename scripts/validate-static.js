@@ -27,6 +27,16 @@ function localPath(pagePath, reference) {
   return path.resolve(root, path.dirname(pagePath), clean);
 }
 
+// The website's old copies of the app's pages are left out of dist/ (the
+// Worker serves the Expo web app there); see scripts/cloudflare-build.mjs.
+const { REPLACED_SECTIONS, KEPT_IN_REPLACED } = require(path.join(root, "worker/routing.js"));
+function ships(file) {
+  const rel = file.split(path.sep).join("/");
+  if (rel.startsWith("app/")) return true; // the app's web template, checked against app/public
+  if (!REPLACED_SECTIONS.includes(rel.split("/")[0])) return true;
+  return KEPT_IN_REPLACED.some((kept) => rel === kept || rel.startsWith(`${kept}/`));
+}
+
 const loadedScripts = new Set();
 for (const page of trackedFiles("*.html")) {
   const html = fs.readFileSync(path.join(root, page), "utf8");
@@ -52,6 +62,8 @@ for (const page of trackedFiles("*.html")) {
     const resolved = localPath(page, reference);
     if (!resolved) continue;
     if (!fs.existsSync(resolved)) failures.push(`${page}: missing local reference: ${reference}`);
+    // A page that ships can't load files from the old app pages, which no longer do.
+    if (ships(page) && !ships(path.relative(root, resolved))) failures.push(`${page}: loads ${reference}, which is left out of dist/ (worker/routing.js REPLACED_SECTIONS)`);
   }
 
   for (const reference of scripts) {

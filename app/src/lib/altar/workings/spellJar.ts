@@ -10,10 +10,12 @@ import { isCandle, isLit, readLivingState } from '../livingState.ts';
 import { correspondenceOf, entryByName, objectUid, type ElementOrSpirit } from '../reading/correspondence.ts';
 import type { SavedObject } from '../types.ts';
 import { newId } from '../uid.ts';
+import { containedRect, VESSELS, type Rect } from '../vesselLabel.ts';
+import { IMAGE_INSET } from '../geometry.ts';
 import { appPart, withAppPart } from './appState.ts';
 import { ingredientColor, waxColor } from './colors.ts';
 
-export type LayerSource = 'library' | 'cabinet' | 'apothecary' | 'salt' | 'typed';
+export type LayerSource = 'library' | 'cabinet' | 'apothecary' | 'salt' | 'typed' | 'petition';
 
 /** One layer of a jar, bottom first. */
 export type JarLayer = {
@@ -43,7 +45,15 @@ export type JarSeal = {
   sealedAt: string;
 };
 
-export type JarDraft = { name: string; intention: string; layers: JarLayer[]; seal: JarSeal | null };
+/** The glass it's built in: the cabinet's clear jar or its green corked bottle (vesselLabel.ts VESSELS). */
+export type JarVessel = 'jar' | 'bottle';
+
+export const JAR_VESSELS: { id: JarVessel; label: string }[] = [
+  { id: 'jar', label: 'Clear glass jar' },
+  { id: 'bottle', label: 'Green glass bottle' },
+];
+
+export type JarDraft = { name: string; intention: string; layers: JarLayer[]; seal: JarSeal | null; vessel?: JarVessel };
 
 export type JarRenewal = { at: string; note: string };
 
@@ -56,6 +66,8 @@ export type JarState = {
   madeAt: string;
   renewals: JarRenewal[];
   lastRenewedAt: string;
+  /** The glass it was built in; older jars have none and keep the apothecary's picture. */
+  vessel?: JarVessel;
 };
 
 export const JAR_LAYER_MAX = 13;
@@ -74,7 +86,7 @@ export const JAR_SALTS: { label: string; note: string }[] = [
 ];
 
 export function emptyJar(intention = ''): JarDraft {
-  return { name: '', intention, layers: [], seal: null };
+  return { name: '', intention, layers: [], seal: null, vessel: 'jar' };
 }
 
 export type LayerInput = {
@@ -109,6 +121,14 @@ export function jarLayer(input: LayerInput, now: string, entries?: LibraryEntry[
   if (input.apothecaryItemId) layer.apothecaryItemId = input.apothecaryItemId;
   if (input.amount?.trim()) layer.amount = input.amount.trim();
   return layer;
+}
+
+/** The petition's colour in the jar: rolled paper. */
+export const PETITION_COLOR = '#ecdfbd';
+
+/** A petition, rolled and put in: its words kept as the layer's spoken line. */
+export function petitionLayer(words: string, now: string): JarLayer {
+  return { label: 'Petition', source: 'petition', type: 'petition', color: PETITION_COLOR, spoken: words.replace(/\s+/g, ' ').trim().slice(0, SPOKEN_MAX), addedAt: now };
 }
 
 /** Add a layer on top. A blank one, or one past the jar's neck, changes nothing. */
@@ -190,7 +210,7 @@ export function jarItem(draft: JarDraft, now: string, id: string = newId()): Apo
     name: draft.name.trim() || `${draft.intention.trim() || 'Intention'} jar`,
     type: 'spell-jar',
     typeLabel: type.label,
-    imagePath: type.image,
+    imagePath: draft.vessel ? VESSELS[draft.vessel].image : type.image,
     intention: draft.intention.trim(),
     notes: [sealLine(draft.seal), ...spoken].join('\n'),
     details: {},
@@ -229,6 +249,7 @@ export function jarObject(
     madeAt: now,
     renewals: [],
     lastRenewedAt: '',
+    ...(draft.vessel ? { vessel: draft.vessel } : {}),
   };
   const object = withAppPart(base, 'jar', jar, now, {
     apothecary: { ...(state.apothecary as object), activationState: sealLine(draft.seal) },
@@ -269,4 +290,56 @@ export function daysSinceRenewal(jar: JarState, now: Date | number = Date.now())
   const from = Date.parse(jar.lastRenewedAt || jar.madeAt);
   if (!Number.isFinite(from)) return 0;
   return Math.max(0, Math.floor((Number(now) - from) / 86_400_000));
+}
+
+// ── On the altar ─────────────────────────────────────────────────────────
+
+/** Where the cork sits in each glass's picture (fractions), for the wax seal. */
+const CORK: Record<JarVessel, Rect> = {
+  jar: { x: 0.22, y: 0.0, w: 0.55, h: 0.13 },
+  bottle: { x: 0.22, y: 0.0, w: 0.56, h: 0.13 },
+};
+/** The glass the layers show through (the jar's from vesselLabel.ts; the bottle's measured the same way). */
+const INSIDE: Record<JarVessel, Rect> = {
+  jar: VESSELS.jar.fill ?? { x: 0.1, y: 0.42, w: 0.8, h: 0.5 },
+  bottle: { x: 0.09, y: 0.42, w: 0.82, h: 0.5 },
+};
+
+export type JarArt = {
+  /** The glass inside, in the object's box (points). */
+  inside: Rect;
+  /** Each layer as a band in the box, bottom first. */
+  bands: (Rect & { color: string; label: string })[];
+  /** The cork, and the wax over it once sealed. */
+  cork: Rect;
+  seal: string | null;
+};
+
+/**
+ * A placed jar's layers and seal drawn over its glass on the altar, in the
+ * object's box (as the picture is drawn: inset, contained). Null for a jar
+ * without a glass of its own (made before the choice), or anything else.
+ */
+export function jarArt(object: SavedObject, width: number, height: number): JarArt | null {
+  const jar = jarStateOf(object);
+  if (!jar?.vessel || !VESSELS[jar.vessel] || String(object.imagePath || '') !== VESSELS[jar.vessel].image) return null;
+  const v = VESSELS[jar.vessel];
+  const ox = width * IMAGE_INSET.x;
+  const oy = width * IMAGE_INSET.y;
+  const w = width - ox * 2;
+  const h = height - oy * 2;
+  const place = (r: Rect): Rect => {
+    const c = containedRect(w, h, v.ratio, r);
+    return { x: c.x + ox, y: c.y + oy, w: c.w, h: c.h };
+  };
+  const inside = place(INSIDE[jar.vessel]);
+  const bands = layerBands(jar.layers).map((b) => ({
+    color: b.color,
+    label: b.label,
+    x: inside.x,
+    w: inside.w,
+    y: inside.y + inside.h * (1 - b.to),
+    h: inside.h * (b.to - b.from),
+  }));
+  return { inside, bands, cork: place(CORK[jar.vessel]), seal: sealHex(jar.seal) };
 }

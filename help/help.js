@@ -34,7 +34,8 @@
 
   function topicHtml(topic, section, showWhere) {
     const note = W.TOPIC_NOTES[topic.id];
-    const href = topic.href ? W.siteHref(topic.href) : null;
+    // The app's screens are on this same domain now (worker/routing.js), so "Take me there" opens the app's own address.
+    const href = topic.href || null;
     return `<details class="gd-topic" data-topic="${esc(topic.id)}">
       <summary>${esc(topic.title)}</summary>
       <div class="gd-topic__body">

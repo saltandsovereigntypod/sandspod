@@ -1,10 +1,11 @@
 import { router, useLocalSearchParams, type Href } from 'expo-router';
 import { useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { Image, StyleSheet, View } from 'react-native';
 
 import { Button } from '../../../../../../components/Button';
 import { Body, Field, Notice, RitualScreen, SectionLabel, Title, confirmAction, tell, ui } from '../../../../../../components/rituals/ui';
-import { ANCESTORS, blankAncestor, formatPartial, normalizeAncestor, partialDate, type Ancestor, type PartialDate } from '../../../../../../lib/craft/hedge/ancestors';
+import { keepImageOnDevice, pickImage, removeUploaded, uploadImage } from '../../../../../../lib/altar/images';
+import { ANCESTORS, blankAncestor, formatPartial, keptDaysText, normalizeAncestor, parseKeptDays, partialDate, type Ancestor, type PartialDate } from '../../../../../../lib/craft/hedge/ancestors';
 import { addEntry, removeEntry, updateEntry, useCraft, type CraftEntry } from '../../../../../../lib/craft/store';
 import { useSession } from '../../../../../../lib/session';
 
@@ -57,6 +58,29 @@ function Form({ existing }: { existing: CraftEntry<unknown> | null }) {
   const [born, setBorn] = useState<Boxes>(boxesOf(start.born));
   const [died, setDied] = useState<Boxes>(boxesOf(start.died));
   const [saving, setSaving] = useState(false);
+  const [daysText, setDaysText] = useState(keptDaysText(start.days));
+  const [picking, setPicking] = useState(false);
+  const kept = parseKeptDays(daysText);
+
+  const choosePhoto = async () => {
+    setPicking(true);
+    try {
+      const picked = await pickImage();
+      if (!picked) return;
+      const old = person.photoPath;
+      if (session) {
+        const { url, storagePath } = await uploadImage(session.user.id, picked, 'ancestors');
+        set({ photo: url, photoPath: storagePath });
+      } else {
+        set({ photo: await keepImageOnDevice(picked, 'ancestors'), photoPath: '' });
+      }
+      if (old) void removeUploaded([old]);
+    } catch (e) {
+      tell('Couldn’t add the photo', e instanceof Error ? e.message : 'Please try again.');
+    } finally {
+      setPicking(false);
+    }
+  };
 
   const set = (patch: Partial<Ancestor>) => setPerson((p) => ({ ...p, ...patch }));
 
@@ -67,6 +91,9 @@ function Form({ existing }: { existing: CraftEntry<unknown> | null }) {
       relation: person.relation.trim(),
       loved: person.loved.trim(),
       memory: person.memory.trim(),
+      foods: (person.foods ?? '').trim(),
+      stories: (person.stories ?? '').trim(),
+      days: kept.days,
       bornPlace: (person.bornPlace ?? '').trim(),
       diedPlace: (person.diedPlace ?? '').trim(),
       born: partialDate(born.day, born.month, born.year),
@@ -115,6 +142,24 @@ function Form({ existing }: { existing: CraftEntry<unknown> | null }) {
       <View style={ui.gap}>
         <Field label="What they loved, and what you offer them" value={person.loved} onChange={(loved) => set({ loved })} placeholder="Strong tea, roses, a song, a nip of whisky" multiline />
         <Field label="A memory" value={person.memory} onChange={(memory) => set({ memory })} placeholder="Something you want to keep" multiline />
+        <Field label="Foods and offerings they liked" value={person.foods ?? ''} onChange={(foods) => set({ foods })} placeholder="Her apple cake, buttered soda bread, a glass of stout" multiline />
+        <Field label="Their stories" value={person.stories ?? ''} onChange={(stories) => set({ stories })} placeholder="The stories told about them, and the ones they told" multiline />
+      </View>
+
+      <View style={ui.gapSmall}>
+        <SectionLabel>Other days you keep for them</SectionLabel>
+        <Field label="One to a line: the day, the month, then its name" value={daysText} onChange={setDaysText} placeholder={'24 June Name day\n12/9 Wedding day'} multiline />
+        {kept.unread.length > 0 && <Body muted>{`Couldn’t read: ${kept.unread.join('; ')}. Try “24 June Name day”.`}</Body>}
+        <Body muted>A saint’s or name day, a wedding day, a feast they kept. These come round each year with their birthday and the day they died.</Body>
+      </View>
+
+      <View style={ui.gapSmall}>
+        <SectionLabel>A photo</SectionLabel>
+        {!!person.photo && <Image source={{ uri: person.photo }} style={styles.photo} resizeMode="cover" accessibilityLabel={`A photo of ${person.name || 'them'}`} />}
+        <View style={ui.actions}>
+          <Button label={picking ? 'Adding…' : person.photo ? 'Change the photo' : 'Add a photo'} variant="outline" onPress={() => void choosePhoto()} disabled={picking} />
+          {!!person.photo && <Button label="Remove the photo" variant="text" onPress={() => set({ photo: '', photoPath: '' })} />}
+        </View>
       </View>
 
       {!session && <Notice>Saved on this phone. Sign in to keep them with your account.</Notice>}
@@ -130,4 +175,5 @@ const styles = StyleSheet.create({
   boxes: { flexDirection: 'row', gap: 10 },
   box: { flex: 1 },
   year: { flex: 1.4 },
+  photo: { width: 140, height: 180, borderRadius: 8 },
 });

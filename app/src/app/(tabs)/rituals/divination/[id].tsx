@@ -3,6 +3,7 @@ import { useMemo, useState } from 'react';
 import { Text, View } from 'react-native';
 
 import { Button } from '../../../../components/Button';
+import { ShareCardButton } from '../../../../components/share/ShareCard';
 import { PairsCard } from '../../../../components/divination/oracle/Pairs';
 import { DeckReadingLines } from '../../../../components/divination/DeckReading';
 import { ReadMore } from '../../../../components/divination/ReadMore';
@@ -140,6 +141,14 @@ export default function ReadingPage() {
       </Card>
 
       <Button label="Edit" variant="outline" onPress={() => router.push(`/rituals/divination/edit?id=${raw.id}` as Href)} />
+      <ShareCardButton
+        card={{
+          eyebrow: `${methodLabel(reading.method)} · ${fullDate(reading.date) ?? reading.date}`,
+          title: reading.question || 'A reading',
+          subtitle: reading.drawn.length ? reading.drawn.join(' · ') : undefined,
+          lines: [reading.cameUp, reading.interpretation, reading.outcome ? `What happened: ${reading.outcome}` : ''],
+        }}
+      />
     </RitualScreen>
   );
 }

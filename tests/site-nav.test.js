@@ -5,7 +5,9 @@ const SiteNav = require("../js/site-nav.js");
 test("the main bar has the app's tabs: Practice holds the Grimoire, Rituals and Craft", () => {
   assert.deepEqual(SiteNav.TABS.map((tab) => tab.label), ["Today", "Altar", "Practice", "Coven", "More"]);
   assert.deepEqual(SiteNav.PRACTICE.map((tab) => tab.label), ["Grimoire", "Rituals", "Craft"]);
-  assert.deepEqual(SiteNav.PRACTICE.map((tab) => tab.href), ["/grimoire/", "/rituals/", "/practice/"]);
+  // The app's own screens, on this same domain (worker/routing.js).
+  assert.deepEqual(SiteNav.PRACTICE.map((tab) => tab.href), ["/grimoire", "/rituals", "/rituals/craft"]);
+  assert.deepEqual(SiteNav.TABS.map((tab) => tab.href), ["/today", "/altar", "/grimoire", "/coven", "/more"]);
 });
 
 test("Craft lights up on the tools that aren't rituals, each at its old address", () => {
@@ -18,9 +20,9 @@ test("Craft lights up on the tools that aren't rituals, each at its old address"
   }
   assert.equal(SiteNav.practiceSection("/altar/", "?ritual=1"), "rituals");
   // Back with nowhere to go back to lands on the section's home.
-  assert.equal(SiteNav.fallbackHref({ pathname: "/practice/cosmic/chart/", search: "" }), "/practice/");
-  assert.equal(SiteNav.fallbackHref({ pathname: "/rituals/cycle/", search: "" }), "/practice/");
-  assert.equal(SiteNav.fallbackHref({ pathname: "/rituals/premade/", search: "" }), "/rituals/");
+  assert.equal(SiteNav.fallbackHref({ pathname: "/practice/cosmic/chart/", search: "" }), "/rituals/craft");
+  assert.equal(SiteNav.fallbackHref({ pathname: "/rituals/cycle/", search: "" }), "/rituals/craft");
+  assert.equal(SiteNav.fallbackHref({ pathname: "/rituals/premade/", search: "" }), "/rituals");
 });
 
 test("the Practice tab returns to whichever of the three was used last", () => {

@@ -4,6 +4,7 @@ import { Image, StyleSheet, Text, View } from 'react-native';
 
 import { Button } from '../Button';
 import { ResearchFooter } from '../ResearchNote';
+import { ShareCardButton } from '../share/ShareCard';
 import { Card, MoreScreen, RichText, Section, Tags } from '../more/ui';
 import { JOURNEY_CATALOG } from '../../lib/journeys/catalog';
 import { journeyForDeityRefIn } from '../../lib/journeys/lookup';
@@ -18,6 +19,7 @@ import { useMySettings } from '../../lib/settings/store';
 import { colors, fonts, radius, type, fitLines } from '../../theme';
 import { ConnectedTo, LibraryJourney, RelationshipManager } from './LibraryConnections';
 import { DeityYours } from './DeityYours';
+import { MyCorrespondencesFor } from './MyCorrespondencesFor';
 import { shelfFor } from '../../lib/shelves/model';
 import { HerbHearth } from '../craft/hearth';
 
@@ -133,6 +135,14 @@ export function LibraryEntryView({ entryId, back, backLabel, hrefFor, editHref }
         />
       )}
 
+      <ShareCardButton
+        card={{
+          eyebrow: `Living Library${entry.category ? ` · ${entry.category}` : ''}`,
+          title: entry.name,
+          lines: [entryIntro(entry), ...facts.map((f) => `${f.label}: ${f.value}`)],
+        }}
+      />
+
       {!!spellLink && (
         <Button
           label="Use in a spell"
@@ -207,6 +217,8 @@ export function LibraryEntryView({ entryId, back, backLabel, hrefFor, editHref }
             </Card>
           </Section>
         ))}
+
+      <MyCorrespondencesFor entry={entry} />
 
       <ConnectedTo
         entry={entry}

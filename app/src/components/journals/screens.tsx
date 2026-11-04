@@ -994,14 +994,20 @@ export function AncestorJournalLink({ person, label }: { person?: string; label?
 }
 
 /** Their photo, from an ancestor frame on one of your altars linked to them; nothing when there is none. */
-export function AncestorPhoto({ id, name }: { id: string; name: string }) {
+export function AncestorPhoto({ id, name, own }: { id: string; name: string; own?: string }) {
   const photoOf = usePhotos();
   const photo = photoOf(id);
-  if (!photo) return null;
+  if (!photo && !own) return null;
   return (
     <View style={s.people}>
-      <Image source={{ uri: photo.photo }} style={[s.photo, photo.aged ? { opacity: 0.85 } : null]} resizeMode="cover" accessibilityLabel={`A photo of ${name || 'them'}`} />
-      <Text style={[type.caption, s.grow]}>{`From the ancestor frame on ${photo.altarName}.`}</Text>
+      {own ? (
+        <Image source={{ uri: own }} style={s.photo} resizeMode="cover" accessibilityLabel={`A photo of ${name || 'them'}`} />
+      ) : (
+        <Image source={{ uri: photo!.photo }} style={[s.photo, photo!.aged ? { opacity: 0.85 } : null]} resizeMode="cover" accessibilityLabel={`A photo of ${name || 'them'}`} />
+      )}
+      <Text style={[type.caption, s.grow]}>
+        {photo ? `From the ancestor frame on ${photo.altarName}.` : 'Choose them for an ancestor frame on your altar: Tools in the cabinet, then Ancestor Frame and “Add a name”.'}
+      </Text>
     </View>
   );
 }

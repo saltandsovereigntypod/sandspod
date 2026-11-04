@@ -41,7 +41,8 @@ test('a remembered section is read back only if it is one of the three', () => {
 
 test('the website sorts its pages the same way, under the same key', () => {
   const nav = readFileSync('../js/site-nav.js', 'utf8');
-  assert.match(nav, /\{ key: "craft", label: "Craft", href: "\/practice\/" \}/);
+  // Craft is the app's own screen on the website's domain now (worker/routing.js).
+  assert.match(nav, /\{ key: "craft", label: "Craft", href: "\/rituals\/craft" \}/);
   assert.match(nav, /PRACTICE_KEY = "saltPracticeSection"/);
   assert.match(readFileSync('src/lib/practiceSection.ts', 'utf8'), /KEY = 'saltPracticeSection'/);
 });

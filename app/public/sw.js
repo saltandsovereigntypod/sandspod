@@ -1,4 +1,11 @@
-// Offline support for the web app at app.saltandsovereignty.com.
+// Offline support for the web app (saltandsovereignty.com, where the site's
+// Worker serves it beside the website's own pages, and its EAS Hosting
+// address).
+//
+// On saltandsovereignty.com the website's own pages (home, blog, help, submit,
+// privacy and terms, admin) share this origin: they are left to the network,
+// never stored as the app's page, and the app's saved page is fetched from an
+// app address (/today) rather than / (the website's home there).
 //
 // Pages: network first, so a new deploy shows as soon as there is a
 // connection; offline, the last copy of the app shell is served instead.
@@ -10,16 +17,27 @@
 // Data is not cached here: Supabase calls go to another origin, and the app
 // keeps its own offline copy of altars, pages and rituals.
 
-const VERSION = 1;
+const VERSION = 2;
 const SHELL = `shell-v${VERSION}`;
 const FILES = `files-v${VERSION}`;
-const SHELL_URLS = ['/', '/manifest.json', '/icon-192.png', '/icon-512.png', '/apple-touch-icon.png'];
+// The app's page, the same single-page app at every address; stored under this key.
+const APP_PAGE = '/today';
+const SHELL_URLS = ['/manifest.json', '/icon-192.png', '/icon-512.png', '/apple-touch-icon.png'];
+
+const ON_SITE = /(^|\.)saltandsovereignty\.com$/.test(self.location.hostname);
+const WEBSITE_EXACT = ['/', '/index.html', '/privacy.html', '/submission-terms.html', '/delete-account.html', '/sitemap.xml', '/robots.txt'];
+const WEBSITE_PREFIXES = ['/blog/', '/submit/', '/help/', '/admin/', '/css/', '/js/', '/covens/guidelines/'];
+
+/** A page or file of the website itself (worker/routing.js in the website), not the app. */
+function isWebsitePath(pathname) {
+  return ON_SITE && (WEBSITE_EXACT.includes(pathname) || WEBSITE_PREFIXES.some((prefix) => pathname.startsWith(prefix)));
+}
 
 self.addEventListener('install', (event) => {
   event.waitUntil(
     caches
       .open(SHELL)
-      .then((cache) => cache.addAll(SHELL_URLS))
+      .then((cache) => Promise.all([cache.addAll(SHELL_URLS), fetchPage(new Request(APP_PAGE)).catch(() => undefined)]))
       .then(() => self.skipWaiting()),
   );
 });
@@ -33,8 +51,10 @@ self.addEventListener('activate', (event) => {
   );
 });
 
+// Built files carry a content hash in their names (/_expo/static/js/web/index-<hash>.js,
+// /assets/.../name.<hash>.png). The website's own unhashed /assets/ files are left to the network.
 function isBuiltFile(url) {
-  return url.pathname.startsWith('/_expo/') || url.pathname.startsWith('/assets/');
+  return url.pathname.startsWith('/_expo/') || (url.pathname.startsWith('/assets/') && /\.[0-9a-f]{32}\.[a-z0-9]+$/i.test(url.pathname));
 }
 
 // On a weak signal, wait this long for the network before opening the saved
@@ -43,7 +63,7 @@ const NETWORK_WAIT_MS = 4000;
 
 async function fromNetworkThenShell(request) {
   const network = fetchPage(request);
-  const shell = await caches.match('/', { cacheName: SHELL });
+  const shell = await caches.match(APP_PAGE, { cacheName: SHELL });
   if (!shell) return network;
   const timeout = new Promise((resolve) => setTimeout(() => resolve(shell), NETWORK_WAIT_MS));
   return Promise.race([network.catch(() => shell), timeout]);
@@ -59,11 +79,11 @@ async function fetchPage(request) {
     if (isHtml && (response.ok || response.status === 404)) {
       const body = await response.clone().blob();
       const cache = await caches.open(SHELL);
-      await cache.put('/', new Response(body, { status: 200, headers: { 'Content-Type': 'text/html; charset=utf-8' } }));
+      await cache.put(APP_PAGE, new Response(body, { status: 200, headers: { 'Content-Type': 'text/html; charset=utf-8' } }));
     }
     return response;
   } catch (error) {
-    const shell = await caches.match('/', { cacheName: SHELL });
+    const shell = await caches.match(APP_PAGE, { cacheName: SHELL });
     if (shell) return shell;
     throw error;
   }
@@ -98,6 +118,7 @@ self.addEventListener('fetch', (event) => {
   const url = new URL(request.url);
   if (url.origin !== self.location.origin) return;
 
+  if (isWebsitePath(url.pathname)) return;
   if (request.mode === 'navigate') event.respondWith(fromNetworkThenShell(request));
   else if (isBuiltFile(url)) event.respondWith(fromCacheThenNetwork(request));
   else if (SHELL_URLS.includes(url.pathname)) event.respondWith(fromCacheAndRefresh(request));

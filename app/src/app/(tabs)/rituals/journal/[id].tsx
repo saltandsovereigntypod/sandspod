@@ -5,6 +5,7 @@ import { Button } from '../../../../components/Button';
 import { PreReading } from '../../../../components/divination/Linked';
 import { Connections } from '../../../../components/rituals/Connections';
 import { DidItWork } from '../../../../components/rituals/DidItWork';
+import { SpellCheckIns } from '../../../../components/rituals/CheckIns';
 import { Body, Card, Chip, Chips, RitualScreen, SectionLabel, Title, confirmAction, tell, ui } from '../../../../components/rituals/ui';
 import { journalDetail } from '../../../../lib/rituals/format';
 import { readLookBack } from '../../../../lib/rituals/lookBack';
@@ -82,6 +83,7 @@ export default function JournalEntry() {
       <Title eyebrow={[entry.day_of_week, entry.time_of_day].filter(Boolean).join(' · ') || 'Ritual journal'}>{entry.title || 'Untitled Ritual'}</Title>
       <Body muted>{journalDetail(entry)}</Body>
 
+      <SpellCheckIns key={`checkins-${entry.id}`} entry={entry} />
       <DidItWork key={entry.id} entry={entry} />
       <PreReading entry={entry} answered={!!readLookBack(entry)?.answer} />
 

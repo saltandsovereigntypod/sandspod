@@ -7,15 +7,23 @@ import { useEffect } from 'react';
 import { AppState } from 'react-native';
 
 import { syncCovenReminders } from '../covens/reminders';
+import { ANCESTORS, normalizeAncestor } from '../craft/hedge/ancestors';
+import { useCraft } from '../craft/store';
 import { useSession } from '../session';
 import { useMySettings } from '../settings/store';
-import { useReminders } from './store';
+import { setAncestorSources, useReminders } from './store';
+import { useCalendarFeedKeeper } from './useCalendarFeed';
 
 export function useReminderKeeper() {
-  useReminders();
-  useMySettings();
+  const reminders = useReminders();
+  const { settings } = useMySettings();
   const { session } = useSession();
   const userId = session?.user.id ?? null;
+  useCalendarFeedKeeper(!!userId, settings as Record<string, unknown> | null, reminders.settings.phases);
+  const people = useCraft<unknown>(ANCESTORS);
+  useEffect(() => {
+    if (people.ready) setAncestorSources(people.entries.map((e) => ({ id: e.id, createdAt: e.createdAt, data: normalizeAncestor(e.data) })));
+  }, [people.entries, people.ready]);
   useEffect(() => {
     void syncCovenReminders(userId);
     const sub = AppState.addEventListener('change', (next) => {
