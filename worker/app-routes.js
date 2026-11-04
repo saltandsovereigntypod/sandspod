@@ -282,6 +282,8 @@ export const APP_ROUTES = [
   "/rituals/divination/meanings",
   "/rituals/divination/patterns",
   "/rituals/divination/spread",
+  "/rituals/divination/study",
+  "/rituals/finder",
   "/rituals/ingredient/[ref]",
   "/rituals/journal",
   "/rituals/journal/[id]",
