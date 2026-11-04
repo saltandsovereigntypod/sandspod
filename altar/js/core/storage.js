@@ -720,7 +720,7 @@ async function restoreWorkingAltarDraft() {
   window.AltarOpening?.done();
   if (choice !== "draft" || rowPromise) return;
   const destinationParams = new URLSearchParams(window.location.search);
-  const hasSpecificDestination = ["cabinet", "apothecaryItem", "placeCabinetItem", "placeApothecaryItem", "selectObject", "editRitualTemplate", "beginRitual", "setDate"].some((name) => destinationParams.has(name));
+  const hasSpecificDestination = ["cabinet", "apothecaryItem", "placeCabinetItem", "placeApothecaryItem", "shelf", "selectObject", "editRitualTemplate", "beginRitual", "setDate"].some((name) => destinationParams.has(name));
   if (!hasSpecificDestination) showAltarToast("Working altar restored");
 }
 

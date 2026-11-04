@@ -255,7 +255,15 @@
       }
     };
     const [stones, plants] = await Promise.all([craft("crystal.stones"), craft("green.plants")]);
-    return { objects: [], apothecary, customItems, stones, plants };
+    // My Shelves, as the app's IngredientCheck counts them.
+    const M = global.SaltCore?.rituals?.shelves;
+    let shelves = [];
+    try {
+      shelves = M ? (await global.SaltCraft.list(M.SHELVES_COLLECTION)).map((e) => ({ id: e.id, item: M.cleanItem(e.data) })) : [];
+    } catch {
+      shelves = [];
+    }
+    return { objects: [], apothecary, customItems, stones, plants, shelves };
   }
 
   async function settings() {

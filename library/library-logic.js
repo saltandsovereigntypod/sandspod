@@ -158,6 +158,10 @@
         if (!m) return null;
         return `/rituals/spell/?${m[1] === "deity" ? `deity=${encodeURIComponent(m[2])}` : `add=${encodeURIComponent(entry.traditionalRef)}`}`;
       })(),
+      // Physical things: "I own this" adds it to My Shelves (app: LibraryEntryView).
+      ownHref: /herb|crystal|stone|oil|candle|tool|incense|resin|vessel|deity|plant|flower|root|tree/i.test(String(entry.type || ""))
+        ? `/rituals/shelves/?add=1&name=${encodeURIComponent(entry.name)}&ref=${encodeURIComponent(entry.traditionalRef || "")}&image=${encodeURIComponent(entry.image || "")}&type=${encodeURIComponent(`${entry.category || ""} ${entry.type || ""}`)}`
+        : null,
       deityKey: entry.type === "deity" ? (String(entry.traditionalRef || "").match(/^traditional\/deity\/([^/]+)$/) || [])[1] || null : null,
       record: record
         ? {

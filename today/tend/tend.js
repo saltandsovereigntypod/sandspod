@@ -50,7 +50,7 @@
       `<div class="sp-field"><label for="tn-search">Find something</label><input id="tn-search" type="search" data-search value="${esc(ui.query)}" placeholder="A petition, a plant, a coven, a ritual" /></div>` +
       `<div class="sp-chips" role="group" aria-label="Show">${M.GROUP_FILTERS.map((g) => chip(g.label, `data-group="${g.value}"`, ui.group === g.value)).join("")}</div>` +
       (ui.message ? `<p class="sp-notice" role="status">${esc(ui.message)}</p>` : "") +
-      (ui.adding ? `<div class="sp-card tn-item" data-own-new>${ownForm(null)}</div>` : `<div class="sp-actions"><button type="button" class="button button--ghost" data-add-own>Add your own</button></div>`) +
+      (ui.adding ? `<div class="sp-card tn-item" data-own-new>${ownForm(null)}</div>` : `<div class="sp-actions"><button type="button" class="button button--ghost" data-add-own>Add your own</button><a class="button button--ghost" href="/rituals/shelves/" title="The crystals, herbs, oils and tools you keep, and how each is tended">My Shelves</a></div>`) +
       (nothing ? `<div class="sp-card"><p>Nothing to tend yet. A petition on your altar, a candle burning, an offering set out, a coven petition you hold or a journey begun will gather here.</p></div>` : "") +
       (today.length ? `<h2 class="sp-eyebrow tn-group">Due today · ${today.length}</h2>${today.map(card).join("")}` : "") +
       (ongoing.length ? `<h2 class="sp-eyebrow tn-group">Ongoing · ${ongoing.length}</h2>${ongoing.map(card).join("")}` : "") +

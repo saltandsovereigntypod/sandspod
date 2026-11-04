@@ -239,6 +239,42 @@ if (typeof document !== "undefined") {
   else window.addEventListener("load", () => void loadCabinetFavourites());
 }
 
+// "I own this": add a cabinet thing to My Shelves (/rituals/shelves/), with
+// the cabinet's picture. Things already there say "On my shelves".
+let cabinetOwned = new Set();
+function cabinetOwnKey(item, form) {
+  return `${cabinetItemId(item)}|${form.form || form.label}`;
+}
+function cabinetOwn(item, form, label) {
+  const key = cabinetOwnKey(item, form);
+  const on = cabinetOwned.has(key);
+  const href = `/rituals/shelves/?add=1&key=${encodeURIComponent(key)}&name=${encodeURIComponent(item.name)}&image=${encodeURIComponent(getCabinetDisplayImage(item, form) || "")}`;
+  return `<span class="cabinet-own${on ? " is-on" : ""}" role="link" tabindex="0" data-cabinet-own="${href}" aria-label="${on ? `${label} is on your shelves. Add another` : `I own ${label}: add it to My Shelves`}">${on ? "On my shelves" : "I own this"}</span>`;
+}
+async function loadCabinetOwned() {
+  try {
+    await window.SaltPage?.ready?.();
+    const list = (await window.SaltCraft?.list?.("shelves.items")) || [];
+    cabinetOwned = new Set(list.map((e) => String(e.data?.cabinetKey || "")).filter(Boolean));
+    renderCabinet();
+  } catch { /* the cabinet works without it */ }
+}
+if (typeof document !== "undefined") {
+  const onOwn = (event) => {
+    const own = event.target.closest?.("[data-cabinet-own]");
+    if (!own) return;
+    if (event.type === "keydown" && event.key !== "Enter" && event.key !== " ") return;
+    event.preventDefault();
+    event.stopPropagation();
+    event.stopImmediatePropagation();
+    window.location.href = own.dataset.cabinetOwn;
+  };
+  document.addEventListener("click", onOwn, true);
+  document.addEventListener("keydown", onOwn, true);
+  if (document.readyState === "complete") setTimeout(loadCabinetOwned, 0);
+  else window.addEventListener("load", () => void loadCabinetOwned());
+}
+
 /** The drawers in order: Seasonal first while a festival is near; Seasonal, Natural, Plants and Offerings only when they hold something. */
 function visibleCabinetCategories() {
   const list = cabinetCategories.filter((category) => !["seasonal", "natural", "plants", "offerings"].includes(category.id) || cabinetItems.some((item) => item.category === category.id));
@@ -282,7 +318,7 @@ function cabinetItemId(item) {
   return `${item.category}:${item.name.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`;
 }
 
-function placeCabinetDefinition({ itemId, formId } = {}) {
+function placeCabinetDefinition({ itemId, formId, extra = null } = {}) {
   ensureSeasonalCabinetItems();
   const item = cabinetItems.find((candidate) => cabinetItemId(candidate) === itemId);
   if (!item) { showAltarToast("Cabinet item not found"); return false; }
@@ -297,7 +333,9 @@ function placeCabinetDefinition({ itemId, formId } = {}) {
     showAltarToast(availableForms.length ? "Choose a form to place" : "Add a form image before placing this item");
     return true;
   }
-  placeObject({ imagePath: getCabinetDisplayImage(item, form), label: item.forms.length > 1 ? `${item.name} ${form.label}` : item.name, type: form.type || "", herb: form.herb || "", form: form.form || "", color: form.color || "", crystal: form.crystal || "", tool: form.tool || "", vessel: form.vessel || "", deity: form.deity || "", entityId: form.entityId || item.entityId || "", offering: form.offering || "", offeringLabel: form.offeringLabel || "" });
+  const placed = placeObject({ imagePath: getCabinetDisplayImage(item, form), label: item.forms.length > 1 ? `${item.name} ${form.label}` : item.name, type: form.type || "", herb: form.herb || "", form: form.form || "", color: form.color || "", crystal: form.crystal || "", tool: form.tool || "", vessel: form.vessel || "", deity: form.deity || "", entityId: form.entityId || item.entityId || "", offering: form.offering || "", offeringLabel: form.offeringLabel || "" });
+  // A thing from My Shelves carries its id (kept with the app's own fields), so its history follows it.
+  if (placed && extra) placed.dataset.appExtra = JSON.stringify({ ...JSON.parse(placed.dataset.appExtra || "{}"), ...extra });
   return true;
 }
 
@@ -427,6 +465,7 @@ function renderCabinetTile(item, form, isMultiForm = false) {
       ${item.category === "seasonal" && item.description ? `<span class="cabinet-tile-festival">${item.description}</span>` : ""}
       <span class="cabinet-tile-count" data-cabinet-count hidden></span>
       ${isMultiForm ? "" : cabinetStar(item, item.name)}
+      ${cabinetOwn(item, form, label)}
 
       <span class="cabinet-custom-actions">
         <span data-upload-cabinet-image>${hasOverride ? "Replace Form Image" : "Add Form Image"}</span>

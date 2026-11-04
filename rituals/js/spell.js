@@ -166,7 +166,7 @@
             })
             .join("")}</ul><p class="sp-caption">${esc(`${C.GENERAL_SUBSTITUTES.candle} ${C.GENERAL_SUBSTITUTES.crystal}`)}</p></div>`
         : "";
-      const check = state.spec.ingredients.length ? UI.ingredientCheck(R.ingredients.checkIngredients(R.ingredients.templateNeeds({ ingredients: state.spec.ingredients }), state.pantry || { objects: [] })) : "";
+      const check = state.spec.ingredients.length ? UI.ingredientCheck(R.ingredients.checkIngredients(R.ingredients.templateNeeds({ ingredients: state.spec.ingredients }), state.pantry || { objects: [] }), { working: state.spec.name || "a spell" }) : "";
       return `${groups}${own}${all}${chosen}${check}`;
     },
     deities() {

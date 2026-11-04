@@ -43,7 +43,13 @@ type Props = {
   /** Starred item ids in the order added, and the star toggle (saved to your settings, shared with the website). */
   favourites?: string[];
   onToggleFavourite?: (itemId: string) => void;
+  /** "I own this": add it to My Shelves. `owned` holds the cabinet keys ("item|form") already there. */
+  onOwn?: (item: CabinetItem, form: CabinetForm) => void;
+  owned?: string[];
 };
+
+/** The key a cabinet form is known by on My Shelves (itemIndex.ts cabinetFormOf). */
+const ownKey = (item: CabinetItem, form: CabinetForm) => `${item.id}|${form.form || form.label}`;
 
 export function CabinetSheet({
   visible,
@@ -62,7 +68,10 @@ export function CabinetSheet({
   near = null,
   favourites = [],
   onToggleFavourite,
+  onOwn,
+  owned = [],
 }: Props) {
+  const ownedIt = (item: CabinetItem, forms: CabinetForm[]) => forms.some((f) => owned.includes(ownKey(item, f)));
   // Near a festival with something in the drawer for it, the cabinet opens on its seasonal things.
   const nearShown = nearWithThings(near, items).length > 0;
   const [category, setCategory] = useState<string>(() => (favourites.length ? FAVOURITES_CATEGORY : nearShown ? 'seasonal' : 'candles'));
@@ -175,6 +184,8 @@ export function CabinetSheet({
       onLongPress={choosePicture(item, forms[0])}
       starred={favourites.includes(favouriteKey(item))}
       onStar={onToggleFavourite ? () => onToggleFavourite(favouriteKey(item)) : undefined}
+      owned={ownedIt(item, forms)}
+      onOwn={onOwn ? () => onOwn(item, forms[0]) : undefined}
     />
   );
 
@@ -267,6 +278,8 @@ export function CabinetSheet({
                 onLongPress={choosePicture(place.item, place.form)}
                 starred={favourites.includes(favouriteKey(place.item))}
                 onStar={onToggleFavourite ? () => onToggleFavourite(favouriteKey(place.item)) : undefined}
+                owned={ownedIt(place.item, [place.form])}
+                onOwn={onOwn ? () => onOwn(place.item, place.form) : undefined}
               />
             ))}
           </View>
@@ -303,6 +316,7 @@ export function CabinetSheet({
                 {!!uses && <Text style={[styles.uses, styles.usesLeft]}>{uses}</Text>}
               </View>
               {!!onToggleFavourite && <Star on={favourites.includes(favouriteKey(item))} label={item.name} onPress={() => onToggleFavourite(favouriteKey(item))} />}
+              {!!onOwn && <Own owned={ownedIt(item, forms)} label={item.name} onPress={() => onOwn(item, forms[0])} />}
               {!!item.customCabinetItemId && !!onEditOwn && (
                 <Pressable accessibilityRole="button" accessibilityLabel={`Edit ${item.name}`} onPress={() => onEditOwn(item)} hitSlop={8} style={styles.edit}>
                   <Text style={styles.editText}>Edit</Text>
@@ -408,6 +422,21 @@ function Star({ on, label, onPress }: { on: boolean; label: string; onPress: () 
   );
 }
 
+/** "I own this" (or "On my shelves", to add another). */
+function Own({ owned, label, onPress }: { owned: boolean; label: string; onPress: () => void }) {
+  return (
+    <Pressable
+      accessibilityRole="button"
+      accessibilityLabel={owned ? `${label} is on your shelves. Add another` : `I own ${label}: add it to My Shelves`}
+      hitSlop={6}
+      onPress={onPress}
+      style={({ pressed }) => [styles.own, pressed && { opacity: 0.6 }]}
+    >
+      <Text style={[styles.ownText, owned && styles.ownOn]}>{owned ? 'On my shelves' : 'I own this'}</Text>
+    </Pressable>
+  );
+}
+
 function Tile({
   label,
   uses,
@@ -418,6 +447,8 @@ function Tile({
   onLongPress,
   starred = false,
   onStar,
+  owned = false,
+  onOwn,
 }: {
   label: string;
   uses?: string;
@@ -429,6 +460,8 @@ function Tile({
   onLongPress?: () => void;
   starred?: boolean;
   onStar?: () => void;
+  owned?: boolean;
+  onOwn?: () => void;
 }) {
   const picture = altarPicture(image);
   // Heaps of chips and loose herbs are wide and flat: give them a wide frame
@@ -471,6 +504,7 @@ function Tile({
         </Text>
       )}
       {count > 0 && <Text style={styles.onAltar}>{count > 1 ? `on the altar ×${count}` : 'on the altar'}</Text>}
+      {!!onOwn && <Own owned={owned} label={label} onPress={onOwn} />}
     </Pressable>
   );
 }
@@ -479,6 +513,9 @@ const styles = StyleSheet.create({
   star: { position: 'absolute', top: 4, left: 6, zIndex: 2 },
   starGlyph: { fontSize: 20, color: colors.tabInactive },
   starOn: { color: colors.gold },
+  own: { minHeight: 28, justifyContent: 'center', paddingHorizontal: 4 },
+  ownText: { fontFamily: fonts.body, fontSize: 12, color: colors.muted, textDecorationLine: 'underline' },
+  ownOn: { color: colors.gold, textDecorationLine: 'none' },
   header: { paddingHorizontal: space.gutter, gap: 12, paddingBottom: 12 },
   search: {
     minHeight: touch,

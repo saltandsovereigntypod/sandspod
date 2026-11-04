@@ -1,6 +1,7 @@
 // Ingredient checks: what a premade working or your own template calls for,
 // and which of those you already have: on this altar, in My Apothecary, in
-// your own cabinet items, among your stones or growing in your garden.
+// your own cabinet items, on My Shelves, among your stones or growing in your
+// garden.
 // "You have 6 of the 8." Pure, so it can be tested.
 
 import type { ApothecaryItem } from '../apothecary.ts';
@@ -9,11 +10,12 @@ import type { Premade } from '../../rituals/premade/types.ts';
 import type { Ingredient, TemplateDraft, TemplateRow } from '../../rituals/types.ts';
 import type { Stone } from '../../craft/crystal/stones.ts';
 import type { Plant } from '../../craft/green/garden.ts';
+import { matchesNeed, type ShelfItem } from '../../shelves/model.ts';
 
 /** One thing a working needs. */
 export type Need = { name: string; ref?: string; optional?: boolean };
 
-export type Source = 'altar' | 'apothecary' | 'cabinet' | 'stones' | 'garden';
+export type Source = 'altar' | 'shelves' | 'apothecary' | 'cabinet' | 'stones' | 'garden';
 
 export type Pantry = {
   objects: SavedObject[];
@@ -21,12 +23,14 @@ export type Pantry = {
   customItems?: CabinetItem[];
   stones?: Stone[];
   plants?: Plant[];
+  /** What's on My Shelves (with some left). */
+  shelves?: { id: string; item: ShelfItem }[];
 };
 
 export type NeedResult = Need & {
   have: boolean;
   /** Where it was found, first match first. */
-  found: { source: Source; label: string }[];
+  found: { source: Source; label: string; id?: string }[];
 };
 
 export type IngredientCheck = {
@@ -116,10 +120,14 @@ function matchesText(need: Need, text: string): boolean {
 }
 
 /** Where one need is found. */
-export function findNeed(need: Need, pantry: Pantry): { source: Source; label: string }[] {
-  const out: { source: Source; label: string }[] = [];
+export function findNeed(need: Need, pantry: Pantry): { source: Source; label: string; id?: string }[] {
+  const out: { source: Source; label: string; id?: string }[] = [];
   const ref = parseRef(need.ref);
   for (const o of pantry.objects) if (matchesObject(need, o)) out.push({ source: 'altar', label: String(o.label || need.name) });
+  for (const { id, item } of pantry.shelves ?? []) {
+    if (item.qty.kind === 'count' && item.qty.n <= 0) continue;
+    if (matchesNeed(item, need)) out.push({ source: 'shelves', label: item.name, id });
+  }
   for (const item of pantry.apothecary ?? []) {
     // A working counts when it is the thing ("Moon water", "Rosemary oil"); what went into one is used up.
     if (matchesText(need, item.name)) out.push({ source: 'apothecary', label: item.name });
@@ -173,6 +181,7 @@ export function haveLine(have: number, total: number): string {
 
 export const SOURCE_WORDS: Record<Source, string> = {
   altar: 'on this altar',
+  shelves: 'on your shelves',
   apothecary: 'in your apothecary',
   cabinet: 'in your cabinet',
   stones: 'among your stones',

@@ -18,6 +18,7 @@ import { useMySettings } from '../../lib/settings/store';
 import { colors, fonts, radius, type, fitLines } from '../../theme';
 import { ConnectedTo, LibraryJourney, RelationshipManager } from './LibraryConnections';
 import { DeityYours } from './DeityYours';
+import { shelfFor } from '../../lib/shelves/model';
 import { HerbHearth } from '../craft/hearth';
 
 /** A herb or tree's Traditional Library key ("elder"), from its own id or the entry it was made from. */
@@ -138,6 +139,20 @@ export function LibraryEntryView({ entryId, back, backLabel, hrefFor, editHref }
           variant="outline"
           accessibilityHint={`Opens the spell builder with ${entry.name} already chosen`}
           onPress={() => router.push(spellLink)}
+        />
+      )}
+
+      {/herb|crystal|stone|oil|candle|tool|incense|resin|vessel|deity|plant|flower|root|tree/i.test(entry.type) && (
+        <Button
+          label="I own this"
+          variant="outline"
+          accessibilityHint={`Adds ${entry.name} to My Shelves, where it can be tended and found again`}
+          onPress={() =>
+            router.push({
+              pathname: '/rituals/shelves/add',
+              params: { name: entry.name, ref: entry.traditionalRef ?? '', image: entry.image ?? '', shelf: shelfFor(entry.category, entry.name, entry.type) },
+            } as Href)
+          }
         />
       )}
 
