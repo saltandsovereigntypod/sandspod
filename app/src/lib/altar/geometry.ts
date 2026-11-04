@@ -36,6 +36,16 @@ import type { SavedObject } from './types.ts';
 /** Stage width / height, fixed by the website's CSS. */
 export const STAGE_ASPECT = 16 / 9;
 
+/**
+ * The widest stage that fits a box (the computer screen's altar column) at
+ * STAGE_ASPECT, so the whole altar shows with no scrolling.
+ */
+export function fitStageWidth(boxWidth: number, boxHeight: number, aspect: number = STAGE_ASPECT): number {
+  if (!(boxWidth > 0)) return 0;
+  if (!(boxHeight > 0)) return Math.floor(boxWidth);
+  return Math.max(0, Math.floor(Math.min(boxWidth, boxHeight * aspect)));
+}
+
 /** The website's object box before scaling, in CSS px. */
 export const WEB_OBJECT_BOX = 80;
 

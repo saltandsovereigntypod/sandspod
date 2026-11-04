@@ -20,10 +20,12 @@ type Props = {
   size?: 'full' | 'half';
   /** Come back to the same place in the list when the sheet is closed and opened again (the cabinet). */
   keepScroll?: boolean;
+  /** Shown in place, filling its box, rather than rising over the screen (the altar's side panel on a computer screen). */
+  inline?: boolean;
 };
 
 /** A bottom sheet that scrolls vertically; the altar's cabinet, backgrounds and layers live in these. */
-export function Sheet({ visible, title, eyebrow, onClose, children, header, size = 'full', keepScroll = false }: Props) {
+export function Sheet({ visible, title, eyebrow, onClose, children, header, size = 'full', keepScroll = false, inline = false }: Props) {
   const insets = useSafeAreaInsets();
   // A closed Modal drops its contents, so where the list was is kept here and
   // put back once the reopened list has laid out.
@@ -35,28 +37,43 @@ export function Sheet({ visible, title, eyebrow, onClose, children, header, size
   }, [visible, keepScroll]);
   const reduceMotion = useReducedMotion();
   const t = useAccessibleText();
+  const head = (
+    <View style={styles.head}>
+      <View style={styles.headText}>
+        {eyebrow ? <Text style={type.eyebrow}>{eyebrow}</Text> : null}
+        <Text accessibilityRole="header" style={type.cardTitle}>
+          {title}
+        </Text>
+      </View>
+      <Pressable
+        onPress={onClose}
+        accessibilityRole="button"
+        accessibilityLabel={`Close ${title}`}
+        style={({ pressed }) => [styles.close, pressed && { opacity: 0.6 }]}
+      >
+        <Text style={t(styles.closeText)}>Done</Text>
+      </Pressable>
+    </View>
+  );
+  if (inline) {
+    if (!visible) return null;
+    return (
+      <View style={styles.inline}>
+        {head}
+        {header}
+        <ScrollView style={styles.inlineScroll} contentContainerStyle={styles.content} alwaysBounceHorizontal={false} keyboardShouldPersistTaps="handled">
+          {children}
+        </ScrollView>
+      </View>
+    );
+  }
   return (
     <Modal visible={visible} transparent animationType={reduceMotion ? 'none' : 'slide'} onRequestClose={onClose} supportedOrientations={ORIENTATIONS}>
       {/* The sheet rises with the keyboard, so the field being typed in stays in view. */}
       <KeyboardAvoidingView style={styles.root} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
         <Pressable style={[styles.backdrop, size === 'half' && styles.backdropLight]} onPress={onClose} accessibilityRole="button" accessibilityLabel="Close" />
         <View style={[styles.card, size === 'half' && styles.cardHalf, { paddingBottom: Math.max(insets.bottom, 16) }]} accessibilityViewIsModal>
-          <View style={styles.head}>
-            <View style={styles.headText}>
-              {eyebrow ? <Text style={type.eyebrow}>{eyebrow}</Text> : null}
-              <Text accessibilityRole="header" style={type.cardTitle}>
-                {title}
-              </Text>
-            </View>
-            <Pressable
-              onPress={onClose}
-              accessibilityRole="button"
-              accessibilityLabel={`Close ${title}`}
-              style={({ pressed }) => [styles.close, pressed && { opacity: 0.6 }]}
-            >
-              <Text style={t(styles.closeText)}>Done</Text>
-            </Pressable>
-          </View>
+          {head}
           {header}
           <ScrollView
             ref={scroll}
@@ -105,5 +122,7 @@ const styles = StyleSheet.create({
   close: { minHeight: touch, minWidth: touch, alignItems: 'center', justifyContent: 'center', paddingHorizontal: 8 },
   closeText: { color: colors.gold, fontFamily: fonts.bodySemi, fontSize: 15 },
   scroll: { flexGrow: 0 },
+  inline: { flex: 1, paddingTop: 12 },
+  inlineScroll: { flex: 1 },
   content: { paddingHorizontal: space.gutter, paddingBottom: 12, gap: 16 },
 });

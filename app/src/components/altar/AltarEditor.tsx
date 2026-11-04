@@ -234,7 +234,7 @@ import {
   uncarveObject,
   undressObject,
 } from '../../lib/altar/editor';
-import { displayBox, STAGE_ASPECT } from '../../lib/altar/geometry';
+import { displayBox, fitStageWidth, STAGE_ASPECT } from '../../lib/altar/geometry';
 import { stackOrder } from '../../lib/altar/layers';
 import { apothecaryStateOf, CANDLE_LIFE, candleLife, carvingMark, carvingsOf, dressingsOf, isCandle, isLit, type ApothecaryState } from '../../lib/altar/livingState';
 import { addObjectInstanceEvent, getObjectInstance, updateObjectInstance, useObjectInstance } from '../../lib/altar/instanceStore';
@@ -259,7 +259,10 @@ import { altarSummary, documentFromAltar, emptyDocument, ritualAltarSnapshot, ty
 import { useAltars } from '../../lib/altar/store';
 import type { CabinetForm, CabinetItem } from '../../lib/altar/types';
 import { altarLibraryHref, useLibrary } from '../../lib/library';
-import { setAltarFullScreen } from '../../lib/altarFullScreen';
+import { setAltarFullScreen, setAltarRitualMode } from '../../lib/altarFullScreen';
+import { useDesktopLayout } from '../../lib/desktopLayout';
+import { useRememberedTab } from '../../lib/rememberedTab';
+import { ShelvesView } from '../shelves/ShelvesView';
 import { canTurnScreen, turnScreen } from '../../lib/screenOrientation';
 import { cachedSettings, patchMySettings, useMySettings } from '../../lib/settings/store';
 import { CABINET_FAVOURITES_SETTING, encodeFavourites, readFavourites, toggleFavourite } from '../../lib/altar/cabinetFavourites';
@@ -341,6 +344,21 @@ const newMoonFor = (entries: CraftEntry<AltarOptions>[], id: string | null) => (
 const afterSheetCloses = (open: () => void) => setTimeout(open, Platform.OS === 'ios' ? 450 : 0);
 const MAX_STAGE_WIDTH = 960;
 
+// On a computer screen (web), the altar's tools sit in a panel beside it, in tabs. The panel can be
+// folded away so the altar fills the width; the choice and the last tab are kept on this device.
+const ALTAR_PANEL_KEY = 'salt.altar.panel';
+const ALTAR_PANEL_TAB_KEY = 'salt.altar.panelTab';
+type PanelTab = 'add' | 'cabinet' | 'ritual' | 'tend' | 'shelves';
+const PANEL_TABS: { key: PanelTab; label: string }[] = [
+  { key: 'add', label: 'Add' },
+  { key: 'cabinet', label: 'Cabinet' },
+  { key: 'ritual', label: 'Ritual' },
+  { key: 'tend', label: 'Tend' },
+  { key: 'shelves', label: 'Shelves' },
+];
+const asPanelShown = (v: unknown) => (v === 'open' || v === 'folded' ? v : null);
+const asPanelTab = (v: unknown) => (PANEL_TABS.some((t) => t.key === v) ? (v as PanelTab) : null);
+
 /** A coven ritual step done for real here (lib/covens/altarActions.ts): the sheet to open, and what to call once it is done. */
 export type AltarDeedRequest = { kind: AltarDeed; nonce: string; onDone: () => void; /** The step (and turn) it is for: it counts once (altarDesk.ts). */ key?: string };
 
@@ -387,6 +405,13 @@ export function AltarEditor({
   // The last divination's answer, held in the stage's corner until put away (DivinationResultCard).
   const [result, setResult] = useState<DivinationResult | null>(null);
   const [containerWidth, setContainerWidth] = useState(0);
+  const [containerHeight, setContainerHeight] = useState(0);
+  // On a computer screen (web): the altar on the left at full height, its tools in a panel on the right.
+  const desktop = useDesktopLayout();
+  const [panelShown, setPanelShown] = useRememberedTab(ALTAR_PANEL_KEY, asPanelShown);
+  const [panelTabSaved, setPanelTab] = useRememberedTab(ALTAR_PANEL_TAB_KEY, asPanelTab);
+  const panelTab: PanelTab = panelTabSaved ?? 'add';
+  const panelFolded = panelShown === 'folded';
   const [viewport, setViewport] = useState<Viewport>({ zoom: 1, offsetX: 0, offsetY: 0 });
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [confirmClear, setConfirmClear] = useState(false);
@@ -569,7 +594,7 @@ export function AltarEditor({
   }, [doc, pushShared, altarId]);
 
   const fullWidth = Math.floor(Math.min(win.width - insets.left - insets.right, win.height * STAGE_ASPECT));
-  const stageWidth = full ? fullWidth : Math.min(containerWidth, MAX_STAGE_WIDTH);
+  const stageWidth = full ? fullWidth : desktop ? fitStageWidth(containerWidth, containerHeight) : Math.min(containerWidth, MAX_STAGE_WIDTH);
 
   const enterFullScreen = (next: boolean) => {
     setViewport({ zoom: 1, offsetX: 0, offsetY: 0 });
@@ -763,7 +788,10 @@ export function AltarEditor({
     }
   };
 
-  const onLayout = (e: LayoutChangeEvent) => setContainerWidth(Math.max(0, Math.round(e.nativeEvent.layout.width) - 24));
+  const onLayout = (e: LayoutChangeEvent) => {
+    setContainerWidth(Math.max(0, Math.round(e.nativeEvent.layout.width) - 24));
+    setContainerHeight(Math.max(0, Math.round(e.nativeEvent.layout.height) - 12));
+  };
   const zoomBy = (factor: number) =>
     setViewport((v) => {
       const zoom = Math.max(1, Math.min(4, v.zoom * factor));
@@ -1585,6 +1613,11 @@ export function AltarEditor({
   const setRitualMode = craft.setRitualMode;
   // Leaving the altar always comes out of ritual mode.
   useFocusEffect(useCallback(() => () => setRitualMode(false), [setRitualMode]));
+  // The phone's bottom bar steps aside while this altar is in Ritual mode (components/TabBar.tsx).
+  useEffect(() => {
+    setAltarRitualMode(ritualMode);
+  }, [ritualMode]);
+  useEffect(() => () => setAltarRitualMode(false), []);
   const startDeed = (kind: AltarDeed) => {
     if (toolRites.startDeed(kind) || craft.startDeed(kind)) return;
     const objects = docRef.current?.objects ?? [];
@@ -1775,6 +1808,191 @@ export function AltarEditor({
           )}
       </View>
     ) : null;
+
+  // The altar's tools, in groups: one under the other on a phone, in the side panel's tabs on a computer screen.
+  const toolbarChips = doc ? (
+    <>
+              <Chip compact={desktop} label="Undo" symbol="↶" onPress={() => stepHistory(undo, redo)} disabled={undo.current.length === 0} />
+              <Chip compact={desktop} label="Redo" symbol="↷" onPress={() => stepHistory(redo, undo)} disabled={redo.current.length === 0} />
+              <Chip
+                compact={desktop}
+                label="Select"
+                symbol="☑"
+                accessibilityLabel="Choose several things on the altar, to move, group or delete them together"
+                onPress={() => startSelecting(null)}
+                disabled={doc.objects.length === 0}
+              />
+              <Chip compact={desktop} label="Zoom in" symbol="+" onPress={() => zoomBy(1.5)} disabled={viewport.zoom >= 4} />
+              <Chip compact={desktop} label="Zoom out" symbol="−" onPress={() => zoomBy(1 / 1.5)} disabled={viewport.zoom <= 1} />
+              {!full ? <Chip compact={desktop} label="Full screen" symbol="⤢" accessibilityLabel={canTurnScreen ? 'Turn the altar sideways to fill the screen' : 'Fill the screen with the altar'} onPress={() => enterFullScreen(true)} /> : null}
+    </>
+  ) : null;
+  const ritualChip = !full ? (
+                <Chip
+                  label="Ritual mode"
+                  symbol="◐"
+                  accessibilityLabel="Ritual mode: dim everything around the altar, keep one small bar, and soften the sounds"
+                  onPress={() => {
+                    setTools(false);
+                    setRitualMode(true);
+                    setNotice(RITUAL_ON);
+                  }}
+                />
+              ) : null;
+  const workingsChip = (
+    <Chip
+                  label="Workings"
+                  symbol="✶"
+                  accessibilityLabel="Workings: begin a ritual here, spell jar, sachet, cord cutting, spells over days, scrying, the gratitude bowl, and things from your practice"
+                  onPress={() => setSheet('more-workings')}
+                />
+  );
+  const addGroup = doc ? (
+            <ToolGroup title="Add">
+              <Button label="Open the cabinet" onPress={() => (desktop && !full ? setPanelTab('cabinet') : setSheet('cabinet'))} />
+              <ChipRow>
+                <Chip label="Apothecary" symbol="⚗" accessibilityLabel="My Apothecary" onPress={() => setSheet('apothecary')} />
+                <Chip label="Background" symbol="❖" onPress={() => setSheet('background')} />
+                <Chip label="Layers" symbol="☰" onPress={() => setSheet('layers')} disabled={doc.objects.length === 0} />
+                {doc.objects.length > 1 && <Chip label="Group" symbol="⊕" accessibilityLabel="Group things so they move together" onPress={() => setSheet('group')} />}
+              </ChipRow>
+            </ToolGroup>
+  ) : null;
+  const tendGroup = doc ? (
+            <ToolGroup title="Tend">
+              <ChipRow>
+                {doc.objects.some((o) => isCandle(o) && !isLit(o) && !candleLife(o).spent) && (
+                  <Chip label="Light all candles" symbol="✺" onPress={() => commit((d) => lightAll(d, nowIso()))} />
+                )}
+                {doc.objects.some(isLit) && <Chip label="Snuff all" symbol="◌" onPress={() => commit((d) => snuffAll(d, nowIso()))} />}
+                <Chip
+                  label={box.open.length ? `Petitions (${box.open.length})` : 'Petitions'}
+                  symbol="✉"
+                  accessibilityLabel={`The petition box${box.open.length ? `, ${box.open.length} waiting` : ''}`}
+                  onPress={openPetitions}
+                />
+                {workingsChip}
+                <Chip
+                  label="Something came at me"
+                  symbol="◈"
+                  accessibilityLabel="Something came at me: log it, and the stones doing protective work take the brunt"
+                  onPress={wear.cameAtMe}
+                />
+              </ChipRow>
+            </ToolGroup>
+  ) : null;
+  const readGroup = doc ? (
+            <ToolGroup title="Read">
+              <ChipRow>
+                <Chip label="Read & arrange" symbol="☉" accessibilityLabel="Read this altar, its intention and layouts with meaning" onPress={() => setSheet('more-reading')} />
+                {tonight && <Chip label="Why these pieces" symbol="✧" accessibilityLabel="Why each piece of tonight’s altar is there, and swaps" onPress={() => setSheet('tonight')} />}
+                <Chip label="History" symbol="◷" accessibilityLabel="This altar’s history: what happened here and how it looked" onPress={() => openSaved('history', 'history')} />
+                <Chip label="Sky & season" symbol="☾" accessibilityLabel="Sky and season options for this altar" onPress={() => setSheet('options')} />
+              </ChipRow>
+            </ToolGroup>
+  ) : null;
+  const shareGroup = doc ? (
+            <ToolGroup title="Share & keep">
+              <ChipRow>
+                <Chip label="Share" symbol="⇪" accessibilityLabel="Share a picture of this altar" onPress={() => setSheet('share')} disabled={doc.objects.length === 0} />
+                <Chip
+                  label="Record in Grimoire"
+                  symbol="❧"
+                  accessibilityLabel="Record this altar in your Grimoire"
+                  onPress={() => setSheet('grimoire')}
+                  disabled={doc.objects.length === 0}
+                />
+                {Platform.OS !== 'web' ? (
+                  <Chip
+                    label="Home screen"
+                    symbol="▣"
+                    accessibilityLabel="Put this altar on your home screen"
+                    onPress={() => {
+                      // A coven altar is already saved for the coven.
+                      if (sourceId || shared) return setSheet('widget');
+                      // Only saved altars can go on the home screen.
+                      setNotice('Save this altar first, then tap Home screen again to choose its place on your home screen.');
+                      setSheet('save');
+                    }}
+                  />
+                ) : null}
+                {sourceId && !shared && !confirmDelete && (
+                  <>
+                    <Chip label={archivedNow ? 'Restore altar' : 'Archive altar'} onPress={() => void setArchived(!archivedNow)} />
+                    <Chip label="Delete altar" tone="danger" onPress={() => setConfirmDelete(true)} />
+                  </>
+                )}
+              </ChipRow>
+              {sourceId && !shared && archivedNow && (
+                <Text style={type.caption}>This altar is archived. It rests from reminders, tending nudges and the To tend list until you restore it.</Text>
+              )}
+              {sourceId && !shared && confirmDelete && (
+                <>
+                  <Text style={type.caption}>{ARCHIVE_WORDS.deleteBody}</Text>
+                  <ChipRow>
+                    <Chip label="Delete this altar for good" tone="danger" onPress={removeAltar} />
+                    {!archivedNow && <Chip label="Archive it instead" onPress={() => void setArchived(true)} />}
+                    <Chip label="Keep it" onPress={() => setConfirmDelete(false)} />
+                  </ChipRow>
+                </>
+              )}
+            </ToolGroup>
+  ) : null;
+  const altarFoot = doc ? (
+    <>
+            {!!intention.text && (
+              <Text style={styles.glance} accessibilityLabel={`This altar’s intention: ${intention.text}`} onPress={() => openSaved('intention', 'intention')}>
+                {`“${intention.text}”`}
+              </Text>
+            )}
+            <Text style={type.caption}>
+              {altarSummary(doc)}. Tap something on the altar to tend it. Drag to move it, pinch to resize and twist to
+              turn it. Press and hold to choose several.{viewport.zoom > 1 ? ' Drag an empty spot to look around.' : ''}
+            </Text>
+            <AltarListing doc={doc} personal={!shared} whose={whose ?? null} highlighting={highlight !== null} onHighlight={setHighlight} onSelect={setSelected} />
+            {doc.objects.length > 0 && (
+              <ChipRow>
+                {confirmClear ? (
+                  <>
+                    <Chip
+                      label="Take everything off"
+                      tone="danger"
+                      onPress={() => {
+                        commit((d) => clearAltar(d));
+                        setConfirmClear(false);
+                      }}
+                    />
+                    <Chip label="Keep it" onPress={() => setConfirmClear(false)} />
+                  </>
+                ) : (
+                  <Chip label="Clear altar" tone="danger" onPress={() => setConfirmClear(true)} />
+                )}
+              </ChipRow>
+            )}
+    </>
+  ) : null;
+  const desktopTools = doc ? (
+    <View style={styles.section}>
+      {panelTab === 'ritual' ? (
+        <ToolGroup title="Ritual">
+          <Text style={type.caption}>Ritual mode dims everything around the altar, keeps one small bar and softens the sounds. Workings begins a ritual here, or a spell jar, sachet, cord cutting and more.</Text>
+          <ChipRow>
+            {ritualChip}
+            {workingsChip}
+          </ChipRow>
+        </ToolGroup>
+      ) : panelTab === 'tend' ? (
+        tendGroup
+      ) : (
+        <>
+          {addGroup}
+          {readGroup}
+          {shareGroup}
+          {altarFoot}
+        </>
+      )}
+    </View>
+  ) : null;
 
   const panelBody = (
     <>
@@ -1967,156 +2185,67 @@ export function AltarEditor({
             }}
           />
         ) : doc ? (
+          desktop ? (
+            desktopTools
+          ) : (
           <View style={styles.section}>
             <ChipRow>
-              <Chip label="Undo" symbol="↶" onPress={() => stepHistory(undo, redo)} disabled={undo.current.length === 0} />
-              <Chip label="Redo" symbol="↷" onPress={() => stepHistory(redo, undo)} disabled={redo.current.length === 0} />
-              <Chip
-                label="Select"
-                symbol="☑"
-                accessibilityLabel="Choose several things on the altar, to move, group or delete them together"
-                onPress={() => startSelecting(null)}
-                disabled={doc.objects.length === 0}
-              />
-              <Chip label="Zoom in" symbol="+" onPress={() => zoomBy(1.5)} disabled={viewport.zoom >= 4} />
-              <Chip label="Zoom out" symbol="−" onPress={() => zoomBy(1 / 1.5)} disabled={viewport.zoom <= 1} />
-              {!full ? <Chip label="Full screen" symbol="⤢" accessibilityLabel={canTurnScreen ? 'Turn the altar sideways to fill the screen' : 'Fill the screen with the altar'} onPress={() => enterFullScreen(true)} /> : null}
-              {!full ? (
-                <Chip
-                  label="Ritual mode"
-                  symbol="◐"
-                  accessibilityLabel="Ritual mode: dim everything around the altar, keep one small bar, and soften the sounds"
-                  onPress={() => {
-                    setTools(false);
-                    setRitualMode(true);
-                    setNotice(RITUAL_ON);
-                  }}
-                />
-              ) : null}
+              {toolbarChips}
+              {ritualChip}
             </ChipRow>
-            <ToolGroup title="Add">
-              <Button label="Open the cabinet" onPress={() => setSheet('cabinet')} />
-              <ChipRow>
-                <Chip label="Apothecary" symbol="⚗" accessibilityLabel="My Apothecary" onPress={() => setSheet('apothecary')} />
-                <Chip label="Background" symbol="❖" onPress={() => setSheet('background')} />
-                <Chip label="Layers" symbol="☰" onPress={() => setSheet('layers')} disabled={doc.objects.length === 0} />
-                {doc.objects.length > 1 && <Chip label="Group" symbol="⊕" accessibilityLabel="Group things so they move together" onPress={() => setSheet('group')} />}
-              </ChipRow>
-            </ToolGroup>
-            <ToolGroup title="Tend">
-              <ChipRow>
-                {doc.objects.some((o) => isCandle(o) && !isLit(o) && !candleLife(o).spent) && (
-                  <Chip label="Light all candles" symbol="✺" onPress={() => commit((d) => lightAll(d, nowIso()))} />
-                )}
-                {doc.objects.some(isLit) && <Chip label="Snuff all" symbol="◌" onPress={() => commit((d) => snuffAll(d, nowIso()))} />}
-                <Chip
-                  label={box.open.length ? `Petitions (${box.open.length})` : 'Petitions'}
-                  symbol="✉"
-                  accessibilityLabel={`The petition box${box.open.length ? `, ${box.open.length} waiting` : ''}`}
-                  onPress={openPetitions}
-                />
-                <Chip
-                  label="Workings"
-                  symbol="✶"
-                  accessibilityLabel="Workings: begin a ritual here, spell jar, sachet, cord cutting, spells over days, scrying, the gratitude bowl, and things from your practice"
-                  onPress={() => setSheet('more-workings')}
-                />
-                <Chip
-                  label="Something came at me"
-                  symbol="◈"
-                  accessibilityLabel="Something came at me: log it, and the stones doing protective work take the brunt"
-                  onPress={wear.cameAtMe}
-                />
-              </ChipRow>
-            </ToolGroup>
-            <ToolGroup title="Read">
-              <ChipRow>
-                <Chip label="Read & arrange" symbol="☉" accessibilityLabel="Read this altar, its intention and layouts with meaning" onPress={() => setSheet('more-reading')} />
-                {tonight && <Chip label="Why these pieces" symbol="✧" accessibilityLabel="Why each piece of tonight’s altar is there, and swaps" onPress={() => setSheet('tonight')} />}
-                <Chip label="History" symbol="◷" accessibilityLabel="This altar’s history: what happened here and how it looked" onPress={() => openSaved('history', 'history')} />
-                <Chip label="Sky & season" symbol="☾" accessibilityLabel="Sky and season options for this altar" onPress={() => setSheet('options')} />
-              </ChipRow>
-            </ToolGroup>
-            <ToolGroup title="Share & keep">
-              <ChipRow>
-                <Chip label="Share" symbol="⇪" accessibilityLabel="Share a picture of this altar" onPress={() => setSheet('share')} disabled={doc.objects.length === 0} />
-                <Chip
-                  label="Record in Grimoire"
-                  symbol="❧"
-                  accessibilityLabel="Record this altar in your Grimoire"
-                  onPress={() => setSheet('grimoire')}
-                  disabled={doc.objects.length === 0}
-                />
-                {Platform.OS !== 'web' ? (
-                  <Chip
-                    label="Home screen"
-                    symbol="▣"
-                    accessibilityLabel="Put this altar on your home screen"
-                    onPress={() => {
-                      // A coven altar is already saved for the coven.
-                      if (sourceId || shared) return setSheet('widget');
-                      // Only saved altars can go on the home screen.
-                      setNotice('Save this altar first, then tap Home screen again to choose its place on your home screen.');
-                      setSheet('save');
-                    }}
-                  />
-                ) : null}
-                {sourceId && !shared && !confirmDelete && (
-                  <>
-                    <Chip label={archivedNow ? 'Restore altar' : 'Archive altar'} onPress={() => void setArchived(!archivedNow)} />
-                    <Chip label="Delete altar" tone="danger" onPress={() => setConfirmDelete(true)} />
-                  </>
-                )}
-              </ChipRow>
-              {sourceId && !shared && archivedNow && (
-                <Text style={type.caption}>This altar is archived. It rests from reminders, tending nudges and the To tend list until you restore it.</Text>
-              )}
-              {sourceId && !shared && confirmDelete && (
-                <>
-                  <Text style={type.caption}>{ARCHIVE_WORDS.deleteBody}</Text>
-                  <ChipRow>
-                    <Chip label="Delete this altar for good" tone="danger" onPress={removeAltar} />
-                    {!archivedNow && <Chip label="Archive it instead" onPress={() => void setArchived(true)} />}
-                    <Chip label="Keep it" onPress={() => setConfirmDelete(false)} />
-                  </ChipRow>
-                </>
-              )}
-            </ToolGroup>
-            {!!intention.text && (
-              <Text style={styles.glance} accessibilityLabel={`This altar’s intention: ${intention.text}`} onPress={() => openSaved('intention', 'intention')}>
-                {`“${intention.text}”`}
-              </Text>
-            )}
-            <Text style={type.caption}>
-              {altarSummary(doc)}. Tap something on the altar to tend it. Drag to move it, pinch to resize and twist to
-              turn it. Press and hold to choose several.{viewport.zoom > 1 ? ' Drag an empty spot to look around.' : ''}
-            </Text>
-            <AltarListing doc={doc} personal={!shared} whose={whose ?? null} highlighting={highlight !== null} onHighlight={setHighlight} onSelect={setSelected} />
-            {doc.objects.length > 0 && (
-              <ChipRow>
-                {confirmClear ? (
-                  <>
-                    <Chip
-                      label="Take everything off"
-                      tone="danger"
-                      onPress={() => {
-                        commit((d) => clearAltar(d));
-                        setConfirmClear(false);
-                      }}
-                    />
-                    <Chip label="Keep it" onPress={() => setConfirmClear(false)} />
-                  </>
-                ) : (
-                  <Chip label="Clear altar" tone="danger" onPress={() => setConfirmClear(true)} />
-                )}
-              </ChipRow>
-            )}
+            {addGroup}
+            {tendGroup}
+            {readGroup}
+            {shareGroup}
+            {altarFoot}
           </View>
+          )
         ) : (
           <ActivityIndicator color={colors.gold} />
         )}
     </>
   );
+
+  // The side panel on a computer screen: something chosen on the altar turns it to what that can do;
+  // the Cabinet and Shelves tabs fill it. The cabinet is a sheet on a phone, and the Cabinet tab here.
+  const objectOpen = selecting || (!!selectedObject && selected != null);
+  const panelFull = !objectOpen && (panelTab === 'cabinet' || panelTab === 'shelves');
+  const inline = desktop && !full && !ritualMode && !panelFolded && panelFull && panelTab === 'cabinet';
+  const cabinetSheet = doc ? (
+      <CabinetSheet
+        visible={inline || sheet === 'cabinet'}
+        inline={inline}
+        near={near}
+        items={allItems}
+        overrides={overrides}
+        library={libraryEntries}
+        onMakeOwn={(category) => {
+          setSheet(null);
+          afterSheetCloses(() => setOwnItem({ category, item: null }));
+        }}
+        onEditOwn={(item) => {
+          setSheet(null);
+          afterSheetCloses(() => setOwnItem({ category: item.category, item }));
+        }}
+        favourites={readFavourites(settings?.[CABINET_FAVOURITES_SETTING])}
+        owned={shelves.entries.map((e) => e.item.cabinetKey).filter(Boolean)}
+        onOwn={(item, form) => {
+          setSheet(null);
+          router.push({ pathname: '/rituals/shelves/add', params: { key: `${item.id}|${form.form || form.label}`, name: item.name, image: formImage(item, form, overrides) } });
+        }}
+        onToggleFavourite={(id) => {
+          const next = toggleFavourite(readFavourites((cachedSettings() ?? settings)?.[CABINET_FAVOURITES_SETTING]), id);
+          void patchMySettings({ [CABINET_FAVOURITES_SETTING]: encodeFavourites(next) }).catch(() => {});
+        }}
+        signedIn={signedIn}
+        onSetImage={store.setFormImage}
+        onRemoveImage={store.removeFormImage}
+        onClose={() => (inline ? setPanelTab('add') : setSheet(null))}
+        onPlace={place}
+        onAltar={doc.objects}
+        onUndo={() => stepHistory(undo, redo)}
+      />
+    ) : null;
 
   const sheets = doc ? (
     <>
@@ -2329,38 +2458,7 @@ export function AltarEditor({
               if (selected != null) commit((d) => uncarveObject(d, selected, nowIso(), index));
             }}
           />
-          <CabinetSheet
-            visible={sheet === 'cabinet'}
-            near={near}
-            items={allItems}
-            overrides={overrides}
-            library={libraryEntries}
-            onMakeOwn={(category) => {
-              setSheet(null);
-              afterSheetCloses(() => setOwnItem({ category, item: null }));
-            }}
-            onEditOwn={(item) => {
-              setSheet(null);
-              afterSheetCloses(() => setOwnItem({ category: item.category, item }));
-            }}
-            favourites={readFavourites(settings?.[CABINET_FAVOURITES_SETTING])}
-            owned={shelves.entries.map((e) => e.item.cabinetKey).filter(Boolean)}
-            onOwn={(item, form) => {
-              setSheet(null);
-              router.push({ pathname: '/rituals/shelves/add', params: { key: `${item.id}|${form.form || form.label}`, name: item.name, image: formImage(item, form, overrides) } });
-            }}
-            onToggleFavourite={(id) => {
-              const next = toggleFavourite(readFavourites((cachedSettings() ?? settings)?.[CABINET_FAVOURITES_SETTING]), id);
-              void patchMySettings({ [CABINET_FAVOURITES_SETTING]: encodeFavourites(next) }).catch(() => {});
-            }}
-            signedIn={signedIn}
-            onSetImage={store.setFormImage}
-            onRemoveImage={store.removeFormImage}
-            onClose={() => setSheet(null)}
-            onPlace={place}
-            onAltar={doc.objects}
-            onUndo={() => stepHistory(undo, redo)}
-          />
+          {inline ? null : cabinetSheet}
           <BackgroundSheet
             visible={sheet === 'background'}
             current={doc.background}
@@ -2682,6 +2780,89 @@ export function AltarEditor({
     </>
   ) : null;
 
+  // A computer screen (web): the altar fills the left at full height; its tools are a panel of tabs on
+  // the right, which folds away. Choosing something on the altar turns the panel to what it can do.
+  const desktopWork = (
+    <View style={[styles.work, styles.workDesktop]}>
+      <View style={[styles.stageWrap, styles.stageWrapDesktop]} onLayout={onLayout}>
+        {stage ?? <ActivityIndicator color={colors.gold} />}
+      </View>
+      {panelFolded ? (
+        <Pressable
+          onPress={() => setPanelShown('open')}
+          accessibilityRole="button"
+          accessibilityLabel="Show the altar's tools"
+          style={({ pressed }) => [styles.unfold, pressed && { opacity: 0.7 }]}
+        >
+          <Text style={styles.foldText}>‹</Text>
+          <Text style={styles.unfoldLabel}>Tools</Text>
+        </Pressable>
+      ) : (
+        <View style={styles.sidePanel}>
+          <View style={styles.sidePanelHead}>
+            <View style={styles.sidePanelChips}>
+              <ChipRow>{toolbarChips}</ChipRow>
+            </View>
+            <Pressable
+              onPress={() => setPanelShown('folded')}
+              accessibilityRole="button"
+              accessibilityLabel="Fold the tools away, so the altar fills the width"
+              style={({ pressed }) => [styles.foldButton, pressed && { opacity: 0.7 }]}
+            >
+              <Text style={styles.foldText}>›</Text>
+            </Pressable>
+          </View>
+          <View style={styles.panelTabs} accessibilityRole="tablist">
+            {PANEL_TABS.map((t) => {
+              const on = !objectOpen && panelTab === t.key;
+              return (
+                <Pressable
+                  key={t.key}
+                  accessibilityRole="tab"
+                  accessibilityState={{ selected: on }}
+                  aria-selected={on}
+                  onPress={() => {
+                    setSelected(null);
+                    setSelectIds(null);
+                    setPanelTab(t.key);
+                  }}
+                  style={[styles.panelTab, on && styles.panelTabOn]}
+                >
+                  <Text style={[styles.panelTabText, on && styles.panelTabTextOn]}>{t.label}</Text>
+                </Pressable>
+              );
+            })}
+          </View>
+          {panelFull ? (
+            <View style={styles.panelFill}>
+              {notice ? (
+                <Text style={[type.caption, styles.notice]} accessibilityLiveRegion="polite" onPress={() => setNotice(null)}>
+                  {notice}
+                </Text>
+              ) : null}
+              {panelTab === 'cabinet' ? cabinetSheet : <ShelvesView />}
+            </View>
+          ) : (
+            <ScrollView
+              style={styles.panel}
+              contentContainerStyle={styles.panelContent}
+              alwaysBounceHorizontal={false}
+              keyboardShouldPersistTaps="handled"
+            >
+              {objectOpen && !selecting ? (
+                <View style={styles.undoRow}>
+                  <Chip label="Back to the altar's tools" symbol="‹" onPress={() => setSelected(null)} />
+                </View>
+              ) : null}
+              {panelBody}
+            </ScrollView>
+          )}
+        </View>
+      )}
+      {ritualOverlay}
+    </View>
+  );
+
   if (ritualMode && doc && !full) {
     // Ritual mode: the room goes dark around the altar, the tools step back to one small bar, the sounds soften.
     return (
@@ -2840,29 +3021,33 @@ export function AltarEditor({
       </View>
       {header}
 
-      <View style={styles.work}>
-      <View style={styles.stageWrap} onLayout={onLayout}>
-        {stage ? (
-          stage
-        ) : (
-          <View style={{ height: (containerWidth || 320) / STAGE_ASPECT, justifyContent: 'center' }}>
-            <ActivityIndicator color={colors.gold} />
+      {desktop ? (
+        desktopWork
+      ) : (
+          <View style={styles.work}>
+          <View style={styles.stageWrap} onLayout={onLayout}>
+            {stage ? (
+              stage
+            ) : (
+              <View style={{ height: (containerWidth || 320) / STAGE_ASPECT, justifyContent: 'center' }}>
+                <ActivityIndicator color={colors.gold} />
+              </View>
+            )}
           </View>
-        )}
-      </View>
 
-      <ScrollView
-        style={styles.panel}
-        contentContainerStyle={styles.panelContent}
-        alwaysBounceHorizontal={false}
-        automaticallyAdjustKeyboardInsets
-        keyboardDismissMode="interactive"
-        keyboardShouldPersistTaps="handled"
-      >
-        {panelBody}
-      </ScrollView>
-      {ritualOverlay}
-      </View>
+          <ScrollView
+            style={styles.panel}
+            contentContainerStyle={styles.panelContent}
+            alwaysBounceHorizontal={false}
+            automaticallyAdjustKeyboardInsets
+            keyboardDismissMode="interactive"
+            keyboardShouldPersistTaps="handled"
+          >
+            {panelBody}
+          </ScrollView>
+          {ritualOverlay}
+          </View>
+      )}
 
       {sheets}
       {overlayEl}
@@ -3432,6 +3617,21 @@ const styles = StyleSheet.create({
   title: { fontFamily: fonts.display, fontSize: 24, lineHeight: 28, color: colors.cream },
   work: { flex: 1 },
   stageWrap: { paddingHorizontal: 12, alignItems: 'center' },
+  workDesktop: { flexDirection: 'row' },
+  stageWrapDesktop: { flex: 1, justifyContent: 'center', paddingBottom: 12 },
+  sidePanel: { width: '32%', minWidth: 320, maxWidth: 440, borderLeftWidth: StyleSheet.hairlineWidth, borderLeftColor: colors.hairline },
+  sidePanelHead: { flexDirection: 'row', alignItems: 'flex-start', gap: 8, paddingLeft: 16, paddingRight: 8, paddingBottom: 10 },
+  sidePanelChips: { flex: 1 },
+  foldButton: { width: touch, height: touch, alignItems: 'center', justifyContent: 'center' },
+  foldText: { color: colors.gold, fontSize: 26, lineHeight: 30, fontFamily: fonts.display },
+  unfold: { width: 52, alignItems: 'center', paddingTop: 12, gap: 4, borderLeftWidth: StyleSheet.hairlineWidth, borderLeftColor: colors.hairline },
+  unfoldLabel: { fontFamily: fonts.body, fontSize: 12, color: colors.muted },
+  panelTabs: { flexDirection: 'row', flexWrap: 'wrap', paddingHorizontal: 12, borderBottomWidth: StyleSheet.hairlineWidth, borderBottomColor: colors.hairline },
+  panelTab: { paddingHorizontal: 10, paddingVertical: 10, borderBottomWidth: 2, borderBottomColor: 'transparent' },
+  panelTabOn: { borderBottomColor: colors.gold },
+  panelTabText: { fontFamily: fonts.body, fontSize: 15, color: colors.tabInactive },
+  panelTabTextOn: { color: colors.gold },
+  panelFill: { flex: 1 },
   panel: { flex: 1 },
   panelContent: { paddingHorizontal: space.gutter, paddingTop: 16, paddingBottom: 32, gap: 14 },
   section: { gap: 14 },

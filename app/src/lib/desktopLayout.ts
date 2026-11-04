@@ -6,8 +6,10 @@ import { Platform, useWindowDimensions } from 'react-native';
 export const DESKTOP_MIN_WIDTH = 900;
 // Reading screens stay at a comfortable line length; the altar gets more room for its stage.
 export const READING_MAX_WIDTH = 920;
-export const ALTAR_MAX_WIDTH = 1280;
+export const ALTAR_MAX_WIDTH = 2400;
 export const SIDEBAR_WIDTH = 208;
+/** The side bar folded to a rail of icons. */
+export const SIDEBAR_RAIL_WIDTH = 64;
 
 export function useDesktopLayout(): boolean {
   const { width } = useWindowDimensions();
