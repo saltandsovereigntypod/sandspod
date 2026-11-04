@@ -18,6 +18,7 @@ import { useMySettings } from '../../lib/settings/store';
 import { colors, fonts, radius, type, fitLines } from '../../theme';
 import { ConnectedTo, LibraryJourney, RelationshipManager } from './LibraryConnections';
 import { DeityYours } from './DeityYours';
+import { MyCorrespondencesFor } from './MyCorrespondencesFor';
 import { shelfFor } from '../../lib/shelves/model';
 import { HerbHearth } from '../craft/hearth';
 
@@ -207,6 +208,8 @@ export function LibraryEntryView({ entryId, back, backLabel, hrefFor, editHref }
             </Card>
           </Section>
         ))}
+
+      <MyCorrespondencesFor entry={entry} />
 
       <ConnectedTo
         entry={entry}

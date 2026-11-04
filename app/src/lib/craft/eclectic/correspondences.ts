@@ -33,12 +33,14 @@ export type MyCorrespondence = {
   source: SourceId | null;
   /** Which tradition, teacher or experience. */
   sourceNote: string;
+  /** Your own pairings: what you put with it, as names ("bay, a white candle"). Optional; older entries have none. */
+  pairs?: string;
 };
 
 export const sourceLabel = (id: string | null | undefined) => SOURCES.find((s) => s.id === id)?.label ?? null;
 
 export function blankCorrespondence(): MyCorrespondence {
-  return { name: '', ref: null, meaning: '', element: '', planet: '', day: '', colour: '', source: null, sourceNote: '' };
+  return { name: '', ref: null, meaning: '', element: '', planet: '', day: '', colour: '', source: null, sourceNote: '', pairs: '' };
 }
 
 export const ELEMENTS = ['Earth', 'Air', 'Fire', 'Water', 'Spirit'];
@@ -144,6 +146,7 @@ export function mySide(c: MyCorrespondence): Pair[] {
       ['Planet', c.planet],
       ['Day', c.day],
       ['Colour', c.colour],
+      ['Pairs with', c.pairs ?? ''],
     ] as [string, string][]
   )
     .map(([label, value]) => ({ label, value: (value ?? '').trim() }))
@@ -175,9 +178,32 @@ export function filterCorrespondences<T extends { data: MyCorrespondence }>(list
     if (filter.source && c.source !== filter.source) return false;
     if (filter.element && !fold(c.element).includes(fold(filter.element))) return false;
     if (!words.length) return true;
-    const text = fold([c.name, c.meaning, c.element, c.planet, c.day, c.colour, sourceLabel(c.source), c.sourceNote].filter(Boolean).join(' '));
+    const text = fold([c.name, c.meaning, c.element, c.planet, c.day, c.colour, c.pairs, sourceLabel(c.source), c.sourceNote].filter(Boolean).join(' '));
     return words.every((w) => text.includes(w));
   });
+}
+
+/** Your pairings as names: "bay, white candle" → ["bay", "white candle"]. */
+export const pairNames = (c: Pick<MyCorrespondence, 'pairs'>): string[] =>
+  String(c.pairs ?? '')
+    .split(/[,;\n]/)
+    .map((s) => s.trim())
+    .filter(Boolean);
+
+const sameName = (a: string, b: string) => {
+  const x = fold(a).trim().replace(/\s+candles?$/, '');
+  const y = fold(b).trim().replace(/\s+candles?$/, '');
+  return !!x && x === y;
+};
+
+/**
+ * Your correspondences for one Library entry: the ones written about it (linked
+ * to it, or named the same), and the ones that pair something with it.
+ */
+export function forLibraryEntry<T extends { data: MyCorrespondence }>(list: T[], entry: Pick<LibraryEntry, 'id' | 'name'>): { about: T[]; pairedWith: T[] } {
+  const about = list.filter(({ data: c }) => c.ref === entry.id || (!c.ref && sameName(c.name, entry.name)));
+  const pairedWith = list.filter((e) => !about.includes(e) && pairNames(e.data).some((n) => sameName(n, entry.name)));
+  return { about, pairedWith };
 }
 
 /** A to Z by name. */
