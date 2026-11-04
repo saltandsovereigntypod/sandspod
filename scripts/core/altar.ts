@@ -105,3 +105,4 @@ export * as toolRites from '../../app/src/lib/altar/toolRites.ts';
 export * as craftTools from '../../app/src/lib/altar/craftTools.ts';
 // Crystals: when they may charge (selenite touching, the moon by night, the sun by day), and how they wear with use.
 export * as crystalCare from '../../app/src/lib/altar/crystalCare.ts';
+export * as divinationResult from '../../app/src/lib/altar/divinationResult.ts';

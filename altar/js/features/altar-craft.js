@@ -191,7 +191,11 @@
             if (out) out.textContent = "";
             animateSwing(body, answer.swing);
             global.setTimeout(() => { if (out?.isConnected) out.textContent = t.answerLabel(answer.answer); }, reduce() ? 0 : 3200);
-            global.SaltCraft?.add?.("hedge.readings", t.pendulumReading(question, answer.answer, answer.swing, new Date()))?.catch?.(() => {});
+            const asked = new Date();
+            const said = t.answerLabel(answer.answer);
+            const kept = global.SaltCraft?.add?.("hedge.readings", t.pendulumReading(question, answer.answer, answer.swing, asked));
+            // Its answer stays in the altar's corner once it has swung (altar-result.js).
+            global.setTimeout(() => Promise.resolve(kept).then((e) => global.AltarResult?.show?.(K().divinationResult.pendulumResult(said, question, e?.id || null, asked.toISOString()))).catch(() => {}), reduce() ? 0 : 3200);
             logAltar(t.pendulumLine(question, answer.answer, answer.swing));
             show("swing", el);
             finish("pendulum");
@@ -517,6 +521,8 @@
     const laid = els().map(saved).filter((o) => o?.tool === "reading" || o?.tool === "rune").length;
     const card = K().practice.readingObject(entry, `${first.name}${first.reversed ? ", reversed" : ""}`, els().map(saved), now.toISOString(), t.drawSpot(saved(el), laid % 4));
     B().addSaved(card);
+    const items = drawn.items.map((i) => ({ name: i.name, reversed: i.reversed, keywords: D.draw.meaningOf(i)?.meaning?.keywords ?? null }));
+    global.AltarResult?.show?.(K().divinationResult.drawResult(kind, items, question, entry.id || null, now.toISOString()));
     const line = t.drawLine(kind, first.name);
     logAltar(line);
     show("draw", el);

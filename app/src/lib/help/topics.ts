@@ -997,6 +997,21 @@ export const HELP: HelpSection[] = [
         keywords: ['pendulum', 'dowsing', 'yes or no', 'calibrate', 'divination', 'ask'],
       },
       {
+        id: 'altar-divination-answer',
+        title: 'The answer in the altar’s corner, and your notes',
+        summary: 'After the pendulum, a draw from a deck, a scrying sit or a candle reading, the answer stays in the corner of the altar, with room for your notes.',
+        steps: [
+          'Ask the pendulum, draw from a tarot deck, rune bag or ogham staves, scry, or read a candle after its burn. A small card in the altar’s corner shows the answer: "Yes", the card and which way up it fell with a few keywords, the rune or stave, or "Scrying · 10 min".',
+          'It stays until you tap × or do another divination. Tap – to fold it to a small chip, and tap the chip to open it again.',
+          'Tap "Add notes" to write what you make of it. The notes are kept on that reading (its "What you make of it"), so they show wherever your readings show; a candle’s are kept with its reading, in its story. Tap "Your notes" to change them, or "Open reading" to see the whole reading.',
+        ],
+        tips: [
+          'A scrying sit is kept in your readings as well as your journal, so its notes sit with your other divinations.',
+          'On a coven altar the card shows only to you when you draw for yourself. A card someone else lays on the coven altar shows to everyone there; notes you add to it start a reading of your own, which only you see.',
+        ],
+        keywords: ['result', 'answer', 'notes', 'reading', 'tarot', 'rune', 'ogham', 'scrying', 'pendulum', 'candle reading', 'divination'],
+      },
+      {
         id: 'altar-scrying-mirror',
         title: 'Scry in a mirror, the cauldron or a crystal ball',
         summary: 'The altar dims, the candlelight shows in the glass, a timer keeps the time, then a few words on what you saw.',
