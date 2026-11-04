@@ -175,6 +175,7 @@ export default function CovenHome() {
                 <MenuRow label="Rituals and rites" detail={upcoming.length ? `${upcoming.length} on the calendar` : 'Rites and their steps'} icon="moon" onPress={() => router.push(covenHref(coven.slug, 'rituals'))} />
                 <MenuRow label="Altars" detail="The ritual altar and others, tended together" icon="altar" onPress={() => router.push(covenHref(coven.slug, 'altar'))} />
                 <MenuRow label="Book of Shadows" detail="The coven’s own pages" icon="library" onPress={() => router.push(covenHref(coven.slug, 'book'))} />
+                <MenuRow label="Shared shelf" detail="The coven’s things, who holds them, what’s running low" icon="altar" onPress={() => router.push(covenHref(coven.slug, 'shelf'))} />
                 <MenuRow label="Petitions" detail="Prayers the circle holds" icon="offer" onPress={() => router.push(covenHref(coven.slug, 'petitions'))} />
                 <MenuRow
                   label="Initiation & training"
