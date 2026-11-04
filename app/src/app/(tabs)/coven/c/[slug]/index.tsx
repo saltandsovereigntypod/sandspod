@@ -23,6 +23,7 @@ import { usePendingDetail } from '../../../../../lib/covens/requestsBadge';
 import { errorMessage, JOINING, KIND_LABELS, occasionLabel, orderDocuments, rankPowers, ritualGroups, riteTime } from '../../../../../lib/covens/model';
 import { covenCalendarNames, covenNextHoliday } from '../../../../../lib/covens/programs';
 import { copiedFrom, roleBadge } from '../../../../../lib/covens/lineage';
+import { reviewYearNear } from '../../../../../lib/covens/yearReview';
 import { useSession } from '../../../../../lib/session';
 import { type } from '../../../../../theme';
 
@@ -42,6 +43,8 @@ export default function CovenHome() {
   const covenMoonOf = useCovenMoonFor(info, covenMoon);
 
   const leads = coven.perms.review || coven.perms.manage || coven.perms.site;
+  // December and January: the year in review, offered on the home.
+  const reviewYear = reviewYearNear(new Date());
   // What you're asked to write, place or do before the coven's rites.
   const [written, setWritten] = useState<{ step_id: string }[]>([]);
   const askingAhead = coven.steps.some((s) => (s.contribution as { timing?: string } | null)?.timing === 'ahead');
@@ -152,6 +155,13 @@ export default function CovenHome() {
           )}
 
           {coven.perms.member && <MyDutyCard />}
+          {coven.perms.member && reviewYear !== null && (
+            <Card>
+              <Text style={type.eyebrow}>{`The coven’s ${reviewYear}`}</Text>
+              <Text style={type.body}>Gatherings held, sabbats kept, who joined and what went on the altar, gathered into one page to look back on and share.</Text>
+              <Button label="See the year in review" variant="outline" onPress={() => router.push(covenHref(coven.slug, `year?year=${reviewYear}`))} />
+            </Card>
+          )}
           {tasks.length > 0 && (
             <Card>
               <Text style={type.eyebrow}>Before the rite</Text>
@@ -179,6 +189,7 @@ export default function CovenHome() {
                 <MenuRow label="Book of Shadows" detail="The coven’s own pages" icon="library" onPress={() => router.push(covenHref(coven.slug, 'book'))} />
                 <MenuRow label="Duties rota" detail="Who brings, calls, hosts and clears up" icon="journey" onPress={() => router.push(covenHref(coven.slug, 'rota'))} />
                 <MenuRow label="Shared shelf" detail="The coven’s things, who holds them, what’s running low" icon="altar" onPress={() => router.push(covenHref(coven.slug, 'shelf'))} />
+                <MenuRow label="Year in review" detail="The coven’s year, to look back on and share" icon="moon" onPress={() => router.push(covenHref(coven.slug, 'year'))} />
                 <MenuRow label="Petitions" detail="Prayers the circle holds" icon="offer" onPress={() => router.push(covenHref(coven.slug, 'petitions'))} />
                 <MenuRow
                   label="Initiation & training"
