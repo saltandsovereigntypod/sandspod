@@ -2174,6 +2174,19 @@ export const HELP: HelpSection[] = [
         keywords: ['spell builder', 'create spell', 'petition', 'candle spell', 'custom spell', 'spell jar', 'sachet', 'sigil', 'ritual oil', 'charm bag', 'correspondences', 'substitute'],
       },
       {
+        id: 'ritual-moon-sabbat-kits',
+        title: 'Use a moon or sabbat kit',
+        summary: 'For each phase of the moon and each sabbat: an altar set in one tap, correspondences, a short ritual, a journal prompt and a reading.',
+        steps: [
+          'On Today, tap "Tonight’s kit" (the sabbat’s near its day, otherwise tonight’s moon), or open any moon phase or sabbat page.',
+          'Under the kit, tap "Set the altar for it" for a starter altar from the cabinet. Move or swap anything, then Save to keep it.',
+          'Tap a herb, stone or colour to open it in the Library, "Open the ritual" for a short working, and the spread button for a reading.',
+          'Write to the prompt in your journal.',
+        ],
+        href: '/today',
+        keywords: ['kit', 'tonight’s kit', 'moon kit', 'sabbat kit', 'esbat', 'full moon', 'new moon', 'samhain', 'yule', 'altar set-up', 'journal prompt', 'spread'],
+      },
+      {
         id: 'ritual-correspondence-finder',
         title: 'Find correspondences, then build a spell',
         summary: 'Look by intention, herb, stone, colour, planet, day or moon, choose what suits, and open the spell builder with it.',

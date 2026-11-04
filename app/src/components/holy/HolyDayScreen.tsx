@@ -16,6 +16,8 @@ import { findHolyGrimoirePage, grimoireSection, holyBlocks, holyPage } from '../
 import { findByName, todayLibraryHref, useLibrary } from '../../lib/library';
 import { moonSign, moonState } from '../../lib/moon';
 import { premadeById } from '../../lib/rituals/premade';
+import { kitFor } from '../../lib/rituals/kits';
+import { KitCard } from '../rituals/Kit';
 import { useSession } from '../../lib/session';
 import { festivalSeasonLine, seasonCounting } from '../../lib/seasons';
 import { useMySettings } from '../../lib/settings/store';
@@ -70,6 +72,7 @@ export function HolyDayScreen({ back = '/today', backLabel = 'Back to Today' }: 
       {(ANCESTOR_HOLIDAYS.includes(page.ref) || page.ref === 'hellenic_monthly-deipnon') && <AncestorJournalLink label="Your ancestor journal" />}
       {(page.ref === 'moon-dark' || page.ref.startsWith('moon-waning')) && <JournalDoor kind="shadow" detail="Gentle prompts for the waning and dark moon" />}
       <KeepInGrimoire ref_={page.ref} />
+      {!!kitFor(page.ref) && <KitCard kit={kitFor(page.ref)!} open={open} />}
 
       <Section label="Who is honoured, and why">
         <Paragraphs items={page.honours.split(/\n\s*\n/)} />
