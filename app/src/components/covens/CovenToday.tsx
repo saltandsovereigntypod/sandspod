@@ -8,12 +8,15 @@ import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 import { covenHref } from './CovenScreen';
 import { programHref } from './programs';
+import { useDutiesToday } from './Rota';
 import * as api from '../../lib/covens/api';
 import { hasHolyPage, holyRef } from '../../lib/holy';
 import { covenHolidaysSoon, covenTodayItems, type CovenTodayItem } from '../../lib/covens/today';
 import { useCachedQuery } from '../../lib/more/useCachedQuery';
 import { useSession } from '../../lib/session';
 import { colors, fonts, radius, type } from '../../theme';
+
+const NONE: never[] = [];
 
 const ICON: Record<CovenTodayItem['kind'], string> = { turn: '✦', live: '☾', holiday: '❋', rite: '☽', task: '✧', review: '✓' };
 
@@ -42,16 +45,36 @@ export function useCovenToday() {
 export function CovenToday({ showEmpty = false }: { showEmpty?: boolean }) {
   const data = useCovenToday();
   const inCovenTab = useSegments().includes('coven');
+  // Your duty at the next gathering (the coven's rota), and swaps asking you.
+  const duties = useDutiesToday(data?.userId ?? null, data?.covens ?? NONE, data?.rituals ?? NONE);
   if (!data) return null;
   const now = new Date();
   const items = covenTodayItems(data, now);
   const soon = items.length < 3 ? covenHolidaysSoon(data.covens, now) : [];
-  if (!items.length && !soon.length && !showEmpty) return null;
+  if (!items.length && !soon.length && !duties.length && !showEmpty) return null;
   const many = data.covens.length > 1;
   return (
     <View style={styles.card} accessibilityLabel="Your covens">
       <Text style={type.eyebrow}>Your covens</Text>
-      {!items.length && !soon.length && <Text style={type.caption}>Nothing from your covens today.</Text>}
+      {!items.length && !soon.length && !duties.length && <Text style={type.caption}>Nothing from your covens today.</Text>}
+      {duties.map((d) => (
+        <Pressable
+          key={d.key}
+          accessibilityRole="button"
+          accessibilityLabel={`${d.title}. ${d.detail}${many ? `. ${d.covenName}` : ''}`}
+          onPress={() => router.push(covenHref(d.covenSlug, d.ritualId ? `ritual/${d.ritualId}` : 'rota'))}
+          style={({ pressed }) => [styles.row, pressed && styles.pressed]}
+        >
+          <View style={styles.icon}>
+            <Text style={styles.iconText}>✶</Text>
+          </View>
+          <View style={styles.text}>
+            <Text style={styles.title}>{d.title}</Text>
+            <Text style={type.caption}>{d.detail}</Text>
+            {many && <Text style={type.caption}>{d.covenName}</Text>}
+          </View>
+        </Pressable>
+      ))}
       {items.map((item, i) => (
         <Pressable
           key={`${item.kind}-${i}`}
