@@ -139,12 +139,15 @@ export function crystalHistory(object: SavedObject, now: string): { label: strin
     ...list(c.cleansingHistory).map((r) => ({ label: 'Cleansed', r })),
     ...list(c.chargingHistory).map((r) => ({ label: 'Charged', r })),
   ];
-  return rows
+  // Its wear (crystalCare.ts): blows taken, breaking, what became of it, intentions given.
+  const WEAR_LABELS: Record<string, string> = { blow: 'Came at', broke: 'Broke', intention: 'Intention' };
+  const worn = list(c.wearHistory).map((r) => ({ label: WEAR_LABELS[str(r.kind)] ?? 'After breaking', at: str(r.at), detail: str(r.text) }));
+  return [...worn, ...rows
     .map(({ label, r }) => ({
       label,
       at: str(r.occurredAt),
       detail: [humanize(r.purpose), list(r.methods as never).length ? `with ${(r.methods as string[]).map(humanize).join(', ').toLowerCase()}` : ''].filter(Boolean).join(' '),
-    }))
+    }))]
     .sort((a, b) => b.at.localeCompare(a.at));
 }
 

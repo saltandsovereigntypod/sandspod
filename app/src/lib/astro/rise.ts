@@ -109,4 +109,7 @@ export function moonTimes(day: Date, place: Place): RiseSet {
   return crossings(placeMidnight(day, place), place, moonAltitude);
 }
 
+/** Whether the sun is above the horizon at `date` where `place` is (its upper edge, with refraction). */
+export const sunIsUp = (date: Date, place: Place) => sunAltitude(date, place) > 0;
+
 export const _test = { sunAltitude, moonAltitude, HOUR };

@@ -513,6 +513,12 @@
           where = "craft";
           try { await global.SaltCraft.add(SC.SCRYING_COLLECTION, SC.scryingEntry(notes, { altarId: B().altarId(), minutes, satMinutes: sat, moonPhase, at: at.toISOString(), vessel })); } catch { /* nothing more to try */ }
         }
+        // Kept in your readings too, and its answer held in the altar's corner (altar-result.js).
+        const DR = core.divinationResult;
+        const sitFor = Math.max(sat, 1 / 60);
+        Promise.resolve(global.SaltCraft?.add?.("hedge.readings", DR.scryingReading(notes, { vessel: V.with, minutes: sitFor, date: at })))
+          .then((e) => global.AltarResult?.show?.(DR.scryingResult(V.with, sitFor, notes.saw || notes.symbols || notes.feelings, e?.id || null, at.toISOString())))
+          .catch(() => {});
         sheet.setBody(`<p>${where === "journal" ? "Saved to your ritual journal." : "Saved with this altar."} Drink some water, and come back to the room.</p><button type="button" class="app-button" data-sheet-close>Close</button>`);
         const what = vessel === "mirror" ? "in the glass" : "in the water";
         const altarId = B().altarId();

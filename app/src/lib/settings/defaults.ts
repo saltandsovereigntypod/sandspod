@@ -94,6 +94,8 @@ export function defaultSettings(): Settings {
     magical_name: '',
     sanctuary_greeting_name: 'preferred',
     default_altar_background: '',
+    // How crystals on the altar wear with use: 'off', 'gentle' (months) or 'realistic' (weeks): lib/altar/crystalCare.ts.
+    crystal_wear: 'gentle',
     default_mundane_mode: false,
     grimoire_page_font: 'classic-serif',
     grimoire_show_dreams: true,

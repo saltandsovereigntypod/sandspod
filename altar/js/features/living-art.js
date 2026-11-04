@@ -793,6 +793,9 @@
     // A stone set to charge by moon, sun or selenite glows brighter as it sits (craftTools).
     const building = saved.altarObjectId && A.craftTools?.chargingOf(saved) ? Math.max(0.15, A.craftTools.chargingGlow(saved, minute)) : 0;
     const charge = building > (kept?.strength || 0) ? { ...(kept || {}), strength: building } : kept;
+    // A crystal worn by use: duller, clouded, cracked or broken (altar-crystal-wear.js, crystalCare).
+    const wear = saved.type === "crystal" ? global.CrystalWear?.look?.(saved, minute) || null : null;
+    const tint = art?.tint || wear?.tint || null;
     const incense = A.incense.isIncense(saved) ? A.incense.incenseLife(saved, now) : null;
     // A stick of incense burns shorter from its tip and drops its ash at its foot.
     const stick = incense ? A.offeringArt.incenseStickArt(saved, width, height, now) : null;
@@ -801,7 +804,7 @@
     const burned = !!geo && !!img && drawsBurnedDown(geo);
     const spent = isCandle && !lit && A.livingState.candleLife(saved, now).spent;
 
-    const key = JSON.stringify([saved.livingState, saved.lit, saved.flipped, saved.color, saved.imagePath, width, height, minute, lit ? Math.floor(now / 15000) : 0, art, stick?.cutPx, charge?.strength && Math.round(charge.strength * 50), incense?.lit, incense?.ash]);
+    const key = JSON.stringify([saved.livingState, saved.lit, saved.flipped, saved.color, saved.imagePath, width, height, minute, lit ? Math.floor(now / 15000) : 0, art, stick?.cutPx, charge?.strength && Math.round(charge.strength * 50), incense?.lit, incense?.ash, wear]);
     if (key !== record.key) {
       record.key = key;
 
@@ -812,8 +815,8 @@
 
       // An offering going over: browning and duller, a flower bowing its head.
       if (img) {
-        object.classList.toggle("is-aging", !!art?.tint);
-        if (art?.tint) img.style.filter = A.offeringArt.tintFilter(art.tint);
+        object.classList.toggle("is-aging", !!tint);
+        if (tint) img.style.filter = A.offeringArt.tintFilter(tint);
         else img.style.removeProperty("filter");
         img.style.removeProperty("opacity");
         if (art?.bend) {
@@ -823,6 +826,9 @@
       }
       // Liquid sinking in its vessel, the ring it leaves, petals fallen, food heaped in it.
       layerOf(object, "offering").innerHTML = art ? offeringSvg(art, width, height, uid) : "";
+      // A worn crystal's clouding and crack.
+      const wearHtml = wear ? global.CrystalWear?.marksHtml?.(wear, width, height) || "" : "";
+      if (wearHtml || object.querySelector(':scope > [data-living-art="wear"]')) layerOf(object, "wear").innerHTML = wearHtml;
 
       // An ancestor frame: the photo of your own in its opening.
       const photoHtml = framePhotoHtml(saved, width, height);

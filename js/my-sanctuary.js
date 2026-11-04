@@ -306,6 +306,16 @@ function createMySanctuaryPanel() {
             </select>
           </label>
 
+          <label>
+            Crystal wear
+            <select name="crystal_wear">
+              <option value="off">Off: stones never wear</option>
+              <option value="gentle">Gentle: wear shows over months</option>
+              <option value="realistic">Realistic: wear shows over weeks</option>
+            </select>
+            <small>Crystals on your altars dull, cloud and may crack with use, faster in protective work; cleansing clears most of it. Shared with the app.</small>
+          </label>
+
           <label class="my-sanctuary-check">
             <input type="checkbox" name="default_mundane_mode" />
             Use mundane mode by default for my Book of Shadows

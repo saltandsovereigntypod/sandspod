@@ -137,9 +137,11 @@
     if (core.pottedPlants?.isPottedPlant(saved)) out.push(global.AltarPlants?.panelHtml?.(saved, now) || "");
     if (tonightWhy) out.push(block("Why it’s here tonight", caption(tonightWhy) + chips([{ label: "Swap it", symbol: "⇄", action: "tonight-swap", hint: `Swap ${label} for something with the same correspondence` }])));
     if (charge) out.push(block(core.charge.chargeLine(charge), caption(core.charge.chargeDetail(charge)), charge.level === "faded" ? " app-block--faded" : ""));
+    // A crystal's wear, and what to do with a broken one (altar-crystal-wear.js).
+    out.push(global.CrystalWear?.panelHtml?.(saved) || "");
     spells.forEach((entry) => {
       const today = core.spells.spellToday(entry.data, now);
-      out.push(block(`${entry.data.title} · ${today.label}`, caption([today.instruction, today.waited].filter(Boolean).join(" ")) + (today.status === "tend" ? chips([{ label: "Tended today", symbol: "✓", action: "tend-spell", data: { entry: entry.id }, hint: `Mark today’s tending of ${entry.data.title} done` }]) : "")));
+      out.push(block(`${entry.data.title} · ${today.label}`, caption([today.instruction, today.waited].filter(Boolean).join(" ")) + (today.status === "tend" ? chips([{ label: "Tended today", symbol: "✓", action: "tend-spell", data: { entry: entry.id }, hint: `Mark today’s tending of ${entry.data.title} done` }]) : "") + (global.CrystalWear?.spellChip?.(entry.data) || "")));
     });
     if (moonCharge) out.push(caption(`Charged under the ${moonCharge.moon || "moon"}, ${B().dateShort(moonCharge.at)}, sitting here.`));
     if (relationship) {
@@ -586,6 +588,8 @@
     const label = short(before.label, "Candle");
     B().update(object, (o) => core.ceromancy.recordReading(o, input, nowIso()));
     schedule();
+    const read = core.ceromancy.readingsOf(B().toSaved(object)).slice(-1)[0];
+    if (read) global.AltarResult?.show?.(core.divinationResult.ceromancyResult(core.ceromancy.readingSummary(input), input.notes, read.at, { objectId: String(before.altarObjectId || ""), readingId: read.id }), { candleEl: object });
     if (!journal) return notice("Reading kept with the candle. You’ll find it in its story.");
     const reading = core.ceromancy.readingsOf(B().toSaved(object)).slice(-1)[0];
     try {
@@ -1228,7 +1232,7 @@
   document.addEventListener("click", (event) => {
     const button = event.target.closest("[data-app-living] [data-app-action]");
     if (!button) return;
-    const action = ACTIONS[button.dataset.appAction] || global.AltarPlants?.actions?.[button.dataset.appAction] || global.AltarCords?.actions?.[button.dataset.appAction];
+    const action = ACTIONS[button.dataset.appAction] || global.AltarPlants?.actions?.[button.dataset.appAction] || global.AltarCords?.actions?.[button.dataset.appAction] || global.CrystalWear?.actions?.[button.dataset.appAction];
     if (!action) return;
     event.preventDefault();
     event.stopPropagation();

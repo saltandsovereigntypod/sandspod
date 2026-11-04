@@ -39,7 +39,7 @@ type Props = {
   altar: AltarContext;
   onClose: () => void;
   /** Called once the notes are saved; `where` says which store took them, `minutes` how long you sat. */
-  onSaved?: (where: 'journal' | 'craft', minutes: number) => void;
+  onSaved?: (where: 'journal' | 'craft', minutes: number, notes: ScryingNotes) => void;
   /** What you scry in (the water bowl unless said). */
   vessel?: ScryVessel;
   /** Lit candles on the altar, reflected in a mirror. */
@@ -218,7 +218,7 @@ function Scrying({ altar, onClose, onSaved, vessel = 'bowl', candles = 0 }: Omit
     setSaving(false);
     setSavedTo(where);
     setPhase('done');
-    onSaved?.(where, sat);
+    onSaved?.(where, sat, notes);
   };
 
   const bowlSize = Math.min(width - 32, height * 0.9, 520);

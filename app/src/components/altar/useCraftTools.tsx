@@ -13,9 +13,11 @@ import { apothecaryObject } from '../../lib/altar/apothecary';
 import { builtInCabinet, shortLabel } from '../../lib/altar/cabinet';
 import { cordsOf } from '../../lib/altar/cord';
 import { readingObject } from '../../lib/altar/connect/practice';
+import { drawResult, pendulumResult, type DivinationResult } from '../../lib/altar/divinationResult';
 import {
   activateGrid,
   addToMortar,
+  answerLabel,
   askPendulum,
   blendItem,
   burnBlendLine,
@@ -60,7 +62,9 @@ import {
   type Calibration,
   type ChargePlace,
 } from '../../lib/altar/craftTools';
+import { chargeGate, seleniteUnder, setStoneIntention } from '../../lib/altar/crystalCare';
 import { addObject, updateObjects } from '../../lib/altar/editor';
+import { usePlace } from '../../lib/location';
 import { isCandle, isLit } from '../../lib/altar/livingState';
 import type { AltarDocument } from '../../lib/altar/snapshot';
 import type { SavedObject } from '../../lib/altar/types';
@@ -70,7 +74,7 @@ import type { AltarDeed } from '../../lib/covens/altarActions';
 import { READINGS } from '../../lib/craft/hedge/readings';
 import { addEntry } from '../../lib/craft/store';
 import { chosenDeck } from '../../lib/divination/decks';
-import { drawOptions, drawSpread, readingFromDraw, spreadById } from '../../lib/divination/draw';
+import { drawOptions, drawSpread, meaningOf, readingFromDraw, spreadById } from '../../lib/divination/draw';
 import { CraftPanel, GridBar, type CraftActs } from './CraftPanels';
 
 const nowIso = () => new Date().toISOString();
@@ -95,6 +99,8 @@ type Deps = {
   /** Open one of the editor's own sheets: carving, harvesting, the petition box. */
   openSheet: (name: 'carve' | 'potted-harvest' | 'petitions') => void;
   openScry: (vessel: ScryVessel) => void;
+  /** Hold a divination's answer in the stage's corner (DivinationResultCard). */
+  showResult?: (result: DivinationResult) => void;
   isPottedPlant: (o: SavedObject) => boolean;
   /** The ids of what is chosen while selecting several (null when not choosing). */
   chosenIds: string[] | null;
@@ -104,6 +110,7 @@ type Deps = {
 export function useCraftTools(deps: Deps) {
   const { doc, docRef, commit, selected, say, log, show } = deps;
   const [ritualMode, setRitualMode] = useState(false);
+  const place = usePlace();
   const selectedObject = doc && selected != null ? doc.objects[selected] ?? null : null;
   const uidOf = (o: SavedObject | null | undefined) => String(o?.altarObjectId || '');
   const [ownCalibration, setOwnCalibration] = useState<Calibration | null>(null);
@@ -144,7 +151,9 @@ export function useCraftTools(deps: Deps) {
       if (!calibration || !selectedObject) return null;
       const r = askPendulum(calibration);
       const now = new Date();
-      void addEntry(READINGS, pendulumReading(question, r.answer, r.swing, now), now);
+      const said = addEntry(READINGS, pendulumReading(question, r.answer, r.swing, now), now);
+      // The card shows once the pendulum has swung its answer.
+      setTimeout(() => void said.then((e) => deps.showResult?.(pendulumResult(answerLabel(r.answer), question, e.id, now.toISOString()))).catch(() => {}), 3200);
       log(pendulumLine(question, r.answer, r.swing));
       show('swing', uidOf(selectedObject));
       deps.finishDeed('pendulum');
@@ -228,11 +237,14 @@ export function useCraftTools(deps: Deps) {
     scry: (vessel) => deps.openScry(vessel),
     charge: (how: ChargePlace) => {
       if (!selectedObject) return;
-      change((o, at) => startCharging(o, how, at));
+      // The moon only by night, the sun only by day, selenite only touching (crystalCare.ts).
+      const gate = chargeGate(selectedObject, how, docRef.current?.objects ?? [], new Date(), place);
+      if (!gate.ok) return say(gate.line);
+      change((o, at) => startCharging(o, how, at, gate.strength));
       const line = chargeLineFor(shortLabel(selectedObject.label, 'The crystal'), how);
       log(line);
       show('charge', uidOf(selectedObject));
-      say(`${line} Its glow builds as it sits.`);
+      say(`${line} ${gate.line}${gate.warn ? ` ${gate.warn}` : ''} Its glow builds as it sits.`);
     },
     takeUp: () => {
       if (!selectedObject) return;
@@ -242,6 +254,22 @@ export function useCraftTools(deps: Deps) {
       log(`${name} was taken up${full ? ', fully charged' : ''}.`);
       say(`${name} is charged. It’s kept in its charging history.`);
       deps.finishDeed('charge_crystal');
+    },
+    placeSelenite: () => {
+      const d0 = docRef.current;
+      if (!d0 || !selectedObject) return;
+      const piece = seleniteUnder(selectedObject, d0.objects, nowIso());
+      if (!piece) return deps.toCabinet('selenite');
+      commit((d) => addObject(d, piece));
+      log('Set a selenite cluster on the altar, under the stone, to charge it on.');
+      say('A selenite cluster is set under the stone. Now choose On selenite.');
+    },
+    setIntention: (text: string) => {
+      if (!selectedObject || !text.trim()) return;
+      change((o, at) => setStoneIntention(o, text, at));
+      const name = shortLabel(selectedObject.label, 'The crystal');
+      log(`${name} was given an intention: ${text.trim()}.`);
+      say(`${name} holds it now. Charging it will renew it.`);
     },
     gridAll: () => grid(crystalsOf(docRef.current?.objects ?? [])),
     releaseGrid: () => {
@@ -280,6 +308,8 @@ export function useCraftTools(deps: Deps) {
     const laid = (docRef.current?.objects ?? []).filter((o) => o.tool === 'reading' || o.tool === 'rune').length;
     const card = readingObject(entry, `${name}${draw.items[0]?.reversed ? ', reversed' : ''}`, docRef.current?.objects ?? [], now.toISOString(), drawSpot(deck, laid % 4));
     commit((d) => addObject(d, card));
+    const items = draw.items.map((i) => ({ name: i.name, reversed: i.reversed, keywords: meaningOf(i)?.meaning.keywords ?? null }));
+    deps.showResult?.(drawResult(kind, items, question, entry.id, now.toISOString()));
     const line = drawLine(kind, name);
     log(line);
     show('draw', uidOf(deck));
