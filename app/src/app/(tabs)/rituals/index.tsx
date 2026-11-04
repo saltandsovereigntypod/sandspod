@@ -157,14 +157,12 @@ export default function RitualsHome() {
           </List>
         )}
         <List>
-          {journal.length > 0 && (
-            <Row
-              icon="grimoire"
-              title="Journal"
-              detail={journal.length > 5 ? `All ${journal.length} rituals you’ve kept` : 'Every ritual you’ve kept, and what worked'}
-              onPress={() => router.push('/rituals/journal')}
-            />
-          )}
+          <Row
+            icon="grimoire"
+            title="Journal"
+            detail="Rituals, dreams, readings, sits, cycle notes and your practice journals, in one place"
+            onPress={() => router.push('/rituals/journal')}
+          />
           {journal.length > 0 && (
             <Row
               icon="today"
@@ -174,8 +172,7 @@ export default function RitualsHome() {
             />
           )}
           <Row icon="altar" title={APOTHECARY} detail={APOTHECARY_SUBTITLE} onPress={() => router.push('/rituals/apothecary')} />
-          <Row icon="altar" title="My Shelves" detail="What you keep: tending, running low and your shopping list" onPress={() => router.push({ pathname: '/altar', params: { tab: 'shelves' } })} />
-          <Row icon="grimoire" title="Journals" detail="Shadow work, Deity & spirit, Ancestors, and Omens & signs" last onPress={() => router.push('/rituals/journals')} />
+          <Row icon="altar" title="My Shelves" detail="What you keep: tending, running low and your shopping list" last onPress={() => router.push({ pathname: '/altar', params: { tab: 'shelves' } })} />
         </List>
       </View>
 
