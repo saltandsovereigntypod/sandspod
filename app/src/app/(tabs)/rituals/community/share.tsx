@@ -122,8 +122,8 @@ export default function ShareRitual() {
               ? 'Your update has been sent for review. The published version stays up until the update is published.'
               : 'Your ritual has been sent for review. You’ll see where it stands under My shared rituals, with any note from the moderators.'}
           </Body>
-          <Button label="My shared rituals" onPress={() => router.replace('/rituals/community/mine')} />
-          <Button label="Back to Community Rituals" variant="text" onPress={() => router.replace('/rituals/community')} />
+          <Button label="My shared rituals" onPress={() => router.replace('/rituals/community?tab=mine')} />
+          <Button label="Back to Community" variant="text" onPress={() => router.replace('/rituals/community')} />
         </Card>
       </RitualScreen>
     );

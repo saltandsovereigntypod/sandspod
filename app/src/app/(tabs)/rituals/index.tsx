@@ -107,8 +107,8 @@ export default function RitualsHome() {
           />
           <Row
             icon="coven"
-            title="Community Rituals"
-            detail="Rituals and spells the community has shared · search, add to yours or do once"
+            title="Community"
+            detail="Rituals the community has shared, its writings, and what you’ve shared"
             onPress={() => router.push('/rituals/community')}
           />
           <Row

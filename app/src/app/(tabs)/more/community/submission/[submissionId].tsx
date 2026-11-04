@@ -22,7 +22,7 @@ export default function SubmissionThread() {
 
   if (!session) {
     return (
-      <MoreScreen title="My submissions" back="/more/community/mine" backLabel="Back to My submissions">
+      <MoreScreen title="My submissions" back="/more/community?tab=mine" backLabel="Back to Community, Mine">
         <Card>
           <Text style={type.body}>Sign in to read replies to your offerings.</Text>
           <Button label="Sign in" onPress={() => router.push('/sign-in')} />
@@ -33,7 +33,7 @@ export default function SubmissionThread() {
 
   if (!submission) {
     return (
-      <MoreScreen title="My submissions" back="/more/community/mine" backLabel="Back to My submissions">
+      <MoreScreen title="My submissions" back="/more/community?tab=mine" backLabel="Back to Community, Mine">
         {!mine && mineStatus !== 'offline' ? (
           <ActivityIndicator color={colors.gold} />
         ) : (
@@ -66,8 +66,8 @@ export default function SubmissionThread() {
     <MoreScreen
       title={submission.title}
       eyebrow={`${typeLabel(submission.submission_type)} · ${statusLabel(submission.status)}`}
-      back="/more/community/mine"
-      backLabel="Back to My submissions"
+      back="/more/community?tab=mine"
+      backLabel="Back to Community, Mine"
     >
       <Text style={type.caption}>Offered {communityDate(submission.created_at)}</Text>
       <Paragraphs items={paragraphs(submission.body)} style={styles.body} />
