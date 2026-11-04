@@ -53,18 +53,25 @@ export const removeShelfThing = (id: string) => write(supabase.from('coven_shelf
 /** The coven's shelf, loaded once per coven and kept while the screen is open. */
 export function useCovenShelf(covenId: string | null | undefined) {
   const [state, setState] = useState<{ covenId: string; things: CovenShelfThing[]; ready: boolean } | null>(null);
-  const load = useCallback(async () => {
-    if (!covenId) return;
+  const get = useCallback(async (id: string) => {
     try {
-      const r = await fetchShelf(covenId);
-      setState({ covenId, things: r.rows, ready: r.ready });
+      const r = await fetchShelf(id);
+      return { covenId: id, things: r.rows, ready: r.ready };
     } catch {
-      setState({ covenId, things: [], ready: false });
+      return { covenId: id, things: [], ready: false };
     }
-  }, [covenId]);
+  }, []);
   useEffect(() => {
-    void load();
-  }, [load]);
+    if (!covenId) return;
+    let off = false;
+    void get(covenId).then((next) => !off && setState(next));
+    return () => {
+      off = true;
+    };
+  }, [covenId, get]);
+  const load = useCallback(async () => {
+    if (covenId) setState(await get(covenId));
+  }, [covenId, get]);
   const mine = state && state.covenId === covenId ? state : null;
   return { things: mine?.things ?? [], ready: mine?.ready ?? false, loaded: !!mine, reload: load };
 }

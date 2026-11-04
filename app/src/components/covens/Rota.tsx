@@ -25,20 +25,31 @@ export function useCovenRota() {
   const covenId = coven.snapshot?.coven.id ?? null;
   const { loadNames } = coven;
   const [data, setData] = useState<(RotaData & { covenId: string; members: string[] }) | null>(null);
-  const load = useCallback(async () => {
-    if (!covenId) return;
-    try {
-      const [rota, members] = await Promise.all([fetchRota([covenId]), api.fetchMembers(covenId).catch(() => [])]);
-      const ids = members.map((m) => m.user_id);
-      setData({ ...rota, covenId, members: ids });
-      void loadNames(ids);
-    } catch {
-      setData({ duties: [], swaps: [], gatherings: [], away: {}, ready: false, covenId, members: [] });
-    }
-  }, [covenId, loadNames]);
+  const get = useCallback(
+    async (id: string) => {
+      try {
+        const [rota, members] = await Promise.all([fetchRota([id]), api.fetchMembers(id).catch(() => [])]);
+        const ids = members.map((m) => m.user_id);
+        void loadNames(ids);
+        return { ...rota, covenId: id, members: ids };
+      } catch {
+        return { duties: [], swaps: [], gatherings: [], away: {}, ready: false, covenId: id, members: [] };
+      }
+    },
+    [loadNames],
+  );
+  const rituals = coven.rituals;
   useEffect(() => {
-    void load();
-  }, [load, coven.rituals]);
+    if (!covenId) return;
+    let off = false;
+    void get(covenId).then((next) => !off && setData(next));
+    return () => {
+      off = true;
+    };
+  }, [covenId, get, rituals]);
+  const load = useCallback(async () => {
+    if (covenId) setData(await get(covenId));
+  }, [covenId, get]);
   const mine = data && data.covenId === covenId ? data : null;
   const assignments = useMemo<DutyAssignment[]>(
     () => (mine ? assignRota({ duties: mine.duties, gatherings: mine.gatherings, members: mine.members, away: mine.away, swaps: mine.swaps }) : []),

@@ -25,11 +25,12 @@ export default function CovenRota() {
   const { data, assignments, reload } = useCovenRota();
   const [draft, setDraft] = useState<Draft | null>(null);
   const [busy, setBusy] = useState(false);
+  const [now] = useState(() => Date.now());
   const [message, setMessage] = useState<string | null>(null);
   const leads = coven.perms.lead || coven.perms.manage || coven.perms.founder;
   const may = coven.perms.member && coven.standing.ok;
 
-  const upcoming = (data?.gatherings ?? []).filter((g) => (g.status === 'scheduled' || g.status === 'live') && Date.parse(g.scheduled_for ?? '') > Date.now() - 3 * 3600_000).slice(0, 6);
+  const upcoming = (data?.gatherings ?? []).filter((g) => (g.status === 'scheduled' || g.status === 'live') && Date.parse(g.scheduled_for ?? '') > now - 3 * 3600_000).slice(0, 6);
   const swaps = (data?.swaps ?? []).filter((s) => s.status === 'pending' && (s.to_user === coven.userId || s.from_user === coven.userId) && swapStillFits(s, assignments, data?.members ?? []));
   const titleOf = (id: string) => coven.rituals.find((r) => r.id === id)?.title ?? 'Gathering';
   const nameOfDuty = (id: string) => data?.duties.find((d) => d.id === id)?.name ?? '';
