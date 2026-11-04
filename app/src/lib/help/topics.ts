@@ -2346,6 +2346,19 @@ export const HELP: HelpSection[] = [
         keywords: ['did it work', 'look back', 'look-back', 'results', 'outcome', 'follow up', 'success', 'manifest'],
       },
       {
+        id: 'ritual-check-ins',
+        title: 'Check in on a spell a day, a week and four weeks on',
+        summary: 'Follow a working through: how it is going, and any signs, kept with the working in your Journal.',
+        steps: [
+          'After you record a ritual or spell, its journal page offers "Follow it through". Tap "Check in with me".',
+          'A day, a week and four weeks later a reminder asks how it is going. Open the working, choose how it feels, note any signs and tap "Save the check-in".',
+          'At four weeks you can answer "Did it work?" in the same check-in. Each check-in shows in the Journal on the day you wrote it.',
+          'Turn the reminders off in Settings → Reminders under "Check in on spells and workings", or stop them for one working with "Stop the check-ins".',
+        ],
+        href: '/rituals/journal',
+        keywords: ['check in', 'check-in', 'follow up', 'follow through', 'signs', 'spell results', 'did it work', 'reminder'],
+      },
+      {
         id: 'apothecary-did-it-work',
         title: 'Look back on a spell jar, sachet or anything you made',
         summary: 'What you make in your Apothecary can be asked "Did it work?" too.',

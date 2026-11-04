@@ -8,6 +8,7 @@ import { DREAM_ROUTES } from '../../lib/grimoire/dreams';
 import { cycleNoteItem, dayOf, type TimelineItem, type TimelineKind } from '../../lib/journal/timeline';
 import { entryDetail, entryTitle, journalRoutes, type JournalKind } from '../../lib/journals/journals';
 import { kindLabel, normalizeSit, sitLine, SITS } from '../../lib/meditation/log';
+import { checkInTimeline } from '../../lib/rituals/checkIns';
 import { journalDetail } from '../../lib/rituals/format';
 import { useRituals } from '../../lib/rituals/store';
 import { useJournal, usePeople } from '../journals/shared';
@@ -64,7 +65,7 @@ export function useTimelineLists(): { lists: TimelineItem[][]; cycleLocked: bool
 
   const ritualItems = useMemo<TimelineItem[]>(
     () =>
-      rituals.journal.map((e) => ({
+      rituals.journal.map((e): TimelineItem => ({
         kind: 'ritual',
         id: e.id,
         date: dayOf(e.ritual_date) || dayOf(e.ended_at) || dayOf(e.created_at),
@@ -72,7 +73,12 @@ export function useTimelineLists(): { lists: TimelineItem[][]; cycleLocked: bool
         title: e.title || 'Untitled Ritual',
         detail: journalDetail(e),
         href: `/rituals/journal/${encodeURIComponent(e.id)}`,
-      })),
+      })).concat(
+        // Check-ins written on a working (rituals/checkIns.ts), on the day they were written.
+        rituals.journal.flatMap((e) =>
+          checkInTimeline(e).map((c): TimelineItem => ({ kind: 'ritual', id: c.id, date: c.date, at: c.date, title: c.title, detail: c.detail, href: `/rituals/journal/${encodeURIComponent(e.id)}` })),
+        ),
+      ),
     [rituals.journal],
   );
   const dreamItems = useMemo<TimelineItem[]>(
