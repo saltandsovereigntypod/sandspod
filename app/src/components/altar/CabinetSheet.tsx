@@ -20,6 +20,8 @@ import { Sheet } from './Sheet';
 
 type Props = {
   visible: boolean;
+  /** In the altar's side panel on a computer screen, rather than a sheet. */
+  inline?: boolean;
   items: CabinetItem[];
   overrides: Record<string, string>;
   /** The Living Library, for each item's two best-known uses. */
@@ -53,6 +55,7 @@ const ownKey = (item: CabinetItem, form: CabinetForm) => `${item.id}|${form.form
 
 export function CabinetSheet({
   visible,
+  inline,
   items,
   overrides,
   library,
@@ -199,6 +202,7 @@ export function CabinetSheet({
         onClose();
       }}
       keepScroll
+      inline={inline}
       eyebrow="The Cabinet"
       title="Choose what belongs"
       header={

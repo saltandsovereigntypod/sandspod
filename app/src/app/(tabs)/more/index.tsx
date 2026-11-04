@@ -1,20 +1,18 @@
 import { router, type Href } from 'expo-router';
 import Constants from 'expo-constants';
-import * as WebBrowser from 'expo-web-browser';
 import { Linking } from 'react-native';
 
 import type { MoreIconName } from '../../../components/more/MoreIcon';
+import { openSitePage, SiteSmallPrint } from '../../../components/SiteLinks';
 import { runningUpdateLabel } from '../../../components/UpdateBanner';
 import { MenuList, MenuRow, MoreScreen, Section } from '../../../components/more/ui';
 import { useIsReviewer, useReview } from '../../../lib/community/api';
+import { SITE_LINKS, SITE_SECTION_TITLE } from '../../../lib/siteLinks';
 import { inReviewFolder, SUPPORT_EMAIL } from '../../../lib/community/model';
 import { greetingName } from '../../../lib/settings/defaults';
 import { useMySettings } from '../../../lib/settings/store';
 
 type Row = { key: string; label: string; detail: string; icon: MoreIconName; href: Href | null };
-
-const PRIVACY_URL = 'https://saltandsovereignty.com/privacy.html';
-const TERMS_URL = 'https://saltandsovereignty.com/submission-terms.html';
 
 const GROUPS: { label: string; rows: Row[] }[] = [
   {
@@ -107,11 +105,18 @@ export default function More() {
             onPress={() => router.push('/more/research' as Href)}
           />
           <MenuRow label="Contact us" detail={SUPPORT_EMAIL} onPress={() => void Linking.openURL(`mailto:${SUPPORT_EMAIL}`)} />
-          <MenuRow label="Privacy Policy" onPress={() => void WebBrowser.openBrowserAsync(PRIVACY_URL)} />
-          <MenuRow label="Submission Terms" onPress={() => void WebBrowser.openBrowserAsync(TERMS_URL)} />
           <MenuRow label={`Version ${Constants.expoConfig?.version ?? ''}`.trim()} detail={runningUpdateLabel() ?? undefined} last />
         </MenuList>
       </Section>
+      {/* The website's own pages (lib/siteLinks.ts), with Privacy and Terms in small print at the very bottom. */}
+      <Section label={SITE_SECTION_TITLE}>
+        <MenuList>
+          {SITE_LINKS.map((link, index) => (
+            <MenuRow key={link.key} label={link.label} icon={link.icon} last={index === SITE_LINKS.length - 1} onPress={() => openSitePage(link.url)} />
+          ))}
+        </MenuList>
+      </Section>
+      <SiteSmallPrint />
     </MoreScreen>
   );
 }

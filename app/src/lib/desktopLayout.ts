@@ -8,6 +8,8 @@ export const DESKTOP_MIN_WIDTH = 900;
 export const READING_MAX_WIDTH = 920;
 export const ALTAR_MAX_WIDTH = 1280;
 export const SIDEBAR_WIDTH = 208;
+/** The side bar folded to a rail of icons. */
+export const SIDEBAR_RAIL_WIDTH = 64;
 
 export function useDesktopLayout(): boolean {
   const { width } = useWindowDimensions();
