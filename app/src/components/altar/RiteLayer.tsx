@@ -2,14 +2,16 @@
 // circle's glowing ring (lib/altar/circle.ts), the quarters lit at the
 // altar's edges, the thin line of light following an athame or wand while a
 // circle is traced, and the debris the besom sweeps away (spent matches, the
-// ash of a burned petition: lib/altar/toolRites.ts). Shared with the website
+// ash of a burned petition: lib/altar/toolRites.ts). While a coven ritual's
+// quarters step is under way, the quarters' spots show faint and unlit, and
+// the one quarter that is yours to call or release glows. Shared with the website
 // (altar/js/features/altar-rites.js), which draws the same.
 
 import { memo } from 'react';
 import { StyleSheet } from 'react-native';
 import Svg, { Circle, G, Line, Polyline, Rect, Text as SvgText } from 'react-native-svg';
 
-import { circleOf, QUARTER_SPOT, quarterColor, quarterOf, quartersOf, type Pt } from '../../lib/altar/circle';
+import { circleOf, QUARTER_SPOT, quarterColor, quarterOf, QUARTERS, quartersOf, type Pt, type QuarterId } from '../../lib/altar/circle';
 import type { AltarDocument } from '../../lib/altar/snapshot';
 import { debrisOf } from '../../lib/altar/toolRites';
 
@@ -19,13 +21,17 @@ type Props = {
   stageHeight: number;
   /** A circle being traced: its points as stage fractions, and its colour. */
   trail?: { points: Pt[]; color: string } | null;
+  /** A live ritual's quarters step: the one marker that glows for you, and the faint unlit spots to tap. */
+  quarters?: { glow: QuarterId | null; spots: boolean } | null;
 };
 
-export const RiteLayer = memo(function RiteLayer({ doc, stageWidth: w, stageHeight: h, trail }: Props) {
+export const RiteLayer = memo(function RiteLayer({ doc, stageWidth: w, stageHeight: h, trail, quarters: live }: Props) {
   const circle = circleOf(doc.extra);
   const quarters = quartersOf(doc.extra);
   const debris = debrisOf(doc.extra);
-  if (!circle && !quarters.open.length && !debris.length && !trail?.points.length) return null;
+  const spots = live?.spots ? QUARTERS.filter((q) => !quarters.open.includes(q.id)) : [];
+  const glow = live?.glow ?? null;
+  if (!circle && !quarters.open.length && !debris.length && !trail?.points.length && !spots.length && !glow) return null;
   const unit = w / 600;
   return (
     <Svg pointerEvents="none" width={w} height={h} style={StyleSheet.absoluteFill}>
@@ -48,6 +54,22 @@ export const RiteLayer = memo(function RiteLayer({ doc, stageWidth: w, stageHeig
           <Rect x={3 * unit} y={3 * unit} width={w - 6 * unit} height={h - 6 * unit} rx={14 * unit} stroke={circle.color} strokeOpacity={0.18} strokeWidth={14 * unit} fill="none" />
           <Rect x={3 * unit} y={3 * unit} width={w - 6 * unit} height={h - 6 * unit} rx={14 * unit} stroke={circle.color} strokeOpacity={0.4} strokeWidth={5 * unit} fill="none" />
           <Rect x={3 * unit} y={3 * unit} width={w - 6 * unit} height={h - 6 * unit} rx={14 * unit} stroke={circle.color} strokeOpacity={0.95} strokeWidth={1.4 * unit} fill="none" />
+        </G>
+      )}
+      {/* Where each quarter's marker sits, faint and unlit, so it's clear where to tap. */}
+      {spots.map((q) => (
+        <G key={`spot-${q.id}`} opacity={0.5}>
+          <Circle cx={QUARTER_SPOT[q.id].x * w} cy={QUARTER_SPOT[q.id].y * h} r={9 * unit} fill="none" stroke={quarterColor(quarters, q.id)} strokeWidth={1.4 * unit} strokeDasharray={`${3 * unit},${2.5 * unit}`} />
+          <SvgText x={QUARTER_SPOT[q.id].x * w} y={QUARTER_SPOT[q.id].y * h + 3.6 * unit} fontSize={9 * unit} fill={quarterColor(quarters, q.id)} textAnchor="middle">
+            {q.name[0]}
+          </SvgText>
+        </G>
+      ))}
+      {/* Your quarter, when it's yours to call or release: it alone glows. */}
+      {glow && (
+        <G>
+          <Circle cx={QUARTER_SPOT[glow].x * w} cy={QUARTER_SPOT[glow].y * h} r={26 * unit} fill={quarterColor(quarters, glow)} opacity={0.16} />
+          <Circle cx={QUARTER_SPOT[glow].x * w} cy={QUARTER_SPOT[glow].y * h} r={18 * unit} fill="none" stroke={quarterColor(quarters, glow)} strokeOpacity={0.9} strokeWidth={2.2 * unit} />
         </G>
       )}
       {quarters.open.map((id) => {

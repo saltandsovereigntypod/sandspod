@@ -84,6 +84,7 @@ export const STEP_ACTIONS: StepAction[] = [
     suggestItems: [`${q.color} candle`],
     keywords: ['quarter', 'element', q.element, q.dir, 'watchtower'],
   })),
+  { id: 'call_quarters_turns', group: 'opening', name: 'Call the quarters', label: 'Call the quarters, one at a time (a caller for each)', directions: 'Each quarter is called by the one chosen for it, in the ritual’s order. Face your quarter when your turn comes and call its element into the circle.', effect: '', minutes: 4, keywords: ['quarters', 'elements', 'watchtowers', 'directions', 'turns', 'callers'] },
   { id: 'call_quarters', group: 'opening', name: 'Call the quarters', label: 'Call all four quarters', directions: 'Turn to each direction in turn, East, South, West and North, and call its element into the circle. Light each quarter’s candle as you go if you have them.', words: 'Powers of the East, of Air; powers of the South, of Fire; powers of the West, of Water; powers of the North, of Earth: we call you to this circle. Hail and welcome.', effect: 'light_all', minutes: 4, keywords: ['quarters', 'elements', 'watchtowers', 'directions'] },
   { id: 'welcome_deity', group: 'opening', name: 'Welcome {deity}', label: 'Welcome a deity', directions: 'Face the altar and the image of {deity}. Speak your welcome and, if you like, light a candle or set down an offering for them.', words: '{deity}, we welcome you to this circle. Be with us tonight, and bless the work we do in your name.', effect: '', minutes: 2, deity: true, keywords: ['god', 'goddess', 'deity', 'invoke', 'invite'] },
   { id: 'welcome_ancestors', group: 'opening', name: 'Welcome the ancestors', directions: 'Turn to the ancestor frame or an empty chair. Invite the beloved dead to be with the circle. Each person may speak a name aloud.', words: 'Ancestors of blood and of spirit, those who came before us: you are remembered, and you are welcome here.', effect: '', minutes: 3, asks: 'ancestor', ask: { timing: 'live' }, suggestItems: ['ancestor frame', 'white candle'], keywords: ['ancestors', 'beloved dead', 'names'] },
@@ -153,6 +154,18 @@ export const STEP_ACTIONS: StepAction[] = [
   { id: 'sharing_round', group: 'work', name: 'Sharing round', directions: 'Go round the circle. Each person may share a few words, or pass. Listen without answering.', effect: '', minutes: 10, keywords: ['share', 'talking stick', 'round'] },
 
   // ── Closing ──────────────────────────────────────────────────────────
+  ...QUARTERS.map((q) => ({
+    id: `release_${q.id}`,
+    group: 'closing' as const,
+    name: `Release ${q.element}`,
+    label: `Release a quarter: ${q.element} in the ${q.dir}`,
+    directions: `Face the ${q.dir}. Thank ${q.element} for being with the circle and bid it farewell. Put out the ${q.color} candle there if one is lit.`,
+    words: `Guardians of the ${q.dir}, powers of ${q.element}, of ${q.gifts}: thank you for your presence. Go if you must, stay if you will. Hail and farewell.`,
+    effect: '' as const,
+    minutes: 1,
+    keywords: ['quarter', 'element', q.element, q.dir, 'release', 'farewell'],
+  })),
+  { id: 'release_quarters_turns', group: 'closing', name: 'Thank and release the quarters', label: 'Release the quarters, one at a time (a caller for each)', directions: 'Each quarter is released by the one chosen for it, in reverse of the ritual’s order. Face your quarter when your turn comes, thank it and bid it farewell.', effect: '', minutes: 3, keywords: ['quarters', 'release', 'dismiss', 'farewell', 'turns', 'callers'] },
   { id: 'release_quarters', group: 'closing', name: 'Thank and release the quarters', directions: 'Turn to each direction in reverse, North, West, South and East, thanking each element and bidding it farewell. Put out each quarter’s candle as you go.', words: 'Powers of the North, West, South and East: thank you for your presence. Go if you must, stay if you will. Hail and farewell.', effect: 'snuff_all', minutes: 3, keywords: ['quarters', 'release', 'dismiss', 'farewell'] },
   { id: 'farewell_deity', group: 'closing', name: 'Farewell to {deity}', label: 'Farewell the deity', directions: 'Face the altar and thank {deity} for being with the circle.', words: '{deity}, thank you for your presence and your blessing. Go if you must, stay if you will. Hail and farewell.', effect: '', minutes: 1, deity: true, keywords: ['farewell', 'thank', 'deity', 'god', 'goddess'] },
   { id: 'ground_energy', group: 'closing', name: 'Ground the energy', directions: 'Have everyone place their palms on the floor or the earth and let any extra energy drain away. Eat something if you feel light-headed.', effect: '', minutes: 3, keywords: ['ground', 'earth', 'settle'] },

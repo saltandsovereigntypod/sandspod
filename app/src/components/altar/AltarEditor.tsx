@@ -28,6 +28,7 @@ import { AncestorPanelSection, AncestorShrineSheet } from './connect/AncestorShe
 import { FrameNameSheet, FramePanelSection } from './connect/FrameSheets';
 import { FRAME_PHOTO_FOLDER, removeFramePhoto, setFrameAged, setFrameCaption, setFramePhoto } from '../../lib/altar/frame';
 import { useTicker } from '../../lib/altar/useTicker';
+import type { QuarterId } from '../../lib/altar/circle';
 import { HarvestSheet, PlantDetailsSheet, PlantJournalSheet, PottedPanelSection } from './connect/PottedSheets';
 import {
   addJournal,
@@ -133,7 +134,7 @@ import { usePlace } from '../../lib/location';
 import { blankAnswers } from '../../lib/rituals/lifecycle';
 import { saveJournal, startRitual, updateActive, useRituals } from '../../lib/rituals/store';
 import { CabinetSheet } from './CabinetSheet';
-import { AltarDeskContext, type AltarDesk, type ArmedDeed } from './altarDesk';
+import { AltarDeskContext, type AltarDesk, type ArmedDeed, type DeskQuarters } from './altarDesk';
 import { CarveSheet } from './CarveSheet';
 import { CloseUpSheet } from './CloseUpSheet';
 import { GroupGrimoireSheet, GroupSheet, RenameSheet } from './ArrangeSheets';
@@ -1415,13 +1416,15 @@ export function AltarEditor({
   // ── A ritual step done here for real (lib/covens/altarActions.ts) ──────
   // The step's button opens the same sheet as the altar's own; the first time
   // that work is done (the petition placed, the candle lit…) is the person's Done.
-  const pendingDeed = useRef<(Omit<AltarDeedRequest, 'nonce'> & { armed?: boolean }) | null>(null);
+  const pendingDeed = useRef<(Omit<AltarDeedRequest, 'nonce'> & { armed?: boolean; quarter?: QuarterId | null }) | null>(null);
   const startedDeed = useRef('');
   // Steps (and turns) already counted, so a deed done again doesn't count twice.
   const countedDeeds = useRef(new Set<string>());
-  const finishDeed = (kind: AltarDeed) => {
+  const finishDeed = (kind: AltarDeed, quarter?: QuarterId) => {
     const pending = pendingDeed.current;
     if (!pending || pending.kind !== kind) return;
+    // One quarter's step counts only for that quarter.
+    if (pending.quarter && pending.quarter !== quarter) return;
     // A coven altar you can't tend right now keeps it as it was (commit says why): not done yet.
     if (sharedRef.current && !sharedRef.current.canEdit && kind !== 'intention' && kind !== 'gratitude' && kind !== 'scry' && kind !== 'scry_mirror' && kind !== 'pendulum' && kind !== 'bell' && kind !== 'bowl') return;
     pendingDeed.current = null;
@@ -1435,6 +1438,8 @@ export function AltarEditor({
   // A live step's deed waits here, so doing it on the altar any way counts;
   // and what to tap glows for the person whose part it is.
   const [glowKind, setGlowKind] = useState<AltarDeed | 'gaze' | null>(null);
+  // A ritual's quarters step: its order, the one quarter that glows for you, and the markers to tap.
+  const [ritualQuarters, setRitualQuarters] = useState<DeskQuarters | null>(null);
   const armDeed = useCallback((next: ArmedDeed | null) => {
     if (!next) {
       if (pendingDeed.current?.armed) pendingDeed.current = null;
@@ -1464,6 +1469,7 @@ export function AltarEditor({
     finishDeed,
     toCabinet,
     canEdit: !shared || shared.canEdit,
+    quarterOrder: ritualQuarters?.order ?? null,
   });
   // The pendulum, scrying mirror, mortar, bolline, cauldron, crystals and grid, a deck drawn from, and ritual mode.
   const [scryWith, setScryWith] = useState<ScryVessel>('bowl');
@@ -1588,6 +1594,7 @@ export function AltarEditor({
     start: (kind) => afterSheetCloses(() => startDeed(kind)),
     arm: armDeed,
     glow: setGlowKind,
+    quarters: setRitualQuarters,
     writePetition: (input) => writePetition(input, null),
     canWrite: !!sourceId,
     notice,
@@ -1652,6 +1659,8 @@ export function AltarEditor({
             now={minute * 60_000}
             onTrace={toolRites.stage.onTrace}
             trail={toolRites.stage.trail}
+            quarters={ritualQuarters}
+            onQuarterTap={ritualQuarters && (!shared || shared.canEdit) ? (id) => toolRites.tapQuarter(id, ritualQuarters.mode) : undefined}
           />
           {toolRites.floating}
       </View>

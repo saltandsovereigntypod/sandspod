@@ -84,8 +84,10 @@ type Deps = {
   me: string;
   stageWidth: number;
   viewport: Viewport;
-  finishDeed: (kind: AltarDeed) => void;
+  finishDeed: (kind: AltarDeed, quarter?: QuarterId) => void;
   toCabinet: (what: string) => void;
+  /** A coven ritual's own calling order for the quarters, while one is under way (quarterSteps.ts). */
+  quarterOrder?: QuarterId[] | null;
   /** Whether you may change this altar now (a coven altar may be look-only). */
   canEdit: boolean;
 };
@@ -179,10 +181,11 @@ export function useToolRites(deps: Deps) {
 
   // ── The quarters ────────────────────────────────────────────────────
   const call = (id: QuarterId) => {
-    const r = callQuarter(docRef.current?.extra ?? {}, id);
+    const r = callQuarter(docRef.current?.extra ?? {}, id, deps.quarterOrder);
     if (r.ok) {
-      commit((d) => ({ ...d, extra: callQuarter(d.extra, id).extra }));
+      commit((d) => ({ ...d, extra: callQuarter(d.extra, id, deps.quarterOrder).extra }));
       log(r.line);
+      deps.finishDeed('call_quarter', id);
       if (!nextToCall(quartersOf(r.extra))) deps.finishDeed('quarters');
     }
     say(r.line);
@@ -192,6 +195,7 @@ export function useToolRites(deps: Deps) {
     if (r.ok) {
       commit((d) => ({ ...d, extra: releaseQuarter(d.extra, id).extra }));
       log(r.line);
+      deps.finishDeed('release_quarter', id);
       if (!quartersOf(r.extra).open.length) deps.finishDeed('release_quarters');
     }
     say(r.line);
@@ -305,7 +309,7 @@ export function useToolRites(deps: Deps) {
         </View>
       )}
       {(panel || (!!open && isCircleTool(selectedObject))) && (
-        <CirclePanel extra={extra} onCall={call} onRelease={uncall} onColor={(id, c) => commit((d) => ({ ...d, extra: setQuarterColor(d.extra, id, c) }))} onReleaseCircle={release} onClose={() => setPanel(false)} />
+        <CirclePanel extra={extra} order={deps.quarterOrder} onCall={call} onRelease={uncall} onColor={(id, c) => commit((d) => ({ ...d, extra: setQuarterColor(d.extra, id, c) }))} onReleaseCircle={release} onClose={() => setPanel(false)} />
       )}
       {!panel && open && (
         <Pressable accessibilityRole="button" accessibilityHint="Shows the circle panel" onPress={() => setPanel(true)}>
@@ -370,9 +374,20 @@ export function useToolRites(deps: Deps) {
       case 'release_quarters': {
         setPanel(true);
         const state = quartersOf(docRef.current?.extra);
-        const next = kind === 'quarters' ? nextToCall(state) : nextToRelease(state);
+        const next = kind === 'quarters' ? nextToCall(state, deps.quarterOrder) : nextToRelease(state);
         say(next ? `${kind === 'quarters' ? 'Call' : 'Release'} the ${quarterOf(next)!.name} first, then each in turn, in the circle panel.` : kind === 'quarters' ? 'All four quarters are open.' : 'No quarters are open.');
         if (!next) deps.finishDeed(kind);
+        return true;
+      }
+      case 'call_quarter':
+      case 'release_quarter': {
+        // Done by tapping the quarter's own marker at the altar's edge: say where it is.
+        const state = quartersOf(docRef.current?.extra);
+        if (kind === 'release_quarter' && !state.open.length) {
+          say('No quarters are open.');
+          return true;
+        }
+        say(kind === 'call_quarter' ? 'Tap your quarter’s glowing spot at the edge of the altar to call it. North is at the back, East to the right.' : 'Tap your lit quarter at the edge of the altar to release it. North is at the back, East to the right.');
         return true;
       }
       case 'bowl': {
@@ -423,6 +438,8 @@ export function useToolRites(deps: Deps) {
     panels,
     floating,
     startDeed,
+    /** A tap on a quarter's marker: call or release it (as the step under way does), or, unsaid, whichever it needs. */
+    tapQuarter: (id: QuarterId, mode?: 'call' | 'release') => ((mode ?? (quartersOf(docRef.current?.extra).open.includes(id) ? 'release' : 'call')) === 'release' ? uncall(id) : call(id)),
     /** A moment here and for the others at a coven altar (the round-two tools use it: useCraftTools). */
     show: rites.show,
     stage: { onTrace: tracing && deps.canEdit ? onTrace : undefined, trail: tracing && trail.length ? { points: trail, color: circleOf(extra)?.color ?? color } : null },

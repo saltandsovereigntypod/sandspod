@@ -10,10 +10,14 @@ import { createContext, useContext } from 'react';
 
 import type { PetitionInput } from '../../lib/altar/petitions';
 import type { CabinetForm, CabinetItem } from '../../lib/altar/types';
+import type { QuarterId } from '../../lib/altar/circle';
 import type { AltarDeed } from '../../lib/covens/altarActions';
 
 /** A deed waiting to count: `key` is the step (and turn) it is for, so it counts once. */
-export type ArmedDeed = { kind: AltarDeed; key: string; onDone: () => void };
+export type ArmedDeed = { kind: AltarDeed; key: string; onDone: () => void; quarter?: QuarterId | null };
+
+/** A quarters step under way: the ritual's calling order, the one quarter that glows for you, and whether to show the spots to tap. */
+export type DeskQuarters = { order: QuarterId[]; glow: QuarterId | null; spots: boolean; mode: 'call' | 'release' };
 
 export type AltarDesk = {
   cabinet: CabinetItem[];
@@ -25,6 +29,8 @@ export type AltarDesk = {
   arm: (deed: ArmedDeed | null) => void;
   /** What glows: a deed's target, a candle-gazing sit's lit candle, or nothing. */
   glow: (kind: AltarDeed | 'gaze' | null) => void;
+  /** A quarters step: the order, your quarter's glow, and the markers made tappable (null: none under way). */
+  quarters: (q: DeskQuarters | null) => void;
   writePetition: (input: PetitionInput) => Promise<void>;
   /** Whether a petition can be written here (the altar is saved). */
   canWrite: boolean;

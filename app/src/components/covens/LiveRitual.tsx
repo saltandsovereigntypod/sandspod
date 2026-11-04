@@ -1,5 +1,5 @@
 import { router, type Href } from 'expo-router';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Alert, Pressable, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -20,6 +20,7 @@ import { seedPetitionAltar } from '../../lib/covens/petitionAltar';
 import { clearNamed, nameNewThings, offerPaper, paperCount, placeOffering, snuffNamed, stepAltarChange } from '../../lib/covens/ritualAltar';
 import { builderStepFrom, cleanPlan, linkedEffect, stepThingName, type GatheringKind } from '../../lib/covens/builder';
 import { liveFlow } from '../../lib/covens/stepFlow';
+import { needsQuarterTurns, quarterStepOf, quarterTurnOrder, ritualQuarterOrder } from '../../lib/covens/quarterSteps';
 import { atAltarOf, deedQuery, sitStepOf } from '../../lib/covens/altarActions';
 import { DEED_TARGET, glowsForMe, RESULT_DEEDS, stepHowTo } from '../../lib/covens/ritualPanel';
 import { useAltarDesk } from '../altar/altarDesk';
@@ -216,6 +217,7 @@ export function useLiveRitual(id: string | undefined) {
   }, [itemsKey, altarId, live]);
   // Bumped when a step's time is up, so it reads as finished.
   const [, setTick] = useState(0);
+  const quarterOrder = ritualQuarterOrder(plan, builderSteps);
   const flow = current && ritual
     ? liveFlow({
         step: { ...current, details: currentBuilder?.details },
@@ -230,8 +232,21 @@ export function useLiveRitual(id: string | undefined) {
         objects,
         nameOf: coven.nameOf,
         doerName: stepAssignee(current, coven.snapshot?.ranks ?? [], coven.nameOf).label,
+        quarterOrder,
       })
     : null;
+  // A quarters step taken one at a time: those who lead set its turns to each quarter's caller, in the ritual's order, before anyone has had one.
+  const quarterTurns = current && ritual && live && steers && current.turn_mode === 'in_turn' ? quarterTurnOrder(quarterStepOf(currentBuilder, quarterOrder), plan.roles, ritual.led_by) : null;
+  const quarterTurnsKey = quarterTurns && current && needsQuarterTurns(quarterTurns, current) ? `${current.id}:${quarterTurns.join(',')}` : '';
+  const { refreshRituals } = coven;
+  const quarterTurnsSent = useRef('');
+  useEffect(() => {
+    if (!quarterTurnsKey || quarterTurnsSent.current === quarterTurnsKey) return;
+    quarterTurnsSent.current = quarterTurnsKey;
+    const [stepId, order] = quarterTurnsKey.split(':');
+    // Someone not among the step's people can't take a turn: the usual order stands then.
+    void api.setTurns(stepId, order.split(',')).then(() => refreshRituals()).catch(() => undefined);
+  }, [quarterTurnsKey, refreshRituals]);
   // A step with a time finishes by itself when it's up: look again then.
   const endsAt = flow?.endsAt ?? null;
   useEffect(() => {
@@ -356,6 +371,9 @@ export function LiveStepCard({ live, atAltar = false }: { live: LiveRitual; atAl
       {atAltar && <Text style={type.caption}>{`Whose step: ${who.label}${mine && who.kind !== 'everyone' ? ' (yours)' : ''}`}</Text>}
       {atAltar && <Text style={type.caption}>{turnLine(current, coven.userId, coven.nameOf)}</Text>}
       <HowTo text={how.text} builder={how.builder} />
+      {/* A quarters step: the quarter under way, and its caller's words. */}
+      {!!live.flow?.quarter && (live.flow.kind !== 'turns' || live.flow.myTurn) && <Text style={type.body}>{`${live.flow.myTurn ? 'Your turn: ' : ''}${live.flow.quarter.line}`}</Text>}
+      {!!live.flow?.quarter && live.flow.myTurn && <Spoken text={live.flow.quarter.words} />}
       {lines ? <StepLines step={lines} /> : !!current.spoken_text && <Spoken text={current.spoken_text} />}
       {inTurn && (
         <TurnBox

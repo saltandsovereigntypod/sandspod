@@ -9,7 +9,10 @@
      cast". Traced back anticlockwise it's released. "Cast it for me" draws it.
    - The quarters, East, South, West and North, lit at the altar's edges in
      their colours (yours if you change them), released in reverse; the
-     circle panel says what's still open.
+     circle panel says what's still open. In a coven ritual they follow the
+     ritual's own order; while a quarters step is under way the unlit spots
+     show faint, your quarter alone glows, and tapping a spot calls (or
+     releases) it (SaltCore.covens.quarterSteps).
    - The singing bowl: struck once, or every 1 to 10 minutes until stopped,
      in one of eight tones.
    - The chalice: filled, raised in a toast, poured out as a libation (into
@@ -115,6 +118,43 @@
   const moment = (el, kind) => { if (el?.isConnected) global.LivingArt?.playMoment?.(el, kind); };
   const send = (wire) => global.CovenAltarPage?.sendRite?.(wire);
 
+  // ── A coven ritual's quarters step (coven-altar.js quarters) ──────────
+  // { order, glow, spots, mode }: the ritual's calling order, the one quarter
+  // that glows for you, the faint unlit spots, and whether a tap calls or
+  // releases. As the app's RiteLayer and AltarStage.
+  let live = null;
+  let spotsEl = null;
+  function setQuarters(next) {
+    live = next || null;
+    redraw();
+  }
+  function drawSpots(root) {
+    const c = C();
+    if (!live || !c) {
+      spotsEl?.remove();
+      spotsEl = null;
+      return;
+    }
+    if (!spotsEl || !root.contains(spotsEl)) {
+      spotsEl = document.createElement("div");
+      spotsEl.className = "altar-rites-spots";
+      spotsEl.style.cssText = "position:absolute;inset:0;pointer-events:none;z-index:5";
+      spotsEl.addEventListener("click", (event) => {
+        const b = event.target.closest("[data-quarter]");
+        if (!b || !live) return;
+        event.stopPropagation();
+        if (live.mode === "release") releaseQuarter(b.dataset.quarter);
+        else callQuarter(b.dataset.quarter);
+      });
+      root.appendChild(spotsEl);
+    }
+    const verb = live.mode === "release" ? "Release" : "Call";
+    spotsEl.innerHTML = c.QUARTERS.map((q) => {
+      const spot = c.QUARTER_SPOT[q.id];
+      return `<button type="button" data-quarter="${q.id}" aria-label="${esc(`${verb} the ${q.name}`)}${live.glow === q.id ? " (yours now)" : ""}" style="position:absolute;left:${spot.x * 100}%;top:${spot.y * 100}%;width:44px;height:44px;margin:-22px 0 0 -22px;border:0;border-radius:50%;background:transparent;cursor:pointer;pointer-events:auto"></button>`;
+    }).join("");
+  }
+
   // ── Drawing: the ring, the quarters, the debris, the trail ─────────────
   let layer = null;
   let trail = null; // { points: [{x,y}] in stage fractions, color }
@@ -157,6 +197,20 @@
       const ring = (sw, op) => `<rect x="${3 * u}" y="${3 * u}" width="${w - 6 * u}" height="${h - 6 * u}" rx="${14 * u}" stroke="${esc(circle.color)}" stroke-opacity="${op}" stroke-width="${sw}" fill="none"/>`;
       parts.push(`<g class="altar-rites__ring">${ring(14 * u, 0.18)}${ring(5 * u, 0.4)}${ring(1.4 * u, 0.95)}</g>`);
     }
+    // While a quarters step is under way: each unlit quarter's spot, faint, and your quarter alone glowing.
+    if (live?.spots) {
+      for (const q of c.QUARTERS) {
+        if (quarters.open.includes(q.id)) continue;
+        const spot = c.QUARTER_SPOT[q.id];
+        const color = esc(c.quarterColor(quarters, q.id));
+        parts.push(`<g opacity="0.5"><circle cx="${spot.x * w}" cy="${spot.y * h}" r="${9 * u}" fill="none" stroke="${color}" stroke-width="${1.4 * u}" stroke-dasharray="${3 * u},${2.5 * u}"/><text x="${spot.x * w}" y="${spot.y * h + 3.6 * u}" font-size="${9 * u}" fill="${color}" text-anchor="middle">${esc(q.name[0])}</text></g>`);
+      }
+    }
+    if (live?.glow) {
+      const spot = c.QUARTER_SPOT[live.glow];
+      const color = esc(c.quarterColor(quarters, live.glow));
+      parts.push(`<g><circle cx="${spot.x * w}" cy="${spot.y * h}" r="${26 * u}" fill="${color}" opacity="0.16"/><circle cx="${spot.x * w}" cy="${spot.y * h}" r="${18 * u}" fill="none" stroke="${color}" stroke-opacity="0.9" stroke-width="${2.2 * u}"/></g>`);
+    }
     for (const id of quarters.open) {
       const spot = c.QUARTER_SPOT[id];
       const color = esc(c.quarterColor(quarters, id));
@@ -168,6 +222,7 @@
     }
     el.innerHTML = parts.join("");
     el.hidden = !parts.length;
+    drawSpots(root);
     drawBar();
   }
   let frame = 0;
@@ -335,12 +390,13 @@
         const render = () => {
           const ex = extra();
           const state = c.quartersOf(ex);
-          const next = c.nextToCall(state);
+          const next = c.nextToCall(state, live?.order);
           const last = c.nextToRelease(state);
+          const calling = state.open.length ? state.order : live?.order || state.order;
           const reminder = c.circleReminder(ex);
           body.innerHTML = `
             <p class="app-caption">${c.circleOf(ex) ? "The circle is cast." : "The circle isn’t cast."}</p>
-            <div class="app-rows">${c.QUARTERS.map((q) => {
+            <div class="app-rows">${[...c.QUARTERS].sort((a, b) => calling.indexOf(a.id) - calling.indexOf(b.id)).map((q) => {
               const open = state.open.includes(q.id);
               return `<div class="altar-rites-quarter"><span class="altar-rites-swatch" style="background:${esc(c.quarterColor(state, q.id))};opacity:${open ? 1 : 0.35}"></span><span>${esc(q.name)} · ${esc(q.element)}${open ? " · open" : ""}</span>${ui.chips([
                 open ? { label: "Release", action: "release", data: { q: q.id }, disabled: last !== q.id } : { label: "Call", action: "call", data: { q: q.id }, primary: next === q.id },
@@ -348,7 +404,7 @@
               ])}</div>`;
             }).join("")}</div>
             ${tinting ? ui.chips([...c.QUARTERS.map((q) => q.color), ...c.CIRCLE_COLORS.map((x) => x.color)].map((x) => ({ label: x, symbol: "●", action: "color", data: { color: x }, pressed: c.quarterColor(state, tinting) === x })).concat([{ label: "Usual colour", action: "color", data: { color: "" } }])) : ""}
-            <p class="app-caption">Called East, South, West, North, and released in reverse. The colours are the common modern ones; change them to your own.</p>
+            <p class="app-caption">Called ${esc(c.orderLine(calling))}, and released in reverse. The colours are the common modern ones; change them to your own.</p>
             ${reminder ? `<p class="app-caption"><strong>${esc(reminder)}</strong></p>` : ""}
             ${c.circleOf(ex) && !state.open.length ? ui.chips([{ label: c.RELEASE_LABEL, action: "uncircle" }]) : ""}`;
         };
@@ -369,10 +425,11 @@
   }
   function callQuarter(id) {
     const c = C();
-    const r = c.callQuarter(extra(), id);
+    const r = c.callQuarter(extra(), id, live?.order);
     if (r.ok) {
       setExtra(r.extra);
       logAltar(r.line);
+      finish("call_quarter", id);
       if (!c.nextToCall(c.quartersOf(r.extra))) finish("quarters");
     }
     say(r.line);
@@ -383,6 +440,7 @@
     if (r.ok) {
       setExtra(r.extra);
       logAltar(r.line);
+      finish("release_quarter", id);
       if (!c.quartersOf(r.extra).open.length) finish("release_quarters");
     }
     say(r.line);
@@ -657,9 +715,11 @@
   });
 
   // ── A coven ritual step done here (coven-altar.js) ───────────────────
-  let pending = null; // { kind, done }
-  function finish(kind) {
+  let pending = null; // { kind, done, quarter }
+  function finish(kind, quarter) {
     if (pending?.kind !== kind) return;
+    // One quarter's step counts only for that quarter.
+    if (pending.quarter && pending.quarter !== quarter) return;
     const done = pending.done;
     pending = null;
     done?.();
@@ -696,7 +756,17 @@
       case "release_quarters": {
         openCirclePanel();
         const state = c.quartersOf(extra());
-        if (!(kind === "quarters" ? c.nextToCall(state) : c.nextToRelease(state))) finish(kind);
+        if (!(kind === "quarters" ? c.nextToCall(state, live?.order) : c.nextToRelease(state))) finish(kind);
+        return true;
+      }
+      case "call_quarter":
+      case "release_quarter": {
+        // Done by tapping the quarter's own marker at the altar's edge: say where it is.
+        if (kind === "release_quarter" && !c.quartersOf(extra()).open.length) {
+          say("No quarters are open.");
+          return true;
+        }
+        say(kind === "call_quarter" ? "Tap your quarter’s glowing spot at the edge of the altar to call it. North is at the back, East to the right." : "Tap your lit quarter at the edge of the altar to release it. North is at the back, East to the right.");
         return true;
       }
       case "bowl": {
@@ -735,15 +805,15 @@
   }
 
   /** A live ritual step's deed, waiting: done by hand on the altar (the circle traced, the bowl struck…) it counts (coven-altar.js arm). */
-  const OWN = ["circle", "release_circle", "quarters", "release_quarters", "bowl", "toast", "libation", "sweep", "match"];
-  function arm(kind, done) {
+  const OWN = ["circle", "release_circle", "quarters", "release_quarters", "call_quarter", "release_quarter", "bowl", "toast", "libation", "sweep", "match"];
+  function arm(kind, done, quarter) {
     if (OWN.includes(kind)) {
-      pending = kind ? { kind, done } : null;
+      pending = kind ? { kind, done, quarter: quarter || null } : null;
       return true;
     }
     return !!global.AltarCraft?.arm?.(kind, done);
   }
-  global.AltarRites = { deed, arm, dropAsh, openCirclePanel, redraw };
+  global.AltarRites = { deed, arm, dropAsh, openCirclePanel, redraw, setQuarters };
 
   // ── In the object's actions ──────────────────────────────────────────
   const registry = global.altarObjectActionRegistry;

@@ -9,11 +9,13 @@ import { askEndRitual, LeadSteps, LiveStepCard, StepList, useLiveRitual, type Li
 import { useAltarDesk } from '../altar/altarDesk';
 import { Notice, Section } from '../more/ui';
 import { useAccessibility } from '../../lib/accessibility/store';
+import type { QuarterId } from '../../lib/altar/circle';
 import { ringBell } from '../../lib/altar/feel';
 import * as api from '../../lib/covens/api';
 import { atAltarOf, deedFinish, sitStepOf } from '../../lib/covens/altarActions';
 import { altarPanelHeight, badgeLabel, liveRitualFor } from '../../lib/covens/altarPanel';
 import { gazesAtCandle, glowsForMe, opensPanel, panelBarLine, panelCue } from '../../lib/covens/ritualPanel';
+import { quarterDeed, quarterGlowFor, quarterStepOf, ritualQuarterOrder } from '../../lib/covens/quarterSteps';
 import { useCoven } from '../../lib/covens/CovenContext';
 import { useUnread } from '../../lib/covens/unread';
 import { colors, fonts, radius, type } from '../../theme';
@@ -103,14 +105,28 @@ export function AltarPanel({ altarId, ritualId }: { altarId: string; ritualId?: 
   const deed = atAltarOf(builder);
   const sit = sitStepOf(builder);
   const glowing = !!flow && !!current && glowsForMe({ kind: flow.kind, mine: live.mine, myTurn: flow.myTurn, hasOrder: (current.turn_order ?? []).length > 0, iDone: flow.iDone, complete: flow.progress.complete });
-  const armKey = current && deed && glowing && coven.standing.ok ? `${current.id}:${current.turn_at ?? 0}:${deed.deed}` : '';
+  // A quarters step: one quarter at a time (yours glows, alone), its marker tapped to call or release it.
+  const quarterOrder = ritualQuarterOrder(live.plan, live.builderSteps);
+  const qs = quarterStepOf(builder, quarterOrder);
+  const qDeed = quarterDeed(qs, current?.turn_at);
+  const deedKind = qDeed?.kind ?? deed?.deed ?? null;
+  const armQuarter = qDeed?.quarter ?? null;
+  const armKey = current && deedKind && glowing && coven.standing.ok ? `${current.id}:${current.turn_at ?? 0}:${deedKind}:${armQuarter ?? ''}` : '';
+  const quartersKey = qs && flow && !flow.progress.complete ? `${qs.mode}|${quarterOrder.join(',')}|${quarterGlowFor(qs, current?.turn_at, glowing) ?? ''}` : '';
   const gaze = !!sit && gazesAtCandle(sit.id) && !!flow && !flow.progress.complete;
   const { markDone, userId } = coven;
   const stepRef = useRef(current);
   useEffect(() => {
     stepRef.current = current;
   });
-  const deedKind = deed?.deed ?? null;
+  useEffect(() => {
+    if (!desk) return;
+    if (!quartersKey) return desk.quarters(null);
+    const [mode, order, glowQ] = quartersKey.split('|');
+    desk.quarters({ mode: mode as 'call' | 'release', order: order.split(',') as QuarterId[], glow: (glowQ || null) as QuarterId | null, spots: true });
+    // The desk is made afresh each render; what matters is the step's quarters.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [quartersKey]);
   useEffect(() => {
     if (!desk) return;
     if (!armKey || !deedKind) {
@@ -121,6 +137,7 @@ export function AltarPanel({ altarId, ritualId }: { altarId: string; ritualId?: 
     desk.arm({
       kind: deedKind,
       key: armKey,
+      quarter: armQuarter,
       onDone: () => {
         const step = stepRef.current;
         if (!step) return;
@@ -132,7 +149,7 @@ export function AltarPanel({ altarId, ritualId }: { altarId: string; ritualId?: 
     desk.glow(deedKind);
     // The desk is made afresh each render; what matters is the deed, whose turn, and the glow.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [armKey, gaze, deedKind, markDone, userId]);
+  }, [armKey, gaze, deedKind, armQuarter, markDone, userId]);
   const deskRef = useRef(desk);
   useEffect(() => {
     deskRef.current = desk;
@@ -141,6 +158,7 @@ export function AltarPanel({ altarId, ritualId }: { altarId: string; ritualId?: 
     () => () => {
       deskRef.current?.arm(null);
       deskRef.current?.glow(null);
+      deskRef.current?.quarters(null);
     },
     [],
   );
@@ -148,7 +166,7 @@ export function AltarPanel({ altarId, ritualId }: { altarId: string; ritualId?: 
   if (!(coven.perms.member || coven.perms.site)) return null;
   const tab: Tab = chosen === 'messages' || !ritual ? 'messages' : 'ritual';
   const barLine =
-    flow && current ? panelBarLine({ index: live.at, title: current.title, mine: live.mine, myTurn: flow.myTurn, kind: flow.kind, iDone: flow.iDone, complete: flow.progress.complete, isEnder: flow.isEnder }) : '';
+    flow && current ? panelBarLine({ index: live.at, title: current.title, mine: live.mine, myTurn: flow.myTurn, kind: flow.kind, iDone: flow.iDone, complete: flow.progress.complete, isEnder: flow.isEnder, quarterLine: flow.quarter?.line }) : '';
   const pick = (next: Tab) => {
     if (open && next === tab) return setOpen(false);
     setChosen(next);

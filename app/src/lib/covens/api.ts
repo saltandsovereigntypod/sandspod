@@ -520,6 +520,8 @@ export const closeVote = (stepId: string) => rpc('close_coven_ritual_vote', { p_
 /** One at a time: the one whose turn it is is done, or the leader moves on (skip) or starts the turns again. */
 export const nextTurn = (stepId: string, skip = false) => rpc<RitualStep>('next_coven_ritual_turn', { p_step: stepId, p_skip: skip });
 export const restartTurns = (stepId: string) => rpc<RitualStep>('set_coven_ritual_turns', { p_step: stepId, p_order: null });
+/** Set a step's turns to an order of its people (a quarters step: the caller of each quarter, in the ritual's order). */
+export const setTurns = (stepId: string, order: string[]) => rpc<RitualStep>('set_coven_ritual_turns', { p_step: stepId, p_order: order });
 
 /** The altar's quiet time after a rite, ended early. */
 export const releaseAltarHold = (altarId: string) => rpc('release_coven_altar_hold', { p_altar: altarId });

@@ -931,6 +931,7 @@ export const HELP: HelpSection[] = [
           'Set an athame or a wand on the altar from the cabinet’s Tools (the selenite athame and the crystal wand work too), and select it.',
           'Tap "Cast the circle", choose the colour of the light (or type your own), and trace round the altar with the tool, sunwise (clockwise). A thin line of light follows it; once you’ve gone most of the way round, it closes into a glowing ring and says "Circle cast". "Cast it for me" draws the ring without tracing.',
           'Tap "Call the quarters" for the circle panel. Call East (air, yellow), South (fire, red), West (water, blue) and North (earth, green); each lights a marker at that edge of the altar. "Colour" changes a quarter’s colour to your own.',
+          'In a coven ritual the planner can choose the order the quarters are called in (North first, say); the circle panel follows it, and release goes in reverse of it.',
           'To close, release the quarters in reverse (North first), then tap "Release the circle" and trace the ring back anticlockwise, or tap "Release it for me".',
         ],
         tips: [
@@ -4070,12 +4071,14 @@ export const HELP: HelpSection[] = [
           'A petition is written in the panel and placed straight on the altar; an intention, gratitude note, card, spell jar or sachet opens the altar’s own sheet over the altar. A card drawn or the pendulum’s answer shows in the panel.',
           'A sit (Ground & centre, Clearing, Candle gazing) runs in the panel for everyone at once, from the moment the leader starts the step, never before: the clock, the guidance, a breath circle, bells and sound, as you choose in Settings → Covens & privacy → During coven rituals. Candle gazing looks at the lit candle on the altar, which glows for you.',
           'One at a time: when it is your turn the panel opens on your part. Tap "I’ve done my part" to pass to the next person.',
+          'The quarters: while a quarters step is under way, each quarter’s spot shows faint and unlit at its edge of the altar (North at the back, East to the right), and tapping a spot calls that quarter, or releases it on a release step. A step for one quarter ("Call the East", "Release the North") glows that quarter alone for whoever does it.',
+          'Calling the quarters one at a time: the planner chooses who calls each quarter and the words for each, and the ritual’s order (which quarter first; East, South, West, North unless they chose otherwise). The panel takes them in turn ("Your turn: call the East") with your own words, and only your quarter glows for you. Tapping it calls it and passes the turn. Release goes in reverse of the ritual’s order.',
           'Everyone together: tap "Done" when you have finished (or "Not yet" to take it back). The step is finished when everyone here has tapped Done, or when its time runs out.',
           'One person: the step is finished when they tap "Done". Items to place tick off as each goes on the coven altar.',
           'When the step is finished, the panel opens for the one who moves it on (the leader, unless the planner chose someone) with "Move to the next step?". Everyone else sees whom they are waiting for. They can tap "Move on anyway" sooner.',
         ],
         href: '/coven',
-        keywords: ['ritual step', 'your turn', 'done', 'move on', 'pop-up', 'ritual panel', 'one at a time', 'together', 'leader', 'live ritual', 'glow', 'sit in a ritual', 'candle gazing', 'during coven rituals'],
+        keywords: ['ritual step', 'your turn', 'done', 'move on', 'pop-up', 'ritual panel', 'one at a time', 'together', 'leader', 'live ritual', 'glow', 'sit in a ritual', 'candle gazing', 'during coven rituals', 'call the quarters', 'call the east', 'quarter order', 'release the quarters'],
       },
       {
         id: 'covens-book',
