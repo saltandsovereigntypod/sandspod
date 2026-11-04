@@ -9,6 +9,7 @@ import { MoreScreen } from '../../../../components/more/ui';
 import { tabOf } from '../../../../lib/settings/links';
 import { SacredReminders } from '../../../../components/reminders/SacredReminders';
 import { AncestorsSection } from '../../../../components/reminders/AncestorsSection';
+import { CalendarFeedSection } from '../../../../components/reminders/CalendarFeedSection';
 import { TendingSection } from '../../../../components/reminders/TendingSection';
 import { EventStyleSheet } from '../../../../components/rituals/EventStyleSheet';
 import { TimeStepper, clockLabel } from '../../../../components/rituals/TimeStepper';
@@ -159,6 +160,8 @@ function CalendarSection({ settings }: { settings: ReminderSettings }) {
   };
   return (
     <>
+      <CalendarFeedSection />
+      <SectionLabel>On this device</SectionLabel>
       <Card>
         <Body muted>Optional. Planned rituals can be added one by one from their plan.</Body>
         {calendarMode === 'device' ? (
@@ -321,7 +324,7 @@ export default function Notifications() {
         <Row icon="today" title="Daily practice" detail={practiceSummary(settings)} onPress={() => open('practice')} />
         <Row icon="coven" title="Covens" detail={session ? 'Chat, conversations, gatherings, applications and invitations' : 'Sign in to hear from your covens'} onPress={() => open('covens')} />
         <Row icon="more" title="Quiet hours and pause" detail={ready ? lines.quiet : '…'} onPress={() => open('quiet')} />
-        <Row icon="calendar" title="Your calendar" detail="Moon phases, holidays and eclipses in your phone’s calendar" onPress={() => open('calendar')} last />
+        <Row icon="calendar" title="Your calendar" detail="Subscribe in Google or Apple Calendar, or add moon phases, holidays and eclipses to your phone’s" onPress={() => open('calendar')} last />
       </List>
       <SectionLabel>Kept with what they remind you of</SectionLabel>
       <List>

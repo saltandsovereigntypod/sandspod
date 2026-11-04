@@ -675,6 +675,24 @@ export const HELP: HelpSection[] = [
         href: '/rituals/reminders?section=calendar',
         keywords: ['ics', 'apple calendar', 'google calendar', 'sync to calendar', 'calendar export'],
       },
+      {
+        id: 'calendar-subscribe',
+        title: 'Subscribe to your practice in Google or Apple Calendar',
+        summary: 'A private link your calendar keeps up to date: planned rituals, coven gatherings, holidays, moon phases and your ancestors’ days.',
+        steps: [
+          'Sign in, open Settings → Reminders, then "Your calendar".',
+          'Under "Subscribe in your calendar", tap "Make my calendar link".',
+          'Tap "Open in your calendar", or "Copy the link" and add it in your calendar: in Google Calendar, Other calendars, then From URL; in Apple Calendar, File, then New Calendar Subscription.',
+          'Under "What it carries", choose what it shows.',
+        ],
+        tips: [
+          'Anyone with the link can see what it carries. "Reset the link" makes a new one and stops the old one working.',
+          'Calendars refresh subscriptions on their own schedule, from every few hours to a day.',
+          'Holidays and moon phases follow your calendars and choices; the app brings them up to date each day you open it.',
+        ],
+        href: '/rituals/reminders?section=calendar',
+        keywords: ['webcal', 'ical', 'subscribe', 'calendar feed', 'google calendar', 'apple calendar', 'outlook'],
+      },
     ],
   },
 
