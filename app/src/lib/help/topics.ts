@@ -1039,7 +1039,10 @@ export const HELP: HelpSection[] = [
         title: 'Charge a crystal by moon, sun or selenite, and make a grid',
         summary: 'Set a stone to charge and watch its glow build; join stones into a grid with the wand.',
         steps: [
-          'Select a crystal and choose "Under the moon", "In the sun" or "On selenite". Its glow builds as it sits (about three hours, one hour or two). Tap "Take it up" and the charge is kept in its own charging history.',
+          'Select a crystal and choose "Under the moon", "In the sun" or "On selenite". Its glow builds as it sits (about three hours, one hour or two). Tap "Take it up" and the charge is kept in its own charging history, with how it was charged.',
+          'The moon charges only at night, from your sunset to sunrise (set your place on The sky today; without one it goes by the clock, 18:00 to 06:00). It shows how full the moon is: the charge is stronger near the full moon. By day it says when moonlight returns. The sun charges only in daylight.',
+          'On selenite needs a piece of selenite on the altar, and the stone resting on it so they touch. With none there, tap "Place selenite from the cabinet" and a cluster is set under the stone.',
+          'If the stone holds an intention, a charge renews it; if not, it is a general charge. Add an intention, or change it, from the same panel at any time.',
           'For a grid: tap Select, choose three or more crystals, and tap "Activate with the wand". Lines of light join them, round the outside and out from the middle stone. Or select a wand and tap "Activate every crystal here as a grid".',
           'To end it, select a stone in the grid, or the wand, and tap "Let the grid rest".',
         ],
@@ -1047,7 +1050,24 @@ export const HELP: HelpSection[] = [
           'Some stones fade in strong sun (amethyst, rose quartz, fluorite and citrine among them). Charging by light and crystal grids are modern crystal practice.',
           'On a coven altar the grid and each stone’s glow are shared with everyone there.',
         ],
-        keywords: ['crystal', 'charge', 'moon', 'sun', 'selenite', 'grid', 'crystal grid', 'wand', 'glow'],
+        keywords: ['crystal', 'charge', 'moon', 'sun', 'selenite', 'grid', 'crystal grid', 'wand', 'glow', 'intention', 'night', 'daylight', 'full moon'],
+      },
+      {
+        id: 'altar-crystal-wear',
+        title: 'Crystal wear, and when something came at you',
+        summary: 'Stones dull, cloud and may crack with use; cleansing clears most of it. Off, Gentle or Realistic in Settings.',
+        steps: [
+          'Choose how stones wear in Settings → Altar → Crystal wear: Off, Gentle (the usual: wear shows over months) or Realistic (over weeks).',
+          'A crystal takes on strain slowly while it sits on the altar uncleansed, and faster while it does protective work (an intention or spell of protection, warding, banishing or uncrossing, or a protective altar intention) or is held in a spell over days.',
+          'It shows on the stone: a duller sheen, then clouding, then a hairline crack. Its card says "Heavily used — it could do with a cleanse." Cleansing clears the strain of time and all but a fifth of the rest.',
+          'When something came at you, tap "Something came at me" (under Tend, or on a protective spell’s card or stone). It is logged in the altar’s History, and the stones doing protective work take the brunt; the most worn takes the most and may crack through.',
+          'Time alone never breaks a stone. When one breaks, its card asks what you would like to do: thank it and bury it, return it to the earth, keep the pieces (it keeps its cracked look), or cleanse it and keep it as chips. Nothing is taken away until you choose, and it is kept in the stone’s history.',
+        ],
+        tips: [
+          'The idea that a stone takes on what it guards against, and breaks when it has given all it can, is modern crystal folk belief rather than old tradition. Real stones do crack, often from heat, knocks or old flaws.',
+          'On a coven altar each stone’s wear is kept with the stone, so everyone there sees it.',
+        ],
+        keywords: ['crystal wear', 'cracked crystal', 'broken crystal', 'cloudy', 'strain', 'something came at me', 'psychic attack', 'protection', 'warding', 'banishing', 'uncrossing', 'cleanse', 'bury', 'chips', 'gentle', 'realistic'],
       },
       {
         id: 'altar-draw-deck',

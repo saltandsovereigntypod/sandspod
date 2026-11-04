@@ -8,6 +8,7 @@ import { useReducedMotion } from '../../lib/accessibility/store';
 import type { Tint } from '../../lib/altar/ambient';
 import { incenseLife, isIncense } from '../../lib/altar/incense';
 import { isPetitionPaper } from '../../lib/altar/petitions';
+import { crackPaths, type WearLook } from '../../lib/altar/crystalCare';
 import { MoonDisc } from '../MoonDisc';
 import type { MomentKind } from '../../lib/altar/charge';
 import type { Snap } from '../../lib/altar/arrange';
@@ -87,6 +88,8 @@ type Props = {
   sky?: StageSky | null;
   aging?: AgingLooks;
   charges?: ChargeGlows;
+  /** Crystals worn by use, by altarObjectId (crystalCare.ts wearLook). */
+  wear?: Record<string, WearLook>;
   moment?: StageMoment | null;
   /** Where a dragged object is settling (snap to meaning), in stage fractions. */
   guide?: Snap | null;
@@ -342,6 +345,7 @@ export function AltarStage(props: Props) {
               chosen={!!props.selecting && chosen.has(index)}
               ratioVersion={ratioVersion}
               charge={charges[String(doc.objects[index].altarObjectId)] ?? 0}
+              wear={props.wear?.[String(doc.objects[index].altarObjectId)]}
               now={isCandle(doc.objects[index]) || isIncense(doc.objects[index]) || aging[String(doc.objects[index].altarObjectId)] ? now : 0}
               lights={lighting.lights[String(doc.objects[index].altarObjectId)]}
               lightReach={lighting.reach}
@@ -381,11 +385,13 @@ const AltarObjectView = memo(function AltarObjectView({
   highlighted,
   chosen,
   charge,
+  wear,
   now,
   lights,
   lightReach,
 }: {
   object: SavedObject;
+  wear?: WearLook;
   stageWidth: number;
   selected: boolean;
   highlighted: boolean;
@@ -412,7 +418,7 @@ const AltarObjectView = memo(function AltarObjectView({
         },
       ]}
     >
-      <AltarObjectArt object={object} width={rect.width} height={rect.height} charge={charge} now={now} lights={lights} lightReach={lightReach} />
+      <AltarObjectArt object={object} width={rect.width} height={rect.height} charge={charge} wear={wear} now={now} lights={lights} lightReach={lightReach} />
       {(selected || highlighted) && <View style={[styles.outline, highlighted && !selected && styles.outlineSoft, chosen && styles.outlineChosen]} />}
       {chosen && (
         <View style={styles.tick}>
@@ -435,6 +441,8 @@ type ArtProps = {
   /** The lit candles' flames as this object sees them (candlelight on its picture, on the phone). */
   lights?: ObjectLight[];
   lightReach?: number;
+  /** A crystal's wear: duller, clouded, cracked or broken (crystalCare.ts). */
+  wear?: WearLook;
 };
 
 /**
@@ -443,7 +451,7 @@ type ArtProps = {
  * charge's glow; an offering going over. The stage places it; the close-up
  * in the object panel draws the same thing large.
  */
-export const AltarObjectArt = memo(function AltarObjectArt({ object, width, height, charge = 0, now, lights, lightReach = 0 }: ArtProps) {
+export const AltarObjectArt = memo(function AltarObjectArt({ object, width, height, charge = 0, now, lights, lightReach = 0, wear }: ArtProps) {
   const picture = altarPicture(object.imagePath);
   // The whole file, for the candles and incense sticks drawn cut down (never on a sheet).
   const source = picture && !picture.crop ? picture.source : null;
@@ -483,7 +491,7 @@ export const AltarObjectArt = memo(function AltarObjectArt({ object, width, heig
   const paper = isPetitionPaper(object) && !picture;
   // An offering going over: browning and duller, a flower bowing its head, liquid sinking in its vessel.
   const art = now > 0 ? offeringArt(object, width, height, now, object.imagePath ? imageRatio(String(object.imagePath)) : null) : null;
-  const tint = art?.tint ?? null;
+  const tint = art?.tint ?? wear?.tint ?? null;
   const bend = art?.bend ?? null;
   const uid = String(object.altarObjectId || 'obj');
   const labelSize = Math.max(8, Math.min(13, width * 0.16));
@@ -560,6 +568,7 @@ export const AltarObjectArt = memo(function AltarObjectArt({ object, width, heig
       {lit && flame && <Flame layout={flame} motion={motion} />}
       {smoke != null && flame && (HAS_SMOKE ? <SmokeFire key={smoke} layout={flame} width={width} height={height} /> : <Smoke key={smoke} layout={flame} />)}
       {photoRect && frame && <FramePhoto source={frame.photo ? altarImageSource(frame.photo) : null} rect={photoRect} tint={framePhotoTint(object)} unmirror={flipped} />}
+      {wear && (wear.haze > 0 || wear.crack > 0) && <WearMarks wear={wear} width={width} height={height} />}
       {art?.food && <FoodHeap food={art.food} width={width} height={height} uid={uid} />}
       {art && (art.liquid || art.tide || art.stain || art.petals.length > 0) && <OfferingMarks art={art} width={width} height={height} uid={uid} />}
       {stick && (stick.pile || stickCut) && <StickAsh stick={stick} width={width} height={height} lit={!!incense?.lit} />}
@@ -615,6 +624,23 @@ function SkyLayer({ sky, stageWidth }: { sky: StageSky; stageWidth: number }) {
 }
 
 /** A folded petition paper (the website shows its symbol instead). */
+/** A worn crystal's clouding and crack, over its picture (the website draws the same in living-art.js). */
+function WearMarks({ wear, width, height }: { wear: WearLook; width: number; height: number }) {
+  const inner = { w: width * (1 - IMAGE_INSET.x * 2), h: height - width * IMAGE_INSET.y * 2 };
+  return (
+    <View pointerEvents="none" style={{ position: 'absolute', left: width * IMAGE_INSET.x, top: width * IMAGE_INSET.y, width: inner.w, height: inner.h }}>
+      {wear.haze > 0 && <View style={[StyleSheet.absoluteFill, { backgroundColor: 'rgb(236,238,242)', opacity: wear.haze, borderRadius: inner.w / 2 }]} />}
+      {wear.crack > 0 && (
+        <Svg width={inner.w} height={inner.h}>
+          {crackPaths(inner.w, inner.h, wear.crack as 1 | 2).map((d, i) => (
+            <Path key={i} d={d} stroke="rgba(30,26,34,0.75)" strokeWidth={Math.max(0.8, inner.w * (wear.crack === 2 ? 0.03 : 0.015))} fill="none" strokeLinecap="round" strokeLinejoin="round" />
+          ))}
+        </Svg>
+      )}
+    </View>
+  );
+}
+
 function PetitionPaper() {
   return (
     <Svg width="100%" height="100%" viewBox="0 0 40 40">
