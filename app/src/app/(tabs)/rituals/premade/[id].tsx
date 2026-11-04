@@ -3,6 +3,7 @@ import { useMemo, useState } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 import { Button } from '../../../../components/Button';
+import { ShareCardButton } from '../../../../components/share/ShareCard';
 import { SupportLink } from '../../../../components/SupportLink';
 import { AltarChoiceSheet, useBeginOnAltar } from '../../../../components/altar/connect/BeginOnAltar';
 import { BeginTogetherButton } from '../../../../components/together/BeginTogether';
@@ -142,6 +143,19 @@ export default function PremadeView() {
         ) : (
           <Body muted>Sign in to save a copy to your own templates and change it however you like.</Body>
         )}
+        <ShareCardButton
+          card={{
+            eyebrow: premade.kind === 'spell' ? 'A spell' : 'A ritual',
+            title: premade.title,
+            subtitle: premade.summary,
+            lines: [
+              premade.ingredients.length ? `You need: ${premade.ingredients.map((i) => i.name).join(', ')}` : '',
+              ...premade.steps.map((s, i) => `${i + 1}. ${s.title}`),
+              premade.safety ? `Take care: ${premade.safety}` : '',
+            ],
+            footer: facts,
+          }}
+        />
       </View>
 
       {!!premade.safety && (

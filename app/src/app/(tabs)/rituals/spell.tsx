@@ -4,6 +4,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { Share, StyleSheet, Text, View } from 'react-native';
 
 import { Button } from '../../../components/Button';
+import { ShareCardButton } from '../../../components/share/ShareCard';
 import { AltarChoiceSheet, useBeginOnAltar } from '../../../components/altar/connect/BeginOnAltar';
 import { BeginTogetherButton } from '../../../components/together/BeginTogether';
 import { startFromDraft } from '../../../lib/together/live';
@@ -548,6 +549,15 @@ export default function SpellBuilder() {
             </>
           )}
           <Button label="Share or print as text" variant="text" onPress={() => void Share.share({ title: draft.title, message: spellText(spec) }).catch(() => undefined)} />
+          <ShareCardButton
+            variant="text"
+            card={{
+              eyebrow: 'A spell',
+              title: draft.title,
+              subtitle: draft.intention || undefined,
+              lines: [draft.ingredients.length ? `You need: ${draft.ingredients.map((i) => i.name).join(', ')}` : '', ...draft.steps.map((s, i) => `${i + 1}. ${s.title}${s.instructions ? `: ${s.instructions}` : ''}`)],
+            }}
+          />
           <Button label="Start a new spell" variant="text" onPress={startOver} />
         </View>
         {!!rituals.active && <Notice>A ritual is under way. Finish it before beginning this one.</Notice>}

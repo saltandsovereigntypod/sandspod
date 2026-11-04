@@ -4,6 +4,7 @@ import { Image, StyleSheet, Text, View } from 'react-native';
 
 import { Button } from '../Button';
 import { ResearchFooter } from '../ResearchNote';
+import { ShareCardButton } from '../share/ShareCard';
 import { Card, MoreScreen, RichText, Section, Tags } from '../more/ui';
 import { JOURNEY_CATALOG } from '../../lib/journeys/catalog';
 import { journeyForDeityRefIn } from '../../lib/journeys/lookup';
@@ -132,6 +133,14 @@ export function LibraryEntryView({ entryId, back, backLabel, hrefFor, editHref }
           onPress={() => router.push({ pathname: '/rituals/journeys/[id]', params: { id: journey.id } } as Href)}
         />
       )}
+
+      <ShareCardButton
+        card={{
+          eyebrow: `Living Library${entry.category ? ` · ${entry.category}` : ''}`,
+          title: entry.name,
+          lines: [entryIntro(entry), ...facts.map((f) => `${f.label}: ${f.value}`)],
+        }}
+      />
 
       {!!spellLink && (
         <Button

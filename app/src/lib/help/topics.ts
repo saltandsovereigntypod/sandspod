@@ -1616,6 +1616,18 @@ export const HELP: HelpSection[] = [
         keywords: ['screenshot', 'export image', 'post altar', 'social'],
       },
       {
+        id: 'share-as-card',
+        title: 'Share or print a ritual, spell, Library entry or reading as a card',
+        summary: 'A styled picture to send or save, a page to print, or the words to share.',
+        steps: [
+          'Open a ritual template, a working from the workings library, a spell in the builder, a Living Library entry or one of your readings.',
+          'Tap "Share as card" and look at the card.',
+          'Tap "Share the picture" (on the web, "Download the picture"), "Print" on the web, or "Share the words".',
+        ],
+        tips: ['The card is made on your device and goes only where you send it. On a phone, the share sheet’s Print prints the words.'],
+        keywords: ['share card', 'print', 'printable', 'picture', 'image', 'social', 'export'],
+      },
+      {
         id: 'altar-record-grimoire',
         title: 'Record an altar or group in your Grimoire',
         summary: 'Turn what you set up into a page in your Grimoire.',
