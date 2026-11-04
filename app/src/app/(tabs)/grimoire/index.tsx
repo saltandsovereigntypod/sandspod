@@ -421,11 +421,11 @@ function JournalShelf({ kind, frame, item, query }: { kind: JournalKind; frame: 
   );
 }
 
-/** The four practice journals, wherever each is kept. */
+/** The one Journal (Rituals → Journal), with every kind of entry. */
 function JournalsLink() {
   return (
     <MenuList>
-      <MenuRow label="Journals" detail="Shadow work, Deity & spirit, Ancestors, and Omens & signs" icon="moon" last onPress={() => router.push('/grimoire/journals' as Href)} />
+      <MenuRow label="Journal" detail="Every journal in one place: rituals, dreams, readings, sits, cycle notes, shadow work, deities, ancestors and omens" icon="moon" last onPress={() => router.push('/rituals/journal' as Href)} />
     </MenuList>
   );
 }

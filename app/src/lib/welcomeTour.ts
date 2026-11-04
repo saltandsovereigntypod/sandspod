@@ -38,7 +38,7 @@ export const TOUR_PAGES: TourPage[] = [
   {
     icon: { tab: 'rituals' },
     title: 'Rituals by the moon',
-    body: 'In Practice → Rituals, begin a premade ritual or spell, make your own in the spell builder, or plan one for the right night and run it step by step. Your journals keep it afterwards, and on the day you chose it asks: did it work?',
+    body: 'In Practice → Rituals, begin a premade ritual or spell, make your own in the spell builder, or plan one for the right night and run it step by step. One Journal keeps it afterwards, with your dreams, readings, sits and other journals, and on the day you chose it asks: did it work?',
   },
   {
     icon: { tab: 'wheel' },
@@ -48,17 +48,17 @@ export const TOUR_PAGES: TourPage[] = [
   {
     icon: { tab: 'grimoire' },
     title: 'Your Grimoire',
-    body: 'Practice → Grimoire keeps your pages, with the Living Library as a section of it: herbs, crystals, deities and candle colours with their traditional lore. Your dreams live there too, with pages for the holidays and moons.',
+    body: 'Practice → Grimoire keeps your pages, with the Living Library as a section of it (the book at the top right of every tab opens it, and the cog beside it Settings): herbs, crystals, deities and candle colours with their traditional lore. Your dreams live there too, with pages for the holidays and moons.',
   },
   {
     icon: { more: 'journey' },
     title: 'Your practice, your path',
-    body: 'Practice → Craft keeps Cycle & Moon, astrology from your birth chart, the timing advisor for choosing the night, Hearth & land, and the Craft tools for green, kitchen, hedge, cosmic, crystal, sea and folk craft. Dedication journeys (under Rituals), patron deities and the Closed & living traditions guide help you walk a path with care.',
+    body: 'Practice → Craft is My practice: Cycle & Moon, astrology from your birth chart, the timing advisor for choosing the night, Hearth & land, and the Craft tools for green, kitchen, hedge, cosmic, crystal, sea and folk craft. Dedication journeys (under Rituals), patron deities and the Closed & living traditions guide help you walk a path with care.',
   },
   {
     icon: { tab: 'calendar' },
     title: 'Calendars and reminders',
-    body: 'Keep the holidays of the calendars you follow, count your days by the moon, and show old calendars such as the Athenian or the Roman. Reminders can ring for the moon and your plans, the holidays you choose, tending your plants, altar, offerings, crystals and candles, and planning a ritual for your holidays and your coven, each as you like it.',
+    body: 'Keep the holidays of the calendars you follow, count your days by the moon, and show old calendars such as the Athenian or the Roman. Reminders can ring for the moon and your plans, the holidays you choose, tending your plants, altar, offerings, crystals and candles, and planning a ritual for your holidays and your coven, each as you like it, all set in one place: Settings → Reminders.',
   },
   {
     icon: { tab: 'coven' },

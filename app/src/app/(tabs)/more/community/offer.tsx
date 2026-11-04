@@ -71,7 +71,7 @@ export default function Offer() {
             &amp; Sovereignty.
           </Text>
           {userId ? (
-            <Button label="See my submissions" onPress={() => router.replace('/more/community/mine')} />
+            <Button label="See my submissions" onPress={() => router.replace('/more/community?tab=mine')} />
           ) : (
             <Text style={type.caption}>Sign in next time to follow its review and read any replies.</Text>
           )}

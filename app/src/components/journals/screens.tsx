@@ -1,9 +1,9 @@
-// The four practice journals' screens: the hub, a journal, an entry and the
+// The four practice journals' screens (the hub is the one Journal now, rituals/journal): a journal, an entry and the
 // form. The same screens open under the Grimoire (/grimoire/journals/…) and
 // under Rituals (/rituals/journals/…); the person chooses which is home for
 // each journal. The website's twin is grimoire/journals/journals.js.
 
-import { router, useLocalSearchParams, type Href } from 'expo-router';
+import { Redirect, router, useLocalSearchParams, type Href } from 'expo-router';
 import { useMemo, useState } from 'react';
 import { Image, Text, View } from 'react-native';
 
@@ -81,7 +81,7 @@ import { Button } from '../Button';
 import { MoonDisc } from '../MoonDisc';
 import { Body, Card, Chip, Chips, confirmAction, Field, List, Notice, Row, SectionLabel, tell, Title, ui } from '../rituals/ui';
 import { SupportLink } from '../SupportLink';
-import { EntryList, EntryRow, journalStyles as s, JournalShell, Part, PlaceChooser, useJournal, usePeople, useTabPlace } from './shared';
+import { EntryList, EntryRow, journalStyles as s, JournalShell, Part, PlaceChooser, useJournal, usePeople } from './shared';
 
 const str = (v: unknown) => (typeof v === 'string' ? v : '');
 
@@ -96,7 +96,7 @@ function NoSuchJournal() {
     <JournalShell>
       <Title>Journals</Title>
       <Body>That journal couldn’t be found.</Body>
-      <Button label="All journals" variant="outline" onPress={() => router.replace('/grimoire/journals' as Href)} />
+      <Button label="Your journal" variant="outline" onPress={() => router.replace('/rituals/journal' as Href)} />
     </JournalShell>
   );
 }
@@ -110,46 +110,9 @@ const libraryDeities = () =>
 // ---------------------------------------------------------------------------
 // The hub
 
+/** The old Journals hub (/grimoire/journals, /rituals/journals): the one Journal shows every journal now. */
 export function JournalsHubScreen() {
-  const tab = useTabPlace();
-  return (
-    <JournalShell back={tab === 'journal' ? '/rituals/journal' : '/grimoire'}>
-      <Title eyebrow="Your practice">Journals</Title>
-      <Body muted>Four journals for the inner work of the craft. Each is private to you, kept with your account, and can be a section of your Grimoire or a journal of its own.</Body>
-      {JOURNALS.map((j) => (
-        <HubCard key={j.kind} kind={j.kind} />
-      ))}
-      <List>
-        <Row icon="grimoire" title="Dreams" detail="Your dream journal, in the Grimoire" onPress={() => router.push(DREAM_ROUTES.journal as Href)} />
-        <Row icon="rituals" title="Ritual journal" detail="Every ritual you’ve kept, and what worked" onPress={() => router.push('/rituals/journal' as Href)} />
-        <Row icon="today" title="Your moon" detail="Patterns in your practice" last onPress={() => router.push('/rituals/journal/insights' as Href)} />
-      </List>
-      <SupportLink />
-    </JournalShell>
-  );
-}
-
-function HubCard({ kind }: { kind: JournalKind }) {
-  const { def, list } = useJournal(kind);
-  const { names } = usePeople();
-  const { settings } = useMySettings();
-  const home = journalRoutes(kind, journalPlace(settings, kind));
-  return (
-    <Card>
-      <Text style={type.cardTitle}>{def.title}</Text>
-      <Body muted>{shelfLine(kind, list, { people: names })}</Body>
-      <View style={ui.actions}>
-        <Button label={list.length ? 'Open' : 'Begin'} variant="outline" onPress={() => router.push(home.list as Href)} />
-        <Button label={def.write} variant="text" onPress={() => router.push(home.write() as Href)} />
-      </View>
-      <PlaceChooserCompact kind={kind} />
-    </Card>
-  );
-}
-
-function PlaceChooserCompact({ kind }: { kind: JournalKind }) {
-  const { settings } = useMySettings();
-  return <Text style={type.caption}>{journalPlace(settings, kind) === 'grimoire' ? 'Kept in your Grimoire' : 'Kept as its own journal, under Rituals → Journal'}</Text>;
+  return <Redirect href={'/rituals/journal' as Href} />;
 }
 
 // ---------------------------------------------------------------------------

@@ -7,6 +7,7 @@ import { HolidayCalendarSection, HolidaysSection } from '../../../../components/
 import { CovensSection, PlanningSection, PracticeSection, QuietSection } from '../../../../components/reminders/MoreSections';
 import { MoreScreen } from '../../../../components/more/ui';
 import { tabOf } from '../../../../lib/settings/links';
+import { SacredReminders } from '../../../../components/reminders/SacredReminders';
 import { TendingSection } from '../../../../components/reminders/TendingSection';
 import { EventStyleSheet } from '../../../../components/rituals/EventStyleSheet';
 import { TimeStepper, clockLabel } from '../../../../components/rituals/TimeStepper';
@@ -67,6 +68,7 @@ const TITLES: Record<string, string> = {
   practice: 'Daily practice',
   quiet: 'Quiet hours and pause',
   calendar: 'Your calendar',
+  sacred: 'Sacred days of your gods',
 };
 
 /** Moon phases, planned rituals and look-back days (kept on this phone). */
@@ -232,7 +234,7 @@ function practiceSummary(s: ReminderSettings): string {
   return parts.length ? `${parts[0][0].toUpperCase()}${parts.join(' · ').slice(1)}` : 'Off';
 }
 
-// Settings → Notifications & reminders, by kind: one screen with a line on
+// Reminders (Settings → Reminders), by kind: one screen with a line on
 // each, and a page for each (the same route with ?section=…, so the phone's
 // back gesture works). The one home for every notification choice, coven
 // ones included. Today and Rituals open their own copy of it (today/reminders,
@@ -272,9 +274,9 @@ export default function Notifications() {
     const holidayGroup = section.startsWith('holidays:') ? section.slice('holidays:'.length) : null;
     const groupName = holidayGroup ? (holidayGroups(appSettings).find((g) => g.id === holidayGroup)?.name ?? 'A calendar') : null;
     return (
-      <MoreScreen title={groupName ?? TITLES[section] ?? 'Notifications & reminders'} eyebrow="Notifications & reminders" back={home}>
+      <MoreScreen title={groupName ?? TITLES[section] ?? 'Reminders'} eyebrow="Reminders" back={home}>
         {notices}
-        {!ready && section !== 'moon' && section !== 'practice' && section !== 'calendar' ? (
+        {!ready && section !== 'moon' && section !== 'practice' && section !== 'calendar' && section !== 'sacred' ? (
           <Body muted>Reading your settings…</Body>
         ) : holidayGroup ? (
           <HolidayCalendarSection prefs={prefs} update={save} settings={appSettings} open={open} group={holidayGroup} />
@@ -290,6 +292,8 @@ export default function Notifications() {
           <QuietSection prefs={prefs} update={save} />
         ) : section === 'practice' ? (
           <PracticeSection settings={settings} change={(c) => void updateReminderSettings(c)} />
+        ) : section === 'sacred' ? (
+          <SacredReminders inHub />
         ) : section === 'calendar' ? (
           <CalendarSection settings={settings} />
         ) : (
@@ -301,8 +305,8 @@ export default function Notifications() {
 
   const lines = summaries(prefs, appSettings);
   return (
-    <MoreScreen title="Notifications & reminders" eyebrow="Settings" back={home}>
-      <Body muted>Choose what you’d like to hear about, and when. Each kind has its own page.</Body>
+    <MoreScreen title="Reminders" eyebrow="Settings" back={home}>
+      <Body muted>Every reminder in one place: choose what you’d like to hear about, and when. Each kind has its own page. What there is to do now is in To tend.</Body>
       {notices}
       <List>
         <Row icon="bell" title="Moon and rituals" detail={moonSummary(settings)} onPress={() => open('moon')} />
@@ -313,6 +317,13 @@ export default function Notifications() {
         <Row icon="coven" title="Covens" detail={session ? 'Chat, conversations, gatherings, applications and invitations' : 'Sign in to hear from your covens'} onPress={() => open('covens')} />
         <Row icon="more" title="Quiet hours and pause" detail={ready ? lines.quiet : '…'} onPress={() => open('quiet')} />
         <Row icon="calendar" title="Your calendar" detail="Moon phases, holidays and eclipses in your phone’s calendar" onPress={() => open('calendar')} last />
+      </List>
+      <SectionLabel>Kept with what they remind you of</SectionLabel>
+      <List>
+        <Row icon="wheel" title="Sacred days of your gods" detail="For your patron and dedicated deities" onPress={() => open('sacred')} />
+        <Row icon="altar" title="Tend rhythms" detail="Set on each thing in To tend: choose its rhythm and Remind me" onPress={() => router.push('/today/tend' as Href)} />
+        <Row icon="today" title="Cycle & Moon" detail="Kept private with your cycle notes · in Cycle & Moon’s settings" onPress={() => router.push('/rituals/cycle/settings' as Href)} />
+        <Row icon="calendar" title="A Year and a Day" detail="Each moon’s start and the day of dedication · on your year’s page" last onPress={() => router.push('/rituals/year' as Href)} />
       </List>
       {remindersSupported && loaded && permission === 'granted' && (
         <Notice>

@@ -8,8 +8,10 @@ import { CRAFT, CRAFT_TOOLS as CRAFT_TOOLS_TITLE, WORKINGS_LIBRARY, YOUR_CRAFTS 
 import { myPractices, PRACTICES, type Practice } from '../../../../lib/rituals/premade';
 import { useMySettings } from '../../../../lib/settings/store';
 
-// The Craft home, Practice's third section (Grimoire · Rituals · Craft): the
-// practice tools that aren't ritual work. Your body and the moon, the sky,
+// My practice: the Craft home, Practice's third section (Grimoire · Rituals ·
+// Craft), and the one place for every practice tool; the tools of your
+// chosen crafts are listed here directly, each path's own page kept as its
+// detail. The practice tools that aren't ritual work. Your body and the moon, the sky,
 // divination and the sigil maker, then a page of tools for each kind of
 // practice, yours first. It keeps the old Craft tools address
 // (/rituals/craft), and its tools keep theirs (/rituals/cycle,
@@ -37,8 +39,8 @@ export default function CraftHome() {
   return (
     <RitualScreen>
       <PracticeSwitch current="craft" />
-      <Title eyebrow="Tools for your practice">{CRAFT}</Title>
-      <Body muted>The tools that aren’t rituals: your body and the moon, the sky, the cards, and a page of tools for each kind of craft.</Body>
+      <Title eyebrow={CRAFT}>My practice</Title>
+      <Body muted>Every tool for your practice in one place: your body and the moon, the sky, the cards and sigils, meditation, hearth and land, and the tools of your own crafts first.</Body>
 
       <View style={ui.gapSmall}>
         <SectionLabel>Body & moon</SectionLabel>
@@ -129,14 +131,21 @@ export default function CraftHome() {
       <View style={ui.gapSmall}>
         <SectionLabel>{`${CRAFT_TOOLS_TITLE} by path`}</SectionLabel>
         {chosen.length ? (
-          <>
-            <Body muted>{YOUR_CRAFTS}</Body>
-            <List>{chosen.map(row)}</List>
-            <Body muted>Other practices</Body>
-          </>
+          chosen.map((p) => (
+            <View key={p.id} style={ui.gapSmall}>
+              <Body muted>{p.name}</Body>
+              <List>
+                {CRAFT_TOOLS[p.id].map((t) => (
+                  <Row key={t.title} icon="wheel" title={t.title} detail={t.detail} onPress={go(t.href)} />
+                ))}
+                <Row icon="grimoire" title={`All of ${p.name}`} detail="Its page: what’s happening now, the tools and its workings" last onPress={go(`/rituals/craft/${p.id}`)} />
+              </List>
+            </View>
+          ))
         ) : (
-          <Body muted>{`Choose your crafts in Settings → ${YOUR_CRAFTS} to put their tools first. Every practice’s tools are open to you either way.`}</Body>
+          <Body muted>{`Choose your crafts in Settings → ${YOUR_CRAFTS} to put their tools here, one by one. Every practice’s tools are open to you either way.`}</Body>
         )}
+        {chosen.length > 0 && <Body muted>Other practices</Body>}
         <List>{others.map(row)}</List>
         <List>
           <Row icon="grimoire" title="Choose your crafts" detail={`Settings → ${YOUR_CRAFTS}`} last onPress={go('/rituals/settings/practice')} />

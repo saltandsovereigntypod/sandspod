@@ -13,6 +13,7 @@ import { CalendarLineList, LeadCalendarLine } from '../../../components/Calendar
 import { Icon } from '../../../components/Icon';
 import { MoonDisc } from '../../../components/MoonDisc';
 import { Screen } from '../../../components/Screen';
+import { HeaderRow } from '../../../components/HeaderTools';
 import { SegmentedSwitch } from '../../../components/SegmentedSwitch';
 import { preloadRememberedTab, useRememberedTab } from '../../../lib/rememberedTab';
 import { asTodayTab, TODAY_TAB_KEY, TODAY_TABS, todayTabFor } from '../../../lib/screenTabs';
@@ -170,7 +171,9 @@ export default function Today() {
 
   return (
     <Screen>
-      <SegmentedSwitch label="Today" options={TODAY_TABS} value={tab} onChange={rememberTab} />
+      <HeaderRow>
+        <SegmentedSwitch label="Today" options={TODAY_TABS} value={tab} onChange={rememberTab} />
+      </HeaderRow>
       {tab === 'today' ? (
         <>
           <View style={styles.header}>

@@ -1,19 +1,13 @@
-import { router, usePathname } from 'expo-router';
+import { router } from 'expo-router';
 import { useMemo, useState } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 import { Button } from '../../../../components/Button';
 import { Card, Chips, Field, MenuList, MenuRow, Section } from '../../../../components/more/ui';
 import { SettingsForm } from '../../../../components/more/SettingsForm';
-import { TimeStepper } from '../../../../components/rituals/TimeStepper';
-import { Toggle } from '../../../../components/rituals/ui';
-import { remindersSupported } from '../../../../lib/reminders/notifier';
-import { calendarOn, PATRON_GROUP_ID, withCalendarOn, withChange } from '../../../../lib/reminders/prefs';
-import { useReminders } from '../../../../lib/reminders/store';
-import { useReminderPrefs } from '../../../../lib/reminders/usePrefs';
+import { SacredReminders } from '../../../../components/reminders/SacredReminders';
 import { traditionalEntries } from '../../../../lib/library/model';
 import { deitiesValue, LEVELS, MY_DEITIES_KEY, myDeities, withDeity, withoutDeity, type DeityLevel, type MyDeity } from '../../../../lib/patron/mine';
-import { settingsHref } from '../../../../lib/settings/links';
 import { colors, fonts, type } from '../../../../theme';
 
 const today = () => {
@@ -128,26 +122,6 @@ export default function DeitySettings() {
         );
       }}
     </SettingsForm>
-  );
-}
-
-/** Reminders on the sacred days of patron and dedicated deities: their calendar among the holiday reminders (Notifications & reminders → Holidays). */
-function SacredReminders() {
-  const pathname = usePathname();
-  const { permission } = useReminders();
-  const { prefs, update, ready, settings } = useReminderPrefs();
-  if (!remindersSupported || !ready) return null;
-  const on = prefs.holidays.on && calendarOn(prefs, PATRON_GROUP_ID);
-  // Holiday reminders off until now: these alone, not every calendar at once.
-  const turn = (next: boolean) => void update(withCalendarOn(prefs, settings, PATRON_GROUP_ID, next));
-  return (
-    <Card>
-      <Toggle label="Remind me on their sacred days" detail="For your patron and dedicated deities, with a small devotion for the day" value={on} onChange={turn} />
-      {on && <TimeStepper minutes={prefs.holidays.at} onChange={(minutes) => void update(withChange(prefs, 'holidays.at', minutes))} />}
-      {on && <Text style={type.caption}>At the time chosen for holiday reminders. Choose how far ahead, and which of your other calendars remind you, in Notifications & reminders → Holidays.</Text>}
-      <Button label="Holiday reminders" variant="text" onPress={() => router.push({ pathname: settingsHref('notifications', pathname), params: { section: 'holidays' } } as never)} />
-      {permission === 'denied' && on && <Text style={type.caption}>Notifications are off for this app. Turn them on in your phone’s Settings to hear these.</Text>}
-    </Card>
   );
 }
 

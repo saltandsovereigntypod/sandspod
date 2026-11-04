@@ -20,6 +20,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useAccessibility, useAccessibleText } from '../../lib/accessibility/store';
 import { richTextBlocks } from '../../lib/library/richText';
 import { colors, fonts, radius, space, touch, type } from '../../theme';
+import { HeaderTools } from '../HeaderTools';
 import { Icon } from '../Icon';
 import { MoreIcon, type MoreIconName } from './MoreIcon';
 
@@ -32,6 +33,7 @@ export function MoreScreen({
   children,
   refreshControl,
   scrollKey,
+  tools,
 }: {
   title: string;
   eyebrow?: string;
@@ -48,6 +50,8 @@ export function MoreScreen({
    * to one returns to where you were in it rather than wherever the last left off.
    */
   scrollKey?: string;
+  /** A tab's home: the Living Library and Settings doors beside the title (HeaderTools). */
+  tools?: boolean;
 }) {
   // Redraws the title when Settings → Accessibility changes.
   useAccessibility();
@@ -93,11 +97,14 @@ export function MoreScreen({
         keyboardDismissMode="interactive"
         showsVerticalScrollIndicator={false}
       >
-        <View style={styles.titleBlock}>
-          {!!eyebrow && <Text style={type.eyebrow}>{eyebrow}</Text>}
-          <Text accessibilityRole="header" style={type.title}>
-            {title}
-          </Text>
+        <View style={tools ? styles.titleWithTools : undefined}>
+          <View style={[styles.titleBlock, tools && styles.titleFill]}>
+            {!!eyebrow && <Text style={type.eyebrow}>{eyebrow}</Text>}
+            <Text accessibilityRole="header" style={type.title}>
+              {title}
+            </Text>
+          </View>
+          {tools && <HeaderTools />}
         </View>
         {children}
       </ScrollView>
@@ -389,6 +396,8 @@ const styles = StyleSheet.create({
   content: { paddingHorizontal: space.gutter, paddingTop: 4, paddingBottom: 40, gap: space.section },
   contentTop: { paddingTop: 16 },
   titleBlock: { gap: 4 },
+  titleWithTools: { flexDirection: 'row', alignItems: 'flex-start', gap: 8 },
+  titleFill: { flex: 1, minWidth: 0 },
   card: {
     backgroundColor: colors.surface,
     borderRadius: radius.card,

@@ -1,4 +1,4 @@
-// Notifications & reminders → Holidays: holiday reminders on or off, when, how far ahead, and
+// Reminders → Holidays: holiday reminders on or off, when, how far ahead, and
 // each calendar; and a calendar's own page, with every holiday in it to pick
 // or leave, searchable, all or none at once, and each holiday's own timing.
 

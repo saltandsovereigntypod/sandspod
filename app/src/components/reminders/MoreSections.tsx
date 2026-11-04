@@ -1,4 +1,4 @@
-// Notifications & reminders → Ritual planning, Covens, Quiet hours & pause,
+// Reminders → Ritual planning, Covens, Quiet hours & pause,
 // and Daily practice.
 
 import { useEffect, useMemo, useState } from 'react';

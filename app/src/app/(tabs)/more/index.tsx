@@ -14,31 +14,27 @@ import { useMySettings } from '../../../lib/settings/store';
 
 type Row = { key: string; label: string; detail: string; icon: MoreIconName; href: Href | null };
 
+// Each combined place once: the one Journal and Reminders (My practice is
+// Practice → Craft; the Living Library and Settings are also the two doors at
+// the top right of every tab); one Community (Rituals · Writings · Mine); then
+// your own things.
 const GROUPS: { label: string; rows: Row[] }[] = [
   {
-    label: 'Community',
+    label: 'Your practice',
     rows: [
-      {
-        key: 'community',
-        label: 'Community Grimoire',
-        detail: 'Pages shared by the community',
-        icon: 'community',
-        href: '/more/community',
-      },
-      { key: 'offer', label: 'Make an offering', detail: 'Share a ritual, dream or story', icon: 'offer', href: '/more/community/offer' },
-      { key: 'mine', label: 'My submissions', detail: 'Status and replies', icon: 'letters', href: '/more/community/mine' },
+      { key: 'journal', label: 'Journal', detail: 'Rituals, dreams, readings, sits, cycle notes and your journals', icon: 'journey', href: '/rituals/journal' },
+      { key: 'reminders', label: 'Reminders', detail: 'Every reminder, in one place', icon: 'letters', href: '/more/settings/notifications' },
     ],
   },
   {
-    label: 'Practice',
-    rows: [
-    ],
+    label: 'Community',
+    rows: [{ key: 'community', label: 'Community', detail: 'Rituals · Writings · Mine', icon: 'community', href: '/more/community' }],
   },
   {
     label: 'Your Sanctuary',
     rows: [
       { key: 'journey', label: 'My Journey', detail: 'A chronicle of your practice', icon: 'journey', href: '/more/journey' },
-      { key: 'settings', label: 'Settings', detail: 'Notifications, accessibility, account and backup', icon: 'settings', href: '/more/settings' },
+      { key: 'settings', label: 'Settings', detail: 'Accessibility, account, backup and every other choice', icon: 'settings', href: '/more/settings' },
     ],
   },
 ];
@@ -52,7 +48,7 @@ export default function More() {
   const unread = review?.unread.byFolder.all ?? 0;
 
   return (
-    <MoreScreen title="More" eyebrow={name ? `Welcome, ${name}` : 'Your Sanctuary'}>
+    <MoreScreen title="More" eyebrow={name ? `Welcome, ${name}` : 'Your Sanctuary'} tools>
       <MenuList>
         <MenuRow
           label="Search your practice"
