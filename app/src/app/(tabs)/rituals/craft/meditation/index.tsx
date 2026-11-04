@@ -150,7 +150,7 @@ export default function MeditationHome() {
           <Row icon="rituals" title="Log a sit" detail="One you sat without the timer" onPress={go(`${MEDITATION}/log`)} />
           <Row icon="altar" title="Meditate at your altar" detail="Open an altar, then Workings → Meditate here" onPress={go('/altar')} />
           <Row icon="today" title="Sit together" detail="With your coven or friends: everyone’s timer starts at once, with a shared drum or bowls if you like" onPress={go('/rituals/together?sit=1')} />
-          <Row icon="calendar" title="A daily reminder to sit" detail="In Reminders, under your practice" last onPress={go('/rituals/reminders')} />
+          <Row icon="calendar" title="A daily reminder to sit" detail="In Reminders, under Daily practice" last onPress={go('/rituals/reminders?section=practice')} />
         </List>
       </View>
 

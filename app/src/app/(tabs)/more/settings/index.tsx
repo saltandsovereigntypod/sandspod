@@ -85,12 +85,12 @@ export default function SettingsIndex() {
       ],
     },
     {
-      label: 'Notifications & reminders',
+      label: 'Reminders',
       rows: [
         {
           key: 'notifications',
-          label: 'Notifications & reminders',
-          detail: 'Moon, holidays, tending, planning, covens, quiet hours',
+          label: 'Reminders',
+          detail: 'Every notification: moon, holidays, tending, planning, practice, covens, quiet hours',
           icon: 'moon',
           href: '/more/settings/notifications',
         },
