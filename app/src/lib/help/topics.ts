@@ -675,6 +675,24 @@ export const HELP: HelpSection[] = [
         href: '/rituals/reminders?section=calendar',
         keywords: ['ics', 'apple calendar', 'google calendar', 'sync to calendar', 'calendar export'],
       },
+      {
+        id: 'calendar-subscribe',
+        title: 'Subscribe to your practice in Google or Apple Calendar',
+        summary: 'A private link your calendar keeps up to date: planned rituals, coven gatherings, holidays, moon phases and your ancestors’ days.',
+        steps: [
+          'Sign in, open Settings → Reminders, then "Your calendar".',
+          'Under "Subscribe in your calendar", tap "Make my calendar link".',
+          'Tap "Open in your calendar", or "Copy the link" and add it in your calendar: in Google Calendar, Other calendars, then From URL; in Apple Calendar, File, then New Calendar Subscription.',
+          'Under "What it carries", choose what it shows.',
+        ],
+        tips: [
+          'Anyone with the link can see what it carries. "Reset the link" makes a new one and stops the old one working.',
+          'Calendars refresh subscriptions on their own schedule, from every few hours to a day.',
+          'Holidays and moon phases follow your calendars and choices; the app brings them up to date each day you open it.',
+        ],
+        href: '/rituals/reminders?section=calendar',
+        keywords: ['webcal', 'ical', 'subscribe', 'calendar feed', 'google calendar', 'apple calendar', 'outlook'],
+      },
     ],
   },
 
@@ -1617,6 +1635,18 @@ export const HELP: HelpSection[] = [
         keywords: ['screenshot', 'export image', 'post altar', 'social'],
       },
       {
+        id: 'share-as-card',
+        title: 'Share or print a ritual, spell, Library entry or reading as a card',
+        summary: 'A styled picture to send or save, a page to print, or the words to share.',
+        steps: [
+          'Open a ritual template, a working from the workings library, a spell in the builder, a Living Library entry or one of your readings.',
+          'Tap "Share as card" and look at the card.',
+          'Tap "Share the picture" (on the web, "Download the picture"), "Print" on the web, or "Share the words".',
+        ],
+        tips: ['The card is made on your device and goes only where you send it. On a phone, the share sheet’s Print prints the words.'],
+        keywords: ['share card', 'print', 'printable', 'picture', 'image', 'social', 'export'],
+      },
+      {
         id: 'altar-record-grimoire',
         title: 'Record an altar or group in your Grimoire',
         summary: 'Turn what you set up into a page in your Grimoire.',
@@ -1872,6 +1902,24 @@ export const HELP: HelpSection[] = [
         ],
         href: '/grimoire/journals',
         keywords: ['ancestors', 'beloved dead', 'family recipes', 'genealogy', 'samhain', 'deipnon', 'family history'],
+      },
+      {
+        id: 'ancestor-profiles',
+        title: 'Keep a page for each of your ancestors',
+        summary: 'Their name, who they are to you, dates and places, a photo, stories, the foods and offerings they liked, and the days you keep for them.',
+        steps: [
+          'Open Practice → Craft → Hedge → Ancestors and tap "Add someone", or open a person and tap "Edit".',
+          'Add what you know. Under "Other days you keep for them", write one day to a line, such as "24 June Name day".',
+          'Tap "Add a photo" to choose one, then save.',
+          'To be reminded of their days, open Settings → Reminders → Your ancestors’ days and turn it on.',
+        ],
+        tips: [
+          'Their days in the coming week show on Today.',
+          'Name an ancestor frame on your altar from them (Tools in the cabinet, Ancestor Frame, "Add a name") to link the two.',
+          'Their page opens your ancestor journal entries about them.',
+        ],
+        href: '/rituals/craft/hedge/ancestors',
+        keywords: ['ancestor profile', 'family tree', 'death anniversary', 'name day', 'feast day', 'memorial', 'beloved dead'],
       },
       {
         id: 'journals-omens',
@@ -2742,6 +2790,23 @@ export const HELP: HelpSection[] = [
         keywords: ['tarot', 'draw a card', 'card of the day', 'daily card', 'celtic cross', 'three card spread', 'rune cast', 'ogham', 'reversed cards', 'blank rune', 'spreads', 'horseshoe', 'tree of life', 'new moon spread', 'full moon spread', 'samhain spread', 'make your own spread', 'custom spread'],
       },
       {
+        id: 'divination-study',
+        title: 'Learn the cards with flashcards and a quiz',
+        summary: 'Study the tarot (in your deck’s own reading), runes, ogham, Lenormand, Kipper or a deck of your own, a few cards a day.',
+        steps: [
+          'Open Practice → Craft → Divination and tap "Learn the cards".',
+          'Read today’s card to learn, then choose a deck.',
+          'Tap "Flashcards": look at the card, tap "Show the meaning", then "I knew it" or "Not yet". Or tap "Quiz" and choose the right meaning.',
+        ],
+        tips: [
+          'Cards move through five boxes. One you know comes back after a day, then three, seven, fourteen and thirty; one you miss goes back to the first box.',
+          'Seven new cards join each day, so a deck of 78 is met in under a fortnight.',
+          'Your progress is kept with your account, per deck.',
+        ],
+        href: '/rituals/divination/study',
+        keywords: ['learn tarot', 'flashcards', 'quiz', 'study', 'spaced repetition', 'memorise', 'runes', 'ogham', 'lenormand'],
+      },
+      {
         id: 'divination-deck',
         title: 'Choose a tarot deck',
         summary: 'Draw with the Rider–Waite–Smith, the Tarot de Marseille or the Sola Busca: the same 78 cards, each deck with its own pictures and its own way of reading them.',
@@ -2993,13 +3058,13 @@ export const HELP: HelpSection[] = [
       },
       {
         id: 'practice-green-season',
-        title: 'See what is in season now',
-        summary: 'Herbs to sow and gather this month where you are.',
+        title: 'Use the garden and foraging calendar',
+        summary: 'Month by month: what to sow and plant, gather and forage where you are, and which of your own plants, patches and shelf herbs are in season.',
         steps: [
-          'Open Practice → Craft, then Green, then "In season now".',
-          'Choose "Northern" or "Southern" under Hemisphere if needed.',
-          'Tap a month to look elsewhere in the year.',
-          'Tap a herb to open its Living Library page.',
+          'Open Practice → Craft, then Green, then "Garden & foraging calendar". Foraging under Hearth links here too.',
+          'Tap a month. The hemisphere follows Settings → Location; choose "Northern" or "Southern" to change it here.',
+          'Under "Yours", see what of your garden, foraging patches, potted plants and shelves is ready. Tap "Log a plant" or "Log a find" to add more.',
+          'Tap a herb for its Living Library page, or a wild plant for its foraging page. "The whole year, month by month" shows every plant at a glance.',
         ],
         href: '/rituals/craft/green/season',
         keywords: ['harvest', 'foraging', 'herbs month', 'sow', 'gather'],

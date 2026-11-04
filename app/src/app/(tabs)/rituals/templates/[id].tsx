@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
 import { Button } from '../../../../components/Button';
+import { ShareCardButton } from '../../../../components/share/ShareCard';
 import { AltarChoiceSheet, useBeginOnAltar } from '../../../../components/altar/connect/BeginOnAltar';
 import { BeginTogetherButton } from '../../../../components/together/BeginTogether';
 import { draftFromTemplate } from '../../../../lib/rituals/lifecycle';
@@ -142,6 +143,15 @@ export default function TemplateView() {
         variant="outline"
         accessibilityHint="Offers a copy to Community Rituals, reviewed before it appears"
         onPress={() => router.push({ pathname: '/rituals/community/share', params: { templateId: template.id } })}
+      />
+      <ShareCardButton
+        card={{
+          eyebrow: template.metadata?.kind === 'spell' ? 'A spell' : 'A ritual',
+          title: template.title,
+          subtitle: template.intention || undefined,
+          lines: [ingredients.length ? `You need: ${ingredients.map((i) => i.name).join(', ')}` : '', ...steps.map((s, i) => `${i + 1}. ${s.title}${s.instructions ? `: ${s.instructions}` : ''}`)],
+          footer: facts || undefined,
+        }}
       />
 
       <AltarChoiceSheet visible={choosingAltar} title={template.title} onClose={() => setChoosingAltar(false)} onPick={(id) => void beginOnAltar(id)} />

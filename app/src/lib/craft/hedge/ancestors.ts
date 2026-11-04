@@ -23,13 +23,40 @@ export type Ancestor = {
   /** What they loved, and what you offer them. */
   loved: string;
   memory: string;
+  /** Foods and drinks they liked, to cook or set out for them. */
+  foods?: string;
+  /** Stories about them, told and remembered. */
+  stories?: string;
+  /** A photo of them: a public URL when uploaded, a file or data URL on a guest's device, or blank. */
+  photo?: string;
+  /** Where an uploaded photo is kept, to remove it again. */
+  photoPath?: string;
+  /** Other days kept for them each year: a name day, a feast day, a wedding day. */
+  days?: KeptDay[];
 };
+
+/** A day and month kept each year, with its name. */
+export type KeptDay = { month: number; day: number; name: string };
 
 export type AncestorEntry = { id: string; createdAt: string; data: Ancestor };
 
 export const emptyDate = (): PartialDate => ({ year: null, month: null, day: null });
 
-export const blankAncestor = (): Ancestor => ({ name: '', relation: '', born: emptyDate(), died: emptyDate(), bornPlace: '', diedPlace: '', loved: '', memory: '' });
+export const blankAncestor = (): Ancestor => ({
+  name: '',
+  relation: '',
+  born: emptyDate(),
+  died: emptyDate(),
+  bornPlace: '',
+  diedPlace: '',
+  loved: '',
+  memory: '',
+  foods: '',
+  stories: '',
+  photo: '',
+  photoPath: '',
+  days: [],
+});
 
 const DAYS_IN_MONTH = [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
 
@@ -61,10 +88,70 @@ export function normalizeDate(raw: unknown): PartialDate {
 export function normalizeAncestor(raw: unknown): Ancestor {
   const r = (raw && typeof raw === 'object' ? raw : {}) as Partial<Ancestor>;
   const str = (v: unknown) => (typeof v === 'string' ? v : '');
-  return { name: str(r.name), relation: str(r.relation), born: normalizeDate(r.born), died: normalizeDate(r.died), bornPlace: str(r.bornPlace), diedPlace: str(r.diedPlace), loved: str(r.loved), memory: str(r.memory) };
+  return {
+    name: str(r.name),
+    relation: str(r.relation),
+    born: normalizeDate(r.born),
+    died: normalizeDate(r.died),
+    bornPlace: str(r.bornPlace),
+    diedPlace: str(r.diedPlace),
+    loved: str(r.loved),
+    memory: str(r.memory),
+    foods: str(r.foods),
+    stories: str(r.stories),
+    photo: str(r.photo),
+    photoPath: str(r.photoPath),
+    days: normalizeKeptDays(r.days),
+  };
 }
 
-const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+function normalizeKeptDays(raw: unknown): KeptDay[] {
+  if (!Array.isArray(raw)) return [];
+  const out: KeptDay[] = [];
+  for (const item of raw) {
+    const r = (item && typeof item === 'object' ? item : {}) as Record<string, unknown>;
+    const d = partialDate(String(r.day ?? ''), String(r.month ?? ''), '');
+    const name = typeof r.name === 'string' ? r.name.trim().slice(0, 80) : '';
+    if (d.month && d.day && name) out.push({ month: d.month, day: d.day, name });
+  }
+  return out.slice(0, 12);
+}
+
+const MONTH_WORDS = ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec'];
+
+/**
+ * Kept days typed one to a line: "14/5 Name day", "14 May Wedding day",
+ * "May 14 Saint's day". Lines that can't be read are left out, and returned
+ * so the form can say which.
+ */
+export function parseKeptDays(text: string): { days: KeptDay[]; unread: string[] } {
+  const days: KeptDay[] = [];
+  const unread: string[] = [];
+  const monthOf = (word: string) => String(MONTH_WORDS.indexOf(word.slice(0, 3).toLowerCase()) + 1 || '');
+  for (const raw of text.split(/\r?\n/)) {
+    const line = raw.trim();
+    if (!line) continue;
+    let day = '';
+    let month = '';
+    let rest = '';
+    const numeric = /^(\d{1,2})\s*[/.-]\s*(\d{1,2})\s+(.+)$/.exec(line);
+    const dayFirst = /^(\d{1,2})(?:st|nd|rd|th)?\s+([a-z]{3,})\.?\s+(.+)$/i.exec(line);
+    const monthFirst = /^([a-z]{3,})\.?\s+(\d{1,2})(?:st|nd|rd|th)?,?\s+(.+)$/i.exec(line);
+    if (numeric) [, day, month, rest] = numeric;
+    else if (dayFirst) [day, month, rest] = [dayFirst[1], monthOf(dayFirst[2]), dayFirst[3]];
+    else if (monthFirst) [day, month, rest] = [monthFirst[2], monthOf(monthFirst[1]), monthFirst[3]];
+    const d = partialDate(day, month, '');
+    const name = rest.trim().replace(/^[-–:·]\s*/, '').slice(0, 80);
+    if (d.month && d.day && name) days.push({ month: d.month, day: d.day, name });
+    else unread.push(line);
+  }
+  return { days: days.slice(0, 12), unread };
+}
+
+/** Kept days as the form shows them: "14 May Name day", one to a line. */
+export const keptDaysText = (days: KeptDay[] | undefined): string => (days ?? []).map((d) => `${d.day} ${MONTHS[d.month - 1]} ${d.name}`).join('\n');
+
+export const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
 /** "14 May 1932", "May 1932", "14 May", "1932", or "" when nothing is known. */
 export function formatPartial(d: PartialDate): string {
@@ -88,7 +175,9 @@ export function lifespan(a: Ancestor): string {
 export type Anniversary = {
   id: string;
   name: string;
-  kind: 'birth' | 'death';
+  kind: 'birth' | 'death' | 'kept';
+  /** A kept day's own name ("Name day"). */
+  label?: string;
   date: Date;
   /** Whole days from today (0 = today). */
   inDays: number;
@@ -119,16 +208,59 @@ export function upcomingAnniversaries(people: AncestorEntry[], from: Date, days 
       if (inDays > days) continue;
       out.push({ id: p.id, name: p.data.name || 'Unnamed', kind, date, inDays, years: d.year ? date.getFullYear() - d.year : null });
     }
+    for (const kept of p.data.days ?? []) {
+      const date = nextOccurrence(kept.month, kept.day, today);
+      const inDays = Math.round((date.getTime() - today.getTime()) / 86_400_000);
+      if (inDays > days) continue;
+      out.push({ id: p.id, name: p.data.name || 'Unnamed', kind: 'kept', label: kept.name, date, inDays, years: null });
+    }
   }
   return out.sort((a, b) => a.inDays - b.inDays || a.name.localeCompare(b.name));
 }
 
 /** "Her 94th birthday", "3 years since he died": plain words for an anniversary. */
 export function anniversaryWords(a: Anniversary): string {
+  if (a.kind === 'kept') return a.label || 'Their day';
   if (a.kind === 'birth') return a.years ? `Born ${a.years} years ago` : 'Birthday';
   if (a.years === 0) return 'Died this year';
   if (a.years === 1) return 'One year since they died';
   return a.years ? `${a.years} years since they died` : 'The day they died';
+}
+
+/** A reminder for one of their days, as the reminders plan takes it. */
+export type AncestorNote = { key: string; at: Date; title: string; body: string; url: string };
+
+const pad2 = (n: number) => String(n).padStart(2, '0');
+
+/** "Nan’s birthday", "The day Grandad died", "Nan: Name day". */
+export function anniversaryTitle(a: Anniversary): string {
+  if (a.kind === 'kept') return `${a.name}: ${a.label || 'their day'}`;
+  return a.kind === 'birth' ? `${a.name}’s birthday` : `The day ${a.name} died`;
+}
+
+/**
+ * Reminders for your ancestors' days (birth and death days with a day and
+ * month, and their kept days) within `horizonDays`, at `at` minutes after
+ * midnight, on the day and `leads` days before.
+ */
+export function ancestorNotes(people: AncestorEntry[], now: Date, options: { at: number; leads: number[] }, horizonDays: number): AncestorNote[] {
+  const leads = options.leads.length ? options.leads : [0];
+  const out: AncestorNote[] = [];
+  for (const a of upcomingAnniversaries(people, now, horizonDays + Math.max(...leads))) {
+    for (const lead of leads) {
+      const at = new Date(a.date.getFullYear(), a.date.getMonth(), a.date.getDate() - lead, Math.floor(options.at / 60), options.at % 60);
+      const day = `${a.date.getFullYear()}-${pad2(a.date.getMonth() + 1)}-${pad2(a.date.getDate())}`;
+      const when = lead === 0 ? 'today' : lead === 1 ? 'tomorrow' : lead === 7 ? 'in a week' : `in ${lead} days`;
+      out.push({
+        key: `ancestor:${a.id}:${a.kind}:${a.label ?? ''}:${day}${lead ? `:${lead}` : ''}`,
+        at,
+        title: `${anniversaryTitle(a)} ${when}`,
+        body: `${anniversaryWords(a)}. Light a candle, cook something they loved, or write to them in your ancestor journal.`,
+        url: `/rituals/craft/hedge/ancestors/${a.id}`,
+      });
+    }
+  }
+  return out;
 }
 
 /** Holiday ids ("<tradition>-<holiday>") from lib/holidays.ts that are days for the dead. */

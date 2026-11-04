@@ -132,7 +132,7 @@ export default function ForageHome() {
         <Body muted>{MOON_PLANTING_NOTE}</Body>
         <List>
           <Row icon="calendar" title="Tonight in the garden" detail={`On Green · ${night.phase}, moon in ${night.sign}`} onPress={go('/rituals/craft/green/moon')} />
-          <Row icon="wheel" title="In season to sow and gather" detail="On Green · garden herbs month by month" onPress={go('/rituals/craft/green/season')} />
+          <Row icon="wheel" title="Garden & foraging calendar" detail="On Green · sow, gather and forage month by month" onPress={go('/rituals/craft/green/season')} />
           <Row icon="grimoire" title="My garden" detail="On Green · your plants and their history" last onPress={go('/rituals/craft/green/garden')} />
         </List>
       </Card>
