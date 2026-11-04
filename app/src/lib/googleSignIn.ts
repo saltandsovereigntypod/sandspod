@@ -3,16 +3,25 @@ import * as WebBrowser from 'expo-web-browser';
 import { Platform } from 'react-native';
 
 import { linkReturn } from './settings/signInMethods';
+import { isSiteOrigin } from './siteLinks';
 import { supabase } from './supabase';
 
 export type GoogleSignInResult = 'signed-in' | 'redirecting' | 'cancelled';
 
 /**
  * Where Supabase sends people back to after Google, a recovery link or an
- * email change: the site root on the web, the app's auth-callback link on a phone.
+ * email change: the app's auth-callback link on a phone; on the web, this
+ * origin's /auth-callback when the app runs on saltandsovereignty.com (whose
+ * root is the website's home page), otherwise the site root.
  */
 export function authReturnUrl(): string {
-  return Platform.OS === 'web' ? `${window.location.origin}/` : Linking.createURL('auth-callback');
+  if (Platform.OS !== 'web') return Linking.createURL('auth-callback');
+  return webAuthReturnUrl(window.location.origin);
+}
+
+/** The web return address for a page origin (see authReturnUrl). */
+export function webAuthReturnUrl(origin: string): string {
+  return isSiteOrigin(origin) ? `${origin}/auth-callback` : `${origin}/`;
 }
 
 /**

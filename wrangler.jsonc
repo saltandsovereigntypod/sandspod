@@ -1,11 +1,20 @@
-// Cloudflare: the website as static files. The build command
-// (node scripts/cloudflare-build.mjs) copies the site into dist/, and
-// `npx wrangler deploy` publishes it. _headers in dist/ sets cache times.
+// Cloudflare: the website. The build command (node scripts/cloudflare-build.mjs)
+// copies the brand's static pages into dist/, and `npx wrangler deploy`
+// publishes them with the Worker (worker/index.js). A request for a file in
+// dist/ is answered from it directly (_headers sets cache times); anything
+// else reaches the Worker, which passes the app's pages through from EAS
+// Hosting (APP_ORIGIN) and redirects the old website app pages to the app's
+// addresses (worker/routing.js).
 {
   "name": "saltandsovereignty",
+  "main": "worker/index.js",
   "compatibility_date": "2026-10-01",
   "assets": {
     "directory": "./dist",
+    "binding": "ASSETS",
     "html_handling": "auto-trailing-slash"
+  },
+  "vars": {
+    "APP_ORIGIN": "https://saltandsovereignty.expo.app"
   }
 }

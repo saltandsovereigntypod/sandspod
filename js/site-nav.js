@@ -10,6 +10,11 @@
  * a Grimoire | Rituals | Craft switch at the top of those pages; the tab
  * returns to whichever was used last. Coven is /covens/.
  *
+ * The app's pages are now the Expo web app itself, on this same domain
+ * (worker/routing.js): the tabs link to its screens (/today, /altar,
+ * /grimoire, /rituals, /rituals/craft, /coven, /more), and the old addresses
+ * above redirect there. This menu now draws only on the website's own pages.
+ *
  * On a computer (900px and wider) it is a side bar down the left, which folds
  * to a rail of icons (« / »). On phones and narrow windows it is a bar of five
  * tabs along the bottom, with a grip to tuck it away and a round button in the
@@ -44,11 +49,11 @@
   };
 
   const TABS = [
-    { key: "today", label: "Today", href: "/today/" },
-    { key: "altar", label: "Altar", href: "/altar/" },
-    { key: "practice", label: "Practice", href: "/grimoire/" },
-    { key: "coven", label: "Coven", href: "/covens/" },
-    { key: "more", label: "More", view: "more" }
+    { key: "today", label: "Today", href: "/today" },
+    { key: "altar", label: "Altar", href: "/altar" },
+    { key: "practice", label: "Practice", href: "/grimoire" },
+    { key: "coven", label: "Coven", href: "/coven" },
+    { key: "more", label: "More", href: "/more" }
   ];
 
   // The website's own pages, in the app's order (lib/siteLinks.ts SITE_LINKS).
@@ -70,9 +75,9 @@
   // The three sections of Practice, switched at the top of their pages (the
   // app's lib/practiceSections.ts PRACTICE_SECTIONS).
   const PRACTICE = [
-    { key: "grimoire", label: "Grimoire", href: "/grimoire/" },
-    { key: "rituals", label: "Rituals", href: "/rituals/" },
-    { key: "craft", label: "Craft", href: "/practice/" }
+    { key: "grimoire", label: "Grimoire", href: "/grimoire" },
+    { key: "rituals", label: "Rituals", href: "/rituals" },
+    { key: "craft", label: "Craft", href: "/rituals/craft" }
   ];
   const PRACTICE_KEY = "saltPracticeSection";
   // Remembered on this device, as in the app: the side bar folded to a rail, the bottom bar tucked away.
@@ -168,7 +173,7 @@
   /** Where Back goes when there is no history: the page's tab. */
   function fallbackHref(loc = global.location) {
     const tab = activeTab(loc.pathname, loc.search);
-    if (tab === "practice") return PRACTICE.find((p) => p.key === practiceSection(loc.pathname, loc.search))?.href || "/grimoire/";
+    if (tab === "practice") return PRACTICE.find((p) => p.key === practiceSection(loc.pathname, loc.search))?.href || "/grimoire";
     if (tab === "podcast" || tab === "more") return "/";
     return TABS.find((t) => t.key === tab)?.href || "/";
   }
