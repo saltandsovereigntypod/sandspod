@@ -31,6 +31,7 @@
   const core = () => global.SaltCore?.covens || {};
   const B = () => core().builder;
   const F = () => core().fields;
+  const Q = () => core().quarterSteps;
   const T = () => core().templates;
   const S = () => core().script;
   const P = () => core().picker;
@@ -54,6 +55,16 @@
   const statusLine = () => `<p class="cv-status" role="status" aria-live="polite" data-status></p>`;
   const nameOf = (id) => UI.nameOf(ctx.state.context, id);
   const btn = (label, act, extra = "", cls = "button--ghost button--small") => `<button class="button ${cls}" type="button" data-act="${act}" ${extra}>${esc(label)}</button>`;
+  /** The ritual's order for the quarters (quarterSteps.ts): which is called first, sunwise from there, any one moved earlier; released in reverse. As the app's StepFocus QuarterOrder. */
+  function quarterOrderHtml() {
+    const q = Q();
+    const order = q.ritualQuarterOrder(m.plan);
+    return `<div class="sp-card"><p class="sp-eyebrow">The quarters’ order, for this ritual</p>
+      <p class="sp-label">Call first</p><div class="sp-chips" role="group" aria-label="Call first">${q.CALL_ORDER.map((id) => chip(q.quarterOf(id).name, "quarter-first", attr({ value: id }), order[0] === id)).join("")}</div>
+      <p class="sp-label">Move one earlier</p><div class="sp-chips" role="group" aria-label="Move one earlier">${order.slice(1).map((id) => chip(q.quarterOf(id).name, "quarter-earlier", attr({ value: id }), false)).join("")}</div>
+      <p class="sp-caption">${esc(`Called ${q.orderLine(order)}. Released in reverse: ${q.orderLine(q.releaseOrderOf(order))}.`)}</p>
+      <p class="sp-caption">Every quarters step in this ritual follows it, and the altar guides the caller of each in turn.</p></div>`;
+  }
   const chip = (label, act, attrs, on) => `<button type="button" class="sp-chip${on ? " is-active" : ""}" data-act="${act}" ${attrs} aria-pressed="${Boolean(on)}">${esc(label)}</button>`;
   const attr = (o) => Object.entries(o).map(([k, v]) => `data-${k}="${esc(v)}"`).join(" ");
   const whoCtx = () => ({ roles: m.plan.roles, ranks: ctx.state.ranks, nameOf });
@@ -77,8 +88,9 @@
       return;
     }
     const kind = ritual ? (ritual.kind === "meeting" ? "meeting" : "rite") : options.kind === "meeting" ? "meeting" : "rite";
-    const plan = B().cleanPlan(ritual?.plan, kind);
     const saved = ritual ? L.orderSteps(state.ritualSteps, ritual.id) : [];
+    // The quarters' calling order is also kept on the quarters steps (quarterSteps.ts), and read back from them.
+    const plan = Q().withQuarterOrder(B().cleanPlan(ritual?.plan, kind), saved);
     // A time chosen in Find a good time (rituals/js/set-ritual.js) fills a NEW ritual only.
     const chosen = !ritual && global.SaltSetRitual ? global.SaltSetRitual.read(global.location.search) : null;
     m = {
@@ -515,6 +527,7 @@
         <div class="sp-chips" role="group" aria-label="How it is done">${B().TURN_MODES.map((t) => chip(t.label, "turn", attr({ value: t.value }), step.turn_mode === t.value)).join("")}</div>
         <p class="sp-caption">${esc((B().TURN_MODES.find((t) => t.value === step.turn_mode) || {}).detail || "")}</p></div>
       ${specs.some((s) => s.essential) ? `<div class="sp-card">${fieldsHtml(specs, values, "essential", step, index)}</div>` : ""}
+      ${Q().isQuarterStep(step) ? quarterOrderHtml() : ""}
       <div class="sp-card"><p class="sp-label">At the altar</p>
         <div class="sp-chips" role="group" aria-label="Nothing at the altar">${chip("Nothing", "altar-choice", attr({ value: "" }), !altarNow.length)}</div>
         ${AA().altarChoiceGroups(altarNow).map((g) => `<p class="sp-caption">${esc(g.label)}</p><div class="sp-chips" role="group" aria-label="${esc(g.label)}">${g.options.map((o) => chip(o.label, "altar-choice", attr({ value: o.value }), altarNow.includes(o.value))).join("")}</div>`).join("")}
@@ -591,7 +604,7 @@
           case "pages":
             return `<div data-field-picker="${esc(spec.key)}"></div>`;
           case "parts": {
-            const parts = F().partsOf(spec, values, specs);
+            const parts = F().partsOf(spec, values, specs, Q().quarterPartOrder(step, Q().ritualQuarterOrder(m.plan)));
             const source = specs.find((s) => s.key === spec.partsFrom);
             if (!parts.length) return `<p class="sp-caption">Choose ${esc((source?.label || "the parts").toLowerCase())} first.</p>`;
             return `<div class="sp-field"><p class="sp-label">${esc(spec.label)}</p>${parts
@@ -1165,6 +1178,16 @@
       case "turn":
         step.turn_mode = d.value;
         return redraw();
+      case "quarter-first":
+        m.plan = { ...m.plan, quarter_order: Q().orderStartingWith(d.value) };
+        return redraw();
+      case "quarter-earlier": {
+        const order = Q().ritualQuarterOrder(m.plan);
+        const i = order.indexOf(d.value);
+        if (i > 0) [order[i - 1], order[i]] = [order[i], order[i - 1]];
+        m.plan = { ...m.plan, quarter_order: order };
+        return redraw();
+      }
       case "ender": {
         const { ender: _was, ...rest } = step.details;
         step.details = d.value === SF().LEADER_ENDER ? rest : { ...rest, ender: d.value };

@@ -44,6 +44,7 @@ import {
   type RitualPlan,
 } from '../../../../../../lib/covens/builder';
 import { useCoven } from '../../../../../../lib/covens/CovenContext';
+import { withQuarterOrder } from '../../../../../../lib/covens/quarterSteps';
 import { errorMessage, OCCASIONS, orderSteps, type BookPage, type Petition } from '../../../../../../lib/covens/model';
 import { chatReminder, DEFAULT_REMINDER_MINUTES, reminderChoiceLabel, REMINDER_MINUTES, withChatReminder } from '../../../../../../lib/covens/messageExtras';
 import { noticeLabelOptions, type NoticeRule } from '../../../../../../lib/covens/notices';
@@ -97,7 +98,8 @@ export default function PlanRitual() {
   const [audience, setAudience] = useState<Assignee[]>(() => cleanAssignees(ritual?.audience));
   const [chatDefaults, setChatDefaults] = useState<string[] | null>(null);
   const [kind, setKind] = useState<GatheringKind>(initialKind);
-  const [plan, setPlan] = useState<RitualPlan>(() => cleanPlan(ritual?.plan, initialKind));
+  // The quarters' calling order is also kept on the quarters steps (quarterSteps.ts), and read back from them.
+  const [plan, setPlan] = useState<RitualPlan>(() => withQuarterOrder(cleanPlan(ritual?.plan, initialKind), ritual ? orderSteps(coven.steps, ritual.id) : []));
   const [steps, setSteps] = useState<BuilderStep[]>(() => (ritual ? orderBySections(orderSteps(coven.steps, ritual.id).map((s) => builderStepFrom(s, cleanPlan(ritual.plan, initialKind))), cleanPlan(ritual.plan, initialKind).sections) : []));
   const [title, setTitle] = useState(ritual?.title ?? '');
   const [intention, setIntention] = useState(ritual?.intention ?? anyIntent(setFor?.intent)?.label ?? '');
@@ -425,6 +427,7 @@ export default function PlanRitual() {
           step={step}
           number={index + 1}
           plan={plan}
+          onPlanChange={setPlan}
           onChange={(patch) => change(step.key, patch)}
           onDone={() => setView('outline')}
           onRemove={() => {

@@ -14,6 +14,7 @@
 import { actionOf, ALTAR_EFFECTS, applyAction, type AltarEffect, type StepAction } from './stepActions.ts';
 import { CONTRIBUTION_KINDS, defaultContribution, type ContributionKind, type StepContribution } from './contributions.ts';
 import { presetOf, presetParams, PRESETS, type PresetId } from '../meditation/scripts.ts';
+import { QUARTERS, type QuarterId } from '../altar/circle.ts';
 
 /** What the altar opens or does. */
 export type AltarDeed =
@@ -38,6 +39,8 @@ export type AltarDeed =
   | 'release_circle'
   | 'quarters'
   | 'release_quarters'
+  | 'call_quarter'
+  | 'release_quarter'
   | 'match'
   | 'bowl'
   | 'toast'
@@ -75,7 +78,14 @@ export type AtAltar = {
   turn?: 'together' | 'in_turn';
   /** What to do with what is placed (stepFlow's "with them"). */
   withItems?: string;
+  /** A step for one quarter: which (quarterSteps.ts). */
+  quarter?: QuarterId;
 };
+
+/** The step actions for each quarter (stepActions.ts: call_air… release_earth), by quarter. */
+const QUARTER_ACTION: Record<QuarterId, string> = { east: 'air', south: 'fire', west: 'water', north: 'earth' };
+export const quarterCallAction = (id: QuarterId) => `call_${QUARTER_ACTION[id]}`;
+export const quarterReleaseAction = (id: QuarterId) => `release_${QUARTER_ACTION[id]}`;
 
 /** Every meaningful thing done at the altar, as a step. Moving, turning and resizing are left out. */
 export const AT_ALTAR: AtAltar[] = [
@@ -107,6 +117,10 @@ export const AT_ALTAR: AtAltar[] = [
   { action: 'open_circle', name: 'Release the circle', deed: 'release_circle', group: 'circle', button: 'Release the circle at the altar' },
   { action: 'call_quarters', name: 'Call the quarters', deed: 'quarters', group: 'circle', button: 'Call the quarters at the altar' },
   { action: 'release_quarters', name: 'Release the quarters', deed: 'release_quarters', group: 'circle', button: 'Release the quarters at the altar' },
+  { action: 'call_quarters_turns', name: 'Call the quarters, one at a time', deed: 'quarters', group: 'circle', button: 'Call your quarter at the altar', turn: 'in_turn' },
+  { action: 'release_quarters_turns', name: 'Release the quarters, one at a time', deed: 'release_quarters', group: 'circle', button: 'Release your quarter at the altar', turn: 'in_turn' },
+  ...QUARTERS.map((q): AtAltar => ({ action: quarterCallAction(q.id), name: `Call the ${q.name}`, deed: 'call_quarter', group: 'circle', button: `Call the ${q.name} at the altar`, quarter: q.id })),
+  ...QUARTERS.map((q): AtAltar => ({ action: quarterReleaseAction(q.id), name: `Release the ${q.name}`, deed: 'release_quarter', group: 'circle', button: `Release the ${q.name} at the altar`, quarter: q.id })),
   { action: 'cleanse_space', name: 'Sweep the altar', deed: 'sweep', group: 'let_go', button: 'Sweep the altar with the besom' },
   { action: 'ask_pendulum', name: 'Ask the pendulum', deed: 'pendulum', group: 'work', button: 'Ask the pendulum at the altar' },
   { action: 'scry_mirror', name: 'Scry in the mirror', deed: 'scry_mirror', group: 'work', button: 'Scry in the mirror at the altar' },

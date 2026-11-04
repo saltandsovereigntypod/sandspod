@@ -51,8 +51,18 @@ export const DEED_HOWTO: Record<string, string> = {
   strike_bowl: 'Tap the glowing singing bowl on the altar, then Strike, and let it sound out.',
   cast_circle: 'Tap the glowing athame or wand on the altar, then trace the circle round the altar with your finger. Or tap Cast it for me.',
   open_circle: 'Tap the glowing athame or wand on the altar, then trace the circle the other way to release it. Or tap Release it for me.',
-  call_quarters: 'Open the circle panel (tap the glowing athame or wand, or Call them below) and call each quarter in turn, East first.',
-  release_quarters: 'Open the circle panel (tap the glowing athame or wand, or Release them below) and release each quarter in turn, North first.',
+  call_quarters: 'Tap each quarter’s spot at the edge of the altar to call it, in the ritual’s order (East first unless it says otherwise). Or open the circle panel: tap the glowing athame or wand, or Call them below.',
+  release_quarters: 'Tap each lit quarter at the edge of the altar to release it, in reverse of the order they were called. Or open the circle panel: tap the glowing athame or wand, or Release them below.',
+  call_quarters_turns: 'When it’s your turn, only your quarter glows at the edge of the altar. Face it, say your words, then tap it to call it. The next caller’s turn follows.',
+  release_quarters_turns: 'When it’s your turn, only your quarter glows at the edge of the altar. Face it, thank it and bid it farewell, then tap it to release it.',
+  call_air: 'Face the East. Say the words, then tap the glowing East at the right-hand edge of the altar to call it.',
+  call_fire: 'Face the South. Say the words, then tap the glowing South at the front edge of the altar to call it.',
+  call_water: 'Face the West. Say the words, then tap the glowing West at the left-hand edge of the altar to call it.',
+  call_earth: 'Face the North. Say the words, then tap the glowing North at the back edge of the altar to call it.',
+  release_air: 'Face the East. Thank it and bid it farewell, then tap the lit East at the right-hand edge of the altar to release it.',
+  release_fire: 'Face the South. Thank it and bid it farewell, then tap the lit South at the front edge of the altar to release it.',
+  release_water: 'Face the West. Thank it and bid it farewell, then tap the lit West at the left-hand edge of the altar to release it.',
+  release_earth: 'Face the North. Thank it and bid it farewell, then tap the lit North at the back edge of the altar to release it.',
   cleanse_space: 'Tap the glowing besom on the altar, then Sweep, and draw it across the altar.',
   ask_pendulum: 'Tap the glowing pendulum on the altar, ask your question, then tap Ask. Its answer shows here.',
   scry_mirror: 'Tap the glowing mirror on the altar, or Scry below, and gaze softly into the glass.',
@@ -154,6 +164,8 @@ export const DEED_TARGET: Record<AltarDeed, string> = {
   release_circle: 'the athame or wand',
   quarters: 'the athame or wand',
   release_quarters: 'the athame or wand',
+  call_quarter: 'your quarter at the edge of the altar',
+  release_quarter: 'your quarter at the edge of the altar',
   match: 'the matches',
   bowl: 'the singing bowl',
   toast: 'the chalice',
@@ -189,9 +201,9 @@ export function panelCue(stepId: string | null | undefined, flow: CueFlow): stri
 /** Whether to open the panel on the Ritual tab (with a soft chime and a glow): the cue has changed to something new. */
 export const opensPanel = (before: string, now: string): boolean => !!now && now !== before;
 
-/** The slim bar's line: "Step 3 · Your turn: Call the quarters". */
-export function panelBarLine(input: { index: number; title: string; mine: boolean; myTurn: boolean; kind: FlowKind; iDone: boolean; complete: boolean; isEnder: boolean }): string {
-  const title = input.title.trim() || 'A step';
+/** The slim bar's line: "Step 3 · Your turn: Call the quarters", or on a quarter's turn "Step 3 · Your turn: call the East". */
+export function panelBarLine(input: { index: number; title: string; mine: boolean; myTurn: boolean; kind: FlowKind; iDone: boolean; complete: boolean; isEnder: boolean; quarterLine?: string | null }): string {
+  const title = (input.myTurn && input.quarterLine ? input.quarterLine.replace(/^(Call|Release)/, (w) => w.toLowerCase()) : input.title.trim()) || 'A step';
   const head = `Step ${input.index + 1}`;
   if (input.complete) return `${head} · ${input.isEnder ? 'Finished: move on when ready' : 'Finished'}`;
   if (input.myTurn) return `${head} · Your turn: ${title}`;

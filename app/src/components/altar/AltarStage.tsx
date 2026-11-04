@@ -15,6 +15,7 @@ import { CandleMarks, CandlePicture, candleGeometry, drawsBurnedDown } from './C
 import { ChargeAura, Moment, SnapGuide } from './StageEffects';
 import { CordLayer } from './CordLayer';
 import { RiteLayer } from './RiteLayer';
+import { quarterSpotAt, type QuarterId } from '../../lib/altar/circle';
 import { CraftLayer } from './CraftLayer';
 import { FlameFire, HAS_FIRE } from './FlameFire';
 import { HAS_LIT, LitPicture } from './LitPicture';
@@ -94,6 +95,9 @@ type Props = {
   onTrace?: (phase: 'start' | 'move' | 'end', x: number, y: number) => void;
   /** The line of light a circle being traced leaves (RiteLayer). */
   trail?: { points: { x: number; y: number }[]; color: string } | null;
+  /** A live ritual's quarter: the one marker that glows for you, the faint spots of the rest, and tapping a marker to call or release it. */
+  quarters?: { glow: QuarterId | null; spots: boolean } | null;
+  onQuarterTap?: (id: QuarterId) => void;
   /** The minute, so candles burn down and their carvings and wax follow, and incense burns. */
   now: number;
 };
@@ -179,6 +183,13 @@ export function AltarStage(props: Props) {
       .maxDistance(12)
       .onEnd((e, success) => {
         if (!success || latest.current.onTrace) return;
+        // A tap on a quarter's marker calls (or releases) it, while a ritual's quarters step is under way.
+        const onQuarter = latest.current.onQuarterTap;
+        if (onQuarter) {
+          const p = stagePoint(e.x, e.y);
+          const id = quarterSpotAt(p.x / p.stageWidth, (p.y / p.stageWidth) * STAGE_ASPECT, STAGE_ASPECT);
+          if (id) return onQuarter(id);
+        }
         latest.current.onSelect(find(e.x, e.y));
       });
 
@@ -348,7 +359,7 @@ export function AltarStage(props: Props) {
             />
           ))}
           <CordLayer doc={doc} stageWidth={stageWidth} stageHeight={stageHeight} />
-          <RiteLayer doc={doc} stageWidth={stageWidth} stageHeight={stageHeight} trail={props.trail} />
+          <RiteLayer doc={doc} stageWidth={stageWidth} stageHeight={stageHeight} trail={props.trail} quarters={props.quarters} />
           <CraftLayer doc={doc} stageWidth={stageWidth} stageHeight={stageHeight} now={now} />
           </Animated.View>
 

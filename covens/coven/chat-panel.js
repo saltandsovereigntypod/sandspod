@@ -200,9 +200,17 @@
     const row = step ? AA()?.atAltarOf(step) : null;
     const sit = step ? AA()?.sitStepOf(step) : null;
     const glowing = !!flow && RP()?.glowsForMe({ kind: flow.kind, mine: flow.mine, myTurn: flow.myTurn, hasOrder: (step.turn_order || []).length > 0, iDone: flow.iDone, complete: flow.progress.complete });
-    if (row && glowing && state.standing?.ok !== false) {
-      deeds.arm({ kind: row.deed, key: `${step.id}:${step.turn_at || 0}:${row.deed}`, onDone: () => deedDone(step.id) });
-      deeds.glow(row.deed);
+    // A quarters step: one quarter at a time (yours glows, alone), its marker tapped to call or release it.
+    const Q = global.SaltCore?.covens?.quarterSteps;
+    const ritual = ritualNow();
+    const order = Q && ritual ? Q.ritualQuarterOrder(ritual.plan, stepsOf(ritual)) : null;
+    const qs = Q && step ? Q.quarterStepOf(step, order) : null;
+    const qDeed = qs ? Q.quarterDeed(qs, step.turn_at) : null;
+    deeds.quarters?.(qs && flow && !flow.progress.complete ? { mode: qs.mode, order, glow: Q.quarterGlowFor(qs, step.turn_at, glowing), spots: true } : null);
+    const kind = qDeed?.kind || row?.deed || null;
+    if (kind && glowing && state.standing?.ok !== false) {
+      deeds.arm({ kind, quarter: qDeed?.quarter || null, key: `${step.id}:${step.turn_at || 0}:${kind}:${qDeed?.quarter || ""}`, onDone: () => deedDone(step.id) });
+      deeds.glow(kind);
       return;
     }
     deeds.arm(null);
@@ -219,6 +227,7 @@
       holder.querySelector("[data-ritual-main]").innerHTML = "";
       global.CovenRitualSit?.stop();
       armAndGlow(null);
+      global.CovenAltarDeed?.quarters?.(null);
       return showTabs();
     }
     const steps = stepsOf(ritual);
@@ -235,6 +244,7 @@
       ? `<p class="sp-eyebrow">Step ${flow.index + 1} of ${steps.length} · ${esc(flow.myTurn || (flow.mine && flow.kind !== "turns") ? "Your turn" : who)}</p><h2 class="cv-altar-ritual__title">${esc(step.title)}</h2>
           ${PP().howHtml(flow)}
           ${step.spoken_text ? `<p class="sp-label">Words to speak</p><blockquote class="cv-doc cv-spoken">${UI.prose(step.spoken_text)}</blockquote>` : ""}
+          ${flow.quarter && flow.myTurn && !flow.progress.complete ? `<p class="sp-label">Your words for the ${esc(flow.quarter.line.replace(/^(Call|Release) the /, ""))}</p><blockquote class="cv-doc cv-spoken">${UI.prose(flow.quarter.words)}</blockquote>` : ""}
           ${flow.myTurn && !flow.progress.complete ? `<p class="sp-label">${esc(flow.turn.heading)}</p><div class="sp-actions"><button class="button button--primary" type="button" data-panel-turn>${esc(flow.turn.button)}</button></div>` : ""}
           ${PP().cardHtml(flow, { altarHref: "" })}`
       : `<p class="sp-caption">${live ? "The ritual is under way." : "The ritual has ended."}</p>`;
@@ -262,7 +272,7 @@
       global.CovenRitualSit?.stop();
     }
     armAndGlow(flow);
-    barLine = flow && RP() ? RP().panelBarLine({ index: flow.index, title: step.title, mine: flow.mine, myTurn: flow.myTurn, kind: flow.kind, iDone: flow.iDone, complete: flow.progress.complete, isEnder: flow.isEnder }) : "";
+    barLine = flow && RP() ? RP().panelBarLine({ index: flow.index, title: step.title, mine: flow.mine, myTurn: flow.myTurn, kind: flow.kind, iDone: flow.iDone, complete: flow.progress.complete, isEnder: flow.isEnder, quarterLine: flow.quarter?.line }) : "";
     // Opening by itself: a new step, your turn, a finished step you move on.
     const cue = RP() ? RP().panelCue(step?.id, flow) : "";
     const before = lastCue;

@@ -6,8 +6,9 @@
 // ring. Tracing it back anticlockwise (widdershins) unwinds it; "Cast it for
 // me" draws a perfect circle. The four quarters are lit at the altar's edges
 // (the back is north, as layouts.ts has it: east to the right, south at the
-// front, west to the left), called East, South, West, North and released in
-// reverse. Both are kept with the altar itself (`circle` and `quarters` in
+// front, west to the left), called East, South, West, North (or in an order
+// a coven ritual chooses, North first, say) and released in reverse of that
+// order. Both are kept with the altar itself (`circle` and `quarters` in
 // its data, beside its cords), so a coven altar shows them to everyone there.
 // This is modern practice, mostly from Wicca and the ceremonial magic it drew
 // on; see the help topic. Pure, so it can be tested; shared with the website
@@ -194,17 +195,40 @@ export const CALL_ORDER: QuarterId[] = QUARTERS.map((q) => q.id);
 export const quarterOf = (id: string) => QUARTERS.find((q) => q.id === id) ?? null;
 const isQuarter = (v: unknown): v is QuarterId => typeof v === 'string' && CALL_ORDER.includes(v as QuarterId);
 
-/** `open` is in the order they were called; `colors` your own colour for any of them. */
-export type QuartersState = { open: QuarterId[]; colors: Partial<Record<QuarterId, string>> };
+/**
+ * A calling order: all four, each once (North, East, South, West, say), or
+ * null when it isn't one. A coven ritual keeps its own (builder.ts
+ * RitualPlan.quarter_order); the usual is East, South, West, North.
+ */
+export function cleanQuarterOrder(raw: unknown): QuarterId[] | null {
+  if (!Array.isArray(raw) || raw.length !== 4) return null;
+  const list = raw.filter(isQuarter);
+  return new Set(list).size === 4 ? [...list] : null;
+}
+/** The order, or the usual one. */
+export const quarterOrderOr = (raw: unknown): QuarterId[] => cleanQuarterOrder(raw) ?? [...CALL_ORDER];
+export const isUsualOrder = (order: readonly string[]) => order.join() === CALL_ORDER.join();
+/** Release goes in reverse of the calling order. */
+export const releaseOrderOf = (order: readonly QuarterId[]): QuarterId[] => [...order].reverse();
+/** Sunwise from a starting quarter: North first is North, East, South, West. */
+export function orderStartingWith(start: QuarterId): QuarterId[] {
+  const i = Math.max(0, CALL_ORDER.indexOf(start));
+  return [...CALL_ORDER.slice(i), ...CALL_ORDER.slice(0, i)];
+}
+/** "East, South, West, North". */
+export const orderLine = (order: readonly QuarterId[]) => order.map((id) => quarterOf(id)!.name).join(', ');
+
+/** `open` is in the order they were called; `colors` your own colour for any of them; `order` the calling order they were called in (release goes in reverse of it). */
+export type QuartersState = { open: QuarterId[]; colors: Partial<Record<QuarterId, string>>; order: QuarterId[] };
 
 export function quartersOf(extra: Extra | null | undefined): QuartersState {
-  const q = extra?.quarters as { open?: unknown; colors?: unknown } | null | undefined;
+  const q = extra?.quarters as { open?: unknown; colors?: unknown; order?: unknown } | null | undefined;
   const open = Array.isArray(q?.open) ? [...new Set(q.open.filter(isQuarter))] : [];
   const colors: Partial<Record<QuarterId, string>> = {};
   if (q?.colors && typeof q.colors === 'object') {
     for (const [k, v] of Object.entries(q.colors as Record<string, unknown>)) if (isQuarter(k) && cleanColor(v, '')) colors[k] = cleanColor(v);
   }
-  return { open, colors };
+  return { open, colors, order: quarterOrderOr(q?.order) };
 }
 
 export const quarterColor = (state: QuartersState, id: QuarterId) => state.colors[id] ?? quarterOf(id)!.color;
@@ -215,32 +239,42 @@ const withQuarters = (extra: Extra, state: QuartersState): Extra => {
     void _gone;
     return rest;
   }
-  return { ...extra, quarters: { open: state.open, colors: state.colors } };
+  // The order is kept while any quarter is open (and only when it isn't the usual one).
+  const order = state.open.length && !isUsualOrder(state.order) ? { order: state.order } : {};
+  return { ...extra, quarters: { open: state.open, colors: state.colors, ...order } };
 };
 
-/** The next to call, in the usual order (East, South, West, North), or null when all four are open. */
-export const nextToCall = (state: QuartersState): QuarterId | null => CALL_ORDER.find((id) => !state.open.includes(id)) ?? null;
-/** The one to release next: the last called (release goes in reverse), or null. */
-export const nextToRelease = (state: QuartersState): QuarterId | null => state.open[state.open.length - 1] ?? null;
+/** The next to call, in the order (the one they're being called in, else the usual East, South, West, North), or null when all four are open. */
+export const nextToCall = (state: QuartersState, order?: readonly QuarterId[] | null): QuarterId | null => {
+  const use = state.open.length ? state.order : (order ?? state.order);
+  return use.find((id) => !state.open.includes(id)) ?? null;
+};
+/** The one to release next: the open one latest in the calling order (release goes in reverse of it), or null. */
+export const nextToRelease = (state: QuartersState): QuarterId | null => releaseOrderOf(state.order).find((id) => state.open.includes(id)) ?? null;
 
 export type QuarterResult = { extra: Extra; ok: boolean; line: string };
 
-/** Call a quarter: any one may be called (the usual order is a suggestion); calling an open one does nothing. */
-export function callQuarter(extra: Extra, id: QuarterId): QuarterResult {
+/**
+ * Call a quarter: any one may be called (the order is a guide); calling an
+ * open one does nothing. The first call keeps the calling order in force (a
+ * coven ritual's own, or the usual), so release follows it in reverse.
+ */
+export function callQuarter(extra: Extra, id: QuarterId, order?: readonly QuarterId[] | null): QuarterResult {
   const state = quartersOf(extra);
   const q = quarterOf(id)!;
   if (state.open.includes(id)) return { extra, ok: false, line: `The ${q.name} is already open.` };
-  return { extra: withQuarters(extra, { ...state, open: [...state.open, id] }), ok: true, line: `Called the ${q.name}, the quarter of ${q.element}.` };
+  const kept = state.open.length ? state.order : quarterOrderOr(order ?? state.order);
+  return { extra: withQuarters(extra, { ...state, order: kept, open: [...state.open, id] }), ok: true, line: `Called the ${q.name}, the quarter of ${q.element}.` };
 }
 
-/** Release a quarter: only in reverse of the order they were called. */
+/** Release a quarter: only in reverse of the calling order. */
 export function releaseQuarter(extra: Extra, id: QuarterId): QuarterResult {
   const state = quartersOf(extra);
   const q = quarterOf(id)!;
   if (!state.open.includes(id)) return { extra, ok: false, line: `The ${q.name} isn’t open.` };
   const next = nextToRelease(state)!;
   if (next !== id) return { extra, ok: false, line: `Release them in reverse of calling: the ${quarterOf(next)!.name} first.` };
-  return { extra: withQuarters(extra, { ...state, open: state.open.slice(0, -1) }), ok: true, line: `Thanked and released the ${q.name}.` };
+  return { extra: withQuarters(extra, { ...state, open: state.open.filter((x) => x !== id) }), ok: true, line: `Thanked and released the ${q.name}.` };
 }
 
 export function setQuarterColor(extra: Extra, id: QuarterId, color: string | null): Extra {
@@ -265,13 +299,32 @@ export function quarterAt(x: number, y: number, band = 0.2): QuarterId | null {
 /** Where each quarter's marker sits on the stage (fractions). */
 export const QUARTER_SPOT: Record<QuarterId, Pt> = { east: { x: 0.94, y: 0.5 }, south: { x: 0.5, y: 0.9 }, west: { x: 0.06, y: 0.5 }, north: { x: 0.5, y: 0.1 } };
 
+/**
+ * The quarter whose marker a tap lands on (stage fractions; `aspect` is the
+ * stage's width over its height), or null. `reach` is a fraction of the
+ * stage's width, generous enough for a fingertip.
+ */
+export function quarterSpotAt(x: number, y: number, aspect: number, reach = 0.07): QuarterId | null {
+  let best: QuarterId | null = null;
+  let bestD = reach;
+  for (const q of QUARTERS) {
+    const spot = QUARTER_SPOT[q.id];
+    const d = Math.hypot(x - spot.x, (y - spot.y) / aspect);
+    if (d <= bestD) {
+      best = q.id;
+      bestD = d;
+    }
+  }
+  return best;
+}
+
 /** What's still open, for the circle panel; null when nothing is. */
 export function circleReminder(extra: Extra | null | undefined): string | null {
   const circle = circleOf(extra);
-  const { open } = quartersOf(extra);
+  const { open, order } = quartersOf(extra);
   if (!circle && !open.length) return null;
   const parts: string[] = [];
-  if (open.length) parts.push(`release the ${[...open].reverse().map((id) => quarterOf(id)!.name).join(', ')}`);
+  if (open.length) parts.push(`release the ${releaseOrderOf(order).filter((id) => open.includes(id)).map((id) => quarterOf(id)!.name).join(', ')}`);
   if (circle) parts.push('release the circle');
   return `Before you end, ${parts.join(', then ')}.`;
 }

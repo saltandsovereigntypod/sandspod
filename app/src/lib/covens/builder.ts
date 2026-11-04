@@ -28,6 +28,8 @@ import { cleanFieldSpecs, cleanValues, fieldsFor, fieldSummary, namesIn, whoIn, 
 import { chatReminder } from './messageExtras.ts';
 import { cleanNoticeWho } from './notices.ts';
 import { cleanEnder, enderLabel, flowKind, flowWarnings, LEADER_ENDER, stepEnder, stepStartText, stepWithItems } from './stepFlow.ts';
+import { isQuarterStep } from './quarterSteps.ts';
+import { cleanQuarterOrder, isUsualOrder, type QuarterId } from '../altar/circle.ts';
 
 export type GatheringKind = 'rite' | 'meeting';
 
@@ -63,6 +65,12 @@ export type RitualPlan = {
   notify?: string[];
   /** Post a reminder in the coven's chat this many minutes before it begins (messageExtras.ts REMINDER_MINUTES); none is off. */
   chatReminder?: number;
+  /**
+   * The order the quarters are called in (North first, say); released in
+   * reverse. Left out, East, South, West, North. Also kept on each quarters
+   * step's details when saved (quarterSteps.ts ritualQuarterOrder reads it back).
+   */
+  quarter_order?: QuarterId[];
 };
 
 /** Steps that are voted on: a vote, a motion, an election, approving the last minutes (public.coven_is_vote_action). */
@@ -119,6 +127,8 @@ export type StepDetails = {
   at_altar_as?: string;
   /** A timed sit for everyone (altarActions.ts sitStepOf): the meditation preset. */
   sit_preset?: string;
+  /** A quarters step: the ritual's calling order, kept with it (quarterSteps.ts). */
+  quarter_order?: QuarterId[];
 };
 
 /** One step as the builder edits it. */
@@ -213,6 +223,8 @@ export function cleanPlan(raw: unknown, kind: GatheringKind = 'rite'): RitualPla
   if (notify.length) plan.notify = notify;
   const reminder = chatReminder(p);
   if (reminder) plan.chatReminder = reminder;
+  const quarters = cleanQuarterOrder(p.quarter_order);
+  if (quarters && !isUsualOrder(quarters)) plan.quarter_order = quarters;
   return plan;
 }
 
@@ -421,6 +433,8 @@ function cleanDetails(raw: unknown): StepDetails {
   if (isAltarDeed(d.at_altar)) out.at_altar = d.at_altar;
   if (isAltarDeed(d.at_altar) && isAtAltarAction(d.at_altar_as)) out.at_altar_as = d.at_altar_as;
   if (d.sit_preset === 'ground' || d.sit_preset === 'clearing') out.sit_preset = d.sit_preset;
+  const order = cleanQuarterOrder(d.quarter_order);
+  if (order) out.quarter_order = order;
   return out;
 }
 
@@ -603,6 +617,9 @@ export function builderPayload(plan: RitualPlan, steps: BuilderStep[], custom: C
     if (contribution) contribution.mode = step.turn_mode === 'on_behalf' ? 'one' : 'each';
     const details: StepDetails = { ...step.details, fields: values, who: { roles: step.roles, people: cleanAssignees(step.assignees) } };
     if (!Object.keys(values).length) delete details.fields;
+    // The ritual's calling order goes with each quarters step (the plan itself keeps only what the database cleans it to).
+    delete details.quarter_order;
+    if (plan.quarter_order && isQuarterStep(step)) details.quarter_order = plan.quarter_order;
     return {
       ...base,
       ...legacyColumns(who.assignees),

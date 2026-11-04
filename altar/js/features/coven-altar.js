@@ -615,7 +615,7 @@
   const KEEPS = ["intention", "gratitude", "scry"];
   const NO_SHEET = ["light", "incense", "place", "charge_crystal"];
   // Done when the deed itself is (the circle cast, the bowl struck…), never on a sheet closing (altar-rites.js).
-  const SELF_DONE = ["circle", "release_circle", "quarters", "release_quarters", "bowl", "toast", "libation", "sweep", "match"];
+  const SELF_DONE = ["circle", "release_circle", "quarters", "release_quarters", "call_quarter", "release_quarter", "bowl", "toast", "libation", "sweep", "match"];
   function deedChanged() {
     if (!deed) return;
     deed.changed = true;
@@ -723,7 +723,7 @@
     deed = { kind: next.kind, onDone, changed: false, key: next.key, armed: true, before: targetCount(next.kind), objects: savedNow().length };
     global.AltarRites?.arm?.(next.kind, () => {
       if (deed?.key === next.key) finishDeed();
-    });
+    }, next.quarter || null);
   }
   let glowKind = null;
   let glowTimer = null;
@@ -741,7 +741,15 @@
     glowTimer = glowKind ? global.setInterval(drawGlow, 1000) : null;
     drawGlow();
   }
-  global.CovenAltarDeed = { start: startDeed, arm: armDeed, glow: glowFor, toCabinet: toCabinetFor };
+  // A quarters step: the ritual's order, your quarter's glow, the spots to tap (altar-rites.js).
+  let quartersKey = "";
+  function quartersFor(q) {
+    const key = q ? `${q.mode}|${(q.order || []).join(",")}|${q.glow || ""}|${q.spots ? 1 : 0}` : "";
+    if (key === quartersKey) return;
+    quartersKey = key;
+    global.AltarRites?.setQuarters?.(q || null);
+  }
+  global.CovenAltarDeed = { start: startDeed, arm: armDeed, glow: glowFor, quarters: quartersFor, toCabinet: toCabinetFor };
 
   global.CovenAltarPage = {
     altarId, slug, norm, changesFrom, status: () => ({ ready, access, problem, unwritten: unwritten.size }),

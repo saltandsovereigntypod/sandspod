@@ -12,6 +12,8 @@
 // SaltCore.covens.stepFlow) say and decide the same.
 
 import { andList, assigneesOf, includesMember, type Assignee } from './picker.ts';
+import { quarterPart, quarterStepOf } from './quarterSteps.ts';
+import type { QuarterId } from '../altar/circle.ts';
 
 /** Who moves a step on: the ritual's leader (the default), one person ("user:<id>") or a role ("role:<id>"). */
 export const LEADER_ENDER = 'leader';
@@ -164,9 +166,10 @@ export function stepStartText(input: { index: number; total: number; title: stri
   return { heading: `Step ${input.index + 1} of ${input.total} · ${input.title.trim() || 'A step'}`, lines };
 }
 
-/** The pop-up when it's your turn. */
-export function turnPopup(part: string): { heading: string; body: string; button: string } {
-  return { heading: 'Your turn', body: part.trim() || 'Take your turn now.', button: 'I’ve done my part' };
+/** The pop-up when it's your turn; on a quarters step taken in turn, "Your turn: call the East" with your words. */
+export function turnPopup(part: string, quarterLine = ''): { heading: string; body: string; button: string } {
+  const heading = quarterLine ? `Your turn: ${quarterLine.replace(/^(Call|Release)/, (w) => w.toLowerCase())}` : 'Your turn';
+  return { heading, body: part.trim() || 'Take your turn now.', button: 'I’ve done my part' };
 }
 
 /** When a step is finished: the ender is asked to move on; everyone else waits for them. */
@@ -213,6 +216,7 @@ export type LiveStepLike = StepLike & {
   id: string;
   title: string;
   instructions?: string | null;
+  action?: string | null;
   spoken_text?: string | null;
   duration_minutes?: number | null;
   started_at?: string | null;
@@ -243,6 +247,8 @@ export function liveFlow(input: {
   nameOf: (id: string) => string;
   /** "Rowan", "Every Initiate": whose step it is. */
   doerName: string;
+  /** The ritual's calling order for the quarters (quarterSteps.ts ritualQuarterOrder). */
+  quarterOrder?: QuarterId[];
   now?: number;
 }) {
   const { step } = input;
@@ -257,7 +263,10 @@ export function liveFlow(input: {
   const progress = stepProgress({ kind, turns: kind === 'turns' ? { order, at: step.turn_at ?? 0 } : null, present: presentIn(input.presence), done, doers: doersOf(step), items, endsAt, now: input.now });
   const withItems = stepWithItems(step);
   const turnNow = kind === 'turns' ? (order[step.turn_at ?? 0] ?? null) : null;
+  // A quarters step: the quarter under way (one quarter's own, or this turn's), with the caller's words.
+  const quarter = quarterPart(quarterStepOf(step, input.quarterOrder), step.turn_at);
   return {
+    quarter,
     kind,
     ender,
     enderName,
@@ -268,7 +277,7 @@ export function liveFlow(input: {
     start: stepStartText({ index: input.index, total: input.total, title: step.title, kind, doerName: input.doerName, items: (step.items ?? []).map((i) => i.name), withItems, enderName, minutes: step.duration_minutes ?? null }),
     iDone: !!input.userId && done.includes(input.userId),
     myTurn: !!input.userId && turnNow === input.userId,
-    turn: turnPopup(step.instructions || withItems || step.spoken_text || ''),
+    turn: quarter && kind === 'turns' ? turnPopup(quarter.words, quarter.line) : turnPopup(step.instructions || withItems || step.spoken_text || ''),
     complete: completePopup({ isEnder, last: input.index === input.total - 1, index: input.index, enderName }),
   };
 }

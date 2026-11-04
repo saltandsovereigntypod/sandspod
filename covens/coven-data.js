@@ -653,6 +653,8 @@
     /** One at a time: the one whose turn it is is done, or the leader moves on (skip) or starts the turns again. */
     nextTurn: (stepId, skip) => rpc("next_coven_ritual_turn", { p_step: stepId, p_skip: Boolean(skip) }),
     restartTurns: (stepId) => rpc("set_coven_ritual_turns", { p_step: stepId, p_order: null }),
+    /** A step's turns in an order of its people (a quarters step: each quarter's caller, in the ritual's order). */
+    setTurns: (stepId, order) => rpc("set_coven_ritual_turns", { p_step: stepId, p_order: order }),
     /** The altar's quiet time after a rite, ended early. */
     releaseAltarHold: (altarId) => rpc("release_coven_altar_hold", { p_altar: altarId }),
     /** What gatherings left behind (counts, never anyone's words). */

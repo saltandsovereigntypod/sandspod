@@ -27,6 +27,8 @@ import { Button } from '../../Button';
 import { Card, Chips, Field, Notice, Section } from '../../more/ui';
 import { SearchPicker } from '../SearchPicker';
 import { FieldRenderer, MultiChips, type FieldContext } from './FieldRenderer';
+import { CALL_ORDER, orderLine, orderStartingWith, quarterOf, releaseOrderOf, type QuarterId } from '../../../lib/altar/circle';
+import { isQuarterStep, quarterPartOrder, ritualQuarterOrder } from '../../../lib/covens/quarterSteps';
 
 type BookPageLike = { id: string; title: string; section: string | null; hidden?: boolean };
 
@@ -62,8 +64,11 @@ export function StepFocus({
   pages,
   blocked,
   kind,
+  onPlanChange,
 }: {
   kind?: GatheringKind;
+  /** Changes the ritual's own settings (the quarters' calling order). */
+  onPlanChange?: (next: RitualPlan) => void;
   step: BuilderStep;
   number: number;
   plan: RitualPlan;
@@ -99,7 +104,8 @@ export function StepFocus({
   // Each part (a direction) has its own words, so the step's own aren't asked for.
   const partsSpec = specs.find((x) => x.type === 'parts');
   const partsWords = !!partsSpec && partsOf(partsSpec, values, specs).length > 0;
-  const fieldCtx: FieldContext = { who, whoSuggest, whoLabel, items, named, actionId: step.action, pages };
+  const quarterOrder = ritualQuarterOrder(plan);
+  const fieldCtx: FieldContext = { who, whoSuggest, whoLabel, items, named, actionId: step.action, pages, partOrder: quarterPartOrder(step, quarterOrder) };
   const setFields = (next: FieldValues) => onChange({ details: { ...step.details, fields: next } });
   const sectionName = plan.sections.find((s) => s.id === step.section)?.name ?? '';
 
@@ -242,6 +248,8 @@ export function StepFocus({
           <FieldRenderer specs={specs} values={values} onChange={setFields} ctx={fieldCtx} only="essential" />
         </Card>
       )}
+
+      {isQuarterStep(step) && !!onPlanChange && <QuarterOrder order={quarterOrder} onChange={(order) => onPlanChange({ ...plan, quarter_order: order })} />}
 
       <Card>
         {/* At the altar: one choice (altarActions.ts), then what goes on it. */}
@@ -423,6 +431,31 @@ export function StepFocus({
       <Button label="Done" onPress={onDone} />
       <Button label="Remove this step" variant="text" onPress={onRemove} />
     </View>
+  );
+}
+
+/**
+ * The ritual's order for the quarters (quarterSteps.ts): which is called
+ * first, going sunwise from there, and any one moved earlier. Released in
+ * reverse. Kept for the whole ritual, so every quarters step follows it.
+ */
+function QuarterOrder({ order, onChange }: { order: QuarterId[]; onChange: (order: QuarterId[]) => void }) {
+  const options = CALL_ORDER.map((id) => ({ value: id, label: quarterOf(id)!.name }));
+  const earlier = (id: QuarterId) => {
+    const i = order.indexOf(id);
+    if (i <= 0) return;
+    const next = [...order];
+    [next[i - 1], next[i]] = [next[i], next[i - 1]];
+    onChange(next);
+  };
+  return (
+    <Card>
+      <Text style={type.eyebrow}>The quarters’ order, for this ritual</Text>
+      <Chips label="Call first" options={options} value={order[0]} onChange={(v) => onChange(orderStartingWith(v as QuarterId))} />
+      <Chips label="Move one earlier" options={order.slice(1).map((id) => ({ value: id, label: quarterOf(id)!.name }))} value="" onChange={(v) => earlier(v as QuarterId)} />
+      <Text style={type.caption}>{`Called ${orderLine(order)}. Released in reverse: ${orderLine(releaseOrderOf(order))}.`}</Text>
+      <Text style={type.caption}>Every quarters step in this ritual follows it, and the altar guides the caller of each in turn.</Text>
+    </Card>
   );
 }
 

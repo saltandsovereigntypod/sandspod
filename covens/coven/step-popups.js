@@ -23,6 +23,7 @@
   const B = () => global.SaltCore?.covens?.builder || null;
 
   /** The flow of the ritual's step under way, or null. `objects`: what's on its altar now, or null when unknown. */
+  const sentTurns = new Set();
   function flowOf(ritual, steps, state, objects) {
     const index = steps.findIndex((s) => s.id === ritual?.current_step_id);
     const step = steps[index];
@@ -32,6 +33,18 @@
     const leads = Boolean((state.perms.lead && state.standing.ok) || state.perms.site || ritual.led_by === userId);
     const plan = B() ? B().cleanPlan(ritual.plan, ritual.kind === "meeting" ? "meeting" : "rite") : { roles: [] };
     const nameOf = (id) => global.CovenUI.nameOf(state.context, id);
+    const Q = global.SaltCore?.covens?.quarterSteps;
+    const quarterOrder = Q ? Q.ritualQuarterOrder(plan, steps) : undefined;
+    // A quarters step taken one at a time: those who lead set its turns to each quarter's caller, in the ritual's order, before anyone has had one.
+    if (Q && leads && step.turn_mode === "in_turn") {
+      const want = Q.quarterTurnOrder(Q.quarterStepOf(step, quarterOrder), plan.roles, ritual.led_by || null);
+      const key = want && Q.needsQuarterTurns(want, step) ? `${step.id}:${want.join(",")}` : "";
+      if (key && !sentTurns.has(key)) {
+        sentTurns.add(key);
+        // Someone not among the step's people can't take a turn: the usual order stands then.
+        global.CovenData?.setTurns?.(step.id, want)?.catch?.(() => undefined);
+      }
+    }
     const flow = SF().liveFlow({
       step,
       index,
@@ -45,6 +58,7 @@
       objects: objects || null,
       nameOf,
       doerName: L ? L.stepAssignee(step, state.ranks || [], nameOf).label : "",
+      quarterOrder,
       now: Date.now()
     });
     const mine = L ? L.stepIsMine(step, state.membership, userId) : false;

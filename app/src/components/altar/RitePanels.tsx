@@ -18,6 +18,7 @@ import {
   isCircleTool,
   nextToCall,
   nextToRelease,
+  orderLine,
   QUARTERS,
   quarterColor,
   quartersOf,
@@ -199,8 +200,11 @@ export function CirclePanel({
   onColor,
   onReleaseCircle,
   onClose,
+  order,
 }: {
   extra: Record<string, unknown>;
+  /** A coven ritual's own calling order (quarterSteps.ts), when one is under way. */
+  order?: QuarterId[] | null;
   onCall: (id: QuarterId) => void;
   onRelease: (id: QuarterId) => void;
   onColor: (id: QuarterId, color: string | null) => void;
@@ -210,14 +214,15 @@ export function CirclePanel({
   const [tinting, setTinting] = useState<QuarterId | null>(null);
   const circle = circleOf(extra);
   const state = quartersOf(extra);
-  const next = nextToCall(state);
+  const next = nextToCall(state, order);
+  const calling = state.open.length ? state.order : (order ?? state.order);
   const last = nextToRelease(state);
   const reminder = circleReminder(extra);
   return (
     <View style={[styles.box, styles.panel]} accessibilityLabel="The circle">
       <Text style={styles.label}>The circle</Text>
       <Text style={type.caption}>{circle ? 'Cast.' : 'Not cast.'}</Text>
-      {QUARTERS.map((q) => {
+      {[...QUARTERS].sort((a, b) => calling.indexOf(a.id) - calling.indexOf(b.id)).map((q) => {
         const open = state.open.includes(q.id);
         return (
           <View key={q.id} style={styles.quarter}>
@@ -243,7 +248,7 @@ export function CirclePanel({
           <Chip label="Usual colour" onPress={() => onColor(tinting, null)} />
         </ChipRow>
       )}
-      <Text style={type.caption}>Called East, South, West, North, and released in reverse. The colours are the common modern ones; change them to your own.</Text>
+      <Text style={type.caption}>Called {orderLine(calling)}, and released in reverse. The colours are the common modern ones; change them to your own.</Text>
       {reminder && <Text style={[type.caption, styles.reminder]}>{reminder}</Text>}
       {circle && !state.open.length && <Button label={RELEASE_LABEL} variant="outline" onPress={onReleaseCircle} />}
       <Button label="Close this panel" variant="outline" onPress={onClose} />

@@ -16,6 +16,7 @@
 import { moonState } from '../moon.ts';
 import { HIDDEN_PAGE } from '../grimoire/access.ts';
 import { applyOps, ensureBook, nextOrder, sectionInsert, type Op } from '../grimoire/edits.ts';
+import { quarterPartOrder, ritualQuarterOrder } from './quarterSteps.ts';
 import type { GrimoireSnapshot } from '../grimoire/types.ts';
 import { kindOf } from './contributions.ts';
 import { cleanValues, defaultPartWords, optionLabel, partsOf, voteOptions, type FieldSpec, type PartValue } from './fields.ts';
@@ -132,7 +133,7 @@ export function buildScript(input: {
         const speakers = (step.details.speakers ?? []).map((r) => plan.roles.find((x) => x.id === r)?.name).filter((x): x is string => !!x);
         const lines: ScriptLine[] = [];
         const partsSpec = specs.find((s) => s.type === 'parts');
-        const parts: PartValue[] = partsSpec ? partsOf(partsSpec, values, specs) : [];
+        const parts: PartValue[] = partsSpec ? partsOf(partsSpec, values, specs, quarterPartOrder(step, ritualQuarterOrder(plan, input.steps))) : [];
         if (partsSpec && parts.length) {
           const source = specs.find((s) => s.key === partsSpec.partsFrom);
           for (const p of parts) {

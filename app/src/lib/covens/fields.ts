@@ -115,6 +115,8 @@ const QUARTER_FIELDS: FieldSpec[] = [
 export const ACTION_FIELDS: Record<string, FieldSpec[]> = {
   call_quarters: QUARTER_FIELDS,
   release_quarters: QUARTER_FIELDS,
+  call_quarters_turns: QUARTER_FIELDS,
+  release_quarters_turns: QUARTER_FIELDS,
   cleanse: [
     { key: 'method', type: 'choice', label: 'How', options: CLEANSE_METHODS, essential: true },
     { key: 'how', type: 'long', label: 'Anything more about how', placeholder: 'Bay leaf lit and quenched in the water, then sprinkled over each person.' },
@@ -304,13 +306,19 @@ export function cleanValues(specs: FieldSpec[], raw: unknown): FieldValues {
   return out;
 }
 
-/** The parts a parts field has now: its source field's choices in order, keeping what was written for each. */
-export function partsOf(spec: FieldSpec, values: FieldValues, specs: FieldSpec[]): PartValue[] {
+/**
+ * The parts a parts field has now: its source field's choices in order,
+ * keeping what was written for each. `sequence` puts them in an order of its
+ * own (the ritual's order for the quarters: quarterSteps.ts quarterPartOrder),
+ * the rest after.
+ */
+export function partsOf(spec: FieldSpec, values: FieldValues, specs: FieldSpec[], sequence?: string[] | null): PartValue[] {
   const saved = (Array.isArray(values[spec.key]) ? values[spec.key] : []) as PartValue[];
   const source = specs.find((s) => s.key === spec.partsFrom);
   const chosen = source ? ((values[source.key] as string[] | null) ?? []) : saved.map((p) => p.part);
   const ordered = source?.options ? source.options.map((o) => o.value).filter((v) => chosen.includes(v)) : chosen;
-  const order = values.order === 'widdershins' ? [...ordered].reverse() : ordered;
+  const rank = (v: string) => (sequence?.includes(v) ? sequence.indexOf(v) : 100);
+  const order = sequence?.length ? [...ordered].sort((a, b) => rank(a) - rank(b)) : values.order === 'widdershins' ? [...ordered].reverse() : ordered;
   return order.map((part) => saved.find((p) => p.part === part) ?? { part });
 }
 
@@ -333,8 +341,8 @@ const RELEASE_WORDS: Record<string, string> = Object.fromEntries(Object.entries(
 
 /** Words for a part when none are written yet (quarter calls have their own). */
 export function defaultPartWords(actionId: string, part: string): string {
-  if (actionId === 'call_quarters') return QUARTER_WORDS[part] ?? '';
-  if (actionId === 'release_quarters') return RELEASE_WORDS[part] ?? '';
+  if (actionId === 'call_quarters' || actionId === 'call_quarters_turns') return QUARTER_WORDS[part] ?? '';
+  if (actionId === 'release_quarters' || actionId === 'release_quarters_turns') return RELEASE_WORDS[part] ?? '';
   return '';
 }
 
