@@ -9,7 +9,7 @@ export type CraftTool = { title: string; detail: string; href: string };
 export const CRAFT_TOOLS: Record<PracticeId, CraftTool[]> = {
   green: [
     { title: 'Planting by the moon', detail: 'What to sow, tend and harvest tonight', href: '/rituals/craft/green/moon' },
-    { title: 'In season now', detail: 'Herbs to sow and gather this month where you are', href: '/rituals/craft/green/season' },
+    { title: 'Garden & foraging calendar', detail: 'Month by month: what to sow, gather and forage where you are, and what of yours is ready', href: '/rituals/craft/green/season' },
     { title: 'My garden', detail: 'Your plants, sowings and harvests', href: '/rituals/craft/green/garden' },
   ],
   kitchen: [
