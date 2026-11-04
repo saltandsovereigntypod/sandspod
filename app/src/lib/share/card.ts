@@ -73,15 +73,26 @@ export function layoutCard(input: ShareCardInput): CardLine[] {
   }
   y += 40;
   const footerY = height - margin;
-  const room = Math.max(0, Math.floor((footerY - 80 - y) / 46));
+  const limit = footerY - 80;
   const body: string[] = [];
   for (const para of input.lines.map((l) => l.trim()).filter(Boolean)) {
     if (body.length) body.push('');
     body.push(...wrapText(para, 48));
   }
-  for (const t of clip(body, room)) {
-    if (t) out.push({ text: t, y, size: 33, kind: 'body' });
-    y += t ? 46 : 22;
+  for (let i = 0; i < body.length; i++) {
+    const t = body[i];
+    if (!t) {
+      y += 22;
+      continue;
+    }
+    const last = out[out.length - 1];
+    if (y > limit) {
+      // No room for more: the last line shown ends in …
+      if (last?.kind === 'body') last.text = `${last.text.replace(/[\s,.;:…]+$/, '').slice(0, 46)}…`;
+      break;
+    }
+    out.push({ text: t, y, size: 33, kind: 'body' });
+    y += 46;
   }
   out.push({ text: input.footer ? `${input.footer} · ${APP_LINE}` : APP_LINE, y: footerY, size: 26, kind: 'footer' });
   return out;
