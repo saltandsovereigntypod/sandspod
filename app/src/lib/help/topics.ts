@@ -2006,7 +2006,7 @@ export const HELP: HelpSection[] = [
           'Where it’s kept suggests the places you’ve used before.',
           'Signed in, your shelves sync with your account and the website; as a guest they stay on this device.',
         ],
-        href: '/rituals/shelves',
+        href: '/altar?tab=shelves',
         keywords: ['inventory', 'collection', 'what i own', 'stock', 'supplies', 'crystals', 'herbs', 'oils', 'decks', 'books', 'statues', 'i own this', 'shelf'],
       },
       {
@@ -2023,7 +2023,7 @@ export const HELP: HelpSection[] = [
           'Decks are cleansed when you feel they need it, after heavy use, so nothing is set for them; candles and books ask nothing; living plants are tended in your garden instead.',
           'Only the thing you added is put on To tend, linked by its own id: tending it never marks anything else done.',
         ],
-        href: '/rituals/shelves',
+        href: '/altar?tab=shelves',
         keywords: ['best by', 'expiry', 'cleanse crystals', 'recharge', 'moon water', 'dust statues', 'witch bottle'],
       },
       {
@@ -2035,7 +2035,7 @@ export const HELP: HelpSection[] = [
           'Your shopping list is at the bottom of My Shelves.',
           'When you’ve bought more, tap "Restocked": it comes off the list and its quantity goes back up.',
         ],
-        href: '/rituals/shelves',
+        href: '/altar?tab=shelves',
         keywords: ['shopping', 'restock', 'low', 'buy', 'running out'],
       },
       {
@@ -2048,7 +2048,7 @@ export const HELP: HelpSection[] = [
           'In the spell builder or a premade working, the ingredient check counts what’s on your shelves; tap "Used it" by one to keep it in its story.',
           'To have it counted down each time, open it, tap "Change" and turn on "Count down when used in a spell".',
         ],
-        href: '/rituals/shelves',
+        href: '/altar?tab=shelves',
         keywords: ['place on altar', 'ingredients', 'you have', 'gather', 'count down', 'used in spell', 'story'],
       },
       {

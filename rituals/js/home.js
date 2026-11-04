@@ -104,7 +104,7 @@
     const apothecaryRow = UI.row({ href: "/rituals/journal/insights/#did-it-work-made", title: "Apothecary", detail: "Jars & sachets, and whether they worked" })
       // The practice journals (grimoire/journals/journals.js), wherever each lives.
       // What you keep (app: Rituals home "My Shelves").
-      + UI.row({ href: "/rituals/shelves/", title: "My Shelves", detail: "What you keep: tending, running low and your shopping list" })
+      + UI.row({ href: "/altar/?tab=shelves", title: "My Shelves", detail: "What you keep: tending, running low and your shopping list" })
       + UI.row({ href: "/rituals/journals/", title: "Journals", detail: "Shadow work, Deity & spirit, Ancestors, and Omens & signs" });
     const journalList = entries.length
       ? `<div class="sp-list">${entries

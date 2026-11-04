@@ -1,5 +1,5 @@
 /*
- * My Shelves (app: Practice → Rituals → My Shelves): the real things you keep
+ * My Shelves (app: the Shelves tab on the Altar page): the real things you keep
  * on painted shelves or as a list, each thing's page (how much is left,
  * tending, its story, placing it on the altar), adding and changing things,
  * and the shopping list. The logic is the app's (js/core/shelves.js); the
@@ -13,13 +13,21 @@
   const C = global.SaltCore?.shelves;
   const M = C?.model;
   const T = C?.tend;
-  const root = global.document.querySelector("[data-page-root]");
+  // On the Altar page (its Shelves tab) it draws into [data-shelves-root] and shows the cabinet only;
+  // on its own page it handles a thing (?item=), adding (?add=) and changing (?edit=).
+  const embedded = global.document.querySelector("[data-shelves-root]");
+  const root = embedded || global.document.querySelector("[data-page-root]");
   const esc = (text) => global.SaltPage.esc(text);
   if (!C || !M || !T || !global.SaltCraft) {
     if (root) root.innerHTML = `<p class="sp-notice">My Shelves couldn’t be opened. Please refresh the page.</p>`;
     return;
   }
-  const params = new URLSearchParams(global.location.search);
+  const params = embedded ? new URLSearchParams() : new URLSearchParams(global.location.search);
+  // The cabinet itself now lives on the Altar page.
+  if (!embedded && !params.get("item") && !params.get("add") && !params.get("edit")) {
+    global.location.replace("/altar/?tab=shelves");
+    return;
+  }
   const VIEW_KEY = "salt.shelves.view";
   const state = { account: null, entries: [], records: [], altars: [], view: "shelves", sort: "shelf", query: "", draft: null, editing: null, found: [], message: "" };
   try {
@@ -429,5 +437,5 @@
     }
     render();
   })();
-  global.SaltPage.onUserChange(() => global.location.reload());
+  if (!embedded) global.SaltPage.onUserChange(() => global.location.reload());
 })(window);

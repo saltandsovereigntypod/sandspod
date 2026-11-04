@@ -1,5 +1,5 @@
 /*
- * My Altars in two tabs, as the app's Altar tab has them
+ * My Altars in three tabs (Personal | Coven | Shelves), as the app's Altar tab has them
  * (app/src/app/(tabs)/altar/index.tsx): "Personal", your saved altars as
  * before (altar/js/core/storage.js draws them), and "Coven", every coven altar
  * you can see across the covens you belong to, grouped under each coven's
@@ -32,11 +32,39 @@
   const TAB_KEY = "saltAltarTab";
   const TABS = [
     { key: "personal", label: "Personal" },
-    { key: "coven", label: "Coven" }
+    { key: "coven", label: "Coven" },
+    { key: "shelves", label: "Shelves" }
   ];
-  const asTab = (value) => core()?.screenTabs?.asAltarTab?.(value) ?? (value === "personal" || value === "coven" ? value : null);
+  const asTab = (value) => core()?.screenTabs?.asAltarTab?.(value) ?? (value === "personal" || value === "coven" || value === "shelves" ? value : null);
   const tabKey = () => core()?.screenTabs?.ALTAR_TAB_KEY || TAB_KEY;
   const tabList = () => core()?.screenTabs?.ALTAR_TABS || TABS;
+
+  // My Shelves, the third tab: its own script (rituals/shelves/shelves.js) draws into this pane
+  // when the tab is first opened. Opening a thing, or adding one, goes to the full page.
+  const shelvesPane = document.createElement("div");
+  shelvesPane.className = "saved-altars-list saved-altars-shelves sp-page";
+  shelvesPane.setAttribute("data-shelves-root", "");
+  shelvesPane.hidden = true;
+  covenList.after(shelvesPane);
+  let shelvesLoading = null;
+  function loadShelves() {
+    if (shelvesLoading) return;
+    shelvesPane.innerHTML = '<p class="sp-muted">Opening your shelves…</p>';
+    for (const href of ["/css/sanctuary-pages.css", "/rituals/rituals.css", "/rituals/shelves/shelves.css"]) {
+      const link = document.createElement("link");
+      link.rel = "stylesheet";
+      link.href = resolve(href);
+      document.head.appendChild(link);
+    }
+    shelvesLoading = (async () => {
+      if (!global.SaltPage) await addScript("/js/salt-store.js");
+      if (!global.SaltCore?.shelves) await addScript("/js/core/shelves.js");
+      await addScript("/rituals/shelves/shelves.js");
+    })().catch(() => {
+      shelvesLoading = null;
+      shelvesPane.innerHTML = '<p class="sp-notice">My Shelves couldn’t be opened. Please try again.</p>';
+    });
+  }
 
   let tab = SW.remembered(tabKey(), asTab) || "personal";
   // { status: "idle" | "loading" | "ready" | "error", user, groups, message }
@@ -48,10 +76,14 @@
     tabsHost.innerHTML = SW.html({ id: "altar-tabs", label: "Altar", options: tabList(), value: tab });
     personal.hidden = tab !== "personal";
     covenList.hidden = tab !== "coven";
+    shelvesPane.hidden = tab !== "shelves";
     personal.setAttribute("role", "tabpanel");
     personal.setAttribute("aria-labelledby", "altar-tabs-personal");
     covenList.setAttribute("role", "tabpanel");
     covenList.setAttribute("aria-labelledby", "altar-tabs-coven");
+    shelvesPane.setAttribute("role", "tabpanel");
+    shelvesPane.setAttribute("aria-labelledby", "altar-tabs-shelves");
+    if (tab === "shelves") loadShelves();
   }
 
   function setTab(next, { focus = false } = {}) {
