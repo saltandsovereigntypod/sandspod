@@ -15,6 +15,36 @@ export const REPLACED_SECTIONS = ["today", "altar", "practice", "rituals", "cove
 /** Parts of those sections that stay on the website, with no screen in the app (the coven guidelines). */
 export const KEPT_IN_REPLACED = ["covens/guidelines", "covens/covens.css"];
 
+/**
+ * Hand-written journal posts that a Living Library post replaced
+ * (scripts/build-library-blog.mjs writes /blog/<type>/<slug>/ from the
+ * Library). Their old addresses, with or without ".html", redirect there.
+ */
+export const BLOG_REDIRECTS = {
+  "/blog/herbs/basil-history": "/blog/herbs/basil/",
+  "/blog/herbs/bay-history": "/blog/herbs/bay/",
+  "/blog/herbs/cedar-history": "/blog/herbs/cedar/",
+  "/blog/herbs/chamomile-history": "/blog/herbs/chamomile/",
+  "/blog/herbs/cinnamon-history": "/blog/herbs/cinnamon/",
+  "/blog/herbs/clove-history": "/blog/herbs/clove/",
+  "/blog/herbs/dandelion-history": "/blog/herbs/dandelion/",
+  "/blog/herbs/frankincense-history": "/blog/herbs/frankincense/",
+  "/blog/herbs/lavender-history": "/blog/herbs/lavender/",
+  "/blog/herbs/mugwort-history": "/blog/herbs/mugwort/",
+  "/blog/herbs/nettle-history": "/blog/herbs/nettle/",
+  "/blog/herbs/patchouli-history": "/blog/herbs/patchouli/",
+  "/blog/herbs/peppermint-history": "/blog/herbs/peppermint/",
+  "/blog/herbs/rose-history": "/blog/herbs/rose/",
+  "/blog/herbs/rosemary-history": "/blog/herbs/rosemary/",
+  "/blog/herbs/rue-history": "/blog/herbs/rue/",
+  "/blog/herbs/sage-history": "/blog/herbs/sage/",
+  "/blog/herbs/thyme-history": "/blog/herbs/thyme/",
+  "/blog/deities/hekate-traditional": "/blog/deities/hekate/",
+};
+
+/** "/blog/herbs/sage-history.html" → "/blog/herbs/sage-history". */
+const blogKey = (pathname) => pathname.replace(/\/index\.html$/, "").replace(/\.html$/, "").replace(/\/+$/, "");
+
 /** Paths always answered by the static site. */
 const STATIC_PREFIXES = ["/blog/", "/submit/", "/help/", "/admin/", "/css/", "/js/", "/covens/guidelines/"];
 const STATIC_EXACT = new Set(["/", "/index.html", "/privacy.html", "/submission-terms.html", "/delete-account.html", "/blog", "/submit", "/help", "/admin", "/covens/guidelines", "/covens/covens.css"]);
@@ -121,6 +151,8 @@ function fill(template, params) {
  */
 export function decideRoute(pathname, search = "") {
   const path = pathname || "/";
+  const replaced = path.startsWith("/blog/") && BLOG_REDIRECTS[blogKey(path)];
+  if (replaced) return { action: "redirect", location: `${replaced}${search && search !== "?" ? (search.startsWith("?") ? search : `?${search}`) : ""}` };
   if (STATIC_EXACT.has(path) || STATIC_PREFIXES.some((prefix) => path.startsWith(prefix))) return { action: "static" };
   const section = path.split("/")[1];
   if (!REPLACED_SECTIONS.includes(section)) {

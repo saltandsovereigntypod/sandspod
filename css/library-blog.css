@@ -1,0 +1,313 @@
+/* =========================================================
+   THE LIVING LIBRARY IN THE JOURNAL
+   Posts and index pages built by scripts/build-library-blog.mjs.
+   ========================================================= */
+
+.lib-crumbs ol {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin: 0 0 2rem;
+  padding: 0;
+  list-style: none;
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.lib-crumbs li + li::before {
+  content: "›";
+  margin-right: 0.35rem;
+  color: var(--gold);
+}
+
+.lib-crumbs a {
+  color: var(--muted);
+  text-decoration: none;
+}
+
+.lib-crumbs a:hover,
+.lib-crumbs a:focus-visible {
+  color: var(--gold);
+}
+
+.lib-post .grimoire-header h1 {
+  font-size: clamp(2.2rem, 5.5vw, 4rem);
+  line-height: 1.05;
+}
+
+.lib-figure {
+  margin: 0 auto 2.5rem;
+  text-align: center;
+}
+
+.lib-figure img {
+  max-width: min(100%, 520px);
+  max-height: 460px;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.45));
+}
+
+.lib-post .grimoire-page h2 {
+  margin-top: 3rem;
+  font-size: clamp(1.8rem, 4vw, 2.6rem);
+}
+
+.lib-post .grimoire-page a:not(.button):not(.grimoire-home-link) {
+  color: var(--gold);
+}
+
+.lib-glance {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.92rem;
+  line-height: 1.5;
+}
+
+.lib-glance th,
+.lib-glance td {
+  padding: 0.45rem 0;
+  vertical-align: top;
+  text-align: left;
+  border-bottom: 1px solid rgba(185, 160, 93, 0.16);
+}
+
+.lib-glance th {
+  width: 38%;
+  padding-right: 0.75rem;
+  color: var(--gold);
+  font-weight: 600;
+}
+
+.lib-glance td {
+  color: var(--cream);
+  overflow-wrap: anywhere;
+}
+
+.lib-glance a {
+  color: var(--cream);
+  text-decoration-color: rgba(185, 160, 93, 0.6);
+}
+
+.lib-app-button {
+  margin-top: 0.75rem;
+}
+
+.lib-connected {
+  margin-top: 3rem;
+}
+
+.lib-connected__group h3 {
+  margin: 1.5rem 0 0.5rem;
+  color: var(--gold);
+  font-size: 1.15rem;
+}
+
+.lib-connected__group ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.lib-connected__group li {
+  padding: 0.3rem 0.75rem;
+  border: 1px solid rgba(185, 160, 93, 0.3);
+  border-radius: 999px;
+  font-size: 0.95rem;
+}
+
+.lib-connected__group li span {
+  color: var(--muted);
+  font-size: 0.78rem;
+}
+
+.lib-research {
+  margin-top: 3rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(185, 160, 93, 0.28);
+}
+
+.lib-research p {
+  font-size: 0.98rem;
+  color: var(--muted);
+}
+
+.lib-post__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem 1.5rem;
+}
+
+.lib-post__actions .button {
+  margin-top: 1rem;
+}
+
+/* Index pages */
+
+.lib-index__inner {
+  width: min(1180px, calc(100% - 2rem));
+  margin: 0 auto;
+}
+
+.lib-index__intro {
+  text-align: center;
+}
+
+.lib-index__intro h1 {
+  max-width: none;
+  margin-inline: auto;
+}
+
+.lib-index__intro p {
+  margin-inline: auto;
+}
+
+.lib-subhead {
+  max-width: none;
+  margin: 3rem 0 1rem;
+  font-size: clamp(1.8rem, 4vw, 2.6rem);
+  text-align: center;
+}
+
+.lib-featured {
+  padding: 0;
+  list-style: none;
+}
+
+.lib-featured h3 a {
+  color: var(--cream);
+  text-decoration: none;
+}
+
+.lib-types,
+.lib-letters {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem;
+  margin: 1.5rem auto;
+}
+
+.lib-types a,
+.lib-letters a {
+  padding: 0.45rem 1rem;
+  border: 1px solid rgba(185, 160, 93, 0.38);
+  border-radius: 999px;
+  color: var(--cream);
+  text-decoration: none;
+}
+
+.lib-letters a {
+  min-width: 2.4rem;
+  padding: 0.35rem 0.6rem;
+  text-align: center;
+}
+
+.lib-types a:hover,
+.lib-types a:focus-visible,
+.lib-letters a:hover,
+.lib-letters a:focus-visible,
+.lib-types a[aria-current="page"] {
+  border-color: var(--gold);
+  color: var(--gold);
+}
+
+.lib-group h2,
+.lib-letter h2 {
+  max-width: none;
+  margin: 2.5rem 0 1rem;
+  font-size: clamp(1.6rem, 3.5vw, 2.2rem);
+}
+
+.lib-group h2 a {
+  color: var(--cream);
+  text-decoration: none;
+}
+
+.lib-group h2 span {
+  color: var(--muted);
+  font-size: 0.6em;
+}
+
+.lib-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 250px), 1fr));
+  gap: 0.75rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.lib-card a {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  height: 100%;
+  padding: 0.7rem 0.9rem;
+  border: 1px solid var(--line);
+  border-radius: 0.9rem;
+  background: linear-gradient(145deg, rgba(38, 61, 46, 0.6), rgba(17, 21, 18, 0.85));
+  color: var(--cream);
+  text-decoration: none;
+}
+
+.lib-card a:hover,
+.lib-card a:focus-visible {
+  border-color: var(--gold);
+}
+
+.lib-card img,
+.lib-card__mark {
+  flex: 0 0 56px;
+  width: 56px;
+  height: 56px;
+  object-fit: contain;
+}
+
+.lib-card__mark {
+  display: grid;
+  place-items: center;
+  color: var(--gold);
+  font-size: 1.4rem;
+}
+
+.lib-card__text {
+  display: grid;
+  gap: 0.15rem;
+  min-width: 0;
+}
+
+.lib-card__text strong {
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-size: 1.25rem;
+  line-height: 1.1;
+}
+
+.lib-card__text span {
+  color: var(--muted);
+  font-size: 0.85rem;
+  line-height: 1.4;
+}
+
+.lib-index__back {
+  margin: 3rem 0 0;
+  text-align: center;
+}
+
+/* Many cards: let the browser skip drawing the ones far off screen. */
+.lib-group,
+.lib-letter {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 600px;
+}
+
+.lib-filter[hidden] {
+  display: none;
+}
