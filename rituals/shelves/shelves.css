@@ -62,3 +62,11 @@
 .sh-shop a { flex: 1; color: inherit; }
 .sh-story { display: grid; gap: 6px; margin: 0; padding: 0; list-style: none; }
 .sh-shop .button { flex: none; width: auto; min-width: 0; }
+/* One shelf at a time: scrolling chips, controls above, planks of a few things. */
+.sh-tabs { display: flex; gap: 8px; overflow-x: auto; padding: 2px 0 6px; scrollbar-width: thin; }
+.sh-tabs .sp-chip { flex: none; white-space: nowrap; }
+.sh-controls { display: grid; gap: 10px; }
+.sh-cabinet .sh-shelf + .sh-shelf, .sh-cabinet .sh-plaque { margin-top: 2px; }
+.sh-cabinet--empty { justify-items: center; padding: 18px 12px; }
+.sh-cabinet--empty .sh-empty { margin: 0; }
+button.sp-back { background: none; border: 0; padding: 0; font: inherit; color: inherit; text-align: left; cursor: pointer; }
