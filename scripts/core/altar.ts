@@ -103,3 +103,4 @@ export * as bowl from '../../app/src/lib/altar/bowl.ts';
 export * as toolRites from '../../app/src/lib/altar/toolRites.ts';
 // The pendulum, mortar and pestle, bolline, cauldron, crystals charging and the grid, drawing from a deck, ritual mode.
 export * as craftTools from '../../app/src/lib/altar/craftTools.ts';
+export * as divinationResult from '../../app/src/lib/altar/divinationResult.ts';

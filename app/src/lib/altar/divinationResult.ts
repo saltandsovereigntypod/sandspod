@@ -6,8 +6,11 @@
 // so they show wherever readings show. Pure, so the app and the website share
 // it and it can be tested.
 
-import { lookBackFrom, methodLabel, moonForReading, type Reading } from '../craft/hedge/readings.ts';
+import { lookBackFrom, METHODS, methodLabel, moonForReading, type Reading, type ReadingMethod } from '../craft/hedge/readings.ts';
 import { localDateKey } from '../rituals/lifecycle.ts';
+import { readingText, readingsOf, type FlameReading } from './ceromancy.ts';
+import { appStateOf, setAppState } from './livingState.ts';
+import type { SavedObject } from './types.ts';
 import type { ScryingNotes } from './workings/scrying.ts';
 
 export type ResultKind = 'pendulum' | 'tarot' | 'runes' | 'ogham' | 'reading' | 'scrying' | 'ceromancy';
@@ -25,6 +28,11 @@ export type DivinationResult = {
   readingId: string | null;
   notes: string;
   at: string;
+  /** A candle read after its burn: its notes are kept on the candle's reading, not in the reading log. */
+  candle?: { objectId: string; readingId: string };
+  /** For a card someone else laid on a coven altar: what to log as your own reading when you add notes to it. */
+  method?: ReadingMethod;
+  drawn?: string[];
 };
 
 /** The first two or three keywords of a meaning's keyword list. */
@@ -78,9 +86,73 @@ export function scryingResult(vessel: string, minutes: number, saw: string, read
 }
 
 /** A candle read after its burn: the summary of its signs; its notes live on the candle. */
-export function ceromancyResult(summary: string, notes: string, at: string): DivinationResult {
-  return { kind: 'ceromancy', eyebrow: KIND_LABEL.ceromancy, answer: clip(summary, 120) || 'Read', detail: '', question: '', readingId: null, notes: notes.trim(), at };
+export function ceromancyResult(summary: string, notes: string, at: string, candle?: { objectId: string; readingId: string }): DivinationResult {
+  return { kind: 'ceromancy', eyebrow: KIND_LABEL.ceromancy, answer: clip(summary, 120) || 'Read', detail: '', question: '', readingId: null, notes: notes.trim(), at, ...(candle ? { candle } : {}) };
 }
+
+/** New notes on a candle's reading (and its text, which carries them); a blank `readingId` means its latest. */
+export function withCandleNotes(object: SavedObject, readingId: string, notes: string, now: string): SavedObject {
+  const list = readingsOf(object);
+  if (!readingId) readingId = list[list.length - 1]?.id ?? '';
+  if (!readingId || !list.some((r) => r.id === readingId)) return object;
+  const readings = list.map((r): FlameReading => (r.id === readingId ? { ...r, notes: notes.trim(), text: readingText({ flame: r.flame, smoke: r.smoke, wax: r.wax, notes }) } : r));
+  return setAppState(object, { readings }, now);
+}
+
+type LaidReading = { id?: unknown; drawn?: unknown; method?: unknown };
+const laidOf = (o: SavedObject): LaidReading | null => {
+  const r = appStateOf(o).reading as LaidReading | undefined;
+  return r && typeof r.drawn === 'string' && r.drawn ? r : null;
+};
+
+/**
+ * Cards, runes and staves laid on the altar since `seen` (the ids of what was
+ * there): the coven's draws, as they arrive. Those whose reading is in `mine`
+ * are left out (you drew them, and their card is already showing).
+ */
+export function newlyLaid(objects: SavedObject[], seen: ReadonlySet<string>, mine: ReadonlySet<string>): SavedObject[] {
+  return objects.filter((o) => {
+    const id = String(o.altarObjectId || '');
+    const r = laidOf(o);
+    return !!id && !!r && !seen.has(id) && !mine.has(String(r.id ?? ''));
+  });
+}
+
+/** A card someone else laid on the coven altar. It has no reading of yours yet: notes on it start one. */
+export function laidResult(object: SavedObject, keywords: string | null, at: string): DivinationResult | null {
+  const r = laidOf(object);
+  if (!r) return null;
+  const drawn = String(r.drawn);
+  const method = METHODS.some((m) => m.id === r.method) ? (r.method as ReadingMethod) : 'other';
+  const reversed = /, reversed$/.test(drawn);
+  const name = drawn.replace(/, reversed$/, '');
+  const kind = method === 'tarot' || method === 'runes' || method === 'ogham' ? method : 'reading';
+  const base = drawResult(kind, [{ name, reversed, keywords }], '', null, at, method);
+  return { ...base, eyebrow: `${base.eyebrow} · drawn at the coven altar`, method, drawn: [drawn] };
+}
+
+/** Your own reading of a card drawn for the coven, made when you first add notes to it. */
+export function readingForResult(r: DivinationResult, notes: string, now: Date): Reading {
+  const date = localDateKey(now);
+  return {
+    date,
+    method: r.method ?? 'other',
+    question: r.question,
+    drawn: r.drawn ?? [],
+    cameUp: [`${r.eyebrow}`, r.answer, r.detail].filter(Boolean).join('\n'),
+    interpretation: notes.trim(),
+    lookBack: lookBackFrom(date, 7),
+    outcome: '',
+    outcomeDate: '',
+    moonPhase: moonForReading(date),
+  };
+}
+
+/** Whether a result's notes can be kept: on a reading, on a candle, or (for the coven's draw) on a new reading of yours. */
+export const canKeepNotes = (r: DivinationResult) => !!r.readingId || !!r.candle || !!r.drawn?.length;
+
+/** The help line under the card. */
+export const RESULT_HELP = 'Kept in your readings. Add what you make of it now or later; it stays with the reading.';
 
 /** The card put away to a chip: "Pendulum · Yes". */
 export function resultChip(r: DivinationResult): string {

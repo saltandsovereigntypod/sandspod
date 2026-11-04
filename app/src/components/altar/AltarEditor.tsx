@@ -56,7 +56,7 @@ import { GrimoireLinkSheet, GrimoirePageLink } from './connect/GrimoireLink';
 import { PlantPanelSection, PlantSheet, ReadingPanelSection, ReadingSheet, StonePanelSection, StoneSheet } from './connect/PracticeSheets';
 import { ShareAltarSheet } from './connect/ShareAltarSheet';
 import { withoutPageLink, withPageLink } from '../../lib/altar/connect/grimoire';
-import { stoneIdOf } from '../../lib/altar/connect/practice';
+import { drawnOf, stoneIdOf } from '../../lib/altar/connect/practice';
 import { applyAltarEffect, type AltarEffect } from '../../lib/altar/connect/ritual';
 import { lastAltarCareOf, ritualOrigin, runsOnAltar, withDraftClosing, type RitualSource } from '../../lib/altar/connect/ritualStart';
 import type { TemplateDraft } from '../../lib/rituals/types';
@@ -90,10 +90,10 @@ import { useAltarBell } from '../../lib/altar/useAltarBell';
 import { useToolRites } from './useToolRites';
 import { useCraftTools } from './useCraftTools';
 import { RITUAL_ON, RITUAL_SOFT } from '../../lib/altar/craftTools';
-import { scryLine, type ScryVessel } from '../../lib/altar/workings/scrying';
+import { SCRY_VESSELS, scryLine, type ScryVessel } from '../../lib/altar/workings/scrying';
 import { ALTAR_OPTIONS, altarOptionsFor, defaultAltarOptions, type AltarOptions } from '../../lib/altar/altarOptions';
 import { ambientAt, moonMirrored, nextAmbientCheck } from '../../lib/altar/ambient';
-import { burnToRead, lastBurn, linkReadingJournal, readingsOf, readingText, recordReading, remnantOf, setRemnant, type ReadingInput } from '../../lib/altar/ceromancy';
+import { burnToRead, lastBurn, linkReadingJournal, readingsOf, readingSummary, readingText, recordReading, remnantOf, setRemnant, type ReadingInput } from '../../lib/altar/ceromancy';
 import { clearAsh, incenseFormOf, incenseLife, isIncense, lightIncense, putOutIncense, setIncenseForm, setIncenseLength } from '../../lib/altar/incense';
 import { moonChargesOf } from '../../lib/altar/moonCharge';
 import {
@@ -128,7 +128,11 @@ import {
 } from '../../lib/altar/petitions';
 import { storyLines, storySummary } from '../../lib/altar/story';
 import { logAppEvent } from '../../lib/altar/livingState';
-import { addEntry, updateEntry, useCraft, type CraftEntry } from '../../lib/craft/store';
+import { addEntry, listEntriesOnce, updateEntry, useCraft, type CraftEntry } from '../../lib/craft/store';
+import { READINGS as READING_LOG, type Reading } from '../../lib/craft/hedge/readings';
+import { ceromancyResult, laidResult, newlyLaid, readingForResult, scryingReading, scryingResult, withCandleNotes, withNotes, type DivinationResult } from '../../lib/altar/divinationResult';
+import { meaningOf } from '../../lib/divination/draw';
+import { DivinationResultCard } from './DivinationResultCard';
 import { usePlace } from '../../lib/location';
 import { blankAnswers } from '../../lib/rituals/lifecycle';
 import { saveJournal, startRitual, updateActive, useRituals } from '../../lib/rituals/store';
@@ -375,6 +379,8 @@ export function AltarEditor({
   // "Find mine": your own things on a coven altar, lit up (components/tend/AltarListing.tsx).
   const [highlight, setHighlight] = useState<string[] | null>(null);
   const [sheet, setSheet] = useState<SheetName>(null);
+  // The last divination's answer, held in the stage's corner until put away (DivinationResultCard).
+  const [result, setResult] = useState<DivinationResult | null>(null);
   const [containerWidth, setContainerWidth] = useState(0);
   const [viewport, setViewport] = useState<Viewport>({ zoom: 1, offsetX: 0, offsetY: 0 });
   const [confirmDelete, setConfirmDelete] = useState(false);
@@ -1015,6 +1021,8 @@ export function AltarEditor({
     const label = shortLabel(selectedObject.label, 'Candle');
     commit((d) => updateObjects(d, [selected], (o) => recordReading(o, input, nowIso())));
     setSheet(null);
+    // Its answer in the stage's corner; notes on it go to the candle's latest reading (this one).
+    setResult(ceromancyResult(readingSummary(input), input.notes, nowIso(), { objectId: id, readingId: '' }));
     if (!journal) return setNotice('Reading kept with the candle. You’ll find it in its story.');
     const index = indexOfId(id);
     const reading = index >= 0 ? readingsOf(docRef.current!.objects[index]).slice(-1)[0] : null;
@@ -1468,6 +1476,25 @@ export function AltarEditor({
   });
   // The pendulum, scrying mirror, mortar, bolline, cauldron, crystals and grid, a deck drawn from, and ritual mode.
   const [scryWith, setScryWith] = useState<ScryVessel>('bowl');
+  const readingNotes = async (id: string) => (await listEntriesOnce<Reading>(READING_LOG)).find((e) => e.id === id) ?? null;
+  const keepResultNotes = async (notes: string) => {
+    const r = result;
+    if (!r) return;
+    if (r.candle) {
+      const { objectId, readingId } = r.candle;
+      const i = indexOfId(objectId);
+      if (i < 0) throw new Error('The candle is no longer on the altar.');
+      commit((d) => updateObjects(d, [i], (o) => withCandleNotes(o, readingId, notes, nowIso())));
+    } else if (r.readingId) {
+      const entry = await readingNotes(r.readingId);
+      if (!entry) throw new Error('The reading is no longer in your log.');
+      await updateEntry(READING_LOG, entry.id, withNotes(entry.data, notes));
+    } else if (r.drawn?.length) {
+      const entry = await addEntry(READING_LOG, readingForResult(r, notes, new Date()));
+      return setResult({ ...r, readingId: entry.id, notes: notes.trim() });
+    }
+    setResult({ ...r, notes: notes.trim() });
+  };
   const craft = useCraftTools({
     doc,
     docRef,
@@ -1488,6 +1515,7 @@ export function AltarEditor({
     finishDeed,
     toCabinet,
     openSheet: (name) => (name === 'petitions' ? openPetitions() : setSheet(name)),
+    showResult: setResult,
     openScry: (vessel) => {
       setScryWith(vessel);
       openSaved('scry', 'scrying');
@@ -1572,6 +1600,30 @@ export function AltarEditor({
     }
   };
   const docReady = !!doc;
+  // On a coven altar, a card, rune or stave someone else lays there shows in everyone's corner too;
+  // notes on it start a reading of your own (yours alone).
+  const laidSeen = useRef<Set<string> | null>(null);
+  useEffect(() => {
+    if (!doc) return;
+    const ids = doc.objects.map((o) => String(o.altarObjectId || '')).filter(Boolean);
+    if (!shared || !laidSeen.current) {
+      laidSeen.current = new Set(ids);
+      return;
+    }
+    const fresh = newlyLaid(doc.objects, laidSeen.current, new Set());
+    laidSeen.current = new Set([...laidSeen.current, ...ids]);
+    if (!fresh.length) return;
+    void listEntriesOnce<Reading>(READING_LOG)
+      .then((mine) => {
+        const theirs = newlyLaid(fresh, new Set(), new Set(mine.map((e) => e.id)));
+        const last = theirs[theirs.length - 1];
+        const drawn = last ? drawnOf(last) : '';
+        const name = drawn.replace(/, reversed$/, '');
+        const shown = last ? laidResult(last, meaningOf({ name, reversed: drawn !== name })?.meaning.keywords ?? null, new Date().toISOString()) : null;
+        if (shown) setResult(shown);
+      })
+      .catch(() => {});
+  }, [doc, shared]);
   useEffect(() => {
     if (!deed || !docReady || startedDeed.current === deed.nonce) return;
     startedDeed.current = deed.nonce;
@@ -1655,6 +1707,15 @@ export function AltarEditor({
             trail={toolRites.stage.trail}
           />
           {toolRites.floating}
+          {result && (
+            <DivinationResultCard
+              key={result.at}
+              result={result}
+              onClose={() => setResult(null)}
+              onSaveNotes={keepResultNotes}
+              loadNotes={result.readingId ? async () => (await readingNotes(result.readingId!))?.data.interpretation ?? null : undefined}
+            />
+          )}
       </View>
     ) : null;
 
@@ -2457,7 +2518,12 @@ export function AltarEditor({
                   setScryWith('bowl');
                   finishDeed(scryWith === 'mirror' ? 'scry_mirror' : 'scry');
                 }}
-                onSaved={(where, minutes) => {
+                onSaved={(where, minutes, notes) => {
+                  const now = new Date();
+                  const reading = scryingReading(notes, { vessel: SCRY_VESSELS[scryWith].with, minutes, date: now });
+                  void addEntry(READING_LOG, reading, now)
+                    .then((e) => setResult(scryingResult(SCRY_VESSELS[scryWith].with, minutes, notes.saw || notes.symbols || notes.feelings, e.id, now.toISOString())))
+                    .catch(() => {});
                   const what = scryWith === 'mirror' ? 'in the glass' : 'in the water';
                   logAltar(scryLine(scryWith, minutes));
                   setNotice(where === 'journal' ? `What came ${what} is in your journal.` : `What came ${what} is kept with this altar.`);

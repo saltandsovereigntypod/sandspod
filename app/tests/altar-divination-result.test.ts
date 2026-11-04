@@ -62,3 +62,32 @@ test('scrying becomes a reading; notes land in What you make of it', () => {
   assert.equal(reading.cameUp, 'Scrying · the bowl · 1 minute\nSaw: a door\nFelt: calm');
   assert.equal(withNotes(reading, '  it felt like an invitation ').interpretation, 'it felt like an invitation');
 });
+
+test('a card the coven drew arrives once, and only if it is not yours', async () => {
+  const { newlyLaid, laidResult, readingForResult, canKeepNotes } = await import('../src/lib/altar/divinationResult.ts');
+  const card = (id: string, readingId: string, drawn: string, method = 'tarot') =>
+    ({ altarObjectId: id, livingState: JSON.stringify({ app: { reading: { id: readingId, drawn, method } } }) }) as never;
+  const objects = [card('a', 'r-mine', 'The Star'), card('b', 'r-theirs', 'The Moon, reversed'), card('c', 'r-old', 'Fehu', 'runes')];
+  const fresh = newlyLaid(objects, new Set(['c']), new Set(['r-mine']));
+  assert.deepEqual(fresh.map((o) => o.altarObjectId), ['b']);
+  const r = laidResult(fresh[0], 'illusion, fear', AT)!;
+  assert.equal(r.answer, 'The Moon, reversed');
+  assert.equal(r.eyebrow, 'Tarot · drawn at the coven altar');
+  assert.equal(r.readingId, null);
+  assert.ok(canKeepNotes(r));
+  const mine = readingForResult(r, ' a quiet warning ', new Date(2026, 10, 4, 20));
+  assert.equal(mine.method, 'tarot');
+  assert.deepEqual(mine.drawn, ['The Moon, reversed']);
+  assert.equal(mine.interpretation, 'a quiet warning');
+});
+
+test('notes on a candle reading are kept with the candle', async () => {
+  const { withCandleNotes } = await import('../src/lib/altar/divinationResult.ts');
+  const { readingsOf } = await import('../src/lib/altar/ceromancy.ts');
+  const candle = { altarObjectId: 'k', livingState: JSON.stringify({ app: { readings: [{ id: 'x', burnId: 'b', at: AT, flame: 'steady', smoke: [], wax: [], notes: '', text: '' }] } }) } as never;
+  const next = withCandleNotes(candle, 'x', ' all well ', AT);
+  assert.equal(readingsOf(next)[0].notes, 'all well');
+  assert.match(readingsOf(next)[0].text, /My notes: all well/);
+  assert.equal(withCandleNotes(candle, 'nope', 'x', AT), candle);
+  assert.equal(readingsOf(withCandleNotes(candle, '', 'latest', AT))[0].notes, 'latest');
+});

@@ -586,6 +586,8 @@
     const label = short(before.label, "Candle");
     B().update(object, (o) => core.ceromancy.recordReading(o, input, nowIso()));
     schedule();
+    const read = core.ceromancy.readingsOf(B().toSaved(object)).slice(-1)[0];
+    if (read) global.AltarResult?.show?.(core.divinationResult.ceromancyResult(core.ceromancy.readingSummary(input), input.notes, read.at, { objectId: String(before.altarObjectId || ""), readingId: read.id }), { candleEl: object });
     if (!journal) return notice("Reading kept with the candle. You’ll find it in its story.");
     const reading = core.ceromancy.readingsOf(B().toSaved(object)).slice(-1)[0];
     try {
