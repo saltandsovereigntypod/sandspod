@@ -293,6 +293,41 @@ export function AltarStage(props: Props) {
     return Gesture.Race(Gesture.Simultaneous(pan, pinch, rotation), hold, tap);
   }, []);
 
+  // With a mouse on the web: the wheel resizes what's chosen, and Shift with the wheel turns it
+  // (the pinch and twist of a phone). With nothing chosen the wheel scrolls the page as usual.
+  const wheelTarget = useRef<View>(null);
+  useEffect(() => {
+    if (Platform.OS !== 'web') return;
+    const el = wheelTarget.current as unknown as HTMLElement | null;
+    if (!el?.addEventListener) return;
+    let start: { index: number; size: number; rotation: number; dy: number } | null = null;
+    let timer: ReturnType<typeof setTimeout> | undefined;
+    const onWheel = (e: WheelEvent) => {
+      const p = latest.current;
+      const index = p.selected;
+      if (index == null || p.selecting || p.onTrace || !p.doc.objects[index]) return;
+      e.preventDefault();
+      if (!start || start.index !== index) {
+        const object = p.doc.objects[index];
+        start = { index, size: displayBox(object).size, rotation: rotationOf(object), dy: 0 };
+        p.onGestureStart(index);
+      }
+      start.dy += e.deltaY || e.deltaX;
+      if (e.shiftKey) p.onRotate(index, start.rotation + start.dy / 10);
+      else p.onResize(index, start.size * Math.exp(-start.dy / 600));
+      clearTimeout(timer);
+      timer = setTimeout(() => {
+        start = null;
+        latest.current.onGestureEnd();
+      }, 350);
+    };
+    el.addEventListener('wheel', onWheel, { passive: false });
+    return () => {
+      clearTimeout(timer);
+      el.removeEventListener('wheel', onWheel);
+    };
+  }, []);
+
   // Re-render when a downloaded image's size becomes known (it sets the box height).
   const ratioVersion = useImageRatioVersion();
   const ordered = stackOrder(doc.objects);
@@ -322,6 +357,7 @@ export function AltarStage(props: Props) {
         }${sky?.label ? `, in ${sky.label}` : ''}${props.selecting ? `, ${chosen.size} chosen` : ''}. Drag an object to move it; pinch to resize and twist to rotate; press and hold to choose several. Every action is also in the panel below.`}
       >
         <View
+          ref={wheelTarget}
           style={{
             position: 'absolute',
             width: stageWidth,

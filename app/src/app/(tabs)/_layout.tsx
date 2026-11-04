@@ -7,6 +7,7 @@ import { WelcomeTour } from '../../components/WelcomeTour';
 import { useCandleKeeper } from '../../lib/altar/useCandleKeeper';
 import { useAstroKeeper } from '../../lib/astro/store';
 import { useCraftAccount } from '../../lib/craft/useCraftAccount';
+import { ALTAR_MAX_WIDTH, READING_MAX_WIDTH, useDesktopLayout } from '../../lib/desktopLayout';
 import { useCycleKeeper } from '../../lib/cycle/store';
 import { useCovenUnreadSync } from '../../lib/covens/unread';
 import { useCovenRequestsSync } from '../../lib/covens/requestsBadge';
@@ -30,6 +31,8 @@ export default function TabsLayout() {
   useTendReminderKeeper();
   // Cycle & Moon's reminders and Today's card are ready from the start (lib/cycle/store.ts).
   const { ready, session } = useSession();
+  // On a computer screen (web only): tabs down the left, screens in a centred column.
+  const desktop = useDesktopLayout();
   useCycleKeeper(ready ? (session?.user.id ?? null) : undefined);
   // The birth-chart vault too, so Today's line from your chart is ready (lib/astro/store.ts).
   useAstroKeeper(ready ? (session?.user.id ?? null) : undefined);
@@ -37,7 +40,18 @@ export default function TabsLayout() {
     <>
       <Tabs
         tabBar={(props) => <TabBar {...props} />}
-        screenOptions={{ headerShown: false, sceneStyle: { backgroundColor: colors.ground } }}
+        screenOptions={({ route }) => ({
+          headerShown: false,
+          tabBarPosition: desktop ? 'left' : 'bottom',
+          sceneStyle: desktop
+            ? {
+                backgroundColor: colors.ground,
+                width: '100%',
+                maxWidth: route.name === 'altar' ? ALTAR_MAX_WIDTH : READING_MAX_WIDTH,
+                alignSelf: 'center',
+              }
+            : { backgroundColor: colors.ground },
+        })}
       >
         <Tabs.Screen name="today" />
         <Tabs.Screen name="altar" />
