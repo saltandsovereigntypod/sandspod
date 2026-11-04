@@ -50,7 +50,7 @@
   function loadShelves() {
     if (shelvesLoading) return;
     shelvesPane.innerHTML = '<p class="sp-muted">Opening your shelves…</p>';
-    for (const href of ["/css/sanctuary-pages.css", "/rituals/rituals.css", "/rituals/shelves/shelves.css"]) {
+    for (const href of ["/css/sanctuary-pages.css", "/rituals/rituals.css", "/css/vessel-labels.css", "/rituals/shelves/shelves.css"]) {
       const link = document.createElement("link");
       link.rel = "stylesheet";
       link.href = resolve(href);
@@ -59,6 +59,7 @@
     shelvesLoading = (async () => {
       if (!global.SaltPage) await addScript("/js/salt-store.js");
       if (!global.SaltCore?.shelves) await addScript("/js/core/shelves.js");
+      if (!global.VesselLabels) await addScript("/js/vessel-labels.js");
       await addScript("/rituals/shelves/shelves.js");
     })().catch(() => {
       shelvesLoading = null;

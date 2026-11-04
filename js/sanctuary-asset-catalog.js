@@ -38,8 +38,8 @@
   // The .png path stays the object's identity everywhere (saved altars, the
   // app, the flame, lookups): an <img> shown through showImage keeps it in
   // data-asset-path, and assetPath maps a shown src back.
-  const OBJECT_PNG = /(assets\/altar\/(?:objects|overlays)\/(?:[\w-]+\/)*[\w-]+)\.png(?=$|[?#])/i;
-  const OBJECT_WEBP = /(assets\/altar\/(?:objects|overlays)\/(?:[\w-]+\/)*[\w-]+?)(?:\.thumb)?\.webp(?=$|[?#])/;
+  const OBJECT_PNG = /(assets\/altar\/(?:objects|overlays|shelves\/containers)\/(?:[\w-]+\/)*[\w-]+)\.png(?=$|[?#])/i;
+  const OBJECT_WEBP = /(assets\/altar\/(?:objects|overlays|shelves\/containers)\/(?:[\w-]+\/)*[\w-]+?)(?:\.thumb)?\.webp(?=$|[?#])/;
   // The two originals whose extension is in capitals.
   const UPPERCASE_PNG = new Set(["assets/altar/objects/candles/black-candle", "assets/altar/objects/candles/white-candle"]);
   const displayPath = (path) => String(path || "").replace(BACKGROUND_PNG, "$1$2.webp").replace(OBJECT_PNG, "$1.webp");

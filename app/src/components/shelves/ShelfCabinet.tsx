@@ -1,11 +1,16 @@
-import { Pressable, StyleSheet, Text, View } from 'react-native';
-import Svg, { Defs, LinearGradient, Line, Rect, Stop } from 'react-native-svg';
+import { useMemo, useState } from 'react';
+import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
+import Svg, { Defs, Ellipse, RadialGradient, Rect, Stop } from 'react-native-svg';
 
 import { Button } from '../Button';
-import { altarPicture } from '../../lib/altar/assets';
-import { isLow, type ShelfEntry, type ShelfKind } from '../../lib/shelves/model';
-import { colors, fonts, type } from '../../theme';
+import { altarImageSource, altarPicture, useImageRatio, useImageRatioVersion } from '../../lib/altar/assets';
+import { imageRatio } from '../../lib/altar/geometry';
+import { containedRect, labelText } from '../../lib/altar/vesselLabel';
+import { layoutShelf, shelfArtFor, shelfThing, toView, viewOf } from '../../lib/shelves/art';
+import { isLow, type ShelfEntry, type ShelfItem, type ShelfKind } from '../../lib/shelves/model';
+import { colors, fonts } from '../../theme';
 import { AltarImage } from '../altar/AltarImage';
+import { VesselPicture } from './VesselLabel';
 
 /** A thing's picture: the cabinet's art or your own photo, or its first letter. */
 export function ShelfPicture({ image, name, size }: { image: string; name: string; size: number }) {
@@ -18,32 +23,103 @@ export function ShelfPicture({ image, name, size }: { image: string; name: strin
   );
 }
 
-// A painted plank: warm wood with a lit front edge and a few grain lines.
-function Plank() {
+/**
+ * A thing as it stands on its shelf, `width` × `height`: herbs in a labelled
+ * jar, oils and waters in labelled bottles, decks in their box and books by
+ * their spine; everything else as its own picture, set down on the floor.
+ */
+export function ShelfThingPicture({ item, width, height }: { item: Pick<ShelfItem, 'shelf' | 'name' | 'image' | 'label' | 'labelStyle' | 'labelFont'>; width: number; height: number }) {
+  useImageRatio(item.image || undefined);
+  useImageRatioVersion();
+  const { vessel } = shelfThing(item);
+  if (vessel) {
+    return <VesselPicture vessel={vessel} text={labelText(item.label, item.name)} labelStyle={item.labelStyle} font={item.labelFont} width={width} height={height} fillImage={vessel === 'jar' ? item.image : undefined} />;
+  }
+  const picture = altarPicture(item.image);
+  if (!picture) return <ShelfPicture image="" name={item.name} size={Math.min(width, height)} />;
+  const ratio = item.image ? imageRatio(item.image) : null;
+  const r = ratio ? containedRect(width, height, ratio, { x: 0, y: 0, w: 1, h: 1 }, true) : { x: 0, y: 0, w: width, h: height };
   return (
-    <Svg width="100%" height={18} preserveAspectRatio="none" viewBox="0 0 100 18" aria-hidden>
+    <View style={{ width, height }}>
+      <AltarImage picture={picture} resizeMode="contain" style={{ position: 'absolute', left: r.x, top: r.y, width: r.w, height: r.h }} />
+    </View>
+  );
+}
+
+// Warm lamplight from above and a soft dark round the edges, over the painting and what stands on it.
+function WarmLight({ width, height, id }: { width: number; height: number; id: string }) {
+  return (
+    <Svg pointerEvents="none" style={StyleSheet.absoluteFill} width={width} height={height}>
       <Defs>
-        <LinearGradient id="plank" x1="0" y1="0" x2="0" y2="1">
-          <Stop offset="0" stopColor="#a5743f" />
-          <Stop offset="0.35" stopColor="#7a512a" />
-          <Stop offset="1" stopColor="#3f2913" />
-        </LinearGradient>
+        <RadialGradient id={`warm-${id}`} cx="50%" cy="18%" rx="70%" ry="80%">
+          <Stop offset="0" stopColor="#ffbe6e" stopOpacity={0.16} />
+          <Stop offset="0.55" stopColor="#ff9a40" stopOpacity={0.05} />
+          <Stop offset="1" stopColor="#000000" stopOpacity={0.32} />
+        </RadialGradient>
       </Defs>
-      <Rect x="0" y="0" width="100" height="18" fill="url(#plank)" />
-      <Rect x="0" y="0" width="100" height="2" fill="#c89a5c" opacity={0.7} />
-      <Line x1="4" y1="7" x2="38" y2="8" stroke="#5a3a1c" strokeWidth={0.4} opacity={0.6} />
-      <Line x1="52" y1="10" x2="96" y2="9" stroke="#5a3a1c" strokeWidth={0.4} opacity={0.6} />
-      <Line x1="20" y1="13" x2="70" y2="14" stroke="#5a3a1c" strokeWidth={0.3} opacity={0.5} />
+      <Rect x={0} y={0} width={width} height={height} fill={`url(#warm-${id})`} />
     </Svg>
   );
 }
 
-const PER_PLANK = 4;
+// A soft contact shadow where a thing meets the plank.
+function ContactShadow({ width, id }: { width: number; id: string }) {
+  const h = Math.max(4, width * 0.16);
+  return (
+    <Svg pointerEvents="none" width={width * 1.1} height={h} style={{ position: 'absolute', left: -width * 0.05, bottom: -h * 0.45 }}>
+      <Defs>
+        <RadialGradient id={`shadow-${id}`} cx="50%" cy="50%" rx="50%" ry="50%">
+          <Stop offset="0" stopColor="#000000" stopOpacity={0.6} />
+          <Stop offset="1" stopColor="#000000" stopOpacity={0} />
+        </RadialGradient>
+      </Defs>
+      <Ellipse cx={width * 0.55} cy={h / 2} rx={width * 0.55} ry={h / 2} fill={`url(#shadow-${id})`} />
+    </Svg>
+  );
+}
+
+/** One shelf's things on its painted furniture: a cabinet of it for as many as fit, then another. */
+function ShelfFurniture({ shelf, entries, width, onOpen }: { shelf: ShelfKind; entries: ShelfEntry[]; width: number; onOpen: (id: string) => void }) {
+  const art = shelfArtFor(shelf);
+  const cabinets = useMemo(() => layoutShelf(art, entries.map((e) => shelfThing(e.item))), [art, entries]);
+  const view = viewOf(art, width);
+  const source = altarImageSource(art.image);
+  return (
+    <View style={{ gap: 10 }}>
+      {cabinets.map((placements, c) => (
+        <View key={c} style={[styles.furniture, { width, height: view.height }]} accessibilityLabel={`${art.name}${cabinets.length > 1 ? `, ${c + 1} of ${cabinets.length}` : ''}`}>
+          {source && <Image source={source} style={{ position: 'absolute', left: view.offset, top: 0, width: view.imageWidth, height: view.height }} resizeMode="stretch" />}
+          {placements.map((p) => {
+            const { id, item } = entries[p.index];
+            const box = toView(art, p, width);
+            const low = isLow(item);
+            return (
+              <Pressable
+                key={id}
+                accessibilityRole="button"
+                accessibilityLabel={`${item.name}${low ? ', running low' : ''}`}
+                onPress={() => onOpen(id)}
+                hitSlop={4}
+                style={({ pressed }) => [{ position: 'absolute', left: box.left, top: box.top, width: box.width, height: box.height }, pressed && { opacity: 0.75 }]}
+              >
+                <ContactShadow width={box.width} id={`${shelf}-${id}`} />
+                <ShelfThingPicture item={item} width={box.width} height={box.height} />
+                {low && <Text style={styles.low}>Low</Text>}
+              </Pressable>
+            );
+          })}
+          <WarmLight width={width} height={view.height} id={`${shelf}-${c}`} />
+        </View>
+      ))}
+    </View>
+  );
+}
 
 /**
- * The curio cabinet: the chosen shelf's things on planks of a few at a time, each with its
- * picture and name, low ones marked. Tapping one opens it. `groups` is one shelf, or every
- * shelf (with plaques) for "All"; only `limit` things are drawn, the rest come with "Show more".
+ * My Shelves on their painted furniture: the chosen shelf's things standing
+ * on the measured planks (lib/shelves/art.ts), each container labelled.
+ * Tapping one opens it. `groups` is one shelf, or every shelf (with plaques)
+ * for "All"; only `limit` things are drawn, the rest come with "Show more".
  */
 export function ShelfCabinet({
   groups,
@@ -58,6 +134,7 @@ export function ShelfCabinet({
   onOpen: (id: string) => void;
   onMore: () => void;
 }) {
+  const [width, setWidth] = useState(0);
   const total = groups.reduce((n, g) => n + g.entries.length, 0);
   const more = Math.max(total - limit, 0);
   const blocks = groups.map((g, i) => {
@@ -65,62 +142,27 @@ export function ShelfCabinet({
     return { ...g, shown: g.entries.slice(0, Math.max(limit - before, 0)) };
   });
   return (
-    <View style={{ gap: 8 }}>
-      <View style={styles.cabinet}>
-        {blocks.map((g) => {
-          if (g.shown.length === 0) return null;
-          const rows: ShelfEntry[][] = [];
-          for (let i = 0; i < g.shown.length; i += PER_PLANK) rows.push(g.shown.slice(i, i + PER_PLANK));
-          return (
-            <View key={g.key} style={styles.shelf}>
+    <View style={{ gap: 8 }} onLayout={(e) => setWidth(Math.round(e.nativeEvent.layout.width))}>
+      {width > 0 &&
+        blocks.map((g) =>
+          g.shown.length === 0 ? null : (
+            <View key={g.key} style={{ gap: 6 }}>
               {showPlaques && (
                 <View style={styles.plaque}>
                   <Text style={styles.plaqueText}>{g.label}</Text>
                 </View>
               )}
-              {rows.map((row, r) => (
-                <View key={r}>
-                  <View style={styles.back}>
-                    {row.map(({ id, item }) => (
-                      <Pressable
-                        key={id}
-                        accessibilityRole="button"
-                        accessibilityLabel={`${item.name}${isLow(item) ? ', running low' : ''}`}
-                        onPress={() => onOpen(id)}
-                        style={({ pressed }) => [styles.thing, pressed && { opacity: 0.7 }]}
-                      >
-                        <ShelfPicture image={item.image} name={item.name} size={56} />
-                        <Text style={styles.thingName} numberOfLines={2}>
-                          {item.name}
-                        </Text>
-                        {isLow(item) && <Text style={styles.low}>Low</Text>}
-                      </Pressable>
-                    ))}
-                  </View>
-                  <Plank />
-                </View>
-              ))}
+              <ShelfFurniture shelf={g.key} entries={g.shown} width={width} onOpen={onOpen} />
             </View>
-          );
-        })}
-      </View>
+          ),
+        )}
       {more > 0 && <Button label={`Show more (${more})`} variant="outline" onPress={onMore} />}
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  cabinet: {
-    backgroundColor: '#2a1a0d',
-    borderRadius: 14,
-    borderWidth: 6,
-    borderColor: '#5b3b1d',
-    paddingHorizontal: 8,
-    paddingTop: 8,
-    paddingBottom: 4,
-    gap: 10,
-  },
-  shelf: { gap: 0 },
+  furniture: { overflow: 'hidden', borderRadius: 14, backgroundColor: '#140c06' },
   plaque: {
     alignSelf: 'center',
     backgroundColor: '#3a2611',
@@ -129,25 +171,9 @@ const styles = StyleSheet.create({
     borderRadius: 6,
     paddingHorizontal: 10,
     paddingVertical: 2,
-    marginBottom: 4,
   },
   plaqueText: { fontFamily: fonts.display, fontSize: 15, color: colors.gold },
-  back: {
-    minHeight: 84,
-    backgroundColor: '#1d120a',
-    borderTopLeftRadius: 6,
-    borderTopRightRadius: 6,
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    alignItems: 'flex-end',
-    paddingHorizontal: 4,
-    paddingTop: 8,
-    gap: 4,
-  },
-  empty: { ...type.caption, color: 'rgba(202,191,157,0.55)', fontStyle: 'italic', alignSelf: 'center', margin: 12 },
-  thing: { width: 72, alignItems: 'center', gap: 2, paddingBottom: 2, minHeight: 44 },
-  thingName: { fontFamily: fonts.body, fontSize: 11, lineHeight: 13, color: colors.parchment, textAlign: 'center' },
-  low: { position: 'absolute', top: 0, right: 2, fontFamily: fonts.bodySemi, fontSize: 10, color: colors.forestInk, backgroundColor: colors.gold, borderRadius: 6, paddingHorizontal: 4, overflow: 'hidden' },
+  low: { position: 'absolute', top: -4, right: -6, fontFamily: fonts.bodySemi, fontSize: 10, color: colors.forestInk, backgroundColor: colors.gold, borderRadius: 6, paddingHorizontal: 4, overflow: 'hidden' },
   letter: { backgroundColor: colors.surfaceRaised, alignItems: 'center', justifyContent: 'center' },
   letterText: { fontFamily: fonts.display, fontSize: 24, color: colors.gold },
 });

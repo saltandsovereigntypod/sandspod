@@ -175,6 +175,8 @@
     if (next.zIndex && String(next.zIndex) !== object.style.zIndex) object.style.zIndex = String(next.zIndex);
     global.updateObjectTransform?.(object);
     global.updateCandleDressingVisuals?.(object);
+    // A labelled jar or bottle: its words follow its vesselLabel (js/vessel-labels.js).
+    if ((next.vesselLabel || "") !== (before.vesselLabel || "") || next.imagePath !== before.imagePath) global.VesselLabels?.decorateAltarObject(object);
     if (lit !== wasLit) global.renderLighting?.();
     if (!options.quiet) {
       global.saveWorkingAltarDraft?.();

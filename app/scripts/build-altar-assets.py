@@ -121,7 +121,8 @@ def main():
         if group:
             groups.setdefault(group[:2], []).append((group[2], rel, path))
             continue
-        is_background = rel.startswith("backgrounds/")
+        # My Shelves' painted furniture is drawn full width like a background (its containers keep their alpha).
+        is_background = rel.startswith("backgrounds/") or (rel.startswith("shelves/") and not rel.startswith("shelves/containers/"))
         # Objects at 1024px stay sharp on 3x screens, even zoomed in on the altar;
         # salt circles and rectangles can span the whole altar, so keep 1600px as backgrounds do.
         is_salt_border = re.match(r"objects/tools/(black-)?salt-(circle|rectangle)/", rel) is not None

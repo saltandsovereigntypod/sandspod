@@ -4,7 +4,7 @@ import { StyleSheet, Text, View } from 'react-native';
 
 import { Button } from '../../../../components/Button';
 import { Body, Card, Chip, Chips, confirmAction, List, Notice, RitualScreen, Row, SectionLabel, Title, ui } from '../../../../components/rituals/ui';
-import { ShelfPicture } from '../../../../components/shelves/ShelfCabinet';
+import { ShelfThingPicture } from '../../../../components/shelves/ShelfCabinet';
 import { useAltars } from '../../../../lib/altar/store';
 import { storyLines } from '../../../../lib/altar/story';
 import type { SavedObject } from '../../../../lib/altar/types';
@@ -52,7 +52,7 @@ export default function ShelfThing() {
     <RitualScreen back="My Shelves">
       <Title eyebrow={shelfLabel(item.shelf)}>{item.name}</Title>
       <View style={styles.head}>
-        <ShelfPicture image={item.image} name={item.name} size={96} />
+        <ShelfThingPicture item={item} width={96} height={96} />
         <View style={{ flex: 1, gap: 4 }}>
           <Body>{`How much: ${qtyLabel(item.qty)}${isLow(item) ? ' · running low' : ''}`}</Body>
           {!!item.where && <Body muted>{`Kept: ${item.where}`}</Body>}

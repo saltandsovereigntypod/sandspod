@@ -1,0 +1,45 @@
+/* Labelled jars, bottles, deck boxes and book spines (js/vessel-labels.js; app: components/shelves/VesselLabel.tsx). */
+.vl {
+  position: absolute;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  box-sizing: border-box;
+  overflow: hidden;
+  container-type: size;
+  border: 0.6px solid var(--vl-edge);
+  border-radius: 6% / 9%;
+  background: var(--vl-paper);
+  color: var(--vl-ink);
+  opacity: 0.96;
+  pointer-events: none;
+}
+.vl > span {
+  display: -webkit-box;
+  width: 94%;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-height: 1.08;
+  text-align: center;
+  overflow-wrap: anywhere;
+}
+.vl--vertical > span {
+  display: block;
+  width: auto;
+  max-height: 94%;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.vl--paper { --vl-paper: #e9dcb9; --vl-ink: #3a2a16; --vl-edge: #a88b5a; background-image: radial-gradient(ellipse at 30% 30%, rgba(255, 255, 255, 0.25), rgba(120, 90, 40, 0.18)); }
+.vl--kraft { --vl-paper: #b48d5e; --vl-ink: #2b1b0c; --vl-edge: #7d5a33; }
+.vl--gold { --vl-paper: #17120d; --vl-ink: #d9b866; --vl-edge: #b08f45; }
+.vl--ink > span { font-family: "Cormorant Garamond", Georgia, serif; font-style: italic; font-weight: 600; }
+.vl--script > span { font-family: "Snell Roundhand", "Apple Chancery", "URW Chancery L", "Segoe Script", cursive; }
+.vl--hand > span { font-family: "Bradley Hand", "Segoe Print", "Comic Neue", "Comic Sans MS", cursive; }
+/* A container standing in its box: the glass, the herb filling a jar, the label. */
+.vl-vessel { position: relative; display: block; width: 100%; height: 100%; }
+.vl-vessel .vl-glass { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: fill; }
+.vl-vessel .vl-fill { position: absolute; object-fit: contain; object-position: bottom; opacity: 0.85; }

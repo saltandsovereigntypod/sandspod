@@ -670,6 +670,17 @@ const f656 = require('../../../assets/altar/sheets/plants/rosemary.webp');
 const f657 = require('../../../assets/altar/sheets/plants/sage.webp');
 const f658 = require('../../../assets/altar/sheets/plants/snake-plant.webp');
 const f659 = require('../../../assets/altar/sheets/plants/thyme.webp');
+const f660 = require('../../../assets/altar/shelves/book-shelf.webp');
+const f661 = require('../../../assets/altar/shelves/candle-shelf.webp');
+const f662 = require('../../../assets/altar/shelves/containers/book.webp');
+const f663 = require('../../../assets/altar/shelves/containers/bottle.webp');
+const f664 = require('../../../assets/altar/shelves/containers/deck.webp');
+const f665 = require('../../../assets/altar/shelves/containers/dropper.webp');
+const f666 = require('../../../assets/altar/shelves/containers/jar.webp');
+const f667 = require('../../../assets/altar/shelves/crystal-shelf.webp');
+const f668 = require('../../../assets/altar/shelves/herb-shelf.webp');
+const f669 = require('../../../assets/altar/shelves/oil-shelf.webp');
+const f670 = require('../../../assets/altar/shelves/wall-shelf.webp');
 
 export const bundledAltarAssets: Record<string, { source: number; width: number; height: number; crop?: BundledAltarCrop }> = {
   'assets/altar/backgrounds/autumn-harvest.png': { source: f0, width: 1536, height: 1024 },
@@ -1761,4 +1772,15 @@ export const bundledAltarAssets: Record<string, { source: number; width: number;
   'assets/altar/objects/vessels/witch-bottle/witch-bottle.png': { source: f474, width: 1024, height: 1536 },
   'assets/altar/overlays/candle-herb-overlay.png': { source: f475, width: 1024, height: 1536 },
   'assets/altar/overlays/candle-oil-overlay.png': { source: f476, width: 1024, height: 1536 },
+  'assets/altar/shelves/book-shelf.png': { source: f660, width: 1680, height: 944 },
+  'assets/altar/shelves/candle-shelf.png': { source: f661, width: 1680, height: 944 },
+  'assets/altar/shelves/containers/book.png': { source: f662, width: 201, height: 1024 },
+  'assets/altar/shelves/containers/bottle.png': { source: f663, width: 504, height: 1024 },
+  'assets/altar/shelves/containers/deck.png': { source: f664, width: 555, height: 1024 },
+  'assets/altar/shelves/containers/dropper.png': { source: f665, width: 348, height: 1024 },
+  'assets/altar/shelves/containers/jar.png': { source: f666, width: 354, height: 708 },
+  'assets/altar/shelves/crystal-shelf.png': { source: f667, width: 1680, height: 944 },
+  'assets/altar/shelves/herb-shelf.png': { source: f668, width: 1680, height: 944 },
+  'assets/altar/shelves/oil-shelf.png': { source: f669, width: 1680, height: 944 },
+  'assets/altar/shelves/wall-shelf.png': { source: f670, width: 1680, height: 944 },
 };

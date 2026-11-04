@@ -106,3 +106,5 @@ export * as craftTools from '../../app/src/lib/altar/craftTools.ts';
 // Crystals: when they may charge (selenite touching, the moon by night, the sun by day), and how they wear with use.
 export * as crystalCare from '../../app/src/lib/altar/crystalCare.ts';
 export * as divinationResult from '../../app/src/lib/altar/divinationResult.ts';
+// Labelled jars and bottles: an Apothecary blend, oil or water carries its label onto the altar (vesselLabel on the object).
+export * as vesselLabel from '../../app/src/lib/altar/vesselLabel.ts';

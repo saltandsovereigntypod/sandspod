@@ -621,7 +621,8 @@ function placeObject(options) {
      entityId,
      instanceId,
      offering,
-     offeringLabel
+     offeringLabel,
+     vesselLabel
    } = options;
 
   const entityName =
@@ -714,6 +715,11 @@ function placeObject(options) {
     object.appendChild(img);
   } else {
     object.textContent = fallbackSymbol || "";
+  }
+  // A labelled jar or bottle from the Apothecary (js/vessel-labels.js).
+  if (vesselLabel) {
+    object.dataset.appExtra = JSON.stringify({ vesselLabel });
+    window.VesselLabels?.decorateAltarObject(object);
   }
 
   object.setAttribute(

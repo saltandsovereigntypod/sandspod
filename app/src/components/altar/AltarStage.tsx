@@ -33,6 +33,8 @@ import { candleLife, dressingOverlays, isCandle, isLit } from '../../lib/altar/l
 import { incenseSmokeSource, incenseStickArt, offeringArt, tintFilter, tintMatrix, type IncenseSmokeSource, type IncenseStickArt, type OfferingArt } from '../../lib/altar/offeringArt';
 import { AgedPicture, HAS_AGED } from './AgedPicture';
 import { AltarImage } from './AltarImage';
+import { VesselLabelText } from '../shelves/VesselLabel';
+import { cleanVesselLabel, containedRect, VESSELS } from '../../lib/altar/vesselLabel';
 import { FoodHeap } from './FoodHeap';
 import { FramePhoto } from './FramePhoto';
 import { frameOf, framePhotoRect, framePhotoTint, isFrame } from '../../lib/altar/frame';
@@ -509,6 +511,10 @@ export const AltarObjectArt = memo(function AltarObjectArt({ object, width, heig
   // An ancestor frame: the photo of your own in its opening.
   const frame = isFrame(object) ? frameOf(object) : null;
   const photoRect = frame && picture ? framePhotoRect(object, width, height) : null;
+  const vesselLabel = (() => {
+    const l = cleanVesselLabel(object.vesselLabel);
+    return l?.vessel && l.text && object.imagePath === VESSELS[l.vessel].image ? l : null;
+  })();
 
   return (
     <View pointerEvents="none" style={{ width, height, transform: [{ scaleX: flipped ? -1 : 1 }] }}>
@@ -562,6 +568,22 @@ export const AltarObjectArt = memo(function AltarObjectArt({ object, width, heig
           <Text style={[styles.symbol, { fontSize: width * 0.49 }]}>{object.fallbackSymbol || '✦'}</Text>
         )}
       </View>
+      {vesselLabel && picture && (
+        // A labelled jar or bottle from the Apothecary: its words on its label, turned back to read when the jar is flipped.
+        <View pointerEvents="none" style={[StyleSheet.absoluteFill, { transform: [{ scaleX: flipped ? -1 : 1 }] }]}>
+          <VesselLabelText
+            rect={(() => {
+              const v = VESSELS[vesselLabel.vessel!];
+              const r = containedRect(width * (1 - IMAGE_INSET.x * 2), height - width * IMAGE_INSET.y * 2, v.ratio, v.label);
+              return { ...r, x: r.x + width * IMAGE_INSET.x, y: r.y + width * IMAGE_INSET.y };
+            })()}
+            text={vesselLabel.text}
+            labelStyle={vesselLabel.style}
+            font={vesselLabel.font}
+            vertical={VESSELS[vesselLabel.vessel!].vertical}
+          />
+        </View>
+      )}
       {(overlays.herb || overlays.oil) && !geometry?.burn?.outline && (
         // The dressing lies only on the wax that's there: cut to the candle's body, and off above its top as it burns down.
         // A figure's is drawn by CandleMarks inside its outline instead: the painted overlay would glow round it as a box.
