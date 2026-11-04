@@ -1,6 +1,6 @@
 // "You have 6 of the 8": what a working calls for against what you already
-// have, on the altar, in your apothecary and cabinet, among your stones and in
-// your garden. For the premade detail screen and the altar.
+// have, on the altar, on My Shelves, in your apothecary and cabinet, among your
+// stones and in your garden. For the premade detail screen and the altar.
 
 import { useMemo, useState } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
@@ -13,6 +13,8 @@ import type { Stone } from '../../../lib/craft/crystal/stones';
 import { PLANTS, type Plant } from '../../../lib/craft/green/garden';
 import { useCraft } from '../../../lib/craft/store';
 import { useAccessibleText } from '../../../lib/accessibility/store';
+import { usedInWorking } from '../../../lib/shelves/model';
+import { useShelfActions, useShelves } from '../../../lib/shelves/store';
 import { colors, fonts, radius, touch, type } from '../../../theme';
 
 type Props = {
@@ -24,9 +26,14 @@ type Props = {
   altarName?: string;
   /** Start with the lists open. */
   open?: boolean;
+  /** The working's name, for "Used it" on things from My Shelves (kept in their story; counted down if asked). */
+  working?: string;
 };
 
-export function IngredientCheck({ needs, objects = [], altarName, open = false }: Props) {
+export function IngredientCheck({ needs, objects = [], altarName, open = false, working }: Props) {
+  const shelves = useShelves();
+  const shelfActions = useShelfActions();
+  const [used, setUsed] = useState<string[]>([]);
   const workshop = useWorkshop();
   const { entries: stones } = useCraft<Stone>(STONES);
   const { entries: plants } = useCraft<Plant>(PLANTS);
@@ -40,11 +47,20 @@ export function IngredientCheck({ needs, objects = [], altarName, open = false }
         customItems: workshop.customItems,
         stones: stones.map((s) => s.data),
         plants: plants.map((p) => p.data),
+        shelves: shelves.entries,
       }),
-    [needs, objects, workshop.apothecary, workshop.customItems, stones, plants],
+    [needs, objects, workshop.apothecary, workshop.customItems, stones, plants, shelves.entries],
   );
   if (!needs.length) return null;
   const ratio = check.total ? check.haveCount / check.total : 1;
+  const useIt = working
+    ? (id: string) => {
+        const entry = shelves.entries.find((e) => e.id === id);
+        if (!entry || used.includes(id)) return;
+        setUsed((u) => [...u, id]);
+        void shelfActions.save(id, usedInWorking(entry.item, working, new Date()));
+      }
+    : undefined;
 
   return (
     <View style={styles.card}>
@@ -66,7 +82,7 @@ export function IngredientCheck({ needs, objects = [], altarName, open = false }
       </Pressable>
       {expanded && (
         <View style={styles.lists}>
-          {check.have.length > 0 && <List title="You have" items={check.have} />}
+          {check.have.length > 0 && <List title="You have" items={check.have} onUse={useIt} used={used} />}
           {check.missing.length > 0 && <List title="To gather" items={check.missing} />}
           {check.optionalHave.length + check.optionalMissing.length > 0 && <List title="If you like" items={[...check.optionalHave, ...check.optionalMissing]} />}
         </View>
@@ -75,17 +91,28 @@ export function IngredientCheck({ needs, objects = [], altarName, open = false }
   );
 }
 
-function List({ title, items }: { title: string; items: NeedResult[] }) {
+function List({ title, items, onUse, used = [] }: { title: string; items: NeedResult[]; onUse?: (id: string) => void; used?: string[] }) {
   return (
     <View style={styles.list}>
       <Text style={type.eyebrow}>{title}</Text>
       {items.map((item, i) => (
-        <View key={`${item.name}-${i}`} style={styles.item} accessible accessibilityLabel={`${item.name}${item.have ? `, ${foundWords(item)}` : ', not found'}`}>
+        <View key={`${item.name}-${i}`} style={styles.item} accessible={!(onUse && item.found[0]?.source === 'shelves')} accessibilityLabel={`${item.name}${item.have ? `, ${foundWords(item)}` : ', not found'}`}>
           <Text style={[styles.mark, item.have && styles.markHave]}>{item.have ? '✓' : '○'}</Text>
           <View style={styles.itemText}>
             <Text style={styles.name}>{item.name}</Text>
             {item.have && <Text style={type.caption}>{foundWords(item)}</Text>}
           </View>
+          {!!onUse && item.found[0]?.source === 'shelves' && !!item.found[0].id && (
+            <Pressable
+              accessibilityRole="button"
+              accessibilityLabel={used.includes(item.found[0].id) ? `${item.found[0].label}: marked used` : `I used ${item.found[0].label} in this`}
+              disabled={used.includes(item.found[0].id)}
+              onPress={() => onUse(item.found[0].id!)}
+              style={styles.use}
+            >
+              <Text style={styles.useText}>{used.includes(item.found[0].id) ? 'Marked used' : 'Used it'}</Text>
+            </Pressable>
+          )}
         </View>
       ))}
     </View>
@@ -106,5 +133,7 @@ const styles = StyleSheet.create({
   itemText: { flex: 1, gap: 1 },
   mark: { color: colors.muted, fontSize: 15, width: 18, textAlign: 'center', marginTop: 2 },
   markHave: { color: colors.fern },
+  use: { minHeight: touch, justifyContent: 'center', paddingHorizontal: 6 },
+  useText: { fontFamily: fonts.bodySemi, fontSize: 13, color: colors.gold },
   name: { fontFamily: fonts.body, fontSize: 15, lineHeight: 21, color: colors.parchment },
 });

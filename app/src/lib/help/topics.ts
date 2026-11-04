@@ -1991,6 +1991,67 @@ export const HELP: HelpSection[] = [
     intro: 'Plan a night, run a ritual step by step, and write down what happened.',
     topics: [
       {
+        id: 'my-shelves',
+        title: 'Keep track of what you own on My Shelves',
+        summary: 'My Shelves holds the real things you keep (crystals, herbs and resins, oils and waters, candles, tools, decks, books, statues, jars and spell bottles) on painted shelves or as a list.',
+        steps: [
+          'Go to Practice → Rituals and tap "My Shelves" (it is also on To tend, and "I own this" in the altar cabinet and the Living Library brings you here).',
+          'Tap "Add something", find it in the cabinet, or tap "Add my own" and "Add a photo".',
+          'Fill in how much you have (a count, or full, half or low), where it’s kept, where it came from, when you got it, an intention and notes.',
+          'Tap "Put it on my shelves".',
+          'Tap "List" to search and sort by shelf, what needs tending, what’s running low, name or date added; "Shelves" takes you back to the cabinet.',
+        ],
+        tips: [
+          'In the altar cabinet, "I own this" under any item adds it with the cabinet’s picture; once added it says "On my shelves".',
+          'Where it’s kept suggests the places you’ve used before.',
+          'Signed in, your shelves sync with your account and the website; as a guest they stay on this device.',
+        ],
+        href: '/rituals/shelves',
+        keywords: ['inventory', 'collection', 'what i own', 'stock', 'supplies', 'crystals', 'herbs', 'oils', 'decks', 'books', 'statues', 'i own this', 'shelf'],
+      },
+      {
+        id: 'my-shelves-tending',
+        title: 'Tend what’s on your shelves',
+        summary: 'Each shelf has its own way of being tended, which shows in To tend and on Today, and you can change it for any one thing.',
+        steps: [
+          'Open something on My Shelves.',
+          'Under "Tending", see its rhythm and when it’s next due; tap "Tended today" (or "Checked or replaced today" for herbs and oils) when you’ve done it.',
+          'To change it, tap "Change", then under "Tending" choose another rhythm or turn "Tend it in To tend" off.',
+        ],
+        tips: [
+          'Until you choose otherwise (common modern practice, not tradition): crystals are cleansed and recharged at each full moon; herbs, resins and oils are checked about a year after you got them (many oils keep up to two years); moon water and other waters are made fresh each full moon; jars and spell bottles are checked on each month; statues and tools are dusted and cleansed each month.',
+          'Decks are cleansed when you feel they need it, after heavy use, so nothing is set for them; candles and books ask nothing; living plants are tended in your garden instead.',
+          'Only the thing you added is put on To tend, linked by its own id: tending it never marks anything else done.',
+        ],
+        href: '/rituals/shelves',
+        keywords: ['best by', 'expiry', 'cleanse crystals', 'recharge', 'moon water', 'dust statues', 'witch bottle'],
+      },
+      {
+        id: 'my-shelves-shopping',
+        title: 'Keep a shopping list of what’s running low',
+        summary: 'Mark something running low and it goes on your shopping list, grouped by shelf.',
+        steps: [
+          'Open something on My Shelves and tap "Running low: add to my shopping list" (choosing "Low", or counting down to none, does the same).',
+          'Your shopping list is at the bottom of My Shelves.',
+          'When you’ve bought more, tap "Restocked": it comes off the list and its quantity goes back up.',
+        ],
+        href: '/rituals/shelves',
+        keywords: ['shopping', 'restock', 'low', 'buy', 'running out'],
+      },
+      {
+        id: 'my-shelves-altar-spells',
+        title: 'Use things from your shelves on the altar and in spells',
+        summary: 'Place the very thing you own on your altar, and see what you already have when you build a spell or open a premade working.',
+        steps: [
+          'Open something on My Shelves and tap "Place on my altar": your most recent altar opens with it set down.',
+          'Its charges and cleansings there are kept in its story on My Shelves, under "Its story".',
+          'In the spell builder or a premade working, the ingredient check counts what’s on your shelves; tap "Used it" by one to keep it in its story.',
+          'To have it counted down each time, open it, tap "Change" and turn on "Count down when used in a spell".',
+        ],
+        href: '/rituals/shelves',
+        keywords: ['place on altar', 'ingredients', 'you have', 'gather', 'count down', 'used in spell', 'story'],
+      },
+      {
         id: 'rituals-home',
         title: 'Find your way around Practice → Rituals',
         summary: 'Practice → Rituals holds your ritual work: what you do, what you learn and what you record.',

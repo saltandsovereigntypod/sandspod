@@ -131,6 +131,9 @@ import {
 import { storyLines, storySummary } from '../../lib/altar/story';
 import { logAppEvent } from '../../lib/altar/livingState';
 import { addEntry, listEntriesOnce, updateEntry, useCraft, type CraftEntry } from '../../lib/craft/store';
+import { cabinetFormOf } from '../../lib/altar/itemIndex';
+import { SHELF_FIELD, shelfPlacement } from '../../lib/shelves/model';
+import { useShelves } from '../../lib/shelves/store';
 import { READINGS as READING_LOG, type Reading } from '../../lib/craft/hedge/readings';
 import { ceromancyResult, laidResult, newlyLaid, readingForResult, scryingReading, scryingResult, withCandleNotes, withNotes, type DivinationResult } from '../../lib/altar/divinationResult';
 import { meaningOf } from '../../lib/divination/draw';
@@ -191,7 +194,7 @@ import { BackgroundSheet, DressSheet, LayersSheet, SaveSheet } from './OptionShe
 import { Button } from '../Button';
 import { burnDuration, burnedSoFar, dressingNames, glanceLine, lifeDuration, resolveAltarEntry } from '../../lib/altar/companion';
 import { CandleLifeSheet } from './CandleLifeSheet';
-import { builtInCabinet, defaultAltarBackground, nudgedCenter, objectFromForm, shortLabel } from '../../lib/altar/cabinet';
+import { builtInCabinet, defaultAltarBackground, formImage, nudgedCenter, objectFromForm, shortLabel } from '../../lib/altar/cabinet';
 import {
   addObject,
   placeApothecary,
@@ -358,7 +361,7 @@ export function AltarEditor({
   whose,
   deed,
 }: { shared?: SharedAltar; header?: ReactNode; overlay?: ReactNode; onBack?: () => void; whose?: WhoseContext | null; deed?: AltarDeedRequest | null } = {}) {
-  const params = useLocalSearchParams<{ altarId: string; from?: string; deity?: string; planet?: string }>();
+  const params = useLocalSearchParams<{ altarId: string; from?: string; deity?: string; planet?: string; shelf?: string }>();
   const altarId = shared ? `coven:${shared.key}` : params.altarId;
   const { from, deity, planet } = params;
   const store = useAltars();
@@ -785,6 +788,37 @@ export function AltarEditor({
     () => withoutHiddenCalendars([...workshop.customItems, ...builtInCabinet], hiddenKey ? hiddenKey.split(',') : []),
     [workshop.customItems, hiddenKey],
   );
+  // "Place on my altar" from My Shelves: that exact thing, set down once the altar is open.
+  const placeShelfThing = (item: CabinetItem, form: CabinetForm, shelfId: string): boolean => {
+    const current = docRef.current;
+    if (!current || shared) return false;
+    const center = nudgedCenter(viewCenter(), current.objects.map((o) => displayBox(o)));
+    const object = { ...objectFromForm(item, form, current.objects, nowIso(), overrides, center), [SHELF_FIELD]: shelfId };
+    commit((d) => {
+      const added = addObject(d, object);
+      const box = displayBox(object);
+      return moveObject(added, added.objects.length - 1, box.cx, box.cy);
+    });
+    if (docRef.current === current) return false;
+    setSelected(current.objects.length);
+    return true;
+  };
+  const shelves = useShelves();
+  const shelfPlaced = useRef<string | null>(null);
+  useEffect(() => {
+    const want = params.shelf;
+    if (!want || !doc || shared || shelfPlaced.current === want || !shelves.ready) return;
+    // Set down just after this render, as a tap in the cabinet would.
+    const timer = setTimeout(() => {
+      shelfPlaced.current = want;
+      const entry = shelves.entries.find((e) => e.id === want);
+      const found = entry ? shelfPlacement(entry.id, entry.item, (key) => cabinetFormOf(key, allItems)) : null;
+      if (!entry || !found) setNotice('That thing from your shelves couldn’t be placed. Add it from the cabinet instead.');
+      else if (placeShelfThing(found.item, found.form, entry.id)) setNotice(`${entry.item.name}, from your shelves, is on your altar. Its charges and cleansings here are kept in its story.`);
+    }, 0);
+    return () => clearTimeout(timer);
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- once per thing asked for, when the altar is ready
+  }, [params.shelf, doc, shelves.ready]);
   const [ownItem, setOwnItem] = useState<{ category: string; item: CabinetItem | null } | null>(null);
   const [working, setWorking] = useState<ApothecaryTarget | null>(null);
 
@@ -2310,6 +2344,11 @@ export function AltarEditor({
               afterSheetCloses(() => setOwnItem({ category: item.category, item }));
             }}
             favourites={readFavourites(settings?.[CABINET_FAVOURITES_SETTING])}
+            owned={shelves.entries.map((e) => e.item.cabinetKey).filter(Boolean)}
+            onOwn={(item, form) => {
+              setSheet(null);
+              router.push({ pathname: '/rituals/shelves/add', params: { key: `${item.id}|${form.form || form.label}`, name: item.name, image: formImage(item, form, overrides) } });
+            }}
             onToggleFavourite={(id) => {
               const next = toggleFavourite(readFavourites((cachedSettings() ?? settings)?.[CABINET_FAVOURITES_SETTING]), id);
               void patchMySettings({ [CABINET_FAVOURITES_SETTING]: encodeFavourites(next) }).catch(() => {});

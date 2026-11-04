@@ -70,7 +70,7 @@
   }
 
   /** "You have 6 of the 8": the check, with its lists behind a disclosure. */
-  function ingredientCheck(check, { altarName = "" } = {}) {
+  function ingredientCheck(check, { altarName = "", working = "" } = {}) {
     if (!check || !check.total && !check.optionalHave.length && !check.optionalMissing.length) return "";
     const C = global.SaltCore.rituals.ingredients;
     const ratio = check.total ? check.haveCount / check.total : 1;
@@ -79,7 +79,11 @@
         ? `<div class="rt-check__list"><p class="sp-eyebrow">${esc(title)}</p><ul>${items
             .map(
               (item) => `<li class="${item.have ? "is-have" : ""}"><span class="rt-check__mark" aria-hidden="true">${item.have ? "✓" : "○"}</span>
-                <span><span class="rt-check__name">${esc(item.name)}</span>${item.have ? `<span class="sp-caption"> · ${esc(C.foundWords(item))}</span>` : `<span class="sr-only">, not found</span>`}</span></li>`
+                <span><span class="rt-check__name">${esc(item.name)}</span>${item.have ? `<span class="sp-caption"> · ${esc(C.foundWords(item))}</span>` : `<span class="sr-only">, not found</span>`}</span>${
+                working && item.found?.[0]?.source === "shelves" && item.found[0].id
+                  ? ` <button type="button" class="sp-chip rt-check__use" data-shelf-use="${esc(item.found[0].id)}" data-working="${esc(working)}" aria-label="I used ${esc(item.found[0].label)} in this">Used it</button>`
+                  : ""
+              }</li>`
             )
             .join("")}</ul></div>`
         : "";
@@ -93,9 +97,29 @@
         ${listOf("You have", check.have)}
         ${listOf("To gather", check.missing)}
         ${listOf("If you like", [...check.optionalHave, ...check.optionalMissing])}
-        <p class="sp-caption">Checked against your apothecary, your own cabinet items, your stones and your garden.</p>
+        <p class="sp-caption">Checked against My Shelves, your apothecary, your own cabinet items, your stones and your garden.</p>
       </details>`;
   }
+
+  // "Used it": a thing from My Shelves used in this working, kept in its story
+  // (and counted down, if you asked for that on its page).
+  global.document.addEventListener("click", async (event) => {
+    const button = event.target.closest?.("[data-shelf-use]");
+    if (!button || button.disabled) return;
+    const M = global.SaltCore?.rituals?.shelves;
+    if (!M || !global.SaltCraft) return;
+    button.disabled = true;
+    try {
+      const entry = (await global.SaltCraft.list(M.SHELVES_COLLECTION)).find((e) => e.id === button.dataset.shelfUse);
+      if (!entry) return;
+      await global.SaltCraft.update(M.SHELVES_COLLECTION, entry.id, M.usedInWorking(M.cleanItem(entry.data), button.dataset.working || "a working", new Date()));
+      button.textContent = "Marked used";
+    } catch (error) {
+      console.error(error);
+      button.disabled = false;
+      say("That couldn’t be kept. Please try again.", "problem");
+    }
+  });
 
   /** Save an .ics file (calendar files open in Apple Calendar, Outlook and Google). */
   function downloadIcs(text, filename) {

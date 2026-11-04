@@ -99,7 +99,10 @@ export function TendScreen() {
           }}
         />
       ) : (
-        <Button label="Add your own" variant="outline" onPress={() => setAdding(true)} />
+        <>
+          <Button label="Add your own" variant="outline" onPress={() => setAdding(true)} />
+          <Button label="My Shelves" variant="outline" accessibilityHint="The crystals, herbs, oils and tools you keep, and how each is tended" onPress={() => router.push('/rituals/shelves')} />
+        </>
       )}
       {!ctx.ready && <ActivityIndicator color={colors.gold} />}
       {ctx.ready && nothing && (

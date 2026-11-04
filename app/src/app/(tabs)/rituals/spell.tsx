@@ -364,7 +364,7 @@ export default function SpellBuilder() {
             <Body muted>{`${GENERAL_SUBSTITUTES.candle} ${GENERAL_SUBSTITUTES.crystal}`}</Body>
           </Card>
         )}
-        <IngredientCheck needs={templateNeeds({ ingredients: spec.ingredients })} />
+        <IngredientCheck needs={templateNeeds({ ingredients: spec.ingredients })} working={spec.name || 'a spell'} />
       </View>
 
       <View style={ui.gap}>

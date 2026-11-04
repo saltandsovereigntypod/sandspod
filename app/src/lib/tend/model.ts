@@ -214,6 +214,8 @@ export type OwnDetails = {
   grimoire: boolean;
   /** Count my meditations: a finished sit marks it done (off unless you turn it on). */
   meditations?: boolean;
+  /** A thing on My Shelves this tends (its id there), so it opens there. */
+  shelf?: string;
 };
 export type Completion = { at: string; how: string[]; note: string };
 
@@ -227,7 +229,7 @@ export const ownHows = (type: OwnType) => OWN_TYPES.find((t) => t.value === type
 
 function cleanOwn(raw: unknown): OwnDetails {
   const o = (raw && typeof raw === 'object' ? raw : {}) as Partial<OwnDetails>;
-  return { type: OWN_TYPES.some((t) => t.value === o.type) ? (o.type as OwnType) : 'other', other: String(o.other || '').slice(0, 80), notes: String(o.notes || '').slice(0, NOTE_MAX), grimoire: o.grimoire === true, ...(o.meditations === true ? { meditations: true } : {}) };
+  return { type: OWN_TYPES.some((t) => t.value === o.type) ? (o.type as OwnType) : 'other', other: String(o.other || '').slice(0, 80), notes: String(o.notes || '').slice(0, NOTE_MAX), grimoire: o.grimoire === true, ...(o.meditations === true ? { meditations: true } : {}), ...(typeof o.shelf === 'string' && o.shelf ? { shelf: o.shelf.slice(0, 80) } : {}) };
 }
 
 function cleanDone(raw: unknown): Completion[] {
@@ -252,7 +254,7 @@ export function newOwnRecord(input: OwnInput, id: string): TendRecord {
 
 /** What it is and how often, changed. */
 export function editOwn(record: TendRecord, input: OwnInput): TendRecord {
-  const own = cleanOwn({ type: input.type, other: input.other ?? '', notes: input.notes ?? '', grimoire: input.grimoire === true, meditations: input.meditations === true });
+  const own = cleanOwn({ type: input.type, other: input.other ?? '', notes: input.notes ?? '', grimoire: input.grimoire === true, meditations: input.meditations === true, shelf: record.own?.shelf });
   return { ...record, title: input.name.trim().slice(0, OWN_NAME_MAX) || ownTypeLabel(own), rhythm: cleanRhythm(input.rhythm) ?? defaultRhythm('own'), own };
 }
 
@@ -306,8 +308,8 @@ export function ownTendables(records: TendRecord[]): Tendable[] {
         ends: [],
         private: false,
         keywords: [r.own?.notes ?? ''],
-        href: '/today/tend',
-        webHref: '/today/tend/',
+        href: r.own?.shelf ? `/rituals/shelves/${r.own.shelf}` : '/today/tend',
+        webHref: r.own?.shelf ? `/rituals/shelves/?item=${encodeURIComponent(r.own.shelf)}` : '/today/tend/',
         ref: {},
       };
     });

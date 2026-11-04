@@ -188,7 +188,7 @@
 
       ${p.safety ? `<section class="sp-card sp-card--gold" aria-labelledby="rt-care"><h2 class="sp-label" id="rt-care">Take care</h2><p>${esc(p.safety)}</p></section>` : ""}
 
-      <div data-check>${UI.ingredientCheck(view.check)}</div>
+      <div data-check>${UI.ingredientCheck(view.check, { working: view.premade?.title || "" })}</div>
 
       <section class="sp-card" aria-labelledby="rt-need">
         <h2 class="sp-label" id="rt-need">You’ll need</h2>
@@ -264,7 +264,7 @@
     const pantry = await S.pantry().catch(() => null);
     if (pantry) {
       view.check = R.ingredients.checkIngredients(R.ingredients.premadeNeeds(view.premade), pantry);
-      UI.root().querySelector("[data-check]").innerHTML = UI.ingredientCheck(view.check);
+      UI.root().querySelector("[data-check]").innerHTML = UI.ingredientCheck(view.check, { working: view.premade?.title || "" });
     }
     UI.root().addEventListener("click", async (event) => {
       const button = event.target.closest("button");

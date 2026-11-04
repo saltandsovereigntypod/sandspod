@@ -151,7 +151,7 @@ export default function PremadeView() {
         </Card>
       )}
 
-      <IngredientCheck needs={needs} />
+      <IngredientCheck needs={needs} working={premade.title} />
 
       <Card>
         <SectionLabel>You’ll need</SectionLabel>

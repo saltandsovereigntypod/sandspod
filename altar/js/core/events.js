@@ -430,6 +430,30 @@ window.addEventListener("load", () => {
       const placed = window.AltarPlacement.placeCabinetItem({ itemId: cabinetItemId, formId: params.get("form") || "" });
       if (placed) consumeAltarSearchAction(["placeCabinetItem", "form"]);
     }
+    // "Place on my altar" from My Shelves: that exact thing, carrying its id.
+    const shelfId = params.get("shelf");
+    if (shelfId && window.SaltCraft) {
+      await window.SaltPage?.ready?.();
+      const entry = ((await window.SaltCraft.list("shelves.items").catch(() => [])) || []).find((e) => e.id === shelfId);
+      const item = entry?.data || null;
+      const extra = { shelfItemId: shelfId };
+      let placed = false;
+      if (item?.cabinetKey) {
+        const [itemId, formId] = String(item.cabinetKey).split("|");
+        placed = !!window.AltarCabinet?.placeItem?.({ itemId, formId, extra });
+      }
+      if (!placed && item?.image && typeof placeObject === "function") {
+        const object = placeObject({ imagePath: item.image, label: item.name || "From my shelves", type: { crystals: "crystal", herbs: "herb", oils: "oil", candles: "candle", statues: "deity", jars: "vessel" }[item.shelf] || "tool" });
+        if (object) {
+          object.dataset.appExtra = JSON.stringify(extra);
+          placed = true;
+        }
+      }
+      if (placed) {
+        consumeAltarSearchAction(["shelf"]);
+        if (typeof showAltarToast === "function") showAltarToast(`${item.name}, from your shelves, is on your altar`);
+      } else if (typeof showAltarToast === "function") showAltarToast("That thing from your shelves couldn’t be placed");
+    }
     const placeApothecaryItemId = params.get("placeApothecaryItem");
     if (placeApothecaryItemId) {
       if (typeof loadApothecaryItems === "function") await loadApothecaryItems();
