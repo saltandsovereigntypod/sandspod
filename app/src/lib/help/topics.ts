@@ -1873,6 +1873,24 @@ export const HELP: HelpSection[] = [
         keywords: ['ancestors', 'beloved dead', 'family recipes', 'genealogy', 'samhain', 'deipnon', 'family history'],
       },
       {
+        id: 'ancestor-profiles',
+        title: 'Keep a page for each of your ancestors',
+        summary: 'Their name, who they are to you, dates and places, a photo, stories, the foods and offerings they liked, and the days you keep for them.',
+        steps: [
+          'Open Practice → Craft → Hedge → Ancestors and tap "Add someone", or open a person and tap "Edit".',
+          'Add what you know. Under "Other days you keep for them", write one day to a line, such as "24 June Name day".',
+          'Tap "Add a photo" to choose one, then save.',
+          'To be reminded of their days, open Settings → Reminders → Your ancestors’ days and turn it on.',
+        ],
+        tips: [
+          'Their days in the coming week show on Today.',
+          'Name an ancestor frame on your altar from them (Tools in the cabinet, Ancestor Frame, "Add a name") to link the two.',
+          'Their page opens your ancestor journal entries about them.',
+        ],
+        href: '/rituals/craft/hedge/ancestors',
+        keywords: ['ancestor profile', 'family tree', 'death anniversary', 'name day', 'feast day', 'memorial', 'beloved dead'],
+      },
+      {
         id: 'journals-omens',
         title: 'Note an omen or sign, and look back later',
         summary: 'What you saw, where, the moon and planetary hour at the time, what it might mean, and whether it came to pass.',

@@ -5,7 +5,7 @@ import { Text, View } from 'react-native';
 import { Button } from '../../../../../../components/Button';
 import { SupportLink } from '../../../../../../components/SupportLink';
 import { AncestorJournalLink, AncestorPhoto } from '../../../../../../components/journals/screens';
-import { Body, Card, RitualScreen, SectionLabel, Title, tell, ui } from '../../../../../../components/rituals/ui';
+import { Body, Card, List, RitualScreen, Row, SectionLabel, Title, tell, ui } from '../../../../../../components/rituals/ui';
 import { relativeDay } from '../../../../../../lib/calendar';
 import { ANCESTORS, anniversaryWords, candleDraft, formatPartial, normalizeAncestor, upcomingAnniversaries } from '../../../../../../lib/craft/hedge/ancestors';
 import { useCraft } from '../../../../../../lib/craft/store';
@@ -49,7 +49,7 @@ export default function AncestorPage() {
   return (
     <RitualScreen back="Ancestors">
       <Title eyebrow={person.relation || 'Remembered'}>{person.name || 'Unnamed'}</Title>
-      <AncestorPhoto id={raw.id} name={person.name} />
+      <AncestorPhoto id={raw.id} name={person.name} own={person.photo || undefined} />
       {(!!born || !!died || !!person.bornPlace || !!person.diedPlace) && (
         <Body muted>
           {[
@@ -72,8 +72,11 @@ export default function AncestorPage() {
         <View style={ui.gapSmall}>
           <SectionLabel>Their days</SectionLabel>
           {days.map((a) => (
-            <Body key={a.kind}>{`${anniversaryWords(a)}: ${relativeDay(now, a.date)}`}</Body>
+            <Body key={`${a.kind}:${a.label ?? ''}`}>{`${anniversaryWords(a)}: ${relativeDay(now, a.date)}`}</Body>
           ))}
+          <List>
+            <Row icon="bell" title="Remind me of their days" detail="Reminders → Your ancestors’ days" onPress={() => router.push({ pathname: '/rituals/reminders', params: { section: 'ancestors' } } as Href)} last />
+          </List>
         </View>
       )}
 
@@ -81,6 +84,18 @@ export default function AncestorPage() {
         <View style={ui.gapSmall}>
           <SectionLabel>What they loved</SectionLabel>
           <Body>{person.loved}</Body>
+        </View>
+      )}
+      {!!person.foods && (
+        <View style={ui.gapSmall}>
+          <SectionLabel>Foods and offerings they liked</SectionLabel>
+          <Body>{person.foods}</Body>
+        </View>
+      )}
+      {!!person.stories && (
+        <View style={ui.gapSmall}>
+          <SectionLabel>Their stories</SectionLabel>
+          <Body>{person.stories}</Body>
         </View>
       )}
       {!!person.memory && (

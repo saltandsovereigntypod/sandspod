@@ -26,6 +26,7 @@ import { PREFS_KEY, readPrefs, type ReminderPrefs } from './prefs';
 import { anyReminders, DEFAULT_SETTINGS, normalizeSettings, type Reminder, type ReminderSettings } from './schedule';
 import { EMPTY_SOURCES, type TendingSources } from './sources';
 import type { TendRecord } from '../tend/model';
+import type { AncestorEntry } from '../craft/hedge/ancestors';
 
 const SETTINGS_KEY = 'reminders.settings.v1';
 
@@ -47,6 +48,8 @@ type RemindersState = {
   cycle: Omit<Reminder, 'kind'>[];
   /** A Year and a Day's notes, when its reminders are on (yearday/store.ts). */
   year: Omit<Reminder, 'kind'>[];
+  /** Your ancestors, for their days (Hedge → Ancestors). */
+  ancestors: AncestorEntry[];
 };
 
 let state: RemindersState = {
@@ -60,6 +63,7 @@ let state: RemindersState = {
   tend: [],
   cycle: [],
   year: [],
+  ancestors: [],
 };
 const listeners = new Set<() => void>();
 let started = false;
@@ -71,6 +75,7 @@ let covensKey = '';
 let tendKey = '';
 let cycleKey = '';
 let yearKey = '';
+let ancestorsKey = '';
 
 function set(patch: Partial<RemindersState>) {
   state = { ...state, ...patch };
@@ -108,6 +113,7 @@ export function syncReminders(): Promise<void> {
         tend: state.tend,
         cycle: state.cycle,
         year: state.year,
+        ancestors: state.ancestors,
         place: place ? { latitude: place.latitude, longitude: place.longitude } : null,
         now: new Date(),
       });
@@ -226,6 +232,15 @@ export function setCycleReminders(list: Omit<Reminder, 'kind'>[]) {
   if (key === cycleKey) return;
   cycleKey = key;
   set({ cycle: list });
+  void syncReminders();
+}
+
+/** Your ancestors and their days (Hedge → Ancestors); reschedules when a name or day changes. */
+export function setAncestorSources(people: AncestorEntry[]) {
+  const key = JSON.stringify(people.map((p) => [p.id, p.data.name, p.data.born, p.data.died, p.data.days ?? []]));
+  if (key === ancestorsKey) return;
+  ancestorsKey = key;
+  set({ ancestors: people });
   void syncReminders();
 }
 

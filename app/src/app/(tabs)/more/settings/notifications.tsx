@@ -8,6 +8,7 @@ import { CovensSection, PlanningSection, PracticeSection, QuietSection } from '.
 import { MoreScreen } from '../../../../components/more/ui';
 import { tabOf } from '../../../../lib/settings/links';
 import { SacredReminders } from '../../../../components/reminders/SacredReminders';
+import { AncestorsSection } from '../../../../components/reminders/AncestorsSection';
 import { TendingSection } from '../../../../components/reminders/TendingSection';
 import { EventStyleSheet } from '../../../../components/rituals/EventStyleSheet';
 import { TimeStepper, clockLabel } from '../../../../components/rituals/TimeStepper';
@@ -69,6 +70,7 @@ const TITLES: Record<string, string> = {
   quiet: 'Quiet hours and pause',
   calendar: 'Your calendar',
   sacred: 'Sacred days of your gods',
+  ancestors: 'Your ancestors’ days',
 };
 
 /** Moon phases, planned rituals and look-back days (kept on this phone). */
@@ -292,6 +294,8 @@ export default function Notifications() {
           <QuietSection prefs={prefs} update={save} />
         ) : section === 'practice' ? (
           <PracticeSection settings={settings} change={(c) => void updateReminderSettings(c)} />
+        ) : section === 'ancestors' ? (
+          <AncestorsSection prefs={prefs} update={save} />
         ) : section === 'sacred' ? (
           <SacredReminders inHub />
         ) : section === 'calendar' ? (
@@ -311,6 +315,7 @@ export default function Notifications() {
       <List>
         <Row icon="bell" title="Moon and rituals" detail={moonSummary(settings)} onPress={() => open('moon')} />
         <Row icon="wheel" title="Holidays" detail={ready ? lines.holidays : '…'} onPress={() => open('holidays')} />
+        <Row icon="samhain" title="Your ancestors’ days" detail={ready ? `${lines.ancestors} · birthdays, death days and their kept days` : '…'} onPress={() => open('ancestors')} />
         <Row icon="altar" title="Tending" detail={ready ? `${lines.tending === 'Off' ? 'Off' : lines.tending} · plants, altars, offerings, crystals, candles` : '…'} onPress={() => open('tending')} />
         <Row icon="calendar" title="Ritual planning" detail={ready ? lines.planning : '…'} onPress={() => open('planning')} />
         <Row icon="today" title="Daily practice" detail={practiceSummary(settings)} onPress={() => open('practice')} />

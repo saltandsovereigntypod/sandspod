@@ -6,15 +6,40 @@ import { router, type Href } from 'expo-router';
 import { useMemo } from 'react';
 import { Text } from 'react-native';
 
-import { ancestorDays, upcomingAnniversaries } from '../../lib/craft/hedge/ancestors';
+import { ancestorDays, anniversaryTitle, anniversaryWords, upcomingAnniversaries } from '../../lib/craft/hedge/ancestors';
+import { relativeDay } from '../../lib/calendar';
 import { deipnonToday } from '../../lib/deipnon';
 import { holidayChoice } from '../../lib/holidays';
 import { entryTitle, journalPlace, journalRoutes, omensToCheck, todayJournalPrompt } from '../../lib/journals/journals';
 import { deityLines } from '../../lib/patron';
 import { type } from '../../theme';
 import { Button } from '../Button';
-import { Body, Card, SectionLabel } from '../rituals/ui';
+import { Body, Card, List, Row, SectionLabel } from '../rituals/ui';
 import { useJournal, usePeople } from './shared';
+
+/** Your ancestors' days in the coming week (Hedge → Ancestors), each opening their page. Nothing when none fall. */
+export function AncestorDaysToday({ now }: { now: Date }) {
+  const { people } = usePeople();
+  const coming = useMemo(() => upcomingAnniversaries(people, now, 7), [people, now]);
+  if (!coming.length) return null;
+  return (
+    <Card>
+      <SectionLabel>Your ancestors’ days</SectionLabel>
+      <List>
+        {coming.map((a, i) => (
+          <Row
+            key={`${a.id}:${a.kind}:${a.label ?? ''}`}
+            icon="samhain"
+            title={anniversaryTitle(a)}
+            detail={`${relativeDay(now, a.date)[0].toUpperCase()}${relativeDay(now, a.date).slice(1)} · ${anniversaryWords(a)}`}
+            onPress={() => router.push(`/rituals/craft/hedge/ancestors/${a.id}` as Href)}
+            last={i === coming.length - 1}
+          />
+        ))}
+      </List>
+    </Card>
+  );
+}
 
 export function JournalToday({ settings, now }: { settings: Record<string, unknown> | null; now: Date }) {
   const { list: omens } = useJournal('omens');

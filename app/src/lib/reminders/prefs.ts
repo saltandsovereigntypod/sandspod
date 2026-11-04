@@ -116,6 +116,8 @@ export type ReminderPrefs = {
    * the coven's leaders, or from someone you oversee. On unless turned off.
    */
   training: { on: boolean };
+  /** Your ancestors' days (Hedge → Ancestors): birthdays, death days and the days kept for them. Off unless turned on. */
+  ancestors: { on: boolean; at: number; leads: number[] };
 };
 
 export type CrystalCadence = 'full' | 'new' | 'both' | 'weeks';
@@ -155,6 +157,7 @@ export const DEFAULT_PREFS: ReminderPrefs = {
   messages: { reactions: false, answers: true },
   positions: { on: true, off: [] },
   training: { on: true },
+  ancestors: { on: false, at: 9 * 60, leads: [0] },
 };
 
 const obj = (v: unknown): Record<string, unknown> => (v && typeof v === 'object' && !Array.isArray(v) ? (v as Record<string, unknown>) : {});
@@ -202,6 +205,7 @@ export function normalizePrefs(input: unknown): ReminderPrefs {
   const msg = obj(raw.messages);
   const pos = obj(raw.positions);
   const tr = obj(raw.training);
+  const anc = obj(raw.ancestors);
 
   const calendars: Record<string, HolidayCalendarPrefs> = {};
   for (const [id, value] of Object.entries(obj(h.calendars))) {
@@ -278,6 +282,7 @@ export function normalizePrefs(input: unknown): ReminderPrefs {
     messages: { reactions: bool(msg.reactions, d.messages.reactions), answers: bool(msg.answers, d.messages.answers) },
     positions: { on: bool(pos.on, d.positions.on), off: strings(pos.off) },
     training: { on: bool(tr.on, d.training.on) },
+    ancestors: { on: anc.on === true, at: minuteOfDay(anc.at, d.ancestors.at), leads: leadList(anc.leads, d.ancestors.leads) },
   };
 }
 
@@ -482,7 +487,7 @@ export function isPaused(prefs: ReminderPrefs, now: Date): boolean {
   return now.getTime() < new Date(y, m - 1, d).getTime();
 }
 
-export type Summaries = { holidays: string; tending: string; planning: string; quiet: string };
+export type Summaries = { holidays: string; tending: string; planning: string; quiet: string; ancestors: string };
 
 /** One line for each kind, for the Reminders screen: "3 calendars · the day before at 9:00 am". */
 export function summaries(prefs: ReminderPrefs, settings: SettingsLike, now: Date = new Date()): Summaries {
@@ -505,5 +510,6 @@ export function summaries(prefs: ReminderPrefs, settings: SettingsLike, now: Dat
     prefs.quiet.on ? `Quiet ${timeLabel(prefs.quiet.start)} to ${timeLabel(prefs.quiet.end)}` : '',
     prefs.bundle.on ? `More than ${prefs.bundle.max} a day become one` : '',
   ].filter(Boolean);
-  return { holidays, tending, planning, quiet: quietParts.join(' · ') || 'Off' };
+  const ancestors = prefs.ancestors.on ? `${leadsLabel(prefs.ancestors.leads)} at ${timeLabel(prefs.ancestors.at)}` : 'Off';
+  return { holidays, tending, planning, quiet: quietParts.join(' · ') || 'Off', ancestors: `${ancestors[0].toUpperCase()}${ancestors.slice(1)}` };
 }

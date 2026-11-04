@@ -6,7 +6,7 @@ import { Button } from '../../../components/Button';
 import { CovenToday } from '../../../components/covens/CovenToday';
 import { TendToday } from '../../../components/tend/TendToday';
 import { CycleToday } from '../../../components/cycle/CycleToday';
-import { JournalToday } from '../../../components/journals/JournalToday';
+import { AncestorDaysToday, JournalToday } from '../../../components/journals/JournalToday';
 import { MeditationToday } from '../../../components/meditation/MeditationToday';
 import { YearTurnToday } from '../../../components/grimoire/YearTurnToday';
 import { CalendarLineList, LeadCalendarLine } from '../../../components/CalendarLines';
@@ -232,6 +232,7 @@ export default function Today() {
           <DreamCapture settings={settings} now={clock} reminderOn={reminders.settings.dreamMorning} />
           <DeipnonCard settings={settings} now={clock} />
           <JournalToday settings={settings} now={clock} />
+          <AncestorDaysToday now={clock} />
           {drawOnToday(settings) && <CardOfTheDay now={clock} south={keepsSouthernWheel(settings)} />}
           <Button
             label="Set tonight’s altar"

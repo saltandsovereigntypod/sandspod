@@ -25,6 +25,7 @@ import { holidayOn, isPaused, leadsOf, readPrefs, type LegacyReminders, type Rem
 import { buildSchedule, HORIZON_DAYS, MAX_REMINDERS, type LookBackReminderSource, type Reminder, type ReminderKind, type ReminderSettings } from './schedule.ts';
 import { EMPTY_SOURCES, type CrystalSource, type TendingSources } from './sources.ts';
 import { tendReminders, type TendRecord } from '../tend/model.ts';
+import { ancestorNotes, type AncestorEntry } from '../craft/hedge/ancestors.ts';
 
 type SettingsLike = Record<string, unknown> | null | undefined;
 
@@ -62,6 +63,8 @@ export type PlanInput = {
   cycle?: Omit<Reminder, 'kind'>[];
   /** A Year and a Day's notes (yearday/schedule.ts yearReminders), when its reminders are on. */
   year?: Omit<Reminder, 'kind'>[];
+  /** Your ancestors (Hedge → Ancestors), for their days when those reminders are on. */
+  ancestors?: AncestorEntry[];
   place?: Place | null;
   now: Date;
   horizonDays?: number;
@@ -561,6 +564,8 @@ export function calendarReminders(input: PlanInput): Reminder[] {
     ...candleReminders(prefs, sources, now, horizonDays),
     // What you chose to be reminded of on your To tend list, by its rhythm.
     ...tendReminders(input.tend ?? [], now, Math.min(TENDING_DAYS, horizonDays)).map((r): Reminder => ({ ...r, kind: 'tend' })),
+    // Your ancestors' days, rung with the sacred days.
+    ...(prefs.ancestors.on ? ancestorNotes(input.ancestors ?? [], now, prefs.ancestors, horizonDays).map((r): Reminder => ({ ...r, kind: 'sacred' })) : []),
   ];
   return settle(list, prefs, now, horizonDays);
 }
@@ -596,5 +601,5 @@ export function planReminders(input: PlanInput, options: { cap?: number; gather?
 /** Whether anything at all could ring, to know whether to ask for notifications. */
 export function anyPlanned(prefs: ReminderPrefs): boolean {
   const t = prefs.tending;
-  return prefs.holidays.on || prefs.planning.holidays || prefs.planning.covens || t.plants.on || t.altars.on || t.offerings.on || t.offerings.refresh || t.crystals.on || t.candles.relight || t.candles.nearEnd || t.candles.daily;
+  return prefs.holidays.on || prefs.ancestors.on || prefs.planning.holidays || prefs.planning.covens || t.plants.on || t.altars.on || t.offerings.on || t.offerings.refresh || t.crystals.on || t.candles.relight || t.candles.nearEnd || t.candles.daily;
 }
