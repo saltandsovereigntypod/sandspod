@@ -36,6 +36,8 @@ import { AltarImage } from './AltarImage';
 import { VesselLabelText } from '../shelves/VesselLabel';
 import { cleanVesselLabel, containedRect, VESSELS } from '../../lib/altar/vesselLabel';
 import { FoodHeap } from './FoodHeap';
+import { JarOnAltar } from './workings/JarOnAltar';
+import { jarArt } from '../../lib/altar/workings/spellJar';
 import { FramePhoto } from './FramePhoto';
 import { frameOf, framePhotoRect, framePhotoTint, isFrame } from '../../lib/altar/frame';
 import type { AltarDocument } from '../../lib/altar/snapshot';
@@ -547,6 +549,8 @@ export const AltarObjectArt = memo(function AltarObjectArt({ object, width, heig
   // An ancestor frame: the photo of your own in its opening.
   const frame = isFrame(object) ? frameOf(object) : null;
   const photoRect = frame && picture ? framePhotoRect(object, width, height) : null;
+  // A spell jar built in a glass of its own: its layers and seal over the glass.
+  const jar = useMemo(() => jarArt(object, width, height), [object, width, height]);
   const vesselLabel = (() => {
     const l = cleanVesselLabel(object.vesselLabel);
     return l?.vessel && l.text && object.imagePath === VESSELS[l.vessel].image ? l : null;
@@ -620,6 +624,7 @@ export const AltarObjectArt = memo(function AltarObjectArt({ object, width, heig
           />
         </View>
       )}
+      {jar && picture && <JarOnAltar art={jar} width={width} height={height} uid={uid} />}
       {(overlays.herb || overlays.oil) && !geometry?.burn?.outline && (
         // The dressing lies only on the wax that's there: cut to the candle's body, and off above its top as it burns down.
         // A figure's is drawn by CandleMarks inside its outline instead: the painted overlay would glow round it as a box.

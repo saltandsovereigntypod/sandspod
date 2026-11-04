@@ -1486,11 +1486,12 @@ export const HELP: HelpSection[] = [
         summary: 'Build a jar in layers, a word spoken with each, and seal it with wax.',
         steps: [
           'With nothing selected, tap "Workings", then "Spell jar".',
-          'Tap "Begin the layers" and add each layer.',
-          'Tap "Seal it", then "Place on the altar".',
-          'Later, select the jar and tap "Shake to renew".',
+          'Choose what it is for and the glass (a clear jar or a green bottle), then tap "Begin the layers".',
+          'Add each layer from the herbs, salts and stones, and roll in a petition if you like. Each layer shows in the jar, bottom first.',
+          'Tap "Seal it", choose the wax colour (or drip it from a lit candle), then "Place on the altar". The jar shows its layers and seal on the altar.',
+          'When it would like a shake, it appears in To tend. Select the jar and tap "Shake to renew".',
         ],
-        keywords: ['jar spell', 'witch jar', 'protection jar', 'shake jar'],
+        keywords: ['jar spell', 'witch jar', 'protection jar', 'shake jar', 'layers', 'petition', 'wax seal', 'to tend'],
       },
       {
         id: 'altar-sachet',
