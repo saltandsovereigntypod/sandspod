@@ -4,7 +4,8 @@ import { StyleSheet, Text, View } from 'react-native';
 
 import { Button } from '../../../../components/Button';
 import { Body, Card, Chip, Chips, Field, List, Notice, RitualScreen, Row, SectionLabel, Title, Toggle, ui } from '../../../../components/rituals/ui';
-import { ShelfPicture } from '../../../../components/shelves/ShelfCabinet';
+import { ShelfThingPicture } from '../../../../components/shelves/ShelfCabinet';
+import { LABEL_FONTS, LABEL_MAX, LABEL_STYLES, VESSELS, vesselForShelf } from '../../../../lib/altar/vesselLabel';
 import { builtInCabinet } from '../../../../lib/altar/cabinet';
 import { cabinetEntry } from '../../../../lib/altar/companion';
 import { keepImageOnDevice, pickImage, uploadImage } from '../../../../lib/altar/images';
@@ -126,11 +127,13 @@ function ShelfForm({ params, editing, all }: { params: Params; editing: { id: st
     }
   };
 
+  const vessel = vesselForShelf(item.shelf, item.name);
+
   return (
     <RitualScreen back="Back">
       <Title eyebrow="My Shelves">{editing ? `Change ${editing.item.name}` : 'I own this'}</Title>
       <View style={styles.head}>
-        <ShelfPicture image={item.image} name={item.name || '?'} size={84} />
+        <ShelfThingPicture item={{ ...item, name: item.name || '?' }} width={84} height={84} />
         <View style={{ flex: 1, gap: 8 }}>
           <Button label={item.image ? 'Use my own photo instead' : 'Add a photo'} variant="outline" disabled={busy} onPress={() => void photo()} />
         </View>
@@ -138,6 +141,25 @@ function ShelfForm({ params, editing, all }: { params: Params; editing: { id: st
       {!!problem && <Notice>{problem}</Notice>}
 
       <Field label="Name" value={item.name} onChange={(name) => set({ name })} placeholder="What it is" />
+
+      {!!vessel && (
+        <Card>
+          <Text style={type.cardTitle}>{`Its label (${VESSELS[vessel].name.toLowerCase()})`}</Text>
+          <Field label="What the label says" value={item.label} onChange={(label) => set({ label: label.slice(0, LABEL_MAX) })} placeholder={item.name || 'Its name'} />
+          <SectionLabel>Label</SectionLabel>
+          <Chips>
+            {LABEL_STYLES.map((s) => (
+              <Chip key={s.value} label={s.label} selected={item.labelStyle === s.value} onPress={() => set({ labelStyle: s.value })} />
+            ))}
+          </Chips>
+          <SectionLabel>Writing</SectionLabel>
+          <Chips>
+            {LABEL_FONTS.map((f) => (
+              <Chip key={f.value} label={f.label} selected={item.labelFont === f.value} onPress={() => set({ labelFont: f.value })} />
+            ))}
+          </Chips>
+        </Card>
+      )}
 
       <View style={ui.gapSmall}>
         <SectionLabel>Shelf</SectionLabel>

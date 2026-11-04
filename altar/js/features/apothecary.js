@@ -348,6 +348,35 @@ function getApothecaryType(typeId) {
   return apothecaryTypes.find((type) => type.id === typeId) || apothecaryTypes[0];
 }
 
+/* Its label: blends, oils and waters stand in a labelled jar or bottle (app: components/altar/Apothecary.tsx). */
+function renderApothecaryLabelFields(existingItem, typeId) {
+  const VL = window.SaltCore?.altar?.vesselLabel;
+  const A = window.SaltCore?.altar?.apothecary;
+  if (!VL || !A) return "";
+  const esc = (value) => String(value ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
+  const label = A.apothecaryLabel({ metadata: existingItem?.metadata || {} });
+  const shown = !!VL.vesselForApothecary(typeId, existingItem?.name || "");
+  const options = (list, value) => list.map((o) => `<option value="${o.value}" ${o.value === value ? "selected" : ""}>${esc(o.label)}</option>`).join("");
+  return `
+    <div class="apothecary-type-specific-fields" data-apothecary-label-fields ${shown ? "" : "hidden"}>
+      <p class="eyebrow">Its label</p>
+      <p class="muted">A herb mix or blend stands in a labelled glass jar, an oil in a labelled dropper bottle and a water in a labelled bottle, on the altar and on My Shelves.</p>
+      <label>
+        What the label says
+        <input type="text" name="vessel_label_text" maxlength="${VL.LABEL_MAX}" value="${esc(label.text)}" placeholder="Its name, until you write something" />
+      </label>
+      <label>
+        Label
+        <select name="vessel_label_style">${options(VL.LABEL_STYLES, label.style)}</select>
+      </label>
+      <label>
+        Writing
+        <select name="vessel_label_font">${options(VL.LABEL_FONTS, label.font)}</select>
+      </label>
+    </div>
+  `;
+}
+
 function getApothecaryTypeSpecificFields(typeId = "", existingItem = null) {
   const details = existingItem?.details || {};
 
@@ -621,6 +650,8 @@ function openCreateApothecaryModal(preselectedType = "", editItemId = "") {
 
         ${getApothecaryTypeSpecificFields(selectedType, existingItem)}
 
+        ${renderApothecaryLabelFields(existingItem, selectedType)}
+
         <label>
           Intention
           <input
@@ -820,7 +851,8 @@ function replaceSelectedIngredientsWithApothecaryObject(item) {
   clearRitualSelection();
 
   placeObject({
-    imagePath: item.imagePath,
+    imagePath: apothecaryVesselOf(item)?.image || item.imagePath,
+    vesselLabel: apothecaryVesselOf(item)?.field || "",
     fallbackSymbol: "✦",
     label: item.name,
     type: "apothecary",
@@ -912,6 +944,13 @@ async function saveCreatedApothecaryItem(form, modal) {
     updatedAt: new Date().toISOString(),
     metadata: existingItem?.metadata || {}
   };
+  if (formData.has("vessel_label_style") && window.SaltCore?.altar?.apothecary?.withApothecaryLabel) {
+    item = window.SaltCore.altar.apothecary.withApothecaryLabel(item, {
+      text: String(formData.get("vessel_label_text") || "").trim(),
+      style: String(formData.get("vessel_label_style") || "paper"),
+      font: String(formData.get("vessel_label_font") || "ink")
+    });
+  }
   item = withApothecaryLookBackChoice(item, String(formData.get("look_back") ?? "keep"));
 
   item = await createOrUpdateApothecaryLibraryEntity(item);
@@ -991,7 +1030,8 @@ function placeApothecaryItem(itemId) {
   }
 
   placeObject({
-    imagePath: item.imagePath,
+    imagePath: apothecaryVesselOf(item)?.image || item.imagePath,
+    vesselLabel: apothecaryVesselOf(item)?.field || "",
     fallbackSymbol: "✦",
     label: item.name,
     type: "apothecary",
@@ -1012,8 +1052,34 @@ function placeApothecaryItem(itemId) {
   return true;
 }
 
+// A herb mix or blend stands in a labelled glass jar, an oil in a labelled dropper bottle and a water
+// in a labelled bottle (app/src/lib/altar/apothecary.ts apothecaryVessel); null keeps its own picture.
+function apothecaryVesselOf(item) {
+  try {
+    return window.SaltCore?.altar?.apothecary?.apothecaryVessel?.({ type: item.type || "", name: item.name || "", metadata: item.metadata || {} }) || null;
+  } catch {
+    return null;
+  }
+}
+
+/** Keep the label an altar object carries (with the app's other fields, in data-app-extra) and draw it. */
+function setObjectVesselLabel(object, field) {
+  let extra = {};
+  try {
+    extra = JSON.parse(object.dataset.appExtra || "{}") || {};
+  } catch {
+    extra = {};
+  }
+  if (field) extra.vesselLabel = field;
+  else delete extra.vesselLabel;
+  if (Object.keys(extra).length) object.dataset.appExtra = JSON.stringify(extra);
+  else delete object.dataset.appExtra;
+  window.VesselLabels?.decorateAltarObject(object);
+}
+
 function syncPlacedApothecaryObjects(item) {
   if (!altarStage || !item) return;
+  const vessel = apothecaryVesselOf(item);
 
   altarStage
     .querySelectorAll(`.altar-object[data-apothecary-item-id="${item.id}"]`)
@@ -1031,11 +1097,13 @@ function syncPlacedApothecaryObjects(item) {
 
       const img = object.querySelector("img:not(.candle-herb-overlay):not(.candle-oil-overlay)");
 
-      if (img && item.imagePath) {
-        if (window.SanctuaryAssetCatalog?.showImage) window.SanctuaryAssetCatalog.showImage(img, item.imagePath);
-        else img.src = item.imagePath;
+      const imagePath = vessel?.image || item.imagePath;
+      if (img && imagePath) {
+        if (window.SanctuaryAssetCatalog?.showImage) window.SanctuaryAssetCatalog.showImage(img, imagePath);
+        else img.src = imagePath;
         img.alt = item.name;
       }
+      setObjectVesselLabel(object, vessel?.field || "");
 
       object.setAttribute(
         "aria-label",
@@ -1196,6 +1264,13 @@ document.addEventListener("click", (event) => {
 });
 
 document.addEventListener("input", (event) => {
+  // Its label shows for what stands in a labelled jar or bottle.
+  const createForm = event.target.closest?.("[data-apothecary-create-form]");
+  if (createForm && (event.target.name === "type" || event.target.name === "name")) {
+    const fields = createForm.querySelector("[data-apothecary-label-fields]");
+    const VL = window.SaltCore?.altar?.vesselLabel;
+    if (fields && VL) fields.hidden = !VL.vesselForApothecary(String(createForm.elements.type?.value || ""), String(createForm.elements.name?.value || ""));
+  }
   const search = event.target.closest("[data-apothecary-ingredient-search]");
   if (!search) return;
   const term = search.value.trim().toLowerCase();

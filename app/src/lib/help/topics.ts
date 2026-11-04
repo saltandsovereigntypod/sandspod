@@ -1463,8 +1463,9 @@ export const HELP: HelpSection[] = [
         tips: [
           'In the Apothecary list, tap "Place" to put one on the altar or "Recipe" to open its recipe.',
           'On its look-back day you’re asked whether it worked: on Today, in the journal under "Apothecary: jars & sachets", and with a reminder if look-back reminders are on. Answers count in What works for you.',
+          'A herb mix or tending blend stands in a labelled glass jar, an oil in a labelled dropper bottle, and a water (a name with "water" in it) in a labelled bottle. Under "Its label" write what it says (its name until you do) and choose the label and writing; the words show on the jar on the altar, small enough to read when you zoom in.',
         ],
-        keywords: ['recipe', 'oil', 'tincture', 'blend', 'potion', 'crafted item', 'workshop', 'did it work', 'look back', 'spell jar', 'sachet'],
+        keywords: ['recipe', 'oil', 'tincture', 'blend', 'label', 'jar label', 'bottle label', 'potion', 'crafted item', 'workshop', 'did it work', 'look back', 'spell jar', 'sachet'],
       },
       {
         id: 'altar-tending-status',
@@ -2004,10 +2005,12 @@ export const HELP: HelpSection[] = [
         tips: [
           'In the altar cabinet, "I own this" under any item adds it with the cabinet’s picture; once added it says "On my shelves".',
           'Where it’s kept suggests the places you’ve used before.',
+          'Each shelf is painted as its own furniture: crystals on carved shelves, herbs and jars in an apothecary cupboard, oils and waters on a bottle rack, candles on a candle shelf, books and decks in a bookcase, and statues, tools and the rest on a wall shelf. Things stand on its planks, a few to a plank, and a second cabinet appears when one is full.',
+          'Herbs and resins stand in a glass jar, oils in a dropper bottle, waters in a corked bottle, decks in their box and books by their spine, each with a label. Tap "Change", then under "Its label" write what it says (it says the name until you do), and choose aged paper, kraft or black with gold, and ink serif, script or handwritten.',
           'Signed in, your shelves sync with your account and the website; as a guest they stay on this device.',
         ],
         href: '/altar?tab=shelves',
-        keywords: ['inventory', 'collection', 'what i own', 'stock', 'supplies', 'crystals', 'herbs', 'oils', 'decks', 'books', 'statues', 'i own this', 'shelf'],
+        keywords: ['inventory', 'collection', 'what i own', 'stock', 'supplies', 'crystals', 'herbs', 'oils', 'decks', 'books', 'statues', 'i own this', 'shelf', 'label', 'jar', 'bookcase'],
       },
       {
         id: 'my-shelves-tending',

@@ -34,6 +34,8 @@ export type SavedObject = {
   /** JSON string of the Living Object State (candle burns, dressings...). */
   livingState?: string;
   plaqueText?: string;
+  /** A labelled container's words and look, as JSON (vesselLabel.ts): drawn on its jar, bottle, box or spine. */
+  vesselLabel?: string;
   altarObjectId?: string;
   groupId?: string;
   /** Centre-ish x as a fraction of stage width (see geometry.ts). */

@@ -9,3 +9,6 @@ export * as tend from '../../app/src/lib/tend/model.ts';
 export * as story from '../../app/src/lib/altar/story.ts';
 export { itemIndex, searchItems, cabinetFormOf, sitePicture } from '../../app/src/lib/altar/itemIndex.ts';
 export * as snapshot from '../../app/src/lib/altar/snapshot.ts';
+// The painted furniture each shelf is drawn on and its measured planks, and the labelled jars, bottles, boxes and spines.
+export * as art from '../../app/src/lib/shelves/art.ts';
+export * as vesselLabel from '../../app/src/lib/altar/vesselLabel.ts';

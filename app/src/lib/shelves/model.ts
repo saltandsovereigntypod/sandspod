@@ -10,6 +10,7 @@
 // it through js/core/shelves.js.
 
 import type { CabinetForm, CabinetItem } from '../altar/types.ts';
+import { cleanVesselLabel, LABEL_MAX, type LabelFont, type LabelStyle } from '../altar/vesselLabel.ts';
 import { editOwn, newOwnRecord, type OwnType, type Rhythm, type TendRecord } from '../tend/model.ts';
 
 export const SHELVES_COLLECTION = 'shelves.items';
@@ -103,6 +104,10 @@ export type ShelfItem = {
   uses: ShelfUse[];
   /** When it was restocked, oldest first. */
   restocks: string[];
+  /** The words on its jar, bottle, box or spine ('' says its name), and how the label looks (lib/altar/vesselLabel.ts). */
+  label: string;
+  labelStyle: LabelStyle;
+  labelFont: LabelFont;
 };
 
 export const NAME_MAX = 120;
@@ -117,6 +122,11 @@ function cleanQty(raw: unknown): Quantity {
   const n = Math.round(Number(q.n));
   return { kind: 'count', n: Number.isFinite(n) && n >= 0 ? Math.min(n, 9999) : 1 };
 }
+
+const labelLook = (style: unknown, font: unknown) => {
+  const look = cleanVesselLabel({ style, font });
+  return { labelStyle: look?.style ?? 'paper', labelFont: look?.font ?? 'ink' } as { labelStyle: LabelStyle; labelFont: LabelFont };
+};
 
 /** A saved thing from any older or partial shape. */
 export function cleanItem(raw: unknown): ShelfItem {
@@ -141,6 +151,8 @@ export function cleanItem(raw: unknown): ShelfItem {
     countDown: r.countDown === true,
     uses: Array.isArray(r.uses) ? (r.uses as ShelfUse[]).filter((u) => u && typeof u.at === 'string').map((u) => ({ at: u.at, what: str(u.what, 200), ...(u.href ? { href: str(u.href, 300) } : {}) })).slice(-USES_MAX) : [],
     restocks: Array.isArray(r.restocks) ? (r.restocks as unknown[]).filter((x): x is string => typeof x === 'string').slice(-USES_MAX) : [],
+    label: str(r.label, LABEL_MAX),
+    ...labelLook(r.labelStyle, r.labelFont),
   };
 }
 

@@ -37,8 +37,6 @@
   }
 
   const picture = (image) => (/^(https?|data|blob):/i.test(image || "") ? image : image ? C.sitePicture(image) : "");
-  const thumb = (item, cls = "") =>
-    picture(item.image) ? `<img class="${cls}" src="${esc(picture(item.image))}" alt="" loading="lazy" />` : `<span class="sh-letter ${cls}" aria-hidden="true">${esc(item.name.trim().charAt(0).toUpperCase() || "·")}</span>`;
   const chip = (label, pressed, attrs) => `<button type="button" class="sp-chip" aria-pressed="${pressed ? "true" : "false"}" ${attrs}>${esc(label)}</button>`;
   const row = (href, title, detail) => `<a class="sp-row" href="${esc(href)}"><span class="sp-row__text"><span class="sp-row__title">${esc(title)}</span>${detail ? `<span class="sp-row__detail">${esc(detail)}</span>` : ""}</span><span class="sp-row__chevron" aria-hidden="true">›</span></a>`;
   const itemHref = (id) => `/rituals/shelves/?item=${encodeURIComponent(id)}`;
@@ -112,7 +110,6 @@
   }
 
   const SHELF_KEY = "salt.shelves.shelf";
-  const PER_PLANK = 4;
   const PAGE = 24;
   const readShelf = () => {
     try {
@@ -130,15 +127,40 @@
     return M.SHELVES.find((s) => entries.some((e) => e.item.shelf === s.key))?.key || M.SHELVES[0].key;
   }
 
-  /** Items on planks of a few at a time, so a long shelf wraps instead of running on. */
-  function planks(list) {
-    let out = "";
-    for (let i = 0; i < list.length; i += PER_PLANK)
-      out += `<div class="sh-shelf"><div class="sh-back">${list
-        .slice(i, i + PER_PLANK)
-        .map(({ id, item }) => `<a class="sh-thing" href="${itemHref(id)}" aria-label="${esc(`${item.name}${M.isLow(item) ? ", running low" : ""}`)}">${thumb(item)}<span>${esc(item.name)}</span>${M.isLow(item) ? `<span class="sh-low" aria-hidden="true">Low</span>` : ""}</a>`)
-        .join("")}</div><div class="sh-plank" aria-hidden="true"></div></div>`;
-    return out;
+  const ART = C.art;
+  const VL = C.vesselLabel;
+  const webp = (path) => C.sitePicture(path).replace(/\.png$/, ".webp");
+  const pct = (n) => `${Math.round(n * 10000) / 100}%`;
+
+  /** A thing as it stands on its shelf: herbs in a labelled jar, oils and waters in labelled bottles, decks in their box, books by their spine; the rest as its own picture. */
+  function standing(item) {
+    const { vessel } = ART.shelfThing(item);
+    if (vessel) {
+      const label = { text: VL.labelText(item.label, item.name), style: item.labelStyle, font: item.labelFont };
+      return global.VesselLabels.vesselHtml(vessel, label, webp(VL.VESSELS[vessel].image), vessel === "jar" ? picture(item.image) : "");
+    }
+    return picture(item.image) ? `<img class="sh-own" src="${esc(picture(item.image))}" alt="" loading="lazy" />` : `<span class="sh-letter sh-own" aria-hidden="true">${esc(item.name.trim().charAt(0).toUpperCase() || "·")}</span>`;
+  }
+
+  /** One shelf's things on its painted furniture (app/src/lib/shelves/art.ts): a cabinet of it for as many as fit, then another. */
+  function furniture(shelfKey, list) {
+    const art = ART.shelfArtFor(shelfKey);
+    const span = art.crop[1] - art.crop[0];
+    const src = webp(art.image);
+    return ART.layoutShelf(art, list.map((e) => ART.shelfThing(e.item)))
+      .map((placements, c, all) => {
+        const things = placements
+          .map((p) => {
+            const { id, item } = list[p.index];
+            const low = M.isLow(item);
+            const box = `left:${pct((p.x - p.w / 2 - art.crop[0]) / span)};top:${pct(p.y - p.h)};width:${pct(p.w / span)};height:${pct(p.h)}`;
+            return `<a class="sh-thing" style="${box}" href="${itemHref(id)}" title="${esc(item.name)}" aria-label="${esc(`${item.name}${low ? ", running low" : ""}`)}"><span class="sh-shadow" aria-hidden="true"></span>${standing(item)}${low ? `<span class="sh-low" aria-hidden="true">Low</span>` : ""}</a>`;
+          })
+          .join("");
+        const name = `${art.name}${all.length > 1 ? `, ${c + 1} of ${all.length}` : ""}`;
+        return `<div class="sh-furniture" role="group" aria-label="${esc(name)}" style="aspect-ratio:${Math.round(span * art.width)} / ${art.height}"><img class="sh-art" src="${esc(src)}" srcset="${esc(src.replace(/\.webp$/, "-840.webp"))} 840w, ${esc(src)} 1680w" sizes="${Math.round(100 / span)}vw" alt="" style="width:${pct(1 / span)};left:${pct(-art.crop[0] / span)}" />${things}<span class="sh-light" aria-hidden="true"></span></div>`;
+      })
+      .join("");
   }
 
   function cabinet(entries, shelf, matches) {
@@ -152,7 +174,7 @@
       const shown = list.slice(0, Math.max(left, 0));
       left -= shown.length;
       more += list.length - shown.length;
-      if (shown.length) html += `${shelf === "all" ? `<p class="sh-plaque">${esc(g.label)}</p>` : ""}${planks(shown)}`;
+      if (shown.length) html += `${shelf === "all" ? `<p class="sh-plaque">${esc(g.label)}</p>` : ""}${furniture(g.key, shown)}`;
     }
     if (!html) {
       return state.query
@@ -239,7 +261,7 @@
       <a class="sp-back" href="/rituals/shelves/">‹ My Shelves</a>
       <header class="rt-head"><p class="sp-eyebrow">${esc(M.shelfLabel(item.shelf))}</p><h1>${esc(item.name)}</h1></header>
       ${state.message ? `<p class="sp-notice" role="status">${esc(state.message)}</p>` : ""}
-      <div class="sh-head">${thumb(item)}<div>
+      <div class="sh-head"><span class="sh-head__pic">${standing(item)}</span><div>
         <p>How much: ${esc(M.qtyLabel(item.qty))}${M.isLow(item) ? " · running low" : ""}</p>
         ${item.where ? `<p class="sp-caption">Kept: ${esc(item.where)}</p>` : ""}
         <p class="sp-caption">${esc([source, item.sourceText].filter(Boolean).join(": "))}</p>
@@ -311,6 +333,7 @@
         <div class="sp-actions"><button type="button" class="button button--ghost" data-own>Add my own</button></div>`;
     }
     const plan = M.tendPlanFor(d.shelf, d.name);
+    const vessel = VL.vesselForShelf(d.shelf, d.name);
     const places = M.whereSuggestions(state.entries.map((e) => e.item));
     const field = (id, label, value, attrs = "", tag = "input") =>
       `<div class="sp-field"><label for="${id}">${esc(label)}</label>${tag === "textarea" ? `<textarea id="${id}" ${attrs}>${esc(value)}</textarea>` : `<input id="${id}" value="${esc(value)}" ${attrs} />`}</div>`;
@@ -318,8 +341,14 @@
       <a class="sp-back" href="${state.editing ? itemHref(state.editing) : "/rituals/shelves/"}">‹ Back</a>
       <header class="rt-head"><p class="sp-eyebrow">My Shelves</p><h1>${state.editing ? esc(`Change ${d.name}`) : "I own this"}</h1></header>
       ${state.message ? `<p class="sp-notice" role="status">${esc(state.message)}</p>` : ""}
-      <div class="sh-head">${thumb(d)}<div class="sp-field"><label for="sh-photo">${d.image ? "Use my own photo instead" : "Add a photo"}</label><input id="sh-photo" type="file" accept="image/png,image/jpeg,image/webp" data-photo /></div></div>
+      <div class="sh-head"><span class="sh-head__pic">${standing(d)}</span><div class="sp-field"><label for="sh-photo">${d.image ? "Use my own photo instead" : "Add a photo"}</label><input id="sh-photo" type="file" accept="image/png,image/jpeg,image/webp" data-photo /></div></div>
       ${field("sh-name", "Name", d.name, 'data-f="name" placeholder="What it is"')}
+      ${vessel
+        ? `<section class="sp-card"><h2 class="sp-card__title">${esc(`Its label (${VL.VESSELS[vessel].name.toLowerCase()})`)}</h2>
+        ${field("sh-label", "What the label says", d.label, `data-f="label" maxlength="${VL.LABEL_MAX}" placeholder="${esc(d.name || "Its name")}"`)}
+        <p class="sp-eyebrow">Label</p><div class="sp-chips">${VL.LABEL_STYLES.map((s) => chip(s.label, d.labelStyle === s.value, `data-label-style="${s.value}"`)).join("")}</div>
+        <p class="sp-eyebrow">Writing</p><div class="sp-chips">${VL.LABEL_FONTS.map((f) => chip(f.label, d.labelFont === f.value, `data-label-font="${f.value}"`)).join("")}</div></section>`
+        : ""}
       <p class="sp-eyebrow">Shelf</p><div class="sp-chips">${M.SHELVES.map((s) => chip(s.label, d.shelf === s.key, `data-pick="${s.key}"`)).join("")}</div>
       <p class="sp-eyebrow">How much</p>
       <div class="sp-chips">${chip("A count", d.qty.kind === "count", 'data-qty="count"')}${chip("Full, half or low", d.qty.kind === "level", 'data-qty="level"')}</div>
@@ -478,6 +507,8 @@
     else if (d && t.dataset.setLevel) draftChanged({ qty: { kind: "level", level: t.dataset.setLevel } });
     else if (d && t.dataset.place) draftChanged({ where: t.dataset.place });
     else if (d && t.dataset.source) draftChanged({ source: t.dataset.source });
+    else if (d && t.dataset.labelStyle) draftChanged({ labelStyle: t.dataset.labelStyle });
+    else if (d && t.dataset.labelFont) draftChanged({ labelFont: t.dataset.labelFont });
     else if (d && t.dataset.rhythm) draftChanged({ tend: { on: true, rhythm: M.SHELF_RHYTHMS[Number(t.dataset.rhythm)].rhythm } });
     else if (d && t.hasAttribute("data-save")) {
       if (!d.name.trim()) {

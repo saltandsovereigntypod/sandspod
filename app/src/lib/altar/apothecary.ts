@@ -7,6 +7,7 @@
 
 import { objectFromForm } from './cabinet.ts';
 import type { CabinetForm, CabinetItem, SavedObject } from './types.ts';
+import { cleanVesselLabel, labelText, VESSELS, vesselForApothecary, vesselLabelField, type VesselKind, type VesselLabel } from './vesselLabel.ts';
 
 export type ApothecaryTypeId = 'spell-jar' | 'oil-tincture' | 'herb-mix' | 'incense' | 'sachet' | 'poppet' | 'spray' | 'tending-blend';
 
@@ -272,8 +273,10 @@ export function apothecaryObject(
     reviewAt: item.livingState.expiration_enabled ? addDays(now, item.livingState.expiration_days) : '',
   };
   const livingState = JSON.stringify({ version: 1, createdAt: now, updatedAt: now, lastUsedAt: '', apothecary });
+  const vessel = apothecaryVessel(item);
   return {
     ...base,
+    ...(vessel ? { imagePath: vessel.image, vesselLabel: vessel.field } : {}),
     label: item.name,
     instanceId: item.instanceId || '',
     apothecaryItemId: item.id,
@@ -287,13 +290,33 @@ export function apothecaryObject(
   };
 }
 
+/** The label you gave a blend, oil or water ('' says its name), kept in the row's metadata (no new column). */
+export function apothecaryLabel(item: Pick<ApothecaryItem, 'metadata'>): VesselLabel {
+  return cleanVesselLabel(item.metadata?.vesselLabel) ?? { text: '', style: 'paper', font: 'ink' };
+}
+
+/** The item with its label changed. */
+export function withApothecaryLabel<T extends Pick<ApothecaryItem, 'metadata'>>(item: T, label: Partial<VesselLabel>): T {
+  const next = { ...apothecaryLabel(item), ...label };
+  return { ...item, metadata: { ...(item.metadata ?? {}), vesselLabel: { text: String(next.text ?? '').slice(0, 60), style: next.style, font: next.font } } };
+}
+
+/** The container a making is shown in on the altar and its label, or null for its own picture. */
+export function apothecaryVessel(item: Pick<ApothecaryItem, 'type' | 'name' | 'metadata'>): { vessel: VesselKind; image: string; field: string } | null {
+  const vessel = vesselForApothecary(item.type, item.name);
+  if (!vessel) return null;
+  const label = apothecaryLabel(item);
+  return { vessel, image: VESSELS[vessel].image, field: vesselLabelField(vessel, { ...label, text: labelText(label.text, item.name) }) };
+}
+
 /** Keep placed copies in step after the recipe changes (syncPlacedApothecaryObjects). */
 export function refreshPlaced(object: SavedObject, item: ApothecaryItem): SavedObject {
   if (object.apothecaryItemId !== item.id) return object;
   return {
     ...object,
     label: item.name,
-    imagePath: item.imagePath,
+    imagePath: apothecaryVessel(item)?.image ?? item.imagePath,
+    vesselLabel: apothecaryVessel(item)?.field ?? '',
     instanceId: item.instanceId || object.instanceId || '',
     apothecaryType: item.typeLabel,
     apothecaryIngredients: JSON.stringify(item.ingredients),

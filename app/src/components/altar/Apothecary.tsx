@@ -12,8 +12,11 @@ import {
   DEFAULT_LIVING,
   DETAIL_FIELDS,
   apothecaryProblem,
+  apothecaryLabel,
   apothecaryType,
+  apothecaryVessel,
   ingredientFromObject,
+  withApothecaryLabel,
   ingredientKey,
   type ApothecaryItem,
   type ApothecaryTypeId,
@@ -22,6 +25,8 @@ import {
 import { isItemDue, itemLookBack, startItemLookBack } from '../../lib/altar/apothecaryLookBack';
 import { altarPicture } from '../../lib/altar/assets';
 import { AltarImage } from './AltarImage';
+import { VesselPicture } from '../shelves/VesselLabel';
+import { LABEL_FONTS, LABEL_STYLES, labelText, VESSELS } from '../../lib/altar/vesselLabel';
 import { builtInCabinet, shortLabel } from '../../lib/altar/cabinet';
 import { ITEM_TYPE, isCustomCategory } from '../../lib/altar/custom';
 import { pickImage, type PickedImage } from '../../lib/altar/images';
@@ -251,6 +256,9 @@ function Editor({ target, altarObjects, onClose, onSaved, onDeleted }: EditorPro
 
   const imagePicture = altarPicture(picked ? picked.uri : item.imagePath);
   const details = DETAIL_FIELDS[item.type] ?? [];
+  // Blends, oils and waters stand in a labelled jar or bottle, on the altar and on My Shelves.
+  const vessel = apothecaryVessel(item)?.vessel ?? null;
+  const label = apothecaryLabel(item);
 
   return (
     <View style={styles.form}>
@@ -265,6 +273,27 @@ function Editor({ target, altarObjects, onClose, onSaved, onDeleted }: EditorPro
       <Group label="Name">
         <Input value={item.name} onChangeText={(name) => change({ name })} placeholder="Protection Jar, Dream Oil…" label="Name" />
       </Group>
+
+      {vessel && (
+        <Group label={`Its label (${VESSELS[vessel].name.toLowerCase()})`}>
+          <View style={styles.labelRow}>
+            <VesselPicture vessel={vessel} text={labelText(label.text, item.name || item.typeLabel)} labelStyle={label.style} font={label.font} width={72} height={110} />
+            <View style={{ flex: 1, gap: 8 }}>
+              <Input value={label.text} onChangeText={(text) => setItem((i) => withApothecaryLabel(i, { text }))} placeholder={item.name || 'Its name'} label="What the label says" />
+              <ChipRow>
+                {LABEL_STYLES.map((s) => (
+                  <Chip key={s.value} label={s.label} active={label.style === s.value} onPress={() => setItem((i) => withApothecaryLabel(i, { style: s.value }))} />
+                ))}
+              </ChipRow>
+              <ChipRow>
+                {LABEL_FONTS.map((f) => (
+                  <Chip key={f.value} label={f.label} active={label.font === f.value} onPress={() => setItem((i) => withApothecaryLabel(i, { font: f.value }))} />
+                ))}
+              </ChipRow>
+            </View>
+          </View>
+        </Group>
+      )}
 
       <Group label="Ingredients">
         {altarChoices.length > 0 && (
@@ -482,6 +511,7 @@ function DaysStepper({ value, onChange }: { value: number; onChange: (n: number)
 }
 
 const styles = StyleSheet.create({
+  labelRow: { flexDirection: 'row', gap: 12, alignItems: 'flex-start' },
   form: { gap: 18 },
   group: { gap: 8 },
   input: {

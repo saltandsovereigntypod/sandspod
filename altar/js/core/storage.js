@@ -452,6 +452,8 @@ function createSavedObject(savedObject) {
     object.textContent = savedObject.fallbackSymbol || "";
     if (savedObject.fallbackSymbol) object.dataset.fallbackSymbol = savedObject.fallbackSymbol;
   }
+  // A labelled jar or bottle (its vesselLabel is kept in data-app-extra): the words on its label.
+  window.VesselLabels?.decorateAltarObject(object);
 
   object.setAttribute(
     "aria-label",
