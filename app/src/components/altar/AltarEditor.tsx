@@ -2798,7 +2798,8 @@ export function AltarEditor({
           <Text style={styles.unfoldLabel}>Tools</Text>
         </Pressable>
       ) : (
-        <View style={styles.sidePanel}>
+        // The whole panel scrolls as one: toolbar, tabs and the tab's content together.
+        <ScrollView style={styles.sidePanel} contentContainerStyle={styles.sidePanelContent} alwaysBounceHorizontal={false} keyboardShouldPersistTaps="handled">
           <View style={styles.sidePanelHead}>
             {/* One line of small symbol chips; on a narrow window it slides sideways rather than wrap. */}
             <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.sidePanelChips} contentContainerStyle={styles.sidePanelChipRow}>
@@ -2834,42 +2835,35 @@ export function AltarEditor({
               );
             })}
           </ScrollView>
-          {/* Under the fixed toolbar and tabs, the tab's content scrolls in the height that is left. */}
           {panelFull && panelTab === 'cabinet' ? (
-            <View style={styles.panelFill}>
+            <View>
               {notice ? (
                 <Text style={[type.caption, styles.notice]} accessibilityLiveRegion="polite" onPress={() => setNotice(null)}>
                   {notice}
                 </Text>
               ) : null}
-              {/* The cabinet scrolls inside itself, under its own search. */}
               {cabinetSheet}
             </View>
           ) : panelFull ? (
-            <ScrollView style={styles.panel} contentContainerStyle={styles.panelContent} alwaysBounceHorizontal={false} keyboardShouldPersistTaps="handled">
+            <View style={styles.panelContent}>
               {notice ? (
                 <Text style={[type.caption, styles.notice]} accessibilityLiveRegion="polite" onPress={() => setNotice(null)}>
                   {notice}
                 </Text>
               ) : null}
               <ShelvesView />
-            </ScrollView>
+            </View>
           ) : (
-            <ScrollView
-              style={styles.panel}
-              contentContainerStyle={styles.panelContent}
-              alwaysBounceHorizontal={false}
-              keyboardShouldPersistTaps="handled"
-            >
+            <View style={styles.panelContent}>
               {objectOpen && !selecting ? (
                 <View style={styles.undoRow}>
                   <Chip label="Back to the altar's tools" symbol="‹" onPress={() => setSelected(null)} />
                 </View>
               ) : null}
               {panelBody}
-            </ScrollView>
+            </View>
           )}
-        </View>
+        </ScrollView>
       )}
       {ritualOverlay}
     </View>
@@ -3632,6 +3626,7 @@ const styles = StyleSheet.create({
   workDesktop: { flexDirection: 'row', minHeight: 0 },
   stageWrapDesktop: { flex: 1, justifyContent: 'center', paddingBottom: 12 },
   sidePanel: { width: '32%', minWidth: 320, maxWidth: 440, minHeight: 0, overflow: 'hidden', borderLeftWidth: StyleSheet.hairlineWidth, borderLeftColor: colors.hairline },
+  sidePanelContent: { paddingTop: 0, paddingBottom: 32 },
   sidePanelHead: { flexDirection: 'row', alignItems: 'center', gap: 4, paddingLeft: 12, paddingRight: 4, paddingBottom: 8, flexShrink: 0 },
   sidePanelChips: { flex: 1 },
   sidePanelChipRow: { flexDirection: 'row', alignItems: 'center', gap: 6 },
@@ -3645,7 +3640,6 @@ const styles = StyleSheet.create({
   panelTabOn: { borderBottomColor: colors.gold },
   panelTabText: { fontFamily: fonts.body, fontSize: 14, color: colors.tabInactive },
   panelTabTextOn: { color: colors.gold },
-  panelFill: { flex: 1, minHeight: 0 },
   panel: { flex: 1, minHeight: 0 },
   panelContent: { paddingHorizontal: space.gutter, paddingTop: 16, paddingBottom: 32, gap: 14 },
   section: { gap: 14 },
