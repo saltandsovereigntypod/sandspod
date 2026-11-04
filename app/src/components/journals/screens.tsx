@@ -1006,7 +1006,7 @@ export function AncestorPhoto({ id, name, own }: { id: string; name: string; own
         <Image source={{ uri: photo!.photo }} style={[s.photo, photo!.aged ? { opacity: 0.85 } : null]} resizeMode="cover" accessibilityLabel={`A photo of ${name || 'them'}`} />
       )}
       <Text style={[type.caption, s.grow]}>
-        {photo ? `In the ancestor frame on ${photo.altarName}.` : 'Choose them for an ancestor frame on your altar: Tools in the cabinet, then Ancestor Frame and “Add a name”.'}
+        {photo ? `From the ancestor frame on ${photo.altarName}.` : 'Choose them for an ancestor frame on your altar: Tools in the cabinet, then Ancestor Frame and “Add a name”.'}
       </Text>
     </View>
   );
