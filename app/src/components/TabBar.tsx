@@ -3,6 +3,7 @@ import { Pressable, StyleSheet, Text, View } from 'react-native';
 import type { Tabs } from 'expo-router/js-tabs';
 
 import { useAltarFullScreen } from '../lib/altarFullScreen';
+import { SIDEBAR_WIDTH, useDesktopLayout } from '../lib/desktopLayout';
 import { covenTabCount } from '../lib/covens/requests';
 import { usePendingRequests } from '../lib/covens/requestsBadge';
 import { useInvitationCount } from '../lib/covens/invitationsBadge';
@@ -40,13 +41,16 @@ export function TabBar({ state, navigation, insets }: TabBarProps) {
   useEffect(() => {
     if (section) rememberPracticeSection(section);
   }, [section]);
+  // On a computer screen (web) the tabs run down the left as a side bar.
+  const desktop = useDesktopLayout();
   // The full-screen altar uses the whole screen.
   if (useAltarFullScreen()) return null;
   return (
     <View
       accessibilityRole="tablist"
-      style={[styles.bar, { paddingBottom: Math.max(insets.bottom, 10) }]}
+      style={desktop ? styles.side : [styles.bar, { paddingBottom: Math.max(insets.bottom, 10) }]}
     >
+      {desktop && <Text style={styles.brand}>Salt &amp; Sovereignty</Text>}
       {TABS.map((tab) => {
         const focused = tab.routes.includes(current ?? '');
         const last = tab.key === 'practice' && !focused ? lastPracticeSection() : null;
@@ -61,7 +65,7 @@ export function TabBar({ state, navigation, insets }: TabBarProps) {
             accessibilityState={{ selected: focused }}
             aria-selected={focused}
             accessibilityLabel={tab.key === 'coven' && unread ? `${tab.label}, ${coven.label}` : tab.label}
-            style={styles.tab}
+            style={desktop ? styles.sideTab : styles.tab}
             onPress={() => {
               const event = navigation.emit({ type: 'tabPress', target: route.key, canPreventDefault: true });
               if (focused || event.defaultPrevented) return;
@@ -78,7 +82,7 @@ export function TabBar({ state, navigation, insets }: TabBarProps) {
                 </View>
               )}
             </View>
-            <Text style={[styles.label, { color }]}>{tab.label}</Text>
+            <Text style={[desktop ? styles.sideLabel : styles.label, { color }]}>{tab.label}</Text>
           </Pressable>
         );
       })}
@@ -95,6 +99,18 @@ const styles = StyleSheet.create({
     paddingTop: 8,
     paddingHorizontal: 8,
   },
+  side: {
+    width: SIDEBAR_WIDTH,
+    backgroundColor: colors.night,
+    borderRightWidth: StyleSheet.hairlineWidth,
+    borderRightColor: 'rgba(244,236,216,0.14)',
+    paddingTop: 28,
+    paddingHorizontal: 12,
+    gap: 4,
+  },
+  brand: { fontFamily: fonts.display, fontSize: 22, color: colors.cream, paddingHorizontal: 12, marginBottom: 20 },
+  sideTab: { flexDirection: 'row', alignItems: 'center', gap: 12, minHeight: 44, paddingHorizontal: 12, borderRadius: 10 },
+  sideLabel: { fontFamily: fonts.body, fontSize: 16 },
   tab: { flex: 1, minHeight: 48, alignItems: 'center', justifyContent: 'center', gap: 3 },
   label: { fontFamily: fonts.body, fontSize: 11 },
   badge: { position: 'absolute', top: -4, right: -10, minWidth: 16, height: 16, borderRadius: 8, paddingHorizontal: 4, alignItems: 'center', justifyContent: 'center', backgroundColor: colors.gold },
