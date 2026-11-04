@@ -35,19 +35,21 @@ export function HeaderTools() {
   );
 }
 
-/** A tab's top row: what it already has there (a switch, a title), then the two doors on the right. */
+/** A tab's top: the two doors on the right, above what it already has there (a switch keeps its full width). */
 export function HeaderRow({ children }: { children: ReactNode }) {
   return (
-    <View style={styles.row}>
-      <View style={styles.fill}>{children}</View>
-      <HeaderTools />
+    <View style={styles.stack}>
+      <View style={styles.right}>
+        <HeaderTools />
+      </View>
+      {children}
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  row: { flexDirection: 'row', alignItems: 'center', gap: 8 },
-  fill: { flex: 1, minWidth: 0 },
+  stack: { gap: 2 },
+  right: { flexDirection: 'row', justifyContent: 'flex-end', marginTop: -8 },
   tools: { flexDirection: 'row', alignItems: 'center', gap: 2 },
   door: { width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center' },
   pressed: { opacity: 0.6 },
