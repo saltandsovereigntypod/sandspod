@@ -7,6 +7,7 @@ import { imageRatio } from '../../lib/altar/geometry';
 import { cabinetEntry, topUses } from '../../lib/altar/companion';
 import { cabinetCategoriesFor, cabinetItemsFor, deityPantheon, formImage, formObjectLabel, overrideKey, PANTHEON_GROUPS, placeableForms, shortLabel } from '../../lib/altar/cabinet';
 import { pickImage, type PickedImage } from '../../lib/altar/images';
+import { FAVOURITES_CATEGORY, favouriteItems, favouriteKey } from '../../lib/altar/cabinetFavourites';
 import { cabinetFormOf, itemIndex, searchItems } from '../../lib/altar/itemIndex';
 import { festivalWhen, nearWithThings, seasonalSections, type FestivalNear } from '../../lib/altar/seasonal';
 import type { CabinetForm, CabinetItem, SavedObject } from '../../lib/altar/types';
@@ -39,6 +40,9 @@ type Props = {
   onRemoveImage?: (item: CabinetItem, form: CabinetForm) => Promise<void>;
   /** The festivals that are near (a week before through their last day): their seasonal things come first. */
   near?: FestivalNear[] | null;
+  /** Starred item ids in the order added, and the star toggle (saved to your settings, shared with the website). */
+  favourites?: string[];
+  onToggleFavourite?: (itemId: string) => void;
 };
 
 export function CabinetSheet({
@@ -56,12 +60,14 @@ export function CabinetSheet({
   onSetImage,
   onRemoveImage,
   near = null,
+  favourites = [],
+  onToggleFavourite,
 }: Props) {
   // Near a festival with something in the drawer for it, the cabinet opens on its seasonal things.
   const nearShown = nearWithThings(near, items).length > 0;
-  const [category, setCategory] = useState<string>(() => (nearShown ? 'seasonal' : 'candles'));
+  const [category, setCategory] = useState<string>(() => (favourites.length ? FAVOURITES_CATEGORY : nearShown ? 'seasonal' : 'candles'));
   // Seasonal, Natural, Plants and Offerings show once they hold something with a picture.
-  const categories = cabinetCategoriesFor(nearShown).filter(
+  const categories = [{ id: FAVOURITES_CATEGORY, label: 'Favourites' }, ...cabinetCategoriesFor(nearShown)].filter(
     (c) => (c.id !== 'seasonal' && c.id !== 'natural' && c.id !== 'plants' && c.id !== 'offerings') || items.some((item) => item.category === c.id),
   );
   const [search, setSearch] = useState('');
@@ -133,13 +139,13 @@ export function CabinetSheet({
 
   const shown = useMemo(
     () =>
-      cabinetItemsFor(items, category, search)
+      (category === FAVOURITES_CATEGORY ? favouriteItems(items, favourites) : cabinetItemsFor(items, category, search))
         .map((item) => ({ item, forms: placeableForms(item, overrides) }))
         .filter((entry) => entry.forms.length > 0)
         // Things the Living Library has no page for say a few words of their own (shelf.ts);
         // an offering always says what it is, not what its vessel is for, and a seasonal thing names its festivals.
         .map((entry) => ({ ...entry, uses: ((entry.item.category === 'offerings' || entry.item.category === 'seasonal') && entry.item.description) || topUses(cabinetEntry(library, entry.item, entry.forms[0])) || entry.item.description || '' })),
-    [items, category, search, overrides, library],
+    [items, category, search, overrides, library, favourites],
   );
 
   // A search looks in every drawer at once (lib/altar/itemIndex.ts, as the coven ritual planner's Items picker).
@@ -167,6 +173,8 @@ export function CabinetSheet({
       count={countOf(item, forms[0])}
       onPress={() => placeIt(item, forms[0])}
       onLongPress={choosePicture(item, forms[0])}
+      starred={favourites.includes(favouriteKey(item))}
+      onStar={onToggleFavourite ? () => onToggleFavourite(favouriteKey(item)) : undefined}
     />
   );
 
@@ -257,13 +265,19 @@ export function CabinetSheet({
                 count={countOf(place.item, place.form)}
                 onPress={() => placeIt(place.item, place.form)}
                 onLongPress={choosePicture(place.item, place.form)}
+                starred={favourites.includes(favouriteKey(place.item))}
+                onStar={onToggleFavourite ? () => onToggleFavourite(favouriteKey(place.item)) : undefined}
               />
             ))}
           </View>
         </>
       )}
-      {!searching && shown.length === 0 && <Text style={type.body}>Nothing in this drawer.</Text>}
-      {!searching && !!onMakeOwn && category !== 'seasonal' && category !== 'natural' && category !== 'plants' && category !== 'offerings' && (
+      {!searching && shown.length === 0 && (
+        <Text style={type.body}>
+          {category === FAVOURITES_CATEGORY ? 'Nothing starred yet. Tap the star on any item to keep it here, first in your cabinet.' : 'Nothing in this drawer.'}
+        </Text>
+      )}
+      {!searching && !!onMakeOwn && category !== FAVOURITES_CATEGORY && category !== 'seasonal' && category !== 'natural' && category !== 'plants' && category !== 'offerings' && (
         <Pressable
           accessibilityRole="button"
           accessibilityLabel="Make your own item for this drawer"
@@ -288,6 +302,7 @@ export function CabinetSheet({
                 </Text>
                 {!!uses && <Text style={[styles.uses, styles.usesLeft]}>{uses}</Text>}
               </View>
+              {!!onToggleFavourite && <Star on={favourites.includes(favouriteKey(item))} label={item.name} onPress={() => onToggleFavourite(favouriteKey(item))} />}
               {!!item.customCabinetItemId && !!onEditOwn && (
                 <Pressable accessibilityRole="button" accessibilityLabel={`Edit ${item.name}`} onPress={() => onEditOwn(item)} hitSlop={8} style={styles.edit}>
                   <Text style={styles.editText}>Edit</Text>
@@ -378,6 +393,21 @@ export function CabinetSheet({
   );
 }
 
+function Star({ on, label, onPress }: { on: boolean; label: string; onPress: () => void }) {
+  return (
+    <Pressable
+      accessibilityRole="button"
+      accessibilityLabel={on ? `Remove ${label} from favourites` : `Add ${label} to favourites`}
+      accessibilityState={{ selected: on }}
+      hitSlop={8}
+      onPress={onPress}
+      style={({ pressed }) => [pressed && { opacity: 0.6 }]}
+    >
+      <Text style={[styles.starGlyph, on && styles.starOn]}>{on ? '★' : '☆'}</Text>
+    </Pressable>
+  );
+}
+
 function Tile({
   label,
   uses,
@@ -386,6 +416,8 @@ function Tile({
   count = 0,
   onPress,
   onLongPress,
+  starred = false,
+  onStar,
 }: {
   label: string;
   uses?: string;
@@ -395,6 +427,8 @@ function Tile({
   count?: number;
   onPress: () => void;
   onLongPress?: () => void;
+  starred?: boolean;
+  onStar?: () => void;
 }) {
   const picture = altarPicture(image);
   // Heaps of chips and loose herbs are wide and flat: give them a wide frame
@@ -415,6 +449,11 @@ function Tile({
       }}
       style={({ pressed }) => [styles.tile, count > 0 && styles.tileOn, pressed && { opacity: 0.7 }]}
     >
+      {!!onStar && (
+        <View style={styles.star}>
+          <Star on={starred} label={label} onPress={onStar} />
+        </View>
+      )}
       {count > 0 && (
         <View style={styles.count}>
           <Text style={styles.countText}>{count > 1 ? `✓ ×${count}` : '✓'}</Text>
@@ -437,6 +476,9 @@ function Tile({
 }
 
 const styles = StyleSheet.create({
+  star: { position: 'absolute', top: 4, left: 6, zIndex: 2 },
+  starGlyph: { fontSize: 20, color: colors.tabInactive },
+  starOn: { color: colors.gold },
   header: { paddingHorizontal: space.gutter, gap: 12, paddingBottom: 12 },
   search: {
     minHeight: touch,

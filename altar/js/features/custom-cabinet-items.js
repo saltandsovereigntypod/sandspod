@@ -193,7 +193,7 @@ async function openCustomCabinetItemModal(editItemId = "", focusFormLabel = "") 
           Cabinet Category
           <select name="category" required data-custom-cabinet-category-select>
             ${cabinetCategories
-              .filter((category) => category.id !== "backgrounds")
+              .filter((category) => category.id !== "backgrounds" && category.id !== "favourites")
               .map((category) => `
                 <option value="${category.id}" ${category.id === selectedCategory ? "selected" : ""}>
                   ${category.label}

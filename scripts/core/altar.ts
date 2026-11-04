@@ -32,6 +32,7 @@ export * as companion from '../../app/src/lib/altar/companion.ts';
 export * as arrange from '../../app/src/lib/altar/arrange.ts';
 export * as tonight from '../../app/src/lib/altar/tonight.ts';
 export * as cabinet from '../../app/src/lib/altar/cabinet.ts';
+export * as cabinetFavourites from '../../app/src/lib/altar/cabinetFavourites.ts';
 export * as seasonal from '../../app/src/lib/altar/seasonal.ts';
 export * as frame from '../../app/src/lib/altar/frame.ts';
 export * as shelf from '../../app/src/lib/altar/shelf.ts';

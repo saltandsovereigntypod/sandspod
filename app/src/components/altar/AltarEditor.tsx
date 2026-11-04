@@ -252,7 +252,8 @@ import type { CabinetForm, CabinetItem } from '../../lib/altar/types';
 import { altarLibraryHref, useLibrary } from '../../lib/library';
 import { setAltarFullScreen } from '../../lib/altarFullScreen';
 import { canTurnScreen, turnScreen } from '../../lib/screenOrientation';
-import { cachedSettings, useMySettings } from '../../lib/settings/store';
+import { cachedSettings, patchMySettings, useMySettings } from '../../lib/settings/store';
+import { CABINET_FAVOURITES_SETTING, encodeFavourites, readFavourites, toggleFavourite } from '../../lib/altar/cabinetFavourites';
 import { moonTimeAltar, planetAltar, shrineAltar, tonightAltar } from '../../lib/altar/tonight';
 import { TRADITIONAL_LIBRARY } from '../../lib/library/traditionalData';
 import { hiddenTraditions, holidayChoice, holidaysToday } from '../../lib/holidays';
@@ -2215,6 +2216,11 @@ export function AltarEditor({
             onEditOwn={(item) => {
               setSheet(null);
               afterSheetCloses(() => setOwnItem({ category: item.category, item }));
+            }}
+            favourites={readFavourites(settings?.[CABINET_FAVOURITES_SETTING])}
+            onToggleFavourite={(id) => {
+              const next = toggleFavourite(readFavourites((cachedSettings() ?? settings)?.[CABINET_FAVOURITES_SETTING]), id);
+              void patchMySettings({ [CABINET_FAVOURITES_SETTING]: encodeFavourites(next) }).catch(() => {});
             }}
             signedIn={signedIn}
             onSetImage={store.setFormImage}
