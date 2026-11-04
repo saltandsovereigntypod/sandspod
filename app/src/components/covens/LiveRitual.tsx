@@ -28,6 +28,8 @@ import { HowTo, ItemTiles, PetitionBox, RitualSit } from './RitualPanelParts';
 import { buildScript, mayVote, voteOptions } from '../../lib/covens/script';
 import { actionForStep } from '../../lib/covens/stepActions';
 import { useCoven } from '../../lib/covens/CovenContext';
+import { useCovenShelf } from '../../lib/covens/sharedApi';
+import { covenHas, covenHasLine } from '../../lib/covens/shelf';
 import { altarActionButton, altarActionNote, errorMessage, orderSteps, stepAssignee, stepIsMine, stepItemsLabel, type BookPage, type RitualStep } from '../../lib/covens/model';
 import { colors, radius, type } from '../../theme';
 
@@ -594,6 +596,8 @@ export function LeadSteps({ live, onEnd }: { live: LiveRitual; onEnd: () => void
  */
 export function StepList({ live, onAccess }: { live: LiveRitual; onAccess?: (stepIndex: number, value: AltarAccessChoice) => void }) {
   const coven = useCoven();
+  // What the coven's shared shelf already has for a step's items (and who holds it).
+  const shelf = useCovenShelf(coven.snapshot?.coven.id);
   const { ritual, steps, current, canLead, busy } = live;
   const membership = coven.snapshot?.membership ?? null;
   if (!ritual) return null;
@@ -621,6 +625,9 @@ export function StepList({ live, onAccess }: { live: LiveRitual; onAccess?: (ste
               {!step.altar_action && action && !step.title.includes(action.name) ? ` · ${action.name.toLowerCase()}` : ''}
             </Text>
             {!!step.items?.length && <Text style={type.caption}>Items: {stepItemsLabel(step)}</Text>}
+            {!!step.items?.length && !!shelf.things.length && !!covenHasLine(covenHas(step.items, shelf.things), coven.nameOf) && (
+              <Text style={type.caption}>{covenHasLine(covenHas(step.items, shelf.things), coven.nameOf)}</Text>
+            )}
             {!!ask && !now && (
               <>
                 <Participation row={live.rowFor(step.id)} ask={ask} nameOf={coven.nameOf} />

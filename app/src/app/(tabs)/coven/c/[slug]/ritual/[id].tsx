@@ -7,6 +7,7 @@ import { CovenScreen, covenHref } from '../../../../../../components/covens/Cove
 import { MyContribution } from '../../../../../../components/covens/Contributions';
 import { takeToAltarOnce } from '../../../../../../components/covens/AltarRitual';
 import { askEndRitual, LeadSteps, LiveStepCard, StepList, StepPopups, useLiveRitual, type AltarAccessChoice } from '../../../../../../components/covens/LiveRitual';
+import { GatheringDuties } from '../../../../../../components/covens/Rota';
 import { ApologyNote } from '../../../../../../components/covens/Record';
 import { MeetingScreen } from '../../../../../../components/covens/meeting/MeetingScreen';
 import { SendNotice } from '../../../../../../components/covens/SendNotice';
@@ -237,6 +238,7 @@ function RitualScreen() {
           ))}
         </Section>
       )}
+      <GatheringDuties ritualId={ritual.id} open={ritual.status === 'scheduled' || ritual.status === 'live'} />
       {steps.length > 0 && (
         <View style={styles.row}>
           <Button label="The script" variant="outline" onPress={() => router.push(`${covenHref(coven.slug, 'ritual/script')}?id=${ritual.id}&mode=script` as never)} />

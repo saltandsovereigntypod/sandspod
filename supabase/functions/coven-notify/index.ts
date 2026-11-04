@@ -8,6 +8,7 @@ import { openedNote, wantsPosition } from "./positions.ts";
 import { trainingNote, wantsTraining } from "./training.ts";
 import { promotedNote, proposedNote, queuedNote, type QueueSource } from "./queue.ts";
 import { answerPushDue, answersNote, reactionNote, reminderButtons, reminderDue, reminderText, wantsMessageNote } from "./messages.ts";
+import { rotaNote, rotaRecipients, wantsRota } from "./rota.ts";
 import { checkinNote, liveNote, mentorMessageNote, mentorshipNote, wantsTogether, type MentorshipEvent, type Note as TogetherNote } from "./together.ts";
 
 // Phone notifications for covens: a new message, a new application or
@@ -221,12 +222,14 @@ async function handle(request: Request): Promise<Response> {
   let queueEvent: "queued" | "proposed" | "promoted" = "queued";
   let together: { kind: "live" | "mentorship" | "mentorship_message" | "mentorship_checkin"; id: string; event: string } | null = null;
   let extra: { kind: "reaction" | "answer" | "due"; id: string } | null = null;
+  let rotaSwap: { id: string; event: "asked" | "answered" } | null = null;
   try {
     const payload = (await request.json()) || {};
     if (payload.reaction_id) extra = { kind: "reaction", id: String(payload.reaction_id) };
     else if (payload.answer_message_id) extra = { kind: "answer", id: String(payload.answer_message_id) };
     else if (payload.due_coven_id) extra = { kind: "due", id: String(payload.due_coven_id) };
-    if (payload.live_ritual_id) together = { kind: "live", id: String(payload.live_ritual_id), event: "started" };
+    if (payload.rota_swap_id && (payload.event === "asked" || payload.event === "answered")) rotaSwap = { id: String(payload.rota_swap_id), event: payload.event };
+    if (payload.live_ritual_id) together ={ kind: "live", id: String(payload.live_ritual_id), event: "started" };
     else if (payload.mentorship_message_id) together = { kind: "mentorship_message", id: String(payload.mentorship_message_id), event: "new" };
     else if (payload.mentorship_checkin_id) together = { kind: "mentorship_checkin", id: String(payload.mentorship_checkin_id), event: "new" };
     else if (payload.mentorship_id && ["asked", "paired", "accepted", "declined", "ended"].includes(payload.event)) {
@@ -270,6 +273,10 @@ async function handle(request: Request): Promise<Response> {
     const { data: member } = await admin.from("coven_members").select("user_id").eq("coven_id", extra.id).eq("user_id", sender).eq("status", "active").maybeSingle();
     if (!member) return reply(404, { error: "not_found" });
     return reply(200, { sent: await dueReminders(admin, extra.id) });
+  }
+  if (rotaSwap) {
+    if (!UUID.test(rotaSwap.id)) return reply(400, { error: "bad_request" });
+    return rotaSwapNote(admin, sender, rotaSwap.id, rotaSwap.event);
   }
   if (together) {
     if (!UUID.test(together.id)) return reply(400, { error: "bad_request" });
@@ -1200,6 +1207,52 @@ async function togetherNote(admin: SupabaseClient, caller: string, kind: "live" 
   const notes: Push[] = (tokens || []).map((t) => {
     const note = notesFor(t.user_id as string);
     return { to: t.token, title: note.title, body: note.body, sound: "default", channelId, threadId: `${source}:${id}`, data: { source, url: note.url } };
+  });
+  return reply(200, { sent: await push(admin, notes) });
+}
+
+// ─── The duties rota's swaps (rota.ts; 20261125000000_coven_shelf_rota_sits.sql) ──
+
+/** A swap asked or answered: check the caller did it, mark it sent once, then ring those it's for. */
+async function rotaSwapNote(admin: SupabaseClient, caller: string, id: string, event: "asked" | "answered") {
+  const { data: swap } = await admin.from("coven_rota_swaps").select("*").eq("id", id).maybeSingle();
+  if (!swap) return reply(404, { error: "not_found" });
+  const recipients = rotaRecipients(swap, event, caller);
+  if (!recipients.length) return reply(404, { error: "not_found" });
+  if (!isFresh(event === "asked" ? swap.created_at : swap.decided_at)) return reply(409, { error: "too_old" });
+  const mark = event === "asked" ? "asked_notified_at" : "answer_notified_at";
+  const { data: claimed } = await admin.from("coven_rota_swaps").update({ [mark]: new Date().toISOString() }).eq("id", id).is(mark, null).select("id");
+  if (!claimed?.length) return reply(409, { error: "already_sent" });
+  const [{ data: coven }, { data: duty }, { data: ritual }, { data: profile }, { data: blocks }, { data: settings }] = await Promise.all([
+    admin.from("covens").select("name,slug,status").eq("id", swap.coven_id).maybeSingle(),
+    admin.from("coven_rota_duties").select("name").eq("id", swap.duty_id).maybeSingle(),
+    admin.from("coven_rituals").select("title").eq("id", swap.ritual_id).maybeSingle(),
+    admin.from("coven_profiles").select("display_name").eq("user_id", caller).maybeSingle(),
+    admin.from("user_blocks").select("blocker_id").eq("blocked_id", caller).in("blocker_id", recipients),
+    admin.from("user_settings").select("user_id,reminders:settings->>reminders_v2").in("user_id", recipients),
+  ]);
+  if (!coven || coven.status !== "active") return reply(404, { error: "not_found" });
+  const blocking = new Set((blocks || []).map((b) => b.blocker_id as string));
+  const saved = new Map(((settings || []) as { user_id: string; reminders: string | null }[]).map((r) => [r.user_id, r.reminders]));
+  const now = new Date();
+  const listeners = recipients.filter((u) => !blocking.has(u) && wantsRota(saved.get(u) ?? null, now));
+  if (!listeners.length) return reply(200, { sent: 0 });
+  const { data: tokens } = await admin.from("push_tokens").select("token,user_id").in("user_id", listeners);
+  const reassigned = event === "answered" && swap.requested_by === caller && caller !== swap.to_user;
+  const notes: Push[] = (tokens || []).map((t) => {
+    const note = rotaNote({
+      event,
+      status: swap.status,
+      who: profile?.display_name || "Someone",
+      duty: duty?.name || "a duty",
+      gathering: ritual?.title || "the next gathering",
+      covenName: coven.name,
+      covenSlug: coven.slug,
+      ritualId: swap.ritual_id,
+      reassigned,
+      toRecipient: t.user_id === swap.to_user ? "to" : "from",
+    });
+    return { to: t.token, title: note.title, body: note.body, sound: "default", channelId: "coven-requests", threadId: `coven-rota:${swap.ritual_id}`, data: { source: "coven-rota", url: note.url } };
   });
   return reply(200, { sent: await push(admin, notes) });
 }
