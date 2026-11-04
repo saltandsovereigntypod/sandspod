@@ -1,34 +1,46 @@
 /*
- * The site's main bar, shared by every page, laid out like the app's tabs:
- * Today · Altar · Practice · Coven · More.
+ * The site's menu, shared by every page and drawn the way the app draws it:
+ * Today · Altar · Practice · Coven · More, then the website's own pages
+ * (About · Podcast · Books · Blog · Contact · Submit · Help) and Privacy and
+ * Terms in small print (the app's lib/siteLinks.ts, in the same order).
  * Practice holds three sections, as in the app: the Grimoire (/grimoire/),
  * Rituals (/rituals/: ritual work) and Craft (/practice/: the tools that
  * aren't rituals, with Cycle & Moon at /rituals/cycle/, divination at
  * /divination/ and the sigil maker at /sigil/, all kept where they were), with
  * a Grimoire | Rituals | Craft switch at the top of those pages; the tab
- * returns to whichever was used last. Coven is /covens/. The podcast is the logo (the home page), as in the app.
+ * returns to whichever was used last. Coven is /covens/.
  *
- * On computers and iPads it sits in the top header. On phones it moves to the
- * bottom of the screen. More opens the Sanctuary panel; pages without the
- * panel send it to the home page, which opens it on arrival.
+ * On a computer (900px and wider) it is a side bar down the left, which folds
+ * to a rail of icons (« / »). On phones and narrow windows it is a bar of five
+ * tabs along the bottom, with a grip to tuck it away and a round button in the
+ * corner to bring it back; the website's pages are under More there. Both
+ * choices are remembered on this device. More opens the Sanctuary panel;
+ * pages without the panel send it to the home page, which opens it on arrival.
+ * A page needs only this script (at the top of <body>) and css/site-nav.css:
+ * no header markup of its own.
  *
  * Back goes to the screen you came from, as in the app. Pages that have their
  * own back link ("‹ Back to Today", "← All rituals") keep it, but it now goes
  * back the way you came while there is somewhere on the site to go back to,
  * and only falls back to its written place when there isn't (a shared link,
- * a fresh tab). Every other page gets a standard "‹ Back" under the header;
- * the tabs' own first pages show it only when there is somewhere to go back to.
+ * a fresh tab). Every other page gets a standard "‹ Back" at the top; the
+ * tabs' own first pages show it only when there is somewhere to go back to.
  */
 (function (global) {
+  // The app's icons (components/Icon.tsx, components/more/MoreIcon.tsx), on the same 24px grid.
   const ICONS = {
-    today: '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>',
-    altar: '<path d="M12 3c1.6 2 1.6 3.4 0 4.6-1.6-1.2-1.6-2.6 0-4.6Z"/><path d="M9.5 9.5h5V19h-5z"/><path d="M5 21h14"/>',
-    grimoire: '<path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5z"/><path d="M4 20.5A2.5 2.5 0 0 0 6.5 23H20v-5"/><path d="m12 7 .9 1.9 2.1.3-1.5 1.5.4 2.1-1.9-1-1.9 1 .4-2.1-1.5-1.5 2.1-.3z"/>',
-    rituals: '<path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5Z"/>',
-    podcast: '<rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v4M8 22h8"/>',
-    practice: '<path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5z"/><path d="M4 20.5A2.5 2.5 0 0 0 6.5 23H20v-5"/><path d="M15.5 12.4A3.6 3.6 0 0 1 10.6 7.5a3.6 3.6 0 1 0 4.9 4.9Z"/>',
-    coven: '<circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="5.5" r="1.7"/><circle cx="6.2" cy="15.4" r="1.7"/><circle cx="17.8" cy="15.4" r="1.7"/><path d="M12 9.5v2.2l-3.4 2M12 11.7l3.4 2"/>',
-    more: '<circle cx="5" cy="12" r="1.4"/><circle cx="12" cy="12" r="1.4"/><circle cx="19" cy="12" r="1.4"/>'
+    today: '<path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/>',
+    altar: '<rect x="9" y="10" width="6" height="11" rx="1"/><path d="M12 3c1.5 2 2 3.5 0 5.5-2-2-1.5-3.5 0-5.5z"/>',
+    practice: '<path d="M5 4h11a3 3 0 0 1 3 3v13H8a3 3 0 0 1-3-3z"/><path d="M5 17a3 3 0 0 1 3-3h11"/>',
+    coven: '<circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="5.6" r="1.7"/><circle cx="6.3" cy="15.3" r="1.7"/><circle cx="17.7" cy="15.3" r="1.7"/>',
+    more: '<circle cx="5" cy="12" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="19" cy="12" r="1.5"/>',
+    about: '<circle cx="12" cy="12" r="8.5"/><path d="M12 11v5.5M12 7.6v.1"/>',
+    podcast: '<rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21M9 21h6"/>',
+    books: '<path d="M5 19.5V5h4v14.5M9 19.5V7h4v12.5"/><path d="M13.5 7.8l3.4-.9 3.1 11.6M3 20h18"/>',
+    blog: '<path d="M20 4c-7 1-11 6-12.5 12.5L6 20"/><path d="M8 16.5c4-.5 7.5-3 9-7.5M11 12.5l3.5-.5"/>',
+    contact: '<rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3.5 6.5L12 13l8.5-6.5"/>',
+    submit: '<path d="M12 21c-4-2.5-7-5.5-7-9.5A4.5 4.5 0 0 1 12 8a4.5 4.5 0 0 1 7 3.5c0 4-3 7-7 9.5z"/><path d="M12 3v3"/>',
+    help: '<circle cx="12" cy="12" r="8.5"/><path d="M9.6 9.4a2.5 2.5 0 0 1 4.8 1c0 1.7-2.4 2.1-2.4 3.6M12 16.9v.1"/>'
   };
 
   const TABS = [
@@ -39,6 +51,22 @@
     { key: "more", label: "More", view: "more" }
   ];
 
+  // The website's own pages, in the app's order (lib/siteLinks.ts SITE_LINKS).
+  const SITE_TITLE = "Salt & Sovereignty";
+  const SITE_LINKS = [
+    { key: "about", label: "About", href: "/#about" },
+    { key: "podcast", label: "Podcast", href: "/#podcast" },
+    { key: "books", label: "Books", href: "/#books" },
+    { key: "blog", label: "Blog", href: "/#blog" },
+    { key: "contact", label: "Contact", href: "/#contact" },
+    { key: "submit", label: "Submit", href: "/submit/" },
+    { key: "help", label: "Help", href: "/help/" }
+  ];
+  const SMALL_LINKS = [
+    { key: "privacy", label: "Privacy", href: "/privacy.html" },
+    { key: "terms", label: "Terms", href: "/submission-terms.html" }
+  ];
+
   // The three sections of Practice, switched at the top of their pages (the
   // app's lib/practiceSections.ts PRACTICE_SECTIONS).
   const PRACTICE = [
@@ -47,16 +75,25 @@
     { key: "craft", label: "Craft", href: "/practice/" }
   ];
   const PRACTICE_KEY = "saltPracticeSection";
+  // Remembered on this device, as in the app: the side bar folded to a rail, the bottom bar tucked away.
+  const SIDEBAR_KEY = "saltSiteMenu";
+  const BOTTOM_BAR_KEY = "saltSiteBottomBar";
 
-  const PHONE_QUERY = "(max-width: 700px)";
+  function readKey(key) {
+    try {
+      return global.localStorage?.getItem(key) ?? null;
+    } catch {
+      return null;
+    }
+  }
 
-  const PODCAST_SECTIONS = [
-    ["About", "#about"],
-    ["Podcast", "#podcast"],
-    ["Books", "#books"],
-    ["Blog", "#blog"],
-    ["Contact", "#contact"]
-  ];
+  function writeKey(key, value) {
+    try {
+      global.localStorage?.setItem(key, value);
+    } catch {
+      // Private windows may refuse; the choice then lasts for this page only.
+    }
+  }
 
   function normalPath(pathname) {
     const path = String(pathname || "/").replace(/index\.html$/, "");
@@ -85,6 +122,15 @@
     if (path.startsWith("/covens/")) return "coven";
     if (path === "/" || path.startsWith("/blog/")) return "podcast";
     return "more";
+  }
+
+  /** Which of the website's own pages a page is (lit in the side bar), or null. */
+  function activeSiteLink(pathname) {
+    const path = normalPath(pathname);
+    if (path.startsWith("/blog/")) return "blog";
+    if (path.startsWith("/submit/")) return "submit";
+    if (path.startsWith("/help/")) return "help";
+    return null;
   }
 
   function rememberedPractice() {
@@ -127,24 +173,18 @@
     return TABS.find((t) => t.key === tab)?.href || "/";
   }
 
-  function renderBack(doc = document, loc = global.location) {
-    doc.querySelectorAll(".site-back-bar").forEach((el) => el.remove());
-    if (TAB_ROOTS.has(normalPath(loc.pathname)) && !canGoBack(loc, doc)) return;
-    const header = doc.querySelector(".site-header");
-    if (!header) return;
-    header.insertAdjacentHTML("afterend", `<div class="site-back-bar"><a class="site-back" href="${fallbackHref(loc)}">‹ Back</a></div>`);
-  }
-
   function isHome(pathname) {
     return normalPath(pathname) === "/";
   }
 
-  function icon(key) {
-    return `<svg class="site-tab-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">${ICONS[key]}</svg>`;
+  function icon(key, cls = "site-tab-icon") {
+    return `<svg class="${cls}" viewBox="0 0 24 24" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${ICONS[key]}</svg>`;
   }
 
+  const esc = (text) => text.replace(/&/g, "&amp;");
+
   function tabMarkup(tab, current, hasPanel) {
-    const attrs = `class="site-tab" data-site-tab="${tab.key}"${tab.key === current ? ' aria-current="page"' : ""}`;
+    const attrs = `class="site-tab" data-site-tab="${tab.key}" data-site-menu-label="${tab.label}"${tab.key === current ? ' aria-current="page"' : ""}`;
     const inner = `${icon(tab.key)}<span class="site-tab-label">${tab.label}</span>`;
     if (tab.view && hasPanel) return `<button type="button" ${attrs} data-site-tab-view="${tab.view}">${inner}</button>`;
     let href = tab.view ? `/?sanctuary=${tab.view}` : tab.href;
@@ -152,60 +192,70 @@
     return `<a href="${href}" ${attrs}>${inner}</a>`;
   }
 
+  function menuMarkup(loc, hasPanel) {
+    const current = activeTab(loc.pathname, loc.search);
+    const site = activeSiteLink(loc.pathname);
+    const links = SITE_LINKS.map(
+      (link) =>
+        `<a class="site-menu-link" href="${link.href}" data-site-link="${link.key}" data-site-menu-label="${link.label}"${link.key === site ? ' aria-current="page"' : ""}>${icon(link.key, "site-menu-icon")}<span class="site-tab-label">${link.label}</span></a>`
+    ).join("");
+    return (
+      `<nav class="site-menu" aria-label="Main">` +
+      `<button type="button" class="site-menu-grip" data-site-menu-tuck aria-label="Tuck the menu away"><span aria-hidden="true"></span></button>` +
+      `<a class="site-menu-brand" href="/" aria-label="${esc(SITE_TITLE)} home" data-site-menu-label="${esc(SITE_TITLE)}"><span class="site-menu-name">${esc(SITE_TITLE)}</span><span class="site-menu-mark" aria-hidden="true">S&amp;S</span></a>` +
+      `<div class="site-tabs">${TABS.map((tab) => tabMarkup(tab, current, hasPanel)).join("")}</div>` +
+      `<div class="site-menu-site"><div class="site-menu-divider"></div><p class="site-menu-heading">${esc(SITE_TITLE)}</p>${links}</div>` +
+      `<div class="site-menu-grow"></div>` +
+      `<button type="button" class="site-menu-fold" data-site-menu-fold></button>` +
+      `<p class="site-menu-small">${SMALL_LINKS.map((link) => `<a href="${link.href}">${link.label}</a>`).join(" ")}</p>` +
+      `</nav>` +
+      `<button type="button" class="site-menu-restore" data-site-menu-restore aria-label="Show the menu">${icon("more")}</button>`
+    );
+  }
+
+  /** Fold the side bar to a rail (or open it), and tuck the bottom bar away (or bring it back), as remembered. */
+  function applyMenuState(doc = document) {
+    const root = doc.documentElement;
+    const rail = readKey(SIDEBAR_KEY) === "rail";
+    root.classList.toggle("site-menu-rail", rail);
+    root.classList.toggle("site-menu-tucked", readKey(BOTTOM_BAR_KEY) === "tucked");
+    const fold = doc.querySelector("[data-site-menu-fold]");
+    if (fold) {
+      fold.textContent = rail ? "»" : "«";
+      fold.setAttribute("aria-label", rail ? "Expand the menu" : "Fold the menu to icons");
+      fold.title = rail ? "Expand the menu" : "Fold the menu";
+    }
+    // Folded, the bar shows icons only: their names show on hover.
+    doc.querySelectorAll(".site-menu [data-site-menu-label]").forEach((el) => {
+      if (rail) el.title = el.dataset.siteMenuLabel;
+      else el.removeAttribute("title");
+    });
+  }
+
   function render(doc = document, loc = global.location) {
     const hasPanel = typeof global.openMySanctuaryPanel === "function";
-    const current = activeTab(loc.pathname, loc.search);
-    let header = doc.querySelector(".site-header");
-    if (!header) {
-      header = doc.createElement("header");
-      header.className = "site-header";
-      header.innerHTML = '<nav class="nav" aria-label="Primary navigation"></nav>';
-      doc.body.prepend(header);
-    }
-    const nav = header.querySelector(".nav") || header;
-    const brand = nav.querySelector(".brand");
-    if (brand) {
-      brand.setAttribute("href", "/");
-      brand.setAttribute("aria-label", "Salt & Sovereignty podcast home");
-    } else {
-      nav.insertAdjacentHTML("afterbegin", '<a class="brand" href="/" aria-label="Salt & Sovereignty podcast home"><span class="brand-mark" aria-hidden="true">S&amp;S</span><span>Salt &amp; Sovereignty</span></a>');
-    }
-    doc.querySelectorAll(".site-tabs").forEach((tabs) => tabs.remove());
-    nav.insertAdjacentHTML("beforeend", `<div class="site-tabs" role="navigation" aria-label="Main">${TABS.map((tab) => tabMarkup(tab, current, hasPanel)).join("")}</div>`);
-    placeTabs(doc);
+    doc.querySelectorAll(".site-menu, .site-menu-restore, .practice-switch, .site-back-bar").forEach((el) => el.remove());
+    // After the "Skip to content" link, which stays the first thing to tab to.
+    const skip = doc.body.querySelector(":scope > .skip-link");
+    if (skip) skip.insertAdjacentHTML("afterend", menuMarkup(loc, hasPanel));
+    else doc.body.insertAdjacentHTML("afterbegin", menuMarkup(loc, hasPanel));
+    let anchor = doc.querySelector(".site-menu-restore");
 
-    doc.querySelectorAll(".practice-switch").forEach((el) => el.remove());
+    if (!TAB_ROOTS.has(normalPath(loc.pathname)) || canGoBack(loc, doc)) {
+      anchor.insertAdjacentHTML("afterend", `<div class="site-back-bar"><a class="site-back" href="${fallbackHref(loc)}">‹ Back</a></div>`);
+      anchor = anchor.nextElementSibling;
+    }
+
     const section = practiceSection(loc.pathname, loc.search);
     if (section) {
-      try {
-        global.localStorage?.setItem(PRACTICE_KEY, section);
-      } catch {
-        // Private windows may refuse; the tab then opens the Grimoire.
-      }
-      header.insertAdjacentHTML(
+      writeKey(PRACTICE_KEY, section);
+      anchor.insertAdjacentHTML(
         "afterend",
         `<nav class="practice-switch" aria-label="Practice">${PRACTICE.map((p) => `<a href="${p.href}"${p.key === section ? ' aria-current="page"' : ""}>${p.label}</a>`).join("")}</nav>`
       );
     }
-
-    renderBack(doc, loc);
-
-    header.querySelector(".site-subnav")?.remove();
-    if (isHome(loc.pathname)) {
-      header.insertAdjacentHTML("beforeend", `<nav class="site-subnav" aria-label="On this page">${PODCAST_SECTIONS.map(([label, hash]) => `<a href="${hash}">${label}</a>`).join("")}</nav>`);
-    }
+    applyMenuState(doc);
     doc.body.classList.add("has-site-nav");
-  }
-
-  // On phones the tabs sit at the bottom of the screen. The header's blur
-  // would pin a fixed bar to the header, so there they live on the page itself.
-  function placeTabs(doc = document) {
-    const tabs = doc.querySelector(".site-tabs");
-    const nav = doc.querySelector(".site-header .nav") || doc.querySelector(".site-header");
-    if (!tabs || !nav) return;
-    const phone = global.matchMedia?.(PHONE_QUERY).matches;
-    if (phone && tabs.parentElement !== doc.body) doc.body.append(tabs);
-    if (!phone && tabs.parentElement !== nav) nav.append(tabs);
   }
 
   // While the Sanctuary panel is open, the tab for its view is the lit one.
@@ -226,12 +276,6 @@
     });
   }
 
-  // The panel opens below the header, so the logo and the tabs stay in reach.
-  function measureHeader(doc = document) {
-    const header = doc.querySelector(".site-header");
-    if (header) doc.documentElement.style.setProperty("--site-header-h", `${header.offsetHeight}px`);
-  }
-
   function openView(view) {
     if (typeof global.openMySanctuaryPanel !== "function") return false;
     global.openMySanctuaryPanel(view);
@@ -249,13 +293,6 @@
 
   function install() {
     render();
-    global.matchMedia?.(PHONE_QUERY).addEventListener?.("change", () => placeTabs());
-    measureHeader();
-    // Once a frame at most while a window is being resized (it reads layout).
-    let measuring = 0;
-    global.addEventListener("resize", () => {
-      if (!measuring) measuring = global.requestAnimationFrame(() => ((measuring = 0), measureHeader()));
-    }, { passive: true });
     const { panel } = panelState();
     if (panel && typeof MutationObserver !== "undefined") {
       new MutationObserver(() => markCurrent()).observe(panel, { subtree: true, attributes: true, attributeFilter: ["hidden", "class"] });
@@ -295,6 +332,18 @@
     }, true);
 
     document.addEventListener("click", (event) => {
+      // Fold the side bar, tuck the bottom bar away, bring it back.
+      if (event.target.closest("[data-site-menu-fold]")) {
+        writeKey(SIDEBAR_KEY, document.documentElement.classList.contains("site-menu-rail") ? "open" : "rail");
+        applyMenuState();
+        return;
+      }
+      const tuck = event.target.closest("[data-site-menu-tuck], [data-site-menu-restore]");
+      if (tuck) {
+        writeKey(BOTTOM_BAR_KEY, tuck.hasAttribute("data-site-menu-tuck") ? "tucked" : "shown");
+        applyMenuState();
+        return;
+      }
       const state = panelState();
       const viewTab = event.target.closest("[data-site-tab-view]");
       if (viewTab) {
@@ -310,7 +359,7 @@
         }
       }
       // With the panel open, a link back to this same page just closes it.
-      const link = state.open && event.target.closest(".site-tab[href], .site-header .brand");
+      const link = state.open && event.target.closest(".site-tab[href], .site-menu-brand");
       if (link) {
         const target = new URL(link.getAttribute("href"), location.href);
         if (normalPath(target.pathname) === normalPath(location.pathname) && target.search === location.search) {
@@ -319,6 +368,9 @@
           return;
         }
       }
+      // A link to a part of the home page, from the home page with the panel open: close it first.
+      const siteLink = state.open && event.target.closest(".site-menu-link");
+      if (siteLink) global.closeMySanctuaryPanel?.();
       const accessibility = event.target.closest("[data-site-accessibility]");
       if (accessibility) document.querySelector("[data-accessibility-trigger]")?.click();
     });
@@ -339,16 +391,15 @@
     }
   }
 
-  const api = { TABS, PRACTICE, PANEL_TABS, activeTab, practiceSection, rememberedPractice, isHome, isBackLink, fallbackHref, canGoBack, render, install };
+  const api = { TABS, SITE_TITLE, SITE_LINKS, SMALL_LINKS, PRACTICE, PANEL_TABS, activeTab, activeSiteLink, practiceSection, rememberedPractice, isHome, isBackLink, fallbackHref, canGoBack, render, install };
   global.SiteNav = api;
   if (typeof module !== "undefined" && module.exports) module.exports = api;
   if (typeof document !== "undefined") {
     if (document.readyState === "loading") {
-      // Pages load this at the top of <body>, or just after their own
-      // .site-header: draw the bar straight away, so the page doesn't jump
-      // when it appears after the page's own scripts. install() draws it
-      // again once the page is ready (the Sanctuary panel may exist by then).
-      // (scripts/validate-static.js checks it never comes before a header.)
+      // Pages load this at the top of <body>: draw the menu straight away, so
+      // the page doesn't jump when it appears after the page's own scripts.
+      // install() draws it again once the page is ready (the Sanctuary panel
+      // may exist by then).
       if (document.body) render();
       document.addEventListener("DOMContentLoaded", install);
     } else install();

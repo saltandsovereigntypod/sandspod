@@ -24,7 +24,7 @@ export function Chip({ label, onPress, accessibilityLabel, symbol, active, disab
       accessibilityRole="button"
       accessibilityLabel={accessibilityLabel ?? label}
       accessibilityState={{ disabled: !!disabled, selected: !!active }}
-      style={({ pressed }) => [styles.chip, active && styles.active, (pressed || disabled) && styles.dim]}
+      style={({ pressed }) => [styles.chip, compact && symbol && styles.compact, active && styles.active, (pressed || disabled) && styles.dim]}
     >
       <View style={styles.row}>
         {symbol ? (
@@ -53,6 +53,8 @@ const styles = StyleSheet.create({
     borderColor: colors.hairline,
     justifyContent: 'center',
   },
+  // A symbol-only chip in the computer screen's toolbar: a small square, so a row of them fits one line.
+  compact: { width: 38, minHeight: 38, paddingHorizontal: 0, alignItems: 'center' },
   active: { backgroundColor: colors.gold, borderColor: colors.gold },
   dim: { opacity: 0.55 },
   row: { flexDirection: 'row', alignItems: 'center', gap: 6 },

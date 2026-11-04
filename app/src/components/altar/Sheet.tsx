@@ -122,7 +122,7 @@ const styles = StyleSheet.create({
   close: { minHeight: touch, minWidth: touch, alignItems: 'center', justifyContent: 'center', paddingHorizontal: 8 },
   closeText: { color: colors.gold, fontFamily: fonts.bodySemi, fontSize: 15 },
   scroll: { flexGrow: 0 },
-  inline: { flex: 1, paddingTop: 12 },
-  inlineScroll: { flex: 1 },
+  inline: { flex: 1, minHeight: 0, paddingTop: 12 },
+  inlineScroll: { flex: 1, minHeight: 0 },
   content: { paddingHorizontal: space.gutter, paddingBottom: 12, gap: 16 },
 });

@@ -174,12 +174,15 @@ function createMySanctuaryPanel() {
 
         <h3 class="my-sanctuary-subheading">Salt &amp; Sovereignty</h3>
         <nav class="my-sanctuary-links" aria-label="Salt &amp; Sovereignty">
-          <a href="/#podcast">🎙 Podcast</a>
           <a href="/#about">About</a>
+          <a href="/#podcast">Podcast</a>
           <a href="/#books">Books</a>
           <a href="/#blog">Blog</a>
           <a href="/#contact">Contact</a>
+          <a href="/submit/">Submit</a>
+          <a href="/help/">Help</a>
           <a href="/privacy.html">Privacy</a>
+          <a href="/submission-terms.html">Terms</a>
         </nav>
 
         <div class="my-sanctuary-actions">

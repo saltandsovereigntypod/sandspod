@@ -6,12 +6,13 @@ const path = require("node:path");
 const root = path.resolve(__dirname, "..");
 const read = (file) => fs.readFileSync(path.join(root, file), "utf8");
 
-test("Community Submissions uses the shared responsive navbar and safe script order", () => {
+test("Community Submissions uses the shared menu and safe script order", () => {
   const html = read("admin/submissions/index.html");
-  for (const label of ["About", "Podcast", "Books", "Blog", "Contact", "Sanctuary"]) assert.match(html, new RegExp(`>${label}<`));
-  assert.match(html, /class="nav-toggle"[^>]+aria-controls="nav-menu"/);
+  // About, Podcast, Books, Blog and Contact are in the shared side bar (js/site-nav.js), not the page.
+  assert.doesNotMatch(html, /class="site-header"|class="nav-toggle"/);
+  assert.match(html, /js\/site-nav\.js/);
+  assert.match(html, /css\/site-nav\.css/);
   assert.ok(html.indexOf("../../js/environment.js") < html.indexOf("../../js/supabase-config.js"));
-  assert.match(html, /href="\.\.\/\.\.\/index\.html#about"/);
 });
 
 test("shared buttons define tiny, pill, icon, active, disabled, focus, and reduced-motion states", () => {

@@ -11,7 +11,11 @@ test('the website pages are full addresses, and can become paths on the same sit
   assert.equal(sitePage('/submit/', 'https://example.org/'), 'https://example.org/submit/');
   assert.deepEqual(
     SITE_LINKS.map((l) => l.label),
-    ['Home', 'Blog & podcast', 'Submit', 'Help'],
+    ['About', 'Podcast', 'Books', 'Blog', 'Contact', 'Submit', 'Help'],
+  );
+  assert.deepEqual(
+    SITE_LINKS.map((l) => l.url.replace('https://saltandsovereignty.com', '')),
+    ['/#about', '/#podcast', '/#books', '/#blog', '/#contact', '/submit/', '/help/'],
   );
   assert.equal(PRIVACY_URL, 'https://saltandsovereignty.com/privacy.html');
   assert.equal(TERMS_URL, 'https://saltandsovereignty.com/submission-terms.html');

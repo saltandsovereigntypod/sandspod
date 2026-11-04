@@ -1,6 +1,6 @@
 import Svg, { Circle, Path, Rect } from 'react-native-svg';
 
-export type MoreIconName = 'community' | 'offer' | 'letters' | 'library' | 'settings' | 'backup' | 'account' | 'moon' | 'altar' | 'search' | 'journey' | 'support';
+export type MoreIconName = 'community' | 'offer' | 'letters' | 'library' | 'settings' | 'backup' | 'account' | 'moon' | 'altar' | 'search' | 'journey' | 'support' | 'about' | 'podcast' | 'books' | 'blog' | 'help';
 
 // Stroke icons on the same 24px grid as components/Icon.tsx.
 export function MoreIcon({ name, size = 20, color }: { name: MoreIconName; size?: number; color: string }) {
@@ -72,6 +72,36 @@ export function MoreIcon({ name, size = 20, color }: { name: MoreIconName; size?
           <Circle cx={12} cy={12} r={8.5} {...stroke} />
           <Circle cx={12} cy={12} r={3.5} {...stroke} />
           <Path d="M6 6l3.5 3.5M18 6l-3.5 3.5M6 18l3.5-3.5M18 18l-3.5-3.5" {...stroke} />
+        </>
+      )}
+      {name === 'about' && (
+        <>
+          <Circle cx={12} cy={12} r={8.5} {...stroke} />
+          <Path d="M12 11v5.5M12 7.6v.1" {...stroke} />
+        </>
+      )}
+      {name === 'podcast' && (
+        <>
+          <Rect x={9} y={3} width={6} height={11} rx={3} {...stroke} />
+          <Path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21M9 21h6" {...stroke} />
+        </>
+      )}
+      {name === 'books' && (
+        <>
+          <Path d="M5 19.5V5h4v14.5M9 19.5V7h4v12.5" {...stroke} />
+          <Path d="M13.5 7.8l3.4-.9 3.1 11.6M3 20h18" {...stroke} />
+        </>
+      )}
+      {name === 'blog' && (
+        <>
+          <Path d="M20 4c-7 1-11 6-12.5 12.5L6 20" {...stroke} />
+          <Path d="M8 16.5c4-.5 7.5-3 9-7.5M11 12.5l3.5-.5" {...stroke} />
+        </>
+      )}
+      {name === 'help' && (
+        <>
+          <Circle cx={12} cy={12} r={8.5} {...stroke} />
+          <Path d="M9.6 9.4a2.5 2.5 0 0 1 4.8 1c0 1.7-2.4 2.1-2.4 3.6M12 16.9v.1" {...stroke} />
         </>
       )}
       {name === 'moon' && <Path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z" {...stroke} />}
