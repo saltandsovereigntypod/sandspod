@@ -40,6 +40,8 @@ export default function TabsLayout() {
     <>
       <Tabs
         tabBar={(props) => <TabBar {...props} />}
+        // Back from a tab's first page returns to the tab you came from, not always to Today.
+        backBehavior="history"
         screenOptions={({ route }) => ({
           headerShown: false,
           tabBarPosition: desktop ? 'left' : 'bottom',
