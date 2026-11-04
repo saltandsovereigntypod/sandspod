@@ -1,6 +1,7 @@
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import Svg, { Defs, LinearGradient, Line, Rect, Stop } from 'react-native-svg';
 
+import { Button } from '../Button';
 import { altarPicture } from '../../lib/altar/assets';
 import { isLow, type ShelfEntry, type ShelfKind } from '../../lib/shelves/model';
 import { colors, fonts, type } from '../../theme';
@@ -37,42 +38,73 @@ function Plank() {
   );
 }
 
+const PER_PLANK = 4;
+
 /**
- * The curio cabinet: one painted shelf per kind, each thing on it with its
- * picture and name, low ones marked. Tapping one opens it.
+ * The curio cabinet: the chosen shelf's things on planks of a few at a time, each with its
+ * picture and name, low ones marked. Tapping one opens it. `groups` is one shelf, or every
+ * shelf (with plaques) for "All"; only `limit` things are drawn, the rest come with "Show more".
  */
-export function ShelfCabinet({ shelves, onOpen }: { shelves: { key: ShelfKind; label: string; entries: ShelfEntry[] }[]; onOpen: (id: string) => void }) {
+export function ShelfCabinet({
+  groups,
+  limit,
+  showPlaques,
+  onOpen,
+  onMore,
+}: {
+  groups: { key: ShelfKind; label: string; entries: ShelfEntry[] }[];
+  limit: number;
+  showPlaques: boolean;
+  onOpen: (id: string) => void;
+  onMore: () => void;
+}) {
+  const total = groups.reduce((n, g) => n + g.entries.length, 0);
+  const more = Math.max(total - limit, 0);
+  const blocks = groups.map((g, i) => {
+    const before = groups.slice(0, i).reduce((n, x) => n + x.entries.length, 0);
+    return { ...g, shown: g.entries.slice(0, Math.max(limit - before, 0)) };
+  });
   return (
-    <View style={styles.cabinet}>
-      {shelves.map((shelf) => (
-        <View key={shelf.key} style={styles.shelf}>
-          <View style={styles.plaque}>
-            <Text style={styles.plaqueText}>{shelf.label}</Text>
-          </View>
-          <View style={styles.back}>
-            {shelf.entries.length === 0 ? (
-              <Text style={styles.empty}>Nothing here yet</Text>
-            ) : (
-              shelf.entries.map(({ id, item }) => (
-                <Pressable
-                  key={id}
-                  accessibilityRole="button"
-                  accessibilityLabel={`${item.name}${isLow(item) ? ', running low' : ''}`}
-                  onPress={() => onOpen(id)}
-                  style={({ pressed }) => [styles.thing, pressed && { opacity: 0.7 }]}
-                >
-                  <ShelfPicture image={item.image} name={item.name} size={56} />
-                  <Text style={styles.thingName} numberOfLines={2}>
-                    {item.name}
-                  </Text>
-                  {isLow(item) && <Text style={styles.low}>Low</Text>}
-                </Pressable>
-              ))
-            )}
-          </View>
-          <Plank />
-        </View>
-      ))}
+    <View style={{ gap: 8 }}>
+      <View style={styles.cabinet}>
+        {blocks.map((g) => {
+          if (g.shown.length === 0) return null;
+          const rows: ShelfEntry[][] = [];
+          for (let i = 0; i < g.shown.length; i += PER_PLANK) rows.push(g.shown.slice(i, i + PER_PLANK));
+          return (
+            <View key={g.key} style={styles.shelf}>
+              {showPlaques && (
+                <View style={styles.plaque}>
+                  <Text style={styles.plaqueText}>{g.label}</Text>
+                </View>
+              )}
+              {rows.map((row, r) => (
+                <View key={r}>
+                  <View style={styles.back}>
+                    {row.map(({ id, item }) => (
+                      <Pressable
+                        key={id}
+                        accessibilityRole="button"
+                        accessibilityLabel={`${item.name}${isLow(item) ? ', running low' : ''}`}
+                        onPress={() => onOpen(id)}
+                        style={({ pressed }) => [styles.thing, pressed && { opacity: 0.7 }]}
+                      >
+                        <ShelfPicture image={item.image} name={item.name} size={56} />
+                        <Text style={styles.thingName} numberOfLines={2}>
+                          {item.name}
+                        </Text>
+                        {isLow(item) && <Text style={styles.low}>Low</Text>}
+                      </Pressable>
+                    ))}
+                  </View>
+                  <Plank />
+                </View>
+              ))}
+            </View>
+          );
+        })}
+      </View>
+      {more > 0 && <Button label={`Show more (${more})`} variant="outline" onPress={onMore} />}
     </View>
   );
 }

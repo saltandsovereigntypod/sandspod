@@ -29,7 +29,7 @@
     return;
   }
   const VIEW_KEY = "salt.shelves.view";
-  const state = { account: null, entries: [], records: [], altars: [], view: "shelves", sort: "shelf", query: "", draft: null, editing: null, found: [], message: "" };
+  const state = { account: null, entries: [], records: [], altars: [], view: "shelves", shelf: null, limit: 24, sort: "shelf", query: "", draft: null, editing: null, found: [], message: "" };
   try {
     state.view = global.localStorage.getItem(VIEW_KEY) === "list" ? "list" : "shelves";
   } catch {
@@ -111,37 +111,63 @@
     return item ? T.dueOf(item, x.record, new Date()).at : null;
   }
 
+  const SHELF_KEY = "salt.shelves.shelf";
+  const PER_PLANK = 4;
+  const PAGE = 24;
+  const readShelf = () => {
+    try {
+      return global.localStorage.getItem(SHELF_KEY);
+    } catch {
+      return null;
+    }
+  };
+
+  /** The chosen shelf: the one kept on this device, else the first with something on it. */
+  function chosenShelf(entries) {
+    const keys = new Set(M.SHELVES.map((s) => s.key));
+    const saved = state.shelf || readShelf();
+    if (saved === "all" || (saved && keys.has(saved))) return saved;
+    return M.SHELVES.find((s) => entries.some((e) => e.item.shelf === s.key))?.key || M.SHELVES[0].key;
+  }
+
+  /** Items on planks of a few at a time, so a long shelf wraps instead of running on. */
+  function planks(list) {
+    let out = "";
+    for (let i = 0; i < list.length; i += PER_PLANK)
+      out += `<div class="sh-shelf"><div class="sh-back">${list
+        .slice(i, i + PER_PLANK)
+        .map(({ id, item }) => `<a class="sh-thing" href="${itemHref(id)}" aria-label="${esc(`${item.name}${M.isLow(item) ? ", running low" : ""}`)}">${thumb(item)}<span>${esc(item.name)}</span>${M.isLow(item) ? `<span class="sh-low" aria-hidden="true">Low</span>` : ""}</a>`)
+        .join("")}</div><div class="sh-plank" aria-hidden="true"></div></div>`;
+    return out;
+  }
+
+  function cabinet(entries, shelf, matches) {
+    const groups = M.byShelf(entries).filter((g) => shelf === "all" || g.key === shelf);
+    let left = state.limit;
+    let more = 0;
+    let html = "";
+    for (const g of groups) {
+      const list = g.entries.filter((e) => matches.has(e.id));
+      if (!list.length) continue;
+      const shown = list.slice(0, Math.max(left, 0));
+      left -= shown.length;
+      more += list.length - shown.length;
+      if (shown.length) html += `${shelf === "all" ? `<p class="sh-plaque">${esc(g.label)}</p>` : ""}${planks(shown)}`;
+    }
+    if (!html) {
+      return state.query
+        ? `<p class="sp-muted">Nothing matches that.</p>`
+        : `<div class="sh-cabinet sh-cabinet--empty"><p class="sh-empty">Nothing here yet</p>${shelf === "all" ? "" : `<a class="button" href="/rituals/shelves/?add=1&amp;shelf=${esc(shelf)}">Add to this shelf</a>`}</div>`;
+    }
+    return `<div class="sh-cabinet">${html}</div>${more ? `<div class="sp-actions"><button type="button" class="button button--ghost" data-more>Show more (${more})</button></div>` : ""}`;
+  }
+
   function home() {
     const { entries } = state;
-    const cabinet = M.byShelf(entries)
-      .map(
-        (s) => `<div class="sh-shelf"><p class="sh-plaque">${esc(s.label)}</p><div class="sh-back">${
-          s.entries.length
-            ? s.entries.map(({ id, item }) => `<a class="sh-thing" href="${itemHref(id)}" aria-label="${esc(`${item.name}${M.isLow(item) ? ", running low" : ""}`)}">${thumb(item)}<span>${esc(item.name)}</span>${M.isLow(item) ? `<span class="sh-low" aria-hidden="true">Low</span>` : ""}</a>`).join("")
-            : `<span class="sh-empty">Nothing here yet</span>`
-        }</div><div class="sh-plank" aria-hidden="true"></div></div>`
-      )
-      .join("");
-    const listed = M.sortShelf(entries, state.sort, state.query, dueAt);
-    const list = `
-      <div class="sp-field"><label for="sh-search">Search</label><input id="sh-search" type="search" value="${esc(state.query)}" placeholder="Name, shelf, where it’s kept…" data-search /></div>
-      <div class="sp-chips">${M.SORTS.map((s) => chip(s.label, state.sort === s.value, `data-sort="${s.value}"`)).join("")}</div>
-      ${listed.length ? `<div class="sp-list">${listed.map(({ id, item }) => row(itemHref(id), item.name, [M.shelfLabel(item.shelf), M.qtyLabel(item.qty), M.isLow(item) ? "running low" : "", item.where].filter(Boolean).join(" · "))).join("")}</div>` : `<p class="sp-muted">Nothing matches that.</p>`}`;
     const shopping = M.shoppingList(entries);
-    return `
-      <a class="sp-back" href="/rituals/">‹ Rituals</a>
-      <header class="rt-head"><p class="sp-eyebrow">What you keep</p><h1>My Shelves</h1>
-        <p class="sp-muted">Your crystals, herbs, oils, candles, tools, decks, books and statues: what you have, where it’s kept, how it’s tended and what’s running low.</p></header>
-      ${state.message ? `<p class="sp-notice" role="status">${esc(state.message)}</p>` : ""}
-      <div class="sp-chips">${chip("Shelves", state.view === "shelves", 'data-view="shelves"')}${chip("List", state.view === "list", 'data-view="list"')}</div>
-      ${
-        !entries.length
-          ? `<section class="sp-card"><p>Nothing on your shelves yet. Add what you own from the altar cabinet or the Living Library with “I own this”, or add your own with a photo.</p></section>`
-          : state.view === "shelves"
-            ? `<div class="sh-cabinet">${cabinet}</div>`
-            : `<div class="sp-stack">${list}</div>`
-      }
-      <div class="sp-actions"><a class="button" href="/rituals/shelves/?add=1">Add something</a></div>
+    const lowCount = shopping.reduce((n, g) => n + g.items.length, 0);
+    const shopHtml = `
+      <button type="button" class="sp-back" data-view="shelves">‹ My Shelves</button>
       <section class="sp-stack"><p class="sp-eyebrow">Shopping list</p>
         ${
           shopping.length
@@ -149,13 +175,45 @@
                 .map((g) => `<section class="sp-card"><h2 class="sp-card__title">${esc(g.label)}</h2>${g.items.map(({ id, item }) => `<div class="sh-shop"><a href="${itemHref(id)}">${esc(item.name)}</a><button type="button" class="button button--ghost" data-restock="${esc(id)}" title="${esc(`Takes ${item.name} off the list and brings it back up`)}">Restocked</button></div>`).join("")}</section>`)
                 .join("")
             : `<p class="sp-muted">Nothing running low. Mark something low from its page and it comes here, by shelf.</p>`
-        }</section>
-      <div class="sp-list">
+        }</section>`;
+    const links = `<div class="sp-list">
         ${row("/today/tend/", "To tend", "Your shelves’ cleansing, best-by days and check-ins, with everything else you tend")}
         ${row("/rituals/journal/insights/#did-it-work-made", "Apothecary", "Jars and sachets you’ve made, and whether they worked")}
         ${row("/practice/hearth/forage/harvests/", "Your harvests and store cupboard", "What you’ve gathered and dried")}
+      </div>`;
+    const foot = state.account ? "" : `<p class="sp-caption">Your shelves are kept in this browser. Sign in to keep them with your account and see them in the app.</p>`;
+    const note = state.message ? `<p class="sp-notice" role="status">${esc(state.message)}</p>` : "";
+    if (state.view === "shopping") return `${note}${shopHtml}${foot}`;
+    if (!entries.length)
+      return `${note}<p class="sp-muted">Your crystals, herbs, oils, candles, tools, decks, books and statues: what you have, where it’s kept, how it’s tended and what’s running low.</p>
+        <section class="sp-card"><p>Nothing on your shelves yet. Add what you own from the altar cabinet or the Living Library with “I own this”, or add your own with a photo.</p></section>
+        <div class="sp-actions"><a class="button" href="/rituals/shelves/?add=1">Add something</a></div>${links}${foot}`;
+
+    const shelf = chosenShelf(entries);
+    const listed = M.sortShelf(entries, state.view === "list" ? state.sort : "shelf", state.query, dueAt).filter((e) => shelf === "all" || e.item.shelf === shelf);
+    const matches = new Set(listed.map((e) => e.id));
+    const counts = Object.fromEntries(M.SHELVES.map((s) => [s.key, entries.filter((e) => e.item.shelf === s.key).length]));
+    const chips = `<div class="sh-tabs" role="tablist" aria-label="Shelves">${M.SHELVES.map((s) => `<button type="button" role="tab" class="sp-chip" aria-selected="${shelf === s.key}" aria-pressed="${shelf === s.key}" data-pick="${s.key}">${esc(`${s.label} · ${counts[s.key]}`)}</button>`).join("")}<button type="button" role="tab" class="sp-chip" aria-selected="${shelf === "all"}" aria-pressed="${shelf === "all"}" data-pick="all">${esc(`All · ${entries.length}`)}</button></div>`;
+    const body =
+      state.view === "list"
+        ? listed.length
+          ? `<div class="sp-list">${listed.map(({ id, item }) => row(itemHref(id), item.name, [shelf === "all" ? M.shelfLabel(item.shelf) : "", M.qtyLabel(item.qty), M.isLow(item) ? "running low" : "", item.where].filter(Boolean).join(" · "))).join("")}</div>`
+          : state.query
+            ? `<p class="sp-muted">Nothing matches that.</p>`
+            : `<div class="sh-cabinet sh-cabinet--empty"><p class="sh-empty">Nothing here yet</p>${shelf === "all" ? "" : `<a class="button" href="/rituals/shelves/?add=1&amp;shelf=${esc(shelf)}">Add to this shelf</a>`}</div>`
+        : cabinet(entries, shelf, matches);
+    return `${note}
+      <div class="sh-controls">
+        <div class="sp-actions"><a class="button" href="/rituals/shelves/?add=1${shelf === "all" ? "" : `&amp;shelf=${esc(shelf)}`}">Add something</a>
+          <button type="button" class="button button--ghost" data-view="shopping">${esc(`Running low (${lowCount})`)}</button></div>
+        <div class="sp-field"><label for="sh-search">Search</label><input id="sh-search" type="search" value="${esc(state.query)}" placeholder="Name, shelf, where it’s kept…" data-search /></div>
+        <div class="sp-chips">${chip("Shelves", state.view === "shelves", 'data-view="shelves"')}${chip("List", state.view === "list", 'data-view="list"')}</div>
+        ${state.view === "list" ? `<div class="sp-chips">${M.SORTS.map((s) => chip(s.label, state.sort === s.value, `data-sort="${s.value}"`)).join("")}</div>` : ""}
+        <p><a href="/today/tend/">To tend</a></p>
       </div>
-      ${state.account ? "" : `<p class="sp-caption">Your shelves are kept in this browser. Sign in to keep them with your account and see them in the app.</p>`}`;
+      ${chips}
+      <div class="sp-stack">${body}</div>
+      ${links}${foot}`;
   }
 
   // ── One thing ──────────────────────────────────────────────────────────
@@ -262,7 +320,7 @@
       ${state.message ? `<p class="sp-notice" role="status">${esc(state.message)}</p>` : ""}
       <div class="sh-head">${thumb(d)}<div class="sp-field"><label for="sh-photo">${d.image ? "Use my own photo instead" : "Add a photo"}</label><input id="sh-photo" type="file" accept="image/png,image/jpeg,image/webp" data-photo /></div></div>
       ${field("sh-name", "Name", d.name, 'data-f="name" placeholder="What it is"')}
-      <p class="sp-eyebrow">Shelf</p><div class="sp-chips">${M.SHELVES.map((s) => chip(s.label, d.shelf === s.key, `data-shelf="${s.key}"`)).join("")}</div>
+      <p class="sp-eyebrow">Shelf</p><div class="sp-chips">${M.SHELVES.map((s) => chip(s.label, d.shelf === s.key, `data-pick="${s.key}"`)).join("")}</div>
       <p class="sp-eyebrow">How much</p>
       <div class="sp-chips">${chip("A count", d.qty.kind === "count", 'data-qty="count"')}${chip("Full, half or low", d.qty.kind === "level", 'data-qty="level"')}</div>
       ${d.qty.kind === "count" ? field("sh-n", "How many", String(d.qty.n), 'type="number" min="0" inputmode="numeric" data-n') : `<div class="sp-chips">${M.LEVELS.map((l) => chip(l.label, d.qty.level === l.value, `data-set-level="${l.value}"`)).join("")}</div>`}
@@ -363,11 +421,25 @@
     const d = state.draft;
     if (t.dataset.view) {
       state.view = t.dataset.view;
+      if (state.view !== "shopping")
+        try {
+          global.localStorage.setItem(VIEW_KEY, state.view);
+        } catch {
+          /* storage blocked */
+        }
+      render();
+    } else if (t.dataset.pick) {
+      state.shelf = t.dataset.pick;
+      state.limit = PAGE;
       try {
-        global.localStorage.setItem(VIEW_KEY, state.view);
+        global.localStorage.setItem(SHELF_KEY, state.shelf);
       } catch {
         /* storage blocked */
       }
+      render();
+      root.querySelector(`[data-pick="${state.shelf}"]`)?.scrollIntoView({ inline: "center", block: "nearest" });
+    } else if (t.hasAttribute("data-more")) {
+      state.limit += PAGE;
       render();
     } else if (t.dataset.sort) {
       state.sort = t.dataset.sort;
