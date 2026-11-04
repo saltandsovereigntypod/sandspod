@@ -23,7 +23,7 @@ const altar = (id, extra = {}) => ({ id, coven_id: "c1", name: id, is_main: fals
 test("the altar bundle carries the app's Altar tabs and the Coven tab's grouping", () => {
   const core = bundle("js/core/altar.js").altar;
   const tabs = core.screenTabs;
-  assert.deepEqual(Array.from(tabs.ALTAR_TABS, (t) => t.label), ["Personal", "Coven"]);
+  assert.deepEqual(Array.from(tabs.ALTAR_TABS, (t) => t.label), ["Personal", "Coven", "Shelves"]);
   assert.equal(tabs.ALTAR_TAB_KEY, "saltAltarTab");
   assert.equal(tabs.asAltarTab("coven"), "coven");
   assert.equal(tabs.asAltarTab("junk"), null);

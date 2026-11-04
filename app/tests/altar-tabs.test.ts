@@ -5,8 +5,8 @@ import type { CovenAltar } from '../src/lib/covens/altarDoc.ts';
 import { altarKind, covensToStartIn, groupCovenAltars, keepsAltar, orderCovenAltars, thingsLabel, type CovenAltarsInput } from '../src/lib/covens/altarsAcross.ts';
 import { ALTAR_TAB_KEY, ALTAR_TABS, asAltarTab } from '../src/lib/screenTabs.ts';
 
-test('Altar has two tabs, Personal first, remembered under its own key', () => {
-  assert.deepEqual(ALTAR_TABS.map((t) => t.label), ['Personal', 'Coven']);
+test('Altar has three tabs, Personal first, remembered under its own key', () => {
+  assert.deepEqual(ALTAR_TABS.map((t) => t.label), ['Personal', 'Coven', 'Shelves']);
   assert.equal(ALTAR_TAB_KEY, 'saltAltarTab');
   assert.equal(asAltarTab('coven'), 'coven');
   assert.equal(asAltarTab(['personal']), 'personal');

@@ -174,7 +174,7 @@ export default function RitualsHome() {
             />
           )}
           <Row icon="altar" title={APOTHECARY} detail={APOTHECARY_SUBTITLE} onPress={() => router.push('/rituals/apothecary')} />
-          <Row icon="altar" title="My Shelves" detail="What you keep: tending, running low and your shopping list" onPress={() => router.push('/rituals/shelves')} />
+          <Row icon="altar" title="My Shelves" detail="What you keep: tending, running low and your shopping list" onPress={() => router.push({ pathname: '/altar', params: { tab: 'shelves' } })} />
           <Row icon="grimoire" title="Journals" detail="Shadow work, Deity & spirit, Ancestors, and Omens & signs" last onPress={() => router.push('/rituals/journals')} />
         </List>
       </View>

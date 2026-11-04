@@ -7,7 +7,7 @@
 
 export type TodayTab = 'today' | 'sky';
 export type CovenTab = 'mine' | 'find';
-export type AltarTab = 'personal' | 'coven';
+export type AltarTab = 'personal' | 'coven' | 'shelves';
 
 export const TODAY_TABS: readonly { key: TodayTab; label: string }[] = [
   { key: 'today', label: 'Today' },
@@ -22,6 +22,7 @@ export const COVEN_TABS: readonly { key: CovenTab; label: string }[] = [
 export const ALTAR_TABS: readonly { key: AltarTab; label: string }[] = [
   { key: 'personal', label: 'Personal' },
   { key: 'coven', label: 'Coven' },
+  { key: 'shelves', label: 'Shelves' },
 ];
 
 /** Where the last tab used is kept on the device (AsyncStorage in the app, localStorage on the website). */
@@ -70,7 +71,7 @@ export function asCovenTab(value: unknown): CovenTab | null {
 /** The Altar tab a link names (`/altar?tab=coven`), or the one stored. */
 export function asAltarTab(value: unknown): AltarTab | null {
   const v = first(value);
-  return v === 'personal' || v === 'coven' ? v : null;
+  return v === 'personal' || v === 'coven' || v === 'shelves' ? v : null;
 }
 
 /**

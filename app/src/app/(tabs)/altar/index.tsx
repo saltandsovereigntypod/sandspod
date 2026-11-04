@@ -6,6 +6,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { Button } from '../../../components/Button';
 import { CovenAltars } from '../../../components/altar/CovenAltars';
+import { ShelvesView } from '../../../components/shelves/ShelvesView';
 import { SegmentedSwitch } from '../../../components/SegmentedSwitch';
 import { Icon } from '../../../components/Icon';
 import { altarImageSource } from '../../../lib/altar/assets';
@@ -39,7 +40,7 @@ export default function AltarList() {
   const { altars, draft, draftSourceId, status, refresh, signedIn, sync, pendingCount, save } = useAltars();
   const [pulling, setPulling] = useState(false);
 
-  // Two tabs: your own altars, and the altars you tend with your covens.
+  // Three tabs: your own altars, the altars you tend with your covens, and My Shelves.
   const [remembered, rememberTab] = useRememberedTab(ALTAR_TAB_KEY, asAltarTab);
   const tab = remembered ?? 'personal';
   // A link can pick the tab (/altar?tab=coven); it is then cleared so it works again.
@@ -119,7 +120,7 @@ export default function AltarList() {
       >
         <View style={styles.titleRow}>
           <View style={{ flex: 1 }}>
-            <Text style={type.eyebrow}>{tab === 'coven' ? 'Tended together' : signedIn ? 'Saved sanctuaries' : 'On this device'}</Text>
+            <Text style={type.eyebrow}>{tab === 'coven' ? 'Tended together' : tab === 'shelves' ? 'What you keep' : signedIn ? 'Saved sanctuaries' : 'On this device'}</Text>
             <Text accessibilityRole="header" style={type.title}>
               Altar
             </Text>
@@ -128,7 +129,9 @@ export default function AltarList() {
 
         <SegmentedSwitch label="Altar" options={ALTAR_TABS} value={tab} onChange={rememberTab} />
 
-        {tab === 'coven' ? (
+        {tab === 'shelves' ? (
+          <ShelvesView />
+        ) : tab === 'coven' ? (
           <CovenAltars signedIn={!!session} userId={userId} data={covenAltars.data} status={covenAltars.status} refresh={covenAltars.refresh} />
         ) : (
           <>
