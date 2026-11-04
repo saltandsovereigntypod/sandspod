@@ -61,9 +61,8 @@ export function Sheet({ visible, title, eyebrow, onClose, children, header, size
       <View style={styles.inline}>
         {head}
         {header}
-        <ScrollView style={styles.inlineScroll} contentContainerStyle={styles.content} alwaysBounceHorizontal={false} keyboardShouldPersistTaps="handled">
-          {children}
-        </ScrollView>
+        {/* Inline, the side panel around it does the scrolling. */}
+        <View style={styles.content}>{children}</View>
       </View>
     );
   }
@@ -123,6 +122,5 @@ const styles = StyleSheet.create({
   closeText: { color: colors.gold, fontFamily: fonts.bodySemi, fontSize: 15 },
   scroll: { flexGrow: 0 },
   inline: { flex: 1, minHeight: 0, paddingTop: 12 },
-  inlineScroll: { flex: 1, minHeight: 0 },
   content: { paddingHorizontal: space.gutter, paddingBottom: 12, gap: 16 },
 });
