@@ -1,173 +1,314 @@
 /* =========================================================
-   MAIN BAR (js/site-nav.js)
-   Computers and iPads: tabs in the top header.
-   Phones: five tabs along the bottom, like the app.
+   THE MENU (js/site-nav.js), drawn like the app's (components/TabBar.tsx).
+   900px and wider: a side bar down the left, folding to a rail of icons.
+   Narrower: five tabs along the bottom, with a grip to tuck them away.
    ========================================================= */
 
-body.has-site-nav .site-header .nav-toggle,
-body.has-site-nav .site-header .nav-links {
-  display: none;
+:root {
+  --site-menu-night: #070a08;
+  --site-menu-line: rgba(244, 236, 216, 0.14);
+  --site-menu-ink: #b4ad96;
+  --site-menu-gold: #e2c36d;
+  --site-menu-cream: #f4ecd8;
+  --site-menu-w: 208px;
 }
 
-/* The bar stays above the Sanctuary panel, which opens below it. */
-body.has-site-nav .site-header {
+html.site-menu-rail {
+  --site-menu-w: 64px;
+}
+
+.site-menu {
+  position: fixed;
   z-index: 10010;
+  box-sizing: border-box;
+  background: var(--site-menu-night);
+  color: var(--site-menu-ink);
+  font-family: "Source Serif 4", Georgia, serif;
 }
 
-body.has-site-nav .my-sanctuary-card {
-  top: var(--site-header-h, 0px);
-  height: calc(100% - var(--site-header-h, 0px));
+.site-menu a,
+.site-menu button {
+  color: inherit;
+  font: inherit;
+  text-decoration: none;
+}
+
+.site-menu button {
+  border: 0;
+  background: none;
+  cursor: pointer;
 }
 
 .site-tabs {
   display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.site-tab,
+.site-menu-link {
+  display: flex;
   align-items: center;
-  gap: 0.25rem;
-  margin-left: auto;
-}
-
-.site-tab {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.45rem;
-  min-height: 2.6rem;
-  padding: 0.45rem 0.8rem;
-  border: 1px solid transparent;
-  border-radius: 999px;
-  background: none;
-  color: var(--muted);
-  font: inherit;
-  font-size: 0.95rem;
-  text-decoration: none;
-  cursor: pointer;
-  transition: color 0.2s, background-color 0.2s, border-color 0.2s;
-}
-
-.site-tab:hover,
-.site-tab:focus-visible {
-  color: var(--cream);
-  background: rgba(244, 236, 216, 0.06);
-}
-
-.site-tab[aria-current="page"] {
-  color: var(--cream);
-  border-color: rgba(185, 160, 93, 0.45);
-  background: rgba(185, 160, 93, 0.12);
+  gap: 12px;
+  min-height: 44px;
+  padding: 0 12px;
+  border-radius: 10px;
+  color: var(--site-menu-ink);
+  font-size: 16px;
+  line-height: 1.2;
+  text-align: left;
+  transition: background-color 0.15s, color 0.15s;
 }
 
 .site-tab-icon {
-  width: 1.15rem;
-  height: 1.15rem;
+  width: 22px;
+  height: 22px;
   flex: none;
-  color: var(--gold);
 }
 
-/* The podcast page's own sections, under the bar. */
-.site-subnav {
-  display: flex;
-  justify-content: center;
-  gap: 0.35rem;
-  padding: 0 1rem 0.6rem;
-  overflow-x: auto;
-  scrollbar-width: none;
+.site-tab[aria-current="page"],
+.site-menu-link[aria-current="page"] {
+  color: var(--site-menu-gold);
 }
 
-.site-subnav::-webkit-scrollbar {
+.site-tab:hover,
+.site-menu-link:hover,
+.site-menu-fold:hover {
+  background: rgba(244, 236, 216, 0.06);
+}
+
+.site-menu :focus-visible,
+.site-menu-restore:focus-visible {
+  outline: 2px solid var(--site-menu-gold);
+  outline-offset: 2px;
+}
+
+.site-menu-brand {
+  display: block;
+  margin-bottom: 20px;
+  padding: 0 12px;
+  color: var(--site-menu-cream);
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-size: 19px;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.site-menu-mark {
   display: none;
+  color: var(--site-menu-gold);
+  font-size: 18px;
 }
 
-.site-subnav a {
-  flex: none;
-  padding: 0.3rem 0.8rem;
-  border: 1px solid var(--line);
-  border-radius: 999px;
-  color: var(--muted);
-  font-size: 0.85rem;
-  text-decoration: none;
+.site-menu-site {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-top: 8px;
 }
 
-.site-subnav a:hover,
-.site-subnav a:focus-visible {
-  color: var(--cream);
-  border-color: rgba(185, 160, 93, 0.45);
+.site-menu-divider {
+  height: 1px;
+  margin: 0 12px 10px;
+  background: rgba(244, 236, 216, 0.18);
 }
 
-.my-sanctuary-subheading {
-  margin: 1.4rem 0 0.4rem;
-  color: var(--gold);
-  font-size: 0.8rem;
-  letter-spacing: 0.14em;
+.site-menu-heading {
+  margin: 0 0 4px;
+  padding: 0 12px;
+  color: var(--site-menu-ink);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 1.2px;
   text-transform: uppercase;
 }
 
-/* Smaller computers and iPads in portrait: icons over labels to fit six. */
-@media (max-width: 1020px) and (min-width: 701px) {
-  .site-tab {
-    flex-direction: column;
-    gap: 0.15rem;
-    min-height: 3.2rem;
-    padding: 0.3rem 0.65rem;
-    border-radius: 14px;
-    font-size: 0.78rem;
+.site-menu-link {
+  min-height: 36px;
+  padding: 0 14px;
+  font-size: 14px;
+}
+
+.site-menu-icon {
+  width: 18px;
+  height: 18px;
+  flex: none;
+}
+
+.site-menu-grow {
+  flex-grow: 1;
+  min-height: 16px;
+}
+
+.site-menu-fold {
+  min-height: 36px;
+  padding: 0 12px;
+  border-radius: 10px;
+  font-size: 20px !important;
+  text-align: left;
+}
+
+.site-menu-small {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin: 0;
+  padding: 8px 12px;
+  font-size: 11px;
+}
+
+.site-menu-small a {
+  text-decoration: underline;
+}
+
+.site-menu-grip,
+.site-menu-restore {
+  display: none;
+}
+
+/* A computer: the side bar. */
+@media (min-width: 900px) {
+  body.has-site-nav {
+    padding-left: var(--site-menu-w);
   }
 
-  body.has-site-nav .brand > span:not(.brand-mark) {
+  .site-menu {
+    top: 0;
+    bottom: 0;
+    left: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    width: var(--site-menu-w);
+    padding: 28px 8px 8px;
+    border-right: 1px solid var(--site-menu-line);
+    overflow-y: auto;
+    scrollbar-width: none;
+  }
+
+  .site-menu::-webkit-scrollbar {
     display: none;
+  }
+
+  /* Folded to a rail: icons only, their names on hover. */
+  html.site-menu-rail .site-menu-name,
+  html.site-menu-rail .site-tab-label,
+  html.site-menu-rail .site-menu-heading,
+  html.site-menu-rail .site-menu-small {
+    display: none;
+  }
+
+  html.site-menu-rail .site-menu-mark {
+    display: block;
+    text-align: center;
+  }
+
+  html.site-menu-rail .site-menu-brand {
+    padding: 0;
+  }
+
+  html.site-menu-rail .site-tab,
+  html.site-menu-rail .site-menu-link,
+  html.site-menu-rail .site-menu-fold {
+    justify-content: center;
+    padding: 0;
+    text-align: center;
+  }
+
+  /* The Sanctuary panel opens beside the side bar, which stays in reach. */
+  body.has-site-nav .button.accessibility-trigger {
+    left: calc(var(--site-menu-w) + 0.75rem);
   }
 }
 
-/* Phones: the tabs move to the bottom of the screen. */
-@media (max-width: 700px) {
+/* A phone or a narrow window: five tabs along the bottom. */
+@media (max-width: 899px) {
   body.has-site-nav {
-    padding-bottom: calc(4.4rem + env(safe-area-inset-bottom));
+    padding-bottom: calc(4.9rem + env(safe-area-inset-bottom));
   }
 
-  body.has-site-nav .nav {
-    min-height: 3.6rem;
-  }
-
-  .site-tabs {
-    position: fixed;
+  .site-menu {
     left: 0;
     right: 0;
     bottom: 0;
     z-index: 10005;
+    padding: 2px max(8px, env(safe-area-inset-left)) max(10px, env(safe-area-inset-bottom)) max(8px, env(safe-area-inset-right));
+    border-top: 1px solid var(--site-menu-line);
+  }
+
+  .site-menu-brand,
+  .site-menu-site,
+  .site-menu-grow,
+  .site-menu-fold,
+  .site-menu-small {
+    display: none;
+  }
+
+  .site-menu-grip {
+    display: block;
+    margin: 0 auto;
+    padding: 2px 16px 4px;
+  }
+
+  .site-menu-grip span {
+    display: block;
+    width: 36px;
+    height: 4px;
+    border-radius: 2px;
+    background: rgba(244, 236, 216, 0.28);
+  }
+
+  .site-tabs {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
     gap: 0;
-    margin: 0;
-    padding: 0.35rem max(0.4rem, env(safe-area-inset-left)) max(0.45rem, env(safe-area-inset-bottom)) max(0.4rem, env(safe-area-inset-right));
-    border-top: 1px solid var(--line);
-    /* Nearly opaque, so a backdrop blur here showed nothing but cost a full
-       re-blur of the page behind it on every frame of scrolling. */
-    background: rgba(13, 17, 14, 0.96);
-  }
-
-  .site-tab[data-site-tab="podcast"] {
-    display: none;
   }
 
   .site-tab {
     flex-direction: column;
     justify-content: center;
-    gap: 0.2rem;
-    min-height: 3.3rem;
-    padding: 0.25rem 0;
-    border-radius: 12px;
-    font-size: 0.72rem;
+    gap: 3px;
+    min-height: 48px;
+    padding: 0;
+    font-size: 11px;
+    text-align: center;
   }
 
-  .site-tab[aria-current="page"] {
-    border-color: transparent;
+  .site-tab:hover {
+    background: none;
   }
 
-  .site-tab-icon {
-    width: 1.35rem;
-    height: 1.35rem;
+  /* Tucked away: a round button in the corner brings it back. */
+  html.site-menu-tucked body.has-site-nav {
+    padding-bottom: 0;
   }
 
-  .site-subnav {
-    justify-content: flex-start;
+  html.site-menu-tucked .site-menu {
+    display: none;
+  }
+
+  html.site-menu-tucked .site-menu-restore {
+    position: fixed;
+    right: calc(16px + env(safe-area-inset-right));
+    bottom: calc(max(10px, env(safe-area-inset-bottom)) + 6px);
+    z-index: 10005;
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    border: 1px solid rgba(226, 195, 109, 0.28);
+    border-radius: 50%;
+    background: var(--site-menu-night);
+    color: var(--site-menu-gold);
+    cursor: pointer;
+  }
+
+  .site-menu-restore .site-tab-icon {
+    width: 20px;
+    height: 20px;
   }
 
   /* Accessibility Options lives in More here, so it doesn't cover the page. */
@@ -177,8 +318,41 @@ body.has-site-nav .my-sanctuary-card {
 
   /* The Sanctuary panel stops above the tabs, so they stay usable. */
   body.has-site-nav .my-sanctuary-card {
-    padding-bottom: calc(5.5rem + env(safe-area-inset-bottom));
+    padding-bottom: calc(6rem + env(safe-area-inset-bottom));
   }
+}
+
+/* The full-screen altar and ritual mode use the whole screen; so does print. */
+body.altar-full-screen .site-menu,
+body.altar-full-screen .site-menu-restore,
+body.altar-ritual-mode .site-menu,
+body.altar-ritual-mode .site-menu-restore {
+  display: none !important;
+}
+
+body.altar-full-screen.has-site-nav,
+body.altar-ritual-mode.has-site-nav {
+  padding-left: 0;
+  padding-bottom: 0;
+}
+
+@media print {
+  .site-menu,
+  .site-menu-restore {
+    display: none !important;
+  }
+
+  body.has-site-nav {
+    padding: 0 !important;
+  }
+}
+
+.my-sanctuary-subheading {
+  margin: 1.4rem 0 0.4rem;
+  color: var(--gold);
+  font-size: 0.8rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
 }
 
 /* Older phone rules stretch every .button across the screen; this one floats. */

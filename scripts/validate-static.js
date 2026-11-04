@@ -59,11 +59,11 @@ for (const page of trackedFiles("*.html")) {
     if (resolved && fs.existsSync(resolved) && resolved.endsWith(".js")) loadedScripts.add(resolved);
   }
 
-  // js/site-nav.js draws the bar as soon as it runs, so it must not come
-  // before a page's own header (it would draw a second one).
+  // js/site-nav.js draws the whole menu (css/site-nav.css styles it), so a
+  // page that loads it keeps no header of its own and loads the stylesheet.
   const navAt = html.search(/<script\b[^>]*\bsrc=["'][^"']*js\/site-nav\.js["']/i);
-  const headerAt = html.search(/<header\b[^>]*class=["'][^"']*\bsite-header\b/i);
-  if (navAt >= 0 && headerAt >= 0 && navAt < headerAt) failures.push(`${page}: js/site-nav.js is loaded before the page's .site-header`);
+  if (navAt >= 0 && /<header\b[^>]*class=["'][^"']*\bsite-header\b/i.test(html)) failures.push(`${page}: has its own .site-header; js/site-nav.js draws the menu`);
+  if (navAt >= 0 && !/href=["'][^"']*css\/site-nav\.css["']/i.test(html)) failures.push(`${page}: loads js/site-nav.js without css/site-nav.css`);
 
   // Bundles that read the Traditional Library from js/traditional-library.js
   // (scripts/build-core.mjs SHARED) need it loaded before them.

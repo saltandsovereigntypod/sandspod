@@ -2800,9 +2800,10 @@ export function AltarEditor({
       ) : (
         <View style={styles.sidePanel}>
           <View style={styles.sidePanelHead}>
-            <View style={styles.sidePanelChips}>
-              <ChipRow>{toolbarChips}</ChipRow>
-            </View>
+            {/* One line of small symbol chips; on a narrow window it slides sideways rather than wrap. */}
+            <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.sidePanelChips} contentContainerStyle={styles.sidePanelChipRow}>
+              {toolbarChips}
+            </ScrollView>
             <Pressable
               onPress={() => setPanelShown('folded')}
               accessibilityRole="button"
@@ -2812,7 +2813,7 @@ export function AltarEditor({
               <Text style={styles.foldText}>›</Text>
             </Pressable>
           </View>
-          <View style={styles.panelTabs} accessibilityRole="tablist">
+          <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.panelTabsScroll} contentContainerStyle={styles.panelTabs} accessibilityRole="tablist">
             {PANEL_TABS.map((t) => {
               const on = !objectOpen && panelTab === t.key;
               return (
@@ -2832,16 +2833,27 @@ export function AltarEditor({
                 </Pressable>
               );
             })}
-          </View>
-          {panelFull ? (
+          </ScrollView>
+          {/* Under the fixed toolbar and tabs, the tab's content scrolls in the height that is left. */}
+          {panelFull && panelTab === 'cabinet' ? (
             <View style={styles.panelFill}>
               {notice ? (
                 <Text style={[type.caption, styles.notice]} accessibilityLiveRegion="polite" onPress={() => setNotice(null)}>
                   {notice}
                 </Text>
               ) : null}
-              {panelTab === 'cabinet' ? cabinetSheet : <ShelvesView />}
+              {/* The cabinet scrolls inside itself, under its own search. */}
+              {cabinetSheet}
             </View>
+          ) : panelFull ? (
+            <ScrollView style={styles.panel} contentContainerStyle={styles.panelContent} alwaysBounceHorizontal={false} keyboardShouldPersistTaps="handled">
+              {notice ? (
+                <Text style={[type.caption, styles.notice]} accessibilityLiveRegion="polite" onPress={() => setNotice(null)}>
+                  {notice}
+                </Text>
+              ) : null}
+              <ShelvesView />
+            </ScrollView>
           ) : (
             <ScrollView
               style={styles.panel}
@@ -3617,22 +3629,24 @@ const styles = StyleSheet.create({
   title: { fontFamily: fonts.display, fontSize: 24, lineHeight: 28, color: colors.cream },
   work: { flex: 1 },
   stageWrap: { paddingHorizontal: 12, alignItems: 'center' },
-  workDesktop: { flexDirection: 'row' },
+  workDesktop: { flexDirection: 'row', minHeight: 0 },
   stageWrapDesktop: { flex: 1, justifyContent: 'center', paddingBottom: 12 },
-  sidePanel: { width: '32%', minWidth: 320, maxWidth: 440, borderLeftWidth: StyleSheet.hairlineWidth, borderLeftColor: colors.hairline },
-  sidePanelHead: { flexDirection: 'row', alignItems: 'flex-start', gap: 8, paddingLeft: 16, paddingRight: 8, paddingBottom: 10 },
+  sidePanel: { width: '32%', minWidth: 320, maxWidth: 440, minHeight: 0, overflow: 'hidden', borderLeftWidth: StyleSheet.hairlineWidth, borderLeftColor: colors.hairline },
+  sidePanelHead: { flexDirection: 'row', alignItems: 'center', gap: 4, paddingLeft: 12, paddingRight: 4, paddingBottom: 8, flexShrink: 0 },
   sidePanelChips: { flex: 1 },
+  sidePanelChipRow: { flexDirection: 'row', alignItems: 'center', gap: 6 },
   foldButton: { width: touch, height: touch, alignItems: 'center', justifyContent: 'center' },
   foldText: { color: colors.gold, fontSize: 26, lineHeight: 30, fontFamily: fonts.display },
   unfold: { width: 52, alignItems: 'center', paddingTop: 12, gap: 4, borderLeftWidth: StyleSheet.hairlineWidth, borderLeftColor: colors.hairline },
   unfoldLabel: { fontFamily: fonts.body, fontSize: 12, color: colors.muted },
-  panelTabs: { flexDirection: 'row', flexWrap: 'wrap', paddingHorizontal: 12, borderBottomWidth: StyleSheet.hairlineWidth, borderBottomColor: colors.hairline },
-  panelTab: { paddingHorizontal: 10, paddingVertical: 10, borderBottomWidth: 2, borderBottomColor: 'transparent' },
+  panelTabsScroll: { flexGrow: 0, flexShrink: 0, borderBottomWidth: StyleSheet.hairlineWidth, borderBottomColor: colors.hairline },
+  panelTabs: { flexDirection: 'row', paddingHorizontal: 8 },
+  panelTab: { paddingHorizontal: 8, paddingVertical: 10, borderBottomWidth: 2, borderBottomColor: 'transparent' },
   panelTabOn: { borderBottomColor: colors.gold },
-  panelTabText: { fontFamily: fonts.body, fontSize: 15, color: colors.tabInactive },
+  panelTabText: { fontFamily: fonts.body, fontSize: 14, color: colors.tabInactive },
   panelTabTextOn: { color: colors.gold },
-  panelFill: { flex: 1 },
-  panel: { flex: 1 },
+  panelFill: { flex: 1, minHeight: 0 },
+  panel: { flex: 1, minHeight: 0 },
   panelContent: { paddingHorizontal: space.gutter, paddingTop: 16, paddingBottom: 32, gap: 14 },
   section: { gap: 14 },
   objectHead: { flexDirection: 'row', alignItems: 'flex-start', gap: 8 },

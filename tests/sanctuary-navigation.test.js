@@ -2,10 +2,11 @@ const test = require("node:test");
 const assert = require("node:assert/strict");
 const fs = require("node:fs");
 
-test("Book of Shadows exposes only the Sanctuary launcher", () => {
+test("Book of Shadows leaves its menu to the shared side bar", () => {
   const html = fs.readFileSync("grimoire/index.html", "utf8");
-  assert.equal((html.match(/data-my-sanctuary-open/g) || []).length, 1);
-  assert.match(html, /data-my-sanctuary-open>\s*Sanctuary/);
+  // The menu (js/site-nav.js) opens the Sanctuary from Today and More; the page keeps no launcher of its own.
+  assert.doesNotMatch(html, /data-my-sanctuary-open|class="site-header"/);
+  assert.match(html, /<script src="\/js\/site-nav\.js"><\/script>/);
   assert.doesNotMatch(html, /data-my-sanctuary-view-button="journey"/);
 });
 

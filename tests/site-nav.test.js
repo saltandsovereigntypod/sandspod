@@ -67,10 +67,22 @@ test("each page lights up its own tab", () => {
   assert.equal(SiteNav.activeTab("/more/support/"), "more");
 });
 
-test("only the home page shows the podcast sections", () => {
+test("the menu lists the website's own pages in the app's order", () => {
   assert.equal(SiteNav.isHome("/"), true);
   assert.equal(SiteNav.isHome("/index.html"), true);
   assert.equal(SiteNav.isHome("/altar/"), false);
+  assert.equal(SiteNav.SITE_TITLE, "Salt & Sovereignty");
+  assert.deepEqual(SiteNav.SITE_LINKS.map((l) => l.label), ["About", "Podcast", "Books", "Blog", "Contact", "Submit", "Help"]);
+  assert.deepEqual(SiteNav.SITE_LINKS.map((l) => l.href), ["/#about", "/#podcast", "/#books", "/#blog", "/#contact", "/submit/", "/help/"]);
+  assert.deepEqual(SiteNav.SMALL_LINKS.map((l) => [l.label, l.href]), [["Privacy", "/privacy.html"], ["Terms", "/submission-terms.html"]]);
+  // The app's side bar lists the same pages, in the same order, at the same addresses.
+  const fs = require("node:fs");
+  const app = fs.readFileSync("app/src/lib/siteLinks.ts", "utf8");
+  const appLinks = [...app.matchAll(/label: '([^']+)', url: sitePage\('([^']+)'\)/g)].map((m) => [m[1], m[2]]);
+  assert.deepEqual(appLinks, [...SiteNav.SITE_LINKS, ...SiteNav.SMALL_LINKS].map((l) => [l.label, l.href]));
+  assert.equal(SiteNav.activeSiteLink("/blog/herbs/sage-history.html"), "blog");
+  assert.equal(SiteNav.activeSiteLink("/submit/"), "submit");
+  assert.equal(SiteNav.activeSiteLink("/today/"), null);
 });
 
 test("the altar can record everything on it in the Grimoire, not only a group", () => {
