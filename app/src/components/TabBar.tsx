@@ -1,5 +1,6 @@
 import { useEffect, type ComponentProps } from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { router, type Href } from 'expo-router';
 import type { Tabs } from 'expo-router/js-tabs';
 
 import { useAltarFullScreen, useAltarRitualMode } from '../lib/altarFullScreen';
@@ -11,6 +12,7 @@ import { useInvitationCount } from '../lib/covens/invitationsBadge';
 import { useUnreadTotal } from '../lib/covens/unread';
 import { lastPracticeSection, rememberPracticeSection } from '../lib/practiceSection';
 import { CRAFT_HOME_ROUTE, practiceSectionOf, practiceTabRoute } from '../lib/practiceSections';
+import { tabHomeHref, tabHomeReset } from '../lib/tabHome';
 import { colors, fonts } from '../theme';
 import { Icon, type IconName } from './Icon';
 import { hoverTitle, SidebarSiteLinks, SiteSmallPrint } from './SiteLinks';
@@ -92,9 +94,20 @@ export function TabBar({ state, navigation, insets }: TabBarProps) {
         style={desktop ? [styles.sideTab, rail && styles.railTab] : styles.tab}
         onPress={() => {
           const event = navigation.emit({ type: 'tabPress', target: route.key, canPreventDefault: true });
-          if (focused || event.defaultPrevented) return;
+          if (event.defaultPrevented) return;
+          if (focused) {
+            // The stack pops to its main page by itself; one opened from another tab
+            // (nothing underneath the page it opened on) gets its main page back.
+            const home = tabHomeReset(route as Parameters<typeof tabHomeReset>[0]);
+            // In the next frame, after the stack's own pop to top: its first page becomes the main page.
+            if (home) requestAnimationFrame(() => router.dismissTo(tabHomeHref(route.name, home) as Href));
+            return;
+          }
           // Craft last time, but the Rituals stack isn't open yet (a fresh start): open the Craft home.
           if (last === 'craft' && !route.state) navigation.navigate(route.name, { screen: CRAFT_HOME_ROUTE });
+          // A tab already open shows the page you left it on. Its params can still hold the
+          // screen a link once opened it on; passing them again would open that page again.
+          else if (route.state) navigation.navigate(route.name);
           else navigation.navigate(route.name, route.params);
         }}
       >

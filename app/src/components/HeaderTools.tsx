@@ -18,7 +18,8 @@ function Door({ icon, label, href }: { icon: MoreIconName; label: string; href: 
       accessibilityRole="button"
       accessibilityLabel={label}
       hitSlop={4}
-      onPress={() => router.navigate(href as Href)}
+      // withAnchor keeps that tab's home underneath, so Back and the tab button lead somewhere sensible.
+      onPress={() => router.navigate(href as Href, { withAnchor: true })}
       style={({ pressed }) => [styles.door, pressed && styles.pressed]}
     >
       <MoreIcon name={icon} size={20} color={colors.cream} />
