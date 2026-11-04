@@ -3,14 +3,14 @@ import { test } from 'node:test';
 
 import { VESSELS } from '../src/lib/altar/vesselLabel.ts';
 import { jarTendingAt, jarWantsShaking } from '../src/lib/altar/workings/jarTending.ts';
-import { addLayer, emptyJar, jarArt, jarLayer, jarObject, jarStateOf, PETITION_COLOR, petitionLayer, sealJar, shakeToRenew } from '../src/lib/altar/workings/spellJar.ts';
+import { addLayer, emptyJar, type JarDraft, jarArt, jarLayer, jarObject, jarStateOf, PETITION_COLOR, petitionLayer, sealJar, shakeToRenew } from '../src/lib/altar/workings/spellJar.ts';
 import { gatherTendables } from '../src/lib/tend/gather.ts';
 
 const NOW = '2026-11-04T20:00:00.000Z';
 const day = (n: number) => new Date(Date.parse(NOW) + n * 86_400_000);
 
 function built(vessel: 'jar' | 'bottle' = 'jar', seal = true) {
-  let jar = { ...emptyJar('Protection'), vessel };
+  let jar: JarDraft = { ...emptyJar('Protection'), vessel };
   jar = addLayer(jar, jarLayer({ label: 'Black salt', source: 'salt' }, NOW));
   jar = addLayer(jar, jarLayer({ label: 'Rosemary', source: 'library', herb: 'rosemary' }, NOW));
   jar = addLayer(jar, petitionLayer('  Keep this house   safe ', NOW));
