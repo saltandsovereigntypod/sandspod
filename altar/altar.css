@@ -3578,3 +3578,9 @@ html.is-altar-opening body .altar-stage[data-altar-stage]::after {
   visibility: hidden;
   opacity: 0;
 }
+
+/* Favourites: the star on each cabinet item (and the first drawer). */
+.altar-cabinet .cabinet-tile, .altar-cabinet .cabinet-custom-wrap { position: relative; }
+.altar-cabinet .cabinet-star { position: absolute; top: 4px; left: 6px; z-index: 2; font-size: 20px; line-height: 1; cursor: pointer; color: rgba(255, 244, 220, 0.6); }
+.altar-cabinet .cabinet-star.is-on { color: #e6bf6a; }
+.altar-cabinet .cabinet-multi-heading .cabinet-star { position: static; margin-left: auto; }

@@ -732,7 +732,7 @@ export const HELP: HelpSection[] = [
           'Tap an item to place it in the middle of the altar.',
           'For an item with several forms, tap the form you want.',
         ],
-        tips: ['The cabinet shows each item’s best-known uses, so you can choose with meaning.'],
+        tips: ['The cabinet shows each item’s best-known uses, so you can choose with meaning.', 'Tap the star on any item to keep it in Favourites, the first drawer, here and on the website.'],
         keywords: ['cabinet', 'drawers', 'add object', 'place item', 'items', 'tools', 'deity statues', 'vessels', 'plants', 'offerings'],
       },
       {

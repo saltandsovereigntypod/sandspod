@@ -4,6 +4,7 @@
    ========================================================= */
 
 const cabinetCategories = [
+  { id: "favourites", label: "Favourites", icon: "★" },
   { id: "backgrounds", label: "Backgrounds", icon: "🌲" },
   { id: "candles", label: "Candles", icon: "🕯️" },
   { id: "herbs", label: "Herbs", icon: "🌿" },
@@ -187,6 +188,55 @@ async function refreshCabinetSabbat() {
 if (typeof document !== "undefined" && typeof window.addEventListener === "function") {
   if (document.readyState === "complete") setTimeout(refreshCabinetSabbat, 0);
   else window.addEventListener("load", () => void refreshCabinetSabbat());
+}
+
+/* Favourites: item ids in the order added, kept in the settings as cabinet_favourites (a JSON string,
+   shared with the app, lib/altar/cabinetFavourites.ts); guests keep them on the device. An item's id is
+   "tools:black-salt-circle", or "custom:<id>" for your own. */
+let cabinetFavourites = [];
+let cabinetFavouritesLoaded = false;
+const favouritesCore = () => window.SaltCore?.altar?.cabinetFavourites;
+function cabinetFavouriteId(item) {
+  return item.customCabinetItemId ? `custom:${item.customCabinetItemId}` : cabinetItemId(item);
+}
+async function loadCabinetFavourites() {
+  const fav = favouritesCore();
+  if (!fav) return;
+  try {
+    const settings = (await window.SaltSettings?.get?.()) || {};
+    cabinetFavourites = fav.readFavourites(settings[fav.CABINET_FAVOURITES_SETTING]);
+  } catch { cabinetFavourites = []; }
+  // Your first look at the cabinet opens on your favourites, unless a drawer was asked for.
+  if (!cabinetFavouritesLoaded && cabinetFavourites.length && !new URLSearchParams(window.location.search).get("category") && ["candles", "seasonal"].includes(activeCabinetCategory)) activeCabinetCategory = "favourites";
+  cabinetFavouritesLoaded = true;
+  renderCabinet();
+}
+async function toggleCabinetFavourite(id) {
+  const fav = favouritesCore();
+  if (!fav || !id) return;
+  cabinetFavourites = fav.toggleFavourite(cabinetFavourites, id);
+  renderCabinet();
+  try { await window.SaltSettings?.patch?.({ [fav.CABINET_FAVOURITES_SETTING]: fav.encodeFavourites(cabinetFavourites) }); } catch { /* kept for this visit */ }
+}
+function cabinetStar(item, label) {
+  const on = cabinetFavourites.includes(cabinetFavouriteId(item));
+  return `<span class="cabinet-star${on ? " is-on" : ""}" role="button" tabindex="0" data-cabinet-favourite="${cabinetFavouriteId(item)}" aria-pressed="${on}" aria-label="${on ? "Remove" : "Add"} ${label} ${on ? "from" : "to"} favourites">${on ? "★" : "☆"}</span>`;
+}
+if (typeof document !== "undefined") {
+  const onStar = (event) => {
+    const star = event.target.closest?.("[data-cabinet-favourite]");
+    if (!star) return;
+    if (event.type === "keydown" && event.key !== "Enter" && event.key !== " ") return;
+    event.preventDefault();
+    event.stopPropagation();
+    event.stopImmediatePropagation();
+    void toggleCabinetFavourite(star.dataset.cabinetFavourite);
+  };
+  document.addEventListener("click", onStar, true);
+  document.addEventListener("keydown", onStar, true);
+  window.addEventListener("saltSettingsChanged", () => { void loadCabinetFavourites(); });
+  if (document.readyState === "complete") setTimeout(loadCabinetFavourites, 0);
+  else window.addEventListener("load", () => void loadCabinetFavourites());
 }
 
 /** The drawers in order: Seasonal first while a festival is near; Seasonal, Natural, Plants and Offerings only when they hold something. */
@@ -376,6 +426,7 @@ function renderCabinetTile(item, form, isMultiForm = false) {
       <span class="cabinet-tile-name">${isMultiForm ? form.label : item.name}</span>
       ${item.category === "seasonal" && item.description ? `<span class="cabinet-tile-festival">${item.description}</span>` : ""}
       <span class="cabinet-tile-count" data-cabinet-count hidden></span>
+      ${isMultiForm ? "" : cabinetStar(item, item.name)}
 
       <span class="cabinet-custom-actions">
         <span data-upload-cabinet-image>${hasOverride ? "Replace Form Image" : "Add Form Image"}</span>
@@ -542,6 +593,7 @@ function renderCabinetItems() {
       : [];
 
   const items = [...customBackgrounds, ...customCabinetItems, ...cabinetItems].filter((item) => {
+    if (!words.length && activeCabinetCategory === "favourites") return item.category !== "backgrounds" && cabinetFavourites.includes(cabinetFavouriteId(item));
     const matchesCategory = words.length ? item.category !== "backgrounds" || activeCabinetCategory === "backgrounds" : item.category === activeCabinetCategory;
     const searchable = [
       item.name,
@@ -554,16 +606,18 @@ function renderCabinetItems() {
     ].join(" ").toLowerCase();
 
     return matchesCategory && words.every((word) => searchable.includes(word));
-  }).sort((a, b) => (words.length ? rank(a) - rank(b) : 0) || String(a.name).localeCompare(String(b.name)));
+  }).sort((a, b) => (!words.length && activeCabinetCategory === "favourites" ? cabinetFavourites.indexOf(cabinetFavouriteId(a)) - cabinetFavourites.indexOf(cabinetFavouriteId(b)) : 0) || (words.length ? rank(a) - rank(b) : 0) || String(a.name).localeCompare(String(b.name)));
 
   if (items.length === 0 && activeCabinetCategory !== "backgrounds") {
-    cabinetContent.innerHTML = `<p class="cabinet-empty">No cabinet items found.</p>`;
+    cabinetContent.innerHTML = activeCabinetCategory === "favourites" && !words.length
+      ? `<p class="cabinet-empty">Nothing starred yet. Tap the star on any item to keep it here, first in your cabinet.</p>`
+      : `<p class="cabinet-empty">No cabinet items found.</p>`;
     restorePlace();
     return;
   }
 
   const addCustomItemTile =
-    !words.length && activeCabinetCategory !== "backgrounds" && activeCabinetCategory !== "seasonal" && activeCabinetCategory !== "natural" && activeCabinetCategory !== "plants" && activeCabinetCategory !== "offerings"
+    !words.length && activeCabinetCategory !== "backgrounds" && activeCabinetCategory !== "favourites" && activeCabinetCategory !== "seasonal" && activeCabinetCategory !== "natural" && activeCabinetCategory !== "plants" && activeCabinetCategory !== "offerings"
       ? `
         <button type="button" class="cabinet-tile cabinet-background-tile" data-add-custom-cabinet-item>
           <span class="cabinet-tile-icon">＋</span>
@@ -658,6 +712,7 @@ function renderCabinetItems() {
           <div class="cabinet-multi-heading">
             <span>${item.icon || "✦"}</span>
             <strong>${item.name}</strong>
+            ${cabinetStar(item, item.name)}
           </div>
 
           <div class="cabinet-form-grid">
