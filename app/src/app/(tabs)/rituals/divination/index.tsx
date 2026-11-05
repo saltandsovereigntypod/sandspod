@@ -55,6 +55,7 @@ export default function Readings() {
         <Row icon="grimoire" title="Card meanings" detail="Tarot, runes, ogham, Lenormand and Kipper, as in your Grimoire" onPress={() => router.push('/rituals/divination/meanings' as Href)} />
         <Row icon="today" title="Learn the cards" detail="Flashcards and a quiz for each deck, a card to learn today, and your progress" onPress={() => router.push('/rituals/divination/study' as Href)} />
         <Row icon="calendar" title="Your patterns" detail="The cards you draw most, by suit, moon and day, and the ones you haven’t met yet" onPress={() => router.push('/rituals/divination/patterns' as Href)} />
+        <Row icon="wheel" title="Psychic development" detail="Guessing games, remote viewing and Tomorrow’s card, scored honestly against chance" onPress={() => router.push('/rituals/craft/psychic' as Href)} />
         <Row icon="grimoire" title="Rune meanings" detail="The twenty-four runes and the blank rune" onPress={() => router.push('/rituals/divination/meanings?kind=runes' as Href)} />
         <Row icon="altar" title="Make a spread" detail="Lay out positions of your own" last onPress={() => router.push('/rituals/divination/spread' as Href)} />
       </List>

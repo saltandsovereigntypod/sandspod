@@ -3,7 +3,7 @@ import { View } from 'react-native';
 
 import { PracticeSwitch } from '../../../../components/PracticeSwitch';
 import { Body, List, RitualScreen, Row, SectionLabel, Title, ui } from '../../../../components/rituals/ui';
-import { CRAFT_TOOLS } from '../../../../lib/craft/practices';
+import { CRAFT_TOOLS, PSYCHIC_TOOLS } from '../../../../lib/craft/practices';
 import { CRAFT, CRAFT_TOOLS as CRAFT_TOOLS_TITLE, WORKINGS_LIBRARY, YOUR_CRAFTS } from '../../../../lib/names';
 import { myPractices, PRACTICES, type Practice } from '../../../../lib/rituals/premade';
 import { useMySettings } from '../../../../lib/settings/store';
@@ -109,6 +109,18 @@ export default function CraftHome() {
             last
             onPress={go('/rituals/sigil')}
           />
+        </List>
+      </View>
+
+      <View style={ui.gapSmall}>
+        <SectionLabel>Psychic development</SectionLabel>
+        <List>
+          {PSYCHIC_TOOLS.map((t, i) => (
+            <Row key={t.href} icon="wheel" title={t.title} detail={t.detail} last={i === PSYCHIC_TOOLS.length - 1} onPress={go(t.href)} />
+          ))}
+        </List>
+        <List>
+          <Row icon="wheel" title="Psychic development hub" detail="Warm-ups, four exercises and an honest record, kept in your Journal" last onPress={go('/rituals/craft/psychic')} />
         </List>
       </View>
 

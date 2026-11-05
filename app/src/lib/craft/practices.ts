@@ -6,6 +6,16 @@ import type { PracticeId } from '../rituals/premade/types';
 /** A tool: its name, a line on it, and the app route that opens it. */
 export type CraftTool = { title: string; detail: string; href: string };
 
+/** Psychic development: its own section on My practice, with its hub at /rituals/craft/psychic. */
+export const PSYCHIC_TOOLS: CraftTool[] = [
+  { title: 'Warm-ups', detail: 'Grounding, opening, third-eye and aura tune-ins, before an exercise', href: '/rituals/craft/psychic/warmup' },
+  { title: 'Card & colour guessing', detail: 'Symbols, suits, colours or yes and no, against a hidden target', href: '/rituals/craft/psychic/esp' },
+  { title: 'Remote viewing', detail: 'Impressions of a hidden picture, then blind judging', href: '/rituals/craft/psychic/remote' },
+  { title: 'Tomorrow’s card', detail: 'Guess the card of the day before it is drawn', href: '/rituals/craft/psychic/precog' },
+  { title: 'Psychometry & intuition', detail: 'Impressions from your own objects, and a prompt a day', href: '/rituals/craft/psychic/psychometry' },
+  { title: 'Your results', detail: 'Hit rate against chance, streaks, time of day and the moon', href: '/rituals/craft/psychic/progress' },
+];
+
 export const CRAFT_TOOLS: Record<PracticeId, CraftTool[]> = {
   green: [
     { title: 'Planting by the moon', detail: 'What to sow, tend and harvest tonight', href: '/rituals/craft/green/moon' },
