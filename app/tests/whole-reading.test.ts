@@ -65,6 +65,7 @@ describe('composeReading', () => {
     const r = composeReading('Is my magic getting stronger?', [{ ...item('Three of Pentacles', true), position: null }])!;
     assert.match(r.sections[0].lines[0], /^Not quite yet\. The Three of Pentacles reversed says /);
     assert.match(r.sections[0].lines[0], /the craft needs tending/);
+    assert.match(r.sections[1].lines[0], /^Return to the fundamentals/);
     assert.ok(!r.sections.some((s) => s.title === 'The story'));
     assert.match(r.text, /Ask again after a moon cycle of practice\./);
   });

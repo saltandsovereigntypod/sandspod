@@ -169,9 +169,23 @@ export function composeReading(question: string, items: WholeItem[]): WholeReadi
   return reads ? composeTarot(question, topic, reads) : composeGeneric(question, topic, usable);
 }
 
+const IMPERATIVE = new Set('return find ask take pick let make keep try give set choose rest trust speak write plan start stop be do go seek hold practise practice light spend look notice call join clear protect book talk tell name commit release allow offer share listen check begin turn put use read stay say learn put focus add open bring reach send show slow wait accept forgive remember honour respect invest save sort tidy review decide reset stand walk drink eat sleep move cleanse ground put'.split(' '));
+
+/** Splits a topic paragraph into its body and the last imperative sentence (a step to take), if there is one. */
+export function splitStep(text: string): { body: string; step: string | null } {
+  const sents = text.match(/[^.!?]+[.!?]+(?=\s|$)|[^.!?]+$/g)?.map((x) => x.trim()) ?? [text];
+  let at = -1;
+  sents.forEach((x, i) => {
+    if (IMPERATIVE.has((x.match(/^[A-Za-z]+/)?.[0] ?? '').toLowerCase())) at = i;
+  });
+  if (at < 0 || sents.length < 2) return { body: text, step: null };
+  return { body: sents.filter((_, i) => i !== at).join(' '), step: sents[at] };
+}
+
 function composeTarot(question: string, topic: Topic, reads: Read[]): WholeReadingResult {
   const rt = readTopicOf(topic);
   const single = reads.length === 1;
+  const general = rt === 'general';
   const patterns = patternLines(reads.map((x) => x.item)).slice(0, 2);
   const { line, lean } = answerLine(reads);
   const yn = looksYesNo(question);
@@ -182,18 +196,24 @@ function composeTarot(question: string, topic: Topic, reads: Read[]): WholeReadi
 
   const opening: string[] = [];
   if (single) {
-    const topicText = strongest.r.topics[rt];
-    opening.push(yn ? `${line} ${why} ${topicText}` : `${TONE[lean]} ${cardLabel(strongest.item)}: ${topicText}`);
+    if (general) {
+      const topicText = strongest.r.topics[rt];
+      opening.push(yn ? `${line} ${why} ${topicText}` : `${TONE[lean]} ${cardLabel(strongest.item)}: ${topicText}`);
+    } else {
+      const body = splitStep(strongest.r.topics[rt]).body;
+      opening.push(`${yn ? line : TONE[lean]} ${cardLabel(strongest.item)} says ${lc(body)}`);
+    }
   } else {
-    opening.push(yn ? `${line} ${why}` : `${TONE[lean]} ${why}`);
+    opening.push(general ? (yn ? `${line} ${why}` : `${TONE[lean]} ${why}`) : `${yn ? line : TONE[lean]} ${cardLabel(strongest.item)} says ${lc(splitStep(strongest.r.topics[rt]).body)}`);
     if (patterns.length) opening.push(patterns.join(' '));
   }
 
-  const story = single ? [] : reads.map((x) => `${x.item.position ? `${x.item.position.name}: ` : ''}${cardLabel(x.item)} — ${x.r.topics[rt]}`);
+  const story = single ? [] : reads.map((x) => `${x.item.position ? `${x.item.position.name}: ` : ''}${cardLabel(x.item)} — ${general ? x.r.topics[rt] : splitStep(x.r.topics[rt]).body}`);
 
   const outcome = [...reads].reverse().find((x) => x.item.position && OUTCOME_POS.test(x.item.position.name)) ?? reads[reads.length - 1];
-  const advice = [outcome.r.advice];
-  if (!single && strongest.r.advice !== outcome.r.advice) advice.push(strongest.r.advice);
+  const stepOf = (x: Read) => (general ? null : splitStep(x.r.topics[rt]).step) ?? x.r.advice;
+  const advice = [stepOf(outcome)];
+  if (!single && stepOf(strongest) !== advice[0]) advice.push(stepOf(strongest));
 
   const sections: WholeSection[] = [
     { title: 'Opening', lines: opening },
