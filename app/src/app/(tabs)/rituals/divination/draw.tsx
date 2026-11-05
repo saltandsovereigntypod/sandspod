@@ -230,7 +230,7 @@ export default function DrawScreen() {
     try {
       const entry = await addEntry(
         READINGS,
-        readingFromDraw(spread, draw, { question, interpretation: wholeOpen && whole ? [interpretation.trim(), whole.text].filter(Boolean).join('\n\n') : interpretation, lookBack: chosenLookBack, now: new Date(), deck, ownDeck, byHand, linkedTo }),
+        readingFromDraw(spread, draw, { question, interpretation: whole ? [interpretation.trim(), whole.text].filter(Boolean).join('\n\n') : interpretation, lookBack: chosenLookBack, now: new Date(), deck, ownDeck, byHand, linkedTo }),
       );
       keptIt.current = true;
       await clearDrawDraft();
