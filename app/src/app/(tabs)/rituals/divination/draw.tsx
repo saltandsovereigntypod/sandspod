@@ -40,6 +40,7 @@ import {
   type DrawKind,
   type Drawn,
 } from '../../../../lib/divination/draw';
+import { wholeReading } from '../../../../lib/divination/wholeReading';
 import { deityLink, linkFromParams, linkKindOfSpread, linkLine, linkQuestion } from '../../../../lib/divination/linked';
 import { DECKS_COLLECTION, ownDeckById, ownDecks } from '../../../../lib/divination/oracle/decks';
 import { KIPPER_NOTE } from '../../../../lib/divination/oracle/kipper';
@@ -96,6 +97,7 @@ export default function DrawScreen() {
   const [revealed, setRevealed] = useState<boolean[]>([]);
   const [selected, setSelected] = useState<number | null>(null);
   const [interpretation, setInterpretation] = useState('');
+  const [wholeOpen, setWholeOpen] = useState(false);
   const [lookBack, setLookBack] = useState<string | null>(null);
   const [width, setWidth] = useState(0);
   const [saving, setSaving] = useState(false);
@@ -220,13 +222,15 @@ export default function DrawScreen() {
     setSelected((s) => s ?? 0);
   };
 
+  const whole = draw && allShown ? wholeReading(spread, draw, { question, deck: ownDeck?.data, tarotDeck: kindId === 'tarot' ? deck : null }) : null;
+
   const keep = async () => {
     if (!draw) return;
     setSaving(true);
     try {
       const entry = await addEntry(
         READINGS,
-        readingFromDraw(spread, draw, { question, interpretation, lookBack: chosenLookBack, now: new Date(), deck, ownDeck, byHand, linkedTo }),
+        readingFromDraw(spread, draw, { question, interpretation: wholeOpen && whole ? [interpretation.trim(), whole.text].filter(Boolean).join('\n\n') : interpretation, lookBack: chosenLookBack, now: new Date(), deck, ownDeck, byHand, linkedTo }),
       );
       keptIt.current = true;
       await clearDrawDraft();
@@ -490,6 +494,22 @@ export default function DrawScreen() {
           {kindId === 'lenormand' && <PairsCard spread={spread} draw={draw} />}
           {spread.cast && <Body muted>{CAST_NOTE}</Body>}
           {!!NOTES[kindId] && <Body muted>{NOTES[kindId]}</Body>}
+          {!!whole && (
+            <Card>
+              <SectionLabel>The whole reading</SectionLabel>
+              <Body muted>The cards, their places and the patterns across them, woven into one reading. If you open it, it is kept with your reading.</Body>
+              <Button label={wholeOpen ? 'Hide the whole reading' : 'Read the whole reading'} variant="outline" onPress={() => setWholeOpen((o) => !o)} />
+              {wholeOpen &&
+                whole.sections.map((sec) => (
+                  <View key={sec.title} style={ui.gapSmall}>
+                    <SectionLabel>{sec.title}</SectionLabel>
+                    {sec.lines.map((l, i) => (
+                      <Body key={i}>{l}</Body>
+                    ))}
+                  </View>
+                ))}
+            </Card>
+          )}
           <Field label="What you make of it" value={interpretation} onChange={setInterpretation} placeholder="Your reading of the reading" multiline />
           <View style={ui.gapSmall}>
             <SectionLabel>Come back to it</SectionLabel>
