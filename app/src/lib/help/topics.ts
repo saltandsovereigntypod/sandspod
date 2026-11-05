@@ -2790,6 +2790,25 @@ export const HELP: HelpSection[] = [
         keywords: ['tarot', 'draw a card', 'card of the day', 'daily card', 'celtic cross', 'three card spread', 'rune cast', 'ogham', 'reversed cards', 'blank rune', 'spreads', 'horseshoe', 'tree of life', 'new moon spread', 'full moon spread', 'samhain spread', 'make your own spread', 'custom spread'],
       },
       {
+        id: 'psychic-development',
+        title: 'Practise psychic development and see your results',
+        summary: 'Card and colour guessing, remote viewing, Tomorrow’s card, psychometry and warm-ups, each scored honestly against chance and kept in your Journal.',
+        steps: [
+          'Open Practice → Craft → Psychic development. Optionally start with a warm-up: grounding, opening, third eye or aura sensing.',
+          'Card & colour guessing: choose symbols, suits, colours or yes and no, and 10 or 25 trials. The hidden target is chosen before you guess; it is shown after each trial.',
+          'Remote viewing: write impressions of a hidden altar picture, choose it blind from four pictures, then see the answer and rate how close you were.',
+          'Tomorrow’s card: guess a suit or the major arcana (and a number) today. Draw tomorrow’s card of the day in Divination and the guess is scored for you.',
+          'Open "Your results" for hit rate against chance, a chart by day, streaks, time of day and moon phase.',
+        ],
+        tips: [
+          'We only say "above chance" when the exact binomial p-value is below 0.05 over at least 50 trials. Fewer trials, or a lower score, reads as in line with chance, or too few to tell.',
+          'Short runs wander widely, and slicing by moon or hour makes many small groups, so some will look good by luck.',
+          'Nothing here claims you are or are not psychic. Controlled tests of these abilities have not shown them; the exercises are practice in attention.',
+        ],
+        href: '/rituals/craft/psychic',
+        keywords: ['psychic', 'esp', 'zener', 'remote viewing', 'precognition', 'psychometry', 'intuition', 'clairvoyance', 'aura', 'third eye', 'guessing'],
+      },
+      {
         id: 'divination-study',
         title: 'Learn the cards with flashcards and a quiz',
         summary: 'Study the tarot (in your deck’s own reading), runes, ogham, Lenormand, Kipper or a deck of your own, a few cards a day.',
