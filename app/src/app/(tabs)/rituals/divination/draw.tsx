@@ -40,6 +40,7 @@ import {
   type DrawKind,
   type Drawn,
 } from '../../../../lib/divination/draw';
+import { divinationReadingRoute, refForDrawn } from '../../../../lib/divination/links';
 import { wholeReading } from '../../../../lib/divination/wholeReading';
 import { deityLink, linkFromParams, linkKindOfSpread, linkLine, linkQuestion } from '../../../../lib/divination/linked';
 import { DECKS_COLLECTION, ownDeckById, ownDecks } from '../../../../lib/divination/oracle/decks';
@@ -483,7 +484,12 @@ export default function DrawScreen() {
               title={`${i + 1}. ${item.name}${item.reversed ? ', reversed' : ''}`}
               detail={[placeOf(spread, draw, i)?.name, meaningOf(item, ownDeck?.data, tarotDeck)?.meaning.keywords].filter(Boolean).join(' · ')}
               last={i === draw.items.length - 1}
-              onPress={() => setSelected(i)}
+              onPress={() => {
+                // Opens the card's own page (on top of this draw); a card from a deck of your own has none, so it is shown above.
+                const ref = refForDrawn(item.name);
+                if (ref) router.push(divinationReadingRoute(ref, kindId === 'tarot' ? deck : null) as Href);
+                else setSelected(i);
+              }}
             />
           ))}
         </List>

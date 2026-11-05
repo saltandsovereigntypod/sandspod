@@ -8,7 +8,7 @@ import { PairsCard } from '../../../../components/divination/oracle/Pairs';
 import { DeckReadingLines } from '../../../../components/divination/DeckReading';
 import { ReadMore } from '../../../../components/divination/ReadMore';
 import { SpreadTable } from '../../../../components/divination/Spread';
-import { Body, Card, Chip, Chips, Field, RitualScreen, SectionLabel, Title, ui } from '../../../../components/rituals/ui';
+import { Body, Card, Chip, Chips, Field, List, Row, RitualScreen, SectionLabel, Title, ui } from '../../../../components/rituals/ui';
 import { useReducedMotion } from '../../../../lib/accessibility/store';
 import { fullDate } from '../../../../lib/calendar';
 import { glossOf, methodLabel, normalizeReading, READINGS } from '../../../../lib/craft/hedge/readings';
@@ -16,6 +16,8 @@ import { updateEntry, useCraft } from '../../../../lib/craft/store';
 import { customSpreads, SPREADS_COLLECTION } from '../../../../lib/divination/custom';
 import { deckInfo, deckOfReading, type DeckId } from '../../../../lib/divination/decks';
 import { drawOfReading, meaningOf, placeOf } from '../../../../lib/divination/draw';
+import { divinationReadingRoute, refForDrawn } from '../../../../lib/divination/links';
+import { wholeReading } from '../../../../lib/divination/wholeReading';
 import { linkLine, linkRoute } from '../../../../lib/divination/linked';
 import { DECKS_COLLECTION, ownDecks } from '../../../../lib/divination/oracle/decks';
 import { localDateKey } from '../../../../lib/rituals/lifecycle';
@@ -30,12 +32,21 @@ export default function ReadingPage() {
   const [saving, setSaving] = useState(false);
   const [picked, setPicked] = useState<number | null>(null);
   const [width, setWidth] = useState(0);
+  const [wholeOpen, setWholeOpen] = useState(true);
   const still = useReducedMotion();
   // Your own spreads too, so a reading drawn from one lays out in its shape.
   const { entries: mine } = useCraft<unknown>(SPREADS_COLLECTION);
   // And your own decks, so a draw from one shows its cards.
   const { entries: deckEntries } = useCraft<unknown>(DECKS_COLLECTION);
   const laid = useMemo(() => (reading ? drawOfReading(reading, customSpreads(mine), ownDecks(deckEntries)) : null), [reading, mine, deckEntries]);
+
+  const whole = useMemo(
+    () => (laid ? wholeReading(laid.spread, laid.draw, { question: reading?.question ?? '', deck: laid.deck?.data, tarotDeck: laid.spread.kind === 'tarot' ? deckOfReading(reading!) : null }) : null),
+    [laid, reading],
+  );
+
+  // A draw kept with its whole reading opened has that text appended to what you wrote; it shows in its own section instead.
+  const madeOf = reading && whole && reading.interpretation.includes(whole.text) ? reading.interpretation.replace(whole.text, '').trim() : (reading?.interpretation ?? '');
 
   if (!raw || !reading) {
     return (
@@ -89,7 +100,40 @@ export default function ReadingPage() {
           {laid.spread.kind === 'tarot' && <Body muted>{`Drawn with the ${deckInfo(deck).name} (${deckInfo(deck).made}).`}</Body>}
           <DrawnMeaning laid={laid} picked={picked} deck={deck} />
           {laid.spread.kind === 'lenormand' && <PairsCard spread={laid.spread} draw={laid.draw} />}
+          {laid.draw.items.length > 1 && (
+            <List>
+              {laid.draw.items.map((item, i) => {
+                const ref = refForDrawn(item.name);
+                return (
+                  <Row
+                    key={i}
+                    icon="wheel"
+                    title={`${i + 1}. ${item.name}${item.reversed ? ', reversed' : ''}`}
+                    detail={[placeOf(laid.spread, laid.draw, i)?.name, meaningOf(item, laid.deck?.data, laid.spread.kind === 'tarot' ? deck : null)?.meaning.keywords].filter(Boolean).join(' · ')}
+                    last={i === laid.draw.items.length - 1}
+                    onPress={() => (ref ? router.push(divinationReadingRoute(ref, laid.spread.kind === 'tarot' ? deck : null) as Href) : setPicked(i))}
+                  />
+                );
+              })}
+            </List>
+          )}
         </View>
+      )}
+
+      {!!whole && (
+        <Card>
+          <SectionLabel>The whole reading</SectionLabel>
+          <Button label={wholeOpen ? 'Hide the whole reading' : 'Read the whole reading'} variant="outline" onPress={() => setWholeOpen((o) => !o)} />
+          {wholeOpen &&
+            whole.sections.map((sec) => (
+              <View key={sec.title} style={ui.gapSmall}>
+                <SectionLabel>{sec.title}</SectionLabel>
+                {sec.lines.map((l, i) => (
+                  <Body key={i}>{l}</Body>
+                ))}
+              </View>
+            ))}
+        </Card>
       )}
 
       {reading.drawn.length > 0 && (
@@ -109,10 +153,10 @@ export default function ReadingPage() {
           <Body>{reading.cameUp}</Body>
         </View>
       )}
-      {!!reading.interpretation && (
+      {!!madeOf && (
         <View style={ui.gapSmall}>
           <SectionLabel>What you made of it</SectionLabel>
-          <Body>{reading.interpretation}</Body>
+          <Body>{madeOf}</Body>
         </View>
       )}
 
