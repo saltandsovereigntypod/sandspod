@@ -6,6 +6,7 @@ import { meaningOf, placeOf, type Draw, type Position, type Spread } from './dra
 import type { OwnDeckData } from './oracle/decks.ts';
 import type { DeckId } from './decks.ts';
 import type { TarotCard } from './tarot.ts';
+import { readingFor, type CardReading, type Lean, type ReadTopic } from './readings/index.ts';
 import { COURT_TITLE, ELEMENT, LENS, NUMBER_THEME, OPENERS, PAIRINGS, TOPIC_CUES, TOPIC_NAME, type LensGroup, type Topic } from './wholeReadingText.ts';
 
 export type WholeItem = {
@@ -103,11 +104,127 @@ const firstSentence = (s: string) => {
 };
 const ADVICE_POS = /action|advice|help|above|crown|aim|outcome|future|will come|before|guidance|best/i;
 
+export function readTopicOf(topic: Topic): ReadTopic {
+  return topic === 'love' || topic === 'person' ? 'love' : topic === 'decision' || topic === 'timing' ? 'general' : topic;
+}
+
+const YES_NO = /^\s*(is|are|will|should|can|do|does|am|did|has|have|could|would)\b|\bor not\b/i;
+export const looksYesNo = (q: string) => YES_NO.test(q);
+
+const LEAN_SCORE: Record<Lean, number> = { yes: 1, 'not-yet': -0.5, no: -1, depends: 0 };
+const OUTCOME_POS = /outcome|result|future|once|what will|advice/i;
+
+type Read = { item: WholeItem; r: CardReading; w: number };
+
+const cardLabel = (it: WholeItem) => {
+  const n = it.card && it.card.arcana === 'minor' ? `The ${it.name}` : it.name;
+  return it.reversed ? `${n} reversed` : n;
+};
+
+/** Plain first line from the cards' weighted lean. Outcome-like places count double, the last card one and a half. */
+export function answerLine(reads: Read[]): { line: string; lean: Lean } {
+  let sum = 0;
+  let tot = 0;
+  for (const x of reads) {
+    sum += x.w * LEAN_SCORE[x.r.lean];
+    tot += x.w;
+  }
+  const a = sum / tot;
+  if (a >= 0.6) return { line: 'Yes.', lean: 'yes' };
+  if (a >= 0.2) return { line: 'Yes, with care.', lean: 'yes' };
+  if (a > -0.2) return { line: 'It depends on you.', lean: 'depends' };
+  if (a > -0.6) return { line: 'Not quite yet.', lean: 'not-yet' };
+  return { line: 'No, not as things stand.', lean: 'no' };
+}
+
+const TONE: Record<Lean, string> = {
+  yes: 'Overall the cards lean hopeful.',
+  'not-yet': 'Overall the cards counsel patience.',
+  no: 'Overall the cards ask for a change of course.',
+  depends: 'Overall the cards are mixed, and much rests on your choices.',
+};
+
+const CLOSE: Record<Lean, (t: ReadTopic) => string> = {
+  yes: (t) => (t === 'spirit' ? 'Act on it, and keep a note of what changes.' : 'Act on it, and notice how it feels as you go.'),
+  'not-yet': (t) => (t === 'spirit' ? 'Ask again after a moon cycle of practice.' : t === 'health' ? 'Ask again after a few weeks of gentle change.' : 'Ask again after a moon cycle, once you have acted on this.'),
+  no: () => 'Let this one go for now, and ask a different question when you are ready.',
+  depends: () => 'The cards hand this back to you. Decide, then see how it sits.',
+};
+
+const render = (sections: WholeSection[]) =>
+  ['The whole reading', ...sections.map((sec) => `${sec.title}\n${sec.lines.join(sec.title === 'The story' ? '\n\n' : '\n')}`)].join('\n\n');
+
 /** Builds the reading from drawn cards, already given their positions and meanings. */
 export function composeReading(question: string, items: WholeItem[]): WholeReadingResult | null {
   const usable = items.filter((i) => i.keywords || i.text);
   if (!usable.length) return null;
   const topic = detectTopic(question);
+  const reads: Read[] | null = usable.every((i) => i.card && readingFor(i.card.id, i.reversed))
+    ? usable.map((item, i) => ({
+        item,
+        r: readingFor(item.card!.id, item.reversed)!,
+        w: (item.position && OUTCOME_POS.test(item.position.name) ? 2 : 1) * (i === usable.length - 1 ? 1.5 : 1),
+      }))
+    : null;
+  return reads ? composeTarot(question, topic, reads) : composeGeneric(question, topic, usable);
+}
+
+const IMPERATIVE = new Set('return find ask take pick let make keep try give set choose rest trust speak write plan start stop be do go seek hold practise practice light spend look notice call join clear protect book talk tell name commit release allow offer share listen check begin turn put use read stay say learn put focus add open bring reach send show slow wait accept forgive remember honour respect invest save sort tidy review decide reset stand walk drink eat sleep move cleanse ground put'.split(' '));
+
+/** Splits a topic paragraph into its body and the last imperative sentence (a step to take), if there is one. */
+export function splitStep(text: string): { body: string; step: string | null } {
+  const sents = text.match(/[^.!?]+[.!?]+(?=\s|$)|[^.!?]+$/g)?.map((x) => x.trim()) ?? [text];
+  let at = -1;
+  sents.forEach((x, i) => {
+    if (IMPERATIVE.has((x.match(/^[A-Za-z]+/)?.[0] ?? '').toLowerCase())) at = i;
+  });
+  if (at < 0 || sents.length < 2) return { body: text, step: null };
+  return { body: sents.filter((_, i) => i !== at).join(' '), step: sents[at] };
+}
+
+function composeTarot(question: string, topic: Topic, reads: Read[]): WholeReadingResult {
+  const rt = readTopicOf(topic);
+  const single = reads.length === 1;
+  const general = rt === 'general';
+  const patterns = patternLines(reads.map((x) => x.item)).slice(0, 2);
+  const { line, lean } = answerLine(reads);
+  const yn = looksYesNo(question);
+  const power = (x: Read) => x.w * (Math.abs(LEAN_SCORE[x.r.lean]) + 0.1);
+  let strongest = reads[0];
+  for (const x of reads) if (power(x) >= power(strongest)) strongest = x;
+  const why = `${cardLabel(strongest.item)} says ${lc(tidy(strongest.r.why))}.`;
+
+  const opening: string[] = [];
+  if (single) {
+    if (general) {
+      const topicText = strongest.r.topics[rt];
+      opening.push(yn ? `${line} ${why} ${topicText}` : `${TONE[lean]} ${cardLabel(strongest.item)}: ${topicText}`);
+    } else {
+      const body = splitStep(strongest.r.topics[rt]).body;
+      opening.push(`${yn ? line : TONE[lean]} ${cardLabel(strongest.item)} says ${lc(body)}`);
+    }
+  } else {
+    opening.push(general ? (yn ? `${line} ${why}` : `${TONE[lean]} ${why}`) : `${yn ? line : TONE[lean]} ${cardLabel(strongest.item)} says ${lc(splitStep(strongest.r.topics[rt]).body)}`);
+    if (patterns.length) opening.push(patterns.join(' '));
+  }
+
+  const story = single ? [] : reads.map((x) => `${x.item.position ? `${x.item.position.name}: ` : ''}${cardLabel(x.item)} — ${general ? x.r.topics[rt] : splitStep(x.r.topics[rt]).body}`);
+
+  const outcome = [...reads].reverse().find((x) => x.item.position && OUTCOME_POS.test(x.item.position.name)) ?? reads[reads.length - 1];
+  const stepOf = (x: Read) => (general ? null : splitStep(x.r.topics[rt]).step) ?? x.r.advice;
+  const advice = [stepOf(outcome)];
+  if (!single && stepOf(strongest) !== advice[0]) advice.push(stepOf(strongest));
+
+  const sections: WholeSection[] = [
+    { title: 'Opening', lines: opening },
+    ...(story.length ? [{ title: 'The story', lines: story }] : []),
+    { title: 'What it advises', lines: advice },
+    { title: 'To close', lines: [CLOSE[lean](rt)] },
+  ];
+  return { topic, sections, text: render(sections) };
+}
+
+function composeGeneric(question: string, topic: Topic, usable: WholeItem[]): WholeReadingResult {
   const single = usable.length === 1;
   const q = question.trim();
   const patterns = patternLines(usable);
@@ -150,8 +267,7 @@ export function composeReading(question: string, items: WholeItem[]): WholeReadi
     { title: 'What it advises', lines: advice },
     { title: 'To close', lines: [closing] },
   ];
-  const text = ['The whole reading', ...sections.map((sec) => `${sec.title}\n${sec.lines.join(sec.title === 'The story' ? '\n\n' : '\n')}`)].join('\n\n');
-  return { topic, sections, text };
+  return { topic, sections, text: render(sections) };
 }
 
 /** The whole reading for a draw: tarot, Lenormand, Kipper, runes, ogham and decks of your own (anything with a meaning). */

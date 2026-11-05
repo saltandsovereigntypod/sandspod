@@ -54,12 +54,34 @@ describe('composeReading', () => {
     const b = composeReading('Should I move?', ten)!;
     assert.equal(a.text, b.text);
     const story = a.sections.find((s) => s.title === 'The story')!.lines;
-    const heads = story.map((l) => l.split(' ').slice(0, 2).join(' ').replace(/Place \d+/, 'P'));
-    assert.equal(new Set(heads).size, heads.length);
+    assert.equal(new Set(story).size, story.length);
+    assert.equal(story.length, ten.length);
   });
   it('has the sections, and one card stays short', () => {
     const r = composeReading('', [item('The Fool')])!;
-    assert.deepEqual(r.sections.map((s) => s.title), ['Opening', 'The story', 'What it advises', 'To close']);
+    assert.deepEqual(r.sections.map((s) => s.title), ['Opening', 'What it advises', 'To close']);
+  });
+  it('answers a yes/no question first and merges a single card into the opening', () => {
+    const r = composeReading('Is my magic getting stronger?', [{ ...item('Three of Pentacles', true), position: null }])!;
+    assert.match(r.sections[0].lines[0], /^Not quite yet\. The Three of Pentacles reversed says /);
+    assert.match(r.sections[0].lines[0], /the craft needs tending/);
+    assert.match(r.sections[1].lines[0], /^Return to the fundamentals/);
+    assert.ok(!r.sections.some((s) => s.title === 'The story'));
+    assert.match(r.text, /Ask again after a moon cycle of practice\./);
+  });
+  it('tarot spreads use topic paragraphs, no repeated sentences, deterministic', () => {
+    const cards = [item('The Tower', false, 'Past'), item('The Star', false, 'Present'), item('Two of Cups', false, 'Outcome')];
+    const a = composeReading('Will we last?', cards)!;
+    assert.equal(a.text, composeReading('Will we last?', cards)!.text);
+    assert.match(a.sections[0].lines[0], /^(Yes\.|Yes, with care\.|Not quite yet\.|No, not as things stand\.|It depends on you\.)/);
+    const story = a.sections.find((s) => s.title === 'The story')!.lines;
+    assert.match(story[0], /^Past: The Tower \u2014 /);
+    const sentences = a.text.split(/(?<=[.!?])\s+/).map((x) => x.trim()).filter((x) => x.length > 20);
+    assert.equal(new Set(sentences).size, sentences.length);
+  });
+  it('without a yes/no question opens with the overall tone', () => {
+    const r = composeReading('Tell me something', [item('The Tower'), item('The Star', false, 'Outcome')])!;
+    assert.match(r.sections[0].lines[0], /^Overall the cards/);
   });
   it('reads a real draw', () => {
     const spread = SPREADS.find((s) => s.kind === 'tarot' && s.positions.length === 3)!;
