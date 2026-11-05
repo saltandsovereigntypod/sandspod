@@ -35,49 +35,72 @@ export const GROUP_ORDER: Record<RelType, GroupKey[]> = {
   coven: ['bring', 'grow', 'flows', 'talk', 'watch'],
 };
 
-export const FEEL: Record<Planet8, string> = {
-  Sun: 'core self and vitality',
-  Moon: 'feelings and need for safety',
-  Mercury: 'way of thinking and speaking',
-  Venus: 'affection and what is valued',
-  Mars: 'drive and desire',
-  Jupiter: 'generosity and hope',
-  Saturn: 'steadiness and limits',
-  Ascendant: 'first impression and manner',
+/**
+ * How each kind of bond reads a planet, in an easy and a harder key. This is
+ * where the relationship type changes the wording: friendship reads Venus as
+ * enjoyment, family reads Mars as how you push each other, a coven reads Saturn
+ * as commitment and Jupiter as shared vision. Listed in the order the bond
+ * leans on them; a contact takes the first planet it involves.
+ */
+export const LENS: Record<RelType, Partial<Record<Planet8, { easy: string; hard: string }>>> = {
+  romantic: {
+    Venus: { easy: 'In love, Venus is where affection is felt, and here it is offered and received without much translation.', hard: 'In love, Venus is where affection is felt; here it needs translating, so learn how the other likes to be loved.' },
+    Mars: { easy: 'In love, Mars is desire and pursuit, and here the wanting runs in step.', hard: 'In love, Mars is desire and pursuit; here heat and timing do not always match, which excites as much as it frustrates.' },
+    Moon: { easy: 'In love, the Moon is how safe you feel together, and this contact helps you relax into each other.', hard: 'In love, the Moon is how safe you feel together; this contact asks you to make that safety on purpose.' },
+    Sun: { easy: 'In love, the Sun is feeling seen, and here each of you tends to see the other clearly.', hard: 'In love, the Sun is feeling seen; here being seen can feel like being challenged.' },
+    Ascendant: { easy: 'In love, the Ascendant is the first spark and how you look as a pair.', hard: 'In love, the Ascendant is the first spark; here the first impression may have been mixed, and the bond grew past it.' },
+    Saturn: { easy: 'In love, Saturn is commitment, and here it builds a quiet loyalty.', hard: 'In love, Saturn is commitment; here it can feel like weight before it feels like safety.' },
+  },
+  friendship: {
+    Venus: { easy: 'Between friends, Venus is not romance but enjoyment: you like the same pleasures and simply like each other’s company.', hard: 'Between friends, Venus is about enjoyment, so friction shows over plans and treats: who chooses, who pays, what counts as fun.' },
+    Moon: { easy: 'In friendship, the Moon is the ease of just being together, with no performance needed.', hard: 'In friendship, the Moon is how at ease you feel; here, say when you need support rather than distraction.' },
+    Mercury: { easy: 'In friendship, Mercury is what you talk about and how, and here the conversation tends to keep going.', hard: 'In friendship, Mercury is the conversation; here it sparks, so keep the debates friendly.' },
+    Jupiter: { easy: 'In friendship, Jupiter is the fun and the encouragement, the friend who says yes.', hard: 'In friendship, Jupiter is fun and encouragement; here it can tip into egging each other on.' },
+    Mars: { easy: 'Between friends, Mars is doing things together: sport, projects, adventures.', hard: 'Between friends, Mars is shared energy, and here it can turn into rivalry, so keep competition playful.' },
+    Sun: { easy: 'In friendship, the Sun is mutual respect, and here you tend to back each other’s aims.', hard: 'In friendship, the Sun is mutual respect; here it has to make room for two strong personalities.' },
+  },
+  family: {
+    Moon: { easy: 'In a family, the Moon is the felt sense of home and care, and here it comes naturally.', hard: 'In a family, the Moon is home and care; here old habits of caring may need updating for who you are now.' },
+    Mars: { easy: 'In a family, Mars is how you push each other, and here the push tends to be encouraging.', hard: 'In a family, Mars is how you push each other; here the push can come out as nagging or old scraps, so say plainly what you are asking for.' },
+    Saturn: { easy: 'In a family, Saturn is duty, boundaries and what is handed down, and here it gives a reliable backbone.', hard: 'In a family, Saturn is duty and what is handed down; here it can feel like rules from another generation.' },
+    Sun: { easy: 'In a family, the Sun is recognition, being seen as who you have become, and here it is given.', hard: 'In a family, the Sun is recognition; here someone may still be seen as who they were, not who they are.' },
+    Venus: { easy: 'In a family, Venus is fondness and the small kindnesses of home, here given freely.', hard: 'In a family, Venus is fondness; here it is shown in different ways, so name the kindnesses you notice.' },
+    Jupiter: { easy: 'In a family, Jupiter is generosity and the faith you have in each other.', hard: 'In a family, Jupiter is generosity; here expectations can run larger than life.' },
+  },
+  coven: {
+    Saturn: { easy: 'Working together, Saturn is commitment and structure: who keeps the calendar, holds the line and turns up.', hard: 'Working together, Saturn is commitment and structure; here it asks you to agree the rules before the rite, not during it.' },
+    Jupiter: { easy: 'Working together, Jupiter is shared vision, the faith and purpose the work grows from.', hard: 'Working together, Jupiter is shared vision; here the visions differ in size or direction, so write down what the circle is for.' },
+    Mercury: { easy: 'Working together, Mercury is planning and invocation, and here words come easily between you.', hard: 'Working together, Mercury is planning and invocation; here, confirm plans in writing and rehearse spoken parts.' },
+    Mars: { easy: 'Working together, Mars is how you raise energy and get things done, and here it combines well.', hard: 'Working together, Mars is raising energy; here it can tip into who leads, so agree roles beforehand.' },
+    Moon: { easy: 'Working together, the Moon is how safe the circle feels, and here it holds.', hard: 'Working together, the Moon is how safe the circle feels; check in with each other before and after a working.' },
+    Venus: { easy: 'Working together, Venus is harmony and the beauty of the altar, here easily shared.', hard: 'Working together, Venus is harmony; here tastes differ, so take turns dressing the altar.' },
+  },
 };
 
-const GENERIC: Record<Family, string> = {
-  harm: 'meet kindly: each tends to support what the other is doing, so it can feel easy, and may be taken for granted.',
-  hard: 'rub against each other. It can feel like friction, and it is also where each of you is asked to stretch.',
-  conj: 'sit close together, so you may recognise each other here, for better and for intensity.',
+/** How each aspect feels, phrased to follow a comma in the summary. */
+export const ASPECT_TONE: Record<string, string> = {
+  conjunction: 'where you blend and both feel it strongly',
+  sextile: 'an opening that rewards a little effort',
+  trine: 'which runs easily and naturally',
+  square: 'a friction that pushes you both to act',
+  opposition: 'a pull of opposites in which each of you sees something of yourself in the other',
 };
 
-/** Specific lines for the pairs that matter most (key: the two planets in alphabetical order). */
-export const PAIR_LINES: Record<string, Record<Family, string>> = {
-  'Moon|Sun': { harm: 'Your needs and your sense of purpose fit well; one feels nourished by the other.', hard: 'What one wants to do and what the other needs to feel can pull apart. Naming it helps.', conj: 'A classic pairing of inner and outer self, often a strong sense of belonging.' },
-  'Moon|Moon': { harm: 'You tend to read each other’s moods easily and feel at home together.', hard: 'Your comfort habits differ, so you may need to say what soothes you rather than hope it is guessed.', conj: 'Feelings run in step, which is comforting and can amplify mood in both directions.' },
-  'Mars|Venus': { harm: 'Affection and desire tend to answer each other warmly.', hard: 'A lively, sometimes prickly attraction: want and tenderness take turns leading.', conj: 'A strong pull, with warmth and drive in the same place.' },
-  'Venus|Venus': { harm: 'You enjoy and value similar things, which makes shared pleasure simple.', hard: 'You show care in different languages; curiosity about each other’s helps.', conj: 'Similar tastes and ways of loving, with an easy mutual fondness.' },
-  'Mercury|Mercury': { harm: 'Conversation tends to flow and you finish each other’s thoughts.', hard: 'You approach ideas from different angles; good for debate, tiring when tired.', conj: 'You think alike, which makes talk quick and sometimes echo-like.' },
-  'Moon|Saturn': { harm: 'One steadies the other’s feelings, a quiet kind of dependability.', hard: 'One may feel held back or the other unheard; patience and kindness carry a long way.', conj: 'Serious commitment is felt here, and a risk of coolness when it is tired.' },
-  'Saturn|Venus': { harm: 'Affection grows into something lasting and loyal.', hard: 'Love may feel restricted at times; slow trust-building pays back.', conj: 'A bond that asks for commitment, often deepening with the years.' },
-  'Jupiter|Moon': { harm: 'A generous, encouraging pairing; you tend to lift each other’s spirits.', hard: 'Enthusiasm may overshoot someone’s need for quiet; check in.', conj: 'Warmth and optimism meet, and it feels good to be around each other.' },
-  'Sun|Sun': { harm: 'You respect each other’s aims and tend to pull the same way.', hard: 'Two strong wills; room for each to shine keeps it friendly.', conj: 'Alike at the core, so you may understand each other at once.' },
-  'Mars|Mars': { harm: 'Your energy and pace suit each other, good for doing things together.', hard: 'Tempers and tempo can clash; physical activity or a shared project helps.', conj: 'Similar drive, a strong team when aimed outward.' },
+export const TYPE_OPEN: Record<RelType, string> = { romantic: 'As a couple', friendship: 'As friends', family: 'As family', coven: 'As working partners' };
+
+export const TILT_LINE: Record<'easy' | 'hard' | 'mixed' | 'none', string> = {
+  easy: 'Most of your strongest contacts are easy ones, so warmth comes readily; the work is not to coast on it.',
+  hard: 'Most of your strongest contacts carry friction, which keeps you awake to each other; it asks for effort and repays it.',
+  mixed: 'Your strongest contacts mix ease and friction, so you have both comfort and challenge to work with.',
+  none: 'Few close contacts link your planets, so the bond is shaped more by choice and circumstance than by the sky.',
 };
 
-/** A short line for the bond type when one of its planets is involved. */
-export const TYPE_LINES: Record<RelType, Partial<Record<Planet8, string>>> = {
-  romantic: { Venus: 'In love, this is where affection is felt.', Mars: 'In love, this is where attraction and heat show.', Moon: 'In love, this shapes how safe you feel together.', Sun: 'In love, this is where you feel seen.', Ascendant: 'This often shapes the first spark and how you come across to each other.' },
-  friendship: { Moon: 'In friendship, this is the ease of just being together.', Mercury: 'In friendship, this is what you talk about and how.', Jupiter: 'In friendship, this is the fun and the encouragement.' },
-  family: { Moon: 'In a family, this is the felt sense of home and care.', Saturn: 'In a family, this touches duty, boundaries and what is handed down.' },
-  coven: { Saturn: 'Working together, this is structure, reliability and who holds the line.', Jupiter: 'Working together, this is shared faith, generosity and growth.' },
+export const TYPE_CLOSE: Record<RelType, string> = {
+  romantic: 'In love, enjoy the easy parts and talk about the hard ones rather than working around them.',
+  friendship: 'As friends, keep making plans; friendships live on time actually spent together.',
+  family: 'In a family, remember that patterns are inherited but not fixed.',
+  coven: 'In the circle, agree roles and rhythms early, and revisit them at each turning of the year.',
 };
-
-export function pairLine(p1: Planet8, p2: Planet8, family: Family): string {
-  const key = [p1, p2].sort().join('|');
-  return PAIR_LINES[key]?.[family] ?? `Their ${FEEL[p1]} and ${FEEL[p2]} ${GENERIC[family]}`;
-}
 
 export const HOUSE_THEME: Record<number, string> = {
   1: 'identity and presence', 2: 'money and what is valued', 3: 'everyday talk and nearby things', 4: 'home and family',

@@ -1,29 +1,19 @@
 import { router, useLocalSearchParams, type Href } from 'expo-router';
 import { useMemo, useState } from 'react';
-import { Text } from 'react-native';
+import { View } from 'react-native';
 
 import { Button } from '../../../../../components/Button';
 import { useCharts } from '../../../../../components/astro/useCharts';
 import { Body, Card, Chip, Chips, RitualScreen, SectionLabel, Title } from '../../../../../components/rituals/ui';
 import { ShareCardButton } from '../../../../../components/share/ShareCard';
-import { ordinalHouse } from '../../../../../lib/astro/interpret/compose';
-import { composite, meet, overlays } from '../../../../../lib/astro/relationship';
-import {
-  GOOD_DAY_INTENTS,
-  GROUP_TITLE,
-  HOUSE_THEME,
-  MAGIC_INTENTS,
-  REL_TYPES,
-  SIGN_FLAVOUR,
-  type RelType,
-} from '../../../../../lib/astro/relationshipText';
+import { reading } from '../../../../../lib/astro/relationship';
+import { GOOD_DAY_INTENTS, GROUP_TITLE, MAGIC_INTENTS, REL_TYPES, type RelType } from '../../../../../lib/astro/relationshipText';
 import { adviseTiming, anyIntent, windowPlanFields, windowWhen } from '../../../../../lib/craft/cosmic/timing';
 import { PREMADE } from '../../../../../lib/rituals/premade';
 import { setForParams } from '../../../../../lib/rituals/setFor';
 import { usePlace } from '../../../../../lib/location';
-import { type } from '../../../../../theme';
 
-const WHERE: Record<string, string> = { Sun: 'Sun', Moon: 'Moon', Venus: 'Venus', Mars: 'Mars', Jupiter: 'Jupiter', Saturn: 'Saturn' };
+const ASPECT_WORD: Record<string, string> = { conjunction: 'conjunct', sextile: 'sextile', square: 'square', trine: 'trine', opposition: 'opposite' };
 
 // "How your charts meet": two saved charts, read for the kind of bond. No scores.
 export default function Relationship() {
@@ -43,9 +33,8 @@ export default function Relationship() {
   const na = a?.saved.name ?? '';
   const nb = b?.saved.name ?? '';
 
-  const groups = (ca && cb ? meet(ca, cb, kind) : []);
-  const houses = (ca && cb ? overlays(ca, cb) : null);
-  const comp = (ca && cb ? composite(ca, cb) : null);
+  const read = ca && cb ? reading(ca, cb, kind, na, nb) : null;
+  const groups = read?.groups ?? [];
   const day = GOOD_DAY_INTENTS.find((d) => d.key === dayKey) ?? GOOD_DAY_INTENTS[0];
   const windows = useMemo(() => {
     const intent = anyIntent(day.intent);
@@ -55,12 +44,9 @@ export default function Relationship() {
   const now = new Date();
   const intent = anyIntent(day.intent);
 
-  const sign = (p: string) => comp?.positions.find((x) => x.point === p)?.sign;
-  const compLines = ['Sun', 'Moon', 'Venus'].flatMap((p) => (sign(p) ? [`Composite ${p} in ${sign(p)}: ${SIGN_FLAVOUR[sign(p)!]}.`] : []));
-  const strongest = (comp?.aspects ?? []).filter((h) => h.a in WHERE && h.b in WHERE).slice(0, 3);
   const magic = MAGIC_INTENTS[kind];
   const picks = magic.flatMap((m) => PREMADE.filter((p) => p.intention === m.intent || p.alsoFor?.includes(m.intent as never)).slice(0, 2));
-  const shareLines = [...compLines, ...groups.flatMap((g) => g.contacts.slice(0, 1).map((c) => c.text))].slice(0, 6);
+  const shareLines = [...(read?.heart ?? []), ...(read?.composite ?? []).slice(0, 2)].slice(0, 6);
 
   return (
     <RitualScreen back="Charts">
@@ -94,28 +80,39 @@ export default function Relationship() {
         </>
       )}
 
-      {ready && (
+      {ready && read && (
         <>
+          <Card accent>
+            <SectionLabel>The heart of it</SectionLabel>
+            <Body>{read.heart.join(' ')}</Body>
+          </Card>
+
           {groups.filter((g) => g.contacts.length).map((g) => (
             <Card key={g.key}>
               <SectionLabel>{GROUP_TITLE[g.key]}</SectionLabel>
-              {g.contacts.slice(0, 4).map((c) => (
-                <Body key={`${c.hit.a}${c.hit.b}${c.hit.aspect}`}>
-                  {`${na}’s ${c.hit.a} ${c.hit.aspect} ${nb}’s ${c.hit.b}. ${c.text}${c.typeLine ? ` ${c.typeLine}` : ''}`}
-                </Body>
+              {g.contacts.map((c) => (
+                <View key={`${c.hit.a}${c.hit.b}${c.hit.aspect}`} style={{ gap: 4 }}>
+                  <Body muted>{`${na}’s ${c.hit.a} ${ASPECT_WORD[c.hit.aspect] ?? c.hit.aspect} ${nb}’s ${c.hit.b} · ${c.strength} · ${c.hit.orb.toFixed(1)}° orb`}</Body>
+                  <Body>{[c.text, c.whose, c.lens].filter(Boolean).join(' ')}</Body>
+                </View>
               ))}
             </Card>
           ))}
           {groups.every((g) => !g.contacts.length) && <Body muted>No close contacts between these planets, which simply means the bond is shaped by other things.</Body>}
 
+          {read.signs.map((s) => (
+            <Card key={s.title}>
+              <SectionLabel>{s.title}</SectionLabel>
+              {s.lines.map((l) => (
+                <Body key={l}>{l}</Body>
+              ))}
+            </Card>
+          ))}
+
           <Card>
             <SectionLabel>House overlays</SectionLabel>
-            {houses ? (
-              houses.map((o) => (
-                <Text key={`${o.whose}${o.point}`} style={type.body}>
-                  {`${o.whose === 'a' ? na : nb}’s ${o.point} falls in ${o.whose === 'a' ? nb : na}’s ${ordinalHouse(o.house)}: ${HOUSE_THEME[o.house]}.`}
-                </Text>
-              ))
+            {read.overlays ? (
+              read.overlays.map((o) => <Body key={o.key}>{o.text}</Body>)
             ) : (
               <Body muted>House overlays need both birth times and places, so they are left out here.</Body>
             )}
@@ -124,11 +121,8 @@ export default function Relationship() {
           <Card accent>
             <SectionLabel>{`${na} and ${nb}: the composite`}</SectionLabel>
             <Body muted>The midpoint of each pair of planets: the relationship as a chart of its own.</Body>
-            {compLines.map((l) => (
+            {read.composite.map((l) => (
               <Body key={l}>{l}</Body>
-            ))}
-            {strongest.map((h) => (
-              <Body key={`${h.a}${h.b}`}>{`Composite ${h.a} ${h.aspect} ${h.b}: a theme the two of you carry together.`}</Body>
             ))}
           </Card>
 
