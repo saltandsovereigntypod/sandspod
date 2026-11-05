@@ -4,7 +4,7 @@ import { Text, View } from 'react-native';
 import { Bars, goTo, Button, usePsychic } from '../../../../../components/psychic/shared';
 import { Body, Card, Notice, RitualScreen, SectionLabel, Title, ui } from '../../../../../components/rituals/ui';
 import { PSYCHIC_KINDS, scoredRuns } from '../../../../../lib/craft/psychic/log';
-import { bestSlice, byDay, byMoonPhase, byTimeOfDay, streaks, verdict, type Slice } from '../../../../../lib/craft/psychic/stats';
+import { bestSlice, byDay, byMeditation, byMoonPhase, byTimeOfDay, streaks, verdict, type Slice } from '../../../../../lib/craft/psychic/stats';
 import { localDateKey } from '../../../../../lib/rituals/lifecycle';
 import { colors, fonts } from '../../../../../theme';
 
@@ -41,6 +41,7 @@ export default function Progress() {
   const days = useMemo(() => byDay(all).slice(-14), [all]);
   const st = useMemo(() => streaks(sessions.map((s) => s.data.date), today), [sessions, today]);
   const time = useMemo(() => byTimeOfDay(all), [all]);
+  const med = useMemo(() => byMeditation(all), [all]);
   const moon = useMemo(() => byMoonPhase(all), [all]);
 
   return (
@@ -70,6 +71,8 @@ export default function Progress() {
         {days.length ? <Bars items={days.map((d) => ({ label: d.date.slice(8), value: d.rate }))} max={1} a11y="Hit rate by day" /> : <Body muted>Nothing scored yet.</Body>}
       </View>
 
+      <SliceBars title="With and without meditation" list={med} />
+      <Body muted>“With meditation” means a drop-in sound or guided drop-in was used for that session.</Body>
       <SliceBars title="By time of day" list={time} />
       <SliceBars title="By moon phase" list={moon} />
       <Notice>Slicing results by time or moon makes many small groups, and some will look good by chance. Treat these as things to watch over many weeks, not findings.</Notice>

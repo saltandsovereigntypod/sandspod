@@ -99,6 +99,8 @@ export type Logged = Scored & {
   /** The moment, ISO. */
   at: string;
   moonPhase?: string;
+  /** Done in meditation (a sound playing and/or a guided drop-in). */
+  meditated?: boolean;
 };
 
 /** Per day: trials, hits and the share, in date order, for the progress bars. */
@@ -165,6 +167,12 @@ function slices(runs: readonly Logged[], key: (r: Logged) => string | null, orde
       return { label: k, trials: v.trials, hits: v.hits, rate: v.hits / v.trials, edge: (v.hits - v.expected) / v.trials };
     });
 }
+
+export const WITH_MEDITATION = 'With meditation';
+export const WITHOUT_MEDITATION = 'Without';
+
+/** Hit rate with and without meditation (a sound or drop-in) beforehand. */
+export const byMeditation = (runs: readonly Logged[]): Slice[] => slices(runs, (r) => (r.meditated ? WITH_MEDITATION : WITHOUT_MEDITATION), [WITH_MEDITATION, WITHOUT_MEDITATION]);
 
 /** Hit rate by time of day, with each slice's edge over chance. */
 export const byTimeOfDay = (runs: readonly Logged[]): Slice[] =>

@@ -37,11 +37,22 @@ export type PsychicSession = {
   /** Exercise-specific detail (the mode, the trials, impressions, the picture, a self-rating…). */
   detail: Record<string, unknown>;
   warmup?: string;
+  /** Set when the session was done in meditation (a sound playing and/or a guided drop-in). */
+  meditation?: { sound: boolean; preset: string; guided: boolean; dropMs: number };
 };
 
 export type SessionEntry = { id: string; createdAt?: string; data: PsychicSession };
 
 const num = (v: unknown, d = 0) => (typeof v === 'number' && Number.isFinite(v) ? v : d);
+
+function cleanMeditation(raw: unknown): PsychicSession['meditation'] | undefined {
+  if (!raw || typeof raw !== 'object') return undefined;
+  const m = raw as Record<string, unknown>;
+  const sound = m.sound === true;
+  const guided = m.guided === true;
+  if (!sound && !guided) return undefined;
+  return { sound, preset: typeof m.preset === 'string' ? m.preset : 'none', guided, dropMs: Math.max(0, num(m.dropMs)) };
+}
 
 export function normalizeSession(raw: unknown): PsychicSession {
   const r = (raw && typeof raw === 'object' ? raw : {}) as Partial<PsychicSession>;
@@ -58,11 +69,12 @@ export function normalizeSession(raw: unknown): PsychicSession {
     summary: typeof r.summary === 'string' ? r.summary : '',
     detail: r.detail && typeof r.detail === 'object' ? (r.detail as Record<string, unknown>) : {},
     ...(typeof r.warmup === 'string' && r.warmup ? { warmup: r.warmup } : {}),
+    ...(cleanMeditation(r.meditation) ? { meditation: cleanMeditation(r.meditation)! } : {}),
   };
 }
 
 /** A new session, stamped with the moment, the day and the moon. */
-export function newSession(input: Pick<PsychicSession, 'kind' | 'summary'> & Partial<Pick<PsychicSession, 'trials' | 'hits' | 'chance' | 'detail' | 'warmup'>>, now: Date = new Date()): PsychicSession {
+export function newSession(input: Pick<PsychicSession, 'kind' | 'summary'> & Partial<Pick<PsychicSession, 'trials' | 'hits' | 'chance' | 'detail' | 'warmup' | 'meditation'>>, now: Date = new Date()): PsychicSession {
   return normalizeSession({ trials: 0, hits: 0, chance: 0.5, detail: {}, ...input, at: now.toISOString(), date: localDateKey(now), moonPhase: moonState(now).name });
 }
 
@@ -71,7 +83,7 @@ export function scoredRuns(list: readonly SessionEntry[], kind?: PsychicKind): L
   return list
     .map((e) => normalizeSession(e.data))
     .filter((s) => s.trials > 0 && (!kind || s.kind === kind))
-    .map((s) => ({ trials: s.trials, hits: s.hits, chance: s.chance, date: s.date, at: s.at, moonPhase: s.moonPhase }));
+    .map((s) => ({ trials: s.trials, hits: s.hits, chance: s.chance, date: s.date, at: s.at, moonPhase: s.moonPhase, meditated: !!s.meditation }));
 }
 
 /** The one Journal's row for a session. */

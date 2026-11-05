@@ -3,6 +3,7 @@ import { useMemo, useState } from 'react';
 import { View } from 'react-native';
 
 import { Button, Chip, Chips, goTo, usePsychic } from '../../../../../components/psychic/shared';
+import { CountdownRing, DropIn, SoundPill, useDropIn, useRevealTimer } from '../../../../../components/psychic/DropIn';
 import { Body, Card, Field, Notice, RitualScreen, SectionLabel, Title, ui } from '../../../../../components/rituals/ui';
 import { INTUITION_PROMPTS, knownAbout, promptFor, PSYCHOMETRY_STEPS } from '../../../../../lib/craft/psychic/prompts';
 import { CLOSENESS } from '../../../../../lib/craft/psychic/remote';
@@ -24,6 +25,8 @@ export default function Psychometry() {
   const [notes, setNotes] = useState('');
   const [close, setClose] = useState(0);
   const [saved, setSaved] = useState(false);
+  const drop = useDropIn();
+  const timer = useRevealTimer();
   const name = pick?.name || free.trim();
   const known = useMemo(() => knownAbout(name, pick?.ref ?? ''), [name, pick]);
 
@@ -34,7 +37,7 @@ export default function Psychometry() {
   const [pSaved, setPSaved] = useState(false);
 
   const saveObject = async () => {
-    await keep({ kind: 'psychometry', summary: `${name}${close ? `, closeness ${close} of 5` : ''}`, detail: { object: name, ref: pick?.ref ?? '', impressions: notes, closeness: close } });
+    await keep({ kind: 'psychometry', summary: `${name}${close ? `, closeness ${close} of 5` : ''}`, detail: { object: name, ref: pick?.ref ?? '', impressions: notes, closeness: close }, meditation: drop.meditation() });
     setSaved(true);
   };
   const savePrompt = async () => {
@@ -45,6 +48,7 @@ export default function Psychometry() {
   return (
     <RitualScreen back="Psychic development">
       <Title eyebrow="Psychic development">Psychometry & intuition</Title>
+      <SoundPill />
       <Chips>
         <Chip label="With an object" selected={tab === 'object'} onPress={() => setTab('object')} />
         <Chip label="Prompt of the day" selected={tab === 'prompt'} onPress={() => setTab('prompt')} />
@@ -67,6 +71,7 @@ export default function Psychometry() {
               )}
               <Field label={things.length ? 'Or something else' : 'Your object'} placeholder="A ring, a shell, a stone, a book" value={free} onChange={(v) => { setFree(v); setPick(null); }} />
               <Button label="Begin" disabled={!name} onPress={() => setStep(1)} />
+              <DropIn onStart={() => setStep(1)} startDisabled={!name} startLabel="Start: with my object" />
             </>
           )}
           {step >= 1 && step <= 2 && (
@@ -75,8 +80,9 @@ export default function Psychometry() {
                 <SectionLabel>{`${PSYCHOMETRY_STEPS[step - 1].title}: ${name}`}</SectionLabel>
                 <Body>{PSYCHOMETRY_STEPS[step - 1].text}</Body>
               </Card>
+              {step === 2 && drop.settings.revealSec !== null && <CountdownRing state={timer.state} />}
               {step === 2 && <Field label="What you noticed" placeholder="Images, feelings, places, words…" value={notes} onChange={setNotes} multiline />}
-              <Button label={step === 1 ? 'I have held it' : 'Compare with what is known'} disabled={step === 2 && !notes.trim()} onPress={() => setStep(step + 1)} />
+              <Button label={step === 1 ? 'I have held it' : 'Compare with what is known'} disabled={step === 2 && (!notes.trim() || timer.locked)} onPress={() => { if (step === 1) timer.start(); setStep(step + 1); }} />
             </>
           )}
           {step === 3 && (
