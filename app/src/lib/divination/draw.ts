@@ -365,6 +365,24 @@ export const SPREADS: Spread[] = [
     lookBackDays: 30,
   },
   {
+    id: 'curse-check',
+    group: 'deep',
+    kind: 'tarot',
+    label: 'Is this a curse?',
+    detail:
+      'Seven cards for when things feel crossed, heavy or stuck: a starting point, not a verdict. Most heaviness has ordinary roots, so read the ordinary card as closely as the rest, and see a doctor or counsellor for anything that won’t lift.',
+    positions: [
+      { name: 'What I feel', about: 'The heaviness, bad luck or blockage as it truly is right now.' },
+      { name: 'Its root', about: 'Where it grows from: within you, your circumstances, or someone else.' },
+      { name: 'Another’s hand?', about: 'Whether ill will, envy or a working from someone else is touching you.' },
+      { name: 'My wards', about: 'How strong your protection, boundaries and own energy are.' },
+      { name: 'The ordinary answer', about: 'What may be overlooked: health, stress, habits, the plain situation.' },
+      { name: 'What would clear it', about: 'Cleansing, uncrossing, protection, or a practical change.' },
+      { name: 'Once it’s tended', about: 'Where things go when you act on this reading.' },
+    ],
+    lookBackDays: 14,
+  },
+  {
     id: 'shadow-work',
     group: 'deep',
     kind: 'tarot',
