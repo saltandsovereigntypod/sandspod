@@ -22,9 +22,11 @@ async function fromApp(request, env, url) {
     const moved = new URL(location, appOrigin);
     if (moved.origin === appOrigin.origin) response.headers.set("location", `${moved.pathname}${moved.search}${moved.hash}`);
   }
-  if (url.pathname.startsWith("/_expo/static/") && upstream.ok) {
-    // Built scripts and styles carry their content hash in the name.
+  if (upstream.ok && isImmutable(url.pathname)) {
+    // Built scripts, styles and pictures carry their content hash in the name.
     response.headers.set("cache-control", "public, max-age=31536000, immutable");
+  } else if (upstream.ok && url.pathname.startsWith("/assets/")) {
+    response.headers.set("cache-control", "public, max-age=86400");
   } else if ((response.headers.get("content-type") || "").includes("text/html") || url.pathname === "/sw.js") {
     // Pages (and the offline worker) are checked every time, so a release shows straight away.
     response.headers.set("cache-control", "no-cache");
@@ -33,8 +35,40 @@ async function fromApp(request, env, url) {
   return response;
 }
 
+// Content-hashed files never change; everything else from the app is kept a short while.
+const HASHED = /\.[0-9a-f]{20,}\.[a-z0-9]+$/i;
+function isImmutable(pathname) {
+  return pathname.startsWith("/_expo/static/") || (pathname.startsWith("/assets/") && HASHED.test(pathname));
+}
+// How long Cloudflare's edge keeps an app answer, so EAS Hosting (free tier, rate
+// limited) is asked once per edge instead of once per visitor and picture.
+function edgeSeconds(url, response) {
+  if (!response.ok || response.headers.has("set-cookie")) return 0;
+  if (isImmutable(url.pathname)) return 31536000;
+  if (url.pathname.startsWith("/assets/")) return 86400;
+  if (url.pathname === "/sw.js") return 60;
+  return 300; // pages: the same app shell, refreshed every few minutes after a release
+}
+
+async function fromAppCached(request, env, url, ctx) {
+  if (request.method !== "GET" || typeof caches === "undefined" || !ctx) return fromApp(request, env, url);
+  const cache = caches.default;
+  const key = new Request(url.toString(), { method: "GET" });
+  const hit = await cache.match(key);
+  if (hit) return hit;
+  const response = await fromApp(request, env, url);
+  const seconds = edgeSeconds(url, response);
+  if (seconds > 0 && !response.headers.get("location")) {
+    const stored = response.clone();
+    const copy = new Response(stored.body, stored);
+    copy.headers.set("cache-control", `public, max-age=${seconds}`);
+    ctx.waitUntil(cache.put(key, copy));
+  }
+  return response;
+}
+
 export default {
-  async fetch(request, env) {
+  async fetch(request, env, ctx) {
     const url = new URL(request.url);
     const route = decideRoute(url.pathname, url.search);
     if (route.action === "redirect") return Response.redirect(new URL(route.location, url).toString(), 301);
@@ -43,6 +77,6 @@ export default {
       const asset = await env.ASSETS.fetch(request);
       if (asset.status !== 404) return asset;
     }
-    return fromApp(request, env, url);
+    return fromAppCached(request, env, url, ctx);
   },
 };
