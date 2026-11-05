@@ -67,6 +67,7 @@ export default function Charts() {
           {charts.length > 0 && (
             <View style={ui.actions}>
               <Button label="Add someone’s chart" variant="outline" onPress={() => router.push({ pathname: '/rituals/craft/cosmic/chart-edit', params: { relation: charts.some((c) => c.saved.relation === 'me') ? 'other' : 'me' } } as unknown as Href)} />
+              {charts.length > 1 && <Button label="How your charts meet" variant="outline" onPress={() => router.push('/rituals/craft/cosmic/relationship' as Href)} />}
               {charts.length > 1 && <Button label="Compare two charts (synastry)" variant="outline" onPress={() => router.push('/rituals/craft/cosmic/synastry' as Href)} />}
             </View>
           )}

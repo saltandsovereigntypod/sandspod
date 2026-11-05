@@ -3245,6 +3245,15 @@ export const HELP: HelpSection[] = [
         keywords: ['synastry', 'compatibility', 'relationship astrology', 'two charts'],
       },
       {
+        id: 'practice-chart-relationship',
+        title: 'How your charts meet',
+        summary: 'Two saved charts read for a romance, friendship, family or coven bond, with a composite chart, good days together and matching spells. No scores.',
+        steps: ['Open a saved chart and tap "Compare" (or "How your charts meet" in All charts).', 'Choose the other chart and the kind of relationship.', 'Read the sections, pick good days, then build a spell, write in your journal or share a card.', 'In a coven, "Chart sharing" lets you opt in to share your planets’ positions (never birth details).'],
+        tips: ['Keep someone else’s birth details only with their blessing.', 'House overlays need both birth times.'],
+        href: '/rituals/craft/cosmic/relationship',
+        keywords: ['relationship', 'compare charts', 'composite', 'good days together', 'coven chart', 'synastry'],
+      },
+      {
         id: 'practice-chart-craft',
         title: 'Use your chart in your craft',
         summary: 'Your planetary allies, a natal altar, your ruler’s hours, and the deities tied to your strongest planets.',

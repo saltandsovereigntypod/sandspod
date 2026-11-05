@@ -27,13 +27,13 @@ const PHASES: PhaseName[] = [
 ];
 
 export default function JournalForm() {
-  const { sessionId, id } = useLocalSearchParams<{ sessionId?: string; id?: string }>();
+  const { sessionId, id, about, aboutTitle } = useLocalSearchParams<{ sessionId?: string; id?: string; about?: string; aboutTitle?: string }>();
   const { session: account } = useSession();
   const rituals = useRituals();
   const existing = id ? rituals.journal.find((j) => j.id === id) ?? null : null;
 
   const [ritual, setRitual] = useState<RitualSession | null>(null);
-  const [answers, setAnswers] = useState<JournalAnswers>(() => (existing ? answersFromJournal(existing) : blankAnswers(null, new Date())));
+  const [answers, setAnswers] = useState<JournalAnswers>(() => (existing ? answersFromJournal(existing) : { ...blankAnswers(null, new Date()), ...(about ? { intention: about } : {}), ...(aboutTitle ? { title: aboutTitle } : {}) }));
   const [ready, setReady] = useState(!sessionId);
   const [saving, setSaving] = useState(false);
   const [problem, setProblem] = useState<string | null>(null);
