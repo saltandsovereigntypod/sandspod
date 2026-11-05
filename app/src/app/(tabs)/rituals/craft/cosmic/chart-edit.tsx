@@ -238,6 +238,7 @@ function ChartForm({ existing, startAsMe }: { existing: SavedChart | null; start
         </Text>
       </Card>
 
+      {!me && <Notice>Keep someone else’s birth details only with their blessing. They stay private, encrypted on this device, and you can delete them any time.</Notice>}
       {!!problem && <Notice>{problem}</Notice>}
       <View style={ui.actions}>
         <Button label={saving ? 'Saving…' : 'Save'} onPress={() => void save()} disabled={saving} />

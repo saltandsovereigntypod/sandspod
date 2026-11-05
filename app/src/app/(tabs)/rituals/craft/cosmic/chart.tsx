@@ -128,6 +128,7 @@ export default function ChartScreen() {
         <Body muted>{saved.input.placeLabel ?? 'No birthplace'}</Body>
         <Body muted>{`${chart.options.zodiac === 'sidereal' ? 'Sidereal (Lahiri)' : 'Tropical'} zodiac · ${chart.houses ? `${chart.houses.system === 'whole-sign' ? 'Whole Sign' : chart.houses.system[0].toUpperCase() + chart.houses.system.slice(1)} houses` : 'no houses'} · ${chart.options.nodes} node`}</Body>
         <Button label="Edit birth details" variant="outline" onPress={() => router.push({ pathname: '/rituals/craft/cosmic/chart-edit', params: { id: saved.id } } as unknown as Href)} />
+        {charts.length > 1 && <Button label="Compare" variant="outline" onPress={() => router.push({ pathname: '/rituals/craft/cosmic/relationship', params: { a: saved.id } } as unknown as Href)} />}
         <Button label="All charts and settings" variant="text" onPress={() => router.push('/rituals/craft/cosmic/charts' as Href)} />
       </Card>
     </RitualScreen>
