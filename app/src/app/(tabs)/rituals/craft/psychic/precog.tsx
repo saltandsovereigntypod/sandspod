@@ -2,6 +2,8 @@ import { useEffect, useMemo, useState } from 'react';
 import { View } from 'react-native';
 
 import { Button, Chip, Chips, goTo, ResultsLine, usePsychic } from '../../../../../components/psychic/shared';
+import { CountdownRing, DropIn, SoundPill, useDropIn, useRevealTimer } from '../../../../../components/psychic/DropIn';
+import { revealLabel } from '../../../../../lib/craft/psychic/dropin';
 import { Body, Field, List, Notice, RitualScreen, Row, SectionLabel, Title, ui } from '../../../../../components/rituals/ui';
 
 import { todaysCard } from '../../../../../lib/divination/daily';
@@ -32,6 +34,9 @@ export default function Precog() {
   const [number, setNumber] = useState<number | null>(null);
   const [text, setText] = useState('');
   const [saved, setSaved] = useState(false);
+  const drop = useDropIn();
+  const timer = useRevealTimer();
+  const timed = drop.settings.revealSec !== null;
 
   const mine = sessions.filter((s) => s.data.kind === 'precog');
   const entries = mine.map((s) => ({ id: s.id, session: s.data, p: s.data.detail as unknown as PrecogEntry }));
@@ -67,7 +72,7 @@ export default function Precog() {
   const save = async () => {
     const guess: PrecogGuess = { suit, number, text };
     const entry: PrecogEntry = { date: today, forDate: tomorrow, guess, status: 'waiting' };
-    await keep({ kind: 'precog', trials: 0, hits: 0, chance: suit ? suitChance(suit) : 0.5, summary: `${words(entry)} (waiting for ${tomorrow})`, detail: entry as unknown as Record<string, unknown> });
+    await keep({ kind: 'precog', trials: 0, hits: 0, chance: suit ? suitChance(suit) : 0.5, summary: `${words(entry)} (waiting for ${tomorrow})`, detail: entry as unknown as Record<string, unknown>, meditation: drop.meditation() });
     setSaved(true);
   };
 
@@ -78,6 +83,7 @@ export default function Precog() {
   return (
     <RitualScreen back="Psychic development">
       <Title eyebrow="Psychic development">Tomorrow’s card</Title>
+      <SoundPill />
       <Body muted>Guess today which card will be tomorrow’s card of the day. Tomorrow, draw it in Divination as usual; the guess is then checked and scored for you. The card is drawn at random, so nothing you do can change it.</Body>
 
       <View style={ui.gapSmall}>
@@ -100,7 +106,10 @@ export default function Precog() {
       )}
       <Field label="Impressions (optional)" placeholder="A colour, a figure, a feeling, a word" value={text} onChange={setText} multiline />
       {already || saved ? <Notice>Your guess for tomorrow is kept. Come back after drawing tomorrow’s card.</Notice> : null}
-      <Button label="Keep my guess" disabled={!canSave} onPress={save} />
+      {timed && timer.state.phase === 'idle' && <Button label={`Start the ${revealLabel(drop.settings.revealSec)} impressions window`} variant="outline" onPress={timer.start} />}
+      {timed && <CountdownRing state={timer.state} />}
+      <Button label="Keep my guess" disabled={!canSave || (timed && timer.state.phase !== 'ready')} onPress={save} />
+      {!already && !saved && <DropIn onStart={timer.start} startLabel="Start: open the impressions window" />}
       <Notice>Naming a suit or the major arcana is what is scored against chance (a major has 22 chances in 78, a suit 14 in 78). Impressions alone are kept in your Journal but not scored.</Notice>
       <Button label="Draw a card of the day" variant="outline" onPress={goTo('/rituals/divination/draw')} />
 

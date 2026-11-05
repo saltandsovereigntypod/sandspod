@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { Text, View } from 'react-native';
 
+import { CountdownRing, DropIn, SoundPill, useDropIn, useRevealTimer } from '../../../../../components/psychic/DropIn';
 import { Bars, Button, Chip, Chips, EspSymbol, ResultsLine, SuitMark, usePsychic } from '../../../../../components/psychic/shared';
 import { Body, Card, Notice, RitualScreen, SectionLabel, Title, Toggle, ui } from '../../../../../components/rituals/ui';
 import { ESP_MODES, espChance, espMode, isHit, nextTarget, RUN_LENGTHS, type EspMode, type Trial } from '../../../../../lib/craft/psychic/esp';
@@ -30,6 +31,9 @@ export default function Esp() {
   const [wait, setWait] = useState(0);
   const kept = useRef(false);
   const m = espMode(mode);
+  const drop = useDropIn();
+  const timer = useRevealTimer();
+  const timed = drop.settings.revealSec !== null;
 
   useEffect(() => {
     if (wait <= 0) return;
@@ -42,7 +46,8 @@ export default function Esp() {
     setTrials([]);
     setGuess('');
     setTarget(nextTarget(mode, []));
-    setWait(sit ? SIT_SECONDS : 0);
+    setWait(sit && !timed ? SIT_SECONDS : 0);
+    timer.start();
     setPhase('guess');
   };
 
@@ -59,13 +64,14 @@ export default function Esp() {
       if (!kept.current) {
         kept.current = true;
         const hits = all.filter(isHit).length;
-        void keep({ kind: 'esp', trials: all.length, hits, chance: espChance(mode), summary: `${m.label}: ${hits} of ${all.length}`, detail: { mode, trials: all } });
+        void keep({ kind: 'esp', trials: all.length, hits, chance: espChance(mode), summary: `${m.label}: ${hits} of ${all.length}`, detail: { mode, trials: all, revealSec: drop.settings.revealSec }, meditation: drop.meditation() });
       }
       return;
     }
     setTarget(nextTarget(mode, all.map((t) => t.target)));
     setGuess('');
-    setWait(sit ? SIT_SECONDS : 0);
+    setWait(sit && !timed ? SIT_SECONDS : 0);
+    timer.start();
     setPhase('guess');
   };
 
@@ -76,6 +82,7 @@ export default function Esp() {
   return (
     <RitualScreen back="Psychic development">
       <Title eyebrow="Psychic development">Card & colour guessing</Title>
+      {phase !== 'setup' && <SoundPill />}
 
       {phase === 'setup' && (
         <>
@@ -99,6 +106,7 @@ export default function Esp() {
           </View>
           <Toggle label="Sit with it" detail={`A ${SIT_SECONDS}-second pause before each guess, to settle and notice`} value={sit} onChange={setSit} />
           <Button label="Begin" onPress={begin} />
+          <DropIn onStart={begin} />
           <Card>
             <SectionLabel>Your results here</SectionLabel>
             <ResultsLine sessions={sessions} kind="esp" />
@@ -113,12 +121,13 @@ export default function Esp() {
           {phase === 'guess' && (
             <>
               <Card accent>
-                <Body>{wait > 0 ? `Sit with it for ${wait} second${wait === 1 ? '' : 's'}. Let an impression arrive.` : 'The target is chosen and hidden. What comes to you?'}</Body>
+                {timed && <CountdownRing state={timer.state} />}
+                <Body>{timer.locked ? 'Sit with it. Let an impression arrive.' : wait > 0 ? `Sit with it for ${wait} second${wait === 1 ? '' : 's'}. Let an impression arrive.` : 'The target is chosen and hidden. What comes to you?'}</Body>
               </Card>
               <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 10 }}>
                 {m.options.map((o) => (
                   <View key={o.id} style={{ flexBasis: m.options.length > 4 ? '30%' : '47%', flexGrow: 1 }}>
-                    <Button label={o.label} variant="outline" disabled={wait > 0} onPress={() => choose(o.id)} />
+                    <Button label={o.label} variant="outline" disabled={wait > 0 || timer.locked} onPress={() => choose(o.id)} />
                   </View>
                 ))}
               </View>

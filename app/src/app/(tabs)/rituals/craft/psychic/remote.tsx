@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Pressable, View } from 'react-native';
 
+import { CountdownRing, DropIn, SoundPill, useDropIn, useRevealTimer } from '../../../../../components/psychic/DropIn';
 import { AltarImage } from '../../../../../components/altar/AltarImage';
 import { Button, Chip, Chips, ResultsLine, usePsychic } from '../../../../../components/psychic/shared';
 import { Body, Card, Field, Notice, RitualScreen, SectionLabel, Title, ui } from '../../../../../components/rituals/ui';
@@ -24,13 +25,16 @@ export default function Remote() {
   const [notes, setNotes] = useState<Record<string, string>>({});
   const [judged, setJudged] = useState('');
   const [close, setClose] = useState(0);
+  const drop = useDropIn();
+  const timer = useRevealTimer();
+  const startTimer = timer.start;
   const [left, setLeft] = useState(TUNE_IN_SECONDS);
 
   useEffect(() => {
     if (phase !== 'tune') return;
-    const t = setTimeout(() => (left <= 0 ? setPhase('write') : setLeft((s) => s - 1)), 1000);
+    const t = setTimeout(() => (left <= 0 ? (startTimer(), setPhase('write')) : setLeft((s) => s - 1)), 1000);
     return () => clearTimeout(t);
-  }, [phase, left]);
+  }, [phase, left, startTimer]);
 
   const begin = () => {
     // The target is chosen now, before anything is written, and not shown.
@@ -40,6 +44,7 @@ export default function Remote() {
     setJudged('');
     setClose(0);
     setLeft(TUNE_IN_SECONDS);
+    timer.reset();
     setPhase('tune');
   };
 
@@ -54,7 +59,8 @@ export default function Remote() {
       hits: hit ? 1 : 0,
       chance: REMOTE_CHANCE,
       summary: `${target.name}: ${hit ? 'picked it blind' : 'did not pick it blind'}, closeness ${close || '-'} of 5`,
-      detail: { targetId: target.id, targetName: target.name, judged, closeness: close, impressions: notes },
+      meditation: drop.meditation(),
+      detail: { revealSec: drop.settings.revealSec, targetId: target.id, targetName: target.name, judged, closeness: close, impressions: notes },
     });
     setPhase('done');
   };
@@ -64,12 +70,14 @@ export default function Remote() {
   return (
     <RitualScreen back="Psychic development">
       <Title eyebrow="Psychic development">Remote viewing</Title>
+      {phase !== 'intro' && <SoundPill />}
 
       {phase === 'intro' && (
         <>
           <Body muted>A picture from the altar art has been hidden away. You write what you pick up about it, then try to spot it among four pictures before the answer is shown, so the judging is blind.</Body>
           <Body muted>Remote viewing is an old parapsychology experiment. Controlled tests have not shown it works, so treat this as practice in noticing, and let the record speak for itself.</Body>
           <Button label="Begin: a minute to tune in" onPress={begin} />
+          <DropIn onStart={begin} startLabel="Start: choose the target" />
           <Card>
             <SectionLabel>Your results here</SectionLabel>
             <ResultsLine sessions={sessions} kind="remote" />
@@ -84,7 +92,7 @@ export default function Remote() {
             <Body>Close your eyes. Breathe slowly. Let go of wanting to get it right, and rest your attention on the hidden picture without trying to name it.</Body>
             <Body muted>{`${left} seconds`}</Body>
           </Card>
-          <Button label="I am ready" variant="outline" onPress={() => setPhase('write')} />
+          <Button label="I am ready" variant="outline" onPress={() => { timer.start(); setPhase('write'); }} />
         </>
       )}
 
@@ -94,7 +102,8 @@ export default function Remote() {
           {IMPRESSION_PROMPTS.map((p) => (
             <Field key={p.id} label={p.label} placeholder={p.hint} value={notes[p.id] ?? ''} onChange={(v) => setNotes((n) => ({ ...n, [p.id]: v }))} multiline={p.id !== 'words'} />
           ))}
-          <Button label="Go to judging" disabled={!hasNotes} onPress={() => setPhase('judge')} />
+          {drop.settings.revealSec !== null && <CountdownRing state={timer.state} />}
+          <Button label="Go to judging" disabled={!hasNotes || timer.locked} onPress={() => setPhase('judge')} />
         </>
       )}
 
