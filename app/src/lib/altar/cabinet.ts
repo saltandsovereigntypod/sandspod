@@ -141,7 +141,7 @@ export const builtInCabinet: CabinetItem[] = ([
     id: `candles:${color}-candle`,
     category: 'candles' as const,
     name: `${capitalize(color)} Candle`,
-    keywords: [...(KEYWORD_OVERRIDES[`candles:${color}-candle`] ?? [color, 'candle', 'fire'])],
+    keywords: [...(KEYWORD_OVERRIDES[`candles:${color}-candle`] ?? [])],
     forms: allCandleForms.map((form) => ({
       label: form.label,
       image: candleFormImage(color, form.id),
