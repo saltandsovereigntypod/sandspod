@@ -420,6 +420,25 @@ function addDays(key: string, n: number): string {
 const sentenceKey = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
 const joinNames = (names: string[]) => (names.length < 2 ? names.join('') : `${names.slice(0, -1).join(', ')} and ${names[names.length - 1]}`);
 
+const LEADS: Record<Feeling, string[]> = {
+  calm: ['Calm here suggests', 'That you stayed calm points to', 'Feeling at ease hints at', 'With calm in it, this reads as', 'Being settled in it speaks of', 'The quiet you felt suggests'],
+  fear: ['Fear here suggests', 'That you were afraid points to', 'Feeling frightened hints at', 'With fear in it, this reads as', 'The dread you felt speaks of', 'Being on edge here suggests'],
+  joy: ['Joy here suggests', 'That you felt glad points to', 'Feeling light hints at', 'With joy in it, this reads as', 'The gladness you felt speaks of', 'Being happy in it suggests'],
+  sad: ['Sorrow here suggests', 'That you felt sad points to', 'Feeling heavy hints at', 'With sadness in it, this reads as', 'The ache you felt speaks of', 'Being tearful here suggests'],
+  anger: ['Anger here suggests', 'That you felt angry points to', 'Feeling heated hints at', 'With anger in it, this reads as', 'The heat you felt speaks of', 'Being furious here suggests'],
+  confused: ['Confusion here suggests', 'That you felt lost points to', 'Feeling unsure hints at', 'With confusion in it, this reads as', 'The fog you felt speaks of', 'Being puzzled here suggests'],
+};
+const LEAD_PREFIX = /^(?:fear|calm|joy|sadness|sorrow|grief|anger|confusion|confused|sad|angry)\b[^.;:]{0,40}?\b(?:suggests?|points? to|hints? at|hints?|means|shows|says|reads as|speaks of)\s+/i;
+
+/** The feeling line of a symbol, re-led so no two in a reading open alike. */
+function releadFeeling(text: string, feeling: Feeling, n: number): string {
+  const m = LEAD_PREFIX.exec(text);
+  if (!m) return text;
+  const rest = text.slice(m[0].length);
+  const leads = LEADS[feeling];
+  return `${leads[n % leads.length]} ${rest}`;
+}
+
 export function readDream(input: ReadInput): Reading {
   const { text, date } = input;
   const dictionary = input.dictionary ?? [];
@@ -467,7 +486,7 @@ export function readDream(input: ReadInput): Reading {
     if (m.subject.personal) paragraphs.push(para(`In your own dictionary, ${m.subject.name.toLowerCase()} means: ${m.subject.personal.replace(/[.\s]+$/, '')}.`));
     if (s) {
       const tradition = lead ? s.folk : s.psyche;
-      const feel = s.byFeeling[feeling];
+      const feel = releadFeeling(s.byFeeling[feeling], feeling, idx + seed);
       paragraphs.push(para(...(lead ? [tradition, feel] : [feel, tradition])));
       if (s.craft) paragraphs.push(para(s.craft));
     } else if (!m.subject.personal) paragraphs.push('');

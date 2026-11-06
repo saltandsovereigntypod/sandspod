@@ -139,3 +139,11 @@ test('patterns: monthly symbols by moon, pairings, came true', () => {
   assert.equal(rate.came, 1);
   assert.match(rate.line, /25%/);
 });
+
+test('no two symbol paragraphs in a reading open with the same three words', () => {
+  for (const text of [SAMPLE, 'water door cat dog snake house tree moon bridge car mirror, I was afraid and scared', 'I felt happy and joyful in the garden with a horse, a river and a bridge, a mirror and a key']) {
+    const r = readDream({ text, date: '2026-11-05' });
+    const firsts = r.symbols.map((s) => s.paragraphs[0].split(/\s+/).slice(0, 3).join(' ').toLowerCase());
+    assert.equal(new Set(firsts).size, firsts.length, firsts.join(' | '));
+  }
+});
