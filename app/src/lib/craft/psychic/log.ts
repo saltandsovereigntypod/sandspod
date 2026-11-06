@@ -10,12 +10,13 @@ import type { Logged } from './stats.ts';
 
 export const PSYCHIC_SESSIONS = 'psychic.sessions';
 
-export type PsychicKind = 'esp' | 'remote' | 'precog' | 'psychometry' | 'intuition';
+export type PsychicKind = 'esp' | 'remote' | 'precog' | 'psychometry' | 'intuition' | 'telepathy';
 
 export const PSYCHIC_KINDS: { id: PsychicKind; label: string; scored: boolean }[] = [
   { id: 'esp', label: 'Card & colour guessing', scored: true },
   { id: 'remote', label: 'Remote viewing', scored: true },
   { id: 'precog', label: 'Tomorrow’s card', scored: true },
+  { id: 'telepathy', label: 'Telepathy', scored: true },
   { id: 'psychometry', label: 'Psychometry', scored: false },
   { id: 'intuition', label: 'Intuition prompt', scored: false },
 ];

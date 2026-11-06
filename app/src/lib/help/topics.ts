@@ -2798,6 +2798,7 @@ export const HELP: HelpSection[] = [
           'Card & colour guessing: choose symbols, suits, colours or yes and no, and 10 or 25 trials. The hidden target is chosen before you guess; it is shown after each trial.',
           'Remote viewing: write impressions of a hidden altar picture, choose it blind from four pictures, then see the answer and rate how close you were.',
           'Tomorrow’s card: guess a suit or the major arcana (and a number) today. Draw tomorrow’s card of the day in Divination and the guess is scored for you.',
+          'Telepathy: make a session for a pair (invite a friend with a code, or a member of your coven) or for a whole coven. Choose symbols, suits, colours or a picture, the rounds, the seconds a round, a start time and who sends. At the start time everyone\u2019s screen follows the same clock: the sender sees the target and holds it in mind, receivers write impressions and choose, then everyone sees the target and each hit or miss. There is no call. Targets are drawn on the server and kept from receivers until the round is over.',
           'Open "Your results" for hit rate against chance, a chart by day, streaks, time of day and moon phase.',
         ],
         tips: [
