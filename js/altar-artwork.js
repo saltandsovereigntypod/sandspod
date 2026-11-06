@@ -8511,6 +8511,48 @@
         },
         {
           "category": "crystals",
+          "name": "Sugilite",
+          "icon": "💎",
+          "keywords": [
+            "spiritual love",
+            "higher intuition",
+            "self-compassion",
+            "shielding from negativity",
+            "meditation"
+          ],
+          "forms": [
+            {
+              "label": "Point",
+              "image": "",
+              "type": "crystal",
+              "crystal": "sugilite",
+              "form": "point"
+            },
+            {
+              "label": "Chips",
+              "image": "../assets/altar/objects/crystals/sugilite/sugilite-chips.png",
+              "type": "crystal",
+              "crystal": "sugilite",
+              "form": "chips"
+            },
+            {
+              "label": "Cluster",
+              "image": "",
+              "type": "crystal",
+              "crystal": "sugilite",
+              "form": "cluster"
+            },
+            {
+              "label": "Tumbled",
+              "image": "../assets/altar/objects/crystals/sugilite/sugilite-tumbled.png",
+              "type": "crystal",
+              "crystal": "sugilite",
+              "form": "tumbled"
+            }
+          ]
+        },
+        {
+          "category": "crystals",
           "name": "Sunstone",
           "icon": "💎",
           "keywords": [
@@ -13268,6 +13310,19 @@
           "safe travel",
           "nature spirits",
           "grief comfort"
+        ],
+        "sugilite": [
+          "spiritual love",
+          "higher intuition",
+          "self-compassion",
+          "shielding from negativity",
+          "meditation",
+          "water",
+          "jupiter",
+          "third eye",
+          "crown",
+          "compassion",
+          "psychic protection"
         ]
       },
       "deity": {

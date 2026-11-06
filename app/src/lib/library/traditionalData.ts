@@ -5086,6 +5086,33 @@ export const TRADITIONAL_LIBRARY: TraditionalLibraryData = {
         "grief comfort",
         "saturn"
       ]
+    },
+    "sugilite": {
+      "DisplayName": "Sugilite",
+      "Category": "Crystal",
+      "Element": "Water",
+      "Planet": "Jupiter",
+      "Chakra": "Third Eye, Crown",
+      "Uses": "Spiritual love, higher intuition, self-compassion, shielding from negativity, meditation",
+      "PairsWith": "Amethyst, charoite, lepidolite, purple candle",
+      "Cleansing": "Moonlight, sound, smoke",
+      "TraditionalWarnings": "Sugilite often contains manganese and is a fine-grained rock, so do not cut, sand or grind it. Dyed purple stones and imitations are common, and gem-quality sugilite is very expensive. Avoid strong sun and soaking, which can fade or harm it.",
+      "Overview": "Sugilite is a rare lithium-bearing silicate mineral of Mohs hardness about 5.5–6.5, found in a deep purple to violet, with veins of black, magenta and pale lilac. It was named in 1944 after the Japanese petrologist Ken-ichi Sugi, who first described it from Iwagi Island in Japan, and gem-quality material was found in the Wessels Mine in South Africa in the late 1970s. It is sold as tumbled stones, beads, cabochons and chips, and a lot of cheap ‘sugilite’ is dyed or an imitation of a lower-grade rock.",
+      "TraditionalMeaning": "Spiritual love and protection; a purple stone of the modern era, called the ‘love stone’ of the new age and linked with compassion and insight.",
+      "HowToUse": "Start here: hold a small piece of sugilite in a quiet moment, and name one kindness you wish to give to yourself or another. Tumbled stones suit pockets and meditation, chips can go in jars with amethyst, and a cabochon makes a pendant. Keep it out of strong sun and in a pouch.",
+      "PairingNotes": "Sugilite pairs well with amethyst for calm, charoite for transformation, lepidolite for ease, and rose quartz for gentle love. Purple, violet and white candles suit it.",
+      "CleansingNotes": "Cleanse sugilite with moonlight (indoors), sound, smoke, or visualization. A wipe with a barely damp cloth is the most water it needs; do not soak it or leave it in strong light.",
+      "SafetyAndRespect": "Polished sugilite is safe to handle, but raw pieces and dust may contain manganese, so wash hands, do not cut or sand it, and do not use it for elixirs. Its love and protection meanings are modern crystal lore from the 1980s onward, and it is no substitute for support. The Wessels Mine is a working mine in the Northern Cape, so seek sellers who say where a stone is from.",
+      "Traditions": "Wheel of the Year",
+      "TraditionNotes": "Wheel of the Year: Kept on the altar for love and compassion, used at the full moon for intuition, and held in meditation at times of change.\n\nFolk & wider practice: Sugilite was first described in 1944, and the gem-quality South African stone became fashionable in the 1980s, when crystal-healing writers named it the ‘love stone’ for the new age; its meanings come from that period. ‘Luvulite’ is a trade name from the Wessels Mine and the word ‘love’. Modern correspondence tables give sugilite to Jupiter and Water.",
+      "tags": [
+        "spiritual love",
+        "higher intuition",
+        "compassion",
+        "psychic protection",
+        "meditation",
+        "jupiter"
+      ]
     }
   },
   "candle": {

@@ -45,6 +45,7 @@ const KNOWN: Record<string, string> = {
   'pink tourmaline': '#e17aa0', iolite: '#5a5fa8', morganite: '#f2c2b4', amazonite: '#6fc4b4', 'blue apatite': '#2fa0c4',
   'spirit quartz': '#a68ab8', 'desert rose': '#d4b08c',
   lodestone: '#3a3a3c',
+  sugilite: '#6a3a8a',
   staurolite: '#6a4430',
   serpentine: '#6a8a4a',
   septarian: '#8a6a3a',
