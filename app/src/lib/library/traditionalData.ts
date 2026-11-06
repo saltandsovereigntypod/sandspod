@@ -2473,6 +2473,32 @@ export const TRADITIONAL_LIBRARY: TraditionalLibraryData = {
         "protection",
         "mercury"
       ]
+    },
+    "plantain": {
+      "DisplayName": "Plantain",
+      "Category": "Herb",
+      "Element": "Earth",
+      "Planet": "Venus",
+      "Uses": "Healing, safe travel, resilience, grounding, soothing stings",
+      "PairsWith": "Comfrey, yarrow, mugwort, moss agate",
+      "Substitutions": "Comfrey, mullein",
+      "TraditionalWarnings": "Plantain here means the common weed (Plantago major), not the cooking banana (Musa), though they share a name. Do not use leaves from roadsides, lawns treated with chemicals or dog-walking spots, and confirm identity before eating.",
+      "Overview": "Plantain, also called broadleaf plantain or ‘waybread’, is a low, tough, perennial weed of paths, lawns and waste ground, with a rosette of broad, oval, ribbed leaves and slender, upright, green seed spikes. Its seeds are the psyllium husk of commerce in a related species. The leaves and seeds are the parts used, fresh, dried and in salves.",
+      "TraditionalMeaning": "Healing and sturdy protection; a plant that grows where people walk, and carries blessing for the road.",
+      "HowToUse": "Start here: pick a clean leaf from an untreated patch, and press it onto a small scratch or a nettle sting to feel why it was a first-aid plant. Dried leaf goes into sachets, jars and healing blends, and travellers once tucked it into shoes or bags for a safe journey. Infuse the leaf in oil for a salve, and keep dried leaf sealed and dark for up to a year.",
+      "PairingNotes": "Plantain pairs well with comfrey and yarrow for healing, mugwort for safe journeys and dreams, and moss agate for gentle grounding. Green, brown and white candles suit it.",
+      "SubstitutionNotes": "Comfrey or mullein can substitute for plantain in healing and softening workings. Plantain’s gift is its common, tough, roadside quality, so a few leaves picked locally work best.",
+      "SafetyAndRespect": "Pick only from clean ground, away from traffic, sprays and pets’ toilets, and wash leaves before use. Plantain leaf is generally gentle, but some people are allergic to it or to the pollen, and psyllium seed can cause breathing problems and choking if taken dry. It is not a replacement for first aid or medical care for wounds, stings and bites, especially snakebite.",
+      "Traditions": "Anglo-Saxon, Wheel of the Year",
+      "TraditionNotes": "Anglo-Saxon: Plantain (waybread, or wegbrade) is one of the nine herbs of the Old English Nine Herbs Charm, a 10th-century verse recorded in the Lacnunga, where it is addressed as ‘mother of herbs’ and said to withstand venom and ill will; the charm is a medical and magical text with Christian elements.\n\nWheel of the Year: Plantain is picked in summer and used in midsummer healing blends, and for journeys at any time of year.\n\nFolk & wider practice: Across Europe and North America plantain was a field remedy for stings and wounds (Native American groups called the plant ‘white man’s foot’ because it followed settlers), and tradition tucked a leaf under the pillow or in a shoe for safe travel. These are folk uses; modern correspondence tables give plantain to Venus and Earth.",
+      "tags": [
+        "healing",
+        "safe travel",
+        "warding",
+        "resilience",
+        "grounding",
+        "venus"
+      ]
     }
   },
   "crystal": {

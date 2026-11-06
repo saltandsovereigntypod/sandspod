@@ -3898,6 +3898,48 @@
         },
         {
           "category": "herbs",
+          "name": "Plantain",
+          "icon": "🌿",
+          "keywords": [
+            "healing",
+            "safe travel",
+            "resilience",
+            "grounding",
+            "soothing stings"
+          ],
+          "forms": [
+            {
+              "label": "Sprig",
+              "image": "../assets/altar/objects/herbs/plantain/plantain-sprig.png",
+              "type": "herb",
+              "herb": "plantain",
+              "form": "sprig"
+            },
+            {
+              "label": "Loose",
+              "image": "../assets/altar/objects/herbs/plantain/plantain-loose.png",
+              "type": "herb",
+              "herb": "plantain",
+              "form": "loose"
+            },
+            {
+              "label": "Oil",
+              "image": "../assets/altar/objects/herbs/plantain/plantain-oil.png",
+              "type": "oil",
+              "herb": "plantain",
+              "form": "oil"
+            },
+            {
+              "label": "Incense",
+              "image": "../assets/altar/objects/herbs/incense/incense.png",
+              "type": "herb",
+              "herb": "plantain",
+              "form": "incense"
+            }
+          ]
+        },
+        {
+          "category": "herbs",
           "name": "Red Clover",
           "icon": "🌿",
           "keywords": [
@@ -11067,6 +11109,16 @@
           "protection",
           "air",
           "mercury"
+        ],
+        "plantain": [
+          "healing",
+          "safe travel",
+          "resilience",
+          "grounding",
+          "soothing stings",
+          "earth",
+          "venus",
+          "warding"
         ]
       },
       "crystal": {
