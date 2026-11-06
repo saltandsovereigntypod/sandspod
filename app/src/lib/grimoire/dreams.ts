@@ -15,6 +15,8 @@ export const DREAM_ROUTES = {
   journal: '/grimoire/dreams',
   write: '/grimoire/dreams/edit',
   patterns: '/grimoire/dreams/symbols',
+  dictionary: '/grimoire/dreams/dictionary',
+  insights: '/grimoire/dreams/patterns',
   dream: (id: string) => `/grimoire/dreams/${encodeURIComponent(id)}`,
   edit: (id: string) => `/grimoire/dreams/edit?id=${encodeURIComponent(id)}`,
 } as const;

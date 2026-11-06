@@ -22,7 +22,20 @@ export type Dream = {
   /** Worked out from the date, for the night before that morning. */
   moonPhase: PhaseName;
   moonSign: ZodiacSign;
+  /** How it felt, if picked (the Dream reader weighs it with the words). */
+  mood?: DreamMood | '';
+  /** Marked as possibly prophetic. */
+  prophetic?: boolean;
+  /** Marked "came true", with the day and a note. */
+  cameTrue?: { date: string; note: string } | null;
+  /** A reading of this dream the person chose to keep. */
+  reading?: string;
+  /** The day to look back at a possibly prophetic dream, "YYYY-MM-DD". */
+  checkBack?: string;
 };
+
+export type DreamMood = 'fear' | 'calm' | 'joy' | 'sad' | 'anger' | 'confused';
+export const DREAM_MOODS: DreamMood[] = ['fear', 'calm', 'joy', 'sad', 'anger', 'confused'];
 
 /** Dreams the given entries carry, with their store ids. */
 export type DreamEntry = { id: string; createdAt: string; data: Dream };
@@ -110,6 +123,14 @@ export function normalizeDream(raw: unknown): Dream {
     recurring: !!d.recurring,
     moonPhase: PHASES.includes(d.moonPhase as PhaseName) ? (d.moonPhase as PhaseName) : moon.moonPhase,
     moonSign: typeof d.moonSign === 'string' && d.moonSign ? (d.moonSign as ZodiacSign) : moon.moonSign,
+    mood: DREAM_MOODS.includes(d.mood as DreamMood) ? (d.mood as DreamMood) : '',
+    prophetic: !!d.prophetic,
+    cameTrue:
+      d.cameTrue && typeof d.cameTrue === 'object' && typeof d.cameTrue.date === 'string'
+        ? { date: d.cameTrue.date, note: typeof d.cameTrue.note === 'string' ? d.cameTrue.note : '' }
+        : null,
+    reading: typeof d.reading === 'string' ? d.reading : '',
+    checkBack: typeof d.checkBack === 'string' && dateFromKey(d.checkBack) ? d.checkBack : '',
   };
 }
 

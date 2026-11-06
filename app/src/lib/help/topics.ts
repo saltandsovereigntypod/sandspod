@@ -1707,6 +1707,21 @@ export const HELP: HelpSection[] = [
         keywords: ['book of shadows', 'bos', 'grimoire', 'pages', 'journal book'],
       },
       {
+        id: 'grimoire-dream-reader',
+        title: 'Read a dream',
+        summary: 'A reading of the symbols, the feeling and the moon of a dream, with your own dictionary.',
+        steps: [
+          'Open Practice → Grimoire → Dreams, then a dream.',
+          'Tap "Read this dream". Open each part of the reading; tap a symbol to see its full entry.',
+          'Tap "Make this my meaning" on a symbol to save your own meaning. It comes first in every reading, and is listed under "Your dream dictionary".',
+          'Tap "Keep this reading" to save it with the dream. Nothing is kept unless you do.',
+          'Use "Mark as came true" later, and see symbols by month and moon under "Patterns".',
+        ],
+        tips: ['The reading is made from a fixed book of symbols, not by AI, and the same dream always reads the same. Treat it as a set of questions, not a prediction.'],
+        href: '/grimoire/dreams',
+        keywords: ['dream reader', 'dream meaning', 'dream dictionary', 'symbols', 'came true', 'dream patterns'],
+      },
+      {
         id: 'grimoire-mundane-mode',
         title: 'Switch to plain, everyday language',
         summary: 'Mundane mode shows your book in everyday words.',
