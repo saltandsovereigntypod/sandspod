@@ -480,7 +480,7 @@ export const SEASON_PLANTS: SeasonPlant[] = [
   {
     key: 'parsley',
     name: 'Parsley',
-    library: false,
+    library: true,
     sow: range(3, 8),
     harvest: range(5, 11),
     sowWhat: 'Sow in succession through spring and summer (slow to sprout)',
@@ -500,7 +500,7 @@ export const SEASON_PLANTS: SeasonPlant[] = [
   {
     key: 'dill',
     name: 'Dill',
-    library: false,
+    library: true,
     sow: range(4, 7),
     harvest: range(6, 9),
     sowWhat: 'Sow where it’s to grow; it dislikes being moved',

@@ -2706,6 +2706,811 @@ const TraditionalLibrary = {
 
             tags: ["love", "peace", "healing", "remembrance", "ancestors", "venus"]
         },
+
+        lotus: {
+            DisplayName: "Lotus",
+            Category: "Herb",
+
+            Element: "Water",
+
+            Planet: "Moon",
+
+            Uses: "Spiritual awakening, meditation, purification, dream work, devotion",
+
+            PairsWith: "Rose, sandalwood, jasmine, moonstone",
+
+            Substitutions: "Rose, jasmine",
+
+            TraditionalWarnings: "Blue lotus (Nymphaea caerulea) is a water lily, not a true lotus, and contains psychoactive alkaloids; it is restricted or banned in several countries. Sacred lotus is edible, but never ingest or smoke any lotus product you cannot identify.",
+
+            Overview: "The sacred lotus (Nelumbo nucifera) is an aquatic plant that roots in mud and sends up round, waxy leaves and large pink or white flowers on tall stems; the flowers open by day and close at night. It is not the same plant as the blue lotus or ‘blue lily’ of ancient Egypt (Nymphaea caerulea), a water lily with a similar look. The petals, stamens, seeds and seed pods are the parts used, sold dried whole, as tea and as a scented or infused oil.",
+
+            TraditionalMeaning: "Purity that rises from the mud; spiritual awakening, rebirth and calm that stays unstained by what surrounds it.",
+
+            HowToUse: "Start here: set a dried lotus petal or a seed pod in a small dish by your meditation seat. Dried petals and seeds go into sachets, incense blends and altar bowls, and a pressed petal can be kept in a book. Lotus tea (petals or stamens) is the easiest culinary form. Most ‘lotus’ oils and perfumes are fragrance or lotus-scented blends, so check the label, and dilute any oil before dressing a candle or object.",
+
+            PairingNotes: "Lotus pairs well with rose for gentle love and devotion, sandalwood for meditation, jasmine for dreams, and moonstone for lunar calm. White, pale pink or gold candles suit it; blue candles suit water and dream work.",
+
+            SubstitutionNotes: "Rose can stand in for lotus in love and devotion workings, and jasmine in dream and moon work. Neither carries the symbolism of rising from mud, so say that intention aloud when you substitute.",
+
+            SafetyAndRespect: "Do not confuse sacred lotus with blue lotus, which is a different plant with sedative, psychoactive effects and legal limits in many places; it is not recommended in pregnancy, with medication or before driving. Buy edible lotus only from a source that names the plant by its Latin name. Lotus is also a living sacred symbol in Hindu, Buddhist and Kemetic traditions: use it with respect rather than as decoration alone. Seed pods can crumble and the small seeds are a choking hazard for children and pets.",
+
+            Traditions: "Egyptian, Hindu, Wheel of the Year",
+
+            TraditionNotes: "Egyptian: The blue lotus, a water lily, opened at dawn and closed at dusk and was tied to the sun, creation and rebirth. It appears on offering tables and in tomb paintings, and Nefertem is shown rising from one.\n\nHindu: The lotus (padma) is the seat of Lakshmi and Brahma and the emblem of Saraswati and Vishnu; it is offered in puja, and its image of rising clean from mud runs through Hindu and Buddhist teaching alike.\n\nWheel of the Year: Lotus has no place in the old European festival cycle; modern practitioners use it at the full moon and for meditation, and at Litha for its link to the sun.\n\nFolk & wider practice: Lotus is a food as well as a symbol: roots, seeds and leaves are cooked and eaten across Asia, and lotus seed paste fills mooncakes. Modern correspondence tables give the flower to Water and the Moon.",
+
+            tags: ["awakening", "purity", "rebirth", "meditation", "serenity", "moon"]
+        },
+
+        apple_blossom: {
+            DisplayName: "Apple Blossom",
+            Category: "Herb",
+
+            Element: "Water",
+
+            Planet: "Venus",
+
+            Uses: "Love, new beginnings, glamour, fertility, joy",
+
+            PairsWith: "Rose, honeysuckle, rose quartz, apple wood",
+
+            Substitutions: "Hawthorn blossom, cherry blossom",
+
+            TraditionalWarnings: "Apple seeds contain a little cyanogenic compound and the leaves and twigs are not for eating; use only the blossom, and only from trees you know have not been sprayed. Some people with pollen allergies react to the blossom.",
+
+            Overview: "Apple blossom is the spring flower of the apple tree (Malus domestica and wild crab apples): five-petalled, white flushed with pink, with a ring of yellow-tipped stamens and a light, sweet, slightly honeyed scent. It is sold dried as loose petals and whole flowers, and as a scented or infused oil; many people simply pick and dry their own from an unsprayed tree.",
+
+            TraditionalMeaning: "Love, beauty and fresh beginnings; the short, bright promise of spring before the fruit.",
+
+            HowToUse: "Start here: float one fresh blossom in a bowl of water on the altar and keep it only while it is fresh. Dry petals on paper out of the sun and store them sealed; they fade to cream but keep a faint scent. Add them to love and beauty sachets, spring bath blends and offerings. Apple blossom oil is usually fragrance, so check the label, and dilute any oil before dressing a candle.",
+
+            PairingNotes: "Apple blossom pairs well with rose for love, honeysuckle for sweetness, rose quartz for tenderness, and apple wood or a dried apple slice for the whole tree. Pink and white candles suit it; green candles suit new growth.",
+
+            SubstitutionNotes: "Hawthorn blossom can stand in for apple blossom in spring and love workings, and cherry blossom for beauty and renewal. Rose petals work where the focus is love alone.",
+
+            SafetyAndRespect: "Only the blossom is used: apple seeds, leaves and bark are not for eating or brewing. Pick from trees you know are unsprayed, and take only a little so the tree can set fruit. Pollen can trigger hay fever and asthma. Wild crab apple blossom is as good as orchard apple; do not pick from protected orchards or other people’s trees without leave.",
+
+            Traditions: "Celtic, Wheel of the Year",
+
+            TraditionNotes: "Celtic: The apple is the sacred fruit of the Otherworld in Irish and Welsh tradition: Avalon is ‘the isle of apples’, and in Irish tales a silver apple branch with blossoms is the token that calls a mortal to the Otherworld. The apple is also one of the nobles of the wood in early Irish law texts, and quert in the Ogham is traditionally read as apple.\n\nWheel of the Year: Apple blossom opens in the weeks around Beltane and is brought in or floated for love and beauty, while the ripe fruit belongs to Mabon and Samhain; wassailing the orchard in midwinter is an English custom to bless next year’s blossom.\n\nFolk & wider practice: In English folk tradition, blossom on the tree out of season was a warning, and girls were said to divine a husband with apple peel. Modern correspondence tables give apple blossom to Venus and Water.",
+
+            tags: ["love", "beauty", "spring", "beginnings", "youth", "venus"]
+        },
+
+        bergamot: {
+            DisplayName: "Bergamot",
+            Category: "Herb",
+
+            Element: "Fire",
+
+            Planet: "Sun",
+
+            Uses: "Success, joy, confidence, prosperity, clearing heaviness",
+
+            PairsWith: "Lavender, orange peel, frankincense, citrine",
+
+            Substitutions: "Orange peel, lemon peel",
+
+            TraditionalWarnings: "Bergamot essential oil makes skin sensitive to sunlight and can cause burns and blistering; choose a furocoumarin-free (FCF) oil or avoid sun after skin contact. Do not confuse it with bee balm, which is also called bergamot.",
+
+            Overview: "Bergamot (Citrus bergamia) is a small citrus tree grown mainly in Calabria in southern Italy; its round, yellow-green fruit is sour and mostly grown for the fragrant oil pressed from its peel, which gives Earl Grey tea its flavour. The peel, the blossom and the oil are the parts used, sold as dried peel, tea blends and essential oil. In North America ‘bergamot’ is also the common name of bee balm (Monarda), an unrelated flowering herb that smells similar; this entry is the citrus.",
+
+            TraditionalMeaning: "Brightness and confidence; a sunny citrus plant of success, cheerfulness and lifting a heavy mood.",
+
+            HowToUse: "Start here: brew a cup of Earl Grey and breathe in the steam while you set an intention for the day. Dried peel goes into jars, sachets and incense blends; the oil is very strong, so add one drop to a carrier oil to dress a candle and keep it away from skin in sunlight. Store peel and oil sealed and away from heat, as the scent fades quickly.",
+
+            PairingNotes: "Bergamot pairs well with lavender for calm confidence, orange peel for success, frankincense for blessing, and citrine for prosperity. Yellow, gold and white candles suit it.",
+
+            SubstitutionNotes: "Orange peel or lemon peel can substitute for bergamot in success and confidence workings, though neither has its floral, tea-like note. Bee balm leaf (Monarda) is a separate herb and not a true substitute.",
+
+            SafetyAndRespect: "Bergamot oil (not bergamot tea) can cause phototoxic burns when put on skin that is then exposed to sun, so always dilute it and avoid sun for 12 hours after use, or choose a furocoumarin-free oil. Keep oils away from pets, especially cats, and out of reach of children. Bergamot can interact with some medicines when taken as a lot of tea, and the oil must never be swallowed. Magical use should not replace medical, financial or legal support.",
+
+            Traditions: "Wheel of the Year",
+
+            TraditionNotes: "Wheel of the Year: Modern practitioners use bergamot at Litha and in midsummer sun workings, and a drop in a bath or on a candle is traditional in modern prosperity and success magic.\n\nFolk & wider practice: Bergamot has no deep ritual history of its own; it has been grown in Calabria since at least the 18th century and went into perfumes such as eau de Cologne before Earl Grey tea. Its use in modern success magic comes from its bright scent and its link to the Sun in correspondence tables. Bee balm (Monarda didyma), also called bergamot, was used by Oswego and other Indigenous peoples of North America, and is a separate plant with its own history that should be credited to them.",
+
+            tags: ["success", "joy", "confidence", "prosperity", "sun"]
+        },
+
+        blackthorn: {
+            DisplayName: "Blackthorn",
+            Category: "Herb",
+
+            Element: "Fire",
+
+            Planet: "Mars",
+
+            Uses: "Banishing, protection, endings, resilience, justice",
+
+            PairsWith: "Hawthorn, rowan, black tourmaline, black candle",
+
+            Substitutions: "Hawthorn thorn, rose thorn",
+
+            TraditionalWarnings: "Blackthorn thorns are sharp, can break off and fester, and the leaves, bark and seed kernels (the stones inside sloes) contain cyanogenic compounds and are not for eating. Eat only ripe sloe flesh, and never the stones.",
+
+            Overview: "Blackthorn (Prunus spinosa), also called sloe, is a dense, spiny shrub of hedgerows with black bark, white blossom that appears before the leaves in early spring, and small, blue-black, very sour fruits (sloes) after the first frosts. The thorns, twigs, blossom and sloes are the parts used, sold dried or as sloe berries, and sloes are best known for steeping in gin.",
+
+            TraditionalMeaning: "The thorn that guards and cuts; protection, hard endings and the strength to see a bleak season through.",
+
+            HowToUse: "Start here: keep a single blackthorn thorn in a small dish or pouch as a charm for boundaries. Thorns can be pushed into a candle, a poppet or the soil, or kept in a jar of protection herbs; handle them with care and store them where no one will be pricked. Sloes can be dried, or steeped in gin or sugar, and the white blossom is brought indoors only briefly, as a harbinger of spring.",
+
+            PairingNotes: "Blackthorn pairs well with hawthorn for the boundary and the gate, rowan for protection, black tourmaline for banishing, and black or dark red candles for endings.",
+
+            SubstitutionNotes: "Hawthorn thorn or a rose thorn can stand in for blackthorn in protection charms. Neither carries the Cailleach and winter symbolism, so state the intention aloud.",
+
+            SafetyAndRespect: "Thorns are sharp and can cause painful, slow-healing wounds; wear gloves when cutting and keep them from children and pets. Sloe stones, leaves and bark contain cyanogenic compounds, so only the ripe flesh of sloes is edible, and not in large amounts. Blackthorn is an important wildlife hedge: harvest only a few twigs and never strip a hedge. Traditional ‘blasting’ uses, including the Irish and Scottish folk lore of cursing with a blackthorn, are folklore and are not recommended; this entry offers protective and boundary uses only.",
+
+            Traditions: "Celtic, Wheel of the Year",
+
+            TraditionNotes: "Celtic: In Irish tradition blackthorn (straif, the Ogham letter for it) is the tree of strife and hard fortune, and is linked to the winter hag, the Cailleach. The blackthorn walking stick, the shillelagh, is an Irish tradition. In Welsh and Scottish folklore it is a tree of ill luck to cut in bloom.\n\nWheel of the Year: Blackthorn’s white blossom marks the ‘blackthorn winter’, a cold snap in early spring; modern practitioners use its thorns around Samhain and in winter protection charms, and gather sloes after the first frost.\n\nFolk & wider practice: In English folklore blackthorn thorns were used to prick out witchcraft in ‘witch bottles’, and bringing the blossom indoors was thought to bring death or ill luck. Modern correspondence tables give it to Mars and to the cleansing of hedges and boundaries.",
+
+            tags: ["banishing", "protection", "endings", "resilience", "justice", "mars"]
+        },
+
+        bramble: {
+            DisplayName: "Bramble",
+            Category: "Herb",
+
+            Element: "Water",
+
+            Planet: "Venus",
+
+            Uses: "Protection, healing, prosperity, fertility, resilience",
+
+            PairsWith: "Blackthorn, hawthorn, mugwort, garnet",
+
+            Substitutions: "Raspberry leaf, blackthorn",
+
+            TraditionalWarnings: "Bramble thorns scratch and can cause infection. Do not eat blackberries picked near busy roads or sprayed verges, and avoid wild fruit after Michaelmas, when folklore says the devil has spat on it; in practice, old berries are simply mouldy.",
+
+            Overview: "Bramble is the wild blackberry (Rubus fruticosus and related species), a rampant, arching, prickly shrub of hedges and waste ground, with white to pink five-petalled flowers in summer and glossy black fruits from late summer. The berries, leaves, young shoots and roots are the parts used, sold dried or picked fresh.",
+
+            TraditionalMeaning: "Hardy protection and healing; a thorny plant that gives its sweetness to those who risk the scratches.",
+
+            HowToUse: "Start here: pick a few ripe blackberries from a clean hedgerow, set one on your altar as an offering, and eat the rest with the intention of prosperity or protection. Dry the leaves on paper for sachets and tea, and keep long bramble stems for knots, wreaths or a protection loop over a door. Wear gloves when handling stems.",
+
+            PairingNotes: "Bramble pairs well with blackthorn and hawthorn for hedge protection, mugwort for dream and spirit work, and garnet for steady vitality. Dark red, purple or green candles suit it.",
+
+            SubstitutionNotes: "Raspberry leaf can substitute for bramble leaf in healing and fertility workings, and blackthorn in protection. Neither has the passing-under-the-arch symbolism, so use your own words.",
+
+            SafetyAndRespect: "Wear gloves for the thorns, and wash wild fruit before eating. Leaves as tea are generally mild, but not recommended in pregnancy without advice. Wild blackberry is a vital food for wildlife: take only part of a patch and leave berries for birds and insects. Magical use should not replace medical care for an illness or wound.",
+
+            Traditions: "Celtic, Wheel of the Year",
+
+            TraditionNotes: "Celtic: In Irish tradition the bramble is the Ogham letter muin, associated with the vine and with wine, and it is also read as a plant of hardship and of the hedge. Bramble arches, where a bush has rooted both ends, were crawled through in English and Celtic folk cures for boils, rheumatism and whooping cough.\n\nWheel of the Year: Blackberries ripen around Lammas and Mabon and are gathered then; folklore says they should not be picked after Michaelmas (29 September in Britain) because the devil spits on them, and a bramble wreath is hung for protection.\n\nFolk & wider practice: Bramble is a very old protective plant in European folk magic, trailed over graves to keep the dead in and thorns used to keep witches out. These are folk beliefs, not a single tradition, and modern correspondence tables give bramble to Venus and Water.",
+
+            tags: ["protection", "healing", "prosperity", "fertility", "resilience", "venus"]
+        },
+
+        burdock: {
+            DisplayName: "Burdock",
+            Category: "Herb",
+
+            Element: "Water",
+
+            Planet: "Venus",
+
+            Uses: "Protection, cleansing, binding to a purpose, tenacity, healing",
+
+            PairsWith: "Dandelion, nettle, black tourmaline, sage",
+
+            Substitutions: "Dandelion root, nettle",
+
+            TraditionalWarnings: "Burdock root is eaten and used as a tea, but it can look like deadly nightshade (belladonna) or other poisonous plants when foraged, and it can cause allergic reactions in people sensitive to daisies, ragweed or chrysanthemums. Do not eat it in pregnancy, or with diabetes or blood-thinning medication, without medical advice.",
+
+            Overview: "Burdock (Arctium lappa and A. minus) is a tall biennial of waste ground and hedgerows, with huge, heart-shaped, rhubarb-like leaves and round purple thistle-like flowers that turn into the hooked, clinging burrs that gave Velcro its design. The long, brown, tapering root is the part most used, sold dried, in slices or powder, with the leaves and seeds used less often.",
+
+            TraditionalMeaning: "Protection that clings and purges; a sticky, stubborn plant used to hold a boundary and cleanse what should not stay.",
+
+            HowToUse: "Start here: keep a small piece of dried burdock root in a dish or pouch by the door. The root can be added to protection and cleansing jars, simmered as a tea, or burned in small bits with other herbs on charcoal. A single burr can be put in a jar to hold or ‘catch’ something. Store root dry and sealed, as it takes up damp.",
+
+            PairingNotes: "Burdock pairs well with dandelion and nettle in cleansing blends, black tourmaline for a protective boundary, and sage for smoke cleansing. Black, brown or white candles suit it.",
+
+            SubstitutionNotes: "Dandelion root or nettle can substitute for burdock in cleansing workings. Neither has its clinging, burr-like holding quality, so for binding work use a few burrs from the plant itself.",
+
+            SafetyAndRespect: "Positively identify burdock before eating the root, as young plants can be confused with poisonous ones such as foxglove and belladonna. Burdock can cause allergic reactions and contact dermatitis, and its root acts on blood sugar and as a diuretic, so ask a clinician if you are pregnant, breastfeeding, on medication or have a medical condition. Burrs tangle in fur and feathers and can trap small animals and birds, so keep them from pets and clear them from wild places. Magical use should not replace medical care.",
+
+            Traditions: "Celtic, Wheel of the Year",
+
+            TraditionNotes: "Celtic: In British and Irish folk medicine burdock was a cleansing plant of the spring, used in a root drink called dandelion and burdock; the burrs were also known as ‘beggar’s buttons’ and ‘love buttons’ and thrown at sweethearts to see if they would stick.\n\nWheel of the Year: Modern practitioners dig the root in autumn of the first year or spring of the second, and use it at Samhain and the dark moon for cleansing and protection.\n\nFolk & wider practice: Burdock is used in European and American folk magic as a protective herb that ‘breaks hexes’, and in Chinese medicine (niubang) and Japanese cooking (gobo) for its root and seeds. Modern correspondence tables give it to Venus and Water.",
+
+            tags: ["protection", "cleansing", "binding", "hex-breaking", "healing", "venus"]
+        },
+
+        cacao: {
+            DisplayName: "Cacao",
+            Category: "Herb",
+
+            Element: "Fire",
+
+            Planet: "Mars",
+
+            Uses: "Love, pleasure, abundance, devotion, vitality",
+
+            PairsWith: "Rose, cinnamon, vanilla, rose quartz",
+
+            Substitutions: "Carob, cinnamon",
+
+            TraditionalWarnings: "Cacao contains theobromine and caffeine, which can cause jitteriness, sleeplessness and a fast heartbeat, and is toxic to dogs, cats and other pets, even in small amounts. Raw cacao is also a common allergen and can contain heavy metals, so buy from a reputable source.",
+
+            Overview: "Cacao (Theobroma cacao) is a small tropical rainforest tree whose large, ridged pods grow straight from the trunk and branches and hold the beans from which chocolate is made. The beans, nibs (crushed beans), powder and butter are the parts used, sold as whole or crushed beans, nibs, ceremonial-grade paste and as an infused oil or butter.",
+
+            TraditionalMeaning: "Love, devotion and the open heart; a plant of Mesoamerican offering and exchange, and of sweetness earned.",
+
+            HowToUse: "Start here: melt a small square of dark chocolate, or steep a few cacao nibs in hot water, and drink it slowly with an intention of love or gratitude. Whole beans and nibs go into sachets and altar bowls and can be left as offerings; keep them sealed and dry, as they take up smells. Never leave cacao where a pet can reach it, and use only a little butter or oil, diluted, for dressing a candle.",
+
+            PairingNotes: "Cacao pairs well with rose for love, cinnamon for warmth, vanilla for sweetness, and rose quartz for the heart. Red, brown and pink candles suit it.",
+
+            SubstitutionNotes: "Carob can stand in for cacao where caffeine is a problem, though it lacks its history. Cinnamon can stand in for its warming, passionate side.",
+
+            SafetyAndRespect: "Cacao is poisonous to dogs, cats and horses; keep it, chocolate and nibs well out of reach of pets, and put offerings out of their way. It contains caffeine-like stimulants and can disturb sleep, worsen anxiety and interact with some medication; people who are pregnant or have heart conditions should ask a clinician before taking large amounts. Cacao has a living sacred place for Maya, Aztec (Mexica) and other Mesoamerican peoples and for several Indigenous communities of South America; ‘ceremonial cacao’ is sold widely, and it is respectful to buy from Indigenous-owned or fair-trade growers and to avoid claiming a lineage that is not yours.",
+
+            Traditions: "Wheel of the Year",
+
+            TraditionNotes: "Wheel of the Year: Cacao is used in modern practice around Imbolc, Valentine’s Day and Beltane as a plant of love and sweetness, and at the new moon for intention-setting.\n\nFolk & wider practice: Cacao was drunk, and the beans used as currency, by the Maya and the Aztec (Mexica); a bitter, frothy, spiced drink was served at feasts and offered to the gods, and the Maya connected it to the maize god. It reached Spain in the 16th century and became sweetened chocolate in Europe. The modern ‘cacao ceremony’ is a recent, mostly Western practice that borrows from these traditions, and should be named as a modern adaptation. Modern correspondence tables give cacao to Mars and Fire.",
+
+            tags: ["love", "heart-opening", "abundance", "devotion", "vitality", "mars"]
+        },
+
+        coriander: {
+            DisplayName: "Coriander",
+            Category: "Herb",
+
+            Element: "Fire",
+
+            Planet: "Mars",
+
+            Uses: "Love, longevity, peace in the home, health, fidelity",
+
+            PairsWith: "Cumin, cardamom, orange peel, carnelian",
+
+            Substitutions: "Cumin, caraway",
+
+            TraditionalWarnings: "Coriander can trigger allergies, particularly in people allergic to celery, carrot, mugwort or birch pollen, and the oil is strong enough to irritate skin. Some people find the fresh leaf tastes of soap, a trait that is partly genetic.",
+
+            Overview: "Coriander (Coriandrum sativum) is a feathery annual of the carrot family, grown for both its leaves (called cilantro in North America) and its round, ridged, golden-tan seeds, which smell warm, citrusy and sweet. The leaves, seeds and essential oil are the parts used, sold fresh, dried and ground.",
+
+            TraditionalMeaning: "Love, long life and a peaceful home; an old, warm spice that carries sweetness and endurance.",
+
+            HowToUse: "Start here: crush a few coriander seeds between your fingers and breathe in the warm, citrus scent. Whole seeds go into jars, sachets and charm bags and keep their scent for a year or more; ground seed fades quickly. Fresh leaf is best used in the kitchen, and the oil should be diluted before dressing a candle.",
+
+            PairingNotes: "Coriander pairs well with cumin for protection and fidelity, cardamom for love, orange peel for joy, and carnelian for warmth and vitality. Red, orange and yellow candles suit it.",
+
+            SubstitutionNotes: "Cumin or caraway seed can substitute for coriander seed in home and protection workings, though neither has its love and longevity associations.",
+
+            SafetyAndRespect: "Coriander is a common culinary herb and is safe in food amounts, but it can cause allergic reactions and skin irritation. Keep essential oil diluted and away from pets, children and eyes. Medicinal amounts should not be taken in pregnancy or alongside diabetes or blood pressure medicine without advice. Magical use should not replace medical, financial or legal support.",
+
+            Traditions: "Egyptian, Wheel of the Year",
+
+            TraditionNotes: "Egyptian: Coriander seeds were found in the tomb of Tutankhamun and are mentioned in ancient Egyptian medical texts, so it was prized as both a food and an aromatic of the afterlife.\n\nWheel of the Year: Coriander is sown in spring and seeds are harvested in late summer, and modern practitioners use it for love at Beltane and in sachets for the home at Lughnasadh.\n\nFolk & wider practice: Coriander is mentioned in the Bible (manna is compared to coriander seed), in the Sanskrit and Chinese herbals and in the Arabian Nights as a love charm. In medieval Europe the seeds were added to love potions and given to cure impotence, and in many places coriander seeds are given to guests for luck. Modern correspondence tables give it to Mars and Fire.",
+
+            tags: ["love", "longevity", "home peace", "health", "passion", "mars"]
+        },
+
+        dill: {
+            DisplayName: "Dill",
+            Category: "Herb",
+
+            Element: "Fire",
+
+            Planet: "Mercury",
+
+            Uses: "Protection, money luck, love, restful sleep, clearing envy",
+
+            PairsWith: "Fennel, caraway, rosemary, citrine",
+
+            Substitutions: "Fennel, caraway",
+
+            TraditionalWarnings: "Dill is safe in food amounts, but concentrated seed and oil should be avoided in pregnancy, and dill can cause skin sensitivity to sunlight on contact in some people. It can also cause allergic reactions in those sensitive to carrot-family plants.",
+
+            Overview: "Dill (Anethum graveolens) is a tall, feathery annual of the carrot family, with thread-like blue-green fronds and flat yellow umbels, grown for its leaves (dill weed) and its flat, ridged, oval seeds. The fronds smell fresh and grassy and the seeds warm and caraway-like. Both are used fresh or dried, along with the oil.",
+
+            TraditionalMeaning: "Protection and good fortune in the home; an old herb of warding, luck and gentle love.",
+
+            HowToUse: "Start here: hang a small bunch of dill over a doorway or set a few seed heads in a jar by the door. Dried fronds and seeds go into protection jars, sachets and bath blends; seed is the more lasting form and keeps well sealed. Fresh dill can be grown in a pot by the kitchen door, and the oil should be well diluted before dressing a candle.",
+
+            PairingNotes: "Dill pairs well with fennel and caraway for protection, rosemary for cleansing, and citrine for prosperity. Green, yellow and white candles suit it.",
+
+            SubstitutionNotes: "Fennel or caraway can substitute for dill in protection and luck workings. Fennel suits the same warding uses, and caraway brings the home-keeping quality.",
+
+            SafetyAndRespect: "Dill is generally gentle as food, but avoid large amounts of seed or oil in pregnancy and breastfeeding, and keep essential oils away from pets and children. It can cause allergic and photosensitive skin reactions. Magical use should not replace medical care for stomach pain or sleep problems.",
+
+            Traditions: "Wheel of the Year",
+
+            TraditionNotes: "Wheel of the Year: Dill is sown in spring and cut at midsummer, when Litha herbs were traditionally gathered for protection; sprigs were hung over doors to ward off ill luck.\n\nFolk & wider practice: Dill appears in Egyptian medical papyri and Greek and Roman writings, and in medieval Europe it was held to be a herb against witchcraft: a line from an old verse says ‘Trefoil, vervain, John’s wort, dill, hinder witches of their will’. Dill seed was given to babies, and ‘gripe water’ is made from it. Modern correspondence tables give it to Mercury and Fire, and bridal bouquets once included it.",
+
+            tags: ["protection", "money luck", "love", "evil eye", "sleep", "mercury"]
+        },
+
+        hops: {
+            DisplayName: "Hops",
+            Category: "Herb",
+
+            Element: "Air",
+
+            Planet: "Mars",
+
+            Uses: "Restful sleep, dream work, healing, calming anger, hospitality",
+
+            PairsWith: "Valerian, lavender, chamomile, amethyst",
+
+            Substitutions: "Lavender, chamomile",
+
+            TraditionalWarnings: "Hops are poisonous to dogs, causing a dangerous rise in body temperature even from small amounts, and some people react to them with skin irritation, particularly pickers handling the fresh cones. Hops can deepen low mood and are not advised in pregnancy, in depression, or with sedatives or alcohol.",
+
+            Overview: "Hops (Humulus lupulus) is a vigorous climbing vine of the hemp family, which twines clockwise up poles and hedges and bears pale green, papery, cone-shaped female flowers in late summer, dusted inside with sticky golden lupulin glands. The cones are the part used, sold dried loose or in pillow blends, and best known for bittering beer.",
+
+            TraditionalMeaning: "Sleep and calm; a bitter plant of rest, dreams and gentle healing, and of the welcome of good ale.",
+
+            HowToUse: "Start here: put a pinch of dried hops in a small cloth pouch and tuck it beside your pillow, away from where a pet can chew it. Dried cones go into dream pillows, sleep sachets and incense with mugwort and lavender; keep them sealed and dry, as the scent turns cheesy and stale with age. The oil should be diluted before dressing a candle.",
+
+            PairingNotes: "Hops pairs well with valerian and lavender for sleep, chamomile for calm, mugwort for dreams, and amethyst for restful meditation. Blue, purple and white candles suit it.",
+
+            SubstitutionNotes: "Lavender or chamomile can substitute for hops in sleep and calm workings, with a gentler, floral rather than bitter scent.",
+
+            SafetyAndRespect: "Hops are highly toxic to dogs, and a small amount can be fatal, so keep them, spent brewing hops and any pillows out of reach of pets. People with depression, hormone-sensitive conditions, or on sedatives or medicines that affect the liver should ask a clinician before taking hops internally. Handling fresh hops can cause skin rashes. Magical use should not replace medical care for poor sleep.",
+
+            Traditions: "Celtic, Wheel of the Year",
+
+            TraditionNotes: "Celtic: Hops grew wild in British and Irish hedgerows before the beer-brewing trade made them a crop; no particular ritual use is firmly recorded for them in Celtic sources, and this entry draws on later English folk use.\n\nWheel of the Year: Hops are picked in late summer and early autumn and are linked in modern practice to Lammas, the harvest and the blessing of ale.\n\nFolk & wider practice: In England, hop pillows were a folk remedy for sleeplessness, and the story that King George III slept on one was widely told in the 18th century. Hop-picking was a seasonal work and holiday for families from London and the Midlands in Kent and Herefordshire, and hops were once hung in the house for luck. Modern correspondence tables give hops to Mars and Air.",
+
+            tags: ["sleep", "dreams", "healing", "calming anger", "hospitality", "mars"]
+        },
+
+        lemon_peel: {
+            DisplayName: "Lemon Peel",
+            Category: "Herb",
+
+            Element: "Water",
+
+            Planet: "Moon",
+
+            Uses: "Cleansing, friendship, joy, mental clarity, renewal",
+
+            PairsWith: "Rosemary, mint, white sage, citrine",
+
+            Substitutions: "Orange peel, lime peel",
+
+            TraditionalWarnings: "Lemon oil can make skin sensitive to sunlight, and cold-pressed lemon peel oil should be diluted before touching skin. The oil and peel can irritate skin and are best kept from pets, especially cats.",
+
+            Overview: "Lemon peel is the yellow outer skin (zest) of the lemon (Citrus limon), which is full of fragrant oil with a bright, clean, sharp scent. It is sold as dried strips and flakes, fresh zest from unwaxed fruit, and cold-pressed essential oil. The pith beneath is bitter and is not used.",
+
+            TraditionalMeaning: "Cleansing, friendship and a fresh start; a sharp, bright plant that cuts through stagnation and sourness.",
+
+            HowToUse: "Start here: scrape the zest of one unwaxed lemon into a small bowl on the altar and breathe in the scent. Dried peel goes into cleansing jars, simmer pots, floor-wash and incense blends and keeps for many months if sealed; fresh peel should be used within a few days. Dilute the oil in a carrier before dressing a candle, and keep it away from skin in sunlight.",
+
+            PairingNotes: "Lemon peel pairs well with rosemary for cleansing, mint for clarity, white sage or palo santo for smoke cleansing, and citrine for a sunny uplift. White, yellow and silver candles suit it.",
+
+            SubstitutionNotes: "Orange peel or lime peel can substitute for lemon peel in cleansing and uplifting workings, although orange is warmer and sweeter. Lemon balm is a gentler herb of a similar scent.",
+
+            SafetyAndRespect: "Choose unwaxed, untreated fruit for zest, and wash it well. Lemon oil can cause sun-sensitive skin reactions and irritation, so dilute it and avoid sunlight after use on skin. Keep oils away from pets, especially cats, and from children. Magical use should not replace proper cleaning or medical advice.",
+
+            Traditions: "Wheel of the Year",
+
+            TraditionNotes: "Wheel of the Year: Lemon peel is used in modern practice at Imbolc and spring cleaning to clear the house, and at Litha for its sun-bright scent; lemon water is a common modern cleansing wash.\n\nFolk & wider practice: Lemons reached Europe through the Arab world in the Middle Ages and became a symbol of Mediterranean cleanliness; in some folk traditions a lemon stuck with pins or cut in half was used in protection charms and to draw out ill will. These are largely modern or regional folk uses. Modern correspondence tables give lemon to the Moon and Water, and link it with friendship.",
+
+            tags: ["cleansing", "friendship", "negativity", "clarity", "renewal", "moon"]
+        },
+
+        marjoram: {
+            DisplayName: "Marjoram",
+            Category: "Herb",
+
+            Element: "Air",
+
+            Planet: "Mercury",
+
+            Uses: "Happiness, comfort in grief, love, protection of the home, health",
+
+            PairsWith: "Thyme, rosemary, lavender, rose quartz",
+
+            Substitutions: "Oregano, thyme",
+
+            TraditionalWarnings: "Marjoram is safe in food amounts, but concentrated oil and large doses of the herb should be avoided in pregnancy. The oil can irritate skin and should be diluted.",
+
+            Overview: "Sweet marjoram (Origanum majorana) is a small, tender, bushy Mediterranean herb of the mint family, with soft, rounded, grey-green leaves and knot-like clusters of buds that gave it the old name ‘knotted marjoram’. The scent is warm, sweet and slightly camphor-like, milder than its relative oregano. The leaves and flowering tops are the parts used, fresh or dried, along with the essential oil.",
+
+            TraditionalMeaning: "Joy and comfort; a gentle herb of love, blessing and the kind of calm that follows a loss.",
+
+            HowToUse: "Start here: rub a dried leaf between your fingers and breathe in its sweet scent before you begin. Dried leaf goes into sachets, jars, bath blends and household blessings, and keeps well for a year if sealed away from light. Sprigs can be strewn at a threshold or set at a table to bless a meal. Dilute the oil before dressing candles or objects.",
+
+            PairingNotes: "Marjoram pairs well with thyme for courage and health, rosemary for remembrance, lavender for calm, and rose quartz for tenderness. White, pink and pale yellow candles suit it.",
+
+            SubstitutionNotes: "Oregano can substitute for marjoram in protection and home workings, though its scent is stronger and sharper. Thyme can stand in for health and courage.",
+
+            SafetyAndRespect: "Marjoram is a common cooking herb and is safe as food. Avoid medicinal amounts of the herb or oil in pregnancy and with blood-thinning or diabetes medicines, and keep oils away from pets, children and eyes. Magical use, including grief rituals, should not replace support from a doctor, counsellor or the people around you.",
+
+            Traditions: "Hellenic, Wheel of the Year",
+
+            TraditionNotes: "Hellenic: In Greek and Roman tradition marjoram (amarakos or sampsuchon) was given to Aphrodite, who was said to have created it, and it was planted on graves so that the dead might rest in peace and happiness. Marjoram garlands were worn at weddings.\n\nWheel of the Year: Marjoram is harvested in late summer just before it flowers and is used in modern practice at Litha and Lammas for blessing the home and for love charms.\n\nFolk & wider practice: In medieval and later Europe marjoram was strewn on floors, put in nosegays, and used in love charms: an English rhyme says a girl who sleeps with marjoram under her pillow will dream of her future husband. Modern correspondence tables give it to Mercury and Air.",
+
+            tags: ["happiness", "grief comfort", "love", "home blessing", "health", "mercury"]
+        },
+
+        orange_peel: {
+            DisplayName: "Orange Peel",
+            Category: "Herb",
+
+            Element: "Fire",
+
+            Planet: "Sun",
+
+            Uses: "Prosperity, joy, divination, attraction, vitality",
+
+            PairsWith: "Cinnamon, clove, bay leaf, citrine",
+
+            Substitutions: "Lemon peel, tangerine peel",
+
+            TraditionalWarnings: "Orange oil is photosensitising to a lesser degree than bergamot or lemon, but can still irritate skin and should be diluted. The oil and peel can upset pets, especially cats and dogs, in more than tiny amounts.",
+
+            Overview: "Orange peel is the aromatic outer rind (zest) of the sweet orange (Citrus × sinensis), bright orange and full of oil with a warm, sweet, fruity scent. Bitter or Seville orange (Citrus × aurantium) peel is also used, and orange blossom comes from the same tree. Peel is sold dried in strips and flakes, as fresh zest, and as essential oil.",
+
+            TraditionalMeaning: "Sunny joy and prosperity; a bright, warming rind of luck, love and the harvest.",
+
+            HowToUse: "Start here: dry a few strips of peel from an unwaxed orange on a radiator or windowsill, and keep one in your wallet or purse for luck with money. Dried peel goes into jars, incense, sachets and simmer pots, and keeps for months if sealed. Fresh peel suits a bowl on the altar for a few days. Dilute the oil in a carrier before dressing a candle.",
+
+            PairingNotes: "Orange peel pairs well with cinnamon for money and warmth, clove for friendship and attraction, bay leaf for wishes, and citrine for sunny prosperity. Orange, yellow and gold candles suit it.",
+
+            SubstitutionNotes: "Lemon peel or tangerine peel can substitute for orange peel in joy and luck workings. Lemon is sharper and more cleansing, and tangerine is lighter and sweeter.",
+
+            SafetyAndRespect: "Use unwaxed, untreated fruit for peel, and wash it well. Orange oil can irritate skin and cause mild sun-sensitivity, so always dilute it. Keep oils away from pets, especially cats, and from children. Magical use should not replace financial planning or medical advice.",
+
+            Traditions: "Chinese, Wheel of the Year",
+
+            TraditionNotes: "Chinese: Dried tangerine or mandarin peel (chenpi) is a prized ingredient in Chinese cooking and medicine, and oranges and tangerines are a symbol of luck and wealth given at Lunar New Year. This note concerns tangerine rather than sweet orange peel, which is a related but different plant.\n\nWheel of the Year: Orange peel is used in modern practice at Yule, when oranges stuck with cloves are made as pomanders, and at Litha for its sun associations.\n\nFolk & wider practice: Oranges and orange blossom have been symbols of love, marriage and fruitfulness in Europe since medieval times, and orange blossom is traditionally worn by brides. Dried orange peel is a modern witchcraft staple for luck, and modern correspondence tables give it to the Sun and Fire.",
+
+            tags: ["prosperity", "joy", "divination", "attraction", "vitality", "sun"]
+        },
+
+        oregano: {
+            DisplayName: "Oregano",
+            Category: "Herb",
+
+            Element: "Air",
+
+            Planet: "Mercury",
+
+            Uses: "Joy, strength of spirit, protection, health, gathering with others",
+
+            PairsWith: "Thyme, basil, marjoram, carnelian",
+
+            Substitutions: "Marjoram, thyme",
+
+            TraditionalWarnings: "Oregano is safe as a culinary herb, but oregano essential oil is very strong, can burn skin and gums, and should never be taken by mouth without expert advice. Avoid medicinal amounts in pregnancy and keep concentrated oil from pets, especially cats.",
+
+            Overview: "Oregano (Origanum vulgare) is a hardy perennial of the mint family, with small, oval, aromatic leaves and clusters of purple-pink bracts and tiny flowers in summer; its scent is sharp, warm, earthy and peppery. The Greek form (subspecies hirtum) is the strongest in flavour, and Mexican oregano is an unrelated plant of a different family. The leaves and flowering tops are used, fresh or dried, along with the oil.",
+
+            TraditionalMeaning: "Joy of the mountains; a strong, warm herb of happiness, courage and the table shared with others.",
+
+            HowToUse: "Start here: crush a pinch of dried oregano and breathe in its sharp, warm scent when you need a lift. Dried leaves are the easiest form and go into jars, sachets, bath blends and a bowl by the door; they keep their scent for about a year if sealed. Fresh sprigs can be grown in a pot on a sunny sill. Dilute the oil heavily before dressing a candle.",
+
+            PairingNotes: "Oregano pairs well with thyme for courage and health, basil for love and luck, marjoram for gentler joy, and carnelian for warmth. Yellow, orange and green candles suit it.",
+
+            SubstitutionNotes: "Marjoram can substitute for oregano in joy and home workings, being sweeter and gentler. Thyme can stand in for courage and health.",
+
+            SafetyAndRespect: "Oregano is a common food herb, but its oil is hot and can burn skin and mucous membranes; always dilute it. Keep it from pets, especially cats, and from children. People allergic to mint-family plants may react, and medicinal amounts should be avoided in pregnancy and with blood-thinning or diabetes medicines. Magical use should not replace medical care.",
+
+            Traditions: "Hellenic, Wheel of the Year",
+
+            TraditionNotes: "Hellenic: The name comes from the Greek oros ganos, ‘joy of the mountain’, and the plant was worn in wedding crowns in ancient Greece and Rome; in Greek lore Aphrodite created it as a plant of happiness, and it was planted on graves so the dead would be at peace.\n\nWheel of the Year: Oregano is cut for drying in midsummer before it flowers fully, and is used in modern practice at Litha and in home blessings.\n\nFolk & wider practice: In medieval Europe oregano was strewn on floors and added to bridal bouquets, and in folk belief a sprig carried or hung at the door gave protection. Modern correspondence tables give it to Mercury and Air.",
+
+            tags: ["joy", "courage", "protection", "health", "community", "mercury"]
+        },
+
+        parsley: {
+            DisplayName: "Parsley",
+            Category: "Herb",
+
+            Element: "Air",
+
+            Planet: "Mercury",
+
+            Uses: "Purification, honouring the dead, fertility, lust, protection",
+
+            PairsWith: "Mint, sage, rosemary, obsidian",
+
+            Substitutions: "Chervil, coriander",
+
+            TraditionalWarnings: "Parsley is safe as food, but large amounts of the seed, root or oil can be harmful in pregnancy, and the oil is toxic in quantity. Do not confuse it with poison hemlock or fool’s parsley, which look similar and are deadly.",
+
+            Overview: "Parsley (Petroselinum crispum) is a biennial herb of the carrot family, grown as either flat-leaf (Italian) or curly parsley, with bright green, lobed leaves and a fresh, clean, slightly peppery scent. The leaves are used fresh or dried, and the root and seed are used less often.",
+
+            TraditionalMeaning: "Purification and the threshold between the living and the dead; an old herb of the funeral feast, of fertility, and of fresh starts.",
+
+            HowToUse: "Start here: put a sprig of fresh parsley in a glass of water on your altar, and change it when it wilts. Fresh leaves are the best form and can be grown on a windowsill; dried parsley goes into jars, floor-washes and sachets but loses colour and scent quickly. Wear or carry a sprig for a clean slate, and scatter fresh leaves in an offering to the dead.",
+
+            PairingNotes: "Parsley pairs well with mint and sage for cleansing, rosemary for remembrance, and obsidian or black tourmaline for protection. White, green and black candles suit it.",
+
+            SubstitutionNotes: "Chervil, a milder relative, can substitute for parsley in purification work, and coriander leaf can stand in for fresh green cleansing, though not for funerary uses.",
+
+            SafetyAndRespect: "Parsley is a safe food herb, but concentrated seed, root and oil should not be used in pregnancy, and it can affect kidney conditions and some medicines. Identify it with care before picking wild umbellifers: hemlock and fool’s parsley are deadly. Keep it from pets in quantity, as large amounts can harm dogs, horses and birds. Magical use should not replace medical care.",
+
+            Traditions: "Hellenic, Wheel of the Year",
+
+            TraditionNotes: "Hellenic: In ancient Greece parsley (selinon) was woven into wreaths for the dead and for the winners of the Isthmian and Nemean Games, and was said to have grown from the blood of Archemoros, the infant ‘beginning of doom’; it was planted on graves, and tradition held that someone ‘needing only parsley’ was close to death.\n\nWheel of the Year: Parsley is sown in spring, and in old English folk custom was sown on Good Friday; in modern practice it is used at Ostara and Samhain.\n\nFolk & wider practice: English folklore says parsley is slow to germinate because it must visit the devil nine times before it sprouts, and that it should be sown by the head of the household only. Pomegranate and parsley both appear in Greek and Roman funeral practice. Modern correspondence tables give parsley to Mercury and Air.",
+
+            tags: ["purification", "honouring the dead", "fertility", "lust", "protection", "mercury"]
+        },
+
+        plantain: {
+            DisplayName: "Plantain",
+            Category: "Herb",
+
+            Element: "Earth",
+
+            Planet: "Venus",
+
+            Uses: "Healing, safe travel, resilience, grounding, soothing stings",
+
+            PairsWith: "Comfrey, yarrow, mugwort, moss agate",
+
+            Substitutions: "Comfrey, mullein",
+
+            TraditionalWarnings: "Plantain here means the common weed (Plantago major), not the cooking banana (Musa), though they share a name. Do not use leaves from roadsides, lawns treated with chemicals or dog-walking spots, and confirm identity before eating.",
+
+            Overview: "Plantain, also called broadleaf plantain or ‘waybread’, is a low, tough, perennial weed of paths, lawns and waste ground, with a rosette of broad, oval, ribbed leaves and slender, upright, green seed spikes. Its seeds are the psyllium husk of commerce in a related species. The leaves and seeds are the parts used, fresh, dried and in salves.",
+
+            TraditionalMeaning: "Healing and sturdy protection; a plant that grows where people walk, and carries blessing for the road.",
+
+            HowToUse: "Start here: pick a clean leaf from an untreated patch, and press it onto a small scratch or a nettle sting to feel why it was a first-aid plant. Dried leaf goes into sachets, jars and healing blends, and travellers once tucked it into shoes or bags for a safe journey. Infuse the leaf in oil for a salve, and keep dried leaf sealed and dark for up to a year.",
+
+            PairingNotes: "Plantain pairs well with comfrey and yarrow for healing, mugwort for safe journeys and dreams, and moss agate for gentle grounding. Green, brown and white candles suit it.",
+
+            SubstitutionNotes: "Comfrey or mullein can substitute for plantain in healing and softening workings. Plantain’s gift is its common, tough, roadside quality, so a few leaves picked locally work best.",
+
+            SafetyAndRespect: "Pick only from clean ground, away from traffic, sprays and pets’ toilets, and wash leaves before use. Plantain leaf is generally gentle, but some people are allergic to it or to the pollen, and psyllium seed can cause breathing problems and choking if taken dry. It is not a replacement for first aid or medical care for wounds, stings and bites, especially snakebite.",
+
+            Traditions: "Anglo-Saxon, Wheel of the Year",
+
+            TraditionNotes: "Anglo-Saxon: Plantain (waybread, or wegbrade) is one of the nine herbs of the Old English Nine Herbs Charm, a 10th-century verse recorded in the Lacnunga, where it is addressed as ‘mother of herbs’ and said to withstand venom and ill will; the charm is a medical and magical text with Christian elements.\n\nWheel of the Year: Plantain is picked in summer and used in midsummer healing blends, and for journeys at any time of year.\n\nFolk & wider practice: Across Europe and North America plantain was a field remedy for stings and wounds (Native American groups called the plant ‘white man’s foot’ because it followed settlers), and tradition tucked a leaf under the pillow or in a shoe for safe travel. These are folk uses; modern correspondence tables give plantain to Venus and Earth.",
+
+            tags: ["healing", "safe travel", "warding", "resilience", "grounding", "venus"]
+        },
+
+        poppy: {
+            DisplayName: "Poppy",
+            Category: "Herb",
+
+            Element: "Water",
+
+            Planet: "Moon",
+
+            Uses: "Remembrance, restful sleep, dream work, fertility, prosperity",
+
+            PairsWith: "Mugwort, lavender, rosemary, moonstone",
+
+            Substitutions: "Lavender, chamomile",
+
+            TraditionalWarnings: "Opium poppy (Papaver somniferum) is a controlled plant in many countries, and its pods and latex contain opioids; growing it for drug use, or buying pods and straw for tea, is illegal or dangerous in many places and has caused deaths. Do not take poppy preparations as a sleep aid or drug. The red corn poppy (Papaver rhoeas) is mildly narcotic and not for internal use.",
+
+            Overview: "Poppies are the showy annuals of the genus Papaver: the red corn poppy (P. rhoeas) of fields and verges, and the opium poppy (P. somniferum) of gardens and farms, with pink, white or purple papery flowers and a round capsule full of tiny, blue-grey seeds. Poppy seeds are a common food and contain almost no opiates; the petals and dried seed pods are used in craft and magic, and poppy seed oil is pressed from the seeds.",
+
+            TraditionalMeaning: "Sleep, memory and the dead; a plant of dreams and of remembrance, and, with its thousand seeds, of fertility and abundance.",
+
+            HowToUse: "Start here: scatter a pinch of culinary poppy seeds on a plate on the altar as an offering, or keep a few in a jar for abundance (a seed for every wish). A pressed red poppy, or a paper one, is a remembrance token for November. Dried seed capsules are decorative and can be kept sealed in a jar; do not make tea from them. Use poppy seed oil only for dressing candles, diluted.",
+
+            PairingNotes: "Poppy pairs well with mugwort for dreaming, lavender for sleep, rosemary for remembrance, and moonstone for lunar calm. Red, white, black and blue candles suit it.",
+
+            SubstitutionNotes: "Lavender or chamomile can substitute for poppy in sleep and calm workings, and are safe where poppy is not. For remembrance, rosemary is the traditional substitute.",
+
+            SafetyAndRespect: "Do not make or drink tea from poppy pods or straw: it can cause overdose and death, and it is illegal in many countries. Even culinary seeds can affect drug-test results. Keep pods, seeds and oil from children and pets. Poppies are also the emblem of remembrance for war dead in Britain and the Commonwealth, so use the flower as a memorial gently. Magical use should not replace medical care for pain or poor sleep.",
+
+            Traditions: "Hellenic, Roman",
+
+            TraditionNotes: "Hellenic: The poppy belongs to Demeter, who is shown with poppies and wheat, and to Hypnos and Morpheus, the gods of sleep and dreams, who were crowned with poppies; the poppy also symbolised the sleep of death and the underworld.\n\nRoman: Ceres and Somnus were likewise associated with poppies, and Roman farmers held that the seeds blessed the fields; a legend says that Tarquin cut off the tallest poppies to send a message to his son.\n\nFolk & wider practice: Since 1918 the red corn poppy, which grew on the battlefields of Flanders, has been worn in Britain and the Commonwealth to remember the war dead, after John McCrae’s poem ‘In Flanders Fields’. In medieval Europe the seeds were thought to bring fertility and to protect against sleeplessness, and modern correspondence tables give poppy to the Moon and Water.",
+
+            tags: ["remembrance", "sleep", "dreams", "fertility", "prosperity", "moon"]
+        },
+
+        raspberry_leaf: {
+            DisplayName: "Raspberry Leaf",
+            Category: "Herb",
+
+            Element: "Water",
+
+            Planet: "Venus",
+
+            Uses: "Womb and cycle care, easing labour, gentle love, fertility, protection of the young",
+
+            PairsWith: "Nettle, rose, red clover, moonstone",
+
+            Substitutions: "Nettle, lady’s mantle",
+
+            TraditionalWarnings: "Raspberry leaf is widely drunk in late pregnancy, but it is not advised in early pregnancy, and anyone pregnant, trying to conceive, with a hormone-sensitive condition or a history of pre-term labour should speak to a midwife or doctor first. It may interact with some medicines.",
+
+            Overview: "Raspberry leaf is the serrated, three- to five-part leaf of the red raspberry (Rubus idaeus), green above and silvery white beneath. The leaf is mild, slightly tannic and tea-like, and is the part used, sold dried as loose tea, tea bags and capsules, and in infused oils and salves. The fruits and canes are used separately.",
+
+            TraditionalMeaning: "Gentle womb and cycle care; a long-standing herb of women’s health, childbirth and easing pain, and of soft, protective love.",
+
+            HowToUse: "Start here: brew a cup of raspberry leaf tea and sip it slowly with an intention of care for your body. Dried leaf goes into tea blends, sachets and bath blends, and keeps for a year in a sealed, dark jar. A leaf can be dried and kept in a charm bag for fertility or gentle healing. Infuse the leaf in oil for a rubbing salve, and keep it away from open wounds.",
+
+            PairingNotes: "Raspberry leaf pairs well with nettle for nourishment, rose for love, red clover for cycle care, and moonstone for lunar and cyclical calm. Pink, red and white candles suit it.",
+
+            SubstitutionNotes: "Nettle leaf can substitute for raspberry leaf in nourishing and cycle-care workings, and lady’s mantle can stand in for the womb-herb tradition. Neither is a medical substitute.",
+
+            SafetyAndRespect: "Check with a midwife, doctor or pharmacist before taking raspberry leaf during pregnancy, while breastfeeding, or alongside medicines or a hormone-sensitive condition. It is not a substitute for antenatal or gynaecological care. Raspberry canes are prickly and wildlife values them, so pick only a few leaves. The ‘womb herb’ lore is traditional folk practice and has little modern clinical evidence behind it; this entry offers it as folklore, not as medicine.",
+
+            Traditions: "Wheel of the Year",
+
+            TraditionNotes: "Wheel of the Year: Raspberry leaf is gathered in early summer before the fruit sets, and used in modern practice for Imbolc, Beltane and other fertility and women’s festivals.\n\nFolk & wider practice: Raspberry leaf tea has been a folk remedy in Europe and North America for centuries, and since the 20th century it has been the best known herbal tea for the end of pregnancy; evidence for its effect on labour is limited. The red fruit and prickly cane were also used in protective and love charms. Modern correspondence tables give raspberry to Venus and Water.",
+
+            tags: ["cycle care", "easy labour", "love", "fertility", "protection", "venus"]
+        },
+
+        solomons_seal: {
+            DisplayName: "Solomon's Seal",
+            Category: "Herb",
+
+            Element: "Water",
+
+            Planet: "Saturn",
+
+            Uses: "Wisdom, binding agreements, protection of the home, mending, exorcism",
+
+            PairsWith: "Comfrey, vervain, rosemary, smoky quartz",
+
+            Substitutions: "Comfrey root, angelica root",
+
+            TraditionalWarnings: "The berries and leaves of Solomon’s seal (Polygonatum) are poisonous and can cause vomiting and diarrhoea. The root has been used in folk medicine, but internal use is not recommended without expert advice, and it should be avoided in pregnancy and by people with diabetes.",
+
+            Overview: "Solomon’s seal (Polygonatum multiflorum and relatives) is a woodland perennial with a single arching stem of alternate oval leaves and, in spring, small white green-tipped bell flowers hanging in pairs beneath, followed by blue-black berries. The creeping rhizome (root) is thick and knobbly with round scars, left each year by the dying stems, which are said to look like the impressions of a seal. The root is the part used, sold dried, as slices or pieces.",
+
+            TraditionalMeaning: "Wisdom, binding and seal; a plant of old protective magic, named for the legendary King Solomon, who was said to bind spirits with a seal.",
+
+            HowToUse: "Start here: keep a small piece of dried root in a pouch or a dish on the altar as a charm of binding and protection. Pieces can be put in jars with protection herbs, set at the doorway, or used in workings to seal an oath or agreement. Handle it as a charm, not a remedy, and keep it away from children and pets. Store it dry and sealed.",
+
+            PairingNotes: "Solomon’s seal pairs well with comfrey for mending, vervain for oaths and sanctity, rosemary for remembrance, and smoky quartz for steady protection. Purple, white and dark blue candles suit it.",
+
+            SubstitutionNotes: "Comfrey root or angelica root can substitute for Solomon’s seal in protection and binding workings. Because the root is rare and slow-growing, cultivated roots are preferred to wild-dug ones.",
+
+            SafetyAndRespect: "The plant is poisonous if eaten, especially the berries and leaves; keep it from children and pets and do not ingest root preparations without a qualified herbalist. It is a slow-growing woodland plant that is protected or declining in some places: buy only from a grower that cultivates it, and never dig it from the wild. Binding workings should be about agreements you have made, not about controlling another person. Magical use should not replace medical care.",
+
+            Traditions: "Wheel of the Year",
+
+            TraditionNotes: "Wheel of the Year: Solomon’s seal flowers in late spring and is used in modern practice around Beltane and Litha for protection and binding, and the root is traditionally dug in autumn.\n\nFolk & wider practice: The common name probably refers to a mark on the root like a six-pointed seal, linked in medieval herbals with the Seal of Solomon of Jewish and later magical tradition. The root was a well-known old English remedy for bruises and black eyes, and Gerard and Culpeper recommended it for mending broken bones, hence its use as a mending herb. It was also used in folk magic to protect the home and in exorcism. The related Chinese herb yuzhu (P. odoratum) is a food and medicine in China. Modern correspondence tables give it to Saturn and Water.",
+
+            tags: ["wisdom", "binding oaths", "home protection", "mending", "exorcism", "saturn"]
+        },
+
+        tansy: {
+            DisplayName: "Tansy",
+            Category: "Herb",
+
+            Element: "Water",
+
+            Planet: "Venus",
+
+            Uses: "Longevity, repelling pests, remembrance of the dead, protecting the home, commitment",
+
+            PairsWith: "Rue, wormwood, mugwort, yellow candle",
+
+            Substitutions: "Rue, feverfew",
+
+            TraditionalWarnings: "Tansy is poisonous. Its leaves, flowers and oil contain thujone and can cause convulsions, liver and kidney damage and death; it is dangerous in pregnancy and was once used as an abortifacient, with fatal results. Do not eat it, brew it, or use the oil on skin. It can also cause skin reactions.",
+
+            Overview: "Tansy (Tanacetum vulgare) is a tall perennial of roadsides and waste ground, with strong, camphor-like, bitter-smelling, fern-like leaves and flat clusters of golden, button-shaped flower heads in late summer. It was once a major strewing herb, insect repellent and bitter flavouring for Easter puddings, and is now regarded as toxic. The flowering tops are used as a dried decorative and craft herb.",
+
+            TraditionalMeaning: "Long life, immortality and remembrance; an old herb of the dead and of keeping pests and decay at bay.",
+
+            HowToUse: "Start here: hang a small bunch of tansy to dry in a dark, airy room, then keep it in the house as a charm, away from children and pets. Dried flower heads can be set in a bowl or wreath for remembrance at Samhain, and hung in a cupboard to deter moths and flies. Wear gloves when handling it, and never ingest it, burn it indoors, or use the oil on skin.",
+
+            PairingNotes: "Tansy pairs well with rue and wormwood as old pest-repelling herbs, mugwort for the dead, and yellow or white candles for remembrance. Always use it dry and out of reach of pets.",
+
+            SubstitutionNotes: "Rue or feverfew can substitute for tansy in house-protection and pest-repelling workings, though rue is also toxic and should be handled with care. For a safe remembrance herb, rosemary is a better choice.",
+
+            SafetyAndRespect: "Tansy is toxic to people and animals, causing seizures, vomiting and organ damage; it can be fatal, and it is especially dangerous in pregnancy. Do not eat, drink, smoke or burn it, or apply it to skin, and keep it from children, pets and livestock. Handle it in gloves, and wash your hands after touching it. Tansy is also a harmful invasive weed in parts of North America, so avoid spreading seed. Magical use should not replace pest control or medical care.",
+
+            Traditions: "Christian, Wheel of the Year",
+
+            TraditionNotes: "Christian: In medieval and later England, bitter tansy cakes and puddings were eaten at Easter, as a reminder of the bitter herbs of Passover and the end of Lent; tansy was also placed in coffins and shrouds to repel worms.\n\nWheel of the Year: Tansy blooms in late summer, and its dried flower heads are used in modern practice at Lammas, Mabon and Samhain for remembrance of the dead.\n\nFolk & wider practice: The name probably comes from the Greek athanasia, ‘immortality’, and in medieval Europe tansy was strewn on floors, laid among linen to keep off moths, rubbed on meat against flies, and used in coffins. The same plant was widely used as a poison and an abortifacient, with many deaths. Modern correspondence tables give it to Venus and Water.",
+
+            tags: ["longevity", "pest repelling", "remembrance", "home protection", "commitment", "venus"]
+        },
+
+        thistle: {
+            DisplayName: "Thistle",
+            Category: "Herb",
+
+            Element: "Fire",
+
+            Planet: "Mars",
+
+            Uses: "Protection, strength, breaking hexes, drawing off envy, endurance",
+
+            PairsWith: "Nettle, hawthorn, black tourmaline, red candle",
+
+            Substitutions: "Nettle, teasel",
+
+            TraditionalWarnings: "Thistles are prickly and cause painful scratches and splinters; wear gloves when picking them. Some thistles (including Scotch thistle and many Cirsium species) are protected or are invasive weeds, depending on where you live. Do not eat wild thistles unless you have identified them with care.",
+
+            Overview: "Thistle is the name for many spiny, daisy-family plants (Cirsium, Carduus, Onopordum and others) with prickly, lobed leaves and round flower heads of purple tufted florets that turn to silvery down. The Scotch thistle (Onopordum acanthium) and the spear thistle (Cirsium vulgare) are the best-known emblems; milk thistle (Silybum marianum) is a related herb with white-veined leaves. The flowering heads and leaves are the parts used, fresh or dried.",
+
+            TraditionalMeaning: "Prickly strength and protection; a defensive plant of courage, endurance and not being trodden on.",
+
+            HowToUse: "Start here: dry a thistle head and keep it in a jar or on a shelf near the door as a protective charm. Pressed or dried heads can be hung as a boundary guard, or crumbled into protection jars with care for the spines. Wear gloves when handling it, and burn it only in small amounts outdoors. Store dried heads sealed, as the down scatters.",
+
+            PairingNotes: "Thistle pairs well with nettle and hawthorn for protective hedge magic, black tourmaline for banishing, and red candles for strength. Purple, red and black candles suit it.",
+
+            SubstitutionNotes: "Nettle or teasel can substitute for thistle in protection and strength workings, as both are prickly, defensive plants. Milk thistle is a milder, healing relative and is not interchangeable for a spiky guardian role.",
+
+            SafetyAndRespect: "Wear gloves: thistle spines cause painful, easily infected scratches, and small spines can lodge in skin. Do not burn it indoors or inhale the smoke or fluffy seed. Some thistles are protected, rare or invasive, so check local rules and do not dig them up. Milk thistle can interact with medicines and cause allergic reactions in people sensitive to daisies. Magical use should not replace medical care.",
+
+            Traditions: "Celtic, Christian",
+
+            TraditionNotes: "Celtic: The thistle is the national emblem of Scotland. A story, probably from the 18th century, says that a Norse raider’s cry of pain as he stepped on a thistle alerted the Scots to a night attack; the Order of the Thistle dates from the 15th–17th century. Both are traditions of the Scottish crown rather than older pagan practice.\n\nChristian: In medieval Christian art the thistle was a symbol of sorrow and of Christ’s suffering, and the Virgin Mary’s milk was said to have fallen on the leaves of the milk thistle, giving them their white veins.\n\nFolk & wider practice: Thistle has long been a folk protection plant against witchcraft and the evil eye in Britain and Europe, and Our Lady’s thistle was also eaten and used as a liver remedy. Modern correspondence tables give thistle to Mars and Fire.",
+
+            tags: ["protection", "strength", "hex breaking", "courage", "envy", "mars"]
+        },
+
+        vetiver: {
+            DisplayName: "Vetiver",
+            Category: "Herb",
+
+            Element: "Earth",
+
+            Planet: "Saturn",
+
+            Uses: "Grounding, money drawing, breaking hexes, calming anxiety, binding love",
+
+            PairsWith: "Patchouli, sandalwood, cedar, smoky quartz",
+
+            Substitutions: "Patchouli, cedar",
+
+            TraditionalWarnings: "Vetiver oil is very thick and strong, and can cause skin irritation and headaches in some people; dilute it and patch-test. Avoid in pregnancy and keep away from pets. Cheaper ‘vetiver’ products are often blended or synthetic.",
+
+            Overview: "Vetiver (Chrysopogon zizanioides) is a tall, tufted tropical grass, native to India, whose dense, fibrous, golden roots grow straight down as deep as three metres and are famous for holding soil on slopes. The roots are the part used: dried, they smell deeply earthy, smoky, woody and slightly sweet; they are woven into screens and cooled water, and distilled into a thick, amber-brown essential oil used in perfumery.",
+
+            TraditionalMeaning: "Deep grounding and steady fortune; a root that holds the earth together and anchors wealth, love and the self.",
+
+            HowToUse: "Start here: put a pinch of dried vetiver root, or a tiny dab of well-diluted oil, in a small pouch with a coin for steady money. Dried roots go into jars, sachets, floor-washes and incense blends; the roots are fibrous and long-lasting, and the scent improves a little with age. A bundle of roots can be tied with cord and hung in a cupboard, and the oil is best used a drop at a time.",
+
+            PairingNotes: "Vetiver pairs well with patchouli for money and grounding, sandalwood and cedar for woody depth, and smoky quartz for stability. Green, brown, black and gold candles suit it.",
+
+            SubstitutionNotes: "Patchouli or cedar can substitute for vetiver in grounding and money workings, though neither has its smoky, cooling depth. Dried roots and oil are not equal, so reduce the amount if you swap.",
+
+            SafetyAndRespect: "Vetiver oil is thick and strong, can irritate skin and trigger headaches, and should be diluted; it is not advised in pregnancy, and should be kept from pets and children. Check the label, as many cheap oils are synthetic blends. Vetiver is also a valued soil-stabilising crop for farming communities in India, Haiti and elsewhere, so buy from a fair source. Magical use should not replace financial planning.",
+
+            Traditions: "Hindu, Wheel of the Year",
+
+            TraditionNotes: "Hindu: In India, vetiver roots (khus) are woven into fragrant, water-cooled screens and mats and used in cooling drinks and perfumes in the hot season, and the oil (khus attar) is used in perfumery and in Ayurvedic practice. This note records an Indian cultural use; it should not be taken as a prescribed ritual.\n\nWheel of the Year: Vetiver has no place in the old European festival cycle; modern practitioners use it at Mabon and Samhain for grounding and the closing of the year.\n\nFolk & wider practice: In New Orleans and wider Southern American folk magic, vetiver (often called ‘khus-khus’) is a root used in money-drawing powders and in work for ‘breaking’ or uncrossing; the name ‘khus-khus’ is Hindi. Modern correspondence tables give vetiver to Saturn and Earth.",
+
+            tags: ["grounding", "money drawing", "hex breaking", "steadiness", "binding love", "saturn"]
+        },
+
+        witch_hazel: {
+            DisplayName: "Witch Hazel",
+            Category: "Herb",
+
+            Element: "Fire",
+
+            Planet: "Sun",
+
+            Uses: "Protection, finding hidden things, single-minded focus, healing the heart, dowsing",
+
+            PairsWith: "Hawthorn, willow, rosemary, amber",
+
+            Substitutions: "Hazel, willow",
+
+            TraditionalWarnings: "Witch hazel bark and leaf extracts are for the skin, not for swallowing: the extract can cause stomach upset, liver damage and nausea if taken by mouth in any quantity, and some products contain a lot of alcohol. It can irritate skin and eyes, and should not be used on broken skin without advice.",
+
+            Overview: "Witch hazel (Hamamelis virginiana, the North American species) is a large shrub or small tree that blooms in autumn and winter, with spidery, crinkled, bright yellow flowers appearing as the leaves fall. The leaves and twigs are rounded with wavy edges. The leaves, bark and twigs are the parts used, sold dried and as a distilled astringent extract (‘witch hazel water’) used on skin. It is a different plant from the common hazel (Corylus).",
+
+            TraditionalMeaning: "Finding what is hidden, and mending what is hurt; a tree of protection and of dowsing, whose flowers appear in the dark of the year.",
+
+            HowToUse: "Start here: keep a small forked witch hazel twig in a dish or on a shelf near the door as a protection charm. The bark or leaf can be added to protection jars and sachets, and a few drops of the distilled water can be added to a cleansing wash for tools or a bath. A forked twig is the traditional dowsing rod. Always use the distilled water externally, and avoid the eyes.",
+
+            PairingNotes: "Witch hazel pairs well with willow for dowsing and grief, hawthorn for protection and boundaries, rosemary for cleansing, and amber for warmth and healing. Yellow, gold and white candles suit it.",
+
+            SubstitutionNotes: "Willow or hazel (Corylus) twigs can substitute for witch hazel as a dowsing fork. For protection and cleansing, hawthorn or rosemary can stand in.",
+
+            SafetyAndRespect: "Distilled witch hazel is for external use: do not drink it, and keep it from children and pets. Check the label, as some products contain 14 per cent alcohol and are not suitable for sensitive skin. Witch hazel is native to eastern North America, where it has long been used by Indigenous peoples, including the Haudenosaunee and Algonquin, for healing; use it with thanks for that knowledge, and buy from responsible suppliers. Magical use should not replace medical care for wounds or skin conditions.",
+
+            Traditions: "Wheel of the Year",
+
+            TraditionNotes: "Wheel of the Year: Witch hazel flowers in autumn and winter, so modern practitioners use its twigs at Samhain, Yule and Imbolc, for protection and for finding what is hidden.\n\nFolk & wider practice: The ‘witch’ in the name is unrelated to witchcraft: it comes from the Old English wice, meaning pliant, supple, from the bendy branches; the same word gave ‘wych elm’. Early English settlers in America used forked witch hazel twigs for water divining, as they had used hazel in Europe, and witch hazel water was distilled from the bark for skin care in New England by the 19th century. Modern correspondence tables give witch hazel to the Sun and Fire.",
+
+            tags: ["protection", "finding hidden things", "single purpose", "heart healing", "boundaries", "sun"]
+        },
     },
 
     crystal: {
@@ -5177,6 +5982,820 @@ const TraditionalLibrary = {
             TraditionNotes: "Wheel of the Year: Placed in the home for calm and protection, used in letting-go work at the waning moon, and set on the altar beside selenite for clarity.\n\nFolk & wider practice: Desert roses have long been gathered and sold as curiosities in the Sahara; their magical meanings are modern.",
 
             tags: ["calm", "letting go", "clarity", "endurance", "home", "moon"]
+        },
+
+        lodestone: {
+            DisplayName: "Lodestone",
+            Category: "Crystal",
+
+            Element: "Earth",
+
+            Planet: "Mars",
+
+            Chakra: "Root",
+
+            Uses: "Attraction, fidelity, grounding, guidance, thrift",
+
+            PairsWith: "Iron filings, green candle, pyrite, red jasper",
+
+            Cleansing: "Smoke, sound, breath",
+
+            TraditionalWarnings: "Lodestone is magnetic and can wipe cards and disturb phones and watches; keep strong magnets away from pacemakers. It rusts if left wet.",
+
+            Overview: "Lodestone is a naturally magnetised piece of magnetite, an iron oxide (Fe3O4) of Mohs 5.5–6.5, dark grey-black with a dull metallic sheen. Only some magnetite is strongly magnetic, and that magnetism is thought to come from lightning strikes. It is sold as raw chunks, chips, small tumbled stones and as pairs, often with iron filings or ‘magnetic sand’.",
+
+            TraditionalMeaning: "The stone that draws and holds: old folk magic of attraction, luck and fidelity, and in modern crystal use a stone of grounding and direction.",
+
+            HowToUse: "Start here: keep one small lodestone in a dish and ‘feed’ it a pinch of iron filings each new moon while you say what you want to draw in. Tumbled pieces can be carried in a pouch, and chips can sit in a dry jar. Test a piece with a paper clip before buying, as plain magnetite is often sold as lodestone, and keep it dry.",
+
+            PairingNotes: "Lodestone pairs well with iron filings, which it is traditionally ‘fed’ with, green candles for money and luck, pyrite for prosperity, and red jasper for steady strength. A small bowl of coins and a green or gold candle suit an attraction working.",
+
+            CleansingNotes: "Cleanse lodestone with smoke, sound or breath and intention. Keep it dry: water and salt rust it. Never pass it through strong heat, which removes its magnetism.",
+
+            SafetyAndRespect: "Keep magnetic stones away from bank and travel cards, phones, watches, hearing aids and pacemakers. Small pieces and filings can be swallowed by children and pets, and strong magnets can pinch fingers. The fidelity and attraction lore is old folk magic and modern practice, and is no substitute for open talk or good sense with money or a partner; it should not be used to bind another person’s will.",
+
+            Traditions: "Wheel of the Year",
+
+            TraditionNotes: "Wheel of the Year: Kept on the altar for luck and abundance, fed at the new moon and set among coins or a green candle at Lammas and Mabon, when what has been gathered is held.\n\nFolk & wider practice: Lodestones were carried as charms in 17th- and 18th-century Europe and are best known today in American folk magic (hoodoo and rootwork), where a lodestone is kept with iron filings, magnetic sand and sometimes oil to ‘feed’ it, and carried for luck, money and love. Greek writers such as Thales were already puzzled by the stone’s pull, and the name ‘lode’ means ‘way’, because it was used as a compass. These are folk uses, not a single closed tradition, but the rootwork use belongs to its Black American roots and deserves credit.",
+
+            tags: ["attraction", "luck", "grounding", "direction", "root", "mars"]
+        },
+
+        bronzite: {
+            DisplayName: "Bronzite",
+            Category: "Crystal",
+
+            Element: "Earth",
+
+            Planet: "Mars",
+
+            Chakra: "Root",
+
+            Uses: "Courage, decisive action, boundaries, grounding, steady willpower",
+
+            PairsWith: "Black tourmaline, red jasper, tiger's eye, brown candle",
+
+            Cleansing: "Smoke, sound, earth",
+
+            TraditionalWarnings: "Bronzite is a moderately hard, cleavable stone that can chip if dropped. Keep it out of salt and acids, and do not soak it.",
+
+            Overview: "Bronzite is an iron-rich variety of enstatite, a pyroxene mineral, of Mohs hardness about 5.5. It is a warm bronze-brown to dark chestnut stone, often with a fine, silky, golden metallic shimmer when turned in the light. It is found in Brazil, Austria, South Africa and the USA, and is sold as tumbled stones, beads, palm stones and chips.",
+
+            TraditionalMeaning: "Courage and decisive will; a modern stone of steady, practical strength, for acting on a decision and holding a boundary.",
+
+            HowToUse: "Start here: carry a tumbled bronzite in a pocket on a day when you must make a decision or say a difficult thing, and hold it for a few breaths first. Tumbled pieces suit carrying, chips can go into jars for courage, and a palm stone can sit on the desk. Rub it gently with a soft cloth to keep the shimmer.",
+
+            PairingNotes: "Bronzite pairs well with black tourmaline for protection, red jasper for stamina, tiger’s eye for confidence, and smoky quartz for grounding. Brown, red and orange candles suit it.",
+
+            CleansingNotes: "Cleanse bronzite with smoke, sound, earth, or visualization. A quick wipe with a barely damp cloth is the most water it needs; do not soak it, rest it in salt, or use acids.",
+
+            SafetyAndRespect: "Bronzite is safe to handle, but it can chip and should not be soaked or put in water for elixirs. Its meanings are modern crystal lore, rather than an old tradition. It is not a substitute for advice, therapy or medical care when a decision is a hard one.",
+
+            Traditions: "Wheel of the Year",
+
+            TraditionNotes: "Wheel of the Year: Kept on the altar or in a pocket for courage and willpower, set at the north of a grid for grounding, and used at the waning moon for firmness and boundary-setting.\n\nFolk & wider practice: Bronzite has no long magical history of its own; its meanings come from 20th-century crystal-healing books, partly from the stone’s bronze colour and Mars-like iron. Enstatite and bronzite were named in the 19th century; the name bronzite refers to its metallic bronze lustre.",
+
+            tags: ["courage", "willpower", "boundaries", "grounding", "root", "mars"]
+        },
+
+        chalcedony: {
+            DisplayName: "Chalcedony",
+            Category: "Crystal",
+
+            Element: "Water",
+
+            Planet: "Moon",
+
+            Chakra: "Throat",
+
+            Uses: "Calm communication, emotional balance, gentle kindness, peaceful sleep, goodwill",
+
+            PairsWith: "Moonstone, selenite, blue lace agate, white candle",
+
+            Cleansing: "Moonlight, smoke, sound",
+
+            TraditionalWarnings: "Chalcedony is hard, but dyed pieces (bright blue, pink, purple) can fade or bleed in water and sun. Check how a piece is treated before soaking it or leaving it in strong light.",
+
+            Overview: "Chalcedony is microcrystalline quartz, with tiny crystals too small to see, of Mohs hardness 6.5–7. The name covers a family of waxy, translucent stones: agate, carnelian, chrysoprase, onyx and jasper are all chalcedony, but ‘chalcedony’ on its own usually means the plain, milky blue-grey to white stone. It is found in Brazil, Namibia, Turkey and the USA and is sold as tumbled stones, cabochons, beads and chips.",
+
+            TraditionalMeaning: "Gentle goodwill and calm speech; an old stone of kindness and peace that a modern practitioner uses for steadying a heated mind.",
+
+            HowToUse: "Start here: hold a small chalcedony in your palm before a conversation you want to keep kind, and breathe slowly. Tumbled pieces suit carrying or a bedside dish, chips can go in jars with moonstone for peace, and a cabochon makes a ring or pendant. Store it away from strong sun.",
+
+            PairingNotes: "Chalcedony pairs well with moonstone for lunar calm, selenite for clarity, blue lace agate for gentle speech, and rose quartz for kindness. White, pale blue and silver candles suit it.",
+
+            CleansingNotes: "Cleanse chalcedony with moonlight, smoke, sound, or visualization. Plain pieces can be rinsed briefly in water and dried; dyed pieces should only be wiped, and none should be left in strong sun.",
+
+            SafetyAndRespect: "Chalcedony is safe to handle, but the dust from cutting or sanding it contains silica and should be avoided. Dyed stones should not go in water for elixirs. Its calming meanings are modern crystal lore alongside an old reputation for goodwill, and it is no substitute for care when anxiety or a quarrel runs deeper.",
+
+            Traditions: "Hellenic, Wheel of the Year",
+
+            TraditionNotes: "Hellenic: The name is thought to come from the ancient Greek town of Chalcedon (now Kadıköy in Turkey), and Greeks and Romans carved chalcedony into seals and cameos, as they did with other banded and cryptocrystalline quartz.\n\nWheel of the Year: Kept on the altar for peace and kindness, used at the waxing moon for gentle growth, and held in hand for calm before difficult talks.\n\nFolk & wider practice: Medieval lapidaries said that chalcedony gave a good voice and a cheerful heart and protected travellers, and in the Christian Book of Revelation, ‘chalcedony’ is the third foundation stone of the heavenly city. These are older folk and religious readings of a stone whose name was applied loosely, and modern crystal books add their own meanings.",
+
+            tags: ["calm speech", "emotional balance", "kindness", "sleep", "goodwill", "moon"]
+        },
+
+        chiastolite: {
+            DisplayName: "Chiastolite",
+            Category: "Crystal",
+
+            Element: "Earth",
+
+            Planet: "Saturn",
+
+            Chakra: "Root",
+
+            Uses: "Protection on journeys, easing transitions, steadiness in loss, resilience, cutting through confusion",
+
+            PairsWith: "Black tourmaline, smoky quartz, jet, grey candle",
+
+            Cleansing: "Smoke, sound, earth",
+
+            TraditionalWarnings: "Chiastolite is hard but can fracture along its cross-shaped inclusion. Do not strike it, and wear safety gear if cutting, as the dust from stone contains silica.",
+
+            Overview: "Chiastolite is a variety of andalusite (an aluminium silicate), of Mohs hardness about 6.5–7.5. It is a grey, tan or olive-brown stone whose graphite inclusions form a dark cross when the crystal is cut across. The cross is the defining feature; the name comes from the Greek chiastos, ‘marked with the letter chi’ (Χ). It is found in Spain, Australia, China, Chile and the USA, and is sold as tumbled stones, slices and chips.",
+
+            TraditionalMeaning: "The cross stone: a protective charm for travellers and a modern stone of steadiness, passage and acceptance of change.",
+
+            HowToUse: "Start here: carry a small chiastolite on a journey or into a time of change, holding it at the start and end of the trip. Tumbled pieces suit pockets and bags, slices make pendants, and chips can go in jars for protection on the road. Keep a piece by the door when you travel.",
+
+            PairingNotes: "Chiastolite pairs well with black tourmaline for protection, smoky quartz for grounding, jet for mourning, and amethyst for calm. Grey, brown and black candles suit it.",
+
+            CleansingNotes: "Cleanse chiastolite with smoke, sound, earth, or visualization. A brief rinse in water is fine, and it should be dried; avoid hard knocks.",
+
+            SafetyAndRespect: "Chiastolite is safe to handle, but sharp edges can scratch and the dust from cutting is harmful. The protective and luck meanings are folk and modern crystal lore. It carries a cross shape that some people see as a Christian symbol and others as a plain mineral feature, so use it as you wish and respect those for whom the cross has meaning.",
+
+            Traditions: "Christian, Wheel of the Year",
+
+            TraditionNotes: "Christian: In Galicia in Spain, cross-marked andalusite was collected at Santiago de Compostela and sold to pilgrims as a charm; legend said the crosses were drops of Christ’s blood or tears of the Virgin, and the stone was called the ‘cross stone’ (piedra cruz). It was worn as an amulet against illness and accident.\n\nWheel of the Year: Used by modern practitioners as a travel and passage stone, and set on the altar at times of endings, such as Samhain.\n\nFolk & wider practice: Cross-bearing stones are found in Brittany and Wales as well, where they are called fairy crosses or ‘cross stones’ in folk tradition, and were also used as amulets. Chiastolite has few older meanings beyond these charms; the rest come from 20th-century crystal books.",
+
+            tags: ["safe travel", "transitions", "loss", "resilience", "clarity", "saturn"]
+        },
+
+        crazy_lace_agate: {
+            DisplayName: "Crazy Lace Agate",
+            Category: "Crystal",
+
+            Element: "Earth",
+
+            Planet: "Mercury",
+
+            Chakra: "Crown",
+
+            Uses: "Cheerfulness, patience with chaos, creative flow, easing frustration, finding pattern",
+
+            PairsWith: "Citrine, carnelian, clear quartz, yellow candle",
+
+            Cleansing: "Smoke, sound, moonlight",
+
+            TraditionalWarnings: "Crazy lace agate is hard and stable, but dyed pieces (bright pink, blue or purple) can bleed in water. Silica dust from cutting or sanding is harmful to lungs.",
+
+            Overview: "Crazy lace agate is a banded chalcedony (microcrystalline quartz) of Mohs hardness 6.5–7, named for its swirling, looping, lace-like patterns of white, cream, grey, yellow and rust. Much of it comes from Chihuahua in Mexico (hence ‘Mexican lace agate’), and the stone is also found in Namibia, Australia and the USA. It is sold as tumbled stones, palm stones, beads and chips.",
+
+            TraditionalMeaning: "Cheerfulness and joy; a playful modern stone of good humour, patience and finding pattern in the tangle.",
+
+            HowToUse: "Start here: keep a small crazy lace agate on a desk or in a bag, and turn it in your fingers when a day feels heavy or tangled. Tumbled stones suit carrying, chips can go in jars with citrine for cheerfulness, and a palm stone makes a good worry stone. Wipe it with a soft cloth to keep the bands bright.",
+
+            PairingNotes: "Crazy lace agate pairs well with citrine for sunny mood, carnelian for energy, clear quartz for clarity, and rose quartz for gentleness. Yellow, orange and cream candles suit it.",
+
+            CleansingNotes: "Cleanse crazy lace agate with smoke, sound, moonlight, or visualization. Plain pieces can be rinsed and dried; dyed pieces should only be wiped.",
+
+            SafetyAndRespect: "Crazy lace agate is safe to handle, but sharp edges and the dust from cutting it are harmful; dyed stones should not go in water for elixirs. The cheering meanings are modern crystal lore; the stone is not a treatment for depression, and persistent low mood deserves proper support.",
+
+            Traditions: "Wheel of the Year",
+
+            TraditionNotes: "Wheel of the Year: Kept on the altar or desk for good humour, used at Beltane and Litha for lightness and play, and held to ease frustration.\n\nFolk & wider practice: Agate itself has been used for beads, seals and amulets since the Stone Age, and the Greeks and Romans prized banded agates, but ‘crazy lace’ was named and sold in the 20th century. Its meanings come from modern crystal-healing books, which link it to joy and the Crown chakra, and to Mercury and Earth in correspondence tables.",
+
+            tags: ["cheerfulness", "playfulness", "mood lift", "patience", "creativity", "mercury"]
+        },
+
+        dendritic_agate: {
+            DisplayName: "Dendritic Agate",
+            Category: "Crystal",
+
+            Element: "Earth",
+
+            Planet: "Mercury",
+
+            Chakra: "Heart",
+
+            Uses: "Growth, abundance, connection to nature, steady progress, gentle grounding",
+
+            PairsWith: "Moss agate, green aventurine, clear quartz, green candle",
+
+            Cleansing: "Smoke, sound, earth",
+
+            TraditionalWarnings: "Dendritic agate is hard and stable, but silica dust from cutting or sanding is harmful. Dyed or heavily treated pieces can bleed in water.",
+
+            Overview: "Dendritic agate (also called tree agate) is milky, translucent chalcedony with fine, branching, tree-like or fern-like patterns of black, brown or dark green, formed by manganese or iron oxides growing inside the stone. It is not banded like true agate, and it is sometimes confused with moss agate, which has green mineral inclusions that look like moss. It is found in India, Brazil, the USA and Madagascar, and is sold as tumbled stones, cabochons, palm stones and chips.",
+
+            TraditionalMeaning: "Growth and abundance; a modern stone of the garden and the wood, for patient progress and a feeling of being rooted among living things.",
+
+            HowToUse: "Start here: keep a small dendritic agate in a plant pot or on a windowsill as a charm for steady growth, or hold one while setting a gardening or study intention. Tumbled pieces suit carrying, chips can go in jars with green aventurine for abundance, and slices make good pendants. Wipe it with a soft cloth to keep the patterns clear.",
+
+            PairingNotes: "Dendritic agate pairs well with moss agate for the garden, green aventurine for luck and growth, clear quartz for clarity, and jade for steady prosperity. Green, white and brown candles suit it.",
+
+            CleansingNotes: "Cleanse dendritic agate with smoke, sound, earth, or visualization. Plain pieces can be rinsed and dried, but dyed pieces should be wiped only.",
+
+            SafetyAndRespect: "Dendritic agate is safe to handle, but the dust from cutting it is harmful and edges can be sharp. Its growth and abundance meanings are modern crystal lore, rather than old tradition, and the stone is no substitute for good soil, sunlight or financial planning.",
+
+            Traditions: "Wheel of the Year",
+
+            TraditionNotes: "Wheel of the Year: Kept in the garden or on the altar at Ostara and Beltane for growth, and at Lammas and Mabon for gratitude at the harvest.\n\nFolk & wider practice: Agates have been used as charms for farming and fertility since ancient times; Pliny the Elder and medieval lapidaries said that agate in the field protected crops. The name ‘dendritic’ is from the Greek dendron, ‘tree’, and was applied by 19th-century mineralogists to the branching patterns. Most modern meanings come from 20th-century crystal-healing books.",
+
+            tags: ["growth", "abundance", "nature connection", "progress", "grounding", "mercury"]
+        },
+
+        dumortierite: {
+            DisplayName: "Dumortierite",
+            Category: "Crystal",
+
+            Element: "Air",
+
+            Planet: "Mercury",
+
+            Chakra: "Throat, Third Eye",
+
+            Uses: "Study and memory, patience, calm focus, clear speech, steady self-discipline",
+
+            PairsWith: "Sodalite, lapis lazuli, clear quartz, blue candle",
+
+            Cleansing: "Smoke, sound, moonlight",
+
+            TraditionalWarnings: "Dumortierite is hard and stable, but much ‘dumortierite’ is dumortierite quartz, and some is dyed. The dust from cutting it, as with all hard stone, contains silica and should be avoided.",
+
+            Overview: "Dumortierite is an aluminium borosilicate mineral of Mohs hardness up to 8.5, found as dense, fibrous masses in deep denim blue, indigo, violet and sometimes brown or grey. It was named in 1881 after the French palaeontologist Eugène Dumortier, who found it near Lyon. Most of the stone sold is ‘dumortierite quartz’, quartz with dumortierite fibres. It is found in Brazil, Madagascar, Namibia and the USA, and is sold as tumbled stones, beads, cabochons and chips.",
+
+            TraditionalMeaning: "Patience, study and calm order; a modern stone of the student and the organiser, for staying with a task.",
+
+            HowToUse: "Start here: keep a small dumortierite on your desk or bag, and hold it for a few slow breaths before study, an exam or a task that needs patience. Tumbled stones suit carrying, chips can go in jars with sodalite for focus, and a bead makes a bracelet. Wipe it with a soft cloth.",
+
+            PairingNotes: "Dumortierite pairs well with sodalite for logic, lapis lazuli for clarity, clear quartz for amplification, and amethyst for calm. Blue, indigo and white candles suit it.",
+
+            CleansingNotes: "Cleanse dumortierite with smoke, sound, moonlight, or visualization. Plain pieces can be rinsed and dried; dyed or composite pieces should be wiped only.",
+
+            SafetyAndRespect: "Dumortierite is safe to handle, but avoid the dust from cutting it. The study and patience meanings are modern crystal lore, and the stone does not replace sleep, revision or support for a learning difficulty.",
+
+            Traditions: "Wheel of the Year",
+
+            TraditionNotes: "Wheel of the Year: Kept on the desk or altar for study and patience, used at Lammas and Mabon around the start of the academic year, and held before important talks.\n\nFolk & wider practice: Dumortierite has no old magical tradition; it was named in 1881 and entered crystal-healing books in the late 20th century, which link it to the Throat and Third Eye chakras and to Mercury and Air. The blue dumortierite used in jewellery is often a trade name for dumortierite quartz.",
+
+            tags: ["study", "patience", "focus", "clear speech", "discipline", "mercury"]
+        },
+
+        golden_healer_quartz: {
+            DisplayName: "Golden Healer Quartz",
+            Category: "Crystal",
+
+            Element: "Fire",
+
+            Planet: "Sun",
+
+            Chakra: "Solar Plexus, Crown",
+
+            Uses: "Optimism, self-worth, warmth of heart, spiritual connection, amplified intention",
+
+            PairsWith: "Citrine, clear quartz, sunstone, gold candle",
+
+            Cleansing: "Smoke, sound, moonlight",
+
+            TraditionalWarnings: "Golden healer quartz is hard and stable. Some pieces are dyed or heat-treated, and a few are sold as ‘golden healer’ when they are simply stained, so ask how a piece was treated if that matters to you.",
+
+            Overview: "Golden healer quartz is clear or milky quartz that is stained yellow, gold or rust-orange by iron oxides (such as limonite or hematite) coating the crystal or lying inside it. The trade name ‘golden healer’ came into use in the late 20th century; the stone is found in Arkansas, Brazil, Madagascar and Namibia and is sold as points, clusters, tumbled stones and chips. It is not the same as citrine, a heat-coloured or naturally yellow quartz.",
+
+            TraditionalMeaning: "Warmth and wholeness; a modern stone of the sun, for self-worth, optimism and feeling connected to something larger.",
+
+            HowToUse: "Start here: hold a golden healer quartz point in sunlight or lamplight for a minute, and say one kind thing about yourself. Points suit an altar or desk, tumbled stones suit carrying, and chips can go in jars with citrine for confidence and abundance. Keep it clean and clear of dust.",
+
+            PairingNotes: "Golden healer quartz pairs well with citrine for sunny confidence, clear quartz for amplification, sunstone for warmth, and amethyst for calm. Gold, yellow and white candles suit it.",
+
+            CleansingNotes: "Cleanse golden healer quartz with smoke, sound, moonlight, or visualization. It can be rinsed and dried; the iron staining is stable, but a stiff brush can scratch it.",
+
+            SafetyAndRespect: "Golden healer quartz is safe to handle, but points are sharp and iron-stained pieces can leave an orange dust on skin. The healing in its name is a trade name rather than a medical claim, and the stone is no substitute for treatment. Ask about dyed or heat-treated stones if this matters to you.",
+
+            Traditions: "Wheel of the Year",
+
+            TraditionNotes: "Wheel of the Year: Kept on the altar for Litha and sun workings, held at the start of the day for optimism, and set among candles at Yule to call back the light.\n\nFolk & wider practice: Quartz has been prized across Europe, Asia and the Americas for thousands of years, but ‘golden healer’ is a modern marketing name from the 1990s. Its meanings come from crystal-healing books which link its colour to the Sun and the Solar Plexus.",
+
+            tags: ["optimism", "self-worth", "warmth", "spiritual connection", "intention", "sun"]
+        },
+
+        kunzite: {
+            DisplayName: "Kunzite",
+            Category: "Crystal",
+
+            Element: "Air",
+
+            Planet: "Venus",
+
+            Chakra: "Heart",
+
+            Uses: "Compassion, emotional healing, gentle love, self-forgiveness, calm after upset",
+
+            PairsWith: "Rose quartz, morganite, selenite, pink candle",
+
+            Cleansing: "Moonlight, sound, smoke",
+
+            TraditionalWarnings: "Kunzite fades in strong sunlight and cleaves easily along planes, so keep it in the shade and avoid knocks. Treated and irradiated pink spodumene is sold as kunzite, and colour can darken or fade after irradiation.",
+
+            Overview: "Kunzite is the pink to lilac variety of spodumene (a lithium aluminium silicate), of Mohs hardness 6.5–7. It forms flat, deeply striated, blade-like crystals and is strongly pleochroic, showing different shades from different angles. It was named in 1903 for the New York gemmologist George F. Kunz, who studied it, and is found in Afghanistan, Brazil, Madagascar and California. It is sold as raw blades, tumbled stones, cut gems and chips.",
+
+            TraditionalMeaning: "Compassion and tenderness; a modern stone of the gentle heart, for forgiving oneself and soothing the day.",
+
+            HowToUse: "Start here: place a kunzite blade by your bed or hold a tumbled piece in your palm for a few minutes at the end of a hard day, and name one thing you forgive yourself for. Chips can go in jars with rose quartz for gentleness. Keep it out of the sun, in a soft pouch, and away from knocks.",
+
+            PairingNotes: "Kunzite pairs well with rose quartz for tenderness, morganite for love, selenite for quiet, and lepidolite for calm. Pink, white and lilac candles suit it.",
+
+            CleansingNotes: "Cleanse kunzite with moonlight (indoors, away from dawn sun), sound, smoke, or visualization. A quick rinse and dry is the most water it needs; avoid soaking and bright light.",
+
+            SafetyAndRespect: "Kunzite is safe to handle, but its blades are brittle and can splinter, and sharp raw pieces scratch. Because it fades in light, store it in the dark. The emotional healing meanings are modern crystal lore. Be sceptical of vivid pink ‘kunzite’ that has been dyed, irradiated or is actually pink glass or quartz, and it is no substitute for support when grief runs deep.",
+
+            Traditions: "Wheel of the Year",
+
+            TraditionNotes: "Wheel of the Year: Kept on the altar for love and compassion, used at Imbolc and around Valentine’s Day for gentle love, and set beside the bed for rest.\n\nFolk & wider practice: Kunzite is a 20th-century stone: it was named in 1903 and became fashionable in jewellery in the early 20th century. Its meanings come from modern crystal-healing books that link its pink colour to the Heart chakra and Venus. Tiffany & Co. championed it, and it is also a source of lithium, though the gemstone has no medicinal effect.",
+
+            tags: ["compassion", "emotional healing", "gentle love", "self-forgiveness", "calm", "venus"]
+        },
+
+        merlinite: {
+            DisplayName: "Merlinite",
+            Category: "Crystal",
+
+            Element: "Spirit",
+
+            Planet: "Saturn",
+
+            Chakra: "Third Eye, Crown",
+
+            Uses: "Magic and intuition, shadow work, transformation, protection, dream work",
+
+            PairsWith: "Labradorite, black tourmaline, amethyst, purple candle",
+
+            Cleansing: "Smoke, sound, moonlight",
+
+            TraditionalWarnings: "Merlinite is a mix of quartz and manganese oxides, and manganese dust is toxic if inhaled. Do not cut, sand or grind it, never use it for elixirs, and wash hands after handling raw pieces.",
+
+            Overview: "Merlinite is a trade name for black or grey stone with white dendritic (branching) patterns, a mix of quartz with manganese oxides such as psilomelane and pyrolusite. It is also sold as ‘dendritic opal’, although it is not a true opal. It is found in Madagascar and is sold as tumbled stones, palm stones, spheres and chips. The name suggests the wizard Merlin of Arthurian legend; the stone has no connection to the mythical figure beyond its trade name.",
+
+            TraditionalMeaning: "Magic, mystery and the unseen; a modern stone of the wizard and the shadow, for work with the unconscious and with change.",
+
+            HowToUse: "Start here: hold a merlinite in a dim room for a few breaths before meditation, tarot or journaling, and notice what rises. Tumbled stones suit pockets, palm stones suit the altar, and chips can go in jars for dream work. Wash your hands after handling raw pieces, and keep it dry.",
+
+            PairingNotes: "Merlinite pairs well with labradorite for magic, black tourmaline for protection, amethyst for dreams, and moonstone for lunar workings. Purple, black and silver candles suit it.",
+
+            CleansingNotes: "Cleanse merlinite with smoke, sound, moonlight, or visualization. A quick wipe with a barely damp cloth is the most water it needs; do not soak it, put it in salt, or make an elixir from it.",
+
+            SafetyAndRespect: "Merlinite is safe to handle in polished form, but raw pieces and dust contain manganese, which is toxic if inhaled or swallowed. Wash hands after handling, keep it from children and pets, and do not cut or sand it. Its magical meanings are modern, drawn from the trade name and the Arthurian legend, and it is no substitute for support during difficult inner work.",
+
+            Traditions: "Celtic, Wheel of the Year",
+
+            TraditionNotes: "Celtic: The name refers to Merlin (Myrddin), the wizard and prophet of Welsh and Arthurian legend, who is a figure of medieval Welsh and later literary tradition; the stone itself has no Celtic origin and was named in modern times.\n\nWheel of the Year: Used at Samhain and the dark moon for shadow work and divination, and kept on the altar for transformation.\n\nFolk & wider practice: ‘Merlinite’ is a late 20th-century trade name, and the stone itself is a quarry find from Madagascar. Its meanings come from modern crystal-healing and witchcraft books, which also link it to Saturn and the Crown chakra.",
+
+            tags: ["intuition", "shadow work", "transformation", "protection", "dreams", "saturn"]
+        },
+
+        moldavite: {
+            DisplayName: "Moldavite",
+            Category: "Crystal",
+
+            Element: "Spirit",
+
+            Planet: "Mars",
+
+            Chakra: "Heart, Third Eye",
+
+            Uses: "Transformation, spiritual awakening, letting go of the old, bold change, cosmic connection",
+
+            PairsWith: "Clear quartz, herkimer diamond, labradorite, green candle",
+
+            Cleansing: "Sound, smoke, moonlight",
+
+            TraditionalWarnings: "Moldavite is a brittle natural glass and chips if knocked or heated. Fakes are very common: most ‘moldavite’ for sale is green glass, and even real stones are often moulded, etched or sold by weight. Buy from a seller who names the locality, in Czechia (Bohemia and Moravia).",
+
+            Overview: "Moldavite is a natural olive- to bottle-green glass formed about 15 million years ago when a large meteorite struck the Ries area in southern Germany, throwing molten rock across what is now the Czech Republic, Austria and Germany. It is a type of tektite, of Mohs hardness about 5.5–6, with a distinctive etched, wrinkled, sculptured surface made as it fell and was later weathered. It is named after the Moldau (Vltava) river and is mined near Český Krumlov and in southern Bohemia and Moravia. It is sold as raw pieces, cut gems and fragments.",
+
+            TraditionalMeaning: "A stone from the sky; a modern stone of fast, intense change and spiritual awakening, said to speed up a life’s turning points.",
+
+            HowToUse: "Start here: if you use moldavite at all, begin with a very small piece, handle it briefly, and notice how you feel; many people find its reputation stronger than its effect, and others find it unsettling. Small pieces suit pendants or a dish on the altar, and a raw piece can be held in meditation. Set it down if it feels too much.",
+
+            PairingNotes: "Moldavite pairs well with clear quartz for clarity, herkimer diamond for intensity, labradorite for magic, and black tourmaline for grounding when the energy is strong. Green, silver and white candles suit it.",
+
+            CleansingNotes: "Cleanse moldavite with sound, smoke, moonlight, or visualization. A quick rinse and wipe is fine, but it is brittle glass, so avoid soaking, salt, heat and hard knocks.",
+
+            SafetyAndRespect: "Moldavite is safe to handle, but sharp, brittle edges can cut. Fakes are extremely common: look for the wrinkled, wormy, etched surface and bubbles, be wary of perfect, smooth, bright green stones, and buy from sellers who give the mine or locality and a way to return it. Genuine moldavite is expensive and a limited natural resource. The intense transformation meanings are modern crystal lore, and some users report feeling unsettled by it; it is no substitute for care if a life change is hard, and you can simply set it down.",
+
+            Traditions: "Wheel of the Year",
+
+            TraditionNotes: "Wheel of the Year: Used by modern practitioners at turning points, such as Samhain, the new moon and the solstices, and kept on the altar for transformation.\n\nFolk & wider practice: Moldavite was collected and worked into tools and ornaments at Stone Age sites in central Europe more than 20,000 years ago, and in later centuries it was worn as a luck charm in Bohemia and Moravia. Some modern writers call it the stone of the Holy Grail, an idea from 20th-century writing rather than an old legend. Most of its modern meanings come from crystal-healing books of the 1980s onwards.",
+
+            tags: ["transformation", "awakening", "letting go", "bold change", "cosmic connection", "mars"]
+        },
+
+        nuummite: {
+            DisplayName: "Nuummite",
+            Category: "Crystal",
+
+            Element: "Earth",
+
+            Planet: "Saturn",
+
+            Chakra: "Root, Third Eye",
+
+            Uses: "Shadow work, intuition, protection of the psyche, inner strength, magic",
+
+            PairsWith: "Labradorite, black tourmaline, obsidian, black candle",
+
+            Cleansing: "Smoke, sound, moonlight",
+
+            TraditionalWarnings: "Nuummite is a brittle amphibole rock that may contain fibrous minerals; never cut, sand or grind it, and avoid breathing its dust. Keep it from water beyond a quick rinse.",
+
+            Overview: "Nuummite is a dark, almost black metamorphic rock of anthophyllite and gedrite (amphiboles) that shows a flash of gold, copper and rainbow colour, called iridescence, when light catches its fine layers. It is one of the oldest minerals sold, about three billion years old, and is found only near Nuuk (Nuummite is named after the Greenlandic town, Nuuk) in southwestern Greenland, with similar rock in Canada and Norway. It is sold as tumbled stones, palm stones, cabochons and chips.",
+
+            TraditionalMeaning: "Deep, old magic; a modern stone of the sorcerer and the shadow, said to help a person meet the hidden parts of themselves.",
+
+            HowToUse: "Start here: hold a nuummite in a dim room for a few breaths before journaling or shadow work, and tilt it to see the flash. Tumbled stones suit pockets, a palm stone suits the altar, and chips can go in jars for protection. Keep a piece near the bed only if it brings you calm, as some people find it stirring.",
+
+            PairingNotes: "Nuummite pairs well with labradorite for magic, black tourmaline for protection, obsidian for truth, and moonstone for balance. Black, purple and silver candles suit it.",
+
+            CleansingNotes: "Cleanse nuummite with smoke, sound, moonlight, or visualization. A quick wipe with a barely damp cloth is the most water it needs; never soak it, salt it, or use acid.",
+
+            SafetyAndRespect: "Nuummite is safe to handle polished, but it is brittle and can contain fibrous amphiboles, so do not cut, sand or grind it. Greenland’s nuummite is a limited resource that comes from a few mines under Greenlandic law, so buy from sellers who can name the source. The shadow work and magical meanings are modern crystal lore, and deep inner work is best done alongside real support.",
+
+            Traditions: "Wheel of the Year",
+
+            TraditionNotes: "Wheel of the Year: Used by modern practitioners at Samhain and the dark moon for shadow work and divination, and held in meditation to meet the unconscious.\n\nFolk & wider practice: Nuummite has been known to geologists in Greenland for some decades and entered crystal books and the gem trade in the late 20th century. It is sometimes called the ‘sorcerer’s stone’ by modern sellers, a trade name and not an old tradition; its meanings come from modern crystal-healing and witchcraft writers.",
+
+            tags: ["shadow work", "intuition", "psychic protection", "inner strength", "magic", "saturn"]
+        },
+
+        petrified_wood: {
+            DisplayName: "Petrified Wood",
+            Category: "Crystal",
+
+            Element: "Earth",
+
+            Planet: "Saturn",
+
+            Chakra: "Root",
+
+            Uses: "Ancestor connection, endurance, grounding, patience with slow change, past-life reflection",
+
+            PairsWith: "Smoky quartz, moss agate, jet, brown candle",
+
+            Cleansing: "Earth, smoke, sound",
+
+            TraditionalWarnings: "Petrified wood is hard and stable, but some fossil wood is protected, and collecting it from public land (for example in national parks) is illegal in many places. Buy from reputable sellers.",
+
+            Overview: "Petrified wood is fossilised wood in which the original plant material has been slowly replaced, cell by cell, by minerals, most often quartz, chalcedony and opal, usually between 150 and 250 million years ago, while the wood’s grain and rings survive in stone. Colours range from brown and tan to red, grey, yellow and sometimes blue and green, from iron and manganese. The Petrified Forest in Arizona, Indonesia, Madagascar and Argentina are famous sources, and it is sold as tumbled stones, slabs, bookends and chips.",
+
+            TraditionalMeaning: "Endurance and deep time; a modern stone of the ancestors and the slow work of change, seen as a tree that became stone.",
+
+            HowToUse: "Start here: hold a piece of petrified wood and trace its grain with a finger while you think about the people and years behind you. A tumbled stone suits a pocket, slabs and bookends suit an altar or ancestor shelf, and chips can go in jars for steadiness. Wipe it with a soft cloth; it needs no special care.",
+
+            PairingNotes: "Petrified wood pairs well with smoky quartz for grounding, moss agate for growth, jet for mourning, and clear quartz for clarity. Brown, green and black candles suit it.",
+
+            CleansingNotes: "Cleanse petrified wood with earth, smoke, sound, or visualization. Hardy pieces can be rinsed and dried, but dyed or glued pieces should be wiped.",
+
+            SafetyAndRespect: "Petrified wood is safe to handle, but sharp edges can scratch and the dust from cutting is harmful. Do not collect it from protected land, and avoid pieces sold without a clear source. The ancestor and past-life meanings are modern crystal lore; if you honour ancestors, do so in your own and their ways.",
+
+            Traditions: "Wheel of the Year",
+
+            TraditionNotes: "Wheel of the Year: Placed on an ancestor shelf or altar at Samhain and Mabon, used for endurance in autumn and winter, and kept in the garden as a symbol of the long life of trees.\n\nFolk & wider practice: Fossil wood has been used as a charm and as a building stone for centuries, and several Native American peoples of the American Southwest, including the Navajo, have traditions about the petrified logs of Arizona, which they sometimes call the bones of a giant. The stone was widely collected after the railways opened the Petrified Forest in the 1880s. Its meanings today come from modern crystal books and nature spirituality.",
+
+            tags: ["ancestors", "endurance", "grounding", "patience", "past lives", "saturn"]
+        },
+
+        pink_opal: {
+            DisplayName: "Pink Opal",
+            Category: "Crystal",
+
+            Element: "Water",
+
+            Planet: "Venus",
+
+            Chakra: "Heart",
+
+            Uses: "Gentle love, emotional healing, soothing grief, tenderness toward oneself, peaceful rest",
+
+            PairsWith: "Rose quartz, rhodochrosite, moonstone, pink candle",
+
+            Cleansing: "Moonlight, sound, smoke",
+
+            TraditionalWarnings: "Opal is a hydrated silica that can crack or craze if heated, dried out or knocked, and it can be dyed. Keep pink opal away from strong sun, heat and harsh chemicals, and do not soak it.",
+
+            Overview: "Pink opal is common (or ‘potch’) opal, which has no play of colour, in an opaque, waxy, pastel pink to rose-salmon colour, coloured by trace elements. It is not the precious, flashing opal of jewellery. Most of it comes from the Andes in Peru, and it is also found in Australia and Africa. It is sold as tumbled stones, palm stones, hearts, beads and chips, and its hardness is only about 5–6, softer than quartz.",
+
+            TraditionalMeaning: "Soft, easy love and healing; a modern stone of tenderness, comfort and the gentler kind of heart work.",
+
+            HowToUse: "Start here: hold a pink opal at the end of a day, and name something you are grieving or tired of carrying, then set it down. Tumbled stones suit pockets and bedside dishes, hearts and palm stones suit the altar, and chips can go in jars with rose quartz. Wrap it in soft cloth and keep it from knocks.",
+
+            PairingNotes: "Pink opal pairs well with rose quartz for love, rhodochrosite for emotional healing, moonstone for rest, and selenite for peace. Pink, white and pale blue candles suit it.",
+
+            CleansingNotes: "Cleanse pink opal with moonlight, sound, smoke, or visualization. A wipe with a barely damp cloth is the most water it needs; never soak it or leave it in sun, heat or salt.",
+
+            SafetyAndRespect: "Pink opal is safe to handle, but it is soft, can crack with heat or dryness, and should not be used in water for elixirs. Dyed or polymer-treated stones are sold as pink opal, and pink opalite is a man-made glass, so ask about treatment. The emotional meanings are modern crystal lore; it is no substitute for support when grief runs deep.",
+
+            Traditions: "Wheel of the Year",
+
+            TraditionNotes: "Wheel of the Year: Kept on the altar or by the bed for gentle love, used at Imbolc and in spring for tenderness, and held during quiet mourning.\n\nFolk & wider practice: Opal in general was a gem of the ancient Romans and was said to bring hope; in the 19th century, Sir Walter Scott’s novel Anne of Geierstein spread the superstition that opals were unlucky, which hurt the opal trade. Pink opal has no long tradition of its own: it came to be sold from Peru in the late 20th century, and its meanings come from modern crystal books.",
+
+            tags: ["gentle love", "emotional healing", "grief", "self-tenderness", "rest", "venus"]
+        },
+
+        ruby_zoisite: {
+            DisplayName: "Ruby Zoisite",
+            Category: "Crystal",
+
+            Element: "Earth",
+
+            Planet: "Mars",
+
+            Chakra: "Heart, Root",
+
+            Uses: "Vitality, passion for life, creative drive, joy, balanced energy",
+
+            PairsWith: "Green aventurine, carnelian, garnet, red candle",
+
+            Cleansing: "Smoke, sound, moonlight",
+
+            TraditionalWarnings: "Ruby zoisite is a brittle rock of zoisite, ruby (corundum) and hornblende; the ruby crystals can break out of the matrix. It contains hornblende, so do not cut, sand or grind it, and wash hands after handling raw pieces.",
+
+            Overview: "Ruby zoisite (also called anyolite, from the Maasai word for green) is an opaque rock of vivid green zoisite with irregular patches of pink to deep red ruby (corundum), usually with black flecks of hornblende. It is found in Tanzania, near Longido, and in India, and is sold as tumbled stones, carvings, spheres, beads and chips. The ruby inside is usually opaque, low-grade and not a gem.",
+
+            TraditionalMeaning: "Life force and joy; a modern stone of the heart’s fire, for a restored appetite for living and creative drive.",
+
+            HowToUse: "Start here: keep a ruby zoisite on the desk or workspace, and hold it when you need a spark to begin something you have been putting off. Tumbled stones suit pockets, carvings suit the altar, and chips can go in jars with carnelian for drive. Wipe it with a soft cloth.",
+
+            PairingNotes: "Ruby zoisite pairs well with green aventurine for heart and luck, carnelian for energy, garnet for vitality, and clear quartz for clarity. Red, green and orange candles suit it.",
+
+            CleansingNotes: "Cleanse ruby zoisite with smoke, sound, moonlight, or visualization. A brief wipe with a barely damp cloth is the most water it needs; do not soak it or put it in salt.",
+
+            SafetyAndRespect: "Ruby zoisite is safe to handle polished, but it can chip, and raw pieces and dust contain hornblende, so wash hands after handling and do not cut or sand it. Do not use it for elixirs. The vitality meanings are modern crystal lore; it is no replacement for medical care, and persistent low energy deserves a check-up. Much anyolite is mined in Tanzania, so seek sellers who describe the source.",
+
+            Traditions: "Wheel of the Year",
+
+            TraditionNotes: "Wheel of the Year: Kept on the altar for vitality and joy, used at Beltane and Litha for fire and growth, and carried in the working day for drive.\n\nFolk & wider practice: Ruby zoisite was found in Tanzania in 1954 by a prospector in the Longido hills, and became a carving stone, then a crystal-healing stone, in the late 20th century. ‘Anyolite’ is a trade name from the Maasai word for green. Its meanings come from crystal-healing books, which link its green and red to the Heart and Root chakras and to Mars and Earth.",
+
+            tags: ["vitality", "joy", "creative drive", "passion for life", "balance", "mars"]
+        },
+
+        sardonyx: {
+            DisplayName: "Sardonyx",
+            Category: "Crystal",
+
+            Element: "Fire",
+
+            Planet: "Mars",
+
+            Chakra: "Root, Sacral",
+
+            Uses: "Courage, marital fidelity, warding off envy, clear judgement, keeping promises",
+
+            PairsWith: "Carnelian, black tourmaline, red jasper, red candle",
+
+            Cleansing: "Smoke, sound, moonlight",
+
+            TraditionalWarnings: "Sardonyx is hard and stable, but most is dyed or heat-treated, and some is sold as ‘onyx’ or ‘agate’. Dust from cutting it is harmful.",
+
+            Overview: "Sardonyx is a banded chalcedony (microcrystalline quartz) of Mohs hardness 6.5–7, with straight, parallel bands of reddish-brown sard alternating with white or black onyx. It is one of the oldest carved gem materials, and most sardonyx on the market is dyed or heat-treated to bring out the bands. It comes from India, Brazil and Uruguay and is sold as tumbled stones, beads, cabochons and cameos, and chips.",
+
+            TraditionalMeaning: "Courage and fidelity; an ancient stone of the soldier and the married, whose banded layers were carved into seals and cameos for centuries.",
+
+            HowToUse: "Start here: hold a sardonyx and say aloud one promise you mean to keep, or carry it into a conversation where you must be clear. Tumbled stones suit pockets, cabochons make rings, and chips can go in jars for courage. Wipe it with a soft cloth.",
+
+            PairingNotes: "Sardonyx pairs well with carnelian for courage, black tourmaline for protection, red jasper for steadiness, and lapis lazuli for honest speech. Red, black and white candles suit it.",
+
+            CleansingNotes: "Cleanse sardonyx with smoke, sound, moonlight, or visualization. Plain pieces can be rinsed and dried, but dyed stones should only be wiped.",
+
+            SafetyAndRespect: "Sardonyx is safe to handle, but dust from cutting it is harmful and dyed stones should not be used in water for elixirs. Old lore about marital fidelity and protection from ill will is traditional folk and medieval lapidary tradition, and the stone does not guarantee loyalty; modern meanings come from crystal-healing books.",
+
+            Traditions: "Hellenic, Roman, Christian",
+
+            TraditionNotes: "Hellenic: Greek writers described sardonyx as a stone of courage and good fortune, and Greek and Roman artisans carved it into cameos and intaglio seals, using the layers of colour to make figures stand out in relief.\n\nRoman: Roman soldiers were said to wear sardonyx engraved with Mars or a hero for courage, and Roman writers such as Pliny the Elder discussed the stone and its supposed power to ward off envy and fear.\n\nChristian: Sardonyx is the fifth foundation stone of the heavenly city in the Book of Revelation, and in medieval lapidaries it was held to give modesty, chastity and a good conscience; it is also a stone traditionally given for the month of August.\n\nFolk & wider practice: Sardonyx is also the traditional birthstone for August, along with peridot and spinel. Its reputation for protecting marriage comes from these older gem-lore sources.",
+
+            tags: ["courage", "fidelity", "protection from ill will", "clear judgement", "honest speech", "mars"]
+        },
+
+        septarian: {
+            DisplayName: "Septarian",
+            Category: "Crystal",
+
+            Element: "Earth",
+
+            Planet: "Saturn",
+
+            Chakra: "Root, Solar Plexus",
+
+            Uses: "Patience, endurance, grounding, emotional steadiness, perseverance",
+
+            PairsWith: "Smoky quartz, citrine, brown jasper, brown candle",
+
+            Cleansing: "Smoke, sound, earth",
+
+            TraditionalWarnings: "Septarian is soft (Mohs 3–4) and calcite-based, so it dissolves in acids and weakens in water and salt. Keep it dry, and never soak it or make an elixir from it.",
+
+            Overview: "Septarian (or septaria) are rounded nodules of mudstone that cracked as they dried about 50 million years ago, the cracks then filling with calcite and aragonite (yellow, honey and white) to make a polygonal, turtle-shell or ‘dragon-skin’ network. It is soft (Mohs 3–4), and the best-known source is Madagascar, with Utah in the USA also known. It is sold as tumbled stones, palm stones, spheres, bookends and chips, and is often dyed, waxed or sealed.",
+
+            TraditionalMeaning: "Patience and endurance; a modern stone of the slow work, seen as a stone that cracked and was healed with gold.",
+
+            HowToUse: "Start here: hold a septarian palm stone when you are impatient or worn down, and trace the gold veins with a finger. Tumbled stones suit pockets, spheres and bookends suit the altar or desk, and chips can go in jars with citrine for steadiness. Keep it dry and out of the bath.",
+
+            PairingNotes: "Septarian pairs well with smoky quartz for grounding, citrine for sunny steadiness, brown jasper for patience, and amber for warmth. Brown, yellow and gold candles suit it.",
+
+            CleansingNotes: "Cleanse septarian with smoke, sound, earth, or visualization. Wipe it with a dry or barely damp cloth; never soak it, put it in salt or use vinegar.",
+
+            SafetyAndRespect: "Septarian is safe to handle but soft and brittle, so it can chip, and it should not be used for elixirs or in water. Much septarian is polished with wax or resin, and some is dyed, so check the surface before cleaning. Its patience meanings are modern crystal lore. Some Madagascar septarian comes from areas where the stone is dug at scale, so buy from sellers who say where it came from.",
+
+            Traditions: "Wheel of the Year",
+
+            TraditionNotes: "Wheel of the Year: Kept on the altar at Mabon and Samhain for endurance through the dark half of the year, and used in grounding work.\n\nFolk & wider practice: Septarian nodules have been known to geologists for centuries and were sometimes cut and polished for tabletops and ornaments; the name comes from the Latin septum, ‘partition’. The ‘dragon stone’ and ‘turtle stone’ names are modern trade names. Its meanings come from crystal-healing books, which link its brown and gold to the Root and Solar Plexus chakras and to Saturn and Earth.",
+
+            tags: ["patience", "endurance", "grounding", "emotional steadiness", "perseverance", "saturn"]
+        },
+
+        serpentine: {
+            DisplayName: "Serpentine",
+            Category: "Crystal",
+
+            Element: "Earth",
+
+            Planet: "Saturn",
+
+            Chakra: "Heart, Crown",
+
+            Uses: "Kundalini and energy awakening, shedding the old, intuition, grounding, spiritual growth",
+
+            PairsWith: "Green aventurine, clear quartz, smoky quartz, green candle",
+
+            Cleansing: "Smoke, sound, moonlight",
+
+            TraditionalWarnings: "Some serpentine contains fibrous chrysotile (a form of asbestos), and dust from cutting, sanding or grinding it can be harmful to lungs. Polished pieces are generally safe, but never cut, sand or burn serpentine, and wash hands after handling raw pieces. Do not use it for elixirs.",
+
+            Overview: "Serpentine is a group of magnesium silicate minerals (antigorite, lizardite and chrysotile) in waxy, mottled greens, yellows and sometimes brown or black, with a snakeskin-like pattern that gave it its name (Latin serpens). It is soft to medium hard (Mohs 2.5–5.5) and is found in the UK (the Lizard peninsula in Cornwall), the USA, China, Pakistan, Afghanistan and Zimbabwe. The compact green varieties are carved as ‘new jade’ and ‘bowenite’. It is sold as tumbled stones, carvings, spheres and chips.",
+
+            TraditionalMeaning: "Shedding and renewal; a snake-green stone of change, which a person might hold when leaving something behind.",
+
+            HowToUse: "Start here: hold a smooth, polished serpentine when you are thinking about what to let go of, and put it down when you have named it. Tumbled stones suit pockets and bedside dishes, carvings suit the altar, and a polished palm stone is good for meditation. Keep it dry, and never grind, burn or cut it.",
+
+            PairingNotes: "Serpentine pairs well with green aventurine for gentle growth, clear quartz for clarity, smoky quartz for grounding, and moonstone for cycles. Green, brown and silver candles suit it.",
+
+            CleansingNotes: "Cleanse serpentine with smoke, sound, moonlight, or visualization. A quick wipe with a barely damp cloth is the most water it needs; never soak, grind or burn it.",
+
+            SafetyAndRespect: "Polished serpentine is safe to handle, but it is soft, and some contains fibrous asbestos minerals that become a hazard as dust. Do not cut, sand, grind or burn it, never use it in water for elixirs, and wash hands after handling raw pieces. It is a different stone from jade, which is sold as ‘new jade’ only as a trade name. Many of its energy meanings are modern crystal lore; if you feel unwell after energy work, rest and seek care.",
+
+            Traditions: "Hellenic, Roman, Wheel of the Year",
+
+            TraditionNotes: "Hellenic: Greek and Roman writers (including Dioscorides and Pliny) described a green, snake-spotted stone called ophites, which was worn as a charm against snakebite and venom; this old stone is identified with serpentine, though the identification is not certain.\n\nRoman: The Romans carved serpentine ‘green porphyry’ columns and tables, and it was valued in medieval Europe as ‘serpentine marble’ and in medieval lapidaries as a defence against poison, in cups and amulets.\n\nWheel of the Year: Used at Ostara and Beltane for renewal, and in autumn for shedding the old, linked to the snake and its skin.\n\nFolk & wider practice: Serpentine rock is a major stone of the Cornish Lizard peninsula, where it was carved into ornaments from the 19th century. Maori (New Zealand) and Chinese traditions both value serpentine-like greenstones such as pounamu and ‘soft jade’, which are separate cultural stones with their own protocols; serpentine ‘new jade’ should not be passed off as them.",
+
+            tags: ["energy awakening", "shedding the old", "intuition", "grounding", "spiritual growth", "saturn"]
+        },
+
+        staurolite: {
+            DisplayName: "Staurolite",
+            Category: "Crystal",
+
+            Element: "Earth",
+
+            Planet: "Saturn",
+
+            Chakra: "Root",
+
+            Uses: "Protection of travellers, luck, connection to nature spirits, grounding, comfort in grief",
+
+            PairsWith: "Smoky quartz, black tourmaline, moss agate, green candle",
+
+            Cleansing: "Earth, smoke, sound",
+
+            TraditionalWarnings: "Staurolite is hard and stable, but the cross arms can snap. Some ‘fairy crosses’ sold are cast or made of resin or ceramic, and some are carved from other stone, so check that a piece shows the natural twin faces.",
+
+            Overview: "Staurolite is an iron-magnesium-aluminium silicate of Mohs hardness 7–7.5, a reddish-brown to black mineral that forms twinned crystals. Twinned at 60 or 90 degrees, the crystals cross into the shape of a Greek cross or an X, which are called ‘fairy crosses’ or ‘fairy stones’. The name is from the Greek stauros, ‘cross’. It is found in Virginia, Georgia and North Carolina in the USA, in Brittany, Switzerland and Russia, and is sold as natural crosses, tumbled stones, pendants and chips.",
+
+            TraditionalMeaning: "The fairy cross: a stone of luck and protection from journeys and ill will, with folk stories of tears of fairies.",
+
+            HowToUse: "Start here: carry a natural fairy cross in a pocket or bag as a travel charm, and hold it when you set out and when you return. Crosses suit pendants, tumbled stones suit pockets, and chips can go in jars for protection. Keep it dry and clean; a rinse and dry is enough.",
+
+            PairingNotes: "Staurolite pairs well with smoky quartz for grounding, black tourmaline for protection, moss agate for nature, and jet for gentle mourning. Green, brown and white candles suit it.",
+
+            CleansingNotes: "Cleanse staurolite with earth, smoke, sound, or visualization. A rinse in water and a dry is fine; avoid salt and hard knocks, as the arms can break.",
+
+            SafetyAndRespect: "Staurolite is safe to handle, but the crosses have rough edges that can scratch, and the dust from cutting any hard stone is harmful. Because the natural crosses are collected from the ground, buy from sellers who say where and how they were dug. The fairy stone folklore is traditional folk belief from Virginia, Brittany and elsewhere, and the cross shape belongs to a Christian symbol as well as to natural mineral lore; use it with respect for both.",
+
+            Traditions: "Christian, Wheel of the Year",
+
+            TraditionNotes: "Christian: In Brittany, Spain and elsewhere in Europe, natural cross-shaped stones were collected and worn as charms or gifted to pilgrims, and a Breton folk story says the crosses are tears shed by fairies on hearing of Christ’s death.\n\nWheel of the Year: Used by modern practitioners as a travel and protection charm, and set on the altar at Samhain and Imbolc for comfort and nature spirits.\n\nFolk & wider practice: In Virginia and the southern Appalachians, fairy crosses are the subject of stories among Cherokee and other peoples about the tears of the Little People, which belong to those peoples and should be credited to them rather than retold as general lore. Staurolite crosses were also reported to be gifts to US presidents, which helped make them fashionable, and Fairy Stone State Park in Virginia is named for them. Modern correspondence tables give staurolite to Saturn and Earth.",
+
+            tags: ["safe travel", "luck", "nature spirits", "grounding", "grief comfort", "saturn"]
+        },
+
+        sugilite: {
+            DisplayName: "Sugilite",
+            Category: "Crystal",
+
+            Element: "Water",
+
+            Planet: "Jupiter",
+
+            Chakra: "Third Eye, Crown",
+
+            Uses: "Spiritual love, higher intuition, self-compassion, shielding from negativity, meditation",
+
+            PairsWith: "Amethyst, charoite, lepidolite, purple candle",
+
+            Cleansing: "Moonlight, sound, smoke",
+
+            TraditionalWarnings: "Sugilite often contains manganese and is a fine-grained rock, so do not cut, sand or grind it. Dyed purple stones and imitations are common, and gem-quality sugilite is very expensive. Avoid strong sun and soaking, which can fade or harm it.",
+
+            Overview: "Sugilite is a rare lithium-bearing silicate mineral of Mohs hardness about 5.5–6.5, found in a deep purple to violet, with veins of black, magenta and pale lilac. It was named in 1944 after the Japanese petrologist Ken-ichi Sugi, who first described it from Iwagi Island in Japan, and gem-quality material was found in the Wessels Mine in South Africa in the late 1970s. It is sold as tumbled stones, beads, cabochons and chips, and a lot of cheap ‘sugilite’ is dyed or an imitation of a lower-grade rock.",
+
+            TraditionalMeaning: "Spiritual love and protection; a purple stone of the modern era, called the ‘love stone’ of the new age and linked with compassion and insight.",
+
+            HowToUse: "Start here: hold a small piece of sugilite in a quiet moment, and name one kindness you wish to give to yourself or another. Tumbled stones suit pockets and meditation, chips can go in jars with amethyst, and a cabochon makes a pendant. Keep it out of strong sun and in a pouch.",
+
+            PairingNotes: "Sugilite pairs well with amethyst for calm, charoite for transformation, lepidolite for ease, and rose quartz for gentle love. Purple, violet and white candles suit it.",
+
+            CleansingNotes: "Cleanse sugilite with moonlight (indoors), sound, smoke, or visualization. A wipe with a barely damp cloth is the most water it needs; do not soak it or leave it in strong light.",
+
+            SafetyAndRespect: "Polished sugilite is safe to handle, but raw pieces and dust may contain manganese, so wash hands, do not cut or sand it, and do not use it for elixirs. Its love and protection meanings are modern crystal lore from the 1980s onward, and it is no substitute for support. The Wessels Mine is a working mine in the Northern Cape, so seek sellers who say where a stone is from.",
+
+            Traditions: "Wheel of the Year",
+
+            TraditionNotes: "Wheel of the Year: Kept on the altar for love and compassion, used at the full moon for intuition, and held in meditation at times of change.\n\nFolk & wider practice: Sugilite was first described in 1944, and the gem-quality South African stone became fashionable in the 1980s, when crystal-healing writers named it the ‘love stone’ for the new age; its meanings come from that period. ‘Luvulite’ is a trade name from the Wessels Mine and the word ‘love’. Modern correspondence tables give sugilite to Jupiter and Water.",
+
+            tags: ["spiritual love", "higher intuition", "compassion", "psychic protection", "meditation", "jupiter"]
+        },
+
+        tanzanite: {
+            DisplayName: "Tanzanite",
+            Category: "Crystal",
+
+            Element: "Air",
+
+            Planet: "Jupiter",
+
+            Chakra: "Third Eye, Throat",
+
+            Uses: "Intuition, calm communication, expanded perspective, meditation, dream recall",
+
+            PairsWith: "Amethyst, iolite, lapis lazuli, indigo candle",
+
+            Cleansing: "Moonlight, sound, smoke",
+
+            TraditionalWarnings: "Tanzanite is brittle along cleavage planes and can crack with knocks or sudden heat. Almost all tanzanite is heat-treated to turn its brownish colour blue-violet; this is standard and permanent. It is an expensive gem, and glass and synthetic copies are common.",
+
+            Overview: "Tanzanite is the blue to violet gem variety of zoisite, of Mohs hardness about 6.5–7, found only in a small area at the foot of Mount Kilimanjaro in Merelani Hills, northern Tanzania. It was first brought to wider notice in 1967 and was named by Tiffany & Co. after Tanzania; the stone is strongly pleochroic, showing blue, violet and reddish-brown from different angles. Natural stones are brownish and are heat-treated to turn blue-violet. It is sold as cut gems, rough crystals, small tumbled stones and chips.",
+
+            TraditionalMeaning: "Insight and the expanded view; a modern gem of the third eye and the throat, linked with the sky above Kilimanjaro.",
+
+            HowToUse: "Start here: hold a tanzanite chip or a small crystal during meditation, and let your eyes rest on its colour as it changes with the light. Rough crystals suit an altar, chips can go in jars with amethyst, and cut stones can be worn in jewellery. Keep it out of heat and knocks.",
+
+            PairingNotes: "Tanzanite pairs well with amethyst for calm, iolite for insight, lapis lazuli for truth, and clear quartz for clarity. Indigo, blue and violet candles suit it.",
+
+            CleansingNotes: "Cleanse tanzanite with moonlight, sound, smoke, or visualization. A wipe with a barely damp cloth or a short rinse in lukewarm water is enough; never use steam, ultrasonic cleaners, salt or hot water.",
+
+            SafetyAndRespect: "Tanzanite is safe to handle, but it is brittle and the dust from cutting is harmful. Most is heat-treated and glass and synthetic imitations are common, so buy from a reputable gem seller. Tanzanite comes only from one area of Tanzania, where mining is hard and often dangerous; ask for ethical, traceable stones where you can. Its intuition meanings are modern crystal lore.",
+
+            Traditions: "Wheel of the Year",
+
+            TraditionNotes: "Wheel of the Year: Kept on the altar for insight, used at the full moon and on clear nights for meditation, and held at the year’s turning points.\n\nFolk & wider practice: The Maasai of northern Tanzania are said to have known the blue stones from a bushfire that turned the brownish zoisite crystals blue after a lightning strike, a story told in the gem trade; a Maasai herder named Ali Juuyawatu is credited in trade accounts with finding the stones in 1967. Tiffany & Co. promoted it from 1968 as a gem found in only one place on Earth, and named it tanzanite. Its meanings come from modern crystal-healing books.",
+
+            tags: ["intuition", "spiritual insight", "calm communication", "wider perspective", "meditation", "jupiter"]
+        },
+
+        tektite: {
+            DisplayName: "Tektite",
+            Category: "Crystal",
+
+            Element: "Spirit",
+
+            Planet: "Mars",
+
+            Chakra: "Root, Crown",
+
+            Uses: "Grounding after meditation, cosmic connection, resilience, letting go of the old, patience",
+
+            PairsWith: "Moldavite, clear quartz, black tourmaline, black candle",
+
+            Cleansing: "Sound, smoke, moonlight",
+
+            TraditionalWarnings: "Tektite is a brittle natural glass that can chip or crack if knocked or heated. Much black ‘tektite’ is common obsidian, volcanic glass or slag, and the better-known tektites (such as moldavite) are expensive, so ask for locality.",
+
+            Overview: "Tektites are natural glass objects formed when large meteorite impacts melted rock and flung it high into the air, where it cooled into glass bodies that fell back to Earth in strewn fields, thousands of kilometres across. They are mostly black or dark brown, sometimes olive green (moldavite), of Mohs hardness about 5.5–6, with rounded, pitted, button, drop or dumbbell shapes. They are found in Southeast Asia (Indochinites), Australia (australites), Ivory Coast, the Czech Republic and Texas. They are sold as raw pieces, tumbled stones and chips.",
+
+            TraditionalMeaning: "Stones of the sky; modern lore for cosmic connection and a steady response to fast change.",
+
+            HowToUse: "Start here: hold a tektite in the dark or at dusk, and think about the age of the glass in your hand, and what it has seen. Raw pieces suit an altar, tumbled stones suit pockets, and chips can go in jars with clear quartz. Keep it dry and set it on a soft surface, as it is brittle.",
+
+            PairingNotes: "Tektite pairs well with moldavite for the impact story, clear quartz for clarity, black tourmaline for grounding, and labradorite for magic. Black, silver and dark blue candles suit it.",
+
+            CleansingNotes: "Cleanse tektite with sound, smoke, moonlight, or visualization. A quick rinse and dry is fine, but avoid salt, heat and hard knocks, as it is brittle glass.",
+
+            SafetyAndRespect: "Tektite is safe to handle, but sharp, brittle edges can cut. Many dark stones sold as tektite are obsidian, slag or glass, so ask for the locality and avoid unusually cheap, uniform pieces. Some tektites are from sensitive heritage areas, such as Libyan Desert Glass or Australian australites in protected sites, so buy from a seller who can say where they were found. The cosmic meanings are modern crystal lore.",
+
+            Traditions: "Wheel of the Year",
+
+            TraditionNotes: "Wheel of the Year: Used by modern practitioners at the dark moon, at meteor showers and on clear nights, and kept on the altar for stillness and cosmic awareness.\n\nFolk & wider practice: Tektites have been picked up and kept by people for thousands of years: in Southeast Asia they have long been collected as charms, and Aboriginal Australian peoples are recorded as using and trading australites, whose knowledge and stories belong to them and should be credited to them. Western scientists described tektites in the 19th century, and the name is from the Greek tektos, ‘molten’. Most modern meanings come from 20th-century crystal books.",
+
+            tags: ["grounding", "cosmic connection", "resilience", "letting go", "patience", "mars"]
         },
     },
 

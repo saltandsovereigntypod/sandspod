@@ -1222,6 +1222,47 @@ export const ALTAR_ARTWORK: {
       },
       {
         "category": "herbs",
+        "name": "Apple Blossom",
+        "keywords": [
+          "love",
+          "new beginnings",
+          "glamour",
+          "fertility",
+          "joy"
+        ],
+        "forms": [
+          {
+            "label": "Sprig",
+            "image": "../assets/altar/objects/herbs/apple-blossom/apple-blossom-sprig.png",
+            "type": "herb",
+            "herb": "apple_blossom",
+            "form": "sprig"
+          },
+          {
+            "label": "Loose",
+            "image": "../assets/altar/objects/herbs/apple-blossom/apple-blossom-loose.png",
+            "type": "herb",
+            "herb": "apple_blossom",
+            "form": "loose"
+          },
+          {
+            "label": "Oil",
+            "image": "../assets/altar/objects/herbs/apple-blossom/apple-blossom-oil.png",
+            "type": "oil",
+            "herb": "apple_blossom",
+            "form": "oil"
+          },
+          {
+            "label": "Incense",
+            "image": "../assets/altar/objects/herbs/incense/incense.png",
+            "type": "herb",
+            "herb": "apple_blossom",
+            "form": "incense"
+          }
+        ]
+      },
+      {
+        "category": "herbs",
         "name": "Belladonna",
         "keywords": [
           "lore and history",
@@ -1256,6 +1297,47 @@ export const ALTAR_ARTWORK: {
             "image": "../assets/altar/objects/herbs/incense/incense.png",
             "type": "herb",
             "herb": "belladonna",
+            "form": "incense"
+          }
+        ]
+      },
+      {
+        "category": "herbs",
+        "name": "Bergamot",
+        "keywords": [
+          "success",
+          "joy",
+          "confidence",
+          "prosperity",
+          "clearing heaviness"
+        ],
+        "forms": [
+          {
+            "label": "Sprig",
+            "image": "../assets/altar/objects/herbs/bergamot/bergamot-sprig.png",
+            "type": "herb",
+            "herb": "bergamot",
+            "form": "sprig"
+          },
+          {
+            "label": "Loose",
+            "image": "../assets/altar/objects/herbs/bergamot/bergamot-loose.png",
+            "type": "herb",
+            "herb": "bergamot",
+            "form": "loose"
+          },
+          {
+            "label": "Oil",
+            "image": "../assets/altar/objects/herbs/bergamot/bergamot-oil.png",
+            "type": "oil",
+            "herb": "bergamot",
+            "form": "oil"
+          },
+          {
+            "label": "Incense",
+            "image": "../assets/altar/objects/herbs/incense/incense.png",
+            "type": "herb",
+            "herb": "bergamot",
             "form": "incense"
           }
         ]
@@ -1344,6 +1426,47 @@ export const ALTAR_ARTWORK: {
       },
       {
         "category": "herbs",
+        "name": "Blackthorn",
+        "keywords": [
+          "banishing",
+          "protection",
+          "endings",
+          "resilience",
+          "justice"
+        ],
+        "forms": [
+          {
+            "label": "Sprig",
+            "image": "../assets/altar/objects/herbs/blackthorn/blackthorn-sprig.png",
+            "type": "herb",
+            "herb": "blackthorn",
+            "form": "sprig"
+          },
+          {
+            "label": "Loose",
+            "image": "../assets/altar/objects/herbs/blackthorn/blackthorn-loose.png",
+            "type": "herb",
+            "herb": "blackthorn",
+            "form": "loose"
+          },
+          {
+            "label": "Oil",
+            "image": "../assets/altar/objects/herbs/blackthorn/blackthorn-oil.png",
+            "type": "oil",
+            "herb": "blackthorn",
+            "form": "oil"
+          },
+          {
+            "label": "Incense",
+            "image": "../assets/altar/objects/herbs/incense/incense.png",
+            "type": "herb",
+            "herb": "blackthorn",
+            "form": "incense"
+          }
+        ]
+      },
+      {
+        "category": "herbs",
         "name": "Borage",
         "keywords": [
           "courage",
@@ -1379,6 +1502,129 @@ export const ALTAR_ARTWORK: {
             "image": "../assets/altar/objects/herbs/incense/incense.png",
             "type": "herb",
             "herb": "borage",
+            "form": "incense"
+          }
+        ]
+      },
+      {
+        "category": "herbs",
+        "name": "Bramble",
+        "keywords": [
+          "protection",
+          "healing",
+          "prosperity",
+          "fertility",
+          "resilience"
+        ],
+        "forms": [
+          {
+            "label": "Sprig",
+            "image": "../assets/altar/objects/herbs/bramble/bramble-sprig.png",
+            "type": "herb",
+            "herb": "bramble",
+            "form": "sprig"
+          },
+          {
+            "label": "Loose",
+            "image": "../assets/altar/objects/herbs/bramble/bramble-loose.png",
+            "type": "herb",
+            "herb": "bramble",
+            "form": "loose"
+          },
+          {
+            "label": "Oil",
+            "image": "../assets/altar/objects/herbs/bramble/bramble-oil.png",
+            "type": "oil",
+            "herb": "bramble",
+            "form": "oil"
+          },
+          {
+            "label": "Incense",
+            "image": "../assets/altar/objects/herbs/incense/incense.png",
+            "type": "herb",
+            "herb": "bramble",
+            "form": "incense"
+          }
+        ]
+      },
+      {
+        "category": "herbs",
+        "name": "Burdock",
+        "keywords": [
+          "protection",
+          "cleansing",
+          "binding to a purpose",
+          "tenacity",
+          "healing"
+        ],
+        "forms": [
+          {
+            "label": "Sprig",
+            "image": "../assets/altar/objects/herbs/burdock/burdock-sprig.png",
+            "type": "herb",
+            "herb": "burdock",
+            "form": "sprig"
+          },
+          {
+            "label": "Loose",
+            "image": "../assets/altar/objects/herbs/burdock/burdock-loose.png",
+            "type": "herb",
+            "herb": "burdock",
+            "form": "loose"
+          },
+          {
+            "label": "Oil",
+            "image": "../assets/altar/objects/herbs/burdock/burdock-oil.png",
+            "type": "oil",
+            "herb": "burdock",
+            "form": "oil"
+          },
+          {
+            "label": "Incense",
+            "image": "../assets/altar/objects/herbs/incense/incense.png",
+            "type": "herb",
+            "herb": "burdock",
+            "form": "incense"
+          }
+        ]
+      },
+      {
+        "category": "herbs",
+        "name": "Cacao",
+        "keywords": [
+          "love",
+          "pleasure",
+          "abundance",
+          "devotion",
+          "vitality"
+        ],
+        "forms": [
+          {
+            "label": "Sprig",
+            "image": "../assets/altar/objects/herbs/cacao/cacao-sprig.png",
+            "type": "herb",
+            "herb": "cacao",
+            "form": "sprig"
+          },
+          {
+            "label": "Loose",
+            "image": "../assets/altar/objects/herbs/cacao/cacao-loose.png",
+            "type": "herb",
+            "herb": "cacao",
+            "form": "loose"
+          },
+          {
+            "label": "Oil",
+            "image": "../assets/altar/objects/herbs/cacao/cacao-oil.png",
+            "type": "oil",
+            "herb": "cacao",
+            "form": "oil"
+          },
+          {
+            "label": "Incense",
+            "image": "../assets/altar/objects/herbs/incense/incense.png",
+            "type": "herb",
+            "herb": "cacao",
             "form": "incense"
           }
         ]
@@ -1671,6 +1917,47 @@ export const ALTAR_ARTWORK: {
       },
       {
         "category": "herbs",
+        "name": "Coriander",
+        "keywords": [
+          "love",
+          "longevity",
+          "peace in the home",
+          "health",
+          "fidelity"
+        ],
+        "forms": [
+          {
+            "label": "Sprig",
+            "image": "../assets/altar/objects/herbs/coriander/coriander-sprig.png",
+            "type": "herb",
+            "herb": "coriander",
+            "form": "sprig"
+          },
+          {
+            "label": "Loose",
+            "image": "../assets/altar/objects/herbs/coriander/coriander-loose.png",
+            "type": "herb",
+            "herb": "coriander",
+            "form": "loose"
+          },
+          {
+            "label": "Oil",
+            "image": "../assets/altar/objects/herbs/coriander/coriander-oil.png",
+            "type": "oil",
+            "herb": "coriander",
+            "form": "oil"
+          },
+          {
+            "label": "Incense",
+            "image": "../assets/altar/objects/herbs/incense/incense.png",
+            "type": "herb",
+            "herb": "coriander",
+            "form": "incense"
+          }
+        ]
+      },
+      {
+        "category": "herbs",
         "name": "Cypress",
         "keywords": [
           "grief",
@@ -1788,6 +2075,47 @@ export const ALTAR_ARTWORK: {
             "image": "../assets/altar/objects/herbs/incense/incense.png",
             "type": "herb",
             "herb": "dandelion",
+            "form": "incense"
+          }
+        ]
+      },
+      {
+        "category": "herbs",
+        "name": "Dill",
+        "keywords": [
+          "protection",
+          "money luck",
+          "love",
+          "restful sleep",
+          "clearing envy"
+        ],
+        "forms": [
+          {
+            "label": "Sprig",
+            "image": "../assets/altar/objects/herbs/dill/dill-sprig.png",
+            "type": "herb",
+            "herb": "dill",
+            "form": "sprig"
+          },
+          {
+            "label": "Loose",
+            "image": "../assets/altar/objects/herbs/dill/dill-loose.png",
+            "type": "herb",
+            "herb": "dill",
+            "form": "loose"
+          },
+          {
+            "label": "Oil",
+            "image": "../assets/altar/objects/herbs/dill/dill-oil.png",
+            "type": "oil",
+            "herb": "dill",
+            "form": "oil"
+          },
+          {
+            "label": "Incense",
+            "image": "../assets/altar/objects/herbs/incense/incense.png",
+            "type": "herb",
+            "herb": "dill",
             "form": "incense"
           }
         ]
@@ -2405,6 +2733,47 @@ export const ALTAR_ARTWORK: {
       },
       {
         "category": "herbs",
+        "name": "Hops",
+        "keywords": [
+          "restful sleep",
+          "dream work",
+          "healing",
+          "calming anger",
+          "hospitality"
+        ],
+        "forms": [
+          {
+            "label": "Sprig",
+            "image": "../assets/altar/objects/herbs/hops/hops-sprig.png",
+            "type": "herb",
+            "herb": "hops",
+            "form": "sprig"
+          },
+          {
+            "label": "Loose",
+            "image": "../assets/altar/objects/herbs/hops/hops-loose.png",
+            "type": "herb",
+            "herb": "hops",
+            "form": "loose"
+          },
+          {
+            "label": "Oil",
+            "image": "../assets/altar/objects/herbs/hops/hops-oil.png",
+            "type": "oil",
+            "herb": "hops",
+            "form": "oil"
+          },
+          {
+            "label": "Incense",
+            "image": "../assets/altar/objects/herbs/incense/incense.png",
+            "type": "herb",
+            "herb": "hops",
+            "form": "incense"
+          }
+        ]
+      },
+      {
+        "category": "herbs",
         "name": "Hyssop",
         "keywords": [
           "purification",
@@ -2569,6 +2938,47 @@ export const ALTAR_ARTWORK: {
       },
       {
         "category": "herbs",
+        "name": "Lemon Peel",
+        "keywords": [
+          "cleansing",
+          "friendship",
+          "joy",
+          "mental clarity",
+          "renewal"
+        ],
+        "forms": [
+          {
+            "label": "Sprig",
+            "image": "../assets/altar/objects/herbs/lemon-peel/lemon-peel-sprig.png",
+            "type": "herb",
+            "herb": "lemon_peel",
+            "form": "sprig"
+          },
+          {
+            "label": "Loose",
+            "image": "../assets/altar/objects/herbs/lemon-peel/lemon-peel-loose.png",
+            "type": "herb",
+            "herb": "lemon_peel",
+            "form": "loose"
+          },
+          {
+            "label": "Oil",
+            "image": "../assets/altar/objects/herbs/lemon-peel/lemon-peel-oil.png",
+            "type": "oil",
+            "herb": "lemon_peel",
+            "form": "oil"
+          },
+          {
+            "label": "Incense",
+            "image": "../assets/altar/objects/herbs/incense/incense.png",
+            "type": "herb",
+            "herb": "lemon_peel",
+            "form": "incense"
+          }
+        ]
+      },
+      {
+        "category": "herbs",
         "name": "Lemongrass",
         "keywords": [
           "cleansing",
@@ -2651,6 +3061,47 @@ export const ALTAR_ARTWORK: {
       },
       {
         "category": "herbs",
+        "name": "Lotus",
+        "keywords": [
+          "spiritual awakening",
+          "meditation",
+          "purification",
+          "dream work",
+          "devotion"
+        ],
+        "forms": [
+          {
+            "label": "Sprig",
+            "image": "../assets/altar/objects/herbs/lotus/lotus-sprig.png",
+            "type": "herb",
+            "herb": "lotus",
+            "form": "sprig"
+          },
+          {
+            "label": "Loose",
+            "image": "../assets/altar/objects/herbs/lotus/lotus-loose.png",
+            "type": "herb",
+            "herb": "lotus",
+            "form": "loose"
+          },
+          {
+            "label": "Oil",
+            "image": "../assets/altar/objects/herbs/lotus/lotus-oil.png",
+            "type": "oil",
+            "herb": "lotus",
+            "form": "oil"
+          },
+          {
+            "label": "Incense",
+            "image": "../assets/altar/objects/herbs/incense/incense.png",
+            "type": "herb",
+            "herb": "lotus",
+            "form": "incense"
+          }
+        ]
+      },
+      {
+        "category": "herbs",
         "name": "Mandrake",
         "keywords": [
           "protection",
@@ -2686,6 +3137,47 @@ export const ALTAR_ARTWORK: {
             "image": "../assets/altar/objects/herbs/incense/incense.png",
             "type": "herb",
             "herb": "mandrake",
+            "form": "incense"
+          }
+        ]
+      },
+      {
+        "category": "herbs",
+        "name": "Marjoram",
+        "keywords": [
+          "happiness",
+          "comfort in grief",
+          "love",
+          "protection of the home",
+          "health"
+        ],
+        "forms": [
+          {
+            "label": "Sprig",
+            "image": "../assets/altar/objects/herbs/marjoram/marjoram-sprig.png",
+            "type": "herb",
+            "herb": "marjoram",
+            "form": "sprig"
+          },
+          {
+            "label": "Loose",
+            "image": "../assets/altar/objects/herbs/marjoram/marjoram-loose.png",
+            "type": "herb",
+            "herb": "marjoram",
+            "form": "loose"
+          },
+          {
+            "label": "Oil",
+            "image": "../assets/altar/objects/herbs/marjoram/marjoram-oil.png",
+            "type": "oil",
+            "herb": "marjoram",
+            "form": "oil"
+          },
+          {
+            "label": "Incense",
+            "image": "../assets/altar/objects/herbs/incense/incense.png",
+            "type": "herb",
+            "herb": "marjoram",
             "form": "incense"
           }
         ]
@@ -3020,6 +3512,88 @@ export const ALTAR_ARTWORK: {
       },
       {
         "category": "herbs",
+        "name": "Orange Peel",
+        "keywords": [
+          "prosperity",
+          "joy",
+          "divination",
+          "attraction",
+          "vitality"
+        ],
+        "forms": [
+          {
+            "label": "Sprig",
+            "image": "../assets/altar/objects/herbs/orange-peel/orange-peel-sprig.png",
+            "type": "herb",
+            "herb": "orange_peel",
+            "form": "sprig"
+          },
+          {
+            "label": "Loose",
+            "image": "../assets/altar/objects/herbs/orange-peel/orange-peel-loose.png",
+            "type": "herb",
+            "herb": "orange_peel",
+            "form": "loose"
+          },
+          {
+            "label": "Oil",
+            "image": "../assets/altar/objects/herbs/orange-peel/orange-peel-oil.png",
+            "type": "oil",
+            "herb": "orange_peel",
+            "form": "oil"
+          },
+          {
+            "label": "Incense",
+            "image": "../assets/altar/objects/herbs/incense/incense.png",
+            "type": "herb",
+            "herb": "orange_peel",
+            "form": "incense"
+          }
+        ]
+      },
+      {
+        "category": "herbs",
+        "name": "Oregano",
+        "keywords": [
+          "joy",
+          "strength of spirit",
+          "protection",
+          "health",
+          "gathering with others"
+        ],
+        "forms": [
+          {
+            "label": "Sprig",
+            "image": "../assets/altar/objects/herbs/oregano/oregano-sprig.png",
+            "type": "herb",
+            "herb": "oregano",
+            "form": "sprig"
+          },
+          {
+            "label": "Loose",
+            "image": "../assets/altar/objects/herbs/oregano/oregano-loose.png",
+            "type": "herb",
+            "herb": "oregano",
+            "form": "loose"
+          },
+          {
+            "label": "Oil",
+            "image": "../assets/altar/objects/herbs/oregano/oregano-oil.png",
+            "type": "oil",
+            "herb": "oregano",
+            "form": "oil"
+          },
+          {
+            "label": "Incense",
+            "image": "../assets/altar/objects/herbs/incense/incense.png",
+            "type": "herb",
+            "herb": "oregano",
+            "form": "incense"
+          }
+        ]
+      },
+      {
+        "category": "herbs",
         "name": "Orris Root",
         "keywords": [
           "love",
@@ -3055,6 +3629,47 @@ export const ALTAR_ARTWORK: {
             "image": "../assets/altar/objects/herbs/incense/incense.png",
             "type": "herb",
             "herb": "orris_root",
+            "form": "incense"
+          }
+        ]
+      },
+      {
+        "category": "herbs",
+        "name": "Parsley",
+        "keywords": [
+          "purification",
+          "honouring the dead",
+          "fertility",
+          "lust",
+          "protection"
+        ],
+        "forms": [
+          {
+            "label": "Sprig",
+            "image": "../assets/altar/objects/herbs/parsley/parsley-sprig.png",
+            "type": "herb",
+            "herb": "parsley",
+            "form": "sprig"
+          },
+          {
+            "label": "Loose",
+            "image": "../assets/altar/objects/herbs/parsley/parsley-loose.png",
+            "type": "herb",
+            "herb": "parsley",
+            "form": "loose"
+          },
+          {
+            "label": "Oil",
+            "image": "../assets/altar/objects/herbs/parsley/parsley-oil.png",
+            "type": "oil",
+            "herb": "parsley",
+            "form": "oil"
+          },
+          {
+            "label": "Incense",
+            "image": "../assets/altar/objects/herbs/incense/incense.png",
+            "type": "herb",
+            "herb": "parsley",
             "form": "incense"
           }
         ]
@@ -3219,6 +3834,129 @@ export const ALTAR_ARTWORK: {
             "image": "../assets/altar/objects/herbs/incense/incense.png",
             "type": "herb",
             "herb": "pine",
+            "form": "incense"
+          }
+        ]
+      },
+      {
+        "category": "herbs",
+        "name": "Plantain",
+        "keywords": [
+          "healing",
+          "safe travel",
+          "resilience",
+          "grounding",
+          "soothing stings"
+        ],
+        "forms": [
+          {
+            "label": "Sprig",
+            "image": "../assets/altar/objects/herbs/plantain/plantain-sprig.png",
+            "type": "herb",
+            "herb": "plantain",
+            "form": "sprig"
+          },
+          {
+            "label": "Loose",
+            "image": "../assets/altar/objects/herbs/plantain/plantain-loose.png",
+            "type": "herb",
+            "herb": "plantain",
+            "form": "loose"
+          },
+          {
+            "label": "Oil",
+            "image": "../assets/altar/objects/herbs/plantain/plantain-oil.png",
+            "type": "oil",
+            "herb": "plantain",
+            "form": "oil"
+          },
+          {
+            "label": "Incense",
+            "image": "../assets/altar/objects/herbs/incense/incense.png",
+            "type": "herb",
+            "herb": "plantain",
+            "form": "incense"
+          }
+        ]
+      },
+      {
+        "category": "herbs",
+        "name": "Poppy",
+        "keywords": [
+          "remembrance",
+          "restful sleep",
+          "dream work",
+          "fertility",
+          "prosperity"
+        ],
+        "forms": [
+          {
+            "label": "Sprig",
+            "image": "../assets/altar/objects/herbs/poppy/poppy-sprig.png",
+            "type": "herb",
+            "herb": "poppy",
+            "form": "sprig"
+          },
+          {
+            "label": "Loose",
+            "image": "../assets/altar/objects/herbs/poppy/poppy-loose.png",
+            "type": "herb",
+            "herb": "poppy",
+            "form": "loose"
+          },
+          {
+            "label": "Oil",
+            "image": "../assets/altar/objects/herbs/poppy/poppy-oil.png",
+            "type": "oil",
+            "herb": "poppy",
+            "form": "oil"
+          },
+          {
+            "label": "Incense",
+            "image": "../assets/altar/objects/herbs/incense/incense.png",
+            "type": "herb",
+            "herb": "poppy",
+            "form": "incense"
+          }
+        ]
+      },
+      {
+        "category": "herbs",
+        "name": "Raspberry Leaf",
+        "keywords": [
+          "womb and cycle care",
+          "easing labour",
+          "gentle love",
+          "fertility",
+          "protection of the young"
+        ],
+        "forms": [
+          {
+            "label": "Sprig",
+            "image": "../assets/altar/objects/herbs/raspberry-leaf/raspberry-leaf-sprig.png",
+            "type": "herb",
+            "herb": "raspberry_leaf",
+            "form": "sprig"
+          },
+          {
+            "label": "Loose",
+            "image": "../assets/altar/objects/herbs/raspberry-leaf/raspberry-leaf-loose.png",
+            "type": "herb",
+            "herb": "raspberry_leaf",
+            "form": "loose"
+          },
+          {
+            "label": "Oil",
+            "image": "../assets/altar/objects/herbs/raspberry-leaf/raspberry-leaf-oil.png",
+            "type": "oil",
+            "herb": "raspberry_leaf",
+            "form": "oil"
+          },
+          {
+            "label": "Incense",
+            "image": "../assets/altar/objects/herbs/incense/incense.png",
+            "type": "herb",
+            "herb": "raspberry_leaf",
             "form": "incense"
           }
         ]
@@ -3512,6 +4250,47 @@ export const ALTAR_ARTWORK: {
       },
       {
         "category": "herbs",
+        "name": "Solomon's Seal",
+        "keywords": [
+          "wisdom",
+          "binding agreements",
+          "protection of the home",
+          "mending",
+          "exorcism"
+        ],
+        "forms": [
+          {
+            "label": "Sprig",
+            "image": "../assets/altar/objects/herbs/solomons-seal/solomons-seal-sprig.png",
+            "type": "herb",
+            "herb": "solomons_seal",
+            "form": "sprig"
+          },
+          {
+            "label": "Loose",
+            "image": "../assets/altar/objects/herbs/solomons-seal/solomons-seal-loose.png",
+            "type": "herb",
+            "herb": "solomons_seal",
+            "form": "loose"
+          },
+          {
+            "label": "Oil",
+            "image": "../assets/altar/objects/herbs/solomons-seal/solomons-seal-oil.png",
+            "type": "oil",
+            "herb": "solomons_seal",
+            "form": "oil"
+          },
+          {
+            "label": "Incense",
+            "image": "../assets/altar/objects/herbs/incense/incense.png",
+            "type": "herb",
+            "herb": "solomons_seal",
+            "form": "incense"
+          }
+        ]
+      },
+      {
+        "category": "herbs",
         "name": "St John’s Wort",
         "keywords": [
           "protection",
@@ -3629,6 +4408,88 @@ export const ALTAR_ARTWORK: {
             "image": "../assets/altar/objects/herbs/incense/incense.png",
             "type": "herb",
             "herb": "sunflower",
+            "form": "incense"
+          }
+        ]
+      },
+      {
+        "category": "herbs",
+        "name": "Tansy",
+        "keywords": [
+          "longevity",
+          "repelling pests",
+          "remembrance of the dead",
+          "protecting the home",
+          "commitment"
+        ],
+        "forms": [
+          {
+            "label": "Sprig",
+            "image": "../assets/altar/objects/herbs/tansy/tansy-sprig.png",
+            "type": "herb",
+            "herb": "tansy",
+            "form": "sprig"
+          },
+          {
+            "label": "Loose",
+            "image": "../assets/altar/objects/herbs/tansy/tansy-loose.png",
+            "type": "herb",
+            "herb": "tansy",
+            "form": "loose"
+          },
+          {
+            "label": "Oil",
+            "image": "../assets/altar/objects/herbs/tansy/tansy-oil.png",
+            "type": "oil",
+            "herb": "tansy",
+            "form": "oil"
+          },
+          {
+            "label": "Incense",
+            "image": "../assets/altar/objects/herbs/incense/incense.png",
+            "type": "herb",
+            "herb": "tansy",
+            "form": "incense"
+          }
+        ]
+      },
+      {
+        "category": "herbs",
+        "name": "Thistle",
+        "keywords": [
+          "protection",
+          "strength",
+          "breaking hexes",
+          "drawing off envy",
+          "endurance"
+        ],
+        "forms": [
+          {
+            "label": "Sprig",
+            "image": "../assets/altar/objects/herbs/thistle/thistle-sprig.png",
+            "type": "herb",
+            "herb": "thistle",
+            "form": "sprig"
+          },
+          {
+            "label": "Loose",
+            "image": "../assets/altar/objects/herbs/thistle/thistle-loose.png",
+            "type": "herb",
+            "herb": "thistle",
+            "form": "loose"
+          },
+          {
+            "label": "Oil",
+            "image": "../assets/altar/objects/herbs/thistle/thistle-oil.png",
+            "type": "oil",
+            "herb": "thistle",
+            "form": "oil"
+          },
+          {
+            "label": "Incense",
+            "image": "../assets/altar/objects/herbs/incense/incense.png",
+            "type": "herb",
+            "herb": "thistle",
             "form": "incense"
           }
         ]
@@ -3799,6 +4660,47 @@ export const ALTAR_ARTWORK: {
       },
       {
         "category": "herbs",
+        "name": "Vetiver",
+        "keywords": [
+          "grounding",
+          "money drawing",
+          "breaking hexes",
+          "calming anxiety",
+          "binding love"
+        ],
+        "forms": [
+          {
+            "label": "Sprig",
+            "image": "../assets/altar/objects/herbs/vetiver/vetiver-sprig.png",
+            "type": "herb",
+            "herb": "vetiver",
+            "form": "sprig"
+          },
+          {
+            "label": "Loose",
+            "image": "../assets/altar/objects/herbs/vetiver/vetiver-loose.png",
+            "type": "herb",
+            "herb": "vetiver",
+            "form": "loose"
+          },
+          {
+            "label": "Oil",
+            "image": "../assets/altar/objects/herbs/vetiver/vetiver-oil.png",
+            "type": "oil",
+            "herb": "vetiver",
+            "form": "oil"
+          },
+          {
+            "label": "Incense",
+            "image": "../assets/altar/objects/herbs/incense/incense.png",
+            "type": "herb",
+            "herb": "vetiver",
+            "form": "incense"
+          }
+        ]
+      },
+      {
+        "category": "herbs",
         "name": "Violet",
         "keywords": [
           "love",
@@ -3875,6 +4777,47 @@ export const ALTAR_ARTWORK: {
             "image": "../assets/altar/objects/herbs/incense/incense.png",
             "type": "herb",
             "herb": "willow",
+            "form": "incense"
+          }
+        ]
+      },
+      {
+        "category": "herbs",
+        "name": "Witch Hazel",
+        "keywords": [
+          "protection",
+          "finding hidden things",
+          "single-minded focus",
+          "healing the heart",
+          "dowsing"
+        ],
+        "forms": [
+          {
+            "label": "Sprig",
+            "image": "../assets/altar/objects/herbs/witch-hazel/witch-hazel-sprig.png",
+            "type": "herb",
+            "herb": "witch_hazel",
+            "form": "sprig"
+          },
+          {
+            "label": "Loose",
+            "image": "../assets/altar/objects/herbs/witch-hazel/witch-hazel-loose.png",
+            "type": "herb",
+            "herb": "witch_hazel",
+            "form": "loose"
+          },
+          {
+            "label": "Oil",
+            "image": "../assets/altar/objects/herbs/witch-hazel/witch-hazel-oil.png",
+            "type": "oil",
+            "herb": "witch_hazel",
+            "form": "oil"
+          },
+          {
+            "label": "Incense",
+            "image": "../assets/altar/objects/herbs/incense/incense.png",
+            "type": "herb",
+            "herb": "witch_hazel",
             "form": "incense"
           }
         ]
@@ -4575,6 +5518,47 @@ export const ALTAR_ARTWORK: {
       },
       {
         "category": "crystals",
+        "name": "Bronzite",
+        "keywords": [
+          "courage",
+          "decisive action",
+          "boundaries",
+          "grounding",
+          "steady willpower"
+        ],
+        "forms": [
+          {
+            "label": "Point",
+            "image": "",
+            "type": "crystal",
+            "crystal": "bronzite",
+            "form": "point"
+          },
+          {
+            "label": "Chips",
+            "image": "../assets/altar/objects/crystals/bronzite/bronzite-chips.png",
+            "type": "crystal",
+            "crystal": "bronzite",
+            "form": "chips"
+          },
+          {
+            "label": "Cluster",
+            "image": "",
+            "type": "crystal",
+            "crystal": "bronzite",
+            "form": "cluster"
+          },
+          {
+            "label": "Tumbled",
+            "image": "../assets/altar/objects/crystals/bronzite/bronzite-tumbled.png",
+            "type": "crystal",
+            "crystal": "bronzite",
+            "form": "tumbled"
+          }
+        ]
+      },
+      {
+        "category": "crystals",
         "name": "Carnelian",
         "keywords": [
           "creativity",
@@ -4657,6 +5641,47 @@ export const ALTAR_ARTWORK: {
       },
       {
         "category": "crystals",
+        "name": "Chalcedony",
+        "keywords": [
+          "calm communication",
+          "emotional balance",
+          "gentle kindness",
+          "peaceful sleep",
+          "goodwill"
+        ],
+        "forms": [
+          {
+            "label": "Point",
+            "image": "",
+            "type": "crystal",
+            "crystal": "chalcedony",
+            "form": "point"
+          },
+          {
+            "label": "Chips",
+            "image": "../assets/altar/objects/crystals/chalcedony/chalcedony-chips.png",
+            "type": "crystal",
+            "crystal": "chalcedony",
+            "form": "chips"
+          },
+          {
+            "label": "Cluster",
+            "image": "",
+            "type": "crystal",
+            "crystal": "chalcedony",
+            "form": "cluster"
+          },
+          {
+            "label": "Tumbled",
+            "image": "../assets/altar/objects/crystals/chalcedony/chalcedony-tumbled.png",
+            "type": "crystal",
+            "crystal": "chalcedony",
+            "form": "tumbled"
+          }
+        ]
+      },
+      {
+        "category": "crystals",
         "name": "Charoite",
         "keywords": [
           "transformation",
@@ -4691,6 +5716,47 @@ export const ALTAR_ARTWORK: {
             "image": "../assets/altar/objects/crystals/charoite/charoite-tumbled.png",
             "type": "crystal",
             "crystal": "charoite",
+            "form": "tumbled"
+          }
+        ]
+      },
+      {
+        "category": "crystals",
+        "name": "Chiastolite",
+        "keywords": [
+          "protection on journeys",
+          "easing transitions",
+          "steadiness in loss",
+          "resilience",
+          "cutting through confusion"
+        ],
+        "forms": [
+          {
+            "label": "Point",
+            "image": "",
+            "type": "crystal",
+            "crystal": "chiastolite",
+            "form": "point"
+          },
+          {
+            "label": "Chips",
+            "image": "../assets/altar/objects/crystals/chiastolite/chiastolite-chips.png",
+            "type": "crystal",
+            "crystal": "chiastolite",
+            "form": "chips"
+          },
+          {
+            "label": "Cluster",
+            "image": "",
+            "type": "crystal",
+            "crystal": "chiastolite",
+            "form": "cluster"
+          },
+          {
+            "label": "Tumbled",
+            "image": "../assets/altar/objects/crystals/chiastolite/chiastolite-tumbled.png",
+            "type": "crystal",
+            "crystal": "chiastolite",
             "form": "tumbled"
           }
         ]
@@ -4820,6 +5886,47 @@ export const ALTAR_ARTWORK: {
       },
       {
         "category": "crystals",
+        "name": "Crazy Lace Agate",
+        "keywords": [
+          "cheerfulness",
+          "patience with chaos",
+          "creative flow",
+          "easing frustration",
+          "finding pattern"
+        ],
+        "forms": [
+          {
+            "label": "Point",
+            "image": "",
+            "type": "crystal",
+            "crystal": "crazy_lace_agate",
+            "form": "point"
+          },
+          {
+            "label": "Chips",
+            "image": "../assets/altar/objects/crystals/crazy-lace-agate/crazy-lace-agate-chips.png",
+            "type": "crystal",
+            "crystal": "crazy_lace_agate",
+            "form": "chips"
+          },
+          {
+            "label": "Cluster",
+            "image": "",
+            "type": "crystal",
+            "crystal": "crazy_lace_agate",
+            "form": "cluster"
+          },
+          {
+            "label": "Tumbled",
+            "image": "../assets/altar/objects/crystals/crazy-lace-agate/crazy-lace-agate-tumbled.png",
+            "type": "crystal",
+            "crystal": "crazy_lace_agate",
+            "form": "tumbled"
+          }
+        ]
+      },
+      {
+        "category": "crystals",
         "name": "Dalmatian Jasper",
         "keywords": [
           "playfulness",
@@ -4895,6 +6002,47 @@ export const ALTAR_ARTWORK: {
       },
       {
         "category": "crystals",
+        "name": "Dendritic Agate",
+        "keywords": [
+          "growth",
+          "abundance",
+          "connection to nature",
+          "steady progress",
+          "gentle grounding"
+        ],
+        "forms": [
+          {
+            "label": "Point",
+            "image": "",
+            "type": "crystal",
+            "crystal": "dendritic_agate",
+            "form": "point"
+          },
+          {
+            "label": "Chips",
+            "image": "../assets/altar/objects/crystals/dendritic-agate/dendritic-agate-chips.png",
+            "type": "crystal",
+            "crystal": "dendritic_agate",
+            "form": "chips"
+          },
+          {
+            "label": "Cluster",
+            "image": "",
+            "type": "crystal",
+            "crystal": "dendritic_agate",
+            "form": "cluster"
+          },
+          {
+            "label": "Tumbled",
+            "image": "../assets/altar/objects/crystals/dendritic-agate/dendritic-agate-tumbled.png",
+            "type": "crystal",
+            "crystal": "dendritic_agate",
+            "form": "tumbled"
+          }
+        ]
+      },
+      {
+        "category": "crystals",
         "name": "Desert Rose",
         "keywords": [
           "calm",
@@ -4924,6 +6072,47 @@ export const ALTAR_ARTWORK: {
             "type": "crystal",
             "crystal": "desert_rose",
             "form": "cluster"
+          }
+        ]
+      },
+      {
+        "category": "crystals",
+        "name": "Dumortierite",
+        "keywords": [
+          "study and memory",
+          "patience",
+          "calm focus",
+          "clear speech",
+          "steady self-discipline"
+        ],
+        "forms": [
+          {
+            "label": "Point",
+            "image": "",
+            "type": "crystal",
+            "crystal": "dumortierite",
+            "form": "point"
+          },
+          {
+            "label": "Chips",
+            "image": "../assets/altar/objects/crystals/dumortierite/dumortierite-chips.png",
+            "type": "crystal",
+            "crystal": "dumortierite",
+            "form": "chips"
+          },
+          {
+            "label": "Cluster",
+            "image": "",
+            "type": "crystal",
+            "crystal": "dumortierite",
+            "form": "cluster"
+          },
+          {
+            "label": "Tumbled",
+            "image": "../assets/altar/objects/crystals/dumortierite/dumortierite-tumbled.png",
+            "type": "crystal",
+            "crystal": "dumortierite",
+            "form": "tumbled"
           }
         ]
       },
@@ -5047,6 +6236,40 @@ export const ALTAR_ARTWORK: {
             "type": "crystal",
             "crystal": "garnet",
             "form": "tumbled"
+          }
+        ]
+      },
+      {
+        "category": "crystals",
+        "name": "Golden Healer Quartz",
+        "keywords": [
+          "optimism",
+          "self-worth",
+          "warmth of heart",
+          "spiritual connection",
+          "amplified intention"
+        ],
+        "forms": [
+          {
+            "label": "Point",
+            "image": "../assets/altar/objects/crystals/golden-healer-quartz/golden-healer-quartz-point.png",
+            "type": "crystal",
+            "crystal": "golden_healer_quartz",
+            "form": "point"
+          },
+          {
+            "label": "Chips",
+            "image": "../assets/altar/objects/crystals/golden-healer-quartz/golden-healer-quartz-chips.png",
+            "type": "crystal",
+            "crystal": "golden_healer_quartz",
+            "form": "chips"
+          },
+          {
+            "label": "Cluster",
+            "image": "",
+            "type": "crystal",
+            "crystal": "golden_healer_quartz",
+            "form": "cluster"
           }
         ]
       },
@@ -5339,6 +6562,40 @@ export const ALTAR_ARTWORK: {
       },
       {
         "category": "crystals",
+        "name": "Kunzite",
+        "keywords": [
+          "compassion",
+          "emotional healing",
+          "gentle love",
+          "self-forgiveness",
+          "calm after upset"
+        ],
+        "forms": [
+          {
+            "label": "Point",
+            "image": "../assets/altar/objects/crystals/kunzite/kunzite-point.png",
+            "type": "crystal",
+            "crystal": "kunzite",
+            "form": "point"
+          },
+          {
+            "label": "Chips",
+            "image": "../assets/altar/objects/crystals/kunzite/kunzite-chips.png",
+            "type": "crystal",
+            "crystal": "kunzite",
+            "form": "chips"
+          },
+          {
+            "label": "Cluster",
+            "image": "",
+            "type": "crystal",
+            "crystal": "kunzite",
+            "form": "cluster"
+          }
+        ]
+      },
+      {
+        "category": "crystals",
         "name": "Kyanite",
         "keywords": [
           "communication",
@@ -5544,6 +6801,47 @@ export const ALTAR_ARTWORK: {
       },
       {
         "category": "crystals",
+        "name": "Lodestone",
+        "keywords": [
+          "attraction",
+          "fidelity",
+          "grounding",
+          "guidance",
+          "thrift"
+        ],
+        "forms": [
+          {
+            "label": "Point",
+            "image": "",
+            "type": "crystal",
+            "crystal": "lodestone",
+            "form": "point"
+          },
+          {
+            "label": "Chips",
+            "image": "../assets/altar/objects/crystals/lodestone/lodestone-chips.png",
+            "type": "crystal",
+            "crystal": "lodestone",
+            "form": "chips"
+          },
+          {
+            "label": "Cluster",
+            "image": "",
+            "type": "crystal",
+            "crystal": "lodestone",
+            "form": "cluster"
+          },
+          {
+            "label": "Tumbled",
+            "image": "../assets/altar/objects/crystals/lodestone/lodestone-tumbled.png",
+            "type": "crystal",
+            "crystal": "lodestone",
+            "form": "tumbled"
+          }
+        ]
+      },
+      {
+        "category": "crystals",
         "name": "Malachite",
         "keywords": [
           "transformation",
@@ -5579,6 +6877,81 @@ export const ALTAR_ARTWORK: {
             "type": "crystal",
             "crystal": "malachite",
             "form": "tumbled"
+          }
+        ]
+      },
+      {
+        "category": "crystals",
+        "name": "Merlinite",
+        "keywords": [
+          "magic and intuition",
+          "shadow work",
+          "transformation",
+          "protection",
+          "dream work"
+        ],
+        "forms": [
+          {
+            "label": "Point",
+            "image": "",
+            "type": "crystal",
+            "crystal": "merlinite",
+            "form": "point"
+          },
+          {
+            "label": "Chips",
+            "image": "../assets/altar/objects/crystals/merlinite/merlinite-chips.png",
+            "type": "crystal",
+            "crystal": "merlinite",
+            "form": "chips"
+          },
+          {
+            "label": "Cluster",
+            "image": "",
+            "type": "crystal",
+            "crystal": "merlinite",
+            "form": "cluster"
+          },
+          {
+            "label": "Tumbled",
+            "image": "../assets/altar/objects/crystals/merlinite/merlinite-tumbled.png",
+            "type": "crystal",
+            "crystal": "merlinite",
+            "form": "tumbled"
+          }
+        ]
+      },
+      {
+        "category": "crystals",
+        "name": "Moldavite",
+        "keywords": [
+          "transformation",
+          "spiritual awakening",
+          "letting go of the old",
+          "bold change",
+          "cosmic connection"
+        ],
+        "forms": [
+          {
+            "label": "Point",
+            "image": "",
+            "type": "crystal",
+            "crystal": "moldavite",
+            "form": "point"
+          },
+          {
+            "label": "Chips",
+            "image": "../assets/altar/objects/crystals/moldavite/moldavite-chips.png",
+            "type": "crystal",
+            "crystal": "moldavite",
+            "form": "chips"
+          },
+          {
+            "label": "Cluster",
+            "image": "../assets/altar/objects/crystals/moldavite/moldavite-cluster.png",
+            "type": "crystal",
+            "crystal": "moldavite",
+            "form": "cluster"
           }
         ]
       },
@@ -5742,6 +7115,47 @@ export const ALTAR_ARTWORK: {
             "image": "../assets/altar/objects/crystals/moss-agate/moss-agate-tumbled.png",
             "type": "crystal",
             "crystal": "moss_agate",
+            "form": "tumbled"
+          }
+        ]
+      },
+      {
+        "category": "crystals",
+        "name": "Nuummite",
+        "keywords": [
+          "shadow work",
+          "intuition",
+          "protection of the psyche",
+          "inner strength",
+          "magic"
+        ],
+        "forms": [
+          {
+            "label": "Point",
+            "image": "",
+            "type": "crystal",
+            "crystal": "nuummite",
+            "form": "point"
+          },
+          {
+            "label": "Chips",
+            "image": "../assets/altar/objects/crystals/nuummite/nuummite-chips.png",
+            "type": "crystal",
+            "crystal": "nuummite",
+            "form": "chips"
+          },
+          {
+            "label": "Cluster",
+            "image": "",
+            "type": "crystal",
+            "crystal": "nuummite",
+            "form": "cluster"
+          },
+          {
+            "label": "Tumbled",
+            "image": "../assets/altar/objects/crystals/nuummite/nuummite-tumbled.png",
+            "type": "crystal",
+            "crystal": "nuummite",
             "form": "tumbled"
           }
         ]
@@ -5988,6 +7402,88 @@ export const ALTAR_ARTWORK: {
             "image": "../assets/altar/objects/crystals/peridot/peridot-tumbled.png",
             "type": "crystal",
             "crystal": "peridot",
+            "form": "tumbled"
+          }
+        ]
+      },
+      {
+        "category": "crystals",
+        "name": "Petrified Wood",
+        "keywords": [
+          "ancestor connection",
+          "endurance",
+          "grounding",
+          "patience with slow change",
+          "past-life reflection"
+        ],
+        "forms": [
+          {
+            "label": "Point",
+            "image": "",
+            "type": "crystal",
+            "crystal": "petrified_wood",
+            "form": "point"
+          },
+          {
+            "label": "Chips",
+            "image": "../assets/altar/objects/crystals/petrified-wood/petrified-wood-chips.png",
+            "type": "crystal",
+            "crystal": "petrified_wood",
+            "form": "chips"
+          },
+          {
+            "label": "Cluster",
+            "image": "",
+            "type": "crystal",
+            "crystal": "petrified_wood",
+            "form": "cluster"
+          },
+          {
+            "label": "Tumbled",
+            "image": "../assets/altar/objects/crystals/petrified-wood/petrified-wood-tumbled.png",
+            "type": "crystal",
+            "crystal": "petrified_wood",
+            "form": "tumbled"
+          }
+        ]
+      },
+      {
+        "category": "crystals",
+        "name": "Pink Opal",
+        "keywords": [
+          "gentle love",
+          "emotional healing",
+          "soothing grief",
+          "tenderness toward oneself",
+          "peaceful rest"
+        ],
+        "forms": [
+          {
+            "label": "Point",
+            "image": "",
+            "type": "crystal",
+            "crystal": "pink_opal",
+            "form": "point"
+          },
+          {
+            "label": "Chips",
+            "image": "../assets/altar/objects/crystals/pink-opal/pink-opal-chips.png",
+            "type": "crystal",
+            "crystal": "pink_opal",
+            "form": "chips"
+          },
+          {
+            "label": "Cluster",
+            "image": "",
+            "type": "crystal",
+            "crystal": "pink_opal",
+            "form": "cluster"
+          },
+          {
+            "label": "Tumbled",
+            "image": "../assets/altar/objects/crystals/pink-opal/pink-opal-tumbled.png",
+            "type": "crystal",
+            "crystal": "pink_opal",
             "form": "tumbled"
           }
         ]
@@ -6322,6 +7818,47 @@ export const ALTAR_ARTWORK: {
       },
       {
         "category": "crystals",
+        "name": "Ruby Zoisite",
+        "keywords": [
+          "vitality",
+          "passion for life",
+          "creative drive",
+          "joy",
+          "balanced energy"
+        ],
+        "forms": [
+          {
+            "label": "Point",
+            "image": "",
+            "type": "crystal",
+            "crystal": "ruby_zoisite",
+            "form": "point"
+          },
+          {
+            "label": "Chips",
+            "image": "../assets/altar/objects/crystals/ruby-zoisite/ruby-zoisite-chips.png",
+            "type": "crystal",
+            "crystal": "ruby_zoisite",
+            "form": "chips"
+          },
+          {
+            "label": "Cluster",
+            "image": "",
+            "type": "crystal",
+            "crystal": "ruby_zoisite",
+            "form": "cluster"
+          },
+          {
+            "label": "Tumbled",
+            "image": "../assets/altar/objects/crystals/ruby-zoisite/ruby-zoisite-tumbled.png",
+            "type": "crystal",
+            "crystal": "ruby_zoisite",
+            "form": "tumbled"
+          }
+        ]
+      },
+      {
+        "category": "crystals",
         "name": "Rutilated Quartz",
         "keywords": [
           "amplifying intention",
@@ -6404,6 +7941,47 @@ export const ALTAR_ARTWORK: {
       },
       {
         "category": "crystals",
+        "name": "Sardonyx",
+        "keywords": [
+          "courage",
+          "marital fidelity",
+          "warding off envy",
+          "clear judgement",
+          "keeping promises"
+        ],
+        "forms": [
+          {
+            "label": "Point",
+            "image": "",
+            "type": "crystal",
+            "crystal": "sardonyx",
+            "form": "point"
+          },
+          {
+            "label": "Chips",
+            "image": "../assets/altar/objects/crystals/sardonyx/sardonyx-chips.png",
+            "type": "crystal",
+            "crystal": "sardonyx",
+            "form": "chips"
+          },
+          {
+            "label": "Cluster",
+            "image": "",
+            "type": "crystal",
+            "crystal": "sardonyx",
+            "form": "cluster"
+          },
+          {
+            "label": "Tumbled",
+            "image": "../assets/altar/objects/crystals/sardonyx/sardonyx-tumbled.png",
+            "type": "crystal",
+            "crystal": "sardonyx",
+            "form": "tumbled"
+          }
+        ]
+      },
+      {
+        "category": "crystals",
         "name": "Selenite",
         "keywords": [
           "cleansing",
@@ -6439,6 +8017,87 @@ export const ALTAR_ARTWORK: {
             "image": "../assets/altar/objects/crystals/selenite/selenite-tumbled.png",
             "type": "crystal",
             "crystal": "selenite",
+            "form": "tumbled"
+          }
+        ]
+      },
+      {
+        "category": "crystals",
+        "name": "Septarian",
+        "keywords": [
+          "patience",
+          "endurance",
+          "grounding",
+          "emotional steadiness",
+          "perseverance"
+        ],
+        "forms": [
+          {
+            "label": "Point",
+            "image": "",
+            "type": "crystal",
+            "crystal": "septarian",
+            "form": "point"
+          },
+          {
+            "label": "Chips",
+            "image": "../assets/altar/objects/crystals/septarian/septarian-chips.png",
+            "type": "crystal",
+            "crystal": "septarian",
+            "form": "chips"
+          },
+          {
+            "label": "Cluster",
+            "image": "",
+            "type": "crystal",
+            "crystal": "septarian",
+            "form": "cluster"
+          },
+          {
+            "label": "Tumbled",
+            "image": "../assets/altar/objects/crystals/septarian/septarian-tumbled.png",
+            "type": "crystal",
+            "crystal": "septarian",
+            "form": "tumbled"
+          }
+        ]
+      },
+      {
+        "category": "crystals",
+        "name": "Serpentine",
+        "keywords": [
+          "shedding the old",
+          "intuition",
+          "grounding",
+          "spiritual growth"
+        ],
+        "forms": [
+          {
+            "label": "Point",
+            "image": "",
+            "type": "crystal",
+            "crystal": "serpentine",
+            "form": "point"
+          },
+          {
+            "label": "Chips",
+            "image": "../assets/altar/objects/crystals/serpentine/serpentine-chips.png",
+            "type": "crystal",
+            "crystal": "serpentine",
+            "form": "chips"
+          },
+          {
+            "label": "Cluster",
+            "image": "",
+            "type": "crystal",
+            "crystal": "serpentine",
+            "form": "cluster"
+          },
+          {
+            "label": "Tumbled",
+            "image": "../assets/altar/objects/crystals/serpentine/serpentine-tumbled.png",
+            "type": "crystal",
+            "crystal": "serpentine",
             "form": "tumbled"
           }
         ]
@@ -6642,6 +8301,88 @@ export const ALTAR_ARTWORK: {
       },
       {
         "category": "crystals",
+        "name": "Staurolite",
+        "keywords": [
+          "protection of travellers",
+          "luck",
+          "connection to nature spirits",
+          "grounding",
+          "comfort in grief"
+        ],
+        "forms": [
+          {
+            "label": "Point",
+            "image": "",
+            "type": "crystal",
+            "crystal": "staurolite",
+            "form": "point"
+          },
+          {
+            "label": "Chips",
+            "image": "../assets/altar/objects/crystals/staurolite/staurolite-chips.png",
+            "type": "crystal",
+            "crystal": "staurolite",
+            "form": "chips"
+          },
+          {
+            "label": "Cluster",
+            "image": "",
+            "type": "crystal",
+            "crystal": "staurolite",
+            "form": "cluster"
+          },
+          {
+            "label": "Tumbled",
+            "image": "../assets/altar/objects/crystals/staurolite/staurolite-tumbled.png",
+            "type": "crystal",
+            "crystal": "staurolite",
+            "form": "tumbled"
+          }
+        ]
+      },
+      {
+        "category": "crystals",
+        "name": "Sugilite",
+        "keywords": [
+          "spiritual love",
+          "higher intuition",
+          "self-compassion",
+          "shielding from negativity",
+          "meditation"
+        ],
+        "forms": [
+          {
+            "label": "Point",
+            "image": "",
+            "type": "crystal",
+            "crystal": "sugilite",
+            "form": "point"
+          },
+          {
+            "label": "Chips",
+            "image": "../assets/altar/objects/crystals/sugilite/sugilite-chips.png",
+            "type": "crystal",
+            "crystal": "sugilite",
+            "form": "chips"
+          },
+          {
+            "label": "Cluster",
+            "image": "",
+            "type": "crystal",
+            "crystal": "sugilite",
+            "form": "cluster"
+          },
+          {
+            "label": "Tumbled",
+            "image": "../assets/altar/objects/crystals/sugilite/sugilite-tumbled.png",
+            "type": "crystal",
+            "crystal": "sugilite",
+            "form": "tumbled"
+          }
+        ]
+      },
+      {
+        "category": "crystals",
         "name": "Sunstone",
         "keywords": [
           "joy",
@@ -6677,6 +8418,81 @@ export const ALTAR_ARTWORK: {
             "image": "../assets/altar/objects/crystals/sunstone/sunstone-tumbled.png",
             "type": "crystal",
             "crystal": "sunstone",
+            "form": "tumbled"
+          }
+        ]
+      },
+      {
+        "category": "crystals",
+        "name": "Tanzanite",
+        "keywords": [
+          "intuition",
+          "calm communication",
+          "expanded perspective",
+          "meditation",
+          "dream recall"
+        ],
+        "forms": [
+          {
+            "label": "Point",
+            "image": "../assets/altar/objects/crystals/tanzanite/tanzanite-point.png",
+            "type": "crystal",
+            "crystal": "tanzanite",
+            "form": "point"
+          },
+          {
+            "label": "Chips",
+            "image": "../assets/altar/objects/crystals/tanzanite/tanzanite-chips.png",
+            "type": "crystal",
+            "crystal": "tanzanite",
+            "form": "chips"
+          },
+          {
+            "label": "Cluster",
+            "image": "",
+            "type": "crystal",
+            "crystal": "tanzanite",
+            "form": "cluster"
+          }
+        ]
+      },
+      {
+        "category": "crystals",
+        "name": "Tektite",
+        "keywords": [
+          "grounding after meditation",
+          "cosmic connection",
+          "resilience",
+          "letting go of the old",
+          "patience"
+        ],
+        "forms": [
+          {
+            "label": "Point",
+            "image": "",
+            "type": "crystal",
+            "crystal": "tektite",
+            "form": "point"
+          },
+          {
+            "label": "Chips",
+            "image": "../assets/altar/objects/crystals/tektite/tektite-chips.png",
+            "type": "crystal",
+            "crystal": "tektite",
+            "form": "chips"
+          },
+          {
+            "label": "Cluster",
+            "image": "",
+            "type": "crystal",
+            "crystal": "tektite",
+            "form": "cluster"
+          },
+          {
+            "label": "Tumbled",
+            "image": "../assets/altar/objects/crystals/tektite/tektite-tumbled.png",
+            "type": "crystal",
+            "crystal": "tektite",
             "form": "tumbled"
           }
         ]
@@ -9987,6 +11803,256 @@ export const ALTAR_ARTWORK: {
         "water",
         "venus",
         "ancestors"
+      ],
+      "lotus": [
+        "spiritual awakening",
+        "meditation",
+        "purification",
+        "dream work",
+        "devotion",
+        "water",
+        "moon",
+        "awakening",
+        "purity",
+        "rebirth",
+        "serenity"
+      ],
+      "apple-blossom": [
+        "love",
+        "new beginnings",
+        "glamour",
+        "fertility",
+        "joy",
+        "water",
+        "venus",
+        "beauty",
+        "spring",
+        "beginnings",
+        "youth"
+      ],
+      "bergamot": [
+        "success",
+        "joy",
+        "confidence",
+        "prosperity",
+        "clearing heaviness",
+        "fire",
+        "sun"
+      ],
+      "blackthorn": [
+        "banishing",
+        "protection",
+        "endings",
+        "resilience",
+        "justice",
+        "fire",
+        "mars"
+      ],
+      "bramble": [
+        "protection",
+        "healing",
+        "prosperity",
+        "fertility",
+        "resilience",
+        "water",
+        "venus"
+      ],
+      "burdock": [
+        "protection",
+        "cleansing",
+        "binding to a purpose",
+        "tenacity",
+        "healing",
+        "water",
+        "venus",
+        "binding",
+        "hex-breaking"
+      ],
+      "cacao": [
+        "love",
+        "pleasure",
+        "abundance",
+        "devotion",
+        "vitality",
+        "fire",
+        "mars",
+        "heart-opening"
+      ],
+      "coriander": [
+        "love",
+        "longevity",
+        "peace in the home",
+        "health",
+        "fidelity",
+        "fire",
+        "mars",
+        "home peace",
+        "passion"
+      ],
+      "dill": [
+        "protection",
+        "money luck",
+        "love",
+        "restful sleep",
+        "clearing envy",
+        "fire",
+        "mercury",
+        "evil eye",
+        "sleep"
+      ],
+      "hops": [
+        "restful sleep",
+        "dream work",
+        "healing",
+        "calming anger",
+        "hospitality",
+        "air",
+        "mars",
+        "sleep",
+        "dreams"
+      ],
+      "lemon-peel": [
+        "cleansing",
+        "friendship",
+        "joy",
+        "mental clarity",
+        "renewal",
+        "water",
+        "moon",
+        "negativity",
+        "clarity"
+      ],
+      "marjoram": [
+        "happiness",
+        "comfort in grief",
+        "love",
+        "protection of the home",
+        "health",
+        "air",
+        "mercury",
+        "grief comfort",
+        "home blessing"
+      ],
+      "orange-peel": [
+        "prosperity",
+        "joy",
+        "divination",
+        "attraction",
+        "vitality",
+        "fire",
+        "sun"
+      ],
+      "oregano": [
+        "joy",
+        "strength of spirit",
+        "protection",
+        "health",
+        "gathering with others",
+        "air",
+        "mercury",
+        "courage",
+        "community"
+      ],
+      "parsley": [
+        "purification",
+        "honouring the dead",
+        "fertility",
+        "lust",
+        "protection",
+        "air",
+        "mercury"
+      ],
+      "plantain": [
+        "healing",
+        "safe travel",
+        "resilience",
+        "grounding",
+        "soothing stings",
+        "earth",
+        "venus",
+        "warding"
+      ],
+      "poppy": [
+        "remembrance",
+        "restful sleep",
+        "dream work",
+        "fertility",
+        "prosperity",
+        "water",
+        "moon",
+        "sleep",
+        "dreams"
+      ],
+      "raspberry-leaf": [
+        "womb and cycle care",
+        "easing labour",
+        "gentle love",
+        "fertility",
+        "protection of the young",
+        "water",
+        "venus",
+        "cycle care",
+        "easy labour",
+        "love",
+        "protection"
+      ],
+      "solomons-seal": [
+        "wisdom",
+        "binding agreements",
+        "protection of the home",
+        "mending",
+        "exorcism",
+        "water",
+        "saturn",
+        "binding oaths",
+        "home protection"
+      ],
+      "tansy": [
+        "longevity",
+        "repelling pests",
+        "remembrance of the dead",
+        "protecting the home",
+        "commitment",
+        "water",
+        "venus",
+        "pest repelling",
+        "remembrance",
+        "home protection"
+      ],
+      "thistle": [
+        "protection",
+        "strength",
+        "breaking hexes",
+        "drawing off envy",
+        "endurance",
+        "fire",
+        "mars",
+        "hex breaking",
+        "courage",
+        "envy"
+      ],
+      "vetiver": [
+        "grounding",
+        "money drawing",
+        "breaking hexes",
+        "calming anxiety",
+        "binding love",
+        "earth",
+        "saturn",
+        "hex breaking",
+        "steadiness"
+      ],
+      "witch-hazel": [
+        "protection",
+        "finding hidden things",
+        "single-minded focus",
+        "healing the heart",
+        "dowsing",
+        "fire",
+        "sun",
+        "single purpose",
+        "heart healing",
+        "boundaries"
       ]
     },
     "crystal": {
@@ -10785,6 +12851,286 @@ export const ALTAR_ARTWORK: {
         "root",
         "crown",
         "home"
+      ],
+      "lodestone": [
+        "attraction",
+        "fidelity",
+        "grounding",
+        "guidance",
+        "thrift",
+        "earth",
+        "mars",
+        "root",
+        "luck",
+        "direction"
+      ],
+      "bronzite": [
+        "courage",
+        "decisive action",
+        "boundaries",
+        "grounding",
+        "steady willpower",
+        "earth",
+        "mars",
+        "root",
+        "willpower"
+      ],
+      "chalcedony": [
+        "calm communication",
+        "emotional balance",
+        "gentle kindness",
+        "peaceful sleep",
+        "goodwill",
+        "water",
+        "moon",
+        "throat",
+        "calm speech",
+        "kindness",
+        "sleep"
+      ],
+      "chiastolite": [
+        "protection on journeys",
+        "easing transitions",
+        "steadiness in loss",
+        "resilience",
+        "cutting through confusion",
+        "earth",
+        "saturn",
+        "root",
+        "safe travel",
+        "transitions",
+        "loss",
+        "clarity"
+      ],
+      "crazy-lace-agate": [
+        "cheerfulness",
+        "patience with chaos",
+        "creative flow",
+        "easing frustration",
+        "finding pattern",
+        "earth",
+        "mercury",
+        "crown",
+        "playfulness",
+        "mood lift",
+        "patience",
+        "creativity"
+      ],
+      "dendritic-agate": [
+        "growth",
+        "abundance",
+        "connection to nature",
+        "steady progress",
+        "gentle grounding",
+        "earth",
+        "mercury",
+        "heart",
+        "nature connection",
+        "progress",
+        "grounding"
+      ],
+      "dumortierite": [
+        "study and memory",
+        "patience",
+        "calm focus",
+        "clear speech",
+        "steady self-discipline",
+        "air",
+        "mercury",
+        "throat",
+        "third eye",
+        "study",
+        "focus",
+        "discipline"
+      ],
+      "golden-healer-quartz": [
+        "optimism",
+        "self-worth",
+        "warmth of heart",
+        "spiritual connection",
+        "amplified intention",
+        "fire",
+        "sun",
+        "solar plexus",
+        "crown",
+        "warmth",
+        "intention"
+      ],
+      "kunzite": [
+        "compassion",
+        "emotional healing",
+        "gentle love",
+        "self-forgiveness",
+        "calm after upset",
+        "air",
+        "venus",
+        "heart",
+        "calm"
+      ],
+      "merlinite": [
+        "magic and intuition",
+        "shadow work",
+        "transformation",
+        "protection",
+        "dream work",
+        "spirit",
+        "saturn",
+        "third eye",
+        "crown",
+        "intuition",
+        "dreams"
+      ],
+      "moldavite": [
+        "transformation",
+        "spiritual awakening",
+        "letting go of the old",
+        "bold change",
+        "cosmic connection",
+        "spirit",
+        "mars",
+        "heart",
+        "third eye",
+        "awakening",
+        "letting go"
+      ],
+      "nuummite": [
+        "shadow work",
+        "intuition",
+        "protection of the psyche",
+        "inner strength",
+        "magic",
+        "earth",
+        "saturn",
+        "root",
+        "third eye",
+        "psychic protection"
+      ],
+      "petrified-wood": [
+        "ancestor connection",
+        "endurance",
+        "grounding",
+        "patience with slow change",
+        "past-life reflection",
+        "earth",
+        "saturn",
+        "root",
+        "ancestors",
+        "patience",
+        "past lives"
+      ],
+      "pink-opal": [
+        "gentle love",
+        "emotional healing",
+        "soothing grief",
+        "tenderness toward oneself",
+        "peaceful rest",
+        "water",
+        "venus",
+        "heart",
+        "grief",
+        "self-tenderness",
+        "rest"
+      ],
+      "ruby-zoisite": [
+        "vitality",
+        "passion for life",
+        "creative drive",
+        "joy",
+        "balanced energy",
+        "earth",
+        "mars",
+        "heart",
+        "root",
+        "balance"
+      ],
+      "sardonyx": [
+        "courage",
+        "marital fidelity",
+        "warding off envy",
+        "clear judgement",
+        "keeping promises",
+        "fire",
+        "mars",
+        "root",
+        "sacral",
+        "fidelity",
+        "protection from ill will",
+        "honest speech"
+      ],
+      "septarian": [
+        "patience",
+        "endurance",
+        "grounding",
+        "emotional steadiness",
+        "perseverance",
+        "earth",
+        "saturn",
+        "root",
+        "solar plexus"
+      ],
+      "serpentine": [
+        "kundalini and energy awakening",
+        "shedding the old",
+        "intuition",
+        "grounding",
+        "spiritual growth",
+        "earth",
+        "saturn",
+        "heart",
+        "crown",
+        "energy awakening"
+      ],
+      "staurolite": [
+        "protection of travellers",
+        "luck",
+        "connection to nature spirits",
+        "grounding",
+        "comfort in grief",
+        "earth",
+        "saturn",
+        "root",
+        "safe travel",
+        "nature spirits",
+        "grief comfort"
+      ],
+      "sugilite": [
+        "spiritual love",
+        "higher intuition",
+        "self-compassion",
+        "shielding from negativity",
+        "meditation",
+        "water",
+        "jupiter",
+        "third eye",
+        "crown",
+        "compassion",
+        "psychic protection"
+      ],
+      "tanzanite": [
+        "intuition",
+        "calm communication",
+        "expanded perspective",
+        "meditation",
+        "dream recall",
+        "air",
+        "jupiter",
+        "third eye",
+        "throat",
+        "spiritual insight",
+        "wider perspective"
+      ],
+      "tektite": [
+        "grounding after meditation",
+        "cosmic connection",
+        "resilience",
+        "letting go of the old",
+        "patience",
+        "spirit",
+        "mars",
+        "root",
+        "crown",
+        "grounding",
+        "letting go"
       ]
     },
     "deity": {
