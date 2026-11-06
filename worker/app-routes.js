@@ -264,6 +264,8 @@ export const APP_ROUTES = [
   "/rituals/craft/psychic/progress",
   "/rituals/craft/psychic/psychometry",
   "/rituals/craft/psychic/remote",
+  "/rituals/craft/psychic/telepathy",
+  "/rituals/craft/psychic/telepathy-session",
   "/rituals/craft/psychic/warmup",
   "/rituals/craft/sea",
   "/rituals/craft/sea/finds",

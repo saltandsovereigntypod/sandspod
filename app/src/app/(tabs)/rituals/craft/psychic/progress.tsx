@@ -4,6 +4,7 @@ import { Text, View } from 'react-native';
 import { Bars, goTo, Button, usePsychic } from '../../../../../components/psychic/shared';
 import { Body, Card, Notice, RitualScreen, SectionLabel, Title, ui } from '../../../../../components/rituals/ui';
 import { PSYCHIC_KINDS, scoredRuns } from '../../../../../lib/craft/psychic/log';
+import { partnerBreakdown } from '../../../../../lib/craft/psychic/telepathy';
 import { bestSlice, byDay, byMeditation, byMoonPhase, byTimeOfDay, streaks, verdict, type Slice } from '../../../../../lib/craft/psychic/stats';
 import { localDateKey } from '../../../../../lib/rituals/lifecycle';
 import { colors, fonts } from '../../../../../theme';
@@ -43,6 +44,7 @@ export default function Progress() {
   const time = useMemo(() => byTimeOfDay(all), [all]);
   const med = useMemo(() => byMeditation(all), [all]);
   const moon = useMemo(() => byMoonPhase(all), [all]);
+  const partners = useMemo(() => partnerBreakdown(sessions), [sessions]);
 
   return (
     <RitualScreen back="Psychic development">
@@ -50,7 +52,7 @@ export default function Progress() {
       <Body muted>Every score is set against what luck alone would give. We only say “above chance” when it is unlikely to be luck (p below 0.05) over at least 50 trials, and even then it cannot tell you why.</Body>
 
       {PSYCHIC_KINDS.filter((k) => k.scored).map((k) => {
-        const v = verdict(scoredRuns(sessions, k.id as 'esp' | 'remote' | 'precog'));
+        const v = verdict(scoredRuns(sessions, k.id as 'esp' | 'remote' | 'precog' | 'telepathy'));
         return (
           <Card key={k.id}>
             <SectionLabel>{k.label}</SectionLabel>
@@ -70,6 +72,18 @@ export default function Progress() {
         <SectionLabel>Hit rate over time (last 14 days you practised)</SectionLabel>
         {days.length ? <Bars items={days.map((d) => ({ label: d.date.slice(8), value: d.rate }))} max={1} a11y="Hit rate by day" /> : <Body muted>Nothing scored yet.</Body>}
       </View>
+
+      {partners.length > 0 && (
+        <View style={ui.gapSmall}>
+          <SectionLabel>Telepathy, by partner</SectionLabel>
+          {partners.map((p) => (
+            <Text key={p.partner} style={{ color: colors.cream, fontFamily: fonts.body, fontSize: 13 }}>
+              {`${p.name}: received ${p.received.hits} of ${p.received.trials} (chance gives ${p.received.expected.toFixed(1)}, ${p.received.trials ? (p.received.p < 0.001 ? 'p < 0.001' : `p = ${p.received.p.toFixed(3)}`) : 'no trials'}); ${p.sent.trials} sent, ${p.sent.hits} hit`}
+            </Text>
+          ))}
+          <Body muted>Each partner is a small sample, so one who looks good is as likely to be luck as anyone.</Body>
+        </View>
+      )}
 
       <SliceBars title="With and without meditation" list={med} />
       <Body muted>“With meditation” means a drop-in sound or guided drop-in was used for that session.</Body>
