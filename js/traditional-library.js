@@ -6094,6 +6094,43 @@ const TraditionalLibrary = {
 
             tags: ["calm speech", "emotional balance", "kindness", "sleep", "goodwill", "moon"]
         },
+
+        chiastolite: {
+            DisplayName: "Chiastolite",
+            Category: "Crystal",
+
+            Element: "Earth",
+
+            Planet: "Saturn",
+
+            Chakra: "Root",
+
+            Uses: "Protection on journeys, easing transitions, steadiness in loss, resilience, cutting through confusion",
+
+            PairsWith: "Black tourmaline, smoky quartz, jet, grey candle",
+
+            Cleansing: "Smoke, sound, earth",
+
+            TraditionalWarnings: "Chiastolite is hard but can fracture along its cross-shaped inclusion. Do not strike it, and wear safety gear if cutting, as the dust from stone contains silica.",
+
+            Overview: "Chiastolite is a variety of andalusite (an aluminium silicate), of Mohs hardness about 6.5–7.5. It is a grey, tan or olive-brown stone whose graphite inclusions form a dark cross when the crystal is cut across. The cross is the defining feature; the name comes from the Greek chiastos, ‘marked with the letter chi’ (Χ). It is found in Spain, Australia, China, Chile and the USA, and is sold as tumbled stones, slices and chips.",
+
+            TraditionalMeaning: "The cross stone: a protective charm for travellers and a modern stone of steadiness, passage and acceptance of change.",
+
+            HowToUse: "Start here: carry a small chiastolite on a journey or into a time of change, holding it at the start and end of the trip. Tumbled pieces suit pockets and bags, slices make pendants, and chips can go in jars for protection on the road. Keep a piece by the door when you travel.",
+
+            PairingNotes: "Chiastolite pairs well with black tourmaline for protection, smoky quartz for grounding, jet for mourning, and amethyst for calm. Grey, brown and black candles suit it.",
+
+            CleansingNotes: "Cleanse chiastolite with smoke, sound, earth, or visualization. A brief rinse in water is fine, and it should be dried; avoid hard knocks.",
+
+            SafetyAndRespect: "Chiastolite is safe to handle, but sharp edges can scratch and the dust from cutting is harmful. The protective and luck meanings are folk and modern crystal lore. It carries a cross shape that some people see as a Christian symbol and others as a plain mineral feature, so use it as you wish and respect those for whom the cross has meaning.",
+
+            Traditions: "Christian, Wheel of the Year",
+
+            TraditionNotes: "Christian: In Galicia in Spain, cross-marked andalusite was collected at Santiago de Compostela and sold to pilgrims as a charm; legend said the crosses were drops of Christ’s blood or tears of the Virgin, and the stone was called the ‘cross stone’ (piedra cruz). It was worn as an amulet against illness and accident.\n\nWheel of the Year: Used by modern practitioners as a travel and passage stone, and set on the altar at times of endings, such as Samhain.\n\nFolk & wider practice: Cross-bearing stones are found in Brittany and Wales as well, where they are called fairy crosses or ‘cross stones’ in folk tradition, and were also used as amulets. Chiastolite has few older meanings beyond these charms; the rest come from 20th-century crystal books.",
+
+            tags: ["safe travel", "transitions", "loss", "resilience", "clarity", "saturn"]
+        },
     },
 
     candle: {

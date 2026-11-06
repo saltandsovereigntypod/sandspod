@@ -5826,6 +5826,48 @@
         },
         {
           "category": "crystals",
+          "name": "Chiastolite",
+          "icon": "💎",
+          "keywords": [
+            "protection on journeys",
+            "easing transitions",
+            "steadiness in loss",
+            "resilience",
+            "cutting through confusion"
+          ],
+          "forms": [
+            {
+              "label": "Point",
+              "image": "",
+              "type": "crystal",
+              "crystal": "chiastolite",
+              "form": "point"
+            },
+            {
+              "label": "Chips",
+              "image": "../assets/altar/objects/crystals/chiastolite/chiastolite-chips.png",
+              "type": "crystal",
+              "crystal": "chiastolite",
+              "form": "chips"
+            },
+            {
+              "label": "Cluster",
+              "image": "",
+              "type": "crystal",
+              "crystal": "chiastolite",
+              "form": "cluster"
+            },
+            {
+              "label": "Tumbled",
+              "image": "../assets/altar/objects/crystals/chiastolite/chiastolite-tumbled.png",
+              "type": "crystal",
+              "crystal": "chiastolite",
+              "form": "tumbled"
+            }
+          ]
+        },
+        {
+          "category": "crystals",
           "name": "Chrysocolla",
           "icon": "💎",
           "keywords": [
@@ -12413,6 +12455,20 @@
           "calm speech",
           "kindness",
           "sleep"
+        ],
+        "chiastolite": [
+          "protection on journeys",
+          "easing transitions",
+          "steadiness in loss",
+          "resilience",
+          "cutting through confusion",
+          "earth",
+          "saturn",
+          "root",
+          "safe travel",
+          "transitions",
+          "loss",
+          "clarity"
         ]
       },
       "deity": {
