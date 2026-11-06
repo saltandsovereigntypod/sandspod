@@ -8424,6 +8424,40 @@ export const ALTAR_ARTWORK: {
       },
       {
         "category": "crystals",
+        "name": "Tanzanite",
+        "keywords": [
+          "intuition",
+          "calm communication",
+          "expanded perspective",
+          "meditation",
+          "dream recall"
+        ],
+        "forms": [
+          {
+            "label": "Point",
+            "image": "../assets/altar/objects/crystals/tanzanite/tanzanite-point.png",
+            "type": "crystal",
+            "crystal": "tanzanite",
+            "form": "point"
+          },
+          {
+            "label": "Chips",
+            "image": "../assets/altar/objects/crystals/tanzanite/tanzanite-chips.png",
+            "type": "crystal",
+            "crystal": "tanzanite",
+            "form": "chips"
+          },
+          {
+            "label": "Cluster",
+            "image": "",
+            "type": "crystal",
+            "crystal": "tanzanite",
+            "form": "cluster"
+          }
+        ]
+      },
+      {
+        "category": "crystals",
         "name": "Tiger Eye",
         "keywords": [
           "confidence",
@@ -13030,6 +13064,19 @@ export const ALTAR_ARTWORK: {
         "crown",
         "compassion",
         "psychic protection"
+      ],
+      "tanzanite": [
+        "intuition",
+        "calm communication",
+        "expanded perspective",
+        "meditation",
+        "dream recall",
+        "air",
+        "jupiter",
+        "third eye",
+        "throat",
+        "spiritual insight",
+        "wider perspective"
       ]
     },
     "deity": {

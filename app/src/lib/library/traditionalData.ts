@@ -5113,6 +5113,33 @@ export const TRADITIONAL_LIBRARY: TraditionalLibraryData = {
         "meditation",
         "jupiter"
       ]
+    },
+    "tanzanite": {
+      "DisplayName": "Tanzanite",
+      "Category": "Crystal",
+      "Element": "Air",
+      "Planet": "Jupiter",
+      "Chakra": "Third Eye, Throat",
+      "Uses": "Intuition, calm communication, expanded perspective, meditation, dream recall",
+      "PairsWith": "Amethyst, iolite, lapis lazuli, indigo candle",
+      "Cleansing": "Moonlight, sound, smoke",
+      "TraditionalWarnings": "Tanzanite is brittle along cleavage planes and can crack with knocks or sudden heat. Almost all tanzanite is heat-treated to turn its brownish colour blue-violet; this is standard and permanent. It is an expensive gem, and glass and synthetic copies are common.",
+      "Overview": "Tanzanite is the blue to violet gem variety of zoisite, of Mohs hardness about 6.5–7, found only in a small area at the foot of Mount Kilimanjaro in Merelani Hills, northern Tanzania. It was first brought to wider notice in 1967 and was named by Tiffany & Co. after Tanzania; the stone is strongly pleochroic, showing blue, violet and reddish-brown from different angles. Natural stones are brownish and are heat-treated to turn blue-violet. It is sold as cut gems, rough crystals, small tumbled stones and chips.",
+      "TraditionalMeaning": "Insight and the expanded view; a modern gem of the third eye and the throat, linked with the sky above Kilimanjaro.",
+      "HowToUse": "Start here: hold a tanzanite chip or a small crystal during meditation, and let your eyes rest on its colour as it changes with the light. Rough crystals suit an altar, chips can go in jars with amethyst, and cut stones can be worn in jewellery. Keep it out of heat and knocks.",
+      "PairingNotes": "Tanzanite pairs well with amethyst for calm, iolite for insight, lapis lazuli for truth, and clear quartz for clarity. Indigo, blue and violet candles suit it.",
+      "CleansingNotes": "Cleanse tanzanite with moonlight, sound, smoke, or visualization. A wipe with a barely damp cloth or a short rinse in lukewarm water is enough; never use steam, ultrasonic cleaners, salt or hot water.",
+      "SafetyAndRespect": "Tanzanite is safe to handle, but it is brittle and the dust from cutting is harmful. Most is heat-treated and glass and synthetic imitations are common, so buy from a reputable gem seller. Tanzanite comes only from one area of Tanzania, where mining is hard and often dangerous; ask for ethical, traceable stones where you can. Its intuition meanings are modern crystal lore.",
+      "Traditions": "Wheel of the Year",
+      "TraditionNotes": "Wheel of the Year: Kept on the altar for insight, used at the full moon and on clear nights for meditation, and held at the year’s turning points.\n\nFolk & wider practice: The Maasai of northern Tanzania are said to have known the blue stones from a bushfire that turned the brownish zoisite crystals blue after a lightning strike, a story told in the gem trade; a Maasai herder named Ali Juuyawatu is credited in trade accounts with finding the stones in 1967. Tiffany & Co. promoted it from 1968 as a gem found in only one place on Earth, and named it tanzanite. Its meanings come from modern crystal-healing books.",
+      "tags": [
+        "intuition",
+        "spiritual insight",
+        "calm communication",
+        "wider perspective",
+        "meditation",
+        "jupiter"
+      ]
     }
   },
   "candle": {
