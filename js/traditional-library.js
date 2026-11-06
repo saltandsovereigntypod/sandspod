@@ -6760,6 +6760,43 @@ const TraditionalLibrary = {
 
             tags: ["intuition", "spiritual insight", "calm communication", "wider perspective", "meditation", "jupiter"]
         },
+
+        tektite: {
+            DisplayName: "Tektite",
+            Category: "Crystal",
+
+            Element: "Spirit",
+
+            Planet: "Mars",
+
+            Chakra: "Root, Crown",
+
+            Uses: "Grounding after meditation, cosmic connection, resilience, letting go of the old, patience",
+
+            PairsWith: "Moldavite, clear quartz, black tourmaline, black candle",
+
+            Cleansing: "Sound, smoke, moonlight",
+
+            TraditionalWarnings: "Tektite is a brittle natural glass that can chip or crack if knocked or heated. Much black ‘tektite’ is common obsidian, volcanic glass or slag, and the better-known tektites (such as moldavite) are expensive, so ask for locality.",
+
+            Overview: "Tektites are natural glass objects formed when large meteorite impacts melted rock and flung it high into the air, where it cooled into glass bodies that fell back to Earth in strewn fields, thousands of kilometres across. They are mostly black or dark brown, sometimes olive green (moldavite), of Mohs hardness about 5.5–6, with rounded, pitted, button, drop or dumbbell shapes. They are found in Southeast Asia (Indochinites), Australia (australites), Ivory Coast, the Czech Republic and Texas. They are sold as raw pieces, tumbled stones and chips.",
+
+            TraditionalMeaning: "Stones of the sky; modern lore for cosmic connection and a steady response to fast change.",
+
+            HowToUse: "Start here: hold a tektite in the dark or at dusk, and think about the age of the glass in your hand, and what it has seen. Raw pieces suit an altar, tumbled stones suit pockets, and chips can go in jars with clear quartz. Keep it dry and set it on a soft surface, as it is brittle.",
+
+            PairingNotes: "Tektite pairs well with moldavite for the impact story, clear quartz for clarity, black tourmaline for grounding, and labradorite for magic. Black, silver and dark blue candles suit it.",
+
+            CleansingNotes: "Cleanse tektite with sound, smoke, moonlight, or visualization. A quick rinse and dry is fine, but avoid salt, heat and hard knocks, as it is brittle glass.",
+
+            SafetyAndRespect: "Tektite is safe to handle, but sharp, brittle edges can cut. Many dark stones sold as tektite are obsidian, slag or glass, so ask for the locality and avoid unusually cheap, uniform pieces. Some tektites are from sensitive heritage areas, such as Libyan Desert Glass or Australian australites in protected sites, so buy from a seller who can say where they were found. The cosmic meanings are modern crystal lore.",
+
+            Traditions: "Wheel of the Year",
+
+            TraditionNotes: "Wheel of the Year: Used by modern practitioners at the dark moon, at meteor showers and on clear nights, and kept on the altar for stillness and cosmic awareness.\n\nFolk & wider practice: Tektites have been picked up and kept by people for thousands of years: in Southeast Asia they have long been collected as charms, and Aboriginal Australian peoples are recorded as using and trading australites, whose knowledge and stories belong to them and should be credited to them. Western scientists described tektites in the 19th century, and the name is from the Greek tektos, ‘molten’. Most modern meanings come from 20th-century crystal books.",
+
+            tags: ["grounding", "cosmic connection", "resilience", "letting go", "patience", "mars"]
+        },
     },
 
     candle: {

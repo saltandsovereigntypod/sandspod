@@ -8630,6 +8630,48 @@
         },
         {
           "category": "crystals",
+          "name": "Tektite",
+          "icon": "💎",
+          "keywords": [
+            "grounding after meditation",
+            "cosmic connection",
+            "resilience",
+            "letting go of the old",
+            "patience"
+          ],
+          "forms": [
+            {
+              "label": "Point",
+              "image": "",
+              "type": "crystal",
+              "crystal": "tektite",
+              "form": "point"
+            },
+            {
+              "label": "Chips",
+              "image": "../assets/altar/objects/crystals/tektite/tektite-chips.png",
+              "type": "crystal",
+              "crystal": "tektite",
+              "form": "chips"
+            },
+            {
+              "label": "Cluster",
+              "image": "",
+              "type": "crystal",
+              "crystal": "tektite",
+              "form": "cluster"
+            },
+            {
+              "label": "Tumbled",
+              "image": "../assets/altar/objects/crystals/tektite/tektite-tumbled.png",
+              "type": "crystal",
+              "crystal": "tektite",
+              "form": "tumbled"
+            }
+          ]
+        },
+        {
+          "category": "crystals",
           "name": "Tiger Eye",
           "icon": "💎",
           "keywords": [
@@ -13371,6 +13413,19 @@
           "throat",
           "spiritual insight",
           "wider perspective"
+        ],
+        "tektite": [
+          "grounding after meditation",
+          "cosmic connection",
+          "resilience",
+          "letting go of the old",
+          "patience",
+          "spirit",
+          "mars",
+          "root",
+          "crown",
+          "grounding",
+          "letting go"
         ]
       },
       "deity": {
