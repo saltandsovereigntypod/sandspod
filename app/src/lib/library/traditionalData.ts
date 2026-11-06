@@ -2655,6 +2655,32 @@ export const TRADITIONAL_LIBRARY: TraditionalLibraryData = {
         "binding love",
         "saturn"
       ]
+    },
+    "witch_hazel": {
+      "DisplayName": "Witch Hazel",
+      "Category": "Herb",
+      "Element": "Fire",
+      "Planet": "Sun",
+      "Uses": "Protection, finding hidden things, single-minded focus, healing the heart, dowsing",
+      "PairsWith": "Hawthorn, willow, rosemary, amber",
+      "Substitutions": "Hazel, willow",
+      "TraditionalWarnings": "Witch hazel bark and leaf extracts are for the skin, not for swallowing: the extract can cause stomach upset, liver damage and nausea if taken by mouth in any quantity, and some products contain a lot of alcohol. It can irritate skin and eyes, and should not be used on broken skin without advice.",
+      "Overview": "Witch hazel (Hamamelis virginiana, the North American species) is a large shrub or small tree that blooms in autumn and winter, with spidery, crinkled, bright yellow flowers appearing as the leaves fall. The leaves and twigs are rounded with wavy edges. The leaves, bark and twigs are the parts used, sold dried and as a distilled astringent extract (‘witch hazel water’) used on skin. It is a different plant from the common hazel (Corylus).",
+      "TraditionalMeaning": "Finding what is hidden, and mending what is hurt; a tree of protection and of dowsing, whose flowers appear in the dark of the year.",
+      "HowToUse": "Start here: keep a small forked witch hazel twig in a dish or on a shelf near the door as a protection charm. The bark or leaf can be added to protection jars and sachets, and a few drops of the distilled water can be added to a cleansing wash for tools or a bath. A forked twig is the traditional dowsing rod. Always use the distilled water externally, and avoid the eyes.",
+      "PairingNotes": "Witch hazel pairs well with willow for dowsing and grief, hawthorn for protection and boundaries, rosemary for cleansing, and amber for warmth and healing. Yellow, gold and white candles suit it.",
+      "SubstitutionNotes": "Willow or hazel (Corylus) twigs can substitute for witch hazel as a dowsing fork. For protection and cleansing, hawthorn or rosemary can stand in.",
+      "SafetyAndRespect": "Distilled witch hazel is for external use: do not drink it, and keep it from children and pets. Check the label, as some products contain 14 per cent alcohol and are not suitable for sensitive skin. Witch hazel is native to eastern North America, where it has long been used by Indigenous peoples, including the Haudenosaunee and Algonquin, for healing; use it with thanks for that knowledge, and buy from responsible suppliers. Magical use should not replace medical care for wounds or skin conditions.",
+      "Traditions": "Wheel of the Year",
+      "TraditionNotes": "Wheel of the Year: Witch hazel flowers in autumn and winter, so modern practitioners use its twigs at Samhain, Yule and Imbolc, for protection and for finding what is hidden.\n\nFolk & wider practice: The ‘witch’ in the name is unrelated to witchcraft: it comes from the Old English wice, meaning pliant, supple, from the bendy branches; the same word gave ‘wych elm’. Early English settlers in America used forked witch hazel twigs for water divining, as they had used hazel in Europe, and witch hazel water was distilled from the bark for skin care in New England by the 19th century. Modern correspondence tables give witch hazel to the Sun and Fire.",
+      "tags": [
+        "protection",
+        "finding hidden things",
+        "single purpose",
+        "heart healing",
+        "boundaries",
+        "sun"
+      ]
     }
   },
   "crystal": {

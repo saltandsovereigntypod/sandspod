@@ -4783,6 +4783,47 @@ export const ALTAR_ARTWORK: {
       },
       {
         "category": "herbs",
+        "name": "Witch Hazel",
+        "keywords": [
+          "protection",
+          "finding hidden things",
+          "single-minded focus",
+          "healing the heart",
+          "dowsing"
+        ],
+        "forms": [
+          {
+            "label": "Sprig",
+            "image": "../assets/altar/objects/herbs/witch-hazel/witch-hazel-sprig.png",
+            "type": "herb",
+            "herb": "witch_hazel",
+            "form": "sprig"
+          },
+          {
+            "label": "Loose",
+            "image": "../assets/altar/objects/herbs/witch-hazel/witch-hazel-loose.png",
+            "type": "herb",
+            "herb": "witch_hazel",
+            "form": "loose"
+          },
+          {
+            "label": "Oil",
+            "image": "../assets/altar/objects/herbs/witch-hazel/witch-hazel-oil.png",
+            "type": "oil",
+            "herb": "witch_hazel",
+            "form": "oil"
+          },
+          {
+            "label": "Incense",
+            "image": "../assets/altar/objects/herbs/incense/incense.png",
+            "type": "herb",
+            "herb": "witch_hazel",
+            "form": "incense"
+          }
+        ]
+      },
+      {
+        "category": "herbs",
         "name": "Wormwood",
         "keywords": [
           "spirit work",
@@ -11168,6 +11209,18 @@ export const ALTAR_ARTWORK: {
         "saturn",
         "hex breaking",
         "steadiness"
+      ],
+      "witch-hazel": [
+        "protection",
+        "finding hidden things",
+        "single-minded focus",
+        "healing the heart",
+        "dowsing",
+        "fire",
+        "sun",
+        "single purpose",
+        "heart healing",
+        "boundaries"
       ]
     },
     "crystal": {
