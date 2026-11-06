@@ -3266,6 +3266,41 @@ const TraditionalLibrary = {
 
             tags: ["healing", "safe travel", "warding", "resilience", "grounding", "venus"]
         },
+
+        poppy: {
+            DisplayName: "Poppy",
+            Category: "Herb",
+
+            Element: "Water",
+
+            Planet: "Moon",
+
+            Uses: "Remembrance, restful sleep, dream work, fertility, prosperity",
+
+            PairsWith: "Mugwort, lavender, rosemary, moonstone",
+
+            Substitutions: "Lavender, chamomile",
+
+            TraditionalWarnings: "Opium poppy (Papaver somniferum) is a controlled plant in many countries, and its pods and latex contain opioids; growing it for drug use, or buying pods and straw for tea, is illegal or dangerous in many places and has caused deaths. Do not take poppy preparations as a sleep aid or drug. The red corn poppy (Papaver rhoeas) is mildly narcotic and not for internal use.",
+
+            Overview: "Poppies are the showy annuals of the genus Papaver: the red corn poppy (P. rhoeas) of fields and verges, and the opium poppy (P. somniferum) of gardens and farms, with pink, white or purple papery flowers and a round capsule full of tiny, blue-grey seeds. Poppy seeds are a common food and contain almost no opiates; the petals and dried seed pods are used in craft and magic, and poppy seed oil is pressed from the seeds.",
+
+            TraditionalMeaning: "Sleep, memory and the dead; a plant of dreams and of remembrance, and, with its thousand seeds, of fertility and abundance.",
+
+            HowToUse: "Start here: scatter a pinch of culinary poppy seeds on a plate on the altar as an offering, or keep a few in a jar for abundance (a seed for every wish). A pressed red poppy, or a paper one, is a remembrance token for November. Dried seed capsules are decorative and can be kept sealed in a jar; do not make tea from them. Use poppy seed oil only for dressing candles, diluted.",
+
+            PairingNotes: "Poppy pairs well with mugwort for dreaming, lavender for sleep, rosemary for remembrance, and moonstone for lunar calm. Red, white, black and blue candles suit it.",
+
+            SubstitutionNotes: "Lavender or chamomile can substitute for poppy in sleep and calm workings, and are safe where poppy is not. For remembrance, rosemary is the traditional substitute.",
+
+            SafetyAndRespect: "Do not make or drink tea from poppy pods or straw: it can cause overdose and death, and it is illegal in many countries. Even culinary seeds can affect drug-test results. Keep pods, seeds and oil from children and pets. Poppies are also the emblem of remembrance for war dead in Britain and the Commonwealth, so use the flower as a memorial gently. Magical use should not replace medical care for pain or poor sleep.",
+
+            Traditions: "Hellenic, Roman",
+
+            TraditionNotes: "Hellenic: The poppy belongs to Demeter, who is shown with poppies and wheat, and to Hypnos and Morpheus, the gods of sleep and dreams, who were crowned with poppies; the poppy also symbolised the sleep of death and the underworld.\n\nRoman: Ceres and Somnus were likewise associated with poppies, and Roman farmers held that the seeds blessed the fields; a legend says that Tarquin cut off the tallest poppies to send a message to his son.\n\nFolk & wider practice: Since 1918 the red corn poppy, which grew on the battlefields of Flanders, has been worn in Britain and the Commonwealth to remember the war dead, after John McCrae’s poem ‘In Flanders Fields’. In medieval Europe the seeds were thought to bring fertility and to protect against sleeplessness, and modern correspondence tables give poppy to the Moon and Water.",
+
+            tags: ["remembrance", "sleep", "dreams", "fertility", "prosperity", "moon"]
+        },
     },
 
     crystal: {

@@ -3881,6 +3881,47 @@ export const ALTAR_ARTWORK: {
       },
       {
         "category": "herbs",
+        "name": "Poppy",
+        "keywords": [
+          "remembrance",
+          "restful sleep",
+          "dream work",
+          "fertility",
+          "prosperity"
+        ],
+        "forms": [
+          {
+            "label": "Sprig",
+            "image": "../assets/altar/objects/herbs/poppy/poppy-sprig.png",
+            "type": "herb",
+            "herb": "poppy",
+            "form": "sprig"
+          },
+          {
+            "label": "Loose",
+            "image": "../assets/altar/objects/herbs/poppy/poppy-loose.png",
+            "type": "herb",
+            "herb": "poppy",
+            "form": "loose"
+          },
+          {
+            "label": "Oil",
+            "image": "../assets/altar/objects/herbs/poppy/poppy-oil.png",
+            "type": "oil",
+            "herb": "poppy",
+            "form": "oil"
+          },
+          {
+            "label": "Incense",
+            "image": "../assets/altar/objects/herbs/incense/incense.png",
+            "type": "herb",
+            "herb": "poppy",
+            "form": "incense"
+          }
+        ]
+      },
+      {
+        "category": "herbs",
         "name": "Red Clover",
         "keywords": [
           "luck",
@@ -10852,6 +10893,17 @@ export const ALTAR_ARTWORK: {
         "earth",
         "venus",
         "warding"
+      ],
+      "poppy": [
+        "remembrance",
+        "restful sleep",
+        "dream work",
+        "fertility",
+        "prosperity",
+        "water",
+        "moon",
+        "sleep",
+        "dreams"
       ]
     },
     "crystal": {
