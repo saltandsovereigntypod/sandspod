@@ -22,7 +22,7 @@ export type CustomSpreadData = {
 
 export type CustomSpreadEntry = { id: string; data: CustomSpreadData };
 
-const KINDS: DrawKind[] = ['tarot', 'runes', 'ogham', 'lenormand', 'kipper', 'oracle'];
+const KINDS: DrawKind[] = ['tarot', 'runes', 'ogham', 'lenormand', 'kipper', 'playing', 'oracle'];
 const str = (v: unknown, max: number) => (typeof v === 'string' ? v.trim().slice(0, max) : '');
 
 /** What each place is called when you leave it blank: "Card 2", "Rune 2", "Stave 2". */

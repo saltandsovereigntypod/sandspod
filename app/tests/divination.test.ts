@@ -118,8 +118,8 @@ test('the blank rune is in the bag only when chosen', () => {
   assert.ok(!poolFor('runes', { reversals: false, blankRune: false }).includes(BLANK_RUNE.name));
   assert.equal(poolFor('runes', { reversals: false, blankRune: true }).length, 25);
   assert.equal(poolFor('ogham', { reversals: false, blankRune: true }).length, 20);
-  assert.deepEqual(drawOptions(null), { reversals: false, blankRune: false });
-  assert.deepEqual(drawOptions({ divination_reversals: true, divination_blank_rune: true }), { reversals: true, blankRune: true });
+  assert.deepEqual(drawOptions(null), { reversals: false, blankRune: false, jokers: false });
+  assert.deepEqual(drawOptions({ divination_reversals: true, divination_blank_rune: true }), { reversals: true, blankRune: true, jokers: false });
 });
 
 test('a draw becomes a reading in the log’s own shape, which survives normalizing', () => {

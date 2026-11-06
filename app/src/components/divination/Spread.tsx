@@ -48,6 +48,7 @@ const SIZE = {
   // The Grand Tableaux are wide: small enough to see whole, with a closer look.
   lenormand: { max: 110, min: 34 },
   kipper: { max: 110, min: 34 },
+  playing: { max: 110, min: 40 },
   oracle: { max: 110, min: 44 },
 };
 
@@ -103,7 +104,7 @@ export function SpreadTable({ spread, draw, revealed, selected, onPress, still, 
     if (spread.kind === 'tarot') {
       w = n === 1 ? Math.min(width * 0.56, 220) : Math.min((width - gap * (n - 1)) / n, 150);
       h = w / CARD_RATIO;
-    } else if (spread.kind === 'lenormand' || spread.kind === 'kipper' || spread.kind === 'oracle') {
+    } else if (spread.kind === 'lenormand' || spread.kind === 'kipper' || spread.kind === 'playing' || spread.kind === 'oracle') {
       w = n === 1 ? Math.min(width * 0.56, 220) : Math.min((width - gap * (n - 1)) / n, 150);
       h = w * ITEM[spread.kind].h;
     } else if (spread.kind === 'runes') {

@@ -184,7 +184,7 @@ test('the Lenormand and Kipper spreads, as asked for', () => {
     for (const p of s.positions) assert.ok(p.name && p.about, `${s.id}: ${p.name}`);
     assertSound(layoutOf(s), s.id);
   }
-  assert.deepEqual(KINDS.map((k) => k.id), ['tarot', 'runes', 'ogham', 'lenormand', 'kipper', 'oracle']);
+  assert.deepEqual(KINDS.map((k) => k.id), ['tarot', 'runes', 'ogham', 'lenormand', 'kipper', 'playing', 'oracle']);
   // The Grand Tableau's places are the houses, in the cards' order.
   const gt = spreadById('lenormand-grand-tableau')!;
   assert.deepEqual(gt.positions, HOUSES);
@@ -367,8 +367,8 @@ test('show or hide each kind on the draw screen', () => {
   assert.equal(withKindShown({ divination_hidden_kinds: 'kipper,runes' }, 'kipper', true), 'runes');
   assert.equal(withKindShown({ divination_hidden_kinds: 'oracle' }, 'runes', false), 'runes,oracle');
   const s = { divination_hidden_kinds: 'runes,ogham,kipper' };
-  assert.deepEqual(shownKinds(KINDS, s).map((k) => k.id), ['tarot', 'lenormand', 'oracle']);
-  assert.deepEqual(shownKinds(KINDS, s, 'kipper').map((k) => k.id), ['tarot', 'lenormand', 'kipper', 'oracle'], 'the kind in use stays');
+  assert.deepEqual(shownKinds(KINDS, s).map((k) => k.id), ['tarot', 'lenormand', 'playing', 'oracle']);
+  assert.deepEqual(shownKinds(KINDS, s, 'kipper').map((k) => k.id), ['tarot', 'lenormand', 'kipper', 'playing', 'oracle'], 'the kind in use stays');
   assert.deepEqual(shownKinds(KINDS, { divination_hidden_kinds: KINDS.map((k) => k.id).join(',') }).map((k) => k.id), ['tarot'], 'never nothing');
 });
 

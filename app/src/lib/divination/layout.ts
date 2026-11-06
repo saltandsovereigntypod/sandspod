@@ -9,7 +9,7 @@
 
 import { ORACLE_LAYOUTS } from './oracle/spreads.ts';
 
-export type ItemKind = 'tarot' | 'runes' | 'ogham' | 'lenormand' | 'kipper' | 'oracle';
+export type ItemKind = 'tarot' | 'runes' | 'ogham' | 'lenormand' | 'kipper' | 'playing' | 'oracle';
 export type Dims = { w: number; h: number };
 
 export const ITEM: Record<ItemKind, Dims> = {
@@ -19,12 +19,14 @@ export const ITEM: Record<ItemKind, Dims> = {
   // The Bruges Lenormand is a little squarer than a tarot card; the Kipper cards are drawn a little taller.
   lenormand: { w: 1, h: 1 / 0.68 },
   kipper: { w: 1, h: 1 / 0.62 },
+  // A standard playing card is 2.5 by 3.5 inches.
+  playing: { w: 1, h: 1.4 },
   // Decks of your own are laid out as tarot cards are.
   oracle: { w: 1, h: 1 / 0.58 },
 };
 
 /** The space left between neighbours, in item widths. */
-const GAP: Record<ItemKind, number> = { tarot: 0.2, runes: 0.3, ogham: 0.7, lenormand: 0.12, kipper: 0.12, oracle: 0.2 };
+const GAP: Record<ItemKind, number> = { tarot: 0.2, runes: 0.3, ogham: 0.7, lenormand: 0.12, kipper: 0.12, playing: 0.14, oracle: 0.2 };
 
 export type Slot = { x: number; y: number; rot?: number };
 
