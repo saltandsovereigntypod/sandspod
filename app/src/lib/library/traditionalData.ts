@@ -4843,6 +4843,33 @@ export const TRADITIONAL_LIBRARY: TraditionalLibraryData = {
         "dreams",
         "saturn"
       ]
+    },
+    "moldavite": {
+      "DisplayName": "Moldavite",
+      "Category": "Crystal",
+      "Element": "Spirit",
+      "Planet": "Mars",
+      "Chakra": "Heart, Third Eye",
+      "Uses": "Transformation, spiritual awakening, letting go of the old, bold change, cosmic connection",
+      "PairsWith": "Clear quartz, herkimer diamond, labradorite, green candle",
+      "Cleansing": "Sound, smoke, moonlight",
+      "TraditionalWarnings": "Moldavite is a brittle natural glass and chips if knocked or heated. Fakes are very common: most ‘moldavite’ for sale is green glass, and even real stones are often moulded, etched or sold by weight. Buy from a seller who names the locality, in Czechia (Bohemia and Moravia).",
+      "Overview": "Moldavite is a natural olive- to bottle-green glass formed about 15 million years ago when a large meteorite struck the Ries area in southern Germany, throwing molten rock across what is now the Czech Republic, Austria and Germany. It is a type of tektite, of Mohs hardness about 5.5–6, with a distinctive etched, wrinkled, sculptured surface made as it fell and was later weathered. It is named after the Moldau (Vltava) river and is mined near Český Krumlov and in southern Bohemia and Moravia. It is sold as raw pieces, cut gems and fragments.",
+      "TraditionalMeaning": "A stone from the sky; a modern stone of fast, intense change and spiritual awakening, said to speed up a life’s turning points.",
+      "HowToUse": "Start here: if you use moldavite at all, begin with a very small piece, handle it briefly, and notice how you feel; many people find its reputation stronger than its effect, and others find it unsettling. Small pieces suit pendants or a dish on the altar, and a raw piece can be held in meditation. Set it down if it feels too much.",
+      "PairingNotes": "Moldavite pairs well with clear quartz for clarity, herkimer diamond for intensity, labradorite for magic, and black tourmaline for grounding when the energy is strong. Green, silver and white candles suit it.",
+      "CleansingNotes": "Cleanse moldavite with sound, smoke, moonlight, or visualization. A quick rinse and wipe is fine, but it is brittle glass, so avoid soaking, salt, heat and hard knocks.",
+      "SafetyAndRespect": "Moldavite is safe to handle, but sharp, brittle edges can cut. Fakes are extremely common: look for the wrinkled, wormy, etched surface and bubbles, be wary of perfect, smooth, bright green stones, and buy from sellers who give the mine or locality and a way to return it. Genuine moldavite is expensive and a limited natural resource. The intense transformation meanings are modern crystal lore, and some users report feeling unsettled by it; it is no substitute for care if a life change is hard, and you can simply set it down.",
+      "Traditions": "Wheel of the Year",
+      "TraditionNotes": "Wheel of the Year: Used by modern practitioners at turning points, such as Samhain, the new moon and the solstices, and kept on the altar for transformation.\n\nFolk & wider practice: Moldavite was collected and worked into tools and ornaments at Stone Age sites in central Europe more than 20,000 years ago, and in later centuries it was worn as a luck charm in Bohemia and Moravia. Some modern writers call it the stone of the Holy Grail, an idea from 20th-century writing rather than an old legend. Most of its modern meanings come from crystal-healing books of the 1980s onwards.",
+      "tags": [
+        "transformation",
+        "awakening",
+        "letting go",
+        "bold change",
+        "cosmic connection",
+        "mars"
+      ]
     }
   },
   "candle": {

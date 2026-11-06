@@ -6923,6 +6923,40 @@ export const ALTAR_ARTWORK: {
       },
       {
         "category": "crystals",
+        "name": "Moldavite",
+        "keywords": [
+          "transformation",
+          "spiritual awakening",
+          "letting go of the old",
+          "bold change",
+          "cosmic connection"
+        ],
+        "forms": [
+          {
+            "label": "Point",
+            "image": "",
+            "type": "crystal",
+            "crystal": "moldavite",
+            "form": "point"
+          },
+          {
+            "label": "Chips",
+            "image": "../assets/altar/objects/crystals/moldavite/moldavite-chips.png",
+            "type": "crystal",
+            "crystal": "moldavite",
+            "form": "chips"
+          },
+          {
+            "label": "Cluster",
+            "image": "../assets/altar/objects/crystals/moldavite/moldavite-cluster.png",
+            "type": "crystal",
+            "crystal": "moldavite",
+            "form": "cluster"
+          }
+        ]
+      },
+      {
+        "category": "crystals",
         "name": "Mookaite",
         "keywords": [
           "vitality",
@@ -12502,6 +12536,19 @@ export const ALTAR_ARTWORK: {
         "crown",
         "intuition",
         "dreams"
+      ],
+      "moldavite": [
+        "transformation",
+        "spiritual awakening",
+        "letting go of the old",
+        "bold change",
+        "cosmic connection",
+        "spirit",
+        "mars",
+        "heart",
+        "third eye",
+        "awakening",
+        "letting go"
       ]
     },
     "deity": {
