@@ -410,6 +410,7 @@
       <div class="sp-card">
         ${toggle("gd-pause", "Pause all reminders", paused ? back : "Nothing goes into the calendar file while paused; your choices are kept", paused, "data-pause-on")}
         ${paused ? `<div class="sp-chips">${PAUSES.map(([label, days]) => chip(`data-pause="${days == null ? "" : days}"`, label, prefs.pausedUntil === pauseUntil(days))).join("")}</div>` : ""}
+        ${prefToggle("gd-discreet", "Discreet notifications", "On your phones, every note from the app, and every coven note sent to them, says only “Salt & Sovereignty” and a plain line such as “You have a reminder.” Kept with your settings, so the app follows it.", "discreet")}
         ${prefToggle("gd-quiet-on", "Keep quiet at night", `Reminders between ${timeLabel(prefs.quiet.start)} and ${timeLabel(prefs.quiet.end)} move to when quiet hours end; one about a set time comes just before they begin`, "quiet.on")}
         ${prefs.quiet.on ? `${prefTime("gd-quiet-start", "From", "quiet.start")}${prefTime("gd-quiet-end", "Until", "quiet.end")}` : ""}
         ${prefToggle("gd-bundle", "Gather a busy day into one note", "In the app: holidays, planning and tending on the same day come together in the morning. A calendar file keeps each as its own event.", "bundle.on")}

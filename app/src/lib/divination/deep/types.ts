@@ -19,6 +19,12 @@ export type TarotDeep = {
   spirit: string;
   /** A question to sit with. */
   question: string;
+  /** Majors only: where the picture comes from and what Waite and Smith changed (deep/majorsLore.ts). */
+  history?: string;
+  /** Majors only: how the Tarot de Marseille and the Sola Busca show this trump. */
+  decks?: string;
+  /** Majors only: what to do with the card, upright and reversed. */
+  advice?: string;
 };
 
 export type StaveDeep = {

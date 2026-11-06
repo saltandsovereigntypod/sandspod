@@ -6,8 +6,13 @@ import { meaningOf, placeOf, type Draw, type Position, type Spread } from './dra
 import type { OwnDeckData } from './oracle/decks.ts';
 import type { DeckId } from './decks.ts';
 import type { TarotCard } from './tarot.ts';
-import { readingFor, type CardReading, type Lean, type ReadTopic } from './readings/index.ts';
+import { readingFor, type CardReading } from './readings/index.ts';
+import { answerLine, CLOSE, readTopicOf, firstSentence, hash, lc, LEAN_SCORE, looksYesNo, render, tidy, TONE } from './wholeCommon.ts';
+
+import { composeOracle } from './wholeOracle.ts';
 import { COURT_TITLE, ELEMENT, LENS, NUMBER_THEME, OPENERS, PAIRINGS, TOPIC_CUES, TOPIC_NAME, type LensGroup, type Topic } from './wholeReadingText.ts';
+
+export { answerLine, looksYesNo, readTopicOf };
 
 export type WholeItem = {
   name: string;
@@ -91,27 +96,9 @@ export function patternLines(items: WholeItem[]): string[] {
   return out;
 }
 
-const hash = (s: string) => {
-  let h = 5381;
-  for (let i = 0; i < s.length; i++) h = ((h << 5) + h + s.charCodeAt(i)) >>> 0;
-  return h;
-};
-const lc = (s: string) => s.charAt(0).toLowerCase() + s.slice(1);
-const tidy = (s: string) => s.trim().replace(/[.\s]+$/, '');
-const firstSentence = (s: string) => {
-  const m = s.match(/^.*?[.!?](?=\s|$)/);
-  return (m ? m[0] : s).trim();
-};
 const ADVICE_POS = /action|advice|help|above|crown|aim|outcome|future|will come|before|guidance|best/i;
 
-export function readTopicOf(topic: Topic): ReadTopic {
-  return topic === 'love' || topic === 'person' ? 'love' : topic === 'decision' || topic === 'timing' ? 'general' : topic;
-}
 
-const YES_NO = /^\s*(is|are|will|should|can|do|does|am|did|has|have|could|would)\b|\bor not\b/i;
-export const looksYesNo = (q: string) => YES_NO.test(q);
-
-const LEAN_SCORE: Record<Lean, number> = { yes: 1, 'not-yet': -0.5, no: -1, depends: 0 };
 const OUTCOME_POS = /outcome|result|future|once|what will|advice/i;
 
 type Read = { item: WholeItem; r: CardReading; w: number };
@@ -121,38 +108,7 @@ const cardLabel = (it: WholeItem) => {
   return it.reversed ? `${n} reversed` : n;
 };
 
-/** Plain first line from the cards' weighted lean. Outcome-like places count double, the last card one and a half. */
-export function answerLine(reads: Read[]): { line: string; lean: Lean } {
-  let sum = 0;
-  let tot = 0;
-  for (const x of reads) {
-    sum += x.w * LEAN_SCORE[x.r.lean];
-    tot += x.w;
-  }
-  const a = sum / tot;
-  if (a >= 0.6) return { line: 'Yes.', lean: 'yes' };
-  if (a >= 0.2) return { line: 'Yes, with care.', lean: 'yes' };
-  if (a > -0.2) return { line: 'It depends on you.', lean: 'depends' };
-  if (a > -0.6) return { line: 'Not quite yet.', lean: 'not-yet' };
-  return { line: 'No, not as things stand.', lean: 'no' };
-}
 
-const TONE: Record<Lean, string> = {
-  yes: 'Overall the cards lean hopeful.',
-  'not-yet': 'Overall the cards counsel patience.',
-  no: 'Overall the cards ask for a change of course.',
-  depends: 'Overall the cards are mixed, and much rests on your choices.',
-};
-
-const CLOSE: Record<Lean, (t: ReadTopic) => string> = {
-  yes: (t) => (t === 'spirit' ? 'Act on it, and keep a note of what changes.' : 'Act on it, and notice how it feels as you go.'),
-  'not-yet': (t) => (t === 'spirit' ? 'Ask again after a moon cycle of practice.' : t === 'health' ? 'Ask again after a few weeks of gentle change.' : 'Ask again after a moon cycle, once you have acted on this.'),
-  no: () => 'Let this one go for now, and ask a different question when you are ready.',
-  depends: () => 'The cards hand this back to you. Decide, then see how it sits.',
-};
-
-const render = (sections: WholeSection[]) =>
-  ['The whole reading', ...sections.map((sec) => `${sec.title}\n${sec.lines.join(sec.title === 'The story' ? '\n\n' : '\n')}`)].join('\n\n');
 
 /** Builds the reading from drawn cards, already given their positions and meanings. */
 export function composeReading(question: string, items: WholeItem[]): WholeReadingResult | null {
@@ -270,7 +226,7 @@ function composeGeneric(question: string, topic: Topic, usable: WholeItem[]): Wh
   return { topic, sections, text: render(sections) };
 }
 
-/** The whole reading for a draw: tarot, Lenormand, Kipper, runes, ogham and decks of your own (anything with a meaning). */
+/** The whole reading for a draw: tarot, Lenormand, Kipper, playing cards, runes, ogham and decks of your own (anything with a meaning). Lenormand, Kipper and playing cards are read together in their own way (wholeOracle.ts). */
 export function wholeReading(
   spread: Spread,
   draw: Draw,
@@ -282,5 +238,16 @@ export function wholeReading(
     if (!m) return;
     items.push({ name: m.name, reversed: m.reversed, position: spread.positions.length > 1 ? placeOf(spread, draw, i) : null, keywords: m.meaning.keywords, text: m.meaning.text, card: m.card });
   });
-  return items.length === draw.items.length ? composeReading(question, items) : null;
+  if (items.length !== draw.items.length) return null;
+  if (!deck && (spread.kind === 'lenormand' || spread.kind === 'kipper' || spread.kind === 'playing')) {
+    const oracle = composeOracle(
+      spread.kind,
+      spread.id,
+      question,
+      detectTopic(question),
+      items.map((it) => ({ name: it.name, reversed: it.reversed, position: it.position })),
+    );
+    if (oracle) return oracle;
+  }
+  return composeReading(question, items);
 }

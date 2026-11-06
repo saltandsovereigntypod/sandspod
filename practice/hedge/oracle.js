@@ -87,6 +87,25 @@
     );
   }
 
+  // ------------------------------------------------------------------ the whole reading
+
+  /**
+   * The whole reading of a draw, as the app's WholeReading card has it: tarot by its written
+   * readings; Lenormand, Kipper and playing cards read together in their own way; anything else
+   * from its meanings. `own` is a deck of your own's data, `tarotDeck` the tarot deck's id.
+   */
+  function wholeHtml(spread, draw, question, own, tarotDeck) {
+    if (!Dv.whole || !draw.items.length) return "";
+    const r = Dv.whole.wholeReading(spread, draw, { question: question || "", deck: own || null, tarotDeck: spread.kind === "tarot" ? tarotDeck : null });
+    if (!r) return "";
+    return kit.card(
+      r.sections
+        .map((sec) => `<p class="dv-meaning__name">${esc(sec.title)}</p>${sec.lines.map((l) => kit.p(l)).join("")}`)
+        .join(""),
+      { label: "The whole reading" }
+    );
+  }
+
   // ------------------------------------------------------------------ a physical pull
 
   /**
@@ -135,7 +154,7 @@
     return `${kit.list(rows, "The places")}${turned}${picking}`;
   }
 
-  global.PracticeOracle = { frontHtml, shapeClass, pairsHtml, pullHtml };
+  global.PracticeOracle = { frontHtml, shapeClass, pairsHtml, wholeHtml, pullHtml };
 
   // ------------------------------------------------------------------ the deck pages
 

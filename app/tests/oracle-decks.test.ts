@@ -380,7 +380,7 @@ test('Lenormand and Kipper in the Grimoire: every card with its three words and 
   assert.equal(countOf(kip), 36);
   const rider = divinationPage(findDivination('lenormand', '01-rider')!);
   assert.equal(rider.eyebrow, 'Lenormand · 1 of 36');
-  assert.deepEqual(rider.sections.map((s) => s.key), ['image', 'meaning', 'subject', 'modifier', 'pairs', 'timing', 'playing', 'house', 'question']);
+  assert.deepEqual(rider.sections.map((s) => s.key), ['image', 'meaning', 'subject', 'modifier', 'pairs', 'timing', 'playing', 'house', 'love', 'work', 'health', 'home', 'spirit', 'advice', 'question']);
   const house = divinationPage(findDivination('kipper', '20-the-house')!);
   assert.equal(house.gloss, 'Haus');
   for (const e of [...len.subgroups, ...kip.subgroups].flatMap((s) => s.entries)) {

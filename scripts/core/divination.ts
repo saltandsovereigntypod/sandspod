@@ -34,4 +34,6 @@ export * as tea from '../../app/src/lib/divination/tea.ts';
 export * as smokeWax from '../../app/src/lib/divination/smokeWax.ts';
 export * as charms from '../../app/src/lib/divination/charms.ts';
 export * as geomancy from '../../app/src/lib/divination/geomancy.ts';
+// The whole reading of a draw: tarot, Lenormand, Kipper and playing cards read together.
+export * as whole from '../../app/src/lib/divination/wholeReading.ts';
 export * as keep from '../../app/src/lib/divination/keep.ts';

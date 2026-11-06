@@ -2,6 +2,8 @@
 // tarot, runes and ogham (library.ts puts them in its drop-downs): each
 // card's entry, three words, and its page in sections. Pure.
 
+import { kipperReading } from './kipperReadings.ts';
+import { lenormandReading } from './lenormandReadings.ts';
 import type { DivinationEntry } from '../library.ts';
 import { KIPPER, type KipperCard } from './kipper.ts';
 import { LENORMAND, playingCardText, type LenormandCard } from './lenormand.ts';
@@ -49,6 +51,12 @@ export const LENORMAND_SECTIONS = [
   { key: 'timing', label: 'Timing' },
   { key: 'playing', label: 'The playing card' },
   { key: 'house', label: 'As a house in the Grand Tableau' },
+  { key: 'love', label: 'In love and close ties' },
+  { key: 'work', label: 'In work and money' },
+  { key: 'health', label: 'In health and the body' },
+  { key: 'home', label: 'At home' },
+  { key: 'spirit', label: 'In spirit and practice' },
+  { key: 'advice', label: 'What to do with it' },
   { key: 'question', label: 'A question to sit with' },
 ] as const;
 
@@ -58,6 +66,10 @@ export const KIPPER_SECTIONS = [
   { key: 'love', label: 'In love and close ties' },
   { key: 'work', label: 'In work and money' },
   { key: 'nearFar', label: 'Near the main person, and far' },
+  { key: 'health', label: 'In health and the body' },
+  { key: 'home', label: 'At home' },
+  { key: 'spirit', label: 'In spirit and practice' },
+  { key: 'advice', label: 'What to do with it' },
   { key: 'question', label: 'A question to sit with' },
 ] as const;
 
@@ -76,6 +88,7 @@ function pairsText(card: LenormandCard): string {
 }
 
 export function lenormandPage(card: LenormandCard): { eyebrow: string; gloss: string; sections: { key: string; label: string; text: string }[] } {
+  const r = lenormandReading(card.name)!;
   const text: Record<string, string> = {
     image: `${card.image} In its corner, the ${card.playingName}.`,
     meaning: `${card.meaning.text}`,
@@ -85,6 +98,12 @@ export function lenormandPage(card: LenormandCard): { eyebrow: string; gloss: st
     timing: `${card.timing} Timing in Lenormand is a modern art and readers differ; take it as a hint, not a date.`,
     playing: playingCardText(card),
     house: card.house,
+    love: r.topics.love,
+    work: r.topics.money,
+    health: r.topics.health,
+    home: r.topics.home,
+    spirit: r.topics.spirit,
+    advice: `${r.why.charAt(0).toUpperCase()}${r.why.slice(1)} ${r.advice}`,
     question: card.question,
   };
   return {
@@ -95,12 +114,17 @@ export function lenormandPage(card: LenormandCard): { eyebrow: string; gloss: st
 }
 
 export function kipperPage(card: KipperCard): { eyebrow: string; gloss: string; sections: { key: string; label: string; text: string }[] } {
+  const r = kipperReading(card.name)!;
   const text: Record<string, string> = {
     card: `${card.card} On the German cards: ${card.german}.`,
     meaning: card.meaning.text,
     love: card.love,
     work: card.work,
     nearFar: card.nearFar,
+    health: r.topics.health,
+    home: r.topics.home,
+    spirit: r.topics.spirit,
+    advice: `${r.why.charAt(0).toUpperCase()}${r.why.slice(1)} ${r.advice}`,
     question: card.question,
   };
   return {
