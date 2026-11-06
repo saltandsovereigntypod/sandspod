@@ -2798,6 +2798,7 @@ export const HELP: HelpSection[] = [
           'Card & colour guessing: choose symbols, suits, colours or yes and no, and 10 or 25 trials. The hidden target is chosen before you guess; it is shown after each trial.',
           'Remote viewing: write impressions of a hidden altar picture, choose it blind from four pictures, then see the answer and rate how close you were.',
           'Tomorrow’s card: guess a suit or the major arcana (and a number) today. Draw tomorrow’s card of the day in Divination and the guess is scored for you.',
+          'Telepathy: make a session for a pair (invite a friend with a code, or a member of your coven) or for a whole coven. Choose symbols, suits, colours or a picture, the rounds, the seconds a round, a start time and who sends. At the start time everyone\u2019s screen follows the same clock: the sender sees the target and holds it in mind, receivers write impressions and choose, then everyone sees the target and each hit or miss. There is no call. Targets are drawn on the server and kept from receivers until the round is over.',
           'Open "Your results" for hit rate against chance, a chart by day, streaks, time of day and moon phase.',
         ],
         tips: [
@@ -3163,6 +3164,27 @@ export const HELP: HelpSection[] = [
         ],
         href: '/rituals/craft/kitchen/spells',
         keywords: ['recipes', 'kitchen spells', 'bread spell', 'broth'],
+      },
+      {
+        id: 'practice-bath-mixes',
+        title: 'Use bath mixes, build your own and log your baths',
+        summary: 'Thirty spiritual and comfort baths by intention, moon and season, with safety notes worked out for you, your shelves, and a log in the Journal.',
+        steps: [
+          'Open Practice → Craft, then "Kitchen & hearth", then "Bath & body". Filter by Everyday, Moon, Seasons or Gentle, or by intention.',
+          'Open a mix to read its ingredients with amounts, how to prepare it (sachet, tea or infusion, or loose), the best moon, day and hour, the words to speak, and what to do with the water and herbs afterwards.',
+          'Read "Before you bathe": cautions for skin, pregnancy, children, pets and stones appear on their own for whatever the mix contains. Stones are marked water-safe or keep out of the water.',
+          'Under "On your shelves" see "You have X of Y ingredients", and tap "Add what’s missing" to put the rest on your running-low list.',
+          'Tap "Find a good time" for the timing advisor, "Log this bath" to record how it felt in your Journal, and a rhythm under "Make it a rhythm" (each new moon, weekly and so on) to have it in To tend.',
+          'Tap "Build your own": choose an intention, choose from the herbs and stones the Library suggests, set amounts and a method, and save it as one of your mixes.',
+        ],
+        tips: [
+          'Never put essential oil straight in the water: mix it into a carrier oil, milk or salts first. No premade mix uses oils.',
+          'Salty water goes down the drain, never on plants. Loose herbs go on the compost, not down the plug-hole.',
+          'Moon and sabbat kits suggest a matching bath, and Library herb and stone pages list the mixes that use them.',
+          'A comfort practice, not a treatment: see a doctor or pharmacist for any health concern.',
+        ],
+        href: '/rituals/craft/bath',
+        keywords: ['bath', 'spiritual bath', 'ritual bath', 'bath salts', 'cleansing bath', 'uncrossing', 'milk bath', 'foot soak', 'herbal bath', 'soak', 'epsom'],
       },
       {
         id: 'practice-ancestors',

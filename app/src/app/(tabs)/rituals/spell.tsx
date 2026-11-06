@@ -293,6 +293,7 @@ export default function SpellBuilder() {
         {method.needs.length > 0 && <Body muted>{`You'll also need: ${method.needs.join('; ').toLowerCase()}.`}</Body>}
         {!!method.history && <Body muted>{method.history}</Body>}
         {spec.method === 'sigil' && <Button label="Open the sigil maker" variant="text" onPress={() => router.push('/rituals/sigil')} />}
+        {spec.method === 'bath' && <Button label="Bath mixes: premade and build your own" variant="text" accessibilityHint="Thirty premade baths with safety notes, or one built from the Library" onPress={() => router.push((spec.intent ? { pathname: '/rituals/craft/bath/build', params: { intent: spec.intent } } : '/rituals/craft/bath') as Href)} />}
         {spec.method === 'simmer' && <Button label="Simmer pot ideas in the kitchen" variant="text" onPress={() => router.push('/rituals/craft/kitchen/simmer' as Href)} />}
       </View>
 

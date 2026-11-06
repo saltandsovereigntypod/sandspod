@@ -5,7 +5,7 @@
 // stores already hold, and each row opens that kind's own page. Pure, so it
 // can be tested.
 
-export type TimelineKind = 'ritual' | 'dream' | 'reading' | 'sit' | 'cycle' | 'shadow' | 'devotion' | 'ancestors' | 'omens' | 'psychic';
+export type TimelineKind = 'ritual' | 'dream' | 'reading' | 'sit' | 'cycle' | 'shadow' | 'devotion' | 'ancestors' | 'omens' | 'psychic' | 'bath';
 
 export type TimelineItem = {
   kind: TimelineKind;
@@ -31,6 +31,7 @@ export const TIMELINE_KINDS: readonly { kind: TimelineKind; label: string; one: 
   { kind: 'ancestors', label: 'Ancestors', one: 'Ancestors', write: 'Write in Ancestors' },
   { kind: 'omens', label: 'Omens & signs', one: 'Omen', write: 'Note an omen or sign' },
   { kind: 'psychic', label: 'Psychic development', one: 'Psychic development', write: 'Start a psychic exercise' },
+  { kind: 'bath', label: 'Baths', one: 'Bath', write: 'Log a bath' },
 ];
 
 export const isTimelineKind = (v: unknown): v is TimelineKind => TIMELINE_KINDS.some((k) => k.kind === v);

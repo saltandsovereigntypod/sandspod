@@ -12,6 +12,7 @@ const ROUTES: Record<string, { href: Href; icon: IconName }> = {
   'Pantry correspondences': { href: '/rituals/craft/kitchen/pantry' as Href, icon: 'grimoire' },
   'Simmer pot': { href: '/rituals/craft/kitchen/simmer' as Href, icon: 'altar' },
   'Home by the moon': { href: '/rituals/craft/kitchen/moon' as Href, icon: 'calendar' },
+  'Bath & body': { href: '/rituals/craft/bath' as Href, icon: 'altar' },
   'Kitchen spell book': { href: '/rituals/craft/kitchen/spells' as Href, icon: 'rituals' },
 };
 

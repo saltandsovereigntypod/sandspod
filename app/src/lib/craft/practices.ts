@@ -12,6 +12,7 @@ export const PSYCHIC_TOOLS: CraftTool[] = [
   { title: 'Card & colour guessing', detail: 'Symbols, suits, colours or yes and no, against a hidden target', href: '/rituals/craft/psychic/esp' },
   { title: 'Remote viewing', detail: 'Impressions of a hidden picture, then blind judging', href: '/rituals/craft/psychic/remote' },
   { title: 'Tomorrow’s card', detail: 'Guess the card of the day before it is drawn', href: '/rituals/craft/psychic/precog' },
+  { title: 'Telepathy', detail: 'Send and receive with a partner or your coven, on a shared clock', href: '/rituals/craft/psychic/telepathy' },
   { title: 'Psychometry & intuition', detail: 'Impressions from your own objects, and a prompt a day', href: '/rituals/craft/psychic/psychometry' },
   { title: 'Your results', detail: 'Hit rate against chance, streaks, time of day and the moon', href: '/rituals/craft/psychic/progress' },
 ];
@@ -27,6 +28,7 @@ export const CRAFT_TOOLS: Record<PracticeId, CraftTool[]> = {
     { title: 'Simmer pot', detail: 'A pot for your home from what you have', href: '/rituals/craft/kitchen/simmer' },
     { title: 'Home by the moon', detail: 'Which housework suits tonight', href: '/rituals/craft/kitchen/moon' },
     { title: 'Kitchen spell book', detail: 'Recipes as workings', href: '/rituals/craft/kitchen/spells' },
+    { title: 'Bath & body', detail: 'Thirty bath mixes for every intention, with their safety notes, your shelves and a log', href: '/rituals/craft/bath' },
   ],
   hedge: [
     { title: 'Dream journal', detail: 'Dreams, symbols and the moon they came under', href: '/grimoire/dreams' },

@@ -21,7 +21,7 @@ export function usePsychic() {
 }
 
 /** The honest line on a set of sessions (one exercise or all). */
-export function ResultsLine({ sessions, kind }: { sessions: SessionEntry[]; kind?: 'esp' | 'remote' | 'precog' }) {
+export function ResultsLine({ sessions, kind }: { sessions: SessionEntry[]; kind?: 'esp' | 'remote' | 'precog' | 'telepathy' }) {
   const v = useMemo(() => verdict(scoredRuns(sessions, kind)), [sessions, kind]);
   return <Body muted>{v.words}</Body>;
 }
