@@ -13,6 +13,7 @@ import { holdLoud } from '../../lib/altar/feel';
 import { File, Paths } from 'expo-file-system';
 import { useEffect, useMemo, useRef } from 'react';
 
+import { CHUNK_MS, chirpChunk, rampPath, rampVolume, type Phase, type RampPath } from '../../lib/meditation/ramp';
 import { programStrikes, programTick, type Compiled } from '../../lib/meditation/programs';
 import { bowlStrikes, loopMs, mixOn, samplesFor, soundTick, type SoundMix } from '../../lib/meditation/sound';
 import { wavBytes } from '../../lib/meditation/synth';
@@ -46,6 +47,103 @@ function quiet(p: AudioPlayer) {
   }
 }
 
+/**
+ * The program's binaural layer as back-to-back chirp chunks (ramp.ts): each is
+ * rendered with the phase the last ended on, played from a WAV in the cache and
+ * freed once it is over. At most the playing chunk and the next are kept.
+ */
+function createRamp(prog: Compiled) {
+  const path: RampPath = rampPath(prog);
+  type Chunk = { index: number; player: AudioPlayer; file: File };
+  let chunks: Chunk[] = [];
+  let nextIndex = -1; // The chunk whose start phase `phase` is.
+  let phase: Phase = { left: 0, right: 0 };
+  let timer: ReturnType<typeof setTimeout> | null = null;
+  let current = -1;
+  let volume = 0;
+
+  const free = (c: Chunk) => {
+    quiet(c.player);
+    try {
+      if (c.file.exists) c.file.delete();
+    } catch {
+      // Left for the cache to clear.
+    }
+  };
+  function prepare(index: number): Chunk | null {
+    if (index * CHUNK_MS >= prog.totalMs) return null;
+    const have = chunks.find((c) => c.index === index);
+    if (have) return have;
+    if (index !== nextIndex) phase = { left: 0, right: 0 }; // Started part-way: no earlier chunk to match.
+    const { pcm, phase: end } = chirpChunk(path, index * CHUNK_MS, Math.min(CHUNK_MS, prog.totalMs - index * CHUNK_MS), phase, index === nextIndex);
+    phase = end;
+    nextIndex = index + 1;
+    const file = new File(Paths.cache, `meditation-ramp-${index % 4}.wav`);
+    file.write(wavBytes(pcm));
+    const player = createAudioPlayer({ uri: file.uri });
+    player.loop = false;
+    player.volume = volume;
+    const chunk = { index, player, file };
+    chunks.push(chunk);
+    return chunk;
+  }
+  function startNext(index: number) {
+    const c = prepare(index);
+    if (c) {
+      c.player.volume = volume;
+      c.player.play();
+      current = index;
+    }
+    chunks = chunks.filter((x) => {
+      const old = x.index < index - 1;
+      if (old) free(x);
+      return !old;
+    });
+  }
+  return {
+    tick(elapsed: number, paused = false) {
+      volume = paused ? 0 : rampVolume(prog, elapsed);
+      chunks.forEach((c) => (c.player.volume = volume));
+      const index = Math.floor(elapsed / CHUNK_MS);
+      if (current !== index && !(timer && current === index - 1)) {
+        // First chunk, or a seek: begin the chunk we are in, from where we are in it.
+        if (timer) clearTimeout(timer);
+        timer = null;
+        chunks.forEach(free);
+        chunks = [];
+        nextIndex = -1;
+        const c = prepare(index);
+        if (c) {
+          const at = elapsed - index * CHUNK_MS;
+          if (at > 300) void c.player.seekTo(at / 1000).catch(() => {});
+          c.player.play();
+          current = index;
+        }
+      }
+      // Have the next chunk ready, and start it on the moment (the tick alone is too coarse).
+      const into = elapsed - index * CHUNK_MS;
+      if (!paused && !timer && into > CHUNK_MS - 8000 && (index + 1) * CHUNK_MS < prog.totalMs) {
+        prepare(index + 1);
+        timer = setTimeout(() => {
+          timer = null;
+          startNext(index + 1);
+        }, Math.max(0, CHUNK_MS - into - 60));
+      }
+    },
+    pause() {
+      if (timer) clearTimeout(timer);
+      timer = null;
+      current = -1; // Begin again from the clock on resume.
+      chunks.forEach((c) => c.player.pause());
+    },
+    stop() {
+      if (timer) clearTimeout(timer);
+      chunks.forEach(free);
+      chunks = [];
+    },
+  };
+}
+
 export type SitSoundControl = { needsTap: boolean; unlock: () => void };
 
 export function useSitSound(mix: SoundMix | null, plan: SitPlan, clock: SitClock, endedAtMs: number | null, program?: Compiled | null): SitSoundControl {
@@ -67,20 +165,28 @@ export function useSitSound(mix: SoundMix | null, plan: SitPlan, clock: SitClock
     const bowls = new Map<string, AudioPlayer>();
     let last: number | null = null;
     let wasPaused = false;
+    const ramp = programRef.current ? createRamp(programRef.current) : null;
     holdLoud(true);
 
     const tick = () => {
       const { plan: p, clock: c, endedAtMs: ended } = latest.current;
       try {
         if (c.pausedAt !== null) {
-          if (!wasPaused) players.forEach((pl) => pl.pause());
+          if (!wasPaused) {
+            players.forEach((pl) => pl.pause());
+            ramp?.pause();
+          }
           wasPaused = true;
           return;
         }
         const elapsed = elapsedOf(c, Date.now());
         const prog = programRef.current;
-        const { voices, strike } = prog ? programTick(prog, strikes, last ?? -1, elapsed) : soundTick(m, p, strikes, last ?? -1, elapsed, ended);
+        const ticked = prog ? programTick(prog, strikes, last ?? -1, elapsed) : soundTick(m, p, strikes, last ?? -1, elapsed, ended);
+        const strike = ticked.strike;
+        // A program's binaural layer is the continuous ramp, not the loops.
+        const voices = prog ? ticked.voices.filter((v) => !v.key.startsWith('binaural:')) : ticked.voices;
         last = elapsed;
+        ramp?.tick(elapsed);
         const want = new Set(voices.map((v) => v.key));
         for (const [key, pl] of players) {
           if (!want.has(key)) {
@@ -132,6 +238,7 @@ export function useSitSound(mix: SoundMix | null, plan: SitPlan, clock: SitClock
     return () => {
       holdLoud(false);
       clearInterval(id);
+      ramp?.stop();
       players.forEach(quiet);
       bowls.forEach(quiet);
     };
