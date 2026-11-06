@@ -5743,6 +5743,48 @@
         },
         {
           "category": "crystals",
+          "name": "Chalcedony",
+          "icon": "💎",
+          "keywords": [
+            "calm communication",
+            "emotional balance",
+            "gentle kindness",
+            "peaceful sleep",
+            "goodwill"
+          ],
+          "forms": [
+            {
+              "label": "Point",
+              "image": "",
+              "type": "crystal",
+              "crystal": "chalcedony",
+              "form": "point"
+            },
+            {
+              "label": "Chips",
+              "image": "../assets/altar/objects/crystals/chalcedony/chalcedony-chips.png",
+              "type": "crystal",
+              "crystal": "chalcedony",
+              "form": "chips"
+            },
+            {
+              "label": "Cluster",
+              "image": "",
+              "type": "crystal",
+              "crystal": "chalcedony",
+              "form": "cluster"
+            },
+            {
+              "label": "Tumbled",
+              "image": "../assets/altar/objects/crystals/chalcedony/chalcedony-tumbled.png",
+              "type": "crystal",
+              "crystal": "chalcedony",
+              "form": "tumbled"
+            }
+          ]
+        },
+        {
+          "category": "crystals",
           "name": "Charoite",
           "icon": "💎",
           "keywords": [
@@ -12358,6 +12400,19 @@
           "mars",
           "root",
           "willpower"
+        ],
+        "chalcedony": [
+          "calm communication",
+          "emotional balance",
+          "gentle kindness",
+          "peaceful sleep",
+          "goodwill",
+          "water",
+          "moon",
+          "throat",
+          "calm speech",
+          "kindness",
+          "sleep"
         ]
       },
       "deity": {

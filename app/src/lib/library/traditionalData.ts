@@ -4627,6 +4627,33 @@ export const TRADITIONAL_LIBRARY: TraditionalLibraryData = {
         "root",
         "mars"
       ]
+    },
+    "chalcedony": {
+      "DisplayName": "Chalcedony",
+      "Category": "Crystal",
+      "Element": "Water",
+      "Planet": "Moon",
+      "Chakra": "Throat",
+      "Uses": "Calm communication, emotional balance, gentle kindness, peaceful sleep, goodwill",
+      "PairsWith": "Moonstone, selenite, blue lace agate, white candle",
+      "Cleansing": "Moonlight, smoke, sound",
+      "TraditionalWarnings": "Chalcedony is hard, but dyed pieces (bright blue, pink, purple) can fade or bleed in water and sun. Check how a piece is treated before soaking it or leaving it in strong light.",
+      "Overview": "Chalcedony is microcrystalline quartz, with tiny crystals too small to see, of Mohs hardness 6.5–7. The name covers a family of waxy, translucent stones: agate, carnelian, chrysoprase, onyx and jasper are all chalcedony, but ‘chalcedony’ on its own usually means the plain, milky blue-grey to white stone. It is found in Brazil, Namibia, Turkey and the USA and is sold as tumbled stones, cabochons, beads and chips.",
+      "TraditionalMeaning": "Gentle goodwill and calm speech; an old stone of kindness and peace that a modern practitioner uses for steadying a heated mind.",
+      "HowToUse": "Start here: hold a small chalcedony in your palm before a conversation you want to keep kind, and breathe slowly. Tumbled pieces suit carrying or a bedside dish, chips can go in jars with moonstone for peace, and a cabochon makes a ring or pendant. Store it away from strong sun.",
+      "PairingNotes": "Chalcedony pairs well with moonstone for lunar calm, selenite for clarity, blue lace agate for gentle speech, and rose quartz for kindness. White, pale blue and silver candles suit it.",
+      "CleansingNotes": "Cleanse chalcedony with moonlight, smoke, sound, or visualization. Plain pieces can be rinsed briefly in water and dried; dyed pieces should only be wiped, and none should be left in strong sun.",
+      "SafetyAndRespect": "Chalcedony is safe to handle, but the dust from cutting or sanding it contains silica and should be avoided. Dyed stones should not go in water for elixirs. Its calming meanings are modern crystal lore alongside an old reputation for goodwill, and it is no substitute for care when anxiety or a quarrel runs deeper.",
+      "Traditions": "Hellenic, Wheel of the Year",
+      "TraditionNotes": "Hellenic: The name is thought to come from the ancient Greek town of Chalcedon (now Kadıköy in Turkey), and Greeks and Romans carved chalcedony into seals and cameos, as they did with other banded and cryptocrystalline quartz.\n\nWheel of the Year: Kept on the altar for peace and kindness, used at the waxing moon for gentle growth, and held in hand for calm before difficult talks.\n\nFolk & wider practice: Medieval lapidaries said that chalcedony gave a good voice and a cheerful heart and protected travellers, and in the Christian Book of Revelation, ‘chalcedony’ is the third foundation stone of the heavenly city. These are older folk and religious readings of a stone whose name was applied loosely, and modern crystal books add their own meanings.",
+      "tags": [
+        "calm speech",
+        "emotional balance",
+        "kindness",
+        "sleep",
+        "goodwill",
+        "moon"
+      ]
     }
   },
   "candle": {
