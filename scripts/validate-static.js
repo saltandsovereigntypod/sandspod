@@ -23,6 +23,8 @@ function localPath(pagePath, reference) {
   if (clean.startsWith("/sandspod-dev/")) return path.join(root, clean.slice("/sandspod-dev/".length));
   // The app's web template is served from its own export, where /x means app/public/x.
   if (clean.startsWith("/") && pagePath.startsWith("app/public/")) return path.join(root, "app/public", clean.slice(1));
+  // The web app's built export (scripts/build-webapp.mjs): /x is webapp/x.
+  if (clean.startsWith("/") && pagePath.startsWith("webapp/")) return path.join(root, "webapp", clean.slice(1));
   if (clean.startsWith("/")) return path.join(root, clean.slice(1));
   return path.resolve(root, path.dirname(pagePath), clean);
 }
