@@ -28,7 +28,7 @@ test('filters by kind and searches title, detail and kind', () => {
 });
 
 test('kinds, days and cycle notes', () => {
-  assert.equal(TIMELINE_KINDS.length, 10);
+  assert.equal(TIMELINE_KINDS.length, 11);
   assert.ok(isTimelineKind('omens'));
   assert.ok(!isTimelineKind('nope'));
   assert.equal(dayOf('2026-11-04T10:00:00Z'), '2026-11-04');

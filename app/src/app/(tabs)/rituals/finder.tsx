@@ -166,6 +166,7 @@ export default function CorrespondenceFinder() {
           </Body>
           {next && <Body muted>{`The timing advisor’s best time this week: ${windowWhen(next, new Date())}, ${scoreWord(next.score).toLowerCase()}.`}</Body>}
           <View style={ui.actions}>
+            <Button label="Build a bath" variant="outline" accessibilityHint="Opens the bath builder with this intention, to choose herbs, stones and amounts" onPress={() => router.push({ pathname: '/rituals/craft/bath/build', params: intent ? { intent: intent.key } : {} } as Href)} />
             <Button label="Build a spell" onPress={build} accessibilityHint="Opens the spell builder with these chosen, and the suggested moon and day" />
             {intent && (
               <Button

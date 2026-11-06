@@ -7,6 +7,7 @@ import { useCycle } from '../../lib/cycle/store';
 import { DREAM_ROUTES } from '../../lib/grimoire/dreams';
 import { cycleNoteItem, dayOf, type TimelineItem, type TimelineKind } from '../../lib/journal/timeline';
 import { entryDetail, entryTitle, journalRoutes, type JournalKind } from '../../lib/journals/journals';
+import { BATH_LOG, logTimelineItem } from '../../lib/craft/bath/bath';
 import { PSYCHIC_SESSIONS, sessionTimelineItem, type SessionEntry } from '../../lib/craft/psychic/log';
 import { kindLabel, normalizeSit, sitLine, SITS } from '../../lib/meditation/log';
 import { checkInTimeline } from '../../lib/rituals/checkIns';
@@ -29,6 +30,8 @@ export function newEntryHref(kind: TimelineKind): string {
       return '/rituals/craft/meditation/log';
     case 'cycle':
       return '/rituals/cycle/log';
+    case 'bath':
+      return '/rituals/craft/bath/log';
     case 'psychic':
       return '/rituals/craft/psychic';
     default:
@@ -60,6 +63,7 @@ export function useTimelineLists(): { lists: TimelineItem[][]; cycleLocked: bool
   const readings = useCraft<unknown>(READINGS).entries;
   const sits = useCraft<unknown>(SITS).entries;
   const psychic = useCraft<unknown>(PSYCHIC_SESSIONS).entries;
+  const baths = useCraft<unknown>(BATH_LOG).entries;
   const cycle = useCycle();
   const { names } = usePeople();
   const shadow = usePracticeJournal('shadow', names);
@@ -136,11 +140,12 @@ export function useTimelineLists(): { lists: TimelineItem[][]; cycleLocked: bool
     [sits],
   );
   const psychicItems = useMemo<TimelineItem[]>(() => psychic.map((e) => sessionTimelineItem(e as unknown as SessionEntry)), [psychic]);
+  const bathItems = useMemo<TimelineItem[]>(() => baths.map(logTimelineItem), [baths]);
   const notes = cycle.phase === 'open' ? cycle.data?.notes : undefined;
   const cycleItems = useMemo<TimelineItem[]>(() => (notes ?? []).map(cycleNoteItem).filter((x): x is TimelineItem => !!x), [notes]);
 
   return {
-    lists: [ritualItems, dreamItems, readingItems, sitItems, cycleItems, shadow, devotion, ancestors, omens, psychicItems],
+    lists: [ritualItems, dreamItems, readingItems, sitItems, cycleItems, shadow, devotion, ancestors, omens, psychicItems, bathItems],
     cycleLocked: cycle.phase === 'locked',
   };
 }

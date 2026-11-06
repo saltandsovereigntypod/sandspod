@@ -28,6 +28,7 @@ export const CRAFT_TOOLS: Record<PracticeId, CraftTool[]> = {
     { title: 'Simmer pot', detail: 'A pot for your home from what you have', href: '/rituals/craft/kitchen/simmer' },
     { title: 'Home by the moon', detail: 'Which housework suits tonight', href: '/rituals/craft/kitchen/moon' },
     { title: 'Kitchen spell book', detail: 'Recipes as workings', href: '/rituals/craft/kitchen/spells' },
+    { title: 'Bath & body', detail: 'Thirty bath mixes for every intention, with their safety notes, your shelves and a log', href: '/rituals/craft/bath' },
   ],
   hedge: [
     { title: 'Dream journal', detail: 'Dreams, symbols and the moon they came under', href: '/grimoire/dreams' },
