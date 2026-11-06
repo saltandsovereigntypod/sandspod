@@ -480,7 +480,7 @@ export const SEASON_PLANTS: SeasonPlant[] = [
   {
     key: 'parsley',
     name: 'Parsley',
-    library: false,
+    library: true,
     sow: range(3, 8),
     harvest: range(5, 11),
     sowWhat: 'Sow in succession through spring and summer (slow to sprout)',

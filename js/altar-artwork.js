@@ -3688,6 +3688,48 @@
         },
         {
           "category": "herbs",
+          "name": "Parsley",
+          "icon": "🌿",
+          "keywords": [
+            "purification",
+            "honouring the dead",
+            "fertility",
+            "lust",
+            "protection"
+          ],
+          "forms": [
+            {
+              "label": "Sprig",
+              "image": "../assets/altar/objects/herbs/parsley/parsley-sprig.png",
+              "type": "herb",
+              "herb": "parsley",
+              "form": "sprig"
+            },
+            {
+              "label": "Loose",
+              "image": "../assets/altar/objects/herbs/parsley/parsley-loose.png",
+              "type": "herb",
+              "herb": "parsley",
+              "form": "loose"
+            },
+            {
+              "label": "Oil",
+              "image": "../assets/altar/objects/herbs/parsley/parsley-oil.png",
+              "type": "oil",
+              "herb": "parsley",
+              "form": "oil"
+            },
+            {
+              "label": "Incense",
+              "image": "../assets/altar/objects/herbs/incense/incense.png",
+              "type": "herb",
+              "herb": "parsley",
+              "form": "incense"
+            }
+          ]
+        },
+        {
+          "category": "herbs",
           "name": "Passionflower",
           "icon": "🌿",
           "keywords": [
@@ -11016,6 +11058,15 @@
           "mercury",
           "courage",
           "community"
+        ],
+        "parsley": [
+          "purification",
+          "honouring the dead",
+          "fertility",
+          "lust",
+          "protection",
+          "air",
+          "mercury"
         ]
       },
       "crystal": {

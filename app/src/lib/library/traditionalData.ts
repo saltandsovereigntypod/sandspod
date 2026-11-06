@@ -2447,6 +2447,32 @@ export const TRADITIONAL_LIBRARY: TraditionalLibraryData = {
         "community",
         "mercury"
       ]
+    },
+    "parsley": {
+      "DisplayName": "Parsley",
+      "Category": "Herb",
+      "Element": "Air",
+      "Planet": "Mercury",
+      "Uses": "Purification, honouring the dead, fertility, lust, protection",
+      "PairsWith": "Mint, sage, rosemary, obsidian",
+      "Substitutions": "Chervil, coriander",
+      "TraditionalWarnings": "Parsley is safe as food, but large amounts of the seed, root or oil can be harmful in pregnancy, and the oil is toxic in quantity. Do not confuse it with poison hemlock or fool’s parsley, which look similar and are deadly.",
+      "Overview": "Parsley (Petroselinum crispum) is a biennial herb of the carrot family, grown as either flat-leaf (Italian) or curly parsley, with bright green, lobed leaves and a fresh, clean, slightly peppery scent. The leaves are used fresh or dried, and the root and seed are used less often.",
+      "TraditionalMeaning": "Purification and the threshold between the living and the dead; an old herb of the funeral feast, of fertility, and of fresh starts.",
+      "HowToUse": "Start here: put a sprig of fresh parsley in a glass of water on your altar, and change it when it wilts. Fresh leaves are the best form and can be grown on a windowsill; dried parsley goes into jars, floor-washes and sachets but loses colour and scent quickly. Wear or carry a sprig for a clean slate, and scatter fresh leaves in an offering to the dead.",
+      "PairingNotes": "Parsley pairs well with mint and sage for cleansing, rosemary for remembrance, and obsidian or black tourmaline for protection. White, green and black candles suit it.",
+      "SubstitutionNotes": "Chervil, a milder relative, can substitute for parsley in purification work, and coriander leaf can stand in for fresh green cleansing, though not for funerary uses.",
+      "SafetyAndRespect": "Parsley is a safe food herb, but concentrated seed, root and oil should not be used in pregnancy, and it can affect kidney conditions and some medicines. Identify it with care before picking wild umbellifers: hemlock and fool’s parsley are deadly. Keep it from pets in quantity, as large amounts can harm dogs, horses and birds. Magical use should not replace medical care.",
+      "Traditions": "Hellenic, Wheel of the Year",
+      "TraditionNotes": "Hellenic: In ancient Greece parsley (selinon) was woven into wreaths for the dead and for the winners of the Isthmian and Nemean Games, and was said to have grown from the blood of Archemoros, the infant ‘beginning of doom’; it was planted on graves, and tradition held that someone ‘needing only parsley’ was close to death.\n\nWheel of the Year: Parsley is sown in spring, and in old English folk custom was sown on Good Friday; in modern practice it is used at Ostara and Samhain.\n\nFolk & wider practice: English folklore says parsley is slow to germinate because it must visit the devil nine times before it sprouts, and that it should be sown by the head of the household only. Pomegranate and parsley both appear in Greek and Roman funeral practice. Modern correspondence tables give parsley to Mercury and Air.",
+      "tags": [
+        "purification",
+        "honouring the dead",
+        "fertility",
+        "lust",
+        "protection",
+        "mercury"
+      ]
     }
   },
   "crystal": {
