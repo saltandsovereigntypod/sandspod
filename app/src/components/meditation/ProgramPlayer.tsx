@@ -5,6 +5,7 @@ import { Animated, AppState, Easing, Platform, StyleSheet, Text, View } from 're
 import { clockLabel, elapsedOf, pauseClock, resumeClock, startClock, type SitClock } from '../../lib/meditation/timer';
 import { beatAt, breathAt, BREATH_CYCLE_MS, carrierLabel, cueNow, isDone, PROGRAM_NOTICE, PROGRAM_NOTICE_KEY, programEnd, programPlan, stageAt, type Compiled } from '../../lib/meditation/programs';
 import { mixOn } from '../../lib/meditation/sound';
+import { captionAt, type VoiceTimeline } from '../../lib/meditation/voice';
 import { colors, fonts } from '../../theme';
 import { Button } from '../Button';
 import { Body, Card, Notice, ui } from '../rituals/ui';
@@ -41,8 +42,8 @@ export function useNoticeSeen(): [boolean | null, () => void] {
   }];
 }
 
-/** Plays a compiled program: clock, stage, beat, the current cue, the pacer, pause, skip to the return, and stop. */
-export function ProgramPlayer({ compiled, onFinish }: { compiled: Compiled; onFinish?: (playedMs: number) => void }) {
+/** Plays a compiled program: clock, stage, beat, the current cue, the pacer, pause, skip to the return, and stop; with a recorded voice for its cues if given (and its words, unless `captions` is false). */
+export function ProgramPlayer({ compiled, onFinish, voice, captions = true }: { compiled: Compiled; onFinish?: (playedMs: number) => void; voice?: VoiceTimeline | null; captions?: boolean }) {
   const [seen, markSeen] = useNoticeSeen();
   const [clock, setClock] = useState<SitClock | null>(null);
   const [now, setNow] = useState(() => Date.now());
@@ -50,7 +51,7 @@ export function ProgramPlayer({ compiled, onFinish }: { compiled: Compiled; onFi
   const plan = useMemo(() => programPlan(compiled), [compiled]);
   const live = !!clock && !isDone(compiled, elapsedOf(clock, now));
   // A stop fades by bringing the end forward: the run is replaced by one that ends in a few seconds.
-  useSitSound(live && mixOn(compiled.mix) ? compiled.mix : null, plan, clock ?? startClock(now), programEnd(compiled), compiled);
+  useSitSound(live && mixOn(compiled.mix) ? compiled.mix : null, plan, clock ?? startClock(now), programEnd(compiled), compiled, live ? voice : null);
 
   const latest = useRef(clock);
   useEffect(() => {
@@ -83,7 +84,8 @@ export function ProgramPlayer({ compiled, onFinish }: { compiled: Compiled; onFi
   const elapsed = clock ? elapsedOf(clock, now) : 0;
   const paused = !!clock && clock.pausedAt !== null;
   const seg = stageAt(compiled, elapsed);
-  const cue = clock ? cueNow(compiled, elapsed) : null;
+  const said = clock && voice ? captionAt(voice, elapsed) : null;
+  const cueText = !clock || (voice && !captions) ? null : (said?.text ?? cueNow(compiled, elapsed)?.text ?? null);
   const ret = compiled.segments.find((s) => s.id === 'return' || s.id === 'ground');
   const inReturn = !!ret && elapsed >= ret.startMs;
 
@@ -125,7 +127,7 @@ export function ProgramPlayer({ compiled, onFinish }: { compiled: Compiled; onFi
       ) : (
         <Body muted>{`${compiled.segments.length} stages · ${carrierLabel(compiled.carrier)}`}</Body>
       )}
-      {clock && cue && <Text style={styles.cue}>{cue.text}</Text>}
+      {!!cueText && <Text style={styles.cue}>{cueText}</Text>}
       {clock && compiled.breath && <BreathCircle ms={elapsed} />}
       <View style={styles.actions}>
         {(!clock || paused) && <Button label={paused ? 'Play on' : 'Play'} onPress={play} disabled={seen === null} />}

@@ -9,7 +9,8 @@ import { SvgXml } from 'react-native-svg';
 
 import { useCraft } from '../../lib/craft/store';
 import { candleSvg, mandalaSvg, moonSvg, sigilFocusSvg, type FocusId } from '../../lib/meditation/focus';
-import { lineAt, scriptOf, type ScriptId } from '../../lib/meditation/scripts';
+import { LINE_FADE_MS, lineAt, scriptOf, type ScriptId } from '../../lib/meditation/scripts';
+import { captionAt, type VoiceTimeline } from '../../lib/meditation/voice';
 import { elapsedOf, sitStateAt, type SitClock, type SitPlan } from '../../lib/meditation/timer';
 import { readSigil, SIGILS } from '../../lib/sigil/sigil';
 import { colors, fonts } from '../../theme';
@@ -43,9 +44,20 @@ export function focusXml(focus: FocusId, ms: number, sigil: { d: string; ring: b
   return null;
 }
 
-type Props = { plan: SitPlan; clock: SitClock; endedAtMs: number | null; script: ScriptId | null; focus: FocusId; sigilId: string };
+type Props = {
+  plan: SitPlan;
+  clock: SitClock;
+  endedAtMs: number | null;
+  script: ScriptId | null;
+  focus: FocusId;
+  sigilId: string;
+  /** Read aloud: the words follow the voice instead of the clock. */
+  voice?: VoiceTimeline | null;
+  /** With a voice, whether the words show too. */
+  captions?: boolean;
+};
 
-export function SitGuide({ plan, clock, endedAtMs, script, focus, sigilId }: Props) {
+export function SitGuide({ plan, clock, endedAtMs, script, focus, sigilId, voice, captions = true }: Props) {
   const sigils = useSigils();
   const [full, setFull] = useState(false);
   const moving = focus === 'candle' || focus === 'mandala' || focus === 'sigil';
@@ -53,8 +65,9 @@ export function SitGuide({ plan, clock, endedAtMs, script, focus, sigilId }: Pro
   const { width, height } = useWindowDimensions();
   const elapsed = elapsedOf(clock, now);
   const state = sitStateAt(plan, elapsed, endedAtMs);
-  const s = scriptOf(script);
-  const at = s && state.phase === 'sit' ? lineAt(s, state.sitMs, plan.minutes === null ? null : plan.minutes * 60_000) : null;
+  const s = voice && !captions ? null : scriptOf(script);
+  const said = voice ? captionAt(voice, elapsed) : null;
+  const at = !s ? null : voice ? (said && s.lines[said.line] ? { index: said.line, opacity: Math.round(Math.min(1, (elapsed - said.startMs) / LINE_FADE_MS) * 100) / 100 } : null) : state.phase === 'sit' ? lineAt(s, state.sitMs, plan.minutes === null ? null : plan.minutes * 60_000) : null;
   const sigil = sigils.find((x) => x.id === sigilId) ?? sigils[0] ?? null;
   const xml = focusXml(focus, elapsed, sigil);
   const line = at && s ? <Text style={[styles.line, { opacity: at.opacity }]}>{s.lines[at.index]}</Text> : null;

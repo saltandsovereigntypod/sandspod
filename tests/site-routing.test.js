@@ -24,6 +24,10 @@ test("the app's screens and unknown paths go to the app; built files and picture
   for (const p of ["/_expo/static/js/web/index-abc.js", "/assets/headshot.png", "/assets/assets/altar/x.0123.webp", "/assets/____app/node_modules/x.0123.ttf"]) {
     assert.deepEqual(decideRoute(p, ""), { action: "static" }, p);
   }
+  // Recorded meditations (app/src/lib/meditation/voiceTracks.ts): files only, a missing one a 404, never the app.
+  for (const p of ["/audio/meditation/grounding/01.m4a", "/audio/"]) {
+    assert.deepEqual(decideRoute(p, ""), { action: "static" }, p);
+  }
   // Static first, then the app: icons, the app's offline worker and manifest.
   for (const p of ["/favicon.ico", "/sw.js", "/manifest.json", "/sitemap.xml", "/no-such-page"]) {
     assert.deepEqual(decideRoute(p, ""), { action: "static-or-app" }, p);
