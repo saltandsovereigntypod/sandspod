@@ -3441,6 +3441,41 @@ const TraditionalLibrary = {
 
             tags: ["protection", "strength", "hex breaking", "courage", "envy", "mars"]
         },
+
+        vetiver: {
+            DisplayName: "Vetiver",
+            Category: "Herb",
+
+            Element: "Earth",
+
+            Planet: "Saturn",
+
+            Uses: "Grounding, money drawing, breaking hexes, calming anxiety, binding love",
+
+            PairsWith: "Patchouli, sandalwood, cedar, smoky quartz",
+
+            Substitutions: "Patchouli, cedar",
+
+            TraditionalWarnings: "Vetiver oil is very thick and strong, and can cause skin irritation and headaches in some people; dilute it and patch-test. Avoid in pregnancy and keep away from pets. Cheaper ‘vetiver’ products are often blended or synthetic.",
+
+            Overview: "Vetiver (Chrysopogon zizanioides) is a tall, tufted tropical grass, native to India, whose dense, fibrous, golden roots grow straight down as deep as three metres and are famous for holding soil on slopes. The roots are the part used: dried, they smell deeply earthy, smoky, woody and slightly sweet; they are woven into screens and cooled water, and distilled into a thick, amber-brown essential oil used in perfumery.",
+
+            TraditionalMeaning: "Deep grounding and steady fortune; a root that holds the earth together and anchors wealth, love and the self.",
+
+            HowToUse: "Start here: put a pinch of dried vetiver root, or a tiny dab of well-diluted oil, in a small pouch with a coin for steady money. Dried roots go into jars, sachets, floor-washes and incense blends; the roots are fibrous and long-lasting, and the scent improves a little with age. A bundle of roots can be tied with cord and hung in a cupboard, and the oil is best used a drop at a time.",
+
+            PairingNotes: "Vetiver pairs well with patchouli for money and grounding, sandalwood and cedar for woody depth, and smoky quartz for stability. Green, brown, black and gold candles suit it.",
+
+            SubstitutionNotes: "Patchouli or cedar can substitute for vetiver in grounding and money workings, though neither has its smoky, cooling depth. Dried roots and oil are not equal, so reduce the amount if you swap.",
+
+            SafetyAndRespect: "Vetiver oil is thick and strong, can irritate skin and trigger headaches, and should be diluted; it is not advised in pregnancy, and should be kept from pets and children. Check the label, as many cheap oils are synthetic blends. Vetiver is also a valued soil-stabilising crop for farming communities in India, Haiti and elsewhere, so buy from a fair source. Magical use should not replace financial planning.",
+
+            Traditions: "Hindu, Wheel of the Year",
+
+            TraditionNotes: "Hindu: In India, vetiver roots (khus) are woven into fragrant, water-cooled screens and mats and used in cooling drinks and perfumes in the hot season, and the oil (khus attar) is used in perfumery and in Ayurvedic practice. This note records an Indian cultural use; it should not be taken as a prescribed ritual.\n\nWheel of the Year: Vetiver has no place in the old European festival cycle; modern practitioners use it at Mabon and Samhain for grounding and the closing of the year.\n\nFolk & wider practice: In New Orleans and wider Southern American folk magic, vetiver (often called ‘khus-khus’) is a root used in money-drawing powders and in work for ‘breaking’ or uncrossing; the name ‘khus-khus’ is Hindi. Modern correspondence tables give vetiver to Saturn and Earth.",
+
+            tags: ["grounding", "money drawing", "hex breaking", "steadiness", "binding love", "saturn"]
+        },
     },
 
     crystal: {

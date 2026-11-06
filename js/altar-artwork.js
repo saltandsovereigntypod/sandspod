@@ -4738,6 +4738,48 @@
         },
         {
           "category": "herbs",
+          "name": "Vetiver",
+          "icon": "🌿",
+          "keywords": [
+            "grounding",
+            "money drawing",
+            "breaking hexes",
+            "calming anxiety",
+            "binding love"
+          ],
+          "forms": [
+            {
+              "label": "Sprig",
+              "image": "../assets/altar/objects/herbs/vetiver/vetiver-sprig.png",
+              "type": "herb",
+              "herb": "vetiver",
+              "form": "sprig"
+            },
+            {
+              "label": "Loose",
+              "image": "../assets/altar/objects/herbs/vetiver/vetiver-loose.png",
+              "type": "herb",
+              "herb": "vetiver",
+              "form": "loose"
+            },
+            {
+              "label": "Oil",
+              "image": "../assets/altar/objects/herbs/vetiver/vetiver-oil.png",
+              "type": "oil",
+              "herb": "vetiver",
+              "form": "oil"
+            },
+            {
+              "label": "Incense",
+              "image": "../assets/altar/objects/herbs/incense/incense.png",
+              "type": "herb",
+              "herb": "vetiver",
+              "form": "incense"
+            }
+          ]
+        },
+        {
+          "category": "herbs",
           "name": "Violet",
           "icon": "🌿",
           "keywords": [
@@ -11388,6 +11430,17 @@
           "hex breaking",
           "courage",
           "envy"
+        ],
+        "vetiver": [
+          "grounding",
+          "money drawing",
+          "breaking hexes",
+          "calming anxiety",
+          "binding love",
+          "earth",
+          "saturn",
+          "hex breaking",
+          "steadiness"
         ]
       },
       "crystal": {

@@ -20,7 +20,7 @@ const KNOWN: Record<string, string> = {
   sandalwood: '#c49a6c', copal: '#e7d39a', vanilla: '#3b2a20', 'bay leaf': '#6f7d3c',
   anise: '#a8977a', borage: '#4f6fb8', cardamom: '#8fa267', cinquefoil: '#e3c348', 'red clover': '#b85a86',
   damiana: '#7d8a55', eucalyptus: '#8aa69e', fennel: '#a9b86a', galangal: '#c9a27a', heather: '#a3628f',
-  hibiscus: '#a3243b', lotus: '#eab4c0', thistle: '#a070b0', tansy: '#e3b92c', "solomon's seal": '#d9cfa8', 'raspberry leaf': '#8a9a5a', poppy: '#c1272d', plantain: '#6a8a3a', parsley: '#3f7a3a', oregano: '#7a8a4a', 'orange peel': '#e8913a', marjoram: '#8d9a78', 'lemon peel': '#f0dc5a', hops: '#b5c274', dill: '#8fa66a', coriander: '#b89a5a', cacao: '#4a2e20', burdock: '#7a5a3a', bramble: '#3b2a45', blackthorn: '#2c3350', bergamot: '#c9c24a', 'apple blossom': '#f4d9df', honeysuckle: '#f0dca0', lilac: '#b89ad2', mullein: '#b9ba98', nutmeg: '#7a4e2e',
+  hibiscus: '#a3243b', lotus: '#eab4c0', vetiver: '#8a6d3a', thistle: '#a070b0', tansy: '#e3b92c', "solomon's seal": '#d9cfa8', 'raspberry leaf': '#8a9a5a', poppy: '#c1272d', plantain: '#6a8a3a', parsley: '#3f7a3a', oregano: '#7a8a4a', 'orange peel': '#e8913a', marjoram: '#8d9a78', 'lemon peel': '#f0dc5a', hops: '#b5c274', dill: '#8fa66a', coriander: '#b89a5a', cacao: '#4a2e20', burdock: '#7a5a3a', bramble: '#3b2a45', blackthorn: '#2c3350', bergamot: '#c9c24a', 'apple blossom': '#f4d9df', honeysuckle: '#f0dca0', lilac: '#b89ad2', mullein: '#b9ba98', nutmeg: '#7a4e2e',
   passionflower: '#8676b8', pine: '#3f5d3a', rosehip: '#c4462c', 'rose hip': '#c4462c', sunflower: '#e8b923',
   violet: '#6b4a9c',
   // salts and the like
