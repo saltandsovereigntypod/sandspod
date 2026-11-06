@@ -207,7 +207,11 @@
     wordsExtra() {
       const i = intent();
       const line = i ? C.WORDS_STARTERS[i.key] : "";
-      return line && state.spec.words.trim() !== line ? `<button type="button" class="rt-text-link" data-starter title="${esc(line)}">Start from a simple line</button>` : "";
+      return (
+        (line && state.spec.words.trim() !== line ? `<button type="button" class="rt-text-link" data-starter title="${esc(line)}">Start from a simple line</button> ` : "") +
+        `<button type="button" class="rt-text-link" data-petition title="Greets the gods you chose, asks in your words, names what you gathered, sets a bound and gives thanks. Change anything.">Draft a petition from my choices</button>` +
+        `<details class="sp-muted"><summary>About petitions</summary>${esc(C.PETITION_NOTE)}</details>`
+      );
     },
     steps() {
       const list = steps();
@@ -293,7 +297,7 @@
     }
     const name = main.querySelector("#sb-name");
     if (name) name.placeholder = C.defaultName(state.spec);
-    const words = main.querySelector("#sb-words");
+    const words = main.querySelector("textarea#sb-words");
     if (words) words.placeholder = method().wordsHint;
     main.querySelector("[data-steps-title]").textContent = `7 · The steps (${steps().length})`;
   }
@@ -320,9 +324,9 @@
       ${section("deities", "4 · Who you honour (if anyone)", `<div data-part="deities"></div>`)}
       ${section("when", "5 · When", `<div data-part="when"></div>`)}
       ${section(
-        "words",
+        "say",
         "6 · Your words",
-        `<div class="sp-field"><label for="sb-words">Words, chant or petition</label><textarea id="sb-words" data-text="words"></textarea></div><p data-part="wordsExtra"></p>`
+        `<div class="sp-field"><label for="sb-words">Words, chant or petition</label><textarea id="sb-words" data-text="words"></textarea></div><div data-part="wordsExtra"></div>`
       )}
       <section class="sp-section" aria-labelledby="sb-steps"><h2 class="sp-label" id="sb-steps" data-steps-title>7 · The steps</h2><div data-part="steps"></div></section>
       <div data-part="safety"></div>
@@ -397,10 +401,15 @@
         update({ planet: state.spec.planet === d.planet ? null : d.planet }, ["when", "gather", "deities"]);
       } else if (d.focus !== undefined) {
         update({ focusMinutes: d.focus }, ["steps"]);
+      } else if (el.hasAttribute("data-petition")) {
+        const draft = C.petitionDraft(state.spec);
+        const words = state.spec.words.trim() ? `${state.spec.words.trim()}\n\n${draft}` : draft;
+        main.querySelector("textarea#sb-words").value = words;
+        update({ words }, ["wordsExtra", "steps"]);
       } else if (el.hasAttribute("data-starter")) {
         const line = C.WORDS_STARTERS[state.spec.intent];
         const words = state.spec.words.trim() ? `${state.spec.words.trim()}\n${line}` : line;
-        main.querySelector("#sb-words").value = words;
+        main.querySelector("textarea#sb-words").value = words;
         update({ words }, ["wordsExtra", "steps"]);
       } else if (d.edit !== undefined) {
         state.editing = Number(d.edit);

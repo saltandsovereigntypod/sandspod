@@ -175,8 +175,8 @@ const seasonal = folderPictures('seasonal');
 // Tools that aren't in the Traditional Library, and the Natural drawer's finds
 // (named and described in src/lib/altar/shelf.ts): every tools/<id>/<id>.png
 // the Library doesn't already place, and every natural/<id>/<id>.png.
-// (Graveyard Dirt is placed by the cabinet by hand.)
-const libraryTools = new Set([...Object.keys(library.tool).map(folderOf), 'grave-dirt']);
+// (Graveyard Dirt and the Tuning Fork are placed by the cabinet by hand.)
+const libraryTools = new Set([...Object.keys(library.tool).map(folderOf), 'grave-dirt', 'tuning-fork']);
 const shelfTools = Object.fromEntries(Object.entries(folderPictures('tools')).filter(([id]) => !libraryTools.has(id)));
 const natural = folderPictures('natural');
 
