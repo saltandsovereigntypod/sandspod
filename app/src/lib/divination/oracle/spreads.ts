@@ -127,6 +127,37 @@ export const ORACLE_SPREADS: Spread[] = [
     lookBackDays: 90,
   },
   {
+    id: 'playing-one',
+    kind: 'playing',
+    group: 'quick',
+    label: 'One playing card',
+    detail: 'A single card for the day or a quick answer: read its suit first, then its number.',
+    positions: [{ name: 'The card', about: 'The answer, plainly: the suit says which part of life, the rank how strongly.' }],
+    lookBackDays: 7,
+  },
+  {
+    id: 'playing-three',
+    kind: 'playing',
+    group: 'quick',
+    label: 'Past, present, future',
+    detail: 'Three cards, read left to right as the old fortune-tellers laid them.',
+    positions: [
+      { name: 'The past', about: 'What lies behind and still bears on it.' },
+      { name: 'The present', about: 'Where it stands now.' },
+      { name: 'The future', about: 'Where it leads, if nothing changes.' },
+    ],
+    lookBackDays: 14,
+  },
+  {
+    id: 'playing-nine',
+    kind: 'playing',
+    group: 'classic',
+    label: 'Nine cards',
+    detail: 'The traditional nine in a square, the heart of the matter in the middle: the past to the left, the future to the right, thoughts above and facts below.',
+    positions: BOX,
+    lookBackDays: 30,
+  },
+  {
     id: 'oracle-one',
     kind: 'oracle',
     group: 'quick',
@@ -167,6 +198,7 @@ function rows(item: { w: number; h: number }, gap: number, cols: number, n: numb
 export const ORACLE_LAYOUTS: Record<string, (item: { w: number; h: number }, gap: number) => { slots: Slot[] }> = {
   'lenormand-box': (item, gap) => ({ slots: rows(item, gap, 3, 9) }),
   'kipper-nine': (item, gap) => ({ slots: rows(item, gap, 3, 9) }),
+  'playing-nine': (item, gap) => ({ slots: rows(item, gap, 3, 9) }),
   'lenormand-grand-tableau': (item, gap) => ({ slots: rows(item, gap, 8, 32, 4) }),
   'kipper-grand-tableau': (item, gap) => ({ slots: rows(item, gap, 9, 36) }),
 };

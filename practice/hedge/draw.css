@@ -125,6 +125,8 @@
 /* Lenormand (the Bruges cards of the 1890s), Kipper drawn in words, and cards of your own (practice/hedge/oracle.js) */
 .dv-flip--lenormand { aspect-ratio: 0.68; border-radius: 6px; }
 .dv-flip--kipper { aspect-ratio: 0.62; border-radius: 6px; }
+.dv-flip--playing { aspect-ratio: 0.714; border-radius: 8px; }
+.dv-playing svg { display: block; width: 100%; height: 100%; }
 .dv-kipper { background: #efe4c8; container-type: inline-size; }
 .dv-kipper__frame {
   position: absolute; inset: 5%; display: flex; flex-direction: column; align-items: center; justify-content: space-between;

@@ -85,6 +85,8 @@ import { feedingDue, feedingLine, sachetStateOf } from '../../lib/altar/workings
 import { daysSinceRenewal, jarStateOf } from '../../lib/altar/workings/spellJar';
 import { SPELLS_COLLECTION, spellToday, tickSpell, type SpellEntry } from '../../lib/altar/workings/spells';
 import { AltarOptionsSheet, FlameReadingSheet, IncenseSheet, OfferingSheet } from './LivingSheets';
+import { SymbolReadSheet } from './SymbolReadSheet';
+import { readingToKeep } from '../../lib/divination/keep';
 import { PetitionBoxSheet, WritePetitionSheet } from './PetitionSheets';
 import { softenSounds, useCandleAmbience, useCandleFeel } from '../../lib/altar/feel';
 import { CLEANSE_LABEL, isBell, RING_LABEL } from '../../lib/altar/bell';
@@ -135,7 +137,7 @@ import { cabinetFormOf } from '../../lib/altar/itemIndex';
 import { SHELF_FIELD, shelfPlacement } from '../../lib/shelves/model';
 import { useShelves } from '../../lib/shelves/store';
 import { READINGS as READING_LOG, type Reading } from '../../lib/craft/hedge/readings';
-import { ceromancyResult, laidResult, newlyLaid, readingForResult, scryingReading, scryingResult, withCandleNotes, withNotes, type DivinationResult } from '../../lib/altar/divinationResult';
+import { ceromancyResult, drawResult, laidResult, newlyLaid, readingForResult, scryingReading, scryingResult, withCandleNotes, withNotes, type DivinationResult } from '../../lib/altar/divinationResult';
 import { meaningOf } from '../../lib/divination/draw';
 import { DivinationResultCard } from './DivinationResultCard';
 import { usePlace } from '../../lib/location';
@@ -303,6 +305,8 @@ type SheetName =
   | 'widget'
   | 'length'
   | 'reading'
+  | 'smoke'
+  | 'wax'
   | 'offering'
   | 'incense'
   | 'petition'
@@ -2106,6 +2110,8 @@ export function AltarEditor({
                 setNotice(`${shortLabel(doc.objects[result.partner].label)} now mirrors it across the altar.`);
               },
               read: () => setSheet('reading'),
+              readSmoke: () => setSheet('smoke'),
+              readWax: () => setSheet('wax'),
               ring: (kind) => ringBell(kind, selectedUid),
               offer: () => setSheet('offering'),
               refreshOffering: () => {
@@ -2514,6 +2520,20 @@ export function AltarEditor({
             onChoose={(ms) => {
               if (selected != null) commit((d) => setCandleLifeAt(d, selected, ms, nowIso()));
               setSheet(null);
+            }}
+          />
+          <SymbolReadSheet
+            visible={(sheet === 'smoke' || sheet === 'wax') && !!selectedObject}
+            kind={sheet === 'wax' ? 'wax' : 'smoke'}
+            object={shortLabel(selectedObject?.label, sheet === 'wax' ? 'Candle' : 'Incense')}
+            onClose={() => setSheet(null)}
+            onKeep={(pick, reading) => {
+              const kind = sheet === 'wax' ? 'wax' : 'smoke';
+              const now = new Date();
+              setSheet(null);
+              void addEntry(READING_LOG, readingToKeep({ method: kind, question: pick.question, drawn: reading.blocks.map((b) => b.title), text: reading.text, date: now, lookBackDays: 7 }), now)
+                .then((e) => setResult(drawResult('reading', [{ name: reading.summary }], pick.question, e.id, now.toISOString(), kind)))
+                .catch(() => setNotice('Could not keep the reading just now.'));
             }}
           />
           <FlameReadingSheet
@@ -3083,6 +3103,10 @@ type Actions = {
   tonight: () => void;
   mirror: () => void;
   read: () => void;
+  /** Read the smoke of lit incense (capnomancy). */
+  readSmoke: () => void;
+  /** Pour wax from a lit candle into water and read it. */
+  readWax: () => void;
   /** Ring the bell once, or three times to cleanse the space. */
   ring: (kind: 'ring' | 'cleanse') => void;
   offer: () => void;
@@ -3450,6 +3474,7 @@ function ObjectPanel({
                   : `${incense.form === 'resin' ? 'Resin on charcoal' : incense.form === 'cone' ? 'A cone' : 'A stick'} · burns about ${lifeDuration(incense.burnMs)}`}
           </Text>
           <Button label={incense.lit ? 'Put it out' : incense.ash ? 'Clear the ash' : 'Light the incense'} onPress={act.incense} />
+          {incense.lit && <Button label="Read the smoke" variant="outline" onPress={act.readSmoke} />}
           {incense.adjustable && (
             <ChipRow>
               <Chip label="Stick, cone or resin" symbol="⧗" accessibilityLabel="Choose what kind of incense it is and how long it burns" onPress={act.incenseKind} />
@@ -3493,6 +3518,7 @@ function ObjectPanel({
           ) : (
             <Button label={lit ? 'Snuff the candle' : 'Light the candle'} onPress={act.light} />
           )}
+          {lit && !life?.spent && <Button label="Pour and read wax" variant="outline" onPress={act.readWax} />}
           {toRead ? (
             <View style={styles.living}>
               <Text style={type.eyebrow}>How did it burn?</Text>

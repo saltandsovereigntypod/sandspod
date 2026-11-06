@@ -28,3 +28,10 @@ export * as oracleDecks from '../../app/src/lib/divination/oracle/decks.ts';
 export * as kinds from '../../app/src/lib/divination/oracle/kinds.ts';
 // A draw not yet kept, held in this browser so a reload doesn't lose it.
 export * as draft from '../../app/src/lib/divination/drawDraft.ts';
+// Playing-card cartomancy, tea leaves and other cup readings, smoke and poured wax, charm casting and geomancy.
+export * as playing from '../../app/src/lib/divination/oracle/playing.ts';
+export * as tea from '../../app/src/lib/divination/tea.ts';
+export * as smokeWax from '../../app/src/lib/divination/smokeWax.ts';
+export * as charms from '../../app/src/lib/divination/charms.ts';
+export * as geomancy from '../../app/src/lib/divination/geomancy.ts';
+export * as keep from '../../app/src/lib/divination/keep.ts';

@@ -9,6 +9,7 @@ import { bottomLayer, nextLayer } from './layers.ts';
 import { ensureLivingState } from './livingState.ts';
 import type { AltarBackground, CabinetCategoryId, CabinetForm, CabinetItem, SavedObject } from './types.ts';
 import { ALTAR_ARTWORK } from './artworkData.ts';
+import { KEYWORD_OVERRIDES } from './cabinetKeywords.ts';
 import { offeringCabinetItems } from './offeringDrawer.ts';
 import { offeringKind, setOffering, type OfferingKindId } from './offerings.ts';
 import { pottedCabinetItems } from './pottedPlants.ts';
@@ -89,7 +90,7 @@ function candleFormImage(color: string, formId: string): string {
 }
 
 const fromArtwork = (list: (typeof ALTAR_ARTWORK.items)[keyof typeof ALTAR_ARTWORK.items]): CabinetItem[] =>
-  list.map((item) => ({ ...item, id: `${item.category}:${slug(item.name)}`, keywords: [...item.keywords], forms: item.forms.map((f) => ({ ...f })) }));
+  list.map((item) => ({ ...item, id: `${item.category}:${slug(item.name)}`, keywords: [...(KEYWORD_OVERRIDES[`${item.category}:${slug(item.name)}`] ?? item.keywords)], forms: item.forms.map((f) => ({ ...f })) }));
 
 const saltPicture = (tool: string, form: string) => `../assets/altar/objects/tools/${tool}/${tool}-${form}.png`;
 const saltRectangle = (name: string, tool: string, keywords: string[], description: string): CabinetItem => ({
@@ -135,12 +136,12 @@ const single = (
 });
 
 /** The website's built-in cabinet, in the same order. */
-export const builtInCabinet: CabinetItem[] = [
+export const builtInCabinet: CabinetItem[] = ([
   ...candleColors.map((color) => ({
     id: `candles:${color}-candle`,
     category: 'candles' as const,
     name: `${capitalize(color)} Candle`,
-    keywords: [color, 'candle', 'fire'],
+    keywords: [...(KEYWORD_OVERRIDES[`candles:${color}-candle`] ?? [color, 'candle', 'fire'])],
     forms: allCandleForms.map((form) => ({
       label: form.label,
       image: candleFormImage(color, form.id),
@@ -234,7 +235,7 @@ export const builtInCabinet: CabinetItem[] = [
   ...pottedCabinetItems(),
   // Food, flowers and keepsakes to set straight on the altar, and vessels already filled (offeringDrawer.ts).
   ...offeringCabinetItems(),
-];
+]).map((item) => (KEYWORD_OVERRIDES[item.id] ? { ...item, keywords: [...KEYWORD_OVERRIDES[item.id]] } : item));
 
 /** Label of an object placed from a form (cabinet.js renderCabinetTile). */
 /**

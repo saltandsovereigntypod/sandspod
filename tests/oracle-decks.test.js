@@ -58,7 +58,7 @@ test("the draw kinds can be hidden from Settings on the site, with the app's set
   const K = G.divinationKinds;
   assert.equal(K.HIDDEN_KINDS_KEY, "divination_hidden_kinds");
   assert.equal(K.withKindShown({}, "kipper", false), "kipper");
-  assert.deepEqual(Dv.kinds.shownKinds(Dv.draw.KINDS, { divination_hidden_kinds: "kipper" }).map((k) => k.id), ["tarot", "runes", "ogham", "lenormand", "oracle"]);
+  assert.deepEqual(Dv.kinds.shownKinds(Dv.draw.KINDS, { divination_hidden_kinds: "kipper" }).map((k) => k.id), ["tarot", "runes", "ogham", "lenormand", "playing", "oracle"]);
   const more = read("js/settings-more.js");
   assert.match(more, /data-draw-kind=/);
   assert.match(more, /K\.withKindShown\(settings, t\.dataset\.drawKind, t\.checked\)/);

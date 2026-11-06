@@ -4,20 +4,26 @@
 
 import { moonState, type PhaseName } from '../../moon.ts';
 import { KIPPER } from '../../divination/oracle/kipper.ts';
+import { PLAYING_ALL } from '../../divination/oracle/playing.ts';
 import { LENORMAND } from '../../divination/oracle/lenormand.ts';
 import { dateFromKey, localDateKey } from '../../rituals/lifecycle.ts';
 
 export const READINGS = 'hedge.readings';
 
-export type ReadingMethod = 'tarot' | 'oracle' | 'lenormand' | 'kipper' | 'runes' | 'tea' | 'scrying' | 'pendulum' | 'ogham' | 'other';
+export type ReadingMethod = 'tarot' | 'oracle' | 'lenormand' | 'kipper' | 'playing' | 'runes' | 'tea' | 'smoke' | 'wax' | 'charms' | 'geomancy' | 'scrying' | 'pendulum' | 'ogham' | 'other';
 
 export const METHODS: { id: ReadingMethod; label: string }[] = [
   { id: 'tarot', label: 'Tarot' },
   { id: 'oracle', label: 'Oracle cards' },
   { id: 'lenormand', label: 'Lenormand' },
   { id: 'kipper', label: 'Kipper' },
+  { id: 'playing', label: 'Playing cards' },
   { id: 'runes', label: 'Runes' },
   { id: 'tea', label: 'Tea leaves' },
+  { id: 'smoke', label: 'Smoke' },
+  { id: 'wax', label: 'Poured wax' },
+  { id: 'charms', label: 'Charm casting' },
+  { id: 'geomancy', label: 'Geomancy' },
   { id: 'scrying', label: 'Scrying' },
   { id: 'pendulum', label: 'Pendulum' },
   { id: 'ogham', label: 'Ogham' },
@@ -285,6 +291,7 @@ export function pickList(method: ReadingMethod): string[] | null {
   if (method === 'tarot') return TAROT;
   if (method === 'lenormand') return LENORMAND.map((c) => c.name);
   if (method === 'kipper') return KIPPER.map((c) => c.name);
+  if (method === 'playing') return PLAYING_ALL.map((c) => c.name);
   return null;
 }
 

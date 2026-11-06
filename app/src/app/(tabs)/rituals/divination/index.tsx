@@ -51,8 +51,11 @@ export default function Readings() {
           onPress={() => router.push('/rituals/divination/draw' as Href)}
         />
         <Row icon="grimoire" title="Log a reading" detail="One you did by hand: what you asked, what came up" onPress={() => router.push('/rituals/divination/edit' as Href)} />
+        <Row icon="wheel" title="Read the cup" detail="Tea leaves or coffee grounds: pick the shapes you see and where they lie" onPress={() => router.push('/rituals/divination/tea' as Href)} />
+        <Row icon="wheel" title="Charms and bones" detail="Cast a set of small charms on a mat and read where they fall" onPress={() => router.push('/rituals/divination/charms' as Href)} />
+        <Row icon="wheel" title="Geomancy" detail="Sixteen figures, four Mothers and a shield chart with a Judge" onPress={() => router.push('/rituals/divination/geomancy' as Href)} />
         <Row icon="wheel" title="Your oracle decks" detail="Make a deck of your own, and draw from it" onPress={() => router.push('/rituals/divination/decks' as Href)} />
-        <Row icon="grimoire" title="Card meanings" detail="Tarot, runes, ogham, Lenormand and Kipper, as in your Grimoire" onPress={() => router.push('/rituals/divination/meanings' as Href)} />
+        <Row icon="grimoire" title="Card meanings" detail="Tarot, runes, ogham, Lenormand and Kipper, as in your Grimoire; playing cards are in Draw and Learn" onPress={() => router.push('/rituals/divination/meanings' as Href)} />
         <Row icon="today" title="Learn the cards" detail="Flashcards and a quiz for each deck, a card to learn today, and your progress" onPress={() => router.push('/rituals/divination/study' as Href)} />
         <Row icon="calendar" title="Your patterns" detail="The cards you draw most, by suit, moon and day, and the ones you haven’t met yet" onPress={() => router.push('/rituals/divination/patterns' as Href)} />
         <Row icon="wheel" title="Psychic development" detail="Guessing games, remote viewing and Tomorrow’s card, scored honestly against chance" onPress={() => router.push('/rituals/craft/psychic' as Href)} />
