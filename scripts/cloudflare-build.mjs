@@ -20,7 +20,7 @@
 // (scripts/build-altar-object-webp.py). Workers static assets take at most
 // 20,000 files of at most 25 MiB each; the build stops if dist/ outgrows that.
 import { execFileSync } from "node:child_process";
-import { cpSync, existsSync, mkdirSync, readdirSync, rmSync, statSync, writeFileSync } from "node:fs";
+import { cpSync, existsSync, mkdirSync, readFileSync, readdirSync, rmSync, statSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { KEPT_IN_REPLACED, REPLACED_SECTIONS } from "../worker/routing.js";
 import { buildLibraryBlog } from "./build-library-blog.mjs";
@@ -66,6 +66,19 @@ if (clashes.length) {
   console.error(`webapp/ files would replace the site's: ${clashes.join(", ")}`);
   process.exit(1);
 }
+
+// Safari on iPhone and iPad shows the App Store banner for the app on every page.
+const APP_BANNER = '<meta name="apple-itunes-app" content="app-id=6821416030">';
+const addBanner = (dir) => {
+  for (const entry of readdirSync(dir, { withFileTypes: true })) {
+    const path = join(dir, entry.name);
+    if (entry.isDirectory()) addBanner(path);
+    else if (entry.name.endsWith(".html")) {
+      const html = readFileSync(path, "utf8");
+      if (!html.includes("apple-itunes-app") && /<head[^>]*>/i.test(html)) writeFileSync(path, html.replace(/<head[^>]*>/i, (h) => `${h}\n    ${APP_BANNER}`));
+    }
+  }
+};
 
 // The journal: a post for every Living Library entry, its index pages and the
 // home page's posts.json (scripts/build-library-blog.mjs), built from the Library.
@@ -120,6 +133,7 @@ const count = (dir) => {
     }
   }
 };
+addBanner(out);
 count(out);
 if (files > MAX_FILES || tooBig.length) {
   console.error(`dist/ has ${files} files (at most ${MAX_FILES})${tooBig.length ? `; over 25 MiB: ${tooBig.join(", ")}` : ""}`);
