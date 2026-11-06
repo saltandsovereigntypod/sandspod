@@ -6,6 +6,7 @@
 import { Asset } from 'expo-asset';
 import { useEffect, useMemo, useRef, useState } from 'react';
 
+import { programStrikes, programTick, type Compiled } from '../../lib/meditation/programs';
 import { bowlStrikes, mixOn, soundTick, type SoundMix } from '../../lib/meditation/sound';
 import { elapsedOf, type SitClock, type SitPlan } from '../../lib/meditation/timer';
 import { createWebSound, type WebSound } from '../../lib/meditation/webSound';
@@ -19,7 +20,7 @@ const BEDS: Record<string, number> = {
 };
 const bedUrl = (bed: string) => Asset.fromModule(BEDS[bed]).uri;
 
-export function useSitSound(mix: SoundMix | null, plan: SitPlan, clock: SitClock, endedAtMs: number | null): SitSoundControl {
+export function useSitSound(mix: SoundMix | null, plan: SitPlan, clock: SitClock, endedAtMs: number | null, program?: Compiled | null): SitSoundControl {
   const latest = useRef({ plan, clock, endedAtMs });
   useEffect(() => {
     latest.current = { plan, clock, endedAtMs };
@@ -27,7 +28,11 @@ export function useSitSound(mix: SoundMix | null, plan: SitPlan, clock: SitClock
   const [needsTap, setNeedsTap] = useState(false);
   const engine = useRef<WebSound | null>(null);
   const mixKey = mix && mixOn(mix) ? JSON.stringify(mix) : '';
-  const strikes = useMemo(() => (mixKey ? bowlStrikes(JSON.parse(mixKey) as SoundMix, plan) : []), [mixKey, plan]);
+  const strikes = useMemo(() => (!mixKey ? [] : program ? programStrikes(program) : bowlStrikes(JSON.parse(mixKey) as SoundMix, plan)), [mixKey, plan, program]);
+  const programRef = useRef(program);
+  useEffect(() => {
+    programRef.current = program;
+  });
 
   useEffect(() => {
     if (!mixKey) return;
@@ -47,7 +52,8 @@ export function useSitSound(mix: SoundMix | null, plan: SitPlan, clock: SitClock
       if (paused) sound.resume();
       paused = false;
       const elapsed = elapsedOf(c, Date.now());
-      const { voices, strike } = soundTick(m, p, strikes, last ?? -1, elapsed, ended);
+      const prog = programRef.current;
+        const { voices, strike } = prog ? programTick(prog, strikes, last ?? -1, elapsed) : soundTick(m, p, strikes, last ?? -1, elapsed, ended);
       last = elapsed;
       sound.update(voices);
       if (strike) sound.strike(strike.key, strike.volume);

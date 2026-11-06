@@ -13,6 +13,7 @@ import { holdLoud } from '../../lib/altar/feel';
 import { File, Paths } from 'expo-file-system';
 import { useEffect, useMemo, useRef } from 'react';
 
+import { programStrikes, programTick, type Compiled } from '../../lib/meditation/programs';
 import { bowlStrikes, loopMs, mixOn, samplesFor, soundTick, type SoundMix } from '../../lib/meditation/sound';
 import { wavBytes } from '../../lib/meditation/synth';
 import { elapsedOf, type SitClock, type SitPlan } from '../../lib/meditation/timer';
@@ -47,13 +48,17 @@ function quiet(p: AudioPlayer) {
 
 export type SitSoundControl = { needsTap: boolean; unlock: () => void };
 
-export function useSitSound(mix: SoundMix | null, plan: SitPlan, clock: SitClock, endedAtMs: number | null): SitSoundControl {
+export function useSitSound(mix: SoundMix | null, plan: SitPlan, clock: SitClock, endedAtMs: number | null, program?: Compiled | null): SitSoundControl {
   const latest = useRef({ plan, clock, endedAtMs });
   useEffect(() => {
     latest.current = { plan, clock, endedAtMs };
   });
   const mixKey = mix && mixOn(mix) ? JSON.stringify(mix) : '';
-  const strikes = useMemo(() => (mixKey ? bowlStrikes(JSON.parse(mixKey) as SoundMix, plan) : []), [mixKey, plan]);
+  const strikes = useMemo(() => (!mixKey ? [] : program ? programStrikes(program) : bowlStrikes(JSON.parse(mixKey) as SoundMix, plan)), [mixKey, plan, program]);
+  const programRef = useRef(program);
+  useEffect(() => {
+    programRef.current = program;
+  });
 
   useEffect(() => {
     if (!mixKey) return;
@@ -73,7 +78,8 @@ export function useSitSound(mix: SoundMix | null, plan: SitPlan, clock: SitClock
           return;
         }
         const elapsed = elapsedOf(c, Date.now());
-        const { voices, strike } = soundTick(m, p, strikes, last ?? -1, elapsed, ended);
+        const prog = programRef.current;
+        const { voices, strike } = prog ? programTick(prog, strikes, last ?? -1, elapsed) : soundTick(m, p, strikes, last ?? -1, elapsed, ended);
         last = elapsed;
         const want = new Set(voices.map((v) => v.key));
         for (const [key, pl] of players) {

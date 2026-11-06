@@ -32,7 +32,21 @@ export function withCandleAction(actions: StepAction[] | null | undefined, when:
   const next: StepAction[] = [];
   if (start !== 'none') next.push({ type: start, when: 'start' });
   if (end !== 'none') next.push({ type: end, when: 'end' });
-  return next;
+  // Other kinds of action (a binaural program) are carried over untouched.
+  return [...next, ...(Array.isArray(actions) ? actions : []).filter((a) => a.when !== 'start' && a.when !== 'end')];
+}
+
+/** A step's "Play a program" action: kept as { type: "program:<id>:<minutes>", when: "program" }. */
+export function programOf(actions: StepAction[] | null | undefined): { id: string; minutes: number } | null {
+  const a = (Array.isArray(actions) ? actions : []).find((x) => x.when === 'program' && typeof x.type === 'string' && x.type.startsWith('program:'));
+  const [, id, m] = a ? a.type.split(':') : [];
+  return id ? { id, minutes: Number(m) || 0 } : null;
+}
+
+/** The actions with the program set (or cleared, with null). */
+export function withProgram(actions: StepAction[] | null | undefined, program: { id: string; minutes: number } | null): StepAction[] {
+  const rest = (Array.isArray(actions) ? actions : []).filter((a) => a.when !== 'program');
+  return program ? [...rest, { type: `program:${program.id}:${program.minutes}`, when: 'program' }] : rest;
 }
 
 /** Action types to carry out for a step at one moment, in order. */

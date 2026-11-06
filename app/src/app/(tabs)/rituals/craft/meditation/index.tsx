@@ -143,6 +143,7 @@ export default function MeditationHome() {
         <SectionLabel>More ways in</SectionLabel>
         <List>
           <Row icon="wheel" title="Listen" detail="Binaural beats, noise, rain, fire, a drone, drum or bowls on their own, with a stop timer" onPress={go(`${MEDITATION}/listen`)} />
+          <Row icon="wheel" title="Binaural programs" detail="Sessions that ease down, hold and bring you back: grounding, sleep, scrying, journeying, a deity’s own, or build your own" onPress={go(`${MEDITATION}/programs`)} />
           <Row icon="wheel" title="Breath pacing" detail="A circle, wave or square path to breathe with: box breathing, 4-7-8 or your own count" onPress={go(`${MEDITATION}/breath`)} />
           <Row icon="rituals" title="Mala and mantra" detail="Count beads with a tap: 27, 54 or 108, and keep the mantra in your log" onPress={go(`${MEDITATION}/mala`)} />
           <Row icon="today" title="Walking meditation" detail="A timed walk, with your steps counted where the phone can" onPress={() => beginSit(plan, { ...chosen, kind: 'walking' })} />

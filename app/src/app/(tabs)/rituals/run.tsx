@@ -7,7 +7,8 @@ import { Body, Card, RitualScreen, Title, confirmAction, tell, ui } from '../../
 import { applyCandleAction } from '../../../lib/altar/editor';
 import { documentFromAltar, ritualAltarSnapshot, type AltarDocument } from '../../../lib/altar/snapshot';
 import { useAltars } from '../../../lib/altar/store';
-import { candleActionLabel, completionActions, firstStepActionsDue, markStepActionsStarted, stepActions } from '../../../lib/rituals/automation';
+import { programById } from '../../../lib/meditation/programs';
+import { candleActionLabel, programOf, completionActions, firstStepActionsDue, markStepActionsStarted, stepActions } from '../../../lib/rituals/automation';
 import {
   completeStep,
   currentStep,
@@ -158,6 +159,13 @@ export default function RunRitual() {
             </Body>
           )}
           <CandleNotes step={step} linked={!!session.linked_altar_id} />
+          {programOf(step.actions) && (
+            <Button
+              label={`Play: ${programById(programOf(step.actions)!.id)?.title ?? 'a binaural program'}`}
+              variant="outline"
+              onPress={() => router.push({ pathname: '/rituals/craft/meditation/program', params: { id: programOf(step.actions)!.id, minutes: String(programOf(step.actions)!.minutes) } } as never)}
+            />
+          )}
           <View style={ui.actions}>
             <Button label={last ? 'Complete the last step' : 'Complete step'} disabled={paused} onPress={() => void complete()} />
             <Button label="Skip this step" variant="outline" disabled={paused} onPress={() => void updateActive((s) => skipStep(s, new Date()))} />

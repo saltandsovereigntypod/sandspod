@@ -14,7 +14,9 @@ import { AppState, Platform, Pressable, Text, View } from 'react-native';
 import Svg, { Circle } from 'react-native-svg';
 
 import { useAccessibility } from '../../lib/accessibility/store';
-import { countdownLabel, DEFAULT_SETTINGS, DROP_LENGTHS, DROP_SOUNDS, dropDone, dropLabel, guidedAt, meditationUse, mixFor, MAX_REVEAL, MIN_REVEAL, PSYCHIC_SETTINGS_KEY, REVEAL_PRESETS, revealAt, revealLabel, scaleMix, cleanSettings, VOLUME_STEPS, type MeditationUse, type PsychicSettings, type RevealState } from '../../lib/craft/psychic/dropin';
+import { PROGRAM_NOTICE, programEnd } from '../../lib/meditation/programs';
+import { useNoticeSeen } from '../meditation/ProgramPlayer';
+import { countdownLabel, DEFAULT_SETTINGS, dropProgram, DROP_LENGTHS, DROP_SOUNDS, dropDone, dropLabel, guidedAt, meditationUse, mixFor, MAX_REVEAL, MIN_REVEAL, PSYCHIC_SETTINGS_KEY, REVEAL_PRESETS, revealAt, revealLabel, scaleMix, cleanSettings, VOLUME_STEPS, type MeditationUse, type PsychicSettings, type RevealState } from '../../lib/craft/psychic/dropin';
 import { WARMUPS } from '../../lib/craft/psychic/warmups';
 import { listenPlan, listenState, stopAt } from '../../lib/meditation/listen';
 import { clockLabel, elapsedOf, pauseClock, resumeClock, startClock, type SitClock } from '../../lib/meditation/timer';
@@ -70,8 +72,9 @@ export function DropInProvider({ children }: { children: ReactNode }) {
     const m = mixFor(settings);
     return m ? scaleMix(m, settings.volume) : null;
   }, [settings]);
+  const program = useMemo(() => dropProgram(settings), [settings]);
   const clock = run?.clock ?? startClock(0);
-  useSitSound(run ? mix : null, PLAN, clock, run?.endMs ?? null);
+  useSitSound(run ? (program ? program.mix : mix) : null, PLAN, clock, run?.endMs ?? null, program);
 
   const set = useCallback((patch: Partial<PsychicSettings>) => {
     setSettings((s) => {
@@ -139,7 +142,7 @@ export function DropInProvider({ children }: { children: ReactNode }) {
       const t = Date.now();
       setDroppedAt(t);
       used.current = { guided: s.guided && s.warmups.length > 0, dropMs: 0, sound: !!mixFor(s) };
-      if (mixFor(s) && !latest.current) setRun({ clock: startClock(t), endMs: null });
+      if (mixFor(s) && !latest.current) setRun({ clock: startClock(t), endMs: dropProgram(s) ? programEnd(dropProgram(s)!) : null });
     })();
   }, [settings, set]);
 
@@ -185,6 +188,7 @@ export function DropIn({ onStart, startDisabled, startLabel = 'Start' }: { onSta
   const d = useDropIn();
   const s = d.settings;
   const [open, setOpen] = useState(false);
+  const [seen, markSeen] = useNoticeSeen();
   const [now, setNow] = useState(() => Date.now());
   useEffect(() => {
     if (d.droppedAt === null) return;
@@ -221,7 +225,13 @@ export function DropIn({ onStart, startDisabled, startLabel = 'Start' }: { onSta
       <Body muted>{`Optional. Drop in with a sound and a guided settling, then press Start when you are ready; the sound keeps playing through the exercise. Reveal: ${revealLabel(s.revealSec)}.`}</Body>
       <SoundPill />
       <View style={ui.gapSmall}>
-        <Button label="Drop in first" variant="outline" disabled={s.sound === 'none' && !s.guided} onPress={d.beginDrop} />
+        {s.sound.startsWith('prog-') && seen === false && (
+          <View style={ui.gapSmall}>
+            <Body muted>{PROGRAM_NOTICE}</Body>
+            <Button label="I understand" variant="outline" onPress={markSeen} />
+          </View>
+        )}
+        <Button label="Drop in first" variant="outline" disabled={(s.sound === 'none' && !s.guided) || (s.sound.startsWith('prog-') && seen !== true)} onPress={d.beginDrop} />
         <Button label={open ? 'Hide drop-in and timing settings' : 'Drop-in and timing settings'} variant="text" onPress={() => setOpen(!open)} />
       </View>
       {open && (

@@ -9,6 +9,7 @@ import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { Button } from '../Button';
 import { Card, Section, Tags } from '../more/ui';
 import { bathForKit } from '../../lib/craft/bath/bath';
+import { kitProgram, programMeta } from '../../lib/meditation/programs';
 import { kitTonight, type Kit } from '../../lib/rituals/kits';
 import { colors, type } from '../../theme';
 
@@ -20,6 +21,7 @@ type Props = {
 
 export function KitCard({ kit, open }: Props) {
   const bath = bathForKit(kit.ref);
+  const program = kitProgram(kit.ref);
   const groups: [string, string[]][] = [
     ['Herbs', kit.correspondences.herbs],
     ['Stones', kit.correspondences.crystals],
@@ -84,6 +86,15 @@ export function KitCard({ kit, open }: Props) {
             onPress={() => router.push({ pathname: '/rituals/divination/draw', params: { spread: kit.spread.id } } as Href)}
           />
         </View>
+
+        {program && (
+          <View style={styles.part}>
+            <Text style={styles.label}>A program to listen to</Text>
+            <Text style={type.body}>{program.title}</Text>
+            <Text style={type.caption}>{`${program.line} ${programMeta(program)}. Headphones needed.`}</Text>
+            <Button label="Open the program" variant="outline" onPress={() => router.push({ pathname: '/rituals/craft/meditation/program', params: { id: program.id } } as Href)} />
+          </View>
+        )}
       </Card>
     </Section>
   );

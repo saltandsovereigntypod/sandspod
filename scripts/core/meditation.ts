@@ -15,6 +15,7 @@ export * as mala from '../../app/src/lib/meditation/mala.ts';
 export * as programmes from '../../app/src/lib/meditation/programmes.ts';
 export * as focus from '../../app/src/lib/meditation/focus.ts';
 export * as extras from '../../app/src/lib/meditation/extras.ts';
+export * as programs from '../../app/src/lib/meditation/programs.ts';
 export * as listen from '../../app/src/lib/meditation/listen.ts';
 export * as webSound from '../../app/src/lib/meditation/webSound.ts';
 export { holidayChoice } from '../../app/src/lib/holidays.ts';

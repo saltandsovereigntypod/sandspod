@@ -3817,6 +3817,24 @@ export const HELP: HelpSection[] = [
         keywords: ['binaural', 'binaural beats', 'theta', 'alpha', 'delta', 'white noise', 'pink noise', 'brown noise', 'rain sounds', 'sleep sounds', 'ambient', 'soundscape', 'listen', 'sound bath'],
       },
       {
+        id: 'meditation-binaural-programs',
+        title: 'Binaural programs: sessions that change as they play',
+        summary: 'Grounding, anxiety easing, sleep, protection, ancestor work, scrying, journeying, the astral, a chakra climb, a deity’s own devotional sit and more: each a run of stages with a beat that eases down, holds and brings you back.',
+        steps: [
+          'In Meditation, tap "Binaural programs". Programs are grouped Everyday, Craft & spirit and Devotional; tap one to read what it is for and how to use it.',
+          'Choose a length (every program stretches to fit), a carrier tone if it offers a choice (the planetary, Solfeggio, OM and chakra pitches), and any options: the breathing pacer (six breaths a minute) works with any program, and some offer Schumann 7.83 Hz, 4096 Hz fork strikes or a journey drum.',
+          'Tap Play. Text cues appear at set moments and bells or forks sound. Deep programs always end with a return from theta up through alpha to low beta; "Skip to the return" brings it forward rather than stopping dead.',
+          'To make your own, tap "Build your own program": choose the start and hold beats, how long each part lasts, a carrier, a bed and your own cues. It is kept on your account. The planetary hour and Your patron programs choose their carrier from the hour you are in and from My deities.',
+          'Programs are also offered on the moon and sabbat kits, in the Psychic drop-in (before tarot or remote viewing) and as a step in your own ritual templates: edit a step and open "Play a program".',
+        ],
+        tips: [
+          'You need headphones for the binaural effect. Never play these while driving or operating machinery, and speak to a doctor first if you have epilepsy or any seizure disorder. The first play asks you to confirm this.',
+          'Evidence is mixed: some studies find calming effects from binaural beats, others find none. Take them as an aid to relaxation, focus and intention, not as treatment. Planetary and chakra pairings are tradition, not measurement.',
+        ],
+        href: '/rituals/craft/meditation/programs',
+        keywords: ['binaural', 'program', 'programs', 'brainwave', 'theta', 'delta', 'schumann', 'hemi-sync', 'astral', 'obe', 'out of body', 'lucid dreaming', 'scrying', 'trance', 'journey', 'drum', 'planetary hour', 'chakra', 'sleep', 'anxiety', 'breathing pacer', 'devotional', 'deity', 'grounding'],
+      },
+      {
         id: 'meditation-programmes',
         title: 'Meditation programmes, and before and after',
         summary: '7 days of grounding, a 28-day moon cycle and Sabbat sits, with how you feel before and after each sit.',
