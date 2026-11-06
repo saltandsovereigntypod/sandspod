@@ -3371,6 +3371,41 @@ const TraditionalLibrary = {
 
             tags: ["wisdom", "binding oaths", "home protection", "mending", "exorcism", "saturn"]
         },
+
+        tansy: {
+            DisplayName: "Tansy",
+            Category: "Herb",
+
+            Element: "Water",
+
+            Planet: "Venus",
+
+            Uses: "Longevity, repelling pests, remembrance of the dead, protecting the home, commitment",
+
+            PairsWith: "Rue, wormwood, mugwort, yellow candle",
+
+            Substitutions: "Rue, feverfew",
+
+            TraditionalWarnings: "Tansy is poisonous. Its leaves, flowers and oil contain thujone and can cause convulsions, liver and kidney damage and death; it is dangerous in pregnancy and was once used as an abortifacient, with fatal results. Do not eat it, brew it, or use the oil on skin. It can also cause skin reactions.",
+
+            Overview: "Tansy (Tanacetum vulgare) is a tall perennial of roadsides and waste ground, with strong, camphor-like, bitter-smelling, fern-like leaves and flat clusters of golden, button-shaped flower heads in late summer. It was once a major strewing herb, insect repellent and bitter flavouring for Easter puddings, and is now regarded as toxic. The flowering tops are used as a dried decorative and craft herb.",
+
+            TraditionalMeaning: "Long life, immortality and remembrance; an old herb of the dead and of keeping pests and decay at bay.",
+
+            HowToUse: "Start here: hang a small bunch of tansy to dry in a dark, airy room, then keep it in the house as a charm, away from children and pets. Dried flower heads can be set in a bowl or wreath for remembrance at Samhain, and hung in a cupboard to deter moths and flies. Wear gloves when handling it, and never ingest it, burn it indoors, or use the oil on skin.",
+
+            PairingNotes: "Tansy pairs well with rue and wormwood as old pest-repelling herbs, mugwort for the dead, and yellow or white candles for remembrance. Always use it dry and out of reach of pets.",
+
+            SubstitutionNotes: "Rue or feverfew can substitute for tansy in house-protection and pest-repelling workings, though rue is also toxic and should be handled with care. For a safe remembrance herb, rosemary is a better choice.",
+
+            SafetyAndRespect: "Tansy is toxic to people and animals, causing seizures, vomiting and organ damage; it can be fatal, and it is especially dangerous in pregnancy. Do not eat, drink, smoke or burn it, or apply it to skin, and keep it from children, pets and livestock. Handle it in gloves, and wash your hands after touching it. Tansy is also a harmful invasive weed in parts of North America, so avoid spreading seed. Magical use should not replace pest control or medical care.",
+
+            Traditions: "Christian, Wheel of the Year",
+
+            TraditionNotes: "Christian: In medieval and later England, bitter tansy cakes and puddings were eaten at Easter, as a reminder of the bitter herbs of Passover and the end of Lent; tansy was also placed in coffins and shrouds to repel worms.\n\nWheel of the Year: Tansy blooms in late summer, and its dried flower heads are used in modern practice at Lammas, Mabon and Samhain for remembrance of the dead.\n\nFolk & wider practice: The name probably comes from the Greek athanasia, ‘immortality’, and in medieval Europe tansy was strewn on floors, laid among linen to keep off moths, rubbed on meat against flies, and used in coffins. The same plant was widely used as a poison and an abortifacient, with many deaths. Modern correspondence tables give it to Venus and Water.",
+
+            tags: ["longevity", "pest repelling", "remembrance", "home protection", "commitment", "venus"]
+        },
     },
 
     crystal: {

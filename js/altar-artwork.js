@@ -4486,6 +4486,48 @@
         },
         {
           "category": "herbs",
+          "name": "Tansy",
+          "icon": "🌿",
+          "keywords": [
+            "longevity",
+            "repelling pests",
+            "remembrance of the dead",
+            "protecting the home",
+            "commitment"
+          ],
+          "forms": [
+            {
+              "label": "Sprig",
+              "image": "../assets/altar/objects/herbs/tansy/tansy-sprig.png",
+              "type": "herb",
+              "herb": "tansy",
+              "form": "sprig"
+            },
+            {
+              "label": "Loose",
+              "image": "../assets/altar/objects/herbs/tansy/tansy-loose.png",
+              "type": "herb",
+              "herb": "tansy",
+              "form": "loose"
+            },
+            {
+              "label": "Oil",
+              "image": "../assets/altar/objects/herbs/tansy/tansy-oil.png",
+              "type": "oil",
+              "herb": "tansy",
+              "form": "oil"
+            },
+            {
+              "label": "Incense",
+              "image": "../assets/altar/objects/herbs/incense/incense.png",
+              "type": "herb",
+              "herb": "tansy",
+              "form": "incense"
+            }
+          ]
+        },
+        {
+          "category": "herbs",
           "name": "Thyme",
           "icon": "🌿",
           "keywords": [
@@ -11279,6 +11321,18 @@
           "water",
           "saturn",
           "binding oaths",
+          "home protection"
+        ],
+        "tansy": [
+          "longevity",
+          "repelling pests",
+          "remembrance of the dead",
+          "protecting the home",
+          "commitment",
+          "water",
+          "venus",
+          "pest repelling",
+          "remembrance",
           "home protection"
         ]
       },
