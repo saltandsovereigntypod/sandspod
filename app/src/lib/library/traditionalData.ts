@@ -2187,6 +2187,32 @@ export const TRADITIONAL_LIBRARY: TraditionalLibraryData = {
         "justice",
         "mars"
       ]
+    },
+    "bramble": {
+      "DisplayName": "Bramble",
+      "Category": "Herb",
+      "Element": "Water",
+      "Planet": "Venus",
+      "Uses": "Protection, healing, prosperity, fertility, resilience",
+      "PairsWith": "Blackthorn, hawthorn, mugwort, garnet",
+      "Substitutions": "Raspberry leaf, blackthorn",
+      "TraditionalWarnings": "Bramble thorns scratch and can cause infection. Do not eat blackberries picked near busy roads or sprayed verges, and avoid wild fruit after Michaelmas, when folklore says the devil has spat on it; in practice, old berries are simply mouldy.",
+      "Overview": "Bramble is the wild blackberry (Rubus fruticosus and related species), a rampant, arching, prickly shrub of hedges and waste ground, with white to pink five-petalled flowers in summer and glossy black fruits from late summer. The berries, leaves, young shoots and roots are the parts used, sold dried or picked fresh.",
+      "TraditionalMeaning": "Hardy protection and healing; a thorny plant that gives its sweetness to those who risk the scratches.",
+      "HowToUse": "Start here: pick a few ripe blackberries from a clean hedgerow, set one on your altar as an offering, and eat the rest with the intention of prosperity or protection. Dry the leaves on paper for sachets and tea, and keep long bramble stems for knots, wreaths or a protection loop over a door. Wear gloves when handling stems.",
+      "PairingNotes": "Bramble pairs well with blackthorn and hawthorn for hedge protection, mugwort for dream and spirit work, and garnet for steady vitality. Dark red, purple or green candles suit it.",
+      "SubstitutionNotes": "Raspberry leaf can substitute for bramble leaf in healing and fertility workings, and blackthorn in protection. Neither has the passing-under-the-arch symbolism, so use your own words.",
+      "SafetyAndRespect": "Wear gloves for the thorns, and wash wild fruit before eating. Leaves as tea are generally mild, but not recommended in pregnancy without advice. Wild blackberry is a vital food for wildlife: take only part of a patch and leave berries for birds and insects. Magical use should not replace medical care for an illness or wound.",
+      "Traditions": "Celtic, Wheel of the Year",
+      "TraditionNotes": "Celtic: In Irish tradition the bramble is the Ogham letter muin, associated with the vine and with wine, and it is also read as a plant of hardship and of the hedge. Bramble arches, where a bush has rooted both ends, were crawled through in English and Celtic folk cures for boils, rheumatism and whooping cough.\n\nWheel of the Year: Blackberries ripen around Lammas and Mabon and are gathered then; folklore says they should not be picked after Michaelmas (29 September in Britain) because the devil spits on them, and a bramble wreath is hung for protection.\n\nFolk & wider practice: Bramble is a very old protective plant in European folk magic, trailed over graves to keep the dead in and thorns used to keep witches out. These are folk beliefs, not a single tradition, and modern correspondence tables give bramble to Venus and Water.",
+      "tags": [
+        "protection",
+        "healing",
+        "prosperity",
+        "fertility",
+        "resilience",
+        "venus"
+      ]
     }
   },
   "crystal": {

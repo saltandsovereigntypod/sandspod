@@ -1508,6 +1508,47 @@ export const ALTAR_ARTWORK: {
       },
       {
         "category": "herbs",
+        "name": "Bramble",
+        "keywords": [
+          "protection",
+          "healing",
+          "prosperity",
+          "fertility",
+          "resilience"
+        ],
+        "forms": [
+          {
+            "label": "Sprig",
+            "image": "../assets/altar/objects/herbs/bramble/bramble-sprig.png",
+            "type": "herb",
+            "herb": "bramble",
+            "form": "sprig"
+          },
+          {
+            "label": "Loose",
+            "image": "../assets/altar/objects/herbs/bramble/bramble-loose.png",
+            "type": "herb",
+            "herb": "bramble",
+            "form": "loose"
+          },
+          {
+            "label": "Oil",
+            "image": "../assets/altar/objects/herbs/bramble/bramble-oil.png",
+            "type": "oil",
+            "herb": "bramble",
+            "form": "oil"
+          },
+          {
+            "label": "Incense",
+            "image": "../assets/altar/objects/herbs/incense/incense.png",
+            "type": "herb",
+            "herb": "bramble",
+            "form": "incense"
+          }
+        ]
+      },
+      {
+        "category": "herbs",
         "name": "Calendula",
         "keywords": [
           "joy",
@@ -10236,6 +10277,15 @@ export const ALTAR_ARTWORK: {
         "justice",
         "fire",
         "mars"
+      ],
+      "bramble": [
+        "protection",
+        "healing",
+        "prosperity",
+        "fertility",
+        "resilience",
+        "water",
+        "venus"
       ]
     },
     "crystal": {
