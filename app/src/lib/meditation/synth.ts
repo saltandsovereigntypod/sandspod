@@ -9,6 +9,8 @@
 // scripts/sounds/meditation_beds.py. Seeded, so the same choice makes the
 // same sound. Pure.
 
+import { DEFAULT_FORK_DECAY, forkEnvelope, forkGain } from './forks.ts';
+
 export const SYNTH_RATE = 22050;
 /** Tonal loops are this long: long enough that the loop isn't heard as one. */
 const LOOP_SECONDS = 8;
@@ -169,6 +171,34 @@ export function bowlSamples(hz: number, rate = SYNTH_RATE): Pcm {
     out[i] = v * attack * Math.min(1, (seconds - t) / 0.6);
   }
   normalise([out], 0.7);
+  return { rate, channels: [out], loop: false };
+}
+
+/**
+ * A tuning fork (or two struck together) once: a near-pure sine with a faint
+ * inharmonic clang at the strike, then a long exponential decay and a slight
+ * shimmer (forks.ts forkEnvelope). Very high forks are played gently.
+ */
+export function forkSamples(hzs: number[], decaySeconds = DEFAULT_FORK_DECAY, rate = SYNTH_RATE): Pcm {
+  const env = forkEnvelope(decaySeconds);
+  const n = Math.round(env.seconds * rate);
+  const out = new Float32Array(n);
+  hzs.forEach((hz, k) => {
+    const gain = forkGain(hz);
+    const clang = hz * env.clangRatio < rate * 0.45;
+    const phase = k * 1.9;
+    for (let i = 0; i < n; i++) {
+      const t = i / rate;
+      const attack = Math.min(1, t / env.attack);
+      const shimmer = 1 + env.shimmerDepth * Math.sin(2 * Math.PI * env.shimmerHz * t + phase);
+      let v = Math.exp(-t / env.tau) * shimmer * Math.sin(2 * Math.PI * hz * t);
+      if (clang) v += env.clangGain * Math.exp(-t / env.clangTau) * Math.sin(2 * Math.PI * hz * env.clangRatio * t);
+      out[i] += (v * attack * gain) / hzs.length;
+    }
+  });
+  const tail = Math.min(n, Math.round(rate * 0.5));
+  for (let i = 0; i < tail; i++) out[n - 1 - i] *= i / tail;
+  normalise([out], 0.7 * Math.max(...hzs.map(forkGain)));
   return { rate, channels: [out], loop: false };
 }
 

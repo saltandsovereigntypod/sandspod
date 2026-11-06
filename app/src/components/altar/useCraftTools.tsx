@@ -62,6 +62,11 @@ import {
   type Calibration,
   type ChargePlace,
 } from '../../lib/altar/craftTools';
+import { careForCrystal, crystalIntention } from '../../lib/altar/devotion';
+import { clearedLine, forkClearCare, FORK_SOUND_OFF } from '../../lib/altar/fork';
+import { useAccessibility } from '../../lib/accessibility/store';
+import { CLEARING_HZ } from '../../lib/meditation/forks';
+import { strikeFork } from '../meditation/forkSound';
 import { chargeGate, seleniteUnder, setStoneIntention } from '../../lib/altar/crystalCare';
 import { addObject, updateObjects } from '../../lib/altar/editor';
 import { usePlace } from '../../lib/location';
@@ -111,6 +116,7 @@ export function useCraftTools(deps: Deps) {
   const { doc, docRef, commit, selected, say, log, show } = deps;
   const [ritualMode, setRitualMode] = useState(false);
   const place = usePlace();
+  const accessibility = useAccessibility();
   const selectedObject = doc && selected != null ? doc.objects[selected] ?? null : null;
   const uidOf = (o: SavedObject | null | undefined) => String(o?.altarObjectId || '');
   const [ownCalibration, setOwnCalibration] = useState<Calibration | null>(null);
@@ -245,6 +251,16 @@ export function useCraftTools(deps: Deps) {
       log(line);
       show('charge', uidOf(selectedObject));
       say(`${line} ${gate.line}${gate.warn ? ` ${gate.warn}` : ''} Its glow builds as it sits.`);
+    },
+    clearFork: () => {
+      if (!selectedObject) return;
+      const name = shortLabel(selectedObject.label, 'The crystal');
+      if (accessibility.candleSounds) strikeFork([CLEARING_HZ], 0.6, 20);
+      change((o, at) => careForCrystal(o, 'cleanse', forkClearCare(!!crystalIntention(o, at), at), at));
+      const line = clearedLine(name);
+      log(line);
+      show('charge', uidOf(selectedObject));
+      say(accessibility.candleSounds ? line : `${line} ${FORK_SOUND_OFF}`);
     },
     takeUp: () => {
       if (!selectedObject) return;

@@ -41,6 +41,7 @@ import {
   type PendulumAnswer,
   type Swing,
 } from '../../lib/altar/craftTools';
+import { CLEAR_FORK_LABEL, CLEAR_FORK_NOTE } from '../../lib/altar/fork';
 import { chargeGate, chargeIntentionLine } from '../../lib/altar/crystalCare';
 import { crystalIntention } from '../../lib/altar/devotion';
 import { offeringOf } from '../../lib/altar/offerings';
@@ -70,6 +71,8 @@ export type CraftActs = {
   fillToScry: () => void;
   scry: (vessel: 'mirror' | 'cauldron') => void;
   charge: (how: ChargePlace) => void;
+  /** Clear the stone with the 4096 Hz tuning fork. */
+  clearFork: () => void;
   /** Set a piece of selenite from the cabinet under the stone. */
   placeSelenite: () => void;
   /** Give the stone an intention, or change it. */
@@ -309,6 +312,8 @@ function Crystal({ object, objects, inGrid, crystals, act }: { object: SavedObje
           {gates.map(({ p, gate }) => (
             <Text key={p.id} style={type.caption}>{`${p.label}: ${gate.line}${gate.warn ? ` ${gate.warn}` : ''}`}</Text>
           ))}
+          <Button label={CLEAR_FORK_LABEL} variant="outline" onPress={act.clearFork} />
+          <Text style={type.caption}>{CLEAR_FORK_NOTE}</Text>
           {gates.some(({ gate }) => gate.offerSelenite) && <Button label="Place selenite from the cabinet" variant="outline" onPress={act.placeSelenite} />}
           <Text style={type.caption}>{chargeIntentionLine(object, at)}</Text>
           <Text style={type.caption}>{CHARGE_NOTE}</Text>
