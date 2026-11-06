@@ -6,6 +6,7 @@
 import { Asset } from 'expo-asset';
 import { useEffect, useMemo, useRef, useState } from 'react';
 
+import { earPath, rampPath, rampVolume, type EarPath } from '../../lib/meditation/ramp';
 import { programStrikes, programTick, type Compiled } from '../../lib/meditation/programs';
 import { bowlStrikes, mixOn, soundTick, type SoundMix } from '../../lib/meditation/sound';
 import { elapsedOf, type SitClock, type SitPlan } from '../../lib/meditation/timer';
@@ -42,6 +43,7 @@ export function useSitSound(mix: SoundMix | null, plan: SitPlan, clock: SitClock
     engine.current = sound;
     let last: number | null = null;
     let paused = false;
+    let ears: EarPath | null = null;
     const tick = () => {
       const { plan: p, clock: c, endedAtMs: ended } = latest.current;
       if (c.pausedAt !== null) {
@@ -53,9 +55,13 @@ export function useSitSound(mix: SoundMix | null, plan: SitPlan, clock: SitClock
       paused = false;
       const elapsed = elapsedOf(c, Date.now());
       const prog = programRef.current;
-        const { voices, strike } = prog ? programTick(prog, strikes, last ?? -1, elapsed) : soundTick(m, p, strikes, last ?? -1, elapsed, ended);
+      const { voices, strike } = prog ? programTick(prog, strikes, last ?? -1, elapsed) : soundTick(m, p, strikes, last ?? -1, elapsed, ended);
       last = elapsed;
-      sound.update(voices);
+      if (prog) {
+        ears ??= earPath(rampPath(prog));
+        sound.ramp(ears, elapsed, rampVolume(prog, elapsed));
+      }
+      sound.update(prog ? voices.filter((v) => !v.key.startsWith('binaural:')) : voices);
       if (strike) sound.strike(strike.key, strike.volume);
       setNeedsTap(sound.needsTap());
     };

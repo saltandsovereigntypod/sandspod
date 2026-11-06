@@ -6,12 +6,15 @@
 // sound back until the page is touched; `needsTap` says so, and `unlock`
 // (from a tap) lets it play.
 
+import type { EarPath, Knot } from './ramp.ts';
 import { samplesFor, type Voice } from './sound.ts';
 
 type Playing = { source: AudioBufferSourceNode; gain: GainNode };
 
 export type WebSound = {
   update(voices: Voice[]): void;
+  /** The program's binaural layer as two oscillators (left = carrier, right = carrier + beat) following `path` from `elapsedMs`, at `volume`; null to silence. */
+  ramp(path: EarPath | null, elapsedMs: number, volume: number): void;
   strike(key: string, volume: number): void;
   pause(): void;
   resume(): void;
@@ -35,6 +38,26 @@ export function createWebSound(bedUrl: (bed: string) => string): WebSound | null
   const playing = new Map<string, Playing>();
   const starting = new Set<string>();
   let stopped = false;
+  let tones: { oscs: OscillatorNode[]; gain: GainNode; anchor: number } | null = null;
+
+  function endTones(fade = 0.4) {
+    if (!tones) return;
+    const t = tones;
+    tones = null;
+    t.gain.gain.setTargetAtTime(0, ctx.currentTime, fade);
+    setTimeout(() => t.oscs.forEach((o) => { try { o.stop(); } catch { /* Already stopped. */ } }), 2500);
+  }
+
+  function schedule(f: AudioParam, knots: Knot[], elapsedMs: number) {
+    const now = ctx.currentTime;
+    f.cancelScheduledValues(now);
+    let at = 0;
+    while (at < knots.length - 1 && knots[at + 1].ms <= elapsedMs) at++;
+    const a = knots[at];
+    const b = knots[at + 1];
+    f.setValueAtTime(b && b.ms > a.ms && elapsedMs > a.ms ? a.hz + ((b.hz - a.hz) * (elapsedMs - a.ms)) / (b.ms - a.ms) : a.hz, now);
+    for (let i = at + 1; i < knots.length; i++) f.linearRampToValueAtTime(knots[i].hz, now + (knots[i].ms - elapsedMs) / 1000);
+  }
 
   function buffer(key: string): Promise<AudioBuffer | null> {
     let p = buffers.get(key);
@@ -106,6 +129,29 @@ export function createWebSound(bedUrl: (bed: string) => string): WebSound | null
         playing.get(v.key)?.gain.gain.setTargetAtTime(v.volume, ctx.currentTime, 0.5);
       }
     },
+    ramp(path, elapsedMs, volume) {
+      if (stopped) return;
+      if (!path || volume <= 0) return endTones();
+      const anchor = ctx.currentTime - elapsedMs / 1000;
+      // Out of step with the clock (a seek, or a long stall): start the line again from here.
+      if (tones && Math.abs(anchor - tones.anchor) > 1.5) endTones(0.05);
+      if (!tones) {
+        const gain = ctx.createGain();
+        gain.gain.value = 0;
+        const merger = ctx.createChannelMerger(2);
+        const oscs = [path.left, path.right].map((knots, ear) => {
+          const o = ctx.createOscillator();
+          o.type = 'sine';
+          schedule(o.frequency, knots, elapsedMs);
+          o.connect(merger, 0, ear);
+          o.start();
+          return o;
+        });
+        merger.connect(gain).connect(ctx.destination);
+        tones = { oscs, gain, anchor };
+      }
+      tones.gain.gain.setTargetAtTime(volume, ctx.currentTime, 0.5);
+    },
     strike(key, volume) {
       if (stopped) return;
       const b = ready.get(key);
@@ -127,6 +173,7 @@ export function createWebSound(bedUrl: (bed: string) => string): WebSound | null
       void ctx.resume().catch(() => {});
     },
     stop() {
+      endTones();
       stopped = true;
       for (const [key, p] of playing) fadeOut(key, p);
       setTimeout(() => void ctx.close().catch(() => {}), 3000);
