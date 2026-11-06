@@ -3,7 +3,7 @@
 //
 // The site is two things on one domain: the brand's own static pages (home,
 // blog, submit, help, privacy and terms, admin) served from dist/, and the
-// Expo web app (EAS Hosting, APP_ORIGIN) for everything you use: Today, Altar,
+// Expo web app (its export, webapp/, served from dist/ too) for everything you use: Today, Altar,
 // Practice (Grimoire, Rituals, Craft), Coven and More. The website's old
 // copies of those pages are no longer shipped; their addresses lead to the
 // same screen in the app, by a permanent redirect where the address changed.
@@ -114,7 +114,7 @@ function fill(template, params) {
 
 /**
  * How to answer a request for this path:
- *   { action: "static" }            the static site (dist/)
+ *   { action: "static" }            a file in dist/ (the site and the app's built files)
  *   { action: "static-or-app" }     the static file if there is one, otherwise the app
  *   { action: "app" }               the app, as asked
  *   { action: "redirect", location } a permanent redirect (path and query)
@@ -124,7 +124,8 @@ export function decideRoute(pathname, search = "") {
   if (STATIC_EXACT.has(path) || STATIC_PREFIXES.some((prefix) => path.startsWith(prefix))) return { action: "static" };
   const section = path.split("/")[1];
   if (!REPLACED_SECTIONS.includes(section)) {
-    if (section === "_expo" || isAppRoute(path)) return { action: "app" };
+    if (section === "_expo" || section === "assets") return { action: "static" }; // built files: a missing one is a 404, not the app
+    if (isAppRoute(path)) return { action: "app" };
     return { action: "static-or-app" };
   }
 

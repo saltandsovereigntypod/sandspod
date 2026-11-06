@@ -1,4 +1,4 @@
-# Cloudflare Pages: how long browsers may keep files (ignored by GitHub Pages).
+# Cloudflare: how long browsers may keep the files in dist/ (the Worker sets its own).
 # Pages, scripts and styles are checked again often, so a release shows up
 # within minutes; pictures, sounds and fonts rarely change and are kept longer.
 
@@ -19,3 +19,17 @@
 
 /assets/*
   Cache-Control: public, max-age=604800, stale-while-revalidate=2592000
+
+# The web app's built files (webapp/, scripts/build-webapp.mjs) carry their
+# content hash in the name, so they never change: kept for a year.
+/_expo/static/*
+  ! Cache-Control
+  Cache-Control: public, max-age=31536000, immutable
+
+/assets/assets/*
+  ! Cache-Control
+  Cache-Control: public, max-age=31536000, immutable
+
+/assets/____app/*
+  ! Cache-Control
+  Cache-Control: public, max-age=31536000, immutable

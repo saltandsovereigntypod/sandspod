@@ -7,7 +7,12 @@
 //
 // The website's own copies of the app's pages (Today, Altar, Practice, Coven,
 // More and the rest: worker/routing.js REPLACED_SECTIONS) are left out too:
-// the Worker serves the Expo web app there instead. Their source stays in the
+// the Worker serves the Expo web app there instead, from its export in webapp/
+// (scripts/build-webapp.mjs, committed with each release). The export's files
+// join the site's (/_expo/, the hashed /assets/assets/ and /assets/____app/,
+// sw.js, manifest and icons) and its page goes to /_app/index.html, the shell
+// the Worker answers app addresses with; the build stops if one would replace
+// a file of the site. Their source stays in the
 // repo for now. The coven guidelines (KEPT_IN_REPLACED) still ship.
 //
 // Everything under assets/ goes, the altar's object pictures as both the
@@ -15,14 +20,14 @@
 // (scripts/build-altar-object-webp.py). Workers static assets take at most
 // 20,000 files of at most 25 MiB each; the build stops if dist/ outgrows that.
 import { execFileSync } from "node:child_process";
-import { cpSync, mkdirSync, readdirSync, rmSync, statSync, writeFileSync } from "node:fs";
+import { cpSync, existsSync, mkdirSync, readdirSync, rmSync, statSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { KEPT_IN_REPLACED, REPLACED_SECTIONS } from "../worker/routing.js";
 import { buildLibraryBlog } from "./build-library-blog.mjs";
 
 const root = new URL("..", import.meta.url).pathname;
 const out = join(root, "dist");
-const LEAVE_OUT = new Set([...REPLACED_SECTIONS, "app", "supabase", "scripts", "tests", "docs", "dist", "worker", "node_modules", ".git", ".github", ".claude", "package.json", "package-lock.json", "wrangler.jsonc", "readme.md", "CNAME"]);
+const LEAVE_OUT = new Set([...REPLACED_SECTIONS, "app", "supabase", "scripts", "tests", "docs", "dist", "worker", "node_modules", "webapp", ".git", ".github", ".claude", "package.json", "package-lock.json", "wrangler.jsonc", "readme.md", "CNAME"]);
 
 rmSync(out, { recursive: true, force: true });
 mkdirSync(out);
@@ -33,6 +38,33 @@ for (const name of readdirSync(root)) {
 for (const kept of KEPT_IN_REPLACED) {
   mkdirSync(dirname(join(out, kept)), { recursive: true });
   cpSync(join(root, kept), join(out, kept), { recursive: true });
+}
+
+// The Expo web app's export, merged in without replacing any of the site's files.
+const webapp = join(root, "webapp");
+if (!existsSync(join(webapp, "index.html"))) {
+  console.error("webapp/ has no export: run node scripts/build-webapp.mjs and commit webapp/");
+  process.exit(1);
+}
+const clashes = [];
+const merge = (rel) => {
+  for (const entry of readdirSync(join(webapp, rel), { withFileTypes: true })) {
+    const from = join(rel, entry.name);
+    if (entry.isDirectory()) merge(from);
+    else {
+      const to = join(out, from === "index.html" ? "_app/index.html" : from);
+      if (existsSync(to)) clashes.push(from);
+      else {
+        mkdirSync(dirname(to), { recursive: true });
+        cpSync(join(webapp, from), to);
+      }
+    }
+  }
+};
+merge("");
+if (clashes.length) {
+  console.error(`webapp/ files would replace the site's: ${clashes.join(", ")}`);
+  process.exit(1);
 }
 
 // The journal: a post for every Living Library entry, its index pages and the

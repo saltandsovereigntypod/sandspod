@@ -16,13 +16,16 @@ test("the brand's own pages stay static", async () => {
   }
 });
 
-test("the app's screens, its built files and unknown paths go to the app", async () => {
+test("the app's screens and unknown paths go to the app; built files and pictures are files only", async () => {
   const { decideRoute } = await load();
-  for (const p of ["/today", "/today/", "/altar", "/grimoire/library", "/grimoire/library/traditional:herb:rosemary", "/rituals/craft/cosmic/chart", "/coven", "/coven/c/moon/book/abc", "/more/settings/notifications", "/more/research/", "/sign-in", "/auth-callback", "/_expo/static/js/web/index-abc.js", "/more/covens/a/b"]) {
+  for (const p of ["/today", "/today/", "/altar", "/grimoire/library", "/grimoire/library/traditional:herb:rosemary", "/rituals/craft/cosmic/chart", "/coven", "/coven/c/moon/book/abc", "/more/settings/notifications", "/more/research/", "/sign-in", "/auth-callback", "/more/covens/a/b"]) {
     assert.deepEqual(decideRoute(p, "?x=1"), { action: "app" }, p);
   }
-  // Static first, then the app: pictures, icons, the app's offline worker and manifest.
-  for (const p of ["/assets/headshot.png", "/assets/assets/altar/x.0123.webp", "/favicon.ico", "/sw.js", "/manifest.json", "/sitemap.xml", "/no-such-page"]) {
+  for (const p of ["/_expo/static/js/web/index-abc.js", "/assets/headshot.png", "/assets/assets/altar/x.0123.webp", "/assets/____app/node_modules/x.0123.ttf"]) {
+    assert.deepEqual(decideRoute(p, ""), { action: "static" }, p);
+  }
+  // Static first, then the app: icons, the app's offline worker and manifest.
+  for (const p of ["/favicon.ico", "/sw.js", "/manifest.json", "/sitemap.xml", "/no-such-page"]) {
     assert.deepEqual(decideRoute(p, ""), { action: "static-or-app" }, p);
   }
 });
@@ -95,35 +98,37 @@ test("the Worker's list of app routes matches app/src/app", async () => {
   assert.equal(fs.readFileSync(path.join(root, "worker/app-routes.js"), "utf8"), appRoutesModule(), "run node scripts/build-app-routes.mjs");
 });
 
-test("the Worker proxies app requests and redirects old ones", async () => {
+test("the Worker answers app addresses with the app's page from dist/ and redirects old ones", async () => {
   const { default: worker } = await import("../worker/index.js");
-  const calls = [];
-  const realFetch = global.fetch;
-  global.fetch = async (url, init) => {
-    calls.push([String(url), init]);
-    const html = String(url).includes("/_expo/") ? "js" : "<html>";
-    return new Response(html, { status: 200, headers: { "content-type": String(url).includes("/_expo/") ? "application/javascript" : "text/html" } });
-  };
+  const files = { "/assets/headshot.png": "png", "/_app/": "<html>app</html>", "/_expo/static/js/web/index-abc.js": "js" };
   const env = {
-    APP_ORIGIN: "https://saltandsovereignty.expo.app",
-    ASSETS: { fetch: async (request) => new Response(new URL(request.url).pathname === "/assets/headshot.png" ? "png" : "nope", { status: new URL(request.url).pathname === "/assets/headshot.png" ? 200 : 404 }) },
+    ASSETS: {
+      fetch: async (request) => {
+        const p = new URL(request.url).pathname;
+        return p in files ? new Response(files[p], { status: 200, headers: { "cache-control": "public, max-age=0" } }) : new Response("nope", { status: 404 });
+      },
+    },
   };
-  try {
-    const page = await worker.fetch(new Request("https://saltandsovereignty.com/today?x=1", { headers: { host: "saltandsovereignty.com" } }), env);
-    assert.equal(calls[0][0], "https://saltandsovereignty.expo.app/today?x=1");
-    assert.equal(calls[0][1].headers.get("host"), null);
-    assert.equal(page.headers.get("cache-control"), "no-cache");
-    const script = await worker.fetch(new Request("https://saltandsovereignty.com/_expo/static/js/web/index-abc.js"), env);
-    assert.match(script.headers.get("cache-control"), /immutable/);
-    const old = await worker.fetch(new Request("https://saltandsovereignty.com/covens/coven/?c=moon"), env);
-    assert.equal(old.status, 301);
-    assert.equal(old.headers.get("location"), "https://saltandsovereignty.com/coven/c/moon");
-    const picture = await worker.fetch(new Request("https://saltandsovereignty.com/assets/headshot.png"), env);
-    assert.equal(await picture.text(), "png");
-    calls.length = 0;
-    await worker.fetch(new Request("https://saltandsovereignty.com/assets/assets/x.0123.png"), env);
-    assert.equal(calls[0][0], "https://saltandsovereignty.expo.app/assets/assets/x.0123.png");
-  } finally {
-    global.fetch = realFetch;
-  }
+  const page = await worker.fetch(new Request("https://saltandsovereignty.com/today?x=1"), env);
+  assert.equal(await page.text(), "<html>app</html>");
+  assert.equal(page.headers.get("cache-control"), "no-cache");
+  const unknown = await worker.fetch(new Request("https://saltandsovereignty.com/no-such-page"), env);
+  assert.equal(await unknown.text(), "<html>app</html>");
+  const script = await worker.fetch(new Request("https://saltandsovereignty.com/_expo/static/js/web/index-abc.js"), env);
+  assert.equal(await script.text(), "js");
+  const missing = await worker.fetch(new Request("https://saltandsovereignty.com/assets/assets/x.0123.png"), env);
+  assert.equal(missing.status, 404);
+  const old = await worker.fetch(new Request("https://saltandsovereignty.com/covens/coven/?c=moon"), env);
+  assert.equal(old.status, 301);
+  assert.equal(old.headers.get("location"), "https://saltandsovereignty.com/coven/c/moon");
+  const picture = await worker.fetch(new Request("https://saltandsovereignty.com/assets/headshot.png"), env);
+  assert.equal(await picture.text(), "png");
+});
+
+test("the web app's export (webapp/) is there and complete", () => {
+  const html = fs.readFileSync(path.join(root, "webapp/index.html"), "utf8");
+  const script = html.match(/src="(\/_expo\/static\/js\/web\/[^"]+\.js)"/);
+  assert.ok(script, "webapp/index.html loads the app's script");
+  assert.ok(fs.existsSync(path.join(root, "webapp", script[1])), "run node scripts/build-webapp.mjs");
+  assert.ok(fs.existsSync(path.join(root, "webapp/sw.js")));
 });
