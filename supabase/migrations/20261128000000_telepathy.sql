@@ -166,7 +166,8 @@ set search_path = public
 as $$
 declare
   s public.telepathy_sessions;
-  have int;
+  n_in int;
+  cap int;
 begin
   if auth.uid() is null then raise exception 'Sign in first.'; end if;
   select * into s from public.telepathy_sessions where invite_code = lower(btrim(code)) and status = 'scheduled';
@@ -174,8 +175,9 @@ begin
   if now() >= s.starts_at then raise exception 'That session has already begun.'; end if;
   if not public.not_blocked_between(s.host_id) then raise exception 'No session with that code.'; end if;
   if s.kind = 'coven' and not public.is_coven_member(s.coven_id) then raise exception 'That session is for a coven''s members.'; end if;
-  select count(*) into have from public.telepathy_participants where session_id = s.id and status = 'joined' and user_id <> auth.uid();
-  if have >= case when s.kind = 'pair' then 1 else 29 end then raise exception 'That session is full.'; end if;
+  select count(*) into n_in from public.telepathy_participants where session_id = s.id and status = 'joined' and user_id <> auth.uid();
+  if s.kind = 'pair' then cap := 1; else cap := 29; end if;
+  if n_in >= cap then raise exception 'That session is full.'; end if;
   insert into public.telepathy_participants (session_id, user_id, status) values (s.id, auth.uid(), 'joined')
     on conflict (session_id, user_id) do update set status = 'joined';
   return s.id;
