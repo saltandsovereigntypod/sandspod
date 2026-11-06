@@ -4816,6 +4816,33 @@ export const TRADITIONAL_LIBRARY: TraditionalLibraryData = {
         "calm",
         "venus"
       ]
+    },
+    "merlinite": {
+      "DisplayName": "Merlinite",
+      "Category": "Crystal",
+      "Element": "Spirit",
+      "Planet": "Saturn",
+      "Chakra": "Third Eye, Crown",
+      "Uses": "Magic and intuition, shadow work, transformation, protection, dream work",
+      "PairsWith": "Labradorite, black tourmaline, amethyst, purple candle",
+      "Cleansing": "Smoke, sound, moonlight",
+      "TraditionalWarnings": "Merlinite is a mix of quartz and manganese oxides, and manganese dust is toxic if inhaled. Do not cut, sand or grind it, never use it for elixirs, and wash hands after handling raw pieces.",
+      "Overview": "Merlinite is a trade name for black or grey stone with white dendritic (branching) patterns, a mix of quartz with manganese oxides such as psilomelane and pyrolusite. It is also sold as ‘dendritic opal’, although it is not a true opal. It is found in Madagascar and is sold as tumbled stones, palm stones, spheres and chips. The name suggests the wizard Merlin of Arthurian legend; the stone has no connection to the mythical figure beyond its trade name.",
+      "TraditionalMeaning": "Magic, mystery and the unseen; a modern stone of the wizard and the shadow, for work with the unconscious and with change.",
+      "HowToUse": "Start here: hold a merlinite in a dim room for a few breaths before meditation, tarot or journaling, and notice what rises. Tumbled stones suit pockets, palm stones suit the altar, and chips can go in jars for dream work. Wash your hands after handling raw pieces, and keep it dry.",
+      "PairingNotes": "Merlinite pairs well with labradorite for magic, black tourmaline for protection, amethyst for dreams, and moonstone for lunar workings. Purple, black and silver candles suit it.",
+      "CleansingNotes": "Cleanse merlinite with smoke, sound, moonlight, or visualization. A quick wipe with a barely damp cloth is the most water it needs; do not soak it, put it in salt, or make an elixir from it.",
+      "SafetyAndRespect": "Merlinite is safe to handle in polished form, but raw pieces and dust contain manganese, which is toxic if inhaled or swallowed. Wash hands after handling, keep it from children and pets, and do not cut or sand it. Its magical meanings are modern, drawn from the trade name and the Arthurian legend, and it is no substitute for support during difficult inner work.",
+      "Traditions": "Celtic, Wheel of the Year",
+      "TraditionNotes": "Celtic: The name refers to Merlin (Myrddin), the wizard and prophet of Welsh and Arthurian legend, who is a figure of medieval Welsh and later literary tradition; the stone itself has no Celtic origin and was named in modern times.\n\nWheel of the Year: Used at Samhain and the dark moon for shadow work and divination, and kept on the altar for transformation.\n\nFolk & wider practice: ‘Merlinite’ is a late 20th-century trade name, and the stone itself is a quarry find from Madagascar. Its meanings come from modern crystal-healing and witchcraft books, which also link it to Saturn and the Crown chakra.",
+      "tags": [
+        "intuition",
+        "shadow work",
+        "transformation",
+        "protection",
+        "dreams",
+        "saturn"
+      ]
     }
   },
   "candle": {

@@ -7015,6 +7015,48 @@
         },
         {
           "category": "crystals",
+          "name": "Merlinite",
+          "icon": "💎",
+          "keywords": [
+            "magic and intuition",
+            "shadow work",
+            "transformation",
+            "protection",
+            "dream work"
+          ],
+          "forms": [
+            {
+              "label": "Point",
+              "image": "",
+              "type": "crystal",
+              "crystal": "merlinite",
+              "form": "point"
+            },
+            {
+              "label": "Chips",
+              "image": "../assets/altar/objects/crystals/merlinite/merlinite-chips.png",
+              "type": "crystal",
+              "crystal": "merlinite",
+              "form": "chips"
+            },
+            {
+              "label": "Cluster",
+              "image": "",
+              "type": "crystal",
+              "crystal": "merlinite",
+              "form": "cluster"
+            },
+            {
+              "label": "Tumbled",
+              "image": "../assets/altar/objects/crystals/merlinite/merlinite-tumbled.png",
+              "type": "crystal",
+              "crystal": "merlinite",
+              "form": "tumbled"
+            }
+          ]
+        },
+        {
+          "category": "crystals",
           "name": "Mookaite",
           "icon": "💎",
           "keywords": [
@@ -12730,6 +12772,19 @@
           "venus",
           "heart",
           "calm"
+        ],
+        "merlinite": [
+          "magic and intuition",
+          "shadow work",
+          "transformation",
+          "protection",
+          "dream work",
+          "spirit",
+          "saturn",
+          "third eye",
+          "crown",
+          "intuition",
+          "dreams"
         ]
       },
       "deity": {
