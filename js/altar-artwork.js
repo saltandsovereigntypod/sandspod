@@ -1593,6 +1593,48 @@
         },
         {
           "category": "herbs",
+          "name": "Cacao",
+          "icon": "🌿",
+          "keywords": [
+            "love",
+            "pleasure",
+            "abundance",
+            "devotion",
+            "vitality"
+          ],
+          "forms": [
+            {
+              "label": "Sprig",
+              "image": "../assets/altar/objects/herbs/cacao/cacao-sprig.png",
+              "type": "herb",
+              "herb": "cacao",
+              "form": "sprig"
+            },
+            {
+              "label": "Loose",
+              "image": "../assets/altar/objects/herbs/cacao/cacao-loose.png",
+              "type": "herb",
+              "herb": "cacao",
+              "form": "loose"
+            },
+            {
+              "label": "Oil",
+              "image": "../assets/altar/objects/herbs/cacao/cacao-oil.png",
+              "type": "oil",
+              "herb": "cacao",
+              "form": "oil"
+            },
+            {
+              "label": "Incense",
+              "image": "../assets/altar/objects/herbs/incense/incense.png",
+              "type": "herb",
+              "herb": "cacao",
+              "form": "incense"
+            }
+          ]
+        },
+        {
+          "category": "herbs",
           "name": "Calendula",
           "icon": "🌿",
           "keywords": [
@@ -10595,6 +10637,16 @@
           "venus",
           "binding",
           "hex-breaking"
+        ],
+        "cacao": [
+          "love",
+          "pleasure",
+          "abundance",
+          "devotion",
+          "vitality",
+          "fire",
+          "mars",
+          "heart-opening"
         ]
       },
       "crystal": {

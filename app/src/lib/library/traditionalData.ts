@@ -2239,6 +2239,32 @@ export const TRADITIONAL_LIBRARY: TraditionalLibraryData = {
         "healing",
         "venus"
       ]
+    },
+    "cacao": {
+      "DisplayName": "Cacao",
+      "Category": "Herb",
+      "Element": "Fire",
+      "Planet": "Mars",
+      "Uses": "Love, pleasure, abundance, devotion, vitality",
+      "PairsWith": "Rose, cinnamon, vanilla, rose quartz",
+      "Substitutions": "Carob, cinnamon",
+      "TraditionalWarnings": "Cacao contains theobromine and caffeine, which can cause jitteriness, sleeplessness and a fast heartbeat, and is toxic to dogs, cats and other pets, even in small amounts. Raw cacao is also a common allergen and can contain heavy metals, so buy from a reputable source.",
+      "Overview": "Cacao (Theobroma cacao) is a small tropical rainforest tree whose large, ridged pods grow straight from the trunk and branches and hold the beans from which chocolate is made. The beans, nibs (crushed beans), powder and butter are the parts used, sold as whole or crushed beans, nibs, ceremonial-grade paste and as an infused oil or butter.",
+      "TraditionalMeaning": "Love, devotion and the open heart; a plant of Mesoamerican offering and exchange, and of sweetness earned.",
+      "HowToUse": "Start here: melt a small square of dark chocolate, or steep a few cacao nibs in hot water, and drink it slowly with an intention of love or gratitude. Whole beans and nibs go into sachets and altar bowls and can be left as offerings; keep them sealed and dry, as they take up smells. Never leave cacao where a pet can reach it, and use only a little butter or oil, diluted, for dressing a candle.",
+      "PairingNotes": "Cacao pairs well with rose for love, cinnamon for warmth, vanilla for sweetness, and rose quartz for the heart. Red, brown and pink candles suit it.",
+      "SubstitutionNotes": "Carob can stand in for cacao where caffeine is a problem, though it lacks its history. Cinnamon can stand in for its warming, passionate side.",
+      "SafetyAndRespect": "Cacao is poisonous to dogs, cats and horses; keep it, chocolate and nibs well out of reach of pets, and put offerings out of their way. It contains caffeine-like stimulants and can disturb sleep, worsen anxiety and interact with some medication; people who are pregnant or have heart conditions should ask a clinician before taking large amounts. Cacao has a living sacred place for Maya, Aztec (Mexica) and other Mesoamerican peoples and for several Indigenous communities of South America; ‘ceremonial cacao’ is sold widely, and it is respectful to buy from Indigenous-owned or fair-trade growers and to avoid claiming a lineage that is not yours.",
+      "Traditions": "Wheel of the Year",
+      "TraditionNotes": "Wheel of the Year: Cacao is used in modern practice around Imbolc, Valentine’s Day and Beltane as a plant of love and sweetness, and at the new moon for intention-setting.\n\nFolk & wider practice: Cacao was drunk, and the beans used as currency, by the Maya and the Aztec (Mexica); a bitter, frothy, spiced drink was served at feasts and offered to the gods, and the Maya connected it to the maize god. It reached Spain in the 16th century and became sweetened chocolate in Europe. The modern ‘cacao ceremony’ is a recent, mostly Western practice that borrows from these traditions, and should be named as a modern adaptation. Modern correspondence tables give cacao to Mars and Fire.",
+      "tags": [
+        "love",
+        "heart-opening",
+        "abundance",
+        "devotion",
+        "vitality",
+        "mars"
+      ]
     }
   },
   "crystal": {
