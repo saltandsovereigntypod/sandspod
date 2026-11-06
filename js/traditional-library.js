@@ -6538,6 +6538,43 @@ const TraditionalLibrary = {
 
             tags: ["vitality", "joy", "creative drive", "passion for life", "balance", "mars"]
         },
+
+        sardonyx: {
+            DisplayName: "Sardonyx",
+            Category: "Crystal",
+
+            Element: "Fire",
+
+            Planet: "Mars",
+
+            Chakra: "Root, Sacral",
+
+            Uses: "Courage, marital fidelity, warding off envy, clear judgement, keeping promises",
+
+            PairsWith: "Carnelian, black tourmaline, red jasper, red candle",
+
+            Cleansing: "Smoke, sound, moonlight",
+
+            TraditionalWarnings: "Sardonyx is hard and stable, but most is dyed or heat-treated, and some is sold as ‘onyx’ or ‘agate’. Dust from cutting it is harmful.",
+
+            Overview: "Sardonyx is a banded chalcedony (microcrystalline quartz) of Mohs hardness 6.5–7, with straight, parallel bands of reddish-brown sard alternating with white or black onyx. It is one of the oldest carved gem materials, and most sardonyx on the market is dyed or heat-treated to bring out the bands. It comes from India, Brazil and Uruguay and is sold as tumbled stones, beads, cabochons and cameos, and chips.",
+
+            TraditionalMeaning: "Courage and fidelity; an ancient stone of the soldier and the married, whose banded layers were carved into seals and cameos for centuries.",
+
+            HowToUse: "Start here: hold a sardonyx and say aloud one promise you mean to keep, or carry it into a conversation where you must be clear. Tumbled stones suit pockets, cabochons make rings, and chips can go in jars for courage. Wipe it with a soft cloth.",
+
+            PairingNotes: "Sardonyx pairs well with carnelian for courage, black tourmaline for protection, red jasper for steadiness, and lapis lazuli for honest speech. Red, black and white candles suit it.",
+
+            CleansingNotes: "Cleanse sardonyx with smoke, sound, moonlight, or visualization. Plain pieces can be rinsed and dried, but dyed stones should only be wiped.",
+
+            SafetyAndRespect: "Sardonyx is safe to handle, but dust from cutting it is harmful and dyed stones should not be used in water for elixirs. Old lore about marital fidelity and protection from ill will is traditional folk and medieval lapidary tradition, and the stone does not guarantee loyalty; modern meanings come from crystal-healing books.",
+
+            Traditions: "Hellenic, Roman, Christian",
+
+            TraditionNotes: "Hellenic: Greek writers described sardonyx as a stone of courage and good fortune, and Greek and Roman artisans carved it into cameos and intaglio seals, using the layers of colour to make figures stand out in relief.\n\nRoman: Roman soldiers were said to wear sardonyx engraved with Mars or a hero for courage, and Roman writers such as Pliny the Elder discussed the stone and its supposed power to ward off envy and fear.\n\nChristian: Sardonyx is the fifth foundation stone of the heavenly city in the Book of Revelation, and in medieval lapidaries it was held to give modesty, chastity and a good conscience; it is also a stone traditionally given for the month of August.\n\nFolk & wider practice: Sardonyx is also the traditional birthstone for August, along with peridot and spinel. Its reputation for protecting marriage comes from these older gem-lore sources.",
+
+            tags: ["courage", "fidelity", "protection from ill will", "clear judgement", "honest speech", "mars"]
+        },
     },
 
     candle: {

@@ -7941,6 +7941,47 @@ export const ALTAR_ARTWORK: {
       },
       {
         "category": "crystals",
+        "name": "Sardonyx",
+        "keywords": [
+          "courage",
+          "marital fidelity",
+          "warding off envy",
+          "clear judgement",
+          "keeping promises"
+        ],
+        "forms": [
+          {
+            "label": "Point",
+            "image": "",
+            "type": "crystal",
+            "crystal": "sardonyx",
+            "form": "point"
+          },
+          {
+            "label": "Chips",
+            "image": "../assets/altar/objects/crystals/sardonyx/sardonyx-chips.png",
+            "type": "crystal",
+            "crystal": "sardonyx",
+            "form": "chips"
+          },
+          {
+            "label": "Cluster",
+            "image": "",
+            "type": "crystal",
+            "crystal": "sardonyx",
+            "form": "cluster"
+          },
+          {
+            "label": "Tumbled",
+            "image": "../assets/altar/objects/crystals/sardonyx/sardonyx-tumbled.png",
+            "type": "crystal",
+            "crystal": "sardonyx",
+            "form": "tumbled"
+          }
+        ]
+      },
+      {
+        "category": "crystals",
         "name": "Selenite",
         "keywords": [
           "cleansing",
@@ -12763,6 +12804,20 @@ export const ALTAR_ARTWORK: {
         "heart",
         "root",
         "balance"
+      ],
+      "sardonyx": [
+        "courage",
+        "marital fidelity",
+        "warding off envy",
+        "clear judgement",
+        "keeping promises",
+        "fire",
+        "mars",
+        "root",
+        "sacral",
+        "fidelity",
+        "protection from ill will",
+        "honest speech"
       ]
     },
     "deity": {
