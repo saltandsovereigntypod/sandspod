@@ -3056,6 +3056,41 @@ const TraditionalLibrary = {
 
             tags: ["sleep", "dreams", "healing", "calming anger", "hospitality", "mars"]
         },
+
+        lemon_peel: {
+            DisplayName: "Lemon Peel",
+            Category: "Herb",
+
+            Element: "Water",
+
+            Planet: "Moon",
+
+            Uses: "Cleansing, friendship, joy, mental clarity, renewal",
+
+            PairsWith: "Rosemary, mint, white sage, citrine",
+
+            Substitutions: "Orange peel, lime peel",
+
+            TraditionalWarnings: "Lemon oil can make skin sensitive to sunlight, and cold-pressed lemon peel oil should be diluted before touching skin. The oil and peel can irritate skin and are best kept from pets, especially cats.",
+
+            Overview: "Lemon peel is the yellow outer skin (zest) of the lemon (Citrus limon), which is full of fragrant oil with a bright, clean, sharp scent. It is sold as dried strips and flakes, fresh zest from unwaxed fruit, and cold-pressed essential oil. The pith beneath is bitter and is not used.",
+
+            TraditionalMeaning: "Cleansing, friendship and a fresh start; a sharp, bright plant that cuts through stagnation and sourness.",
+
+            HowToUse: "Start here: scrape the zest of one unwaxed lemon into a small bowl on the altar and breathe in the scent. Dried peel goes into cleansing jars, simmer pots, floor-wash and incense blends and keeps for many months if sealed; fresh peel should be used within a few days. Dilute the oil in a carrier before dressing a candle, and keep it away from skin in sunlight.",
+
+            PairingNotes: "Lemon peel pairs well with rosemary for cleansing, mint for clarity, white sage or palo santo for smoke cleansing, and citrine for a sunny uplift. White, yellow and silver candles suit it.",
+
+            SubstitutionNotes: "Orange peel or lime peel can substitute for lemon peel in cleansing and uplifting workings, although orange is warmer and sweeter. Lemon balm is a gentler herb of a similar scent.",
+
+            SafetyAndRespect: "Choose unwaxed, untreated fruit for zest, and wash it well. Lemon oil can cause sun-sensitive skin reactions and irritation, so dilute it and avoid sunlight after use on skin. Keep oils away from pets, especially cats, and from children. Magical use should not replace proper cleaning or medical advice.",
+
+            Traditions: "Wheel of the Year",
+
+            TraditionNotes: "Wheel of the Year: Lemon peel is used in modern practice at Imbolc and spring cleaning to clear the house, and at Litha for its sun-bright scent; lemon water is a common modern cleansing wash.\n\nFolk & wider practice: Lemons reached Europe through the Arab world in the Middle Ages and became a symbol of Mediterranean cleanliness; in some folk traditions a lemon stuck with pins or cut in half was used in protection charms and to draw out ill will. These are largely modern or regional folk uses. Modern correspondence tables give lemon to the Moon and Water, and link it with friendship.",
+
+            tags: ["cleansing", "friendship", "negativity", "clarity", "renewal", "moon"]
+        },
     },
 
     crystal: {

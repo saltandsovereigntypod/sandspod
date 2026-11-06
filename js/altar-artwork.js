@@ -2974,6 +2974,48 @@
         },
         {
           "category": "herbs",
+          "name": "Lemon Peel",
+          "icon": "🌿",
+          "keywords": [
+            "cleansing",
+            "friendship",
+            "joy",
+            "mental clarity",
+            "renewal"
+          ],
+          "forms": [
+            {
+              "label": "Sprig",
+              "image": "../assets/altar/objects/herbs/lemon-peel/lemon-peel-sprig.png",
+              "type": "herb",
+              "herb": "lemon_peel",
+              "form": "sprig"
+            },
+            {
+              "label": "Loose",
+              "image": "../assets/altar/objects/herbs/lemon-peel/lemon-peel-loose.png",
+              "type": "herb",
+              "herb": "lemon_peel",
+              "form": "loose"
+            },
+            {
+              "label": "Oil",
+              "image": "../assets/altar/objects/herbs/lemon-peel/lemon-peel-oil.png",
+              "type": "oil",
+              "herb": "lemon_peel",
+              "form": "oil"
+            },
+            {
+              "label": "Incense",
+              "image": "../assets/altar/objects/herbs/incense/incense.png",
+              "type": "herb",
+              "herb": "lemon_peel",
+              "form": "incense"
+            }
+          ]
+        },
+        {
+          "category": "herbs",
           "name": "Lemongrass",
           "icon": "🌿",
           "keywords": [
@@ -10806,6 +10848,17 @@
           "mars",
           "sleep",
           "dreams"
+        ],
+        "lemon-peel": [
+          "cleansing",
+          "friendship",
+          "joy",
+          "mental clarity",
+          "renewal",
+          "water",
+          "moon",
+          "negativity",
+          "clarity"
         ]
       },
       "crystal": {
