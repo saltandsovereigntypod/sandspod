@@ -3126,6 +3126,41 @@ const TraditionalLibrary = {
 
             tags: ["happiness", "grief comfort", "love", "home blessing", "health", "mercury"]
         },
+
+        orange_peel: {
+            DisplayName: "Orange Peel",
+            Category: "Herb",
+
+            Element: "Fire",
+
+            Planet: "Sun",
+
+            Uses: "Prosperity, joy, divination, attraction, vitality",
+
+            PairsWith: "Cinnamon, clove, bay leaf, citrine",
+
+            Substitutions: "Lemon peel, tangerine peel",
+
+            TraditionalWarnings: "Orange oil is photosensitising to a lesser degree than bergamot or lemon, but can still irritate skin and should be diluted. The oil and peel can upset pets, especially cats and dogs, in more than tiny amounts.",
+
+            Overview: "Orange peel is the aromatic outer rind (zest) of the sweet orange (Citrus × sinensis), bright orange and full of oil with a warm, sweet, fruity scent. Bitter or Seville orange (Citrus × aurantium) peel is also used, and orange blossom comes from the same tree. Peel is sold dried in strips and flakes, as fresh zest, and as essential oil.",
+
+            TraditionalMeaning: "Sunny joy and prosperity; a bright, warming rind of luck, love and the harvest.",
+
+            HowToUse: "Start here: dry a few strips of peel from an unwaxed orange on a radiator or windowsill, and keep one in your wallet or purse for luck with money. Dried peel goes into jars, incense, sachets and simmer pots, and keeps for months if sealed. Fresh peel suits a bowl on the altar for a few days. Dilute the oil in a carrier before dressing a candle.",
+
+            PairingNotes: "Orange peel pairs well with cinnamon for money and warmth, clove for friendship and attraction, bay leaf for wishes, and citrine for sunny prosperity. Orange, yellow and gold candles suit it.",
+
+            SubstitutionNotes: "Lemon peel or tangerine peel can substitute for orange peel in joy and luck workings. Lemon is sharper and more cleansing, and tangerine is lighter and sweeter.",
+
+            SafetyAndRespect: "Use unwaxed, untreated fruit for peel, and wash it well. Orange oil can irritate skin and cause mild sun-sensitivity, so always dilute it. Keep oils away from pets, especially cats, and from children. Magical use should not replace financial planning or medical advice.",
+
+            Traditions: "Chinese, Wheel of the Year",
+
+            TraditionNotes: "Chinese: Dried tangerine or mandarin peel (chenpi) is a prized ingredient in Chinese cooking and medicine, and oranges and tangerines are a symbol of luck and wealth given at Lunar New Year. This note concerns tangerine rather than sweet orange peel, which is a related but different plant.\n\nWheel of the Year: Orange peel is used in modern practice at Yule, when oranges stuck with cloves are made as pomanders, and at Litha for its sun associations.\n\nFolk & wider practice: Oranges and orange blossom have been symbols of love, marriage and fruitfulness in Europe since medieval times, and orange blossom is traditionally worn by brides. Dried orange peel is a modern witchcraft staple for luck, and modern correspondence tables give it to the Sun and Fire.",
+
+            tags: ["prosperity", "joy", "divination", "attraction", "vitality", "sun"]
+        },
     },
 
     crystal: {

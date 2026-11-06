@@ -3512,6 +3512,47 @@ export const ALTAR_ARTWORK: {
       },
       {
         "category": "herbs",
+        "name": "Orange Peel",
+        "keywords": [
+          "prosperity",
+          "joy",
+          "divination",
+          "attraction",
+          "vitality"
+        ],
+        "forms": [
+          {
+            "label": "Sprig",
+            "image": "../assets/altar/objects/herbs/orange-peel/orange-peel-sprig.png",
+            "type": "herb",
+            "herb": "orange_peel",
+            "form": "sprig"
+          },
+          {
+            "label": "Loose",
+            "image": "../assets/altar/objects/herbs/orange-peel/orange-peel-loose.png",
+            "type": "herb",
+            "herb": "orange_peel",
+            "form": "loose"
+          },
+          {
+            "label": "Oil",
+            "image": "../assets/altar/objects/herbs/orange-peel/orange-peel-oil.png",
+            "type": "oil",
+            "herb": "orange_peel",
+            "form": "oil"
+          },
+          {
+            "label": "Incense",
+            "image": "../assets/altar/objects/herbs/incense/incense.png",
+            "type": "herb",
+            "herb": "orange_peel",
+            "form": "incense"
+          }
+        ]
+      },
+      {
+        "category": "herbs",
         "name": "Orris Root",
         "keywords": [
           "love",
@@ -10649,6 +10690,15 @@ export const ALTAR_ARTWORK: {
         "mercury",
         "grief comfort",
         "home blessing"
+      ],
+      "orange-peel": [
+        "prosperity",
+        "joy",
+        "divination",
+        "attraction",
+        "vitality",
+        "fire",
+        "sun"
       ]
     },
     "crystal": {
