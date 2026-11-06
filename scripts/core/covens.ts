@@ -83,3 +83,5 @@ export * as queueNotes from '../../supabase/functions/coven-notify/queue.ts';
 // the phone notes, choices and timing (coven-notify's messages.ts).
 export * as messageExtras from '../../app/src/lib/covens/messageExtras.ts';
 export * as messageNotes from '../../supabase/functions/coven-notify/messages.ts';
+// Founding a coven: the founder's training and the application to be listed in Find a coven (covens/leading/, covens/moderation/).
+export * as founding from '../../app/src/lib/covens/founding.ts';

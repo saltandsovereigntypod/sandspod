@@ -32,6 +32,8 @@ export type Coven = {
   founder_id: string | null;
   created_at: string;
   member_count?: number;
+  /** When the moderators approved it for Find a coven (founding.ts); null: unlisted until they do. */
+  listing_approved_at?: string | null;
 };
 
 export type Rank = {

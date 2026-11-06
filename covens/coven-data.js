@@ -102,7 +102,7 @@
     return row;
   }
 
-  const COVEN_FIELDS ="id,slug,name,tagline,description,tradition,tags,meeting_rhythm,timezone,joining,visibility,status,moderation_note,application_questions,altar_background,member_limit,practice_traditions,practice_holidays,practice_custom,practice_calendars,founder_id,created_at,updated_at,member_count";
+  const COVEN_FIELDS ="id,slug,name,tagline,description,tradition,tags,meeting_rhythm,timezone,joining,visibility,status,moderation_note,application_questions,altar_background,member_limit,practice_traditions,practice_holidays,practice_custom,practice_calendars,founder_id,created_at,updated_at,member_count,listing_approved_at";
 
   const ALTAR_FIELDS = "id,coven_id,name,is_main,edit_mode,locked,background,background_name,groups,active_group_id,extra,archived_at,created_by,updated_by,created_at,updated_at";
 

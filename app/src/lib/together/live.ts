@@ -333,3 +333,33 @@ export const TOGETHER_GUIDANCE = [
   'The host can ask someone to leave. You can block or report anyone, and you won’t see messages from people you’ve blocked.',
   'Only share an invite link with people you’d be glad to practise with. Anyone with the link and a community profile (18+) can join until the ritual ends.',
 ] as const;
+
+// ─── Reactions ───────────────────────────────────────────────────────────
+// A short, wordless answer anyone in the ritual can send (a candle, a
+// sparkle), shown for a few seconds on everyone's screen. Sent over the
+// ritual's live channel as a broadcast and never stored.
+
+export const REACTIONS = [
+  { key: 'candle', glyph: '🕯️', label: 'A candle for this' },
+  { key: 'spark', glyph: '✨', label: 'Blessings' },
+] as const;
+export type ReactionKey = (typeof REACTIONS)[number]['key'];
+export type LiveReaction = { key: ReactionKey; user_id: string; at: number };
+/** How long a reaction shows, and the least time between your own. */
+export const REACTION_SHOW_MS = 6000;
+export const REACTION_GAP_MS = 1500;
+
+/** A reaction as it arrives on the channel, if it's sound. */
+export function readReaction(payload: unknown, now = Date.now()): LiveReaction | null {
+  const v = payload as { key?: unknown; user_id?: unknown } | null;
+  if (!v || typeof v.user_id !== 'string' || !REACTIONS.some((r) => r.key === v.key)) return null;
+  return { key: v.key as ReactionKey, user_id: v.user_id, at: now };
+}
+
+/** The reactions still showing, newest last, a dozen at most. */
+export const shownReactions = (list: LiveReaction[], now = Date.now()) => list.filter((r) => now - r.at < REACTION_SHOW_MS).slice(-12);
+
+export const reactionGlyph = (key: ReactionKey) => REACTIONS.find((r) => r.key === key)?.glyph ?? '';
+
+/** "🕯️ Rowan · ✨ Ash", for the line under the step (and screen readers). */
+export const reactionLine = (list: LiveReaction[], nameOf: (id: string) => string) => list.map((r) => `${reactionGlyph(r.key)} ${nameOf(r.user_id)}`).join(' · ');

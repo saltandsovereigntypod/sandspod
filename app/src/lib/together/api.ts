@@ -5,7 +5,7 @@
 // decide who may do what; these only ask.
 
 import { supabase } from '../supabase';
-import type { LiveAction, LiveMessage, LivePerson, LiveRitual, LiveStart } from './live';
+import { REACTION_GAP_MS, readReaction, type LiveAction, type LiveMessage, type LivePerson, type LiveReaction, type LiveRitual, type LiveStart, type ReactionKey } from './live';
 import type { CovenPair, MentorListing, Mentorship, MentorshipCheckin, MentorshipItem, MentorshipMessage, MentorRole } from './mentorship';
 import type { CourseLink } from '../covens/courseLinks';
 
@@ -81,9 +81,17 @@ export const sayLive = (id: string, userId: string, body: string) =>
   run<LiveMessage>(supabase.from('live_ritual_messages').insert({ live_id: id, user_id: userId, body: body.trim() }).select().single());
 export const hideLiveMessage = (messageId: string) => rpc<null>('live_ritual_hide_message', { p_message: messageId });
 
-/** Follow a ritual together as it changes; `onChange` reloads. Returns the presence ids as they change, and a stop. */
-export function followLive(id: string, userId: string, name: string, onChange: () => void, onHere: (ids: string[]) => void): () => void {
-  const channel = supabase.channel(`live-ritual:${id}`, { config: { presence: { key: userId } } });
+/** The live channel of each ritual being followed, for reactions. */
+const following = new Map<string, ReturnType<typeof supabase.channel>>();
+
+/** Follow a ritual together as it changes; `onChange` reloads. Returns the presence ids as they change, reactions as they come, and a stop. */
+export function followLive(id: string, userId: string, name: string, onChange: () => void, onHere: (ids: string[]) => void, onReact?: (r: LiveReaction) => void): () => void {
+  const channel = supabase.channel(`live-ritual:${id}`, { config: { presence: { key: userId }, broadcast: { self: true } } });
+  following.set(id, channel);
+  channel.on('broadcast', { event: 'react' }, ({ payload }) => {
+    const r = readReaction(payload);
+    if (r && onReact) onReact(r);
+  });
   for (const [table, column] of [['live_rituals', 'id'], ['live_ritual_people', 'live_id'], ['live_ritual_messages', 'live_id']] as const) {
     channel.on('postgres_changes' as never, { event: '*', schema: 'public', table, filter: `${column}=eq.${id}` } as never, () => onChange());
   }
@@ -98,8 +106,20 @@ export function followLive(id: string, userId: string, name: string, onChange: (
     }
   });
   return () => {
+    if (following.get(id) === channel) following.delete(id);
     void supabase.removeChannel(channel);
   };
+}
+
+/** A reaction to everyone in the ritual (a broadcast on its live channel; never stored). */
+let lastReaction = 0;
+export function reactLive(id: string, userId: string, key: ReactionKey): boolean {
+  const channel = following.get(id);
+  // One every REACTION_GAP_MS at most, however fast the button is pressed.
+  if (!channel || Date.now() - lastReaction < REACTION_GAP_MS) return false;
+  lastReaction = Date.now();
+  void channel.send({ type: 'broadcast', event: 'react', payload: { key, user_id: userId } });
+  return true;
 }
 
 // ─── Mentorship ──────────────────────────────────────────────────────────

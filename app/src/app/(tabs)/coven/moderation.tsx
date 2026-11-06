@@ -9,12 +9,15 @@ import * as api from '../../../lib/covens/api';
 import { errorMessage, filterDirectory, relativeTime, REPORT_REASONS, type Coven, type Profile } from '../../../lib/covens/model';
 import { inactiveFor, transferCandidates, type HeadReport } from '../../../lib/covens/lineage';
 import { fetchHeadReports, resolveHeadReport } from '../../../lib/covens/lineageApi';
+import { BADGE_LABEL, STATUS_WORDS, validateDecision } from '../../../lib/covens/founding';
+import { listingsForReview, reviewListing, trainingDone, type ListingForReview } from '../../../lib/covens/foundingApi';
 import { useSession } from '../../../lib/session';
 import { supabase } from '../../../lib/supabase';
 import { colors, radius, type } from '../../../theme';
 
 const VIEWS = [
   { value: 'reports', label: 'Reports' },
+  { value: 'listings', label: 'Listings' },
   { value: 'heads', label: 'Heads gone' },
   { value: 'covens', label: 'Covens' },
   { value: 'bans', label: 'Site bans' },
@@ -79,6 +82,7 @@ export default function Moderation() {
       <Chips label="Moderation" options={views} value={view} onChange={setView} />
       {view === 'reports' && <Reports userId={userId} nameOf={nameOf} loadNames={loadNames} />}
       {view === 'heads' && <HeadsGone />}
+      {view === 'listings' && <Listings nameOf={nameOf} loadNames={loadNames} />}
       {view === 'covens' && <Covens nameOf={nameOf} loadNames={loadNames} />}
       {view === 'bans' && <Bans userId={userId} nameOf={nameOf} loadNames={loadNames} />}
       {view === 'moderators' && me.admin && <Moderators />}
@@ -391,6 +395,98 @@ const styles = StyleSheet.create({
 // "The head can't be reached": what elders sent, with the coven, how long the
 // head has been away and its succession plan. Hand the coven on (the named
 // successor first) or close the report.
+// Covens asking to be listed in Find a coven (founding.ts): the founder's
+// answers and training, and approve, ask for changes or decline with a note.
+function Listings({ nameOf, loadNames }: Names) {
+  const [rows, setRows] = useState<ListingForReview[] | null>(null);
+  const [trained, setTrained] = useState<Record<string, string | null>>({});
+  const [notes, setNotes] = useState<Record<string, string>>({});
+  const [busy, setBusy] = useState<string | null>(null);
+  const [message, setMessage] = useState<string | null>(null);
+  const [version, setVersion] = useState(0);
+
+  useEffect(() => {
+    let live = true;
+    listingsForReview()
+      .then(async (list) => {
+        if (!live) return;
+        setRows(list);
+        void loadNames(list.map((r) => r.user_id));
+        const people = [...new Set(list.map((r) => r.user_id))];
+        const done = await Promise.all(people.map(async (u) => [u, await trainingDone(u)] as const));
+        if (live) setTrained(Object.fromEntries(done));
+      })
+      .catch((error) => {
+        if (!live) return;
+        setMessage(errorMessage(error));
+        setRows([]);
+      });
+    return () => {
+      live = false;
+    };
+  }, [version, loadNames]);
+
+  const decide = async (r: ListingForReview, decision: 'approved' | 'changes' | 'declined') => {
+    const note = notes[r.id] ?? '';
+    const problem = validateDecision(decision, note);
+    if (problem) return setMessage(problem);
+    setBusy(r.id);
+    setMessage(null);
+    try {
+      await reviewListing(r.id, decision, note);
+      setMessage(decision === 'approved' ? `${r.covens?.name ?? 'The coven'} is listed. Its founder is told.` : 'Answered. The founder is told, with your note.');
+      setVersion((v) => v + 1);
+    } catch (error) {
+      setMessage(errorMessage(error));
+    }
+    setBusy(null);
+  };
+
+  if (!rows) return <ActivityIndicator color={colors.gold} />;
+  const waiting = rows.filter((r) => r.status === 'pending');
+  const others = rows.filter((r) => r.status !== 'pending').slice(0, 20);
+  const card = (r: ListingForReview) => (
+    <Card key={r.id}>
+      <Text style={type.eyebrow}>
+        {STATUS_WORDS[r.status]} · {relativeTime(r.decided_at ?? r.submitted_at)}
+      </Text>
+      <Pressable accessibilityRole="link" onPress={() => r.covens && router.push(`/coven/c/${r.covens.slug}` as Href)}>
+        <Text style={type.cardTitle}>{r.covens?.name ?? 'A coven'}</Text>
+      </Pressable>
+      {!!r.covens?.tagline && <Text style={type.caption}>{r.covens.tagline}</Text>}
+      <Text style={type.body}>
+        {r.leader_title}: {nameOf(r.user_id)} · {trained[r.user_id] || r.training_completed_at ? `${BADGE_LABEL} ✓` : 'Training not finished'}
+      </Text>
+      <Text style={type.caption}>Path: {r.path}</Text>
+      <Text style={type.caption}>Experience: {r.experience}</Text>
+      <Text style={type.caption}>Why: {r.why}</Text>
+      <Text style={type.caption}>Keeping members safe: {r.safety}</Text>
+      <Text style={type.caption}>Agreed to the coven guidelines and confirmed 18+ {relativeTime(r.agreed_guidelines_at)}.</Text>
+      {!!r.moderator_note && <Text style={type.caption}>Note: “{r.moderator_note}”</Text>}
+      {r.status === 'pending' && (
+        <>
+          <Field label="Note to the founder (needed to ask for changes or decline)" value={notes[r.id] ?? ''} onChangeText={(t) => setNotes((prev) => ({ ...prev, [r.id]: t }))} multiline maxLength={2000} />
+          <View style={styles.actions}>
+            <Button label="Approve and list" disabled={busy === r.id} onPress={() => void decide(r, 'approved')} />
+            <Button label="Ask for changes" variant="outline" disabled={busy === r.id} onPress={() => void decide(r, 'changes')} />
+            <Button label="Decline" variant="outline" disabled={busy === r.id} onPress={() => void decide(r, 'declined')} />
+          </View>
+        </>
+      )}
+    </Card>
+  );
+  return (
+    <>
+      <Text style={type.caption}>Founders apply for their coven to be listed in Find a coven after the founder’s training. Unlisted covens practise by invitation meanwhile.</Text>
+      {!waiting.length && <Text style={type.caption}>No coven is waiting to be listed.</Text>}
+      {waiting.map(card)}
+      {!!others.length && <Text style={type.eyebrow}>Answered</Text>}
+      {others.map(card)}
+      {message && <Notice>{message}</Notice>}
+    </>
+  );
+}
+
 function HeadsGone() {
   const [rows, setRows] = useState<HeadReport[] | null>(null);
   const [chosen, setChosen] = useState<Record<string, string>>({});
