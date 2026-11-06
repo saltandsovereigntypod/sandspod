@@ -3184,6 +3184,48 @@
         },
         {
           "category": "herbs",
+          "name": "Marjoram",
+          "icon": "🌿",
+          "keywords": [
+            "happiness",
+            "comfort in grief",
+            "love",
+            "protection of the home",
+            "health"
+          ],
+          "forms": [
+            {
+              "label": "Sprig",
+              "image": "../assets/altar/objects/herbs/marjoram/marjoram-sprig.png",
+              "type": "herb",
+              "herb": "marjoram",
+              "form": "sprig"
+            },
+            {
+              "label": "Loose",
+              "image": "../assets/altar/objects/herbs/marjoram/marjoram-loose.png",
+              "type": "herb",
+              "herb": "marjoram",
+              "form": "loose"
+            },
+            {
+              "label": "Oil",
+              "image": "../assets/altar/objects/herbs/marjoram/marjoram-oil.png",
+              "type": "oil",
+              "herb": "marjoram",
+              "form": "oil"
+            },
+            {
+              "label": "Incense",
+              "image": "../assets/altar/objects/herbs/incense/incense.png",
+              "type": "herb",
+              "herb": "marjoram",
+              "form": "incense"
+            }
+          ]
+        },
+        {
+          "category": "herbs",
           "name": "Meadowsweet",
           "icon": "🌿",
           "keywords": [
@@ -10859,6 +10901,17 @@
           "moon",
           "negativity",
           "clarity"
+        ],
+        "marjoram": [
+          "happiness",
+          "comfort in grief",
+          "love",
+          "protection of the home",
+          "health",
+          "air",
+          "mercury",
+          "grief comfort",
+          "home blessing"
         ]
       },
       "crystal": {

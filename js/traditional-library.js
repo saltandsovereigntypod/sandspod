@@ -3091,6 +3091,41 @@ const TraditionalLibrary = {
 
             tags: ["cleansing", "friendship", "negativity", "clarity", "renewal", "moon"]
         },
+
+        marjoram: {
+            DisplayName: "Marjoram",
+            Category: "Herb",
+
+            Element: "Air",
+
+            Planet: "Mercury",
+
+            Uses: "Happiness, comfort in grief, love, protection of the home, health",
+
+            PairsWith: "Thyme, rosemary, lavender, rose quartz",
+
+            Substitutions: "Oregano, thyme",
+
+            TraditionalWarnings: "Marjoram is safe in food amounts, but concentrated oil and large doses of the herb should be avoided in pregnancy. The oil can irritate skin and should be diluted.",
+
+            Overview: "Sweet marjoram (Origanum majorana) is a small, tender, bushy Mediterranean herb of the mint family, with soft, rounded, grey-green leaves and knot-like clusters of buds that gave it the old name ‘knotted marjoram’. The scent is warm, sweet and slightly camphor-like, milder than its relative oregano. The leaves and flowering tops are the parts used, fresh or dried, along with the essential oil.",
+
+            TraditionalMeaning: "Joy and comfort; a gentle herb of love, blessing and the kind of calm that follows a loss.",
+
+            HowToUse: "Start here: rub a dried leaf between your fingers and breathe in its sweet scent before you begin. Dried leaf goes into sachets, jars, bath blends and household blessings, and keeps well for a year if sealed away from light. Sprigs can be strewn at a threshold or set at a table to bless a meal. Dilute the oil before dressing candles or objects.",
+
+            PairingNotes: "Marjoram pairs well with thyme for courage and health, rosemary for remembrance, lavender for calm, and rose quartz for tenderness. White, pink and pale yellow candles suit it.",
+
+            SubstitutionNotes: "Oregano can substitute for marjoram in protection and home workings, though its scent is stronger and sharper. Thyme can stand in for health and courage.",
+
+            SafetyAndRespect: "Marjoram is a common cooking herb and is safe as food. Avoid medicinal amounts of the herb or oil in pregnancy and with blood-thinning or diabetes medicines, and keep oils away from pets, children and eyes. Magical use, including grief rituals, should not replace support from a doctor, counsellor or the people around you.",
+
+            Traditions: "Hellenic, Wheel of the Year",
+
+            TraditionNotes: "Hellenic: In Greek and Roman tradition marjoram (amarakos or sampsuchon) was given to Aphrodite, who was said to have created it, and it was planted on graves so that the dead might rest in peace and happiness. Marjoram garlands were worn at weddings.\n\nWheel of the Year: Marjoram is harvested in late summer just before it flowers and is used in modern practice at Litha and Lammas for blessing the home and for love charms.\n\nFolk & wider practice: In medieval and later Europe marjoram was strewn on floors, put in nosegays, and used in love charms: an English rhyme says a girl who sleeps with marjoram under her pillow will dream of her future husband. Modern correspondence tables give it to Mercury and Air.",
+
+            tags: ["happiness", "grief comfort", "love", "home blessing", "health", "mercury"]
+        },
     },
 
     crystal: {
