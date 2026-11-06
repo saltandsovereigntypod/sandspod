@@ -4,7 +4,7 @@ import { ActivityIndicator, Pressable, StyleSheet, Text, TextInput, View } from 
 import { altarPicture, useImageRatio, useImageRatioVersion } from '../../lib/altar/assets';
 import { AltarImage } from './AltarImage';
 import { imageRatio } from '../../lib/altar/geometry';
-import { cabinetEntry, topUses } from '../../lib/altar/companion';
+import { keywordLine } from '../../lib/altar/cabinetKeywords';
 import { cabinetCategoriesFor, cabinetItemsFor, deityPantheon, formImage, formObjectLabel, overrideKey, PANTHEON_GROUPS, placeableForms, shortLabel } from '../../lib/altar/cabinet';
 import { pickImage, type PickedImage } from '../../lib/altar/images';
 import { FAVOURITES_CATEGORY, favouriteItems, favouriteKey } from '../../lib/altar/cabinetFavourites';
@@ -58,7 +58,6 @@ export function CabinetSheet({
   inline,
   items,
   overrides,
-  library,
   onClose,
   onPlace,
   onAltar = [],
@@ -154,10 +153,9 @@ export function CabinetSheet({
       (category === FAVOURITES_CATEGORY ? favouriteItems(items, favourites) : cabinetItemsFor(items, category, search))
         .map((item) => ({ item, forms: placeableForms(item, overrides) }))
         .filter((entry) => entry.forms.length > 0)
-        // Things the Living Library has no page for say a few words of their own (shelf.ts);
-        // an offering always says what it is, not what its vessel is for, and a seasonal thing names its festivals.
-        .map((entry) => ({ ...entry, uses: ((entry.item.category === 'offerings' || entry.item.category === 'seasonal') && entry.item.description) || topUses(cabinetEntry(library, entry.item, entry.forms[0])) || entry.item.description || '' })),
-    [items, category, search, overrides, library, favourites],
+        // One small line of up to four keywords under the name; the full description is in the detail sheet.
+        .map((entry) => ({ ...entry, uses: keywordLine(entry.item.keywords) })),
+    [items, category, search, overrides, favourites],
   );
 
   // A search looks in every drawer at once (lib/altar/itemIndex.ts, as the coven ritual planner's Items picker).
@@ -180,7 +178,7 @@ export function CabinetSheet({
       key={item.id}
       label={item.name}
       uses={uses}
-      spoken={`Place ${shortLabel(formObjectLabel(item, forms[0]))}${uses ? `. For ${uses.replace(' · ', ' and ')}` : ''}`}
+      spoken={`Place ${shortLabel(formObjectLabel(item, forms[0]))}${uses ? `. ${uses.replace(/ · /g, ', ')}` : ''}`}
       image={formImage(item, forms[0], overrides)}
       count={countOf(item, forms[0])}
       onPress={() => placeIt(item, forms[0])}
@@ -317,7 +315,7 @@ export function CabinetSheet({
                   {item.name}
                   {item.customCabinetItemId ? '  ·  yours' : ''}
                 </Text>
-                {!!uses && <Text style={[styles.uses, styles.usesLeft]}>{uses}</Text>}
+                {!!uses && <Text style={[styles.uses, styles.usesLeft]} numberOfLines={1}>{uses}</Text>}
               </View>
               {!!onToggleFavourite && <Star on={favourites.includes(favouriteKey(item))} label={item.name} onPress={() => onToggleFavourite(favouriteKey(item))} />}
               {!!onOwn && <Own owned={ownedIt(item, forms)} label={item.name} onPress={() => onOwn(item, forms[0])} />}
@@ -332,7 +330,7 @@ export function CabinetSheet({
                 <Tile
                   key={`${form.form}-${form.label}`}
                   label={form.label}
-                  spoken={`Place ${shortLabel(formObjectLabel(item, form))}${uses ? `. For ${uses.replace(' · ', ' and ')}` : ''}`}
+                  spoken={`Place ${shortLabel(formObjectLabel(item, form))}${uses ? `. ${uses.replace(/ · /g, ', ')}` : ''}`}
                   image={formImage(item, form, overrides)}
                   count={countOf(item, form)}
                   onPress={() => placeIt(item, form)}
@@ -503,7 +501,7 @@ function Tile({
         {label}
       </Text>
       {!!uses && (
-        <Text style={styles.uses} numberOfLines={2}>
+        <Text style={styles.uses} numberOfLines={1}>
           {uses}
         </Text>
       )}
