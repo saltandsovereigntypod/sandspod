@@ -8,11 +8,19 @@
 
 import { DEFAULT_LISTEN_MIX } from '../../meditation/listen.ts';
 import { cleanMix, LAYERS, type SoundMix } from '../../meditation/sound.ts';
+import { programById, compile, type Compiled } from '../../meditation/programs.ts';
 import { warmupOf } from './warmups.ts';
 
 export const PSYCHIC_SETTINGS_KEY = 'psychic.dropin';
 
-export type DropSoundId = 'none' | 'descent' | 'theta' | 'alpha' | 'drone' | 'bowls' | 'forks' | 'forks-ground' | 'rain' | 'listen';
+/** Binaural programs offered before an exercise: id, and what it suits. */
+export const DROP_PROGRAMS: { id: string; program: string; label: string; line: string }[] = [
+  { id: 'prog-divination', program: 'divination', label: 'Program: Divination', line: 'A receptive 6 Hz that eases up to clear attention at the end: before tarot, pendulum or scrying (headphones).' },
+  { id: 'prog-obe', program: 'obe', label: 'Program: Out-of-body', line: 'A long descent to 4 Hz with a full return: before astral work or remote viewing (headphones).' },
+  { id: 'prog-trance', program: 'trance', label: 'Program: Journeying', line: 'Theta at 4.5 Hz with a return: before pathworking (headphones).' },
+  { id: 'prog-centering', program: 'centering', label: 'Program: Centering', line: 'Steady alpha, then back to clear attention (headphones).' },
+];
+export type DropSoundId = `prog-${string}` | 'none' | 'descent' | 'theta' | 'alpha' | 'drone' | 'bowls' | 'forks' | 'forks-ground' | 'rain' | 'listen';
 
 export const DROP_SOUNDS: { id: DropSoundId; label: string; line: string; mix: SoundMix | null }[] = [
   { id: 'none', label: 'No sound', line: 'Drop in in silence.', mix: null },
@@ -24,6 +32,7 @@ export const DROP_SOUNDS: { id: DropSoundId; label: string; line: string; mix: S
   { id: 'forks', label: 'Tuning forks', line: 'The planetary forks struck now and then, each ringing out, over a quiet drone.', mix: cleanMix({ levels: { forks: 0.6, drone: 0.2 }, forkSet: 'cosmic', forkEvery: 60 }) },
   { id: 'forks-ground', label: 'Forks: 128 + 136.1 Hz', line: 'The grounding and OM forks struck together, then the OM pair, beating slowly.', mix: cleanMix({ levels: { forks: 0.6 }, forkSet: 'pairs', forkEvery: 60 }) },
   { id: 'rain', label: 'Rain and theta', line: 'Rain with a gentle theta beat under it.', mix: cleanMix({ levels: { rain: 0.5, binaural: 0.3 }, binaural: 'theta6' }) },
+  ...DROP_PROGRAMS.map((p) => ({ id: p.id as DropSoundId, label: p.label, line: p.line, mix: cleanMix({ levels: { pink: 0.2 } }) })),
   { id: 'listen', label: 'My last Listen mix', line: 'Whatever you last set up under Meditation, Listen.', mix: null },
 ];
 
@@ -171,4 +180,12 @@ export type MeditationUse = { sound: boolean; preset: string; guided: boolean; d
 export function meditationUse(s: PsychicSettings, soundPlaying: boolean, guidedUsed: boolean, dropMs: number): MeditationUse | undefined {
   if (!soundPlaying && !guidedUsed) return undefined;
   return { sound: soundPlaying, preset: soundPlaying ? s.sound : 'none', guided: guidedUsed, dropMs: Math.max(0, Math.round(dropMs)) };
+}
+
+/** The program a setting plays, compiled to the drop-in's length (at least 5 minutes) and volume, or null. */
+export function dropProgram(s: Pick<PsychicSettings, 'sound' | 'dropMinutes' | 'volume'>): Compiled | null {
+  const row = DROP_PROGRAMS.find((p) => p.id === s.sound);
+  const p = row ? programById(row.program) : null;
+  if (!p) return null;
+  return { ...compile(p, Math.max(5, s.dropMinutes ?? p.length)), volume: s.volume };
 }

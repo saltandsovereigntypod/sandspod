@@ -85,6 +85,11 @@ export default function Listen() {
       <Body muted>Binaural beats, noise, rain, fire, a drone, a drum or bowls, on their own: to rest, read, work or fall quiet to. The same layers you can play with a sit.</Body>
 
       <Card>
+        <Body>Want a session that changes as it goes?</Body>
+        <Button label="Binaural programs" variant="outline" onPress={() => router.push('/rituals/craft/meditation/programs')} />
+      </Card>
+
+      <Card>
         <Text style={styles.clock} accessibilityLabel={run ? (state.leftMs !== null ? `${clockLabel(state.leftMs)} left` : `${clockLabel(elapsed)} so far`) : 'Not playing'}>
           {run ? clockLabel(state.leftMs ?? elapsed) : timerLabel(minutes)}
         </Text>

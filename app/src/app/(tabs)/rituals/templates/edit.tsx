@@ -3,14 +3,15 @@ import { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
 import { Button } from '../../../../components/Button';
-import { Card, Chip, Chips, Field, Notice, RitualScreen, SectionLabel, SignInCard, Title, confirmAction, tell, ui } from '../../../../components/rituals/ui';
+import { Card, Chip, Chips, Expander, Field, Notice, RitualScreen, SectionLabel, SignInCard, Title, confirmAction, tell, ui } from '../../../../components/rituals/ui';
 import { anyIntent } from '../../../../lib/craft/cosmic/timing';
 import { useGrimoire } from '../../../../lib/grimoire/store';
 import { savePlanWithCalendar } from '../../../../lib/reminders/calendarStore';
 import { askForRitualReminders } from '../../../../lib/reminders/store';
 import { clockTime, dayLabel } from '../../../../lib/rituals/format';
 import { planFor, readSetFor, type SetForParams } from '../../../../lib/rituals/setFor';
-import { CANDLE_ACTIONS, candleAction, withCandleAction } from '../../../../lib/rituals/automation';
+import { PROGRAMS, programById } from '../../../../lib/meditation/programs';
+import { CANDLE_ACTIONS, candleAction, programOf, withCandleAction, withProgram } from '../../../../lib/rituals/automation';
 import { blankStep, draftFromTemplate, validateDraft } from '../../../../lib/rituals/lifecycle';
 import { archiveTemplate, saveTemplate, useRituals } from '../../../../lib/rituals/store';
 import type { StepDraft, TemplateDraft } from '../../../../lib/rituals/types';
@@ -183,6 +184,22 @@ export default function TemplateEditor() {
                 </Chips>
               </View>
             ))}
+            <Expander title={programOf(step.actions) ? `Play a program: ${programById(programOf(step.actions)!.id)?.title ?? ''}` : 'Play a program'}>
+              <Text style={type.caption}>A binaural program to play during this step (headphones). The step then offers a Play button.</Text>
+              <Chips>
+                <Chip label="None" selected={!programOf(step.actions)} onPress={() => changeStep(index, { actions: withProgram(step.actions, null) })} />
+                {PROGRAMS.filter((p) => !p.dynamic).map((p) => (
+                  <Chip key={p.id} label={p.title} selected={programOf(step.actions)?.id === p.id} onPress={() => changeStep(index, { actions: withProgram(step.actions, { id: p.id, minutes: p.length }), ...(step.minutes.trim() ? {} : { minutes: String(p.length) }) })} />
+                ))}
+              </Chips>
+              {programOf(step.actions) && (
+                <Chips>
+                  {(programById(programOf(step.actions)!.id)?.lengths ?? []).map((m) => (
+                    <Chip key={m} label={`${m} min`} selected={programOf(step.actions)!.minutes === m} onPress={() => changeStep(index, { actions: withProgram(step.actions, { id: programOf(step.actions)!.id, minutes: m }), minutes: String(m) })} />
+                  ))}
+                </Chips>
+              )}
+            </Expander>
             <Chips>
               {index > 0 && <Chip label="Move up" a11yLabel={`Move step ${index + 1} up`} onPress={() => move(index, -1)} />}
               {index < draft.steps.length - 1 && (
