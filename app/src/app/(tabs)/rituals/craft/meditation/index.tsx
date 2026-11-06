@@ -15,9 +15,11 @@ import { FOCUSES } from '../../../../../lib/meditation/focus';
 import { kindLabel, MOOD_WORDS, normalizeSit, SIT_KINDS, sitLine, SITS } from '../../../../../lib/meditation/log';
 import { minutesWords, sitStats } from '../../../../../lib/meditation/patterns';
 import { suggestionsFor, yearFestivals, type Suggestion } from '../../../../../lib/meditation/programmes';
-import { PRESETS, presetParams, SCRIPTS } from '../../../../../lib/meditation/scripts';
+import { PRESETS, presetParams, SCRIPTS, type ScriptId } from '../../../../../lib/meditation/scripts';
 import { mixLine, mixOn } from '../../../../../lib/meditation/sound';
-import { planLine } from '../../../../../lib/meditation/timer';
+import { planLine, type SitPlan } from '../../../../../lib/meditation/timer';
+import { voiceMinMinutes } from '../../../../../lib/meditation/voice';
+import { scriptVoice } from '../../../../../lib/meditation/voiceTracks';
 import { useMySettings } from '../../../../../lib/settings/store';
 import { myDeities } from '../../../../../lib/patron/mine';
 import { localDateKey } from '../../../../../lib/rituals/lifecycle';
@@ -35,6 +37,8 @@ export default function MeditationHome() {
   const [mix, setMix] = useLastMix();
   const [extras, setExtras] = useState<SitExtras>(NO_EXTRAS);
   const [withSound, setWithSound] = useState(false);
+  const [voiceOn, setVoiceOn] = useState(true);
+  const [captions, setCaptions] = useState(true);
   const { entries, ready } = useCraft<unknown>(SITS);
   const sigils = useSigils();
   const { settings } = useMySettings();
@@ -49,6 +53,22 @@ export default function MeditationHome() {
   const go = (href: string) => () => router.push(href as Href);
   const set = (patch: Partial<SitExtras>) => setExtras({ ...extras, ...patch });
   const chosen: SitExtras = { ...extras, sound: withSound && mixOn(mix) ? mix : null };
+  // A script Ashley has recorded: read aloud, with its own sound to start from, and at least as long as the recording needs.
+  const track = scriptVoice(extras.script);
+  const voiced = !!track && voiceOn;
+  const minMinutes = voiced ? voiceMinMinutes(track) : 0;
+  const sitPlan: SitPlan = plan.minutes !== null && plan.minutes < minMinutes ? { ...plan, minutes: minMinutes } : plan;
+  const voiceParams: Record<string, string> = voiced ? { voice: track.id, ...(captions ? {} : { captions: '0' }) } : {};
+  const suggestMix = (id: ScriptId | null, on: boolean) => {
+    const t = on ? scriptVoice(id) : null;
+    if (!t) return;
+    setMix(t.suggestedMix);
+    setWithSound(mixOn(t.suggestedMix));
+  };
+  const chooseScript = (id: ScriptId | null) => {
+    set({ script: id });
+    suggestMix(id, voiceOn);
+  };
   const suggest = (s: Suggestion) => () => beginSit(plan, { ...chosen, kind: s.kind, script: s.script, intention: s.intention ?? chosen.intention, programme: s.programme ?? '', step: s.step ?? '' });
 
   return (
@@ -65,7 +85,8 @@ export default function MeditationHome() {
       <View style={ui.gapSmall}>
         <SectionLabel>Sit</SectionLabel>
         <Card>
-          <PlanForm plan={plan} onChange={setPlan} />
+          <PlanForm plan={sitPlan} onChange={setPlan} minMinutes={minMinutes} />
+          {voiced && plan.minutes !== null && plan.minutes < minMinutes && <Body muted>{`Read aloud, this one needs at least ${minMinutes} minutes, so it’s set to that.`}</Body>}
           <Expander title="What you bring to it">
             <Field label="An intention (optional)" value={extras.intention} onChange={(intention) => set({ intention })} />
             <Body muted>How you feel now</Body>
@@ -86,12 +107,27 @@ export default function MeditationHome() {
           <Expander title="Guidance on screen">
             <Body muted>One line at a time, paced to the length of your sit.</Body>
             <Chips>
-              <Chip label="None" selected={!extras.script} onPress={() => set({ script: null })} />
+              <Chip label="None" selected={!extras.script} onPress={() => chooseScript(null)} />
               {SCRIPTS.map((s) => (
-                <Chip key={s.id} label={s.title} selected={extras.script === s.id} onPress={() => set({ script: s.id })} />
+                <Chip key={s.id} label={scriptVoice(s.id) ? `${s.title} (read aloud)` : s.title} selected={extras.script === s.id} onPress={() => chooseScript(s.id)} />
               ))}
             </Chips>
             {extras.script && <Body muted>{SCRIPTS.find((s) => s.id === extras.script)!.source}</Body>}
+            {track && (
+              <>
+                <Toggle
+                  label="Guided by voice"
+                  detail={`Read aloud by Ashley. Her words are kept whole and the quiet between them stretches to fit your sit, from ${minMinutes || voiceMinMinutes(track)} minutes. The sound dips a little while she speaks.`}
+                  value={voiceOn}
+                  onChange={(on) => {
+                    setVoiceOn(on);
+                    suggestMix(extras.script, on);
+                  }}
+                />
+                {voiceOn && <Toggle label="Show the words as well" detail="Each line on screen as it’s read." value={captions} onChange={setCaptions} />}
+                {voiceOn && <Body muted>The sound below is set to go with it. Change it as you like.</Body>}
+              </>
+            )}
           </Expander>
           <Expander title="Something to look at">
             <Chips>
@@ -116,8 +152,8 @@ export default function MeditationHome() {
             {withSound && <Button label="Use my last Listen mix" variant="text" onPress={() => void lastListenMix().then((m) => m && setMix(m))} />}
             {withSound && <SoundForm mix={mix} onChange={setMix} />}
           </Expander>
-          <Body muted>{[planLine(plan), chosen.sound ? mixLine(chosen.sound) : ''].filter(Boolean).join(' · ')}</Body>
-          <Button label="Begin" onPress={() => beginSit(plan, chosen)} />
+          <Body muted>{[planLine(sitPlan), voiced ? 'Guided by voice' : '', chosen.sound ? mixLine(chosen.sound) : ''].filter(Boolean).join(' · ')}</Body>
+          <Button label="Begin" onPress={() => beginSit(sitPlan, chosen, voiceParams)} />
         </Card>
       </View>
 

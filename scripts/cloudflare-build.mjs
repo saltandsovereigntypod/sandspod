@@ -17,7 +17,9 @@
 //
 // Everything under assets/ goes, the altar's object pictures as both the
 // original PNGs (saved altars name them) and the WebP twins the pages show
-// (scripts/build-altar-object-webp.py). Workers static assets take at most
+// (scripts/build-altar-object-webp.py). So does audio/, Ashley's recorded
+// meditations (/audio/meditation/<track>/, served as files: worker/routing.js
+// STATIC_PREFIXES). Workers static assets take at most
 // 20,000 files of at most 25 MiB each; the build stops if dist/ outgrows that.
 import { execFileSync } from "node:child_process";
 import { cpSync, existsSync, mkdirSync, readFileSync, readdirSync, rmSync, statSync, writeFileSync } from "node:fs";

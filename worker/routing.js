@@ -16,7 +16,7 @@ export const REPLACED_SECTIONS = ["today", "altar", "practice", "rituals", "cove
 export const KEPT_IN_REPLACED = ["covens/guidelines", "covens/covens.css"];
 
 /** Paths always answered by the static site. */
-const STATIC_PREFIXES = ["/blog/", "/submit/", "/help/", "/admin/", "/css/", "/js/", "/covens/guidelines/"];
+const STATIC_PREFIXES = ["/blog/", "/submit/", "/help/", "/admin/", "/css/", "/js/", "/covens/guidelines/", "/audio/"];
 const STATIC_EXACT = new Set(["/", "/index.html", "/privacy.html", "/submission-terms.html", "/delete-account.html", "/blog", "/submit", "/help", "/admin", "/covens/guidelines", "/covens/covens.css"]);
 
 /** Each old section's first page in the app: where an old address with no closer match goes. */

@@ -26,7 +26,8 @@ export function useLastPlan(): [SitPlan, (p: SitPlan) => void] {
   return [plan, change];
 }
 
-export function PlanForm({ plan, onChange, brief }: { plan: SitPlan; onChange: (p: SitPlan) => void; brief?: boolean }) {
+/** `minMinutes`: the shortest it may be (a recorded voice needs room); shorter lengths aren't offered. */
+export function PlanForm({ plan, onChange, brief, minMinutes = 0 }: { plan: SitPlan; onChange: (p: SitPlan) => void; brief?: boolean; minMinutes?: number }) {
   const [custom, setCustom] = useState(plan.minutes !== null && !(LENGTHS as readonly number[]).includes(plan.minutes) ? String(plan.minutes) : '');
   const set = (patch: Partial<SitPlan>) => onChange({ ...plan, ...patch });
   const pick = (minutes: number | null) => {
@@ -37,7 +38,7 @@ export function PlanForm({ plan, onChange, brief }: { plan: SitPlan; onChange: (
     <View style={ui.gap}>
       <Body muted>How long</Body>
       <Chips>
-        {LENGTHS.map((m) => (
+        {LENGTHS.filter((m) => m >= minMinutes).map((m) => (
           <Chip key={m} label={`${m} min`} selected={plan.minutes === m && !custom} onPress={() => pick(m)} />
         ))}
         <Chip label="Open-ended" selected={plan.minutes === null} onPress={() => pick(null)} />
@@ -49,7 +50,7 @@ export function PlanForm({ plan, onChange, brief }: { plan: SitPlan; onChange: (
         onChange={(t) => {
           setCustom(t);
           const n = cleanPlan({ minutes: t }).minutes;
-          if (t.trim() && n !== null && String(n) === t.trim()) set({ minutes: n });
+          if (t.trim() && n !== null && String(n) === t.trim() && n >= minMinutes) set({ minutes: n });
         }}
       />
       {!brief && (
