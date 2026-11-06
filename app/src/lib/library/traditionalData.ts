@@ -5059,6 +5059,33 @@ export const TRADITIONAL_LIBRARY: TraditionalLibraryData = {
         "spiritual growth",
         "saturn"
       ]
+    },
+    "staurolite": {
+      "DisplayName": "Staurolite",
+      "Category": "Crystal",
+      "Element": "Earth",
+      "Planet": "Saturn",
+      "Chakra": "Root",
+      "Uses": "Protection of travellers, luck, connection to nature spirits, grounding, comfort in grief",
+      "PairsWith": "Smoky quartz, black tourmaline, moss agate, green candle",
+      "Cleansing": "Earth, smoke, sound",
+      "TraditionalWarnings": "Staurolite is hard and stable, but the cross arms can snap. Some ‘fairy crosses’ sold are cast or made of resin or ceramic, and some are carved from other stone, so check that a piece shows the natural twin faces.",
+      "Overview": "Staurolite is an iron-magnesium-aluminium silicate of Mohs hardness 7–7.5, a reddish-brown to black mineral that forms twinned crystals. Twinned at 60 or 90 degrees, the crystals cross into the shape of a Greek cross or an X, which are called ‘fairy crosses’ or ‘fairy stones’. The name is from the Greek stauros, ‘cross’. It is found in Virginia, Georgia and North Carolina in the USA, in Brittany, Switzerland and Russia, and is sold as natural crosses, tumbled stones, pendants and chips.",
+      "TraditionalMeaning": "The fairy cross: a stone of luck and protection from journeys and ill will, with folk stories of tears of fairies.",
+      "HowToUse": "Start here: carry a natural fairy cross in a pocket or bag as a travel charm, and hold it when you set out and when you return. Crosses suit pendants, tumbled stones suit pockets, and chips can go in jars for protection. Keep it dry and clean; a rinse and dry is enough.",
+      "PairingNotes": "Staurolite pairs well with smoky quartz for grounding, black tourmaline for protection, moss agate for nature, and jet for gentle mourning. Green, brown and white candles suit it.",
+      "CleansingNotes": "Cleanse staurolite with earth, smoke, sound, or visualization. A rinse in water and a dry is fine; avoid salt and hard knocks, as the arms can break.",
+      "SafetyAndRespect": "Staurolite is safe to handle, but the crosses have rough edges that can scratch, and the dust from cutting any hard stone is harmful. Because the natural crosses are collected from the ground, buy from sellers who say where and how they were dug. The fairy stone folklore is traditional folk belief from Virginia, Brittany and elsewhere, and the cross shape belongs to a Christian symbol as well as to natural mineral lore; use it with respect for both.",
+      "Traditions": "Christian, Wheel of the Year",
+      "TraditionNotes": "Christian: In Brittany, Spain and elsewhere in Europe, natural cross-shaped stones were collected and worn as charms or gifted to pilgrims, and a Breton folk story says the crosses are tears shed by fairies on hearing of Christ’s death.\n\nWheel of the Year: Used by modern practitioners as a travel and protection charm, and set on the altar at Samhain and Imbolc for comfort and nature spirits.\n\nFolk & wider practice: In Virginia and the southern Appalachians, fairy crosses are the subject of stories among Cherokee and other peoples about the tears of the Little People, which belong to those peoples and should be credited to them rather than retold as general lore. Staurolite crosses were also reported to be gifts to US presidents, which helped make them fashionable, and Fairy Stone State Park in Virginia is named for them. Modern correspondence tables give staurolite to Saturn and Earth.",
+      "tags": [
+        "safe travel",
+        "luck",
+        "nature spirits",
+        "grounding",
+        "grief comfort",
+        "saturn"
+      ]
     }
   },
   "candle": {

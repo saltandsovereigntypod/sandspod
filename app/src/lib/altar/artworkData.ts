@@ -8301,6 +8301,47 @@ export const ALTAR_ARTWORK: {
       },
       {
         "category": "crystals",
+        "name": "Staurolite",
+        "keywords": [
+          "protection of travellers",
+          "luck",
+          "connection to nature spirits",
+          "grounding",
+          "comfort in grief"
+        ],
+        "forms": [
+          {
+            "label": "Point",
+            "image": "",
+            "type": "crystal",
+            "crystal": "staurolite",
+            "form": "point"
+          },
+          {
+            "label": "Chips",
+            "image": "../assets/altar/objects/crystals/staurolite/staurolite-chips.png",
+            "type": "crystal",
+            "crystal": "staurolite",
+            "form": "chips"
+          },
+          {
+            "label": "Cluster",
+            "image": "",
+            "type": "crystal",
+            "crystal": "staurolite",
+            "form": "cluster"
+          },
+          {
+            "label": "Tumbled",
+            "image": "../assets/altar/objects/crystals/staurolite/staurolite-tumbled.png",
+            "type": "crystal",
+            "crystal": "staurolite",
+            "form": "tumbled"
+          }
+        ]
+      },
+      {
+        "category": "crystals",
         "name": "Sunstone",
         "keywords": [
           "joy",
@@ -12922,6 +12963,19 @@ export const ALTAR_ARTWORK: {
         "heart",
         "crown",
         "energy awakening"
+      ],
+      "staurolite": [
+        "protection of travellers",
+        "luck",
+        "connection to nature spirits",
+        "grounding",
+        "comfort in grief",
+        "earth",
+        "saturn",
+        "root",
+        "safe travel",
+        "nature spirits",
+        "grief comfort"
       ]
     },
     "deity": {
