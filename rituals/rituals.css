@@ -3,6 +3,7 @@
 .rt-head-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
 .rt-text-link { color: var(--gold); text-decoration: underline; text-underline-offset: 3px; }
 .rt-text-link:hover, .rt-text-link:focus-visible { color: var(--cream); }
+button.rt-text-link { background: none; border: 0; padding: 0.25rem 0; margin-right: 1rem; font: inherit; cursor: pointer; }
 .rt-quiet { border-color: transparent; }
 .rt-status[data-tone="problem"] { color: var(--cream); border-left-color: #d98b6a; }
 .rt-narrow { max-width: 220px; }

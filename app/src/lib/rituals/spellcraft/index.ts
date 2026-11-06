@@ -11,7 +11,7 @@ import type { Ingredient, JournalRow, StepDraft, TemplateDraft, TemplateRow } fr
 import { whatWorks, type Tally } from '../whatWorks.ts';
 import { methodOf, methodSteps, SPELL_METHODS } from './methods.ts';
 import { blankSpec, specFromDraft, specFromTemplate, SPELL_VERSION, type SpellMethodKey, type SpellSpec } from './spec.ts';
-import { libraryEntryOf, spellIntent, SPELL_INTENTS, TIDE_LABELS, WEEKDAY_OF } from './suggest.ts';
+import { libraryEntryOf, offeringFor, spellIntent, SPELL_INTENTS, TIDE_LABELS, WEEKDAY_OF } from './suggest.ts';
 
 export * from './methods.ts';
 export * from './spec.ts';
@@ -24,6 +24,46 @@ function list(names: string[]): string {
 
 /** "Love" for the intent, or null. */
 export const intentLabel = (spec: Pick<SpellSpec, 'intent'>): string | null => spellIntent(spec.intent)?.label ?? null;
+
+// ── The petition ──────────────────────────────────────────────────────────
+
+/** What keeps a working within its bounds, by intent: said as part of the ask. */
+const PETITION_BOUNDS: Record<string, string> = {
+  love: 'Let it come freely, without bending anyone’s will, and only where it is wanted in return.',
+  money: 'Let it come by honest means, and take nothing that belongs to another.',
+  protection: 'Let it guard and not strike; let what is turned away go harmlessly on its way.',
+  banishing: 'Let it go cleanly, harming no one as it goes.',
+  healing: 'Let it work alongside the care of those who tend me, never in place of it.',
+  communication: 'Let me speak truly and hear truly in return.',
+  ancestors: 'I ask only what is mine to ask, from those who are willing.',
+};
+const PETITION_BOUND = 'Let it come in a way that harms no one, in its own good time.';
+
+/**
+ * A petition drafted from the spell's own choices, to change freely: who it is
+ * addressed to, the ask in the person's words, what has been gathered, a bound
+ * on the working, thanks, and a close. A starting place, never a formula.
+ */
+export function petitionDraft(spec: Pick<SpellSpec, 'intent' | 'purpose' | 'deities' | 'ingredients'>, offering: (key: string) => string = (key) => offeringFor(key)): string {
+  const intent = spellIntent(spec.intent);
+  const purpose = spec.purpose.trim().replace(/[.\s]+$/, '') || (intent ? `${intent.label.toLowerCase()}` : 'what I need');
+  const names = spec.deities.map((d) => d.name);
+  const gathered = spec.ingredients.map((i) => i.name.replace(/ Candle$/, ' candle').toLowerCase());
+  const gifts = [...new Set(spec.deities.map((d) => offering(d.key)).filter(Boolean))];
+  const lines = [
+    names.length ? `${list(names)}, I greet you and ask your help.` : 'To the powers I work with, and to my own will:',
+    `I ask for ${purpose}.`,
+    gathered.length ? `By ${list(gathered.slice(0, 6))}, gathered for this, let it be so.` : null,
+    PETITION_BOUNDS[intent?.key ?? ''] ?? PETITION_BOUND,
+    names.length ? `In thanks I offer ${gifts.length ? gifts[0] : 'what I have'}, freely given.` : 'I give thanks for what comes.',
+    'So be it.',
+  ];
+  return lines.filter((l): l is string => !!l).join('\n');
+}
+
+/** Where written petitions come from, honestly, for the builder's words step. */
+export const PETITION_NOTE =
+  'A petition is a request written down and addressed. It has a long history: Romano-British worshippers at Bath left lead tablets asking Sulis Minerva to return stolen goods, and Greek and Roman tablets bound or begged in the same way. Today’s shape (greet, ask, bound, thank, close) is a modern habit, not a rule. “So mote it be” comes from a medieval masons’ poem by way of modern Wicca; “so be it” or your own words do as well. Write it by hand if you can, in your own words.';
 
 /** The ritual planner's intention key for the spell ("money" → "prosperity"), or null. */
 export const plannerKeyOf = (spec: Pick<SpellSpec, 'intent'>): string | null => spellIntent(spec.intent)?.plannerKey ?? null;

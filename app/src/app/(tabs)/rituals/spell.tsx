@@ -51,6 +51,8 @@ import {
   suggestMaterials,
   suggestMoons,
   WORDS_STARTERS,
+  petitionDraft,
+  PETITION_NOTE,
   migrateSpec,
   type SpellSpec,
   type SuggestType,
@@ -434,6 +436,18 @@ export default function SpellBuilder() {
         {!!intent && WORDS_STARTERS[intent.key] && spec.words.trim() !== WORDS_STARTERS[intent.key] && (
           <Button label="Start from a simple line" variant="text" accessibilityHint={WORDS_STARTERS[intent.key]} onPress={() => update({ words: spec.words.trim() ? `${spec.words.trim()}\n${WORDS_STARTERS[intent.key]}` : WORDS_STARTERS[intent.key] })} />
         )}
+        <Button
+          label="Draft a petition from my choices"
+          variant="text"
+          accessibilityHint="Greets the gods you chose, asks in your words, names what you gathered, sets a bound and gives thanks. Change anything."
+          onPress={() => {
+            const draft = petitionDraft(spec);
+            update({ words: spec.words.trim() ? `${spec.words.trim()}\n\n${draft}` : draft });
+          }}
+        />
+        <Expander title="About petitions">
+          <Body muted>{PETITION_NOTE}</Body>
+        </Expander>
       </View>
 
       <View style={ui.gapSmall}>
