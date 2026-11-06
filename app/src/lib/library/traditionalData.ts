@@ -2090,7 +2090,7 @@ export const TRADITIONAL_LIBRARY: TraditionalLibraryData = {
       "Category": "Herb",
       "Element": "Water",
       "Planet": "Moon",
-      "Uses": "Spiritual awakening, purity, rebirth, meditation, serenity",
+      "Uses": "Spiritual awakening, meditation, purification, dream work, devotion",
       "PairsWith": "Rose, sandalwood, jasmine, moonstone",
       "Substitutions": "Rose, jasmine",
       "TraditionalWarnings": "Blue lotus (Nymphaea caerulea) is a water lily, not a true lotus, and contains psychoactive alkaloids; it is restricted or banned in several countries. Sacred lotus is edible, but never ingest or smoke any lotus product you cannot identify.",
@@ -2109,6 +2109,32 @@ export const TRADITIONAL_LIBRARY: TraditionalLibraryData = {
         "meditation",
         "serenity",
         "moon"
+      ]
+    },
+    "apple_blossom": {
+      "DisplayName": "Apple Blossom",
+      "Category": "Herb",
+      "Element": "Water",
+      "Planet": "Venus",
+      "Uses": "Love, new beginnings, glamour, fertility, joy",
+      "PairsWith": "Rose, honeysuckle, rose quartz, apple wood",
+      "Substitutions": "Hawthorn blossom, cherry blossom",
+      "TraditionalWarnings": "Apple seeds contain a little cyanogenic compound and the leaves and twigs are not for eating; use only the blossom, and only from trees you know have not been sprayed. Some people with pollen allergies react to the blossom.",
+      "Overview": "Apple blossom is the spring flower of the apple tree (Malus domestica and wild crab apples): five-petalled, white flushed with pink, with a ring of yellow-tipped stamens and a light, sweet, slightly honeyed scent. It is sold dried as loose petals and whole flowers, and as a scented or infused oil; many people simply pick and dry their own from an unsprayed tree.",
+      "TraditionalMeaning": "Love, beauty and fresh beginnings; the short, bright promise of spring before the fruit.",
+      "HowToUse": "Start here: float one fresh blossom in a bowl of water on the altar and keep it only while it is fresh. Dry petals on paper out of the sun and store them sealed; they fade to cream but keep a faint scent. Add them to love and beauty sachets, spring bath blends and offerings. Apple blossom oil is usually fragrance, so check the label, and dilute any oil before dressing a candle.",
+      "PairingNotes": "Apple blossom pairs well with rose for love, honeysuckle for sweetness, rose quartz for tenderness, and apple wood or a dried apple slice for the whole tree. Pink and white candles suit it; green candles suit new growth.",
+      "SubstitutionNotes": "Hawthorn blossom can stand in for apple blossom in spring and love workings, and cherry blossom for beauty and renewal. Rose petals work where the focus is love alone.",
+      "SafetyAndRespect": "Only the blossom is used: apple seeds, leaves and bark are not for eating or brewing. Pick from trees you know are unsprayed, and take only a little so the tree can set fruit. Pollen can trigger hay fever and asthma. Wild crab apple blossom is as good as orchard apple; do not pick from protected orchards or other people’s trees without leave.",
+      "Traditions": "Celtic, Wheel of the Year",
+      "TraditionNotes": "Celtic: The apple is the sacred fruit of the Otherworld in Irish and Welsh tradition: Avalon is ‘the isle of apples’, and in Irish tales a silver apple branch with blossoms is the token that calls a mortal to the Otherworld. The apple is also one of the nobles of the wood in early Irish law texts, and quert in the Ogham is traditionally read as apple.\n\nWheel of the Year: Apple blossom opens in the weeks around Beltane and is brought in or floated for love and beauty, while the ripe fruit belongs to Mabon and Samhain; wassailing the orchard in midwinter is an English custom to bless next year’s blossom.\n\nFolk & wider practice: In English folk tradition, blossom on the tree out of season was a warning, and girls were said to divine a husband with apple peel. Modern correspondence tables give apple blossom to Venus and Water.",
+      "tags": [
+        "love",
+        "beauty",
+        "spring",
+        "beginnings",
+        "youth",
+        "venus"
       ]
     }
   },
@@ -4009,7 +4035,7 @@ export const TRADITIONAL_LIBRARY: TraditionalLibraryData = {
       "Element": "Earth",
       "Planet": "Mars",
       "Chakra": "Root",
-      "Uses": "Attraction, drawing luck, holding what you have, grounding, direction",
+      "Uses": "Attraction, fidelity, grounding, guidance, thrift",
       "PairsWith": "Iron filings, green candle, pyrite, red jasper",
       "Cleansing": "Smoke, sound, breath",
       "TraditionalWarnings": "Lodestone is magnetic and can wipe cards and disturb phones and watches; keep strong magnets away from pacemakers. It rusts if left wet.",

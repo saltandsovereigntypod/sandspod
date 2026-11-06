@@ -1216,6 +1216,48 @@
         },
         {
           "category": "herbs",
+          "name": "Apple Blossom",
+          "icon": "🌿",
+          "keywords": [
+            "love",
+            "new beginnings",
+            "glamour",
+            "fertility",
+            "joy"
+          ],
+          "forms": [
+            {
+              "label": "Sprig",
+              "image": "../assets/altar/objects/herbs/apple-blossom/apple-blossom-sprig.png",
+              "type": "herb",
+              "herb": "apple_blossom",
+              "form": "sprig"
+            },
+            {
+              "label": "Loose",
+              "image": "../assets/altar/objects/herbs/apple-blossom/apple-blossom-loose.png",
+              "type": "herb",
+              "herb": "apple_blossom",
+              "form": "loose"
+            },
+            {
+              "label": "Oil",
+              "image": "../assets/altar/objects/herbs/apple-blossom/apple-blossom-oil.png",
+              "type": "oil",
+              "herb": "apple_blossom",
+              "form": "oil"
+            },
+            {
+              "label": "Incense",
+              "image": "../assets/altar/objects/herbs/incense/incense.png",
+              "type": "herb",
+              "herb": "apple_blossom",
+              "form": "incense"
+            }
+          ]
+        },
+        {
+          "category": "herbs",
           "name": "Belladonna",
           "icon": "🌿",
           "keywords": [
@@ -2684,10 +2726,10 @@
           "icon": "🌿",
           "keywords": [
             "spiritual awakening",
-            "purity",
-            "rebirth",
             "meditation",
-            "serenity"
+            "purification",
+            "dream work",
+            "devotion"
           ],
           "forms": [
             {
@@ -5690,10 +5732,10 @@
           "icon": "💎",
           "keywords": [
             "attraction",
-            "drawing luck",
-            "holding what you have",
+            "fidelity",
             "grounding",
-            "direction"
+            "guidance",
+            "thrift"
           ],
           "forms": [
             {
@@ -10324,13 +10366,29 @@
         ],
         "lotus": [
           "spiritual awakening",
-          "purity",
-          "rebirth",
           "meditation",
-          "serenity",
+          "purification",
+          "dream work",
+          "devotion",
           "water",
           "moon",
-          "awakening"
+          "awakening",
+          "purity",
+          "rebirth",
+          "serenity"
+        ],
+        "apple-blossom": [
+          "love",
+          "new beginnings",
+          "glamour",
+          "fertility",
+          "joy",
+          "water",
+          "venus",
+          "beauty",
+          "spring",
+          "beginnings",
+          "youth"
         ]
       },
       "crystal": {
@@ -11132,14 +11190,15 @@
         ],
         "lodestone": [
           "attraction",
-          "drawing luck",
-          "holding what you have",
+          "fidelity",
           "grounding",
-          "direction",
+          "guidance",
+          "thrift",
           "earth",
           "mars",
           "root",
-          "luck"
+          "luck",
+          "direction"
         ]
       },
       "deity": {
