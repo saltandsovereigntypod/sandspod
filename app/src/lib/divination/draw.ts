@@ -10,13 +10,14 @@ import { isDeckId, type DeckId } from './decks.ts';
 import { layoutOf, RINGS, type Fall, type Laid, type Ring, type Shape } from './layout.ts';
 import { ownCard, ownMeaning, type OwnCard, type OwnDeckData, type OwnDeckEntry } from './oracle/decks.ts';
 import { KIPPER, type KipperCard } from './oracle/kipper.ts';
+import { PLAYING, PLAYING_ALL, JOKERS, type PlayingCard } from './oracle/playing.ts';
 import { LENORMAND, type LenormandCard } from './oracle/lenormand.ts';
 import { asOwnDeck, ORACLE_SPREADS } from './oracle/spreads.ts';
 import { BLANK_RUNE, FEDA, RUNES, type Stave } from './staves.ts';
 import { TAROT_DECK, type Meaning, type TarotCard } from './tarot.ts';
 
 /** What is drawn: tarot, runes, ogham, the Lenormand and Kipper decks, or a deck of your own ('oracle'). */
-export type DrawKind = 'tarot' | 'runes' | 'ogham' | 'lenormand' | 'kipper' | 'oracle';
+export type DrawKind = 'tarot' | 'runes' | 'ogham' | 'lenormand' | 'kipper' | 'playing' | 'oracle';
 
 export type Position = { name: string; about: string };
 
@@ -619,14 +620,16 @@ export const KINDS: { id: DrawKind; label: string; action: string }[] = [
   { id: 'ogham', label: 'Ogham', action: 'Draw the staves' },
   { id: 'lenormand', label: 'Lenormand', action: 'Shuffle and draw' },
   { id: 'kipper', label: 'Kipper', action: 'Shuffle and draw' },
+  { id: 'playing', label: 'Playing cards', action: 'Shuffle and draw' },
   { id: 'oracle', label: 'Your decks', action: 'Shuffle and draw' },
 ];
 
 /** The draw's choices, kept in settings so the app and the website agree. */
-export type DrawOptions = { reversals: boolean; blankRune: boolean };
+export type DrawOptions = { reversals: boolean; blankRune: boolean; jokers?: boolean };
 export const drawOptions = (settings: Record<string, unknown> | null | undefined): DrawOptions => ({
   reversals: settings?.divination_reversals === true,
   blankRune: settings?.divination_blank_rune === true,
+  jokers: settings?.divination_jokers === true,
 });
 
 // ─── Randomness ──────────────────────────────────────────────────────────
@@ -664,12 +667,13 @@ export function poolFor(kind: DrawKind, options: DrawOptions, deck?: OwnDeckData
   if (kind === 'runes') return [...RUNES.map((r) => r.name), ...(options.blankRune ? [BLANK_RUNE.name] : [])];
   if (kind === 'lenormand') return LENORMAND.map((c) => c.name);
   if (kind === 'kipper') return KIPPER.map((c) => c.name);
+  if (kind === 'playing') return [...PLAYING, ...(options.jokers ? JOKERS : [])].map((c) => c.name);
   if (kind === 'oracle') return deck ? deck.cards.map((c) => c.name) : [];
   return FEDA.map((f) => f.name);
 }
 
 /** Whether cards come up reversed: tarot when you've chosen reversals, a deck of your own when it's set to. Never Lenormand or Kipper. */
-const reverses = (kind: DrawKind, options: DrawOptions, deck?: OwnDeckData | null) => (kind === 'tarot' && options.reversals) || (kind === 'oracle' && !!deck?.reversals);
+const reverses = (kind: DrawKind, options: DrawOptions, deck?: OwnDeckData | null) => ((kind === 'tarot' || kind === 'playing') && options.reversals) || (kind === 'oracle' && !!deck?.reversals);
 
 /** Whether there are enough cards to fill a spread (a deck of your own may be small). */
 export const canDraw = (spread: Spread, options: DrawOptions, deck?: OwnDeckData | null) => poolFor(spread.kind, options, deck).length >= spread.positions.length;
@@ -732,6 +736,7 @@ export type DrawnMeaning = {
   gloss: string | null;
   lenormand?: LenormandCard;
   kipper?: KipperCard;
+  playing?: PlayingCard;
   /** A card from a deck of your own. */
   own?: OwnCard;
   /** A tarot card's reading in the deck it was drawn with: its title and picture there, and whose reading it is. */
@@ -752,6 +757,8 @@ export function meaningOf(item: Drawn, deck?: OwnDeckData | null, tarotDeck?: De
   if (len) return { name: len.name, glyph: null, card: null, reversed: false, meaning: len.meaning, gloss: `${len.number} · ${len.playingName}`, lenormand: len };
   const kip = KIPPER.find((c) => c.name === item.name);
   if (kip) return { name: kip.name, glyph: null, card: null, reversed: false, meaning: kip.meaning, gloss: `${kip.number} · ${kip.german}`, kipper: kip };
+  const pc = PLAYING_ALL.find((c) => c.name === item.name);
+  if (pc) return { name: pc.name, glyph: null, card: null, reversed: item.reversed, meaning: item.reversed ? pc.reversed : pc.meaning, gloss: pc.suit === 'joker' ? 'Joker' : pc.suit, playing: pc };
   const card = TAROT_DECK.find((c) => c.name === item.name);
   if (card) {
     const inDeck = deckMeaning(tarotDeck, card.id)!;
@@ -852,9 +859,9 @@ export function drawOfReading(
   const candidates = reading.method === 'oracle' ? ownDeckSpreads(custom) : [...SPREADS, ...custom].filter((s) => s.kind === reading.method);
   const spread = candidates.find((s) => (head === s.label || head.startsWith(`${s.label}${NOTE}`)) && s.positions.length === reading.drawn.length);
   if (!spread) return null;
-  const reversible = spread.kind === 'tarot' || spread.kind === 'oracle';
+  const reversible = spread.kind === 'tarot' || spread.kind === 'playing' || spread.kind === 'oracle';
   const items: Drawn[] = reading.drawn.map((name, i) => ({ name, reversed: reversible && (lines[i + 1] ?? '').includes(`${name}, reversed`) }));
-  const pool = poolFor(spread.kind, { reversals: true, blankRune: true }, deck?.data);
+  const pool = poolFor(spread.kind, { reversals: true, blankRune: true, jokers: true }, deck?.data);
   if (!items.every((item) => pool.includes(item.name))) return null;
   if (spread.cast) {
     // Where each rune fell is the start of its line: "Near the centre, face up: Fehu (…)".

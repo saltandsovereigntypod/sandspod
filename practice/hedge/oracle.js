@@ -33,6 +33,30 @@
         card?.name ?? item.name
       )}</span><span class="dv-kipper__german">${esc(card?.german ?? "")}</span></span></span>`;
     }
+    if (kind === "playing") {
+      const card = Dv.playing.playingCard(item.name);
+      const suit = card && Dv.playing.SUITS.find((x) => x.id === card.suit);
+      const ink = !suit || suit.colour === "red" ? "#a8261d" : "#1d1d22";
+      const glyph = suit ? suit.glyph : "\u2605";
+      const pips = {
+        2: [[50, 32], [50, 108]], 3: [[50, 32], [50, 70], [50, 108]], 4: [[34, 32], [66, 32], [34, 108], [66, 108]],
+        5: [[34, 32], [66, 32], [50, 70], [34, 108], [66, 108]], 6: [[34, 32], [66, 32], [34, 70], [66, 70], [34, 108], [66, 108]],
+        7: [[34, 32], [66, 32], [50, 51], [34, 70], [66, 70], [34, 108], [66, 108]],
+        8: [[34, 32], [66, 32], [50, 51], [34, 70], [66, 70], [50, 89], [34, 108], [66, 108]],
+        9: [[34, 28], [66, 28], [34, 56], [66, 56], [50, 70], [34, 84], [66, 84], [34, 112], [66, 112]],
+        10: [[34, 28], [66, 28], [50, 42], [34, 56], [66, 56], [34, 84], [66, 84], [50, 98], [34, 112], [66, 112]],
+      };
+      const rank = card ? card.rank : "";
+      const court = rank === "J" || rank === "Q" || rank === "K";
+      const text = (x, y, size, t, w) => `<text x="${x}" y="${y}" font-size="${size}" ${w ? 'font-weight="700" ' : ""}fill="${ink}" text-anchor="middle">${esc(t)}</text>`;
+      const index = card && card.suit === "joker" ? text(12, 22, 18, "\u2605", true) : text(12, 22, rank === "10" ? 15 : 18, rank, true) + text(12, 38, 15, glyph);
+      const body =
+        card && card.suit === "joker" ? text(50, 82, 50, "\u2605") + text(50, 112, 11, card.name.split(" ")[0].toUpperCase(), true)
+        : court ? `<rect x="24" y="26" width="52" height="88" rx="4" fill="none" stroke="${ink}" stroke-width="1.5"/>` + text(50, 78, 40, rank, true) + text(50, 102, 22, glyph)
+        : rank === "A" ? text(50, 92, 64, glyph)
+        : (pips[rank] || []).map(([x, y]) => text(x, y + 7, 20, glyph)).join("");
+      return `<span class="dv-face dv-front dv-card dv-playing${item.reversed ? " dv-card--reversed" : ""}"><svg viewBox="0 0 100 140" role="img" aria-label="${esc(item.name)}"><rect x="1.5" y="1.5" width="97" height="137" rx="8" fill="#fbf8ef" stroke="#8a8372" stroke-width="1.5"/>${index}<g transform="rotate(180 50 70)">${index}</g>${body}</svg></span>`;
+    }
     if (kind === "oracle") {
       const card = deck ? Dv.oracleDecks.ownCard(deck, item.name) : null;
       const photo = card && /^(https?:|data:image\/)/.test(card.photo) ? card.photo : "";
@@ -46,7 +70,7 @@
   }
 
   /** The flip's shape class for a kind of card. */
-  const shapeClass = (kind) => (kind === "lenormand" ? " dv-flip--lenormand" : kind === "kipper" ? " dv-flip--kipper" : "");
+  const shapeClass = (kind) => (kind === "lenormand" ? " dv-flip--lenormand" : kind === "kipper" ? " dv-flip--kipper" : kind === "playing" ? " dv-flip--playing" : "");
 
   // ------------------------------------------------------------------ pairs
 

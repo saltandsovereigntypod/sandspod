@@ -44,6 +44,8 @@ import { divinationReadingRoute, refForDrawn } from '../../../../lib/divination/
 import { wholeReading } from '../../../../lib/divination/wholeReading';
 import { deityLink, linkFromParams, linkKindOfSpread, linkLine, linkQuestion } from '../../../../lib/divination/linked';
 import { DECKS_COLLECTION, ownDeckById, ownDecks } from '../../../../lib/divination/oracle/decks';
+import { PLAYING_NOTE } from '../../../../lib/divination/oracle/playing';
+import { PlayingReads } from '../../../../components/divination/PlayingReads';
 import { KIPPER_NOTE } from '../../../../lib/divination/oracle/kipper';
 import { shownKinds } from '../../../../lib/divination/oracle/kinds';
 import { LENORMAND_NOTE } from '../../../../lib/divination/oracle/lenormand';
@@ -57,7 +59,7 @@ import { useSession } from '../../../../lib/session';
 import { useMySettings } from '../../../../lib/settings/store';
 import { colors, type } from '../../../../theme';
 
-const NOTES: Partial<Record<DrawKind, string>> = { ...STAVE_NOTES, lenormand: LENORMAND_NOTE, kipper: KIPPER_NOTE };
+const NOTES: Partial<Record<DrawKind, string>> = { ...STAVE_NOTES, lenormand: LENORMAND_NOTE, kipper: KIPPER_NOTE, playing: PLAYING_NOTE };
 
 // Draw cards, cast runes or draw ogham staves (or Lenormand, Kipper or a deck
 // of your own), turn them over, read what each means, and keep the draw in
@@ -472,6 +474,7 @@ export default function DrawScreen() {
           {!!shown.meaning.keywords && <Text style={[type.body, { color: colors.gold }]}>{shown.meaning.keywords}</Text>}
           <Body>{shown.meaning.text}</Body>
           {!shown.own && <ReadMore name={shown.name} deck={tarotDeck} />}
+          {!!shown.playing && <PlayingReads card={shown.playing} />}
         </Card>
       )}
 

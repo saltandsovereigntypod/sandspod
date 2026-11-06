@@ -6,7 +6,10 @@
 import { SYMBOLS as ANIMALS } from './symbols/animals-body-actions.ts';
 import { SYMBOLS as NATURE } from './symbols/nature-places.ts';
 import { SYMBOLS as PEOPLE } from './symbols/people-objects-spirit.ts';
+import { composer, hash, joinNames, roundRobin, stem, stems, tokens } from '../symbolReading.ts';
 import type { DreamSymbol, Feeling } from './symbols/types.ts';
+
+export { stem, tokens };
 
 export type { DreamSymbol, Feeling };
 
@@ -40,31 +43,6 @@ export function normalizeDictionaryEntry(raw: unknown): DictionaryEntry {
 
 // ───────────────────────────── Matching ─────────────────────────────
 
-/** A lower-case word with plurals, -ing, -ed and a silent -e folded together. */
-export function stem(word: string): string {
-  let w = word.toLowerCase();
-  if (w.length <= 3) return w;
-  if (w.endsWith('ies') && w.length > 4) w = `${w.slice(0, -3)}y`;
-  else if (w.endsWith('ing') && w.length > 5) {
-    w = w.slice(0, -3);
-    if (/([^aeiou])\1$/.test(w) && !/(ll|ss|zz)$/.test(w)) w = w.slice(0, -1);
-  } else if (w.endsWith('ed') && w.length > 4) {
-    w = w.slice(0, -2);
-    if (/([^aeiou])\1$/.test(w) && !/(ll|ss|zz)$/.test(w)) w = w.slice(0, -1);
-  } else if (/(ss|x|ch|sh|z)es$/.test(w)) w = w.slice(0, -2);
-  else if (w.endsWith('s') && !/(ss|us|is)$/.test(w)) w = w.slice(0, -1);
-  if (w.length > 3 && w.endsWith('e')) w = w.slice(0, -1);
-  return w;
-}
-
-/** Lower-case words of a text, apostrophes tidied, "'s" dropped. */
-export function tokens(text: string): string[] {
-  return (text.toLowerCase().replace(/[‘’`]/g, "'").match(/[a-z0-9']+/g) ?? [])
-    .map((t) => t.replace(/^'+|'+$/g, '').replace(/'s$/, ''))
-    .filter(Boolean);
-}
-
-const stems = (text: string) => tokens(text).map(stem);
 
 /** What the matcher knows: built-in symbols and the person's own, by stemmed phrase. */
 export type Subject = {
@@ -351,12 +329,6 @@ export type ReadInput = {
 
 export const MAX_SYMBOLS = 6;
 
-function hash(s: string): number {
-  let h = 2166136261;
-  for (let i = 0; i < s.length; i++) h = Math.imul(h ^ s.charCodeAt(i), 16777619);
-  return h >>> 0;
-}
-
 const OPENERS: Record<Feeling, string[]> = {
   fear: [
     'This is a dream with fear in it, and that is worth taking seriously without reading doom into it.',
@@ -417,8 +389,6 @@ function addDays(key: string, n: number): string {
   return `${t.getUTCFullYear()}-${String(t.getUTCMonth() + 1).padStart(2, '0')}-${String(t.getUTCDate()).padStart(2, '0')}`;
 }
 
-const sentenceKey = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
-const joinNames = (names: string[]) => (names.length < 2 ? names.join('') : `${names.slice(0, -1).join(', ')} and ${names[names.length - 1]}`);
 
 const LEADS: Record<Feeling, string[]> = {
   calm: ['Calm here suggests', 'That you stayed calm points to', 'Feeling at ease hints at', 'With calm in it, this reads as', 'Being settled in it speaks of', 'The quiet you felt suggests'],
@@ -458,15 +428,7 @@ export function readDream(input: ReadInput): Reading {
     deityNames: (input.library ?? []).filter((l) => l.type === 'deity').map((l) => l.name),
   });
   const seed = hash(`${date}|${text}`);
-  const used = new Set<string>();
-  /** Keeps a sentence only if the reading has not already said it. */
-  const fresh = (s: string | undefined) => {
-    const k = s ? sentenceKey(s) : '';
-    if (!k || used.has(k)) return false;
-    used.add(k);
-    return true;
-  };
-  const para = (...parts: (string | undefined)[]) => parts.filter((p): p is string => !!p && fresh(p)).join(' ');
+  const { fresh, para } = composer();
 
   // Opening
   const names = top.slice(0, 3).map((m) => m.subject.name);
@@ -503,15 +465,7 @@ export function readDream(input: ReadInput): Reading {
 
   // Questions: round-robin across the strongest symbols, rotated by the seed
   const pools = symbols.filter((s) => s.symbol).map((s) => s.symbol!.questions);
-  const questions: string[] = [];
-  const start = pools.length ? seed % 3 : 0;
-  for (let round = 0; round < 3 && questions.length < 3; round++) {
-    for (const pool of pools) {
-      const q = pool[(round + start) % Math.max(1, pool.length)];
-      if (q && questions.length < 3 && fresh(q)) questions.push(q);
-    }
-  }
-  for (const pool of pools) for (const q of pool) if (questions.length < 3 && fresh(q)) questions.push(q);
+  const questions = roundRobin(pools, seed, 3, fresh);
 
   // Something to do
   let action: ReadingAction = { text: input.text ? (symbols.find((s) => s.symbol?.action)?.symbol?.action ?? GENERIC_ACTION) : GENERIC_ACTION };

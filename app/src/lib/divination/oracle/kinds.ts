@@ -13,6 +13,7 @@ export const KIND_CHOICES: { id: string; label: string; detail: string }[] = [
   { id: 'ogham', label: 'Ogham', detail: 'The twenty feda.' },
   { id: 'lenormand', label: 'Lenormand', detail: 'Thirty-six cards, read in pairs and lines.' },
   { id: 'kipper', label: 'Kipper', detail: 'Thirty-six German cards of people and situations.' },
+  { id: 'playing', label: 'Playing cards', detail: 'The standard fifty-two, read by suit, with jokers if you like.' },
   { id: 'oracle', label: 'Your decks', detail: 'Oracle decks of your own, with their cards and meanings.' },
 ];
 

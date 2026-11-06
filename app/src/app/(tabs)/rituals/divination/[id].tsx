@@ -6,6 +6,7 @@ import { Button } from '../../../../components/Button';
 import { ShareCardButton } from '../../../../components/share/ShareCard';
 import { PairsCard } from '../../../../components/divination/oracle/Pairs';
 import { DeckReadingLines } from '../../../../components/divination/DeckReading';
+import { PlayingReads } from '../../../../components/divination/PlayingReads';
 import { ReadMore } from '../../../../components/divination/ReadMore';
 import { SpreadTable } from '../../../../components/divination/Spread';
 import { Body, Card, Chip, Chips, Field, List, Row, RitualScreen, SectionLabel, Title, ui } from '../../../../components/rituals/ui';
@@ -214,6 +215,7 @@ function DrawnMeaning({ laid, picked, deck }: { laid: NonNullable<ReturnType<typ
       {!!m.meaning.keywords && <Text style={[type.body, ui.gold]}>{m.meaning.keywords}</Text>}
       <Body>{m.meaning.text}</Body>
       {!m.own && <ReadMore name={m.name} deck={tarotDeck} />}
+      {!!m.playing && <PlayingReads card={m.playing} />}
     </Card>
   );
 }

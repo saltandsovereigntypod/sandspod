@@ -8,6 +8,8 @@
 import { deckInfo, TAROT_DECKS, type DeckId } from './decks.ts';
 import { deckMeaning } from './deckMeanings/index.ts';
 import { KIPPER } from './oracle/kipper.ts';
+import { PLAYING_ALL } from './oracle/playing.ts';
+import { FIGURES } from './geomancy.ts';
 import { LENORMAND } from './oracle/lenormand.ts';
 import { FEDA, RUNES } from './staves.ts';
 import { TAROT_DECK } from './tarot.ts';
@@ -42,6 +44,8 @@ export function studyDecks(own: OwnDeckLike[] = []): StudyDeck[] {
     { id: 'ogham', name: 'Ogham', detail: 'The twenty feda' },
     { id: 'lenormand', name: 'Lenormand', detail: '36 cards' },
     { id: 'kipper', name: 'Kipper', detail: '36 cards' },
+    { id: 'playing', name: 'Playing cards', detail: '52 cards and the jokers' },
+    { id: 'geomancy', name: 'Geomancy figures', detail: 'The sixteen figures' },
     ...own.filter((d) => d.data.cards.some((c) => c.keywords || c.meaning)).map((d) => ({ id: `own:${d.id}`, name: d.data.name || 'Your deck', detail: `Your own deck, ${d.data.cards.length} cards` })),
   ];
 }
@@ -59,6 +63,8 @@ export function studyCards(deckId: string, own: OwnDeckLike[] = []): StudyCard[]
     return (deckId === 'runes' ? RUNES : FEDA).map((s) => ({ id: s.name.toLowerCase(), name: `${s.name} (${s.gloss})`, glyph: s.glyph, keywords: s.keywords, text: s.text }));
   }
   if (deckId === 'lenormand') return LENORMAND.map((c) => ({ id: c.id, name: `${c.number}. ${c.name}`, glyph: c.playing, keywords: c.meaning.keywords, text: c.meaning.text, picture: { kind: 'lenormand', id: c.id } }));
+  if (deckId === 'playing') return PLAYING_ALL.map((c) => ({ id: c.id, name: c.name, glyph: '', keywords: c.meaning.keywords, text: c.meaning.text, reversed: c.reversed.keywords }));
+  if (deckId === 'geomancy') return FIGURES.map((f) => ({ id: f.id, name: `${f.name} (${f.english})`, glyph: f.lines.map((l) => (l === 1 ? '•' : '••')).join(' '), keywords: `${f.keywords} · ${f.planet}, ${f.element}`, text: f.meaning }));
   if (deckId === 'kipper') return KIPPER.map((c) => ({ id: c.id, name: `${c.number}. ${c.name}`, glyph: '', keywords: c.meaning.keywords, text: c.meaning.text }));
   if (deckId.startsWith('own:')) {
     const deck = own.find((d) => d.id === deckId.slice(4));

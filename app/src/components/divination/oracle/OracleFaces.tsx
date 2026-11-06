@@ -9,6 +9,7 @@ import { Image, StyleSheet, Text, View, type ImageStyle, type StyleProp, type Vi
 
 import type { Drawn } from '../../../lib/divination/draw';
 import { ownCard, type OwnDeckData } from '../../../lib/divination/oracle/decks';
+import { PlayingFace } from './PlayingFace';
 import { kipperCard } from '../../../lib/divination/oracle/kipper';
 import { lenormandCard } from '../../../lib/divination/oracle/lenormand';
 import { LENORMAND_SHEET, lenormandImages, type SheetPlace } from '../../../lib/divination/oracle/lenormandAssets';
@@ -116,6 +117,7 @@ export function OwnCardFace({ name, reversed, deck, width }: { name: string; rev
 export function oracleFront(kind: string, item: Drawn, width: number, deck: OwnDeckData | null): ReactNode | null {
   if (kind === 'lenormand') return <LenormandFace name={item.name} />;
   if (kind === 'kipper') return <KipperFace name={item.name} width={width} />;
+  if (kind === 'playing') return <PlayingFace name={item.name} width={width} reversed={item.reversed} />;
   if (kind === 'oracle') return <OwnCardFace name={item.name} reversed={item.reversed} deck={deck} width={width} />;
   return null;
 }
