@@ -6020,6 +6020,43 @@ const TraditionalLibrary = {
 
             tags: ["attraction", "luck", "grounding", "direction", "root", "mars"]
         },
+
+        bronzite: {
+            DisplayName: "Bronzite",
+            Category: "Crystal",
+
+            Element: "Earth",
+
+            Planet: "Mars",
+
+            Chakra: "Root",
+
+            Uses: "Courage, decisive action, boundaries, grounding, steady willpower",
+
+            PairsWith: "Black tourmaline, red jasper, tiger's eye, brown candle",
+
+            Cleansing: "Smoke, sound, earth",
+
+            TraditionalWarnings: "Bronzite is a moderately hard, cleavable stone that can chip if dropped. Keep it out of salt and acids, and do not soak it.",
+
+            Overview: "Bronzite is an iron-rich variety of enstatite, a pyroxene mineral, of Mohs hardness about 5.5. It is a warm bronze-brown to dark chestnut stone, often with a fine, silky, golden metallic shimmer when turned in the light. It is found in Brazil, Austria, South Africa and the USA, and is sold as tumbled stones, beads, palm stones and chips.",
+
+            TraditionalMeaning: "Courage and decisive will; a modern stone of steady, practical strength, for acting on a decision and holding a boundary.",
+
+            HowToUse: "Start here: carry a tumbled bronzite in a pocket on a day when you must make a decision or say a difficult thing, and hold it for a few breaths first. Tumbled pieces suit carrying, chips can go into jars for courage, and a palm stone can sit on the desk. Rub it gently with a soft cloth to keep the shimmer.",
+
+            PairingNotes: "Bronzite pairs well with black tourmaline for protection, red jasper for stamina, tiger’s eye for confidence, and smoky quartz for grounding. Brown, red and orange candles suit it.",
+
+            CleansingNotes: "Cleanse bronzite with smoke, sound, earth, or visualization. A quick wipe with a barely damp cloth is the most water it needs; do not soak it, rest it in salt, or use acids.",
+
+            SafetyAndRespect: "Bronzite is safe to handle, but it can chip and should not be soaked or put in water for elixirs. Its meanings are modern crystal lore, rather than an old tradition. It is not a substitute for advice, therapy or medical care when a decision is a hard one.",
+
+            Traditions: "Wheel of the Year",
+
+            TraditionNotes: "Wheel of the Year: Kept on the altar or in a pocket for courage and willpower, set at the north of a grid for grounding, and used at the waning moon for firmness and boundary-setting.\n\nFolk & wider practice: Bronzite has no long magical history of its own; its meanings come from 20th-century crystal-healing books, partly from the stone’s bronze colour and Mars-like iron. Enstatite and bronzite were named in the 19th century; the name bronzite refers to its metallic bronze lustre.",
+
+            tags: ["courage", "willpower", "boundaries", "grounding", "root", "mars"]
+        },
     },
 
     candle: {

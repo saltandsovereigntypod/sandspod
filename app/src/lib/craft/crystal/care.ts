@@ -134,6 +134,7 @@ const LIBRARY: Record<string, Row> = {
   spirit_quartz: { name: 'Spirit Quartz', aliases: ['cactus quartz', 'fairy quartz', 'porcupine quartz'], mineral: 'Quartz coated in tiny points', mohs: '7', water: 'brief', salt: 'no', sun: 'fades', handling: 'none', cleanse: ['moonlight', 'smoke', 'sound', 'breath'], note: 'Its tiny points snap off easily and trap water and salt. Purple pieces fade in strong sun; orange ones carry an iron coating that can stain.' },
   desert_rose: { name: 'Desert Rose', aliases: ['sand rose', 'gypsum rose', 'rose rock', 'baryte rose', 'barite rose'], mineral: 'Gypsum or baryte with sand', mohs: '2–3.5', water: 'no', salt: 'no', sun: 'ok', handling: 'none', cleanse: ['smoke', 'sound', 'moonlight', 'breath'], note: 'Gypsum roses crumble and dissolve with water. Keep it dry, indoors, and dust it with a soft brush.' },
   lodestone: { name: 'Lodestone', aliases: ['magnetite'], mineral: 'Iron oxide', mohs: '5.5–6.5', water: 'no', salt: 'no', sun: 'ok', handling: 'none', cleanse: ['smoke', 'sound', 'breath'], note: 'Rusts, so keep it dry. Strong magnets can wipe cards and disturb phones, watches and pacemakers. Heat removes its magnetism.' },
+  bronzite: { name: 'Bronzite', mineral: 'Iron-rich enstatite (orthopyroxene)', mohs: '5.5', water: 'brief', salt: 'no', sun: 'ok', handling: 'none', cleanse: ['smoke', 'sound', 'earth', 'breath'], note: 'Fairly hard but cleaves, so avoid knocks. A quick rinse and dry is fine; skip soaking and salt, and keep it away from acids.' },
 };
 
 // Common stones the Library doesn't hold.

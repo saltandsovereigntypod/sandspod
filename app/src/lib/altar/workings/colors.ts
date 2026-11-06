@@ -45,6 +45,7 @@ const KNOWN: Record<string, string> = {
   'pink tourmaline': '#e17aa0', iolite: '#5a5fa8', morganite: '#f2c2b4', amazonite: '#6fc4b4', 'blue apatite': '#2fa0c4',
   'spirit quartz': '#a68ab8', 'desert rose': '#d4b08c',
   lodestone: '#3a3a3c',
+  bronzite: '#8a5a32',
   // candle wax colours, for seals
   white: '#f2ede1', black: '#1d1b1a', red: '#a52a2a', green: '#3f7a4a', blue: '#335c99', yellow: '#e2c041', orange: '#d9772b',
   purple: '#6f4a9a', pink: '#e39fb5', gold: '#cfa443', silver: '#bfc3c7', brown: '#6b4a32', grey: '#8a8a8a', indigo: '#3b3a7a',

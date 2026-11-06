@@ -5617,6 +5617,48 @@
         },
         {
           "category": "crystals",
+          "name": "Bronzite",
+          "icon": "💎",
+          "keywords": [
+            "courage",
+            "decisive action",
+            "boundaries",
+            "grounding",
+            "steady willpower"
+          ],
+          "forms": [
+            {
+              "label": "Point",
+              "image": "",
+              "type": "crystal",
+              "crystal": "bronzite",
+              "form": "point"
+            },
+            {
+              "label": "Chips",
+              "image": "../assets/altar/objects/crystals/bronzite/bronzite-chips.png",
+              "type": "crystal",
+              "crystal": "bronzite",
+              "form": "chips"
+            },
+            {
+              "label": "Cluster",
+              "image": "",
+              "type": "crystal",
+              "crystal": "bronzite",
+              "form": "cluster"
+            },
+            {
+              "label": "Tumbled",
+              "image": "../assets/altar/objects/crystals/bronzite/bronzite-tumbled.png",
+              "type": "crystal",
+              "crystal": "bronzite",
+              "form": "tumbled"
+            }
+          ]
+        },
+        {
+          "category": "crystals",
           "name": "Carnelian",
           "icon": "💎",
           "keywords": [
@@ -12305,6 +12347,17 @@
           "root",
           "luck",
           "direction"
+        ],
+        "bronzite": [
+          "courage",
+          "decisive action",
+          "boundaries",
+          "grounding",
+          "steady willpower",
+          "earth",
+          "mars",
+          "root",
+          "willpower"
         ]
       },
       "deity": {
