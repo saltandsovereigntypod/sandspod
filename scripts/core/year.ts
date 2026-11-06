@@ -13,6 +13,8 @@ export * as holidays from '../../app/src/lib/holidays.ts';
 export * as calendars from '../../app/src/lib/calendars/index.ts';
 export * as calendar from '../../app/src/lib/calendar.ts';
 export * as links from '../../app/src/lib/divination/links.ts';
+// The practice journals' collections and pages, for the year's journal section.
+export { JOURNALS, journalPlace, journalWebRoutes } from '../../app/src/lib/journals/journals.ts';
 export { JOURNEY_CATALOG } from '../../app/src/lib/journeys/catalog.ts';
 // Saved altars as the app reads them (saved_altars rows, or this browser's copy), for offerings and changes at the altar.
 export { altarFromRow, LOCAL_ALTARS_KEY, parseLocalAltars } from '../../app/src/lib/altar/snapshot.ts';

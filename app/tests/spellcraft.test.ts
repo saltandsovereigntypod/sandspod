@@ -240,3 +240,18 @@ test('the spell prints as plain text', () => {
   assert.match(t, /Waxing moon · Friday \(Venus\)/);
   assert.match(t, /Steps\n1\. Cleanse/);
 });
+
+test('a petition drafted from the spell’s choices, bounded and thanked', async () => {
+  const { petitionDraft, blankSpec } = await import('../src/lib/rituals/spellcraft/index.ts');
+  const spec = { ...blankSpec('love'), purpose: 'A kind partner who stays.', deities: [{ key: 'aphrodite', name: 'Aphrodite' }], ingredients: [{ ref: 'x', name: 'Rose', type: 'herb' }] };
+  const text = petitionDraft(spec, () => 'honey, roses');
+  assert.match(text, /^Aphrodite, I greet you/);
+  assert.match(text, /I ask for A kind partner who stays\.$/m);
+  assert.match(text, /By rose, gathered for this/);
+  assert.match(text, /without bending anyone’s will/);
+  assert.match(text, /In thanks I offer honey, roses/);
+  const plain = petitionDraft(blankSpec(null), () => '');
+  assert.match(plain, /^To the powers I work with/);
+  assert.match(plain, /I ask for what I need\./);
+  assert.match(plain, /harms no one/);
+});

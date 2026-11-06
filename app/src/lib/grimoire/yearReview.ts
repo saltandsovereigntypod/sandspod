@@ -27,6 +27,7 @@ import { placedAtOf } from '../altar/livingState.ts';
 import type { AltarData } from '../altar/types.ts';
 import type { YearSpan } from './yearSpan.ts';
 import { kindLabel, type SitEntry } from '../meditation/log.ts';
+import { choiceLabel, normalizeEntry, OMEN_KINDS, promptById, type JournalEntry, type JournalKind } from '../journals/journals.ts';
 
 /** Something dated, from wherever it's kept: an offering, a gathering, a change at the altar. */
 export type Dated = { at: string; label: string; detail?: string; id?: string };
@@ -52,6 +53,8 @@ export type YearInput = {
   south?: boolean;
   /** Meditation sits (meditation.sits). */
   sits?: SitEntry[];
+  /** The four practice journals (shadow work, deity & spirit, ancestors, omens), as practiceRecords() reads them. */
+  practice?: Partial<Record<JournalKind, JournalEntry[]>>;
 };
 
 const DAY_MS = 86_400_000;
@@ -99,6 +102,8 @@ export type YearReview = {
   gatherings: { count: number; list: Dated[] };
   altar: { count: number; list: Dated[] };
   meditation: { sits: number; minutes: number; kinds: { label: string; count: number }[] };
+  /** The practice journals. Private: never on the share card. */
+  practice: YearPractice;
   /** Is there anything at all in the year? */
   empty: boolean;
 };
@@ -138,6 +143,69 @@ export function moonsOfYear(span: YearSpan, activity: string[], now: Date, south
 }
 
 /** Everything the year holds, by the person's own year. */
+export type YearPractice = {
+  /** Shadow work: how often, and what it kept circling (your tags and the prompts' themes). */
+  shadow: { count: number; themes: { label: string; count: number }[] };
+  /** Deity & spirit: who you wrote of most, and how many entries held an offering. */
+  devotion: { count: number; deities: { key: string; name: string; count: number }[]; offerings: number };
+  /** Ancestors: entries, and how many of your dead they named. */
+  ancestors: { count: number; people: number };
+  /** Omens & signs: what kind came most, how many you read, and how they bore out. */
+  omens: { count: number; kinds: { label: string; count: number }[]; read: number; cameToPass: number; partly: number; didnt: number; waiting: number };
+  total: number;
+};
+
+type RawEntry = { id: string; createdAt?: string | null; data: unknown };
+
+/** The practice journals' craft entries ({ id, createdAt, data }), normalised for yearReview's `practice`. */
+export function practiceRecords(rows: Partial<Record<JournalKind, RawEntry[]>>): Partial<Record<JournalKind, JournalEntry[]>> {
+  const out: Partial<Record<JournalKind, JournalEntry[]>> = {};
+  for (const [kind, list] of Object.entries(rows) as [JournalKind, RawEntry[] | undefined][]) {
+    out[kind] = (list ?? []).map((e) => ({ id: e.id, createdAt: e.createdAt ?? '', data: normalizeEntry(e.data) }));
+  }
+  return out;
+}
+
+function practiceOf(input: Partial<Record<JournalKind, JournalEntry[]>> | undefined, span: YearSpan): YearPractice {
+  const inYear = (kind: JournalKind) => (input?.[kind] ?? []).filter((e) => within(dayKeyOf(e.data.date) ?? dayKeyOf(e.createdAt), span));
+  const shadow = inYear('shadow');
+  const devotion = inYear('devotion');
+  const ancestors = inYear('ancestors');
+  const omens = inYear('omens');
+  const deities = new Map<string, { key: string; name: string; count: number }>();
+  for (const e of devotion) {
+    const id = e.data.deityKey || e.data.deityName.trim().toLowerCase();
+    if (!id) continue;
+    const have = deities.get(id) ?? { key: e.data.deityKey, name: e.data.deityName || 'Unnamed', count: 0 };
+    have.count++;
+    deities.set(id, have);
+  }
+  const outcome = (v: string) => omens.filter((e) => e.data.outcome === v).length;
+  const shadowThemes = (e: JournalEntry) => {
+    const group = e.data.prompt ? promptById('shadow', e.data.prompt)?.group : null;
+    return [...new Set([...e.data.tags, ...(group ? [group] : [])].map((t) => t.toLowerCase()).filter(Boolean))];
+  };
+  return {
+    shadow: { count: shadow.length, themes: counted(shadow.flatMap(shadowThemes), 5) },
+    devotion: {
+      count: devotion.length,
+      deities: [...deities.values()].sort((a, b) => b.count - a.count || a.name.localeCompare(b.name)).slice(0, 5),
+      offerings: devotion.filter((e) => e.data.acts.includes('offering') || e.data.offerings.length > 0 || !!e.data.offered).length,
+    },
+    ancestors: { count: ancestors.length, people: new Set(ancestors.flatMap((e) => e.data.people)).size },
+    omens: {
+      count: omens.length,
+      kinds: counted(omens.map((e) => choiceLabel(OMEN_KINDS, e.data.seen)).filter(Boolean), 4),
+      read: omens.filter((e) => !!e.data.meaning.trim()).length,
+      cameToPass: outcome('yes'),
+      partly: outcome('partly'),
+      didnt: outcome('no'),
+      waiting: outcome('waiting'),
+    },
+    total: shadow.length + devotion.length + ancestors.length + omens.length,
+  };
+}
+
 export function yearReview(input: YearInput, span: YearSpan, now: Date): YearReview {
   const today = localDateKey(now);
   const journal = input.journal.filter((e) => within(journalKey(e), span));
@@ -266,10 +334,11 @@ export function yearReview(input: YearInput, span: YearSpan, now: Date): YearRev
     gatherings: { count: gatherings.length, list: gatherings },
     altar: { count: altar.length, list: altar },
     meditation: { sits: sits.length, minutes: sits.reduce((n, e) => n + e.data.minutes, 0), kinds: counted(sits.map((e) => kindLabel(e.data)), 3) },
+    practice: practiceOf(input.practice, span),
     empty: false,
   };
   review.empty =
-    !journal.length && !plans.length && !readings.length && !dreams.length && !pages.length && !offerings.length && !gatherings.length && !altar.length && !journeys.length && !courses.length && !sits.length && !(cycle && cycle.bleeds);
+    !journal.length && !plans.length && !readings.length && !dreams.length && !pages.length && !offerings.length && !gatherings.length && !altar.length && !journeys.length && !courses.length && !sits.length && !review.practice.total && !(cycle && cycle.bleeds);
   return review;
 }
 
@@ -368,6 +437,11 @@ export function yearLines(r: YearReview): string[] {
   if (r.readings.count) out.push(`You drew ${n(r.readings.count, 'reading', 'readings')}${r.readings.top[0] && r.readings.top[0].count >= 2 ? `; ${r.readings.top[0].name} came most` : ''}.`);
   if (r.dreams.count) out.push(`You wrote down ${n(r.dreams.count, 'dream', 'dreams')}${r.dreams.symbols[0] ? `; ${r.dreams.symbols[0].symbol} came back most` : ''}.`);
   if (r.meditation.sits) out.push(`You sat ${n(r.meditation.sits, 'time', 'times')}, ${n(r.meditation.minutes, 'minute', 'minutes')} in all${r.meditation.kinds[0] && r.meditation.kinds[0].count >= 2 ? `, most often ${r.meditation.kinds[0].label.toLowerCase()}` : ''}.`);
+  const pr = r.practice;
+  if (pr.shadow.count) out.push(`You sat with your shadow ${n(pr.shadow.count, 'time', 'times')}${pr.shadow.themes[0] && pr.shadow.themes[0].count >= 2 ? `, coming back most to ${pr.shadow.themes[0].label}` : ''}.`);
+  if (pr.devotion.count) out.push(`You wrote ${n(pr.devotion.count, 'devotion', 'devotions')}${pr.devotion.deities[0] ? `, most often for ${pr.devotion.deities[0].name}` : ''}.`);
+  if (pr.ancestors.count) out.push(`You kept ${n(pr.ancestors.count, 'page', 'pages')} for your ancestors${pr.ancestors.people ? `, naming ${n(pr.ancestors.people, 'person', 'people')}` : ''}.`);
+  if (pr.omens.count) out.push(`You noted ${n(pr.omens.count, 'sign', 'signs')}${pr.omens.cameToPass + pr.omens.partly ? `; ${pr.omens.cameToPass + pr.omens.partly} came to pass in whole or part` : ''}.`);
   if (r.pages.made) out.push(`Your Grimoire gained ${n(r.pages.made, 'page', 'pages')}.`);
   if (r.offerings.count) out.push(`You made ${n(r.offerings.count, 'offering', 'offerings')}.`);
   if (r.gatherings.count) out.push(`You gathered with your coven ${n(r.gatherings.count, 'time', 'times')}.`);
@@ -387,6 +461,15 @@ export function reflectionPrompts(r: YearReview): string[] {
   if (r.holidays.kept) out.push('Which festival felt most alive this year, and what made it so?');
   const journey = r.journeys[0];
   if (journey) out.push(`How has walking ${journey.title} changed you?`);
+  const pr = r.practice;
+  const theme = pr.shadow.themes[0];
+  if (pr.shadow.count >= 3 && theme && theme.count >= 2) out.push(`Your shadow work kept coming back to ${theme.label}. Gently, and without judging yourself: what do you understand about it now that you didn’t at the start?`);
+  else if (pr.shadow.count) out.push('What did your shadow work show you this year, and what would you like to treat more kindly?');
+  const deity = pr.devotion.deities[0];
+  if (deity) out.push(`How has your relationship with ${deity.name} grown this year, and what would you like to offer in the year ahead?`);
+  if (pr.ancestors.count) out.push('Which of your ancestors felt close this year? What of theirs will you carry on, and what will you set down?');
+  if (pr.omens.cameToPass + pr.omens.partly) out.push('Of the signs that came to pass, how did you know them? What would you trust sooner next time?');
+  else if (pr.omens.count) out.push('Looking back at the signs you noted, which still feel meaningful, and which can you let go?');
   if (r.gatherings.count) out.push('What did your coven give you this year, and what did you give it?');
   out.push('What will you carry into the year ahead, and what will you leave behind?');
   return out;

@@ -24,6 +24,7 @@ import {
   altarRecords,
   astroCourse,
   covenRecords,
+  practiceRecords,
   reflectionPrompts,
   shareCard,
   shareText,
@@ -38,6 +39,7 @@ import { nextSpan, previousSpan, YEAR_START_KEY, YEAR_STARTS, yearSpanAt, yearSt
 import { hasHolyPage } from '../../../lib/holy';
 import { holidayChoice } from '../../../lib/holidays';
 import { JOURNEY_CATALOG } from '../../../lib/journeys/catalog';
+import { journalDef, journalPlace, journalRoutes, type JournalKind } from '../../../lib/journals/journals';
 import { useJourneyProgress } from '../../../lib/journeys/store';
 import { usePlace } from '../../../lib/location';
 import { dateFromKey } from '../../../lib/rituals/lifecycle';
@@ -110,6 +112,10 @@ export default function YearInReview() {
   const { entries: sitRows } = useCraft<unknown>(SITS);
   const { entries: courseRows } = useCraft<CourseProgress>(COURSE_COLLECTION);
   const { entries: journeyRows } = useJourneyProgress();
+  const { entries: shadowRows } = useCraft<unknown>(journalDef('shadow').collection);
+  const { entries: devotionRows } = useCraft<unknown>(journalDef('devotion').collection);
+  const { entries: ancestorRows } = useCraft<unknown>(journalDef('ancestors').collection);
+  const { entries: omenRows } = useCraft<unknown>(journalDef('omens').collection);
   const { snapshot, actions } = useGrimoire();
   const { altars } = useAltars();
   const cycle = useCycle();
@@ -127,6 +133,7 @@ export default function YearInReview() {
         readings: readingRows.map((e) => ({ ...e, data: normalizeReading(e.data) })),
         dreams: dreamRows.map((e) => ({ ...e, data: normalizeDream(e.data) })),
         sits: sitRows.map((e) => ({ id: e.id, data: normalizeSit(e.data) })),
+        practice: practiceRecords({ shadow: shadowRows, devotion: devotionRows, ancestors: ancestorRows, omens: omenRows }),
         pages: snapshot?.pages ?? [],
         holidayChoice: holidayChoice(s),
         offerings: fromAltars.offerings,
@@ -141,7 +148,7 @@ export default function YearInReview() {
       now,
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps -- startKey stands in for the settings it reads
-  }, [altars, courseRows, rituals.journal, rituals.plans, readingRows, dreamRows, sitRows, snapshot, coven, journeyRows, cycle.phase, cycle.data, span, startKey, now]);
+  }, [altars, courseRows, rituals.journal, rituals.plans, readingRows, dreamRows, sitRows, snapshot, coven, journeyRows, shadowRows, devotionRows, ancestorRows, omenRows, cycle.phase, cycle.data, span, startKey, now]);
 
   const lines = yearLines(review);
   const prompts = reflectionPrompts(review);
@@ -333,6 +340,43 @@ export default function YearInReview() {
         </View>
       )}
       {cycle.phase === 'locked' && <Body muted>Cycle & Moon is locked on this device, so it isn’t included. Open it to see it here; it stays private.</Body>}
+
+      {r.practice.total > 0 && (
+        <View style={ui.gapSmall}>
+          <SectionLabel>Your practice journals</SectionLabel>
+          <Body muted>Only you see these. They stay off the card you can share.</Body>
+          <List>
+            {(
+              [
+                ['shadow', r.practice.shadow.count, r.practice.shadow.themes.length ? `Coming back to ${r.practice.shadow.themes.slice(0, 3).map((t) => t.label).join(', ')}` : null],
+                ['devotion', r.practice.devotion.count, [r.practice.devotion.deities.length ? `For ${r.practice.devotion.deities.slice(0, 3).map((d) => d.name).join(', ')}` : null, r.practice.devotion.offerings ? plural(r.practice.devotion.offerings, 'offering', 'offerings') : null].filter(Boolean).join(' · ') || null],
+                ['ancestors', r.practice.ancestors.count, r.practice.ancestors.people ? plural(r.practice.ancestors.people, 'person named', 'people named') : null],
+                [
+                  'omens',
+                  r.practice.omens.count,
+                  [r.practice.omens.kinds.length ? r.practice.omens.kinds.map((k) => k.label.toLowerCase()).join(', ') : null, r.practice.omens.cameToPass + r.practice.omens.partly ? `${r.practice.omens.cameToPass + r.practice.omens.partly} came to pass` : null, r.practice.omens.waiting ? `${r.practice.omens.waiting} still waiting` : null]
+                    .filter(Boolean)
+                    .join(' · ') || null,
+                ],
+              ] as [JournalKind, number, string | null][]
+            )
+              .filter(([, count]) => count > 0)
+              .map(([kind, count, detail], i, list) => {
+                const def = journalDef(kind);
+                return (
+                  <Row
+                    key={kind}
+                    icon="grimoire"
+                    title={`${def.title}: ${plural(count, def.noun, def.nouns)}`}
+                    detail={detail}
+                    last={i === list.length - 1}
+                    onPress={() => router.push(journalRoutes(kind, journalPlace(s, kind)).list as Href)}
+                  />
+                );
+              })}
+          </List>
+        </View>
+      )}
 
       {(r.journeys.length > 0 || r.courses.length > 0) && (
         <View style={ui.gapSmall}>
