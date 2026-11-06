@@ -4897,6 +4897,33 @@ export const TRADITIONAL_LIBRARY: TraditionalLibraryData = {
         "magic",
         "saturn"
       ]
+    },
+    "petrified_wood": {
+      "DisplayName": "Petrified Wood",
+      "Category": "Crystal",
+      "Element": "Earth",
+      "Planet": "Saturn",
+      "Chakra": "Root",
+      "Uses": "Ancestor connection, endurance, grounding, patience with slow change, past-life reflection",
+      "PairsWith": "Smoky quartz, moss agate, jet, brown candle",
+      "Cleansing": "Earth, smoke, sound",
+      "TraditionalWarnings": "Petrified wood is hard and stable, but some fossil wood is protected, and collecting it from public land (for example in national parks) is illegal in many places. Buy from reputable sellers.",
+      "Overview": "Petrified wood is fossilised wood in which the original plant material has been slowly replaced, cell by cell, by minerals, most often quartz, chalcedony and opal, usually between 150 and 250 million years ago, while the wood’s grain and rings survive in stone. Colours range from brown and tan to red, grey, yellow and sometimes blue and green, from iron and manganese. The Petrified Forest in Arizona, Indonesia, Madagascar and Argentina are famous sources, and it is sold as tumbled stones, slabs, bookends and chips.",
+      "TraditionalMeaning": "Endurance and deep time; a modern stone of the ancestors and the slow work of change, seen as a tree that became stone.",
+      "HowToUse": "Start here: hold a piece of petrified wood and trace its grain with a finger while you think about the people and years behind you. A tumbled stone suits a pocket, slabs and bookends suit an altar or ancestor shelf, and chips can go in jars for steadiness. Wipe it with a soft cloth; it needs no special care.",
+      "PairingNotes": "Petrified wood pairs well with smoky quartz for grounding, moss agate for growth, jet for mourning, and clear quartz for clarity. Brown, green and black candles suit it.",
+      "CleansingNotes": "Cleanse petrified wood with earth, smoke, sound, or visualization. Hardy pieces can be rinsed and dried, but dyed or glued pieces should be wiped.",
+      "SafetyAndRespect": "Petrified wood is safe to handle, but sharp edges can scratch and the dust from cutting is harmful. Do not collect it from protected land, and avoid pieces sold without a clear source. The ancestor and past-life meanings are modern crystal lore; if you honour ancestors, do so in your own and their ways.",
+      "Traditions": "Wheel of the Year",
+      "TraditionNotes": "Wheel of the Year: Placed on an ancestor shelf or altar at Samhain and Mabon, used for endurance in autumn and winter, and kept in the garden as a symbol of the long life of trees.\n\nFolk & wider practice: Fossil wood has been used as a charm and as a building stone for centuries, and several Native American peoples of the American Southwest, including the Navajo, have traditions about the petrified logs of Arizona, which they sometimes call the bones of a giant. The stone was widely collected after the railways opened the Petrified Forest in the 1880s. Its meanings today come from modern crystal books and nature spirituality.",
+      "tags": [
+        "ancestors",
+        "endurance",
+        "grounding",
+        "patience",
+        "past lives",
+        "saturn"
+      ]
     }
   },
   "candle": {

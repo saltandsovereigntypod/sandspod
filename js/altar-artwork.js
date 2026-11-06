@@ -7554,6 +7554,48 @@
         },
         {
           "category": "crystals",
+          "name": "Petrified Wood",
+          "icon": "💎",
+          "keywords": [
+            "ancestor connection",
+            "endurance",
+            "grounding",
+            "patience with slow change",
+            "past-life reflection"
+          ],
+          "forms": [
+            {
+              "label": "Point",
+              "image": "",
+              "type": "crystal",
+              "crystal": "petrified_wood",
+              "form": "point"
+            },
+            {
+              "label": "Chips",
+              "image": "../assets/altar/objects/crystals/petrified-wood/petrified-wood-chips.png",
+              "type": "crystal",
+              "crystal": "petrified_wood",
+              "form": "chips"
+            },
+            {
+              "label": "Cluster",
+              "image": "",
+              "type": "crystal",
+              "crystal": "petrified_wood",
+              "form": "cluster"
+            },
+            {
+              "label": "Tumbled",
+              "image": "../assets/altar/objects/crystals/petrified-wood/petrified-wood-tumbled.png",
+              "type": "crystal",
+              "crystal": "petrified_wood",
+              "form": "tumbled"
+            }
+          ]
+        },
+        {
+          "category": "crystals",
           "name": "Pink Tourmaline",
           "icon": "💎",
           "keywords": [
@@ -12887,6 +12929,19 @@
           "root",
           "third eye",
           "psychic protection"
+        ],
+        "petrified-wood": [
+          "ancestor connection",
+          "endurance",
+          "grounding",
+          "patience with slow change",
+          "past-life reflection",
+          "earth",
+          "saturn",
+          "root",
+          "ancestors",
+          "patience",
+          "past lives"
         ]
       },
       "deity": {
