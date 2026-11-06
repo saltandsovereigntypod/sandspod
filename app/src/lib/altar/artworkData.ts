@@ -2081,6 +2081,47 @@ export const ALTAR_ARTWORK: {
       },
       {
         "category": "herbs",
+        "name": "Dill",
+        "keywords": [
+          "protection",
+          "money luck",
+          "love",
+          "restful sleep",
+          "clearing envy"
+        ],
+        "forms": [
+          {
+            "label": "Sprig",
+            "image": "../assets/altar/objects/herbs/dill/dill-sprig.png",
+            "type": "herb",
+            "herb": "dill",
+            "form": "sprig"
+          },
+          {
+            "label": "Loose",
+            "image": "../assets/altar/objects/herbs/dill/dill-loose.png",
+            "type": "herb",
+            "herb": "dill",
+            "form": "loose"
+          },
+          {
+            "label": "Oil",
+            "image": "../assets/altar/objects/herbs/dill/dill-oil.png",
+            "type": "oil",
+            "herb": "dill",
+            "form": "oil"
+          },
+          {
+            "label": "Incense",
+            "image": "../assets/altar/objects/herbs/incense/incense.png",
+            "type": "herb",
+            "herb": "dill",
+            "form": "incense"
+          }
+        ]
+      },
+      {
+        "category": "herbs",
         "name": "Dittany of Crete",
         "keywords": [
           "astral work",
@@ -10441,6 +10482,17 @@ export const ALTAR_ARTWORK: {
         "mars",
         "home peace",
         "passion"
+      ],
+      "dill": [
+        "protection",
+        "money luck",
+        "love",
+        "restful sleep",
+        "clearing envy",
+        "fire",
+        "mercury",
+        "evil eye",
+        "sleep"
       ]
     },
     "crystal": {

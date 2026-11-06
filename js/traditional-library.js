@@ -2986,6 +2986,41 @@ const TraditionalLibrary = {
 
             tags: ["love", "longevity", "home peace", "health", "passion", "mars"]
         },
+
+        dill: {
+            DisplayName: "Dill",
+            Category: "Herb",
+
+            Element: "Fire",
+
+            Planet: "Mercury",
+
+            Uses: "Protection, money luck, love, restful sleep, clearing envy",
+
+            PairsWith: "Fennel, caraway, rosemary, citrine",
+
+            Substitutions: "Fennel, caraway",
+
+            TraditionalWarnings: "Dill is safe in food amounts, but concentrated seed and oil should be avoided in pregnancy, and dill can cause skin sensitivity to sunlight on contact in some people. It can also cause allergic reactions in those sensitive to carrot-family plants.",
+
+            Overview: "Dill (Anethum graveolens) is a tall, feathery annual of the carrot family, with thread-like blue-green fronds and flat yellow umbels, grown for its leaves (dill weed) and its flat, ridged, oval seeds. The fronds smell fresh and grassy and the seeds warm and caraway-like. Both are used fresh or dried, along with the oil.",
+
+            TraditionalMeaning: "Protection and good fortune in the home; an old herb of warding, luck and gentle love.",
+
+            HowToUse: "Start here: hang a small bunch of dill over a doorway or set a few seed heads in a jar by the door. Dried fronds and seeds go into protection jars, sachets and bath blends; seed is the more lasting form and keeps well sealed. Fresh dill can be grown in a pot by the kitchen door, and the oil should be well diluted before dressing a candle.",
+
+            PairingNotes: "Dill pairs well with fennel and caraway for protection, rosemary for cleansing, and citrine for prosperity. Green, yellow and white candles suit it.",
+
+            SubstitutionNotes: "Fennel or caraway can substitute for dill in protection and luck workings. Fennel suits the same warding uses, and caraway brings the home-keeping quality.",
+
+            SafetyAndRespect: "Dill is generally gentle as food, but avoid large amounts of seed or oil in pregnancy and breastfeeding, and keep essential oils away from pets and children. It can cause allergic and photosensitive skin reactions. Magical use should not replace medical care for stomach pain or sleep problems.",
+
+            Traditions: "Wheel of the Year",
+
+            TraditionNotes: "Wheel of the Year: Dill is sown in spring and cut at midsummer, when Litha herbs were traditionally gathered for protection; sprigs were hung over doors to ward off ill luck.\n\nFolk & wider practice: Dill appears in Egyptian medical papyri and Greek and Roman writings, and in medieval Europe it was held to be a herb against witchcraft: a line from an old verse says ‘Trefoil, vervain, John’s wort, dill, hinder witches of their will’. Dill seed was given to babies, and ‘gripe water’ is made from it. Modern correspondence tables give it to Mercury and Fire, and bridal bouquets once included it.",
+
+            tags: ["protection", "money luck", "love", "evil eye", "sleep", "mercury"]
+        },
     },
 
     crystal: {
