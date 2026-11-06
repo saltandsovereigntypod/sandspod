@@ -4924,6 +4924,33 @@ export const TRADITIONAL_LIBRARY: TraditionalLibraryData = {
         "past lives",
         "saturn"
       ]
+    },
+    "pink_opal": {
+      "DisplayName": "Pink Opal",
+      "Category": "Crystal",
+      "Element": "Water",
+      "Planet": "Venus",
+      "Chakra": "Heart",
+      "Uses": "Gentle love, emotional healing, soothing grief, tenderness toward oneself, peaceful rest",
+      "PairsWith": "Rose quartz, rhodochrosite, moonstone, pink candle",
+      "Cleansing": "Moonlight, sound, smoke",
+      "TraditionalWarnings": "Opal is a hydrated silica that can crack or craze if heated, dried out or knocked, and it can be dyed. Keep pink opal away from strong sun, heat and harsh chemicals, and do not soak it.",
+      "Overview": "Pink opal is common (or ‘potch’) opal, which has no play of colour, in an opaque, waxy, pastel pink to rose-salmon colour, coloured by trace elements. It is not the precious, flashing opal of jewellery. Most of it comes from the Andes in Peru, and it is also found in Australia and Africa. It is sold as tumbled stones, palm stones, hearts, beads and chips, and its hardness is only about 5–6, softer than quartz.",
+      "TraditionalMeaning": "Soft, easy love and healing; a modern stone of tenderness, comfort and the gentler kind of heart work.",
+      "HowToUse": "Start here: hold a pink opal at the end of a day, and name something you are grieving or tired of carrying, then set it down. Tumbled stones suit pockets and bedside dishes, hearts and palm stones suit the altar, and chips can go in jars with rose quartz. Wrap it in soft cloth and keep it from knocks.",
+      "PairingNotes": "Pink opal pairs well with rose quartz for love, rhodochrosite for emotional healing, moonstone for rest, and selenite for peace. Pink, white and pale blue candles suit it.",
+      "CleansingNotes": "Cleanse pink opal with moonlight, sound, smoke, or visualization. A wipe with a barely damp cloth is the most water it needs; never soak it or leave it in sun, heat or salt.",
+      "SafetyAndRespect": "Pink opal is safe to handle, but it is soft, can crack with heat or dryness, and should not be used in water for elixirs. Dyed or polymer-treated stones are sold as pink opal, and pink opalite is a man-made glass, so ask about treatment. The emotional meanings are modern crystal lore; it is no substitute for support when grief runs deep.",
+      "Traditions": "Wheel of the Year",
+      "TraditionNotes": "Wheel of the Year: Kept on the altar or by the bed for gentle love, used at Imbolc and in spring for tenderness, and held during quiet mourning.\n\nFolk & wider practice: Opal in general was a gem of the ancient Romans and was said to bring hope; in the 19th century, Sir Walter Scott’s novel Anne of Geierstein spread the superstition that opals were unlucky, which hurt the opal trade. Pink opal has no long tradition of its own: it came to be sold from Peru in the late 20th century, and its meanings come from modern crystal books.",
+      "tags": [
+        "gentle love",
+        "emotional healing",
+        "grief",
+        "self-tenderness",
+        "rest",
+        "venus"
+      ]
     }
   },
   "candle": {

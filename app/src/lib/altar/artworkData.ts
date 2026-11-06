@@ -7449,6 +7449,47 @@ export const ALTAR_ARTWORK: {
       },
       {
         "category": "crystals",
+        "name": "Pink Opal",
+        "keywords": [
+          "gentle love",
+          "emotional healing",
+          "soothing grief",
+          "tenderness toward oneself",
+          "peaceful rest"
+        ],
+        "forms": [
+          {
+            "label": "Point",
+            "image": "",
+            "type": "crystal",
+            "crystal": "pink_opal",
+            "form": "point"
+          },
+          {
+            "label": "Chips",
+            "image": "../assets/altar/objects/crystals/pink-opal/pink-opal-chips.png",
+            "type": "crystal",
+            "crystal": "pink_opal",
+            "form": "chips"
+          },
+          {
+            "label": "Cluster",
+            "image": "",
+            "type": "crystal",
+            "crystal": "pink_opal",
+            "form": "cluster"
+          },
+          {
+            "label": "Tumbled",
+            "image": "../assets/altar/objects/crystals/pink-opal/pink-opal-tumbled.png",
+            "type": "crystal",
+            "crystal": "pink_opal",
+            "form": "tumbled"
+          }
+        ]
+      },
+      {
+        "category": "crystals",
         "name": "Pink Tourmaline",
         "keywords": [
           "love",
@@ -12656,6 +12697,19 @@ export const ALTAR_ARTWORK: {
         "ancestors",
         "patience",
         "past lives"
+      ],
+      "pink-opal": [
+        "gentle love",
+        "emotional healing",
+        "soothing grief",
+        "tenderness toward oneself",
+        "peaceful rest",
+        "water",
+        "venus",
+        "heart",
+        "grief",
+        "self-tenderness",
+        "rest"
       ]
     },
     "deity": {
