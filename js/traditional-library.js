@@ -6168,6 +6168,43 @@ const TraditionalLibrary = {
 
             tags: ["cheerfulness", "playfulness", "mood lift", "patience", "creativity", "mercury"]
         },
+
+        dendritic_agate: {
+            DisplayName: "Dendritic Agate",
+            Category: "Crystal",
+
+            Element: "Earth",
+
+            Planet: "Mercury",
+
+            Chakra: "Heart",
+
+            Uses: "Growth, abundance, connection to nature, steady progress, gentle grounding",
+
+            PairsWith: "Moss agate, green aventurine, clear quartz, green candle",
+
+            Cleansing: "Smoke, sound, earth",
+
+            TraditionalWarnings: "Dendritic agate is hard and stable, but silica dust from cutting or sanding is harmful. Dyed or heavily treated pieces can bleed in water.",
+
+            Overview: "Dendritic agate (also called tree agate) is milky, translucent chalcedony with fine, branching, tree-like or fern-like patterns of black, brown or dark green, formed by manganese or iron oxides growing inside the stone. It is not banded like true agate, and it is sometimes confused with moss agate, which has green mineral inclusions that look like moss. It is found in India, Brazil, the USA and Madagascar, and is sold as tumbled stones, cabochons, palm stones and chips.",
+
+            TraditionalMeaning: "Growth and abundance; a modern stone of the garden and the wood, for patient progress and a feeling of being rooted among living things.",
+
+            HowToUse: "Start here: keep a small dendritic agate in a plant pot or on a windowsill as a charm for steady growth, or hold one while setting a gardening or study intention. Tumbled pieces suit carrying, chips can go in jars with green aventurine for abundance, and slices make good pendants. Wipe it with a soft cloth to keep the patterns clear.",
+
+            PairingNotes: "Dendritic agate pairs well with moss agate for the garden, green aventurine for luck and growth, clear quartz for clarity, and jade for steady prosperity. Green, white and brown candles suit it.",
+
+            CleansingNotes: "Cleanse dendritic agate with smoke, sound, earth, or visualization. Plain pieces can be rinsed and dried, but dyed pieces should be wiped only.",
+
+            SafetyAndRespect: "Dendritic agate is safe to handle, but the dust from cutting it is harmful and edges can be sharp. Its growth and abundance meanings are modern crystal lore, rather than old tradition, and the stone is no substitute for good soil, sunlight or financial planning.",
+
+            Traditions: "Wheel of the Year",
+
+            TraditionNotes: "Wheel of the Year: Kept in the garden or on the altar at Ostara and Beltane for growth, and at Lammas and Mabon for gratitude at the harvest.\n\nFolk & wider practice: Agates have been used as charms for farming and fertility since ancient times; Pliny the Elder and medieval lapidaries said that agate in the field protected crops. The name ‘dendritic’ is from the Greek dendron, ‘tree’, and was applied by 19th-century mineralogists to the branching patterns. Most modern meanings come from 20th-century crystal-healing books.",
+
+            tags: ["growth", "abundance", "nature connection", "progress", "grounding", "mercury"]
+        },
     },
 
     candle: {

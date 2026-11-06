@@ -6113,6 +6113,48 @@
         },
         {
           "category": "crystals",
+          "name": "Dendritic Agate",
+          "icon": "💎",
+          "keywords": [
+            "growth",
+            "abundance",
+            "connection to nature",
+            "steady progress",
+            "gentle grounding"
+          ],
+          "forms": [
+            {
+              "label": "Point",
+              "image": "",
+              "type": "crystal",
+              "crystal": "dendritic_agate",
+              "form": "point"
+            },
+            {
+              "label": "Chips",
+              "image": "../assets/altar/objects/crystals/dendritic-agate/dendritic-agate-chips.png",
+              "type": "crystal",
+              "crystal": "dendritic_agate",
+              "form": "chips"
+            },
+            {
+              "label": "Cluster",
+              "image": "",
+              "type": "crystal",
+              "crystal": "dendritic_agate",
+              "form": "cluster"
+            },
+            {
+              "label": "Tumbled",
+              "image": "../assets/altar/objects/crystals/dendritic-agate/dendritic-agate-tumbled.png",
+              "type": "crystal",
+              "crystal": "dendritic_agate",
+              "form": "tumbled"
+            }
+          ]
+        },
+        {
+          "category": "crystals",
           "name": "Desert Rose",
           "icon": "💎",
           "keywords": [
@@ -12525,6 +12567,19 @@
           "mood lift",
           "patience",
           "creativity"
+        ],
+        "dendritic-agate": [
+          "growth",
+          "abundance",
+          "connection to nature",
+          "steady progress",
+          "gentle grounding",
+          "earth",
+          "mercury",
+          "heart",
+          "nature connection",
+          "progress",
+          "grounding"
         ]
       },
       "deity": {
