@@ -2136,6 +2136,31 @@ export const TRADITIONAL_LIBRARY: TraditionalLibraryData = {
         "youth",
         "venus"
       ]
+    },
+    "bergamot": {
+      "DisplayName": "Bergamot",
+      "Category": "Herb",
+      "Element": "Fire",
+      "Planet": "Sun",
+      "Uses": "Success, joy, confidence, prosperity, clearing heaviness",
+      "PairsWith": "Lavender, orange peel, frankincense, citrine",
+      "Substitutions": "Orange peel, lemon peel",
+      "TraditionalWarnings": "Bergamot essential oil makes skin sensitive to sunlight and can cause burns and blistering; choose a furocoumarin-free (FCF) oil or avoid sun after skin contact. Do not confuse it with bee balm, which is also called bergamot.",
+      "Overview": "Bergamot (Citrus bergamia) is a small citrus tree grown mainly in Calabria in southern Italy; its round, yellow-green fruit is sour and mostly grown for the fragrant oil pressed from its peel, which gives Earl Grey tea its flavour. The peel, the blossom and the oil are the parts used, sold as dried peel, tea blends and essential oil. In North America ‘bergamot’ is also the common name of bee balm (Monarda), an unrelated flowering herb that smells similar; this entry is the citrus.",
+      "TraditionalMeaning": "Brightness and confidence; a sunny citrus plant of success, cheerfulness and lifting a heavy mood.",
+      "HowToUse": "Start here: brew a cup of Earl Grey and breathe in the steam while you set an intention for the day. Dried peel goes into jars, sachets and incense blends; the oil is very strong, so add one drop to a carrier oil to dress a candle and keep it away from skin in sunlight. Store peel and oil sealed and away from heat, as the scent fades quickly.",
+      "PairingNotes": "Bergamot pairs well with lavender for calm confidence, orange peel for success, frankincense for blessing, and citrine for prosperity. Yellow, gold and white candles suit it.",
+      "SubstitutionNotes": "Orange peel or lemon peel can substitute for bergamot in success and confidence workings, though neither has its floral, tea-like note. Bee balm leaf (Monarda) is a separate herb and not a true substitute.",
+      "SafetyAndRespect": "Bergamot oil (not bergamot tea) can cause phototoxic burns when put on skin that is then exposed to sun, so always dilute it and avoid sun for 12 hours after use, or choose a furocoumarin-free oil. Keep oils away from pets, especially cats, and out of reach of children. Bergamot can interact with some medicines when taken as a lot of tea, and the oil must never be swallowed. Magical use should not replace medical, financial or legal support.",
+      "Traditions": "Wheel of the Year",
+      "TraditionNotes": "Wheel of the Year: Modern practitioners use bergamot at Litha and in midsummer sun workings, and a drop in a bath or on a candle is traditional in modern prosperity and success magic.\n\nFolk & wider practice: Bergamot has no deep ritual history of its own; it has been grown in Calabria since at least the 18th century and went into perfumes such as eau de Cologne before Earl Grey tea. Its use in modern success magic comes from its bright scent and its link to the Sun in correspondence tables. Bee balm (Monarda didyma), also called bergamot, was used by Oswego and other Indigenous peoples of North America, and is a separate plant with its own history that should be credited to them.",
+      "tags": [
+        "success",
+        "joy",
+        "confidence",
+        "prosperity",
+        "sun"
+      ]
     }
   },
   "crystal": {

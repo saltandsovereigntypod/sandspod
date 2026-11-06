@@ -1299,6 +1299,48 @@
         },
         {
           "category": "herbs",
+          "name": "Bergamot",
+          "icon": "🌿",
+          "keywords": [
+            "success",
+            "joy",
+            "confidence",
+            "prosperity",
+            "clearing heaviness"
+          ],
+          "forms": [
+            {
+              "label": "Sprig",
+              "image": "../assets/altar/objects/herbs/bergamot/bergamot-sprig.png",
+              "type": "herb",
+              "herb": "bergamot",
+              "form": "sprig"
+            },
+            {
+              "label": "Loose",
+              "image": "../assets/altar/objects/herbs/bergamot/bergamot-loose.png",
+              "type": "herb",
+              "herb": "bergamot",
+              "form": "loose"
+            },
+            {
+              "label": "Oil",
+              "image": "../assets/altar/objects/herbs/bergamot/bergamot-oil.png",
+              "type": "oil",
+              "herb": "bergamot",
+              "form": "oil"
+            },
+            {
+              "label": "Incense",
+              "image": "../assets/altar/objects/herbs/incense/incense.png",
+              "type": "herb",
+              "herb": "bergamot",
+              "form": "incense"
+            }
+          ]
+        },
+        {
+          "category": "herbs",
           "name": "Birch",
           "icon": "🌿",
           "keywords": [
@@ -10389,6 +10431,15 @@
           "spring",
           "beginnings",
           "youth"
+        ],
+        "bergamot": [
+          "success",
+          "joy",
+          "confidence",
+          "prosperity",
+          "clearing heaviness",
+          "fire",
+          "sun"
         ]
       },
       "crystal": {
