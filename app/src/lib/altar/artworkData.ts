@@ -6562,6 +6562,40 @@ export const ALTAR_ARTWORK: {
       },
       {
         "category": "crystals",
+        "name": "Kunzite",
+        "keywords": [
+          "compassion",
+          "emotional healing",
+          "gentle love",
+          "self-forgiveness",
+          "calm after upset"
+        ],
+        "forms": [
+          {
+            "label": "Point",
+            "image": "../assets/altar/objects/crystals/kunzite/kunzite-point.png",
+            "type": "crystal",
+            "crystal": "kunzite",
+            "form": "point"
+          },
+          {
+            "label": "Chips",
+            "image": "../assets/altar/objects/crystals/kunzite/kunzite-chips.png",
+            "type": "crystal",
+            "crystal": "kunzite",
+            "form": "chips"
+          },
+          {
+            "label": "Cluster",
+            "image": "",
+            "type": "crystal",
+            "crystal": "kunzite",
+            "form": "cluster"
+          }
+        ]
+      },
+      {
+        "category": "crystals",
         "name": "Kyanite",
         "keywords": [
           "communication",
@@ -12403,6 +12437,17 @@ export const ALTAR_ARTWORK: {
         "crown",
         "warmth",
         "intention"
+      ],
+      "kunzite": [
+        "compassion",
+        "emotional healing",
+        "gentle love",
+        "self-forgiveness",
+        "calm after upset",
+        "air",
+        "venus",
+        "heart",
+        "calm"
       ]
     },
     "deity": {

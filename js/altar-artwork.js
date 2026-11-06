@@ -6687,6 +6687,41 @@
         },
         {
           "category": "crystals",
+          "name": "Kunzite",
+          "icon": "💎",
+          "keywords": [
+            "compassion",
+            "emotional healing",
+            "gentle love",
+            "self-forgiveness",
+            "calm after upset"
+          ],
+          "forms": [
+            {
+              "label": "Point",
+              "image": "../assets/altar/objects/crystals/kunzite/kunzite-point.png",
+              "type": "crystal",
+              "crystal": "kunzite",
+              "form": "point"
+            },
+            {
+              "label": "Chips",
+              "image": "../assets/altar/objects/crystals/kunzite/kunzite-chips.png",
+              "type": "crystal",
+              "crystal": "kunzite",
+              "form": "chips"
+            },
+            {
+              "label": "Cluster",
+              "image": "",
+              "type": "crystal",
+              "crystal": "kunzite",
+              "form": "cluster"
+            }
+          ]
+        },
+        {
+          "category": "crystals",
           "name": "Kyanite",
           "icon": "💎",
           "keywords": [
@@ -12684,6 +12719,17 @@
           "crown",
           "warmth",
           "intention"
+        ],
+        "kunzite": [
+          "compassion",
+          "emotional healing",
+          "gentle love",
+          "self-forgiveness",
+          "calm after upset",
+          "air",
+          "venus",
+          "heart",
+          "calm"
         ]
       },
       "deity": {

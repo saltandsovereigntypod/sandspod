@@ -4789,6 +4789,33 @@ export const TRADITIONAL_LIBRARY: TraditionalLibraryData = {
         "intention",
         "sun"
       ]
+    },
+    "kunzite": {
+      "DisplayName": "Kunzite",
+      "Category": "Crystal",
+      "Element": "Air",
+      "Planet": "Venus",
+      "Chakra": "Heart",
+      "Uses": "Compassion, emotional healing, gentle love, self-forgiveness, calm after upset",
+      "PairsWith": "Rose quartz, morganite, selenite, pink candle",
+      "Cleansing": "Moonlight, sound, smoke",
+      "TraditionalWarnings": "Kunzite fades in strong sunlight and cleaves easily along planes, so keep it in the shade and avoid knocks. Treated and irradiated pink spodumene is sold as kunzite, and colour can darken or fade after irradiation.",
+      "Overview": "Kunzite is the pink to lilac variety of spodumene (a lithium aluminium silicate), of Mohs hardness 6.5–7. It forms flat, deeply striated, blade-like crystals and is strongly pleochroic, showing different shades from different angles. It was named in 1903 for the New York gemmologist George F. Kunz, who studied it, and is found in Afghanistan, Brazil, Madagascar and California. It is sold as raw blades, tumbled stones, cut gems and chips.",
+      "TraditionalMeaning": "Compassion and tenderness; a modern stone of the gentle heart, for forgiving oneself and soothing the day.",
+      "HowToUse": "Start here: place a kunzite blade by your bed or hold a tumbled piece in your palm for a few minutes at the end of a hard day, and name one thing you forgive yourself for. Chips can go in jars with rose quartz for gentleness. Keep it out of the sun, in a soft pouch, and away from knocks.",
+      "PairingNotes": "Kunzite pairs well with rose quartz for tenderness, morganite for love, selenite for quiet, and lepidolite for calm. Pink, white and lilac candles suit it.",
+      "CleansingNotes": "Cleanse kunzite with moonlight (indoors, away from dawn sun), sound, smoke, or visualization. A quick rinse and dry is the most water it needs; avoid soaking and bright light.",
+      "SafetyAndRespect": "Kunzite is safe to handle, but its blades are brittle and can splinter, and sharp raw pieces scratch. Because it fades in light, store it in the dark. The emotional healing meanings are modern crystal lore. Be sceptical of vivid pink ‘kunzite’ that has been dyed, irradiated or is actually pink glass or quartz, and it is no substitute for support when grief runs deep.",
+      "Traditions": "Wheel of the Year",
+      "TraditionNotes": "Wheel of the Year: Kept on the altar for love and compassion, used at Imbolc and around Valentine’s Day for gentle love, and set beside the bed for rest.\n\nFolk & wider practice: Kunzite is a 20th-century stone: it was named in 1903 and became fashionable in jewellery in the early 20th century. Its meanings come from modern crystal-healing books that link its pink colour to the Heart chakra and Venus. Tiffany & Co. championed it, and it is also a source of lithium, though the gemstone has no medicinal effect.",
+      "tags": [
+        "compassion",
+        "emotional healing",
+        "gentle love",
+        "self-forgiveness",
+        "calm",
+        "venus"
+      ]
     }
   },
   "candle": {
