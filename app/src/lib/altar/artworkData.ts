@@ -4250,6 +4250,47 @@ export const ALTAR_ARTWORK: {
       },
       {
         "category": "herbs",
+        "name": "Solomon's Seal",
+        "keywords": [
+          "wisdom",
+          "binding agreements",
+          "protection of the home",
+          "mending",
+          "exorcism"
+        ],
+        "forms": [
+          {
+            "label": "Sprig",
+            "image": "../assets/altar/objects/herbs/solomons-seal/solomons-seal-sprig.png",
+            "type": "herb",
+            "herb": "solomons_seal",
+            "form": "sprig"
+          },
+          {
+            "label": "Loose",
+            "image": "../assets/altar/objects/herbs/solomons-seal/solomons-seal-loose.png",
+            "type": "herb",
+            "herb": "solomons_seal",
+            "form": "loose"
+          },
+          {
+            "label": "Oil",
+            "image": "../assets/altar/objects/herbs/solomons-seal/solomons-seal-oil.png",
+            "type": "oil",
+            "herb": "solomons_seal",
+            "form": "oil"
+          },
+          {
+            "label": "Incense",
+            "image": "../assets/altar/objects/herbs/incense/incense.png",
+            "type": "herb",
+            "herb": "solomons_seal",
+            "form": "incense"
+          }
+        ]
+      },
+      {
+        "category": "herbs",
         "name": "St John’s Wort",
         "keywords": [
           "protection",
@@ -10958,6 +10999,17 @@ export const ALTAR_ARTWORK: {
         "easy labour",
         "love",
         "protection"
+      ],
+      "solomons-seal": [
+        "wisdom",
+        "binding agreements",
+        "protection of the home",
+        "mending",
+        "exorcism",
+        "water",
+        "saturn",
+        "binding oaths",
+        "home protection"
       ]
     },
     "crystal": {

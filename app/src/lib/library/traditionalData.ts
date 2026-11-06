@@ -2551,6 +2551,32 @@ export const TRADITIONAL_LIBRARY: TraditionalLibraryData = {
         "protection",
         "venus"
       ]
+    },
+    "solomons_seal": {
+      "DisplayName": "Solomon's Seal",
+      "Category": "Herb",
+      "Element": "Water",
+      "Planet": "Saturn",
+      "Uses": "Wisdom, binding agreements, protection of the home, mending, exorcism",
+      "PairsWith": "Comfrey, vervain, rosemary, smoky quartz",
+      "Substitutions": "Comfrey root, angelica root",
+      "TraditionalWarnings": "The berries and leaves of Solomon’s seal (Polygonatum) are poisonous and can cause vomiting and diarrhoea. The root has been used in folk medicine, but internal use is not recommended without expert advice, and it should be avoided in pregnancy and by people with diabetes.",
+      "Overview": "Solomon’s seal (Polygonatum multiflorum and relatives) is a woodland perennial with a single arching stem of alternate oval leaves and, in spring, small white green-tipped bell flowers hanging in pairs beneath, followed by blue-black berries. The creeping rhizome (root) is thick and knobbly with round scars, left each year by the dying stems, which are said to look like the impressions of a seal. The root is the part used, sold dried, as slices or pieces.",
+      "TraditionalMeaning": "Wisdom, binding and seal; a plant of old protective magic, named for the legendary King Solomon, who was said to bind spirits with a seal.",
+      "HowToUse": "Start here: keep a small piece of dried root in a pouch or a dish on the altar as a charm of binding and protection. Pieces can be put in jars with protection herbs, set at the doorway, or used in workings to seal an oath or agreement. Handle it as a charm, not a remedy, and keep it away from children and pets. Store it dry and sealed.",
+      "PairingNotes": "Solomon’s seal pairs well with comfrey for mending, vervain for oaths and sanctity, rosemary for remembrance, and smoky quartz for steady protection. Purple, white and dark blue candles suit it.",
+      "SubstitutionNotes": "Comfrey root or angelica root can substitute for Solomon’s seal in protection and binding workings. Because the root is rare and slow-growing, cultivated roots are preferred to wild-dug ones.",
+      "SafetyAndRespect": "The plant is poisonous if eaten, especially the berries and leaves; keep it from children and pets and do not ingest root preparations without a qualified herbalist. It is a slow-growing woodland plant that is protected or declining in some places: buy only from a grower that cultivates it, and never dig it from the wild. Binding workings should be about agreements you have made, not about controlling another person. Magical use should not replace medical care.",
+      "Traditions": "Wheel of the Year",
+      "TraditionNotes": "Wheel of the Year: Solomon’s seal flowers in late spring and is used in modern practice around Beltane and Litha for protection and binding, and the root is traditionally dug in autumn.\n\nFolk & wider practice: The common name probably refers to a mark on the root like a six-pointed seal, linked in medieval herbals with the Seal of Solomon of Jewish and later magical tradition. The root was a well-known old English remedy for bruises and black eyes, and Gerard and Culpeper recommended it for mending broken bones, hence its use as a mending herb. It was also used in folk magic to protect the home and in exorcism. The related Chinese herb yuzhu (P. odoratum) is a food and medicine in China. Modern correspondence tables give it to Saturn and Water.",
+      "tags": [
+        "wisdom",
+        "binding oaths",
+        "home protection",
+        "mending",
+        "exorcism",
+        "saturn"
+      ]
     }
   },
   "crystal": {
