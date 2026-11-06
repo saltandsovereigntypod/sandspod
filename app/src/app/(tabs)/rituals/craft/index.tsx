@@ -106,8 +106,14 @@ export default function CraftHome() {
             icon="altar"
             title="Sigil maker"
             detail="An intent made into one mark, from its letters or a planetary square"
-            last
             onPress={go('/rituals/sigil')}
+          />
+          <Row
+            icon="grimoire"
+            title="Witch’s alphabets"
+            detail="Theban, Malachim, Celestial, Passing the River, runes and ogham, to copy or carve"
+            last
+            onPress={go('/rituals/craft/eclectic/alphabets')}
           />
         </List>
       </View>
