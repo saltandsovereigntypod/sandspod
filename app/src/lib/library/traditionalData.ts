@@ -2525,6 +2525,32 @@ export const TRADITIONAL_LIBRARY: TraditionalLibraryData = {
         "prosperity",
         "moon"
       ]
+    },
+    "raspberry_leaf": {
+      "DisplayName": "Raspberry Leaf",
+      "Category": "Herb",
+      "Element": "Water",
+      "Planet": "Venus",
+      "Uses": "Womb and cycle care, easing labour, gentle love, fertility, protection of the young",
+      "PairsWith": "Nettle, rose, red clover, moonstone",
+      "Substitutions": "Nettle, lady’s mantle",
+      "TraditionalWarnings": "Raspberry leaf is widely drunk in late pregnancy, but it is not advised in early pregnancy, and anyone pregnant, trying to conceive, with a hormone-sensitive condition or a history of pre-term labour should speak to a midwife or doctor first. It may interact with some medicines.",
+      "Overview": "Raspberry leaf is the serrated, three- to five-part leaf of the red raspberry (Rubus idaeus), green above and silvery white beneath. The leaf is mild, slightly tannic and tea-like, and is the part used, sold dried as loose tea, tea bags and capsules, and in infused oils and salves. The fruits and canes are used separately.",
+      "TraditionalMeaning": "Gentle womb and cycle care; a long-standing herb of women’s health, childbirth and easing pain, and of soft, protective love.",
+      "HowToUse": "Start here: brew a cup of raspberry leaf tea and sip it slowly with an intention of care for your body. Dried leaf goes into tea blends, sachets and bath blends, and keeps for a year in a sealed, dark jar. A leaf can be dried and kept in a charm bag for fertility or gentle healing. Infuse the leaf in oil for a rubbing salve, and keep it away from open wounds.",
+      "PairingNotes": "Raspberry leaf pairs well with nettle for nourishment, rose for love, red clover for cycle care, and moonstone for lunar and cyclical calm. Pink, red and white candles suit it.",
+      "SubstitutionNotes": "Nettle leaf can substitute for raspberry leaf in nourishing and cycle-care workings, and lady’s mantle can stand in for the womb-herb tradition. Neither is a medical substitute.",
+      "SafetyAndRespect": "Check with a midwife, doctor or pharmacist before taking raspberry leaf during pregnancy, while breastfeeding, or alongside medicines or a hormone-sensitive condition. It is not a substitute for antenatal or gynaecological care. Raspberry canes are prickly and wildlife values them, so pick only a few leaves. The ‘womb herb’ lore is traditional folk practice and has little modern clinical evidence behind it; this entry offers it as folklore, not as medicine.",
+      "Traditions": "Wheel of the Year",
+      "TraditionNotes": "Wheel of the Year: Raspberry leaf is gathered in early summer before the fruit sets, and used in modern practice for Imbolc, Beltane and other fertility and women’s festivals.\n\nFolk & wider practice: Raspberry leaf tea has been a folk remedy in Europe and North America for centuries, and since the 20th century it has been the best known herbal tea for the end of pregnancy; evidence for its effect on labour is limited. The red fruit and prickly cane were also used in protective and love charms. Modern correspondence tables give raspberry to Venus and Water.",
+      "tags": [
+        "cycle care",
+        "easy labour",
+        "love",
+        "fertility",
+        "protection",
+        "venus"
+      ]
     }
   },
   "crystal": {

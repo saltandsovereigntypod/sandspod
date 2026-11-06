@@ -3982,6 +3982,48 @@
         },
         {
           "category": "herbs",
+          "name": "Raspberry Leaf",
+          "icon": "🌿",
+          "keywords": [
+            "womb and cycle care",
+            "easing labour",
+            "gentle love",
+            "fertility",
+            "protection of the young"
+          ],
+          "forms": [
+            {
+              "label": "Sprig",
+              "image": "../assets/altar/objects/herbs/raspberry-leaf/raspberry-leaf-sprig.png",
+              "type": "herb",
+              "herb": "raspberry_leaf",
+              "form": "sprig"
+            },
+            {
+              "label": "Loose",
+              "image": "../assets/altar/objects/herbs/raspberry-leaf/raspberry-leaf-loose.png",
+              "type": "herb",
+              "herb": "raspberry_leaf",
+              "form": "loose"
+            },
+            {
+              "label": "Oil",
+              "image": "../assets/altar/objects/herbs/raspberry-leaf/raspberry-leaf-oil.png",
+              "type": "oil",
+              "herb": "raspberry_leaf",
+              "form": "oil"
+            },
+            {
+              "label": "Incense",
+              "image": "../assets/altar/objects/herbs/incense/incense.png",
+              "type": "herb",
+              "herb": "raspberry_leaf",
+              "form": "incense"
+            }
+          ]
+        },
+        {
+          "category": "herbs",
           "name": "Red Clover",
           "icon": "🌿",
           "keywords": [
@@ -11172,6 +11214,19 @@
           "moon",
           "sleep",
           "dreams"
+        ],
+        "raspberry-leaf": [
+          "womb and cycle care",
+          "easing labour",
+          "gentle love",
+          "fertility",
+          "protection of the young",
+          "water",
+          "venus",
+          "cycle care",
+          "easy labour",
+          "love",
+          "protection"
         ]
       },
       "crystal": {
