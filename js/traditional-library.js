@@ -2881,6 +2881,41 @@ const TraditionalLibrary = {
 
             tags: ["protection", "healing", "prosperity", "fertility", "resilience", "venus"]
         },
+
+        burdock: {
+            DisplayName: "Burdock",
+            Category: "Herb",
+
+            Element: "Water",
+
+            Planet: "Venus",
+
+            Uses: "Protection, cleansing, binding to a purpose, tenacity, healing",
+
+            PairsWith: "Dandelion, nettle, black tourmaline, sage",
+
+            Substitutions: "Dandelion root, nettle",
+
+            TraditionalWarnings: "Burdock root is eaten and used as a tea, but it can look like deadly nightshade (belladonna) or other poisonous plants when foraged, and it can cause allergic reactions in people sensitive to daisies, ragweed or chrysanthemums. Do not eat it in pregnancy, or with diabetes or blood-thinning medication, without medical advice.",
+
+            Overview: "Burdock (Arctium lappa and A. minus) is a tall biennial of waste ground and hedgerows, with huge, heart-shaped, rhubarb-like leaves and round purple thistle-like flowers that turn into the hooked, clinging burrs that gave Velcro its design. The long, brown, tapering root is the part most used, sold dried, in slices or powder, with the leaves and seeds used less often.",
+
+            TraditionalMeaning: "Protection that clings and purges; a sticky, stubborn plant used to hold a boundary and cleanse what should not stay.",
+
+            HowToUse: "Start here: keep a small piece of dried burdock root in a dish or pouch by the door. The root can be added to protection and cleansing jars, simmered as a tea, or burned in small bits with other herbs on charcoal. A single burr can be put in a jar to hold or ‘catch’ something. Store root dry and sealed, as it takes up damp.",
+
+            PairingNotes: "Burdock pairs well with dandelion and nettle in cleansing blends, black tourmaline for a protective boundary, and sage for smoke cleansing. Black, brown or white candles suit it.",
+
+            SubstitutionNotes: "Dandelion root or nettle can substitute for burdock in cleansing workings. Neither has its clinging, burr-like holding quality, so for binding work use a few burrs from the plant itself.",
+
+            SafetyAndRespect: "Positively identify burdock before eating the root, as young plants can be confused with poisonous ones such as foxglove and belladonna. Burdock can cause allergic reactions and contact dermatitis, and its root acts on blood sugar and as a diuretic, so ask a clinician if you are pregnant, breastfeeding, on medication or have a medical condition. Burrs tangle in fur and feathers and can trap small animals and birds, so keep them from pets and clear them from wild places. Magical use should not replace medical care.",
+
+            Traditions: "Celtic, Wheel of the Year",
+
+            TraditionNotes: "Celtic: In British and Irish folk medicine burdock was a cleansing plant of the spring, used in a root drink called dandelion and burdock; the burrs were also known as ‘beggar’s buttons’ and ‘love buttons’ and thrown at sweethearts to see if they would stick.\n\nWheel of the Year: Modern practitioners dig the root in autumn of the first year or spring of the second, and use it at Samhain and the dark moon for cleansing and protection.\n\nFolk & wider practice: Burdock is used in European and American folk magic as a protective herb that ‘breaks hexes’, and in Chinese medicine (niubang) and Japanese cooking (gobo) for its root and seeds. Modern correspondence tables give it to Venus and Water.",
+
+            tags: ["protection", "cleansing", "binding", "hex-breaking", "healing", "venus"]
+        },
     },
 
     crystal: {

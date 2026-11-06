@@ -1549,6 +1549,47 @@ export const ALTAR_ARTWORK: {
       },
       {
         "category": "herbs",
+        "name": "Burdock",
+        "keywords": [
+          "protection",
+          "cleansing",
+          "binding to a purpose",
+          "tenacity",
+          "healing"
+        ],
+        "forms": [
+          {
+            "label": "Sprig",
+            "image": "../assets/altar/objects/herbs/burdock/burdock-sprig.png",
+            "type": "herb",
+            "herb": "burdock",
+            "form": "sprig"
+          },
+          {
+            "label": "Loose",
+            "image": "../assets/altar/objects/herbs/burdock/burdock-loose.png",
+            "type": "herb",
+            "herb": "burdock",
+            "form": "loose"
+          },
+          {
+            "label": "Oil",
+            "image": "../assets/altar/objects/herbs/burdock/burdock-oil.png",
+            "type": "oil",
+            "herb": "burdock",
+            "form": "oil"
+          },
+          {
+            "label": "Incense",
+            "image": "../assets/altar/objects/herbs/incense/incense.png",
+            "type": "herb",
+            "herb": "burdock",
+            "form": "incense"
+          }
+        ]
+      },
+      {
+        "category": "herbs",
         "name": "Calendula",
         "keywords": [
           "joy",
@@ -10286,6 +10327,17 @@ export const ALTAR_ARTWORK: {
         "resilience",
         "water",
         "venus"
+      ],
+      "burdock": [
+        "protection",
+        "cleansing",
+        "binding to a purpose",
+        "tenacity",
+        "healing",
+        "water",
+        "venus",
+        "binding",
+        "hex-breaking"
       ]
     },
     "crystal": {
