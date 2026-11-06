@@ -2161,6 +2161,32 @@ export const TRADITIONAL_LIBRARY: TraditionalLibraryData = {
         "prosperity",
         "sun"
       ]
+    },
+    "blackthorn": {
+      "DisplayName": "Blackthorn",
+      "Category": "Herb",
+      "Element": "Fire",
+      "Planet": "Mars",
+      "Uses": "Banishing, protection, endings, resilience, justice",
+      "PairsWith": "Hawthorn, rowan, black tourmaline, black candle",
+      "Substitutions": "Hawthorn thorn, rose thorn",
+      "TraditionalWarnings": "Blackthorn thorns are sharp, can break off and fester, and the leaves, bark and seed kernels (the stones inside sloes) contain cyanogenic compounds and are not for eating. Eat only ripe sloe flesh, and never the stones.",
+      "Overview": "Blackthorn (Prunus spinosa), also called sloe, is a dense, spiny shrub of hedgerows with black bark, white blossom that appears before the leaves in early spring, and small, blue-black, very sour fruits (sloes) after the first frosts. The thorns, twigs, blossom and sloes are the parts used, sold dried or as sloe berries, and sloes are best known for steeping in gin.",
+      "TraditionalMeaning": "The thorn that guards and cuts; protection, hard endings and the strength to see a bleak season through.",
+      "HowToUse": "Start here: keep a single blackthorn thorn in a small dish or pouch as a charm for boundaries. Thorns can be pushed into a candle, a poppet or the soil, or kept in a jar of protection herbs; handle them with care and store them where no one will be pricked. Sloes can be dried, or steeped in gin or sugar, and the white blossom is brought indoors only briefly, as a harbinger of spring.",
+      "PairingNotes": "Blackthorn pairs well with hawthorn for the boundary and the gate, rowan for protection, black tourmaline for banishing, and black or dark red candles for endings.",
+      "SubstitutionNotes": "Hawthorn thorn or a rose thorn can stand in for blackthorn in protection charms. Neither carries the Cailleach and winter symbolism, so state the intention aloud.",
+      "SafetyAndRespect": "Thorns are sharp and can cause painful, slow-healing wounds; wear gloves when cutting and keep them from children and pets. Sloe stones, leaves and bark contain cyanogenic compounds, so only the ripe flesh of sloes is edible, and not in large amounts. Blackthorn is an important wildlife hedge: harvest only a few twigs and never strip a hedge. Traditional ‘blasting’ uses, including the Irish and Scottish folk lore of cursing with a blackthorn, are folklore and are not recommended; this entry offers protective and boundary uses only.",
+      "Traditions": "Celtic, Wheel of the Year",
+      "TraditionNotes": "Celtic: In Irish tradition blackthorn (straif, the Ogham letter for it) is the tree of strife and hard fortune, and is linked to the winter hag, the Cailleach. The blackthorn walking stick, the shillelagh, is an Irish tradition. In Welsh and Scottish folklore it is a tree of ill luck to cut in bloom.\n\nWheel of the Year: Blackthorn’s white blossom marks the ‘blackthorn winter’, a cold snap in early spring; modern practitioners use its thorns around Samhain and in winter protection charms, and gather sloes after the first frost.\n\nFolk & wider practice: In English folklore blackthorn thorns were used to prick out witchcraft in ‘witch bottles’, and bringing the blossom indoors was thought to bring death or ill luck. Modern correspondence tables give it to Mars and to the cleansing of hedges and boundaries.",
+      "tags": [
+        "banishing",
+        "protection",
+        "endings",
+        "resilience",
+        "justice",
+        "mars"
+      ]
     }
   },
   "crystal": {

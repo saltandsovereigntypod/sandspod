@@ -1426,6 +1426,47 @@ export const ALTAR_ARTWORK: {
       },
       {
         "category": "herbs",
+        "name": "Blackthorn",
+        "keywords": [
+          "banishing",
+          "protection",
+          "endings",
+          "resilience",
+          "justice"
+        ],
+        "forms": [
+          {
+            "label": "Sprig",
+            "image": "../assets/altar/objects/herbs/blackthorn/blackthorn-sprig.png",
+            "type": "herb",
+            "herb": "blackthorn",
+            "form": "sprig"
+          },
+          {
+            "label": "Loose",
+            "image": "../assets/altar/objects/herbs/blackthorn/blackthorn-loose.png",
+            "type": "herb",
+            "herb": "blackthorn",
+            "form": "loose"
+          },
+          {
+            "label": "Oil",
+            "image": "../assets/altar/objects/herbs/blackthorn/blackthorn-oil.png",
+            "type": "oil",
+            "herb": "blackthorn",
+            "form": "oil"
+          },
+          {
+            "label": "Incense",
+            "image": "../assets/altar/objects/herbs/incense/incense.png",
+            "type": "herb",
+            "herb": "blackthorn",
+            "form": "incense"
+          }
+        ]
+      },
+      {
+        "category": "herbs",
         "name": "Borage",
         "keywords": [
           "courage",
@@ -10186,6 +10227,15 @@ export const ALTAR_ARTWORK: {
         "clearing heaviness",
         "fire",
         "sun"
+      ],
+      "blackthorn": [
+        "banishing",
+        "protection",
+        "endings",
+        "resilience",
+        "justice",
+        "fire",
+        "mars"
       ]
     },
     "crystal": {
