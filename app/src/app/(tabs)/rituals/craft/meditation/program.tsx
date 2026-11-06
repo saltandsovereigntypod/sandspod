@@ -10,6 +10,8 @@ import { removeEntry, useCraft } from '../../../../../lib/craft/store';
 import { ritualsLibraryHref } from '../../../../../lib/library';
 import { usePlace } from '../../../../../lib/location';
 import { carrierLabel, compile, CUSTOM_COLLECTION, customProgram, deityProgramId, patronChoice, planetNow, PROGRAM_HONESTY, programById, resolveProgram, type CustomProgram, type Opts } from '../../../../../lib/meditation/programs';
+import { programVoiceAt, programVoiceLengths } from '../../../../../lib/meditation/voice';
+import { programVoice } from '../../../../../lib/meditation/voiceTracks';
 import { setSitAlarm } from '../../../../../lib/reminders/notifier';
 import { myDeities } from '../../../../../lib/patron/mine';
 import { useMySettings } from '../../../../../lib/settings/store';
@@ -34,8 +36,17 @@ export default function ProgramScreen() {
   const [minutes, setMinutes] = useState<number | null>(null);
   const [opts, setOpts] = useState<Opts>({});
   const [wbtbHours, setWbtbHours] = useState<number | null>(null);
-  const len = minutes ?? (askedMinutes && program?.lengths.includes(Number(askedMinutes)) ? Number(askedMinutes) : program?.length ?? 10);
+  const [voiceOn, setVoiceOn] = useState(true);
+  const [captions, setCaptions] = useState(true);
+  // Cues Ashley has recorded: offered at the lengths they fit.
+  const track = program ? programVoice(program.id) : null;
+  const voiceLengths = useMemo(() => (track && program ? programVoiceLengths(track, program) : []), [track, program]);
+  const voiced = !!track && voiceOn && voiceLengths.length > 0;
+  const lengths = voiced ? voiceLengths : (program?.lengths ?? []);
+  const wanted = minutes ?? (askedMinutes && program?.lengths.includes(Number(askedMinutes)) ? Number(askedMinutes) : program?.length ?? 10);
+  const len = lengths.length && !lengths.includes(wanted) ? lengths.reduce((a, b) => (Math.abs(b - wanted) < Math.abs(a - wanted) ? b : a)) : wanted;
   const compiled = useMemo(() => (program ? compile(program, len, opts) : null), [program, len, opts]);
+  const voice = useMemo(() => (voiced && track && program ? programVoiceAt(track, program, len) : null), [voiced, track, program, len]);
 
   // The wake-back-to-bed alarm: a notification some hours from now, cleared when you leave.
   useEffect(() => {
@@ -62,15 +73,22 @@ export default function ProgramScreen() {
       <Title eyebrow="Binaural program">{program.title}</Title>
       <Body>{program.line}</Body>
 
-      <ProgramPlayer compiled={compiled} />
+      <ProgramPlayer compiled={compiled} voice={voice} captions={captions} />
 
       <View style={ui.gapSmall}>
         <SectionLabel>Length</SectionLabel>
         <Chips>
-          {program.lengths.map((m) => (
+          {lengths.map((m) => (
             <Chip key={m} label={`${m} min`} selected={len === m} onPress={() => setMinutes(m)} />
           ))}
         </Chips>
+        {!!track && voiceLengths.length > 0 && (
+          <>
+            <Toggle label="Guided by voice" detail="The cues read aloud by Ashley, each on its moment; the sound dips a little while she speaks." value={voiceOn} onChange={setVoiceOn} />
+            {voiceOn && <Toggle label="Show the words as well" value={captions} onChange={setCaptions} />}
+            {voiceOn && voiceLengths.length < program.lengths.length && <Body muted>Read aloud, it comes in these lengths. Turn the voice off for the others.</Body>}
+          </>
+        )}
         {program.deep && <Body muted>It always ends with a return to waking, however long you choose.</Body>}
         {program.carriers.length > 1 && (
           <>

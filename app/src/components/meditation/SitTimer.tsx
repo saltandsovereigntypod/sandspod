@@ -16,6 +16,7 @@ import { useAccessibility } from '../../lib/accessibility/store';
 import { ringBell } from '../../lib/altar/feel';
 import { setSitAlarm } from '../../lib/reminders/notifier';
 import type { SoundMix } from '../../lib/meditation/sound';
+import type { VoiceTimeline } from '../../lib/meditation/voice';
 import { bellsDue, bellsOf, clockLabel, elapsedOf, endBellAt, PHASE_WORDS, pauseClock, resumeClock, sitStateAt, type SitClock, type SitPlan, type SitState } from '../../lib/meditation/timer';
 import { colors, fonts } from '../../theme';
 import { Button } from '../Button';
@@ -46,19 +47,21 @@ type Props = {
   shared?: boolean;
   /** Sound layers to play with it (lib/meditation/sound.ts). */
   sound?: SoundMix | null;
+  /** A recorded voice to play with it, laid out on the sit (lib/meditation/voice.ts). */
+  voice?: VoiceTimeline | null;
 };
 
-export function SitTimer({ plan, clock, onClock, endedAtMs, onEnd, onFinished, compact, shared, sound }: Props) {
+export function SitTimer({ plan, clock, onClock, endedAtMs, onEnd, onFinished, compact, shared, sound, voice }: Props) {
   const prefs = useAccessibility();
-  const audio = useSitSound(sound ?? null, plan, clock, endedAtMs);
+  const audio = useSitSound(sound ?? null, plan, clock, endedAtMs, null, voice);
   const bells = useMemo(() => bellsOf(plan), [plan]);
   const [now, setNow] = useState(() => Date.now());
   const last = useRef<number | null>(null);
   const finished = useRef(false);
   const stops = useRef<(() => void)[]>([]);
-  const latest = useRef({ prefs, plan, clock, onFinished });
+  const latest = useRef({ prefs, plan, clock, onFinished, onClock, voice });
   useEffect(() => {
-    latest.current = { prefs, plan, clock, onFinished };
+    latest.current = { prefs, plan, clock, onFinished, onClock, voice };
   });
 
   // Tick twice a second; bells and the end are worked out from the clock.
@@ -86,9 +89,12 @@ export function SitTimer({ plan, clock, onClock, endedAtMs, onEnd, onFinished, c
   // Away from the app: the end bell as a notification; back again, it's taken off.
   useEffect(() => {
     const sub = AppState.addEventListener('change', (next) => {
-      const { plan: p, clock: c } = latest.current;
+      const { plan: p, clock: c, onClock: setClock, voice: v } = latest.current;
       if (next === 'active') void setSitAlarm(null);
-      else if (next === 'background') {
+      else if (v && setClock && Platform.OS !== 'web') {
+        // With a voice, the sit pauses while the app is away (as Listen does), so no guidance is missed.
+        if (c.pausedAt === null) setClock(pauseClock(c, Date.now()));
+      } else if (next === 'background') {
         const at = endBellAt(p, c, Date.now());
         if (at) void setSitAlarm({ at: new Date(at), title: 'The end of your sit', body: 'Take your time coming back.' });
       }

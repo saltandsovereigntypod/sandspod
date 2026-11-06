@@ -527,6 +527,9 @@ export function stageLengths(stages: Pick<Stage, 'weight' | 'fixedMin'>[], total
 
 const clampBeat = (b: number) => Math.max(0.5, Math.min(40, b));
 
+/** When each of a program's own cues comes (ms from the start), in the order written: a fraction of the whole, or minutes before the end. */
+export const cueTimes = (p: Pick<Program, 'cues'>, totalMs: number): number[] => p.cues.map((q) => Math.max(0, Math.min(totalMs - 1000, q.at !== undefined ? q.at * totalMs : totalMs - (q.fromEnd ?? 0) * MIN)));
+
 export function compile(p: Program, minutes: number, o: Opts = {}): Compiled {
   const mins = Math.max(1, Math.min(240, minutes || p.length));
   const totalMs = mins * MIN;
@@ -539,7 +542,8 @@ export function compile(p: Program, minutes: number, o: Opts = {}): Compiled {
     t += lens[i];
     return seg;
   });
-  const cues: TimedCue[] = p.cues.map((q) => ({ atMs: Math.max(0, Math.min(totalMs - 1000, q.at !== undefined ? q.at * totalMs : totalMs - (q.fromEnd ?? 0) * MIN)), text: q.text, ...(q.strike ? { strike: q.strike } : {}) }));
+  const at = cueTimes(p, totalMs);
+  const cues: TimedCue[] = p.cues.map((q, i) => ({ atMs: at[i], text: q.text, ...(q.strike ? { strike: q.strike } : {}) }));
   if (o.forks && p.forks) {
     [0.25, 0.5, 0.75].forEach((f, i) => cues.push({ atMs: f * totalMs, text: i === 0 ? 'A bright fork rings: let it clear the air.' : 'Another strike, another sweep of clear.', strike: `fork:${CLEARING_HZ}` }));
   }

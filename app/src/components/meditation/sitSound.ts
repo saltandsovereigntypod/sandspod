@@ -5,7 +5,9 @@
 // (soundTick) and each player's volume follows it, so it fades in and out
 // and stops with the timer; a sit together's drum or bowls keep in step,
 // since everyone's clock starts at the same moment. Sound you chose plays
-// with the silent switch on. The web build uses sitSound.web.ts.
+// with the silent switch on. A recorded voice (voice.ts) plays with it
+// (voicePlayer.ts), and while it speaks the layers dip under it (duckAt),
+// eased ten times a second. The web build uses sitSound.web.ts.
 
 import { createAudioPlayer, type AudioPlayer, type AudioSource } from 'expo-audio';
 
@@ -17,7 +19,9 @@ import { CHUNK_MS, chirpChunk, rampPath, rampVolume, type Phase, type RampPath }
 import { programStrikes, programTick, type Compiled } from '../../lib/meditation/programs';
 import { bowlStrikes, loopMs, mixOn, samplesFor, soundTick, type SoundMix } from '../../lib/meditation/sound';
 import { wavBytes } from '../../lib/meditation/synth';
+import { duckAt, type VoiceTimeline } from '../../lib/meditation/voice';
 import { elapsedOf, type SitClock, type SitPlan } from '../../lib/meditation/timer';
+import { createVoicePlayer } from './voicePlayer';
 
 const BEDS: Record<string, number> = {
   pink: require('../../../assets/sounds/meditation/pink.wav'),
@@ -61,6 +65,7 @@ function createRamp(prog: Compiled) {
   let timer: ReturnType<typeof setTimeout> | null = null;
   let current = -1;
   let volume = 0;
+  let gain = 1;
 
   const free = (c: Chunk) => {
     quiet(c.player);
@@ -82,7 +87,7 @@ function createRamp(prog: Compiled) {
     file.write(wavBytes(pcm));
     const player = createAudioPlayer({ uri: file.uri });
     player.loop = false;
-    player.volume = volume;
+    player.volume = volume * gain;
     const chunk = { index, player, file };
     chunks.push(chunk);
     return chunk;
@@ -90,7 +95,7 @@ function createRamp(prog: Compiled) {
   function startNext(index: number) {
     const c = prepare(index);
     if (c) {
-      c.player.volume = volume;
+      c.player.volume = volume * gain;
       c.player.play();
       current = index;
     }
@@ -101,9 +106,14 @@ function createRamp(prog: Compiled) {
     });
   }
   return {
+    /** How far it dips under the voice (1: not at all). */
+    gain(g: number) {
+      gain = g;
+      chunks.forEach((c) => (c.player.volume = volume * gain));
+    },
     tick(elapsed: number, paused = false) {
       volume = paused ? 0 : rampVolume(prog, elapsed);
-      chunks.forEach((c) => (c.player.volume = volume));
+      chunks.forEach((c) => (c.player.volume = volume * gain));
       const index = Math.floor(elapsed / CHUNK_MS);
       if (current !== index && !(timer && current === index - 1)) {
         // First chunk, or a seek: begin the chunk we are in, from where we are in it.
@@ -146,12 +156,13 @@ function createRamp(prog: Compiled) {
 
 export type SitSoundControl = { needsTap: boolean; unlock: () => void };
 
-export function useSitSound(mix: SoundMix | null, plan: SitPlan, clock: SitClock, endedAtMs: number | null, program?: Compiled | null): SitSoundControl {
+export function useSitSound(mix: SoundMix | null, plan: SitPlan, clock: SitClock, endedAtMs: number | null, program?: Compiled | null, voice?: VoiceTimeline | null): SitSoundControl {
   const latest = useRef({ plan, clock, endedAtMs });
   useEffect(() => {
     latest.current = { plan, clock, endedAtMs };
   });
   const mixKey = mix && mixOn(mix) ? JSON.stringify(mix) : '';
+  const voiceKey = voice?.sections.length ? JSON.stringify(voice) : '';
   const strikes = useMemo(() => (!mixKey ? [] : program ? programStrikes(program) : bowlStrikes(JSON.parse(mixKey) as SoundMix, plan)), [mixKey, plan, program]);
   const programRef = useRef(program);
   useEffect(() => {
@@ -159,13 +170,24 @@ export function useSitSound(mix: SoundMix | null, plan: SitPlan, clock: SitClock
   });
 
   useEffect(() => {
-    if (!mixKey) return;
-    const m = JSON.parse(mixKey) as SoundMix;
+    if (!mixKey && !voiceKey) return;
+    const m = mixKey ? (JSON.parse(mixKey) as SoundMix) : null;
+    const said = voiceKey ? (JSON.parse(voiceKey) as VoiceTimeline) : null;
+    const voicePlayer = said ? createVoicePlayer(said) : null;
     const players = new Map<string, AudioPlayer>();
+    const levels = new Map<string, number>();
     const bowls = new Map<string, AudioPlayer>();
     let last: number | null = null;
     let wasPaused = false;
-    const ramp = programRef.current ? createRamp(programRef.current) : null;
+    const ramp = m && programRef.current ? createRamp(programRef.current) : null;
+    // Under the voice: every layer's level times the dip, now.
+    const duck = () => {
+      const c = latest.current.clock;
+      if (!said || c.pausedAt !== null) return;
+      const g = duckAt(said, elapsedOf(c, Date.now()));
+      for (const [key, pl] of players) pl.volume = (levels.get(key) ?? 0) * g;
+      ramp?.gain(g);
+    };
     holdLoud(true);
 
     const tick = () => {
@@ -175,13 +197,16 @@ export function useSitSound(mix: SoundMix | null, plan: SitPlan, clock: SitClock
           if (!wasPaused) {
             players.forEach((pl) => pl.pause());
             ramp?.pause();
+            voicePlayer?.tick(0, true);
           }
           wasPaused = true;
           return;
         }
         const elapsed = elapsedOf(c, Date.now());
+        voicePlayer?.tick(elapsed, false);
+        const g = duckAt(said, elapsed);
         const prog = programRef.current;
-        const ticked = prog ? programTick(prog, strikes, last ?? -1, elapsed) : soundTick(m, p, strikes, last ?? -1, elapsed, ended);
+        const ticked = !m ? { voices: [], strike: null } : prog ? programTick(prog, strikes, last ?? -1, elapsed) : soundTick(m, p, strikes, last ?? -1, elapsed, ended);
         const strike = ticked.strike;
         // A program's binaural layer is the continuous ramp, not the loops.
         const voices = prog ? ticked.voices.filter((v) => !v.key.startsWith('binaural:')) : ticked.voices;
@@ -192,6 +217,7 @@ export function useSitSound(mix: SoundMix | null, plan: SitPlan, clock: SitClock
           if (!want.has(key)) {
             quiet(pl);
             players.delete(key);
+            levels.delete(key);
           }
         }
         for (const v of voices) {
@@ -206,11 +232,12 @@ export function useSitSound(mix: SoundMix | null, plan: SitPlan, clock: SitClock
             // Kept in step: the drum from where the shared clock says it is; the callback from where it's got to.
             const at = oneShot ? v.atMs : len ? v.atMs % len : 0;
             if (at > 500) void pl.seekTo(at / 1000).catch(() => {});
-            pl.volume = v.volume;
+            pl.volume = v.volume * g;
             pl.play();
             players.set(v.key, pl);
           }
-          pl.volume = v.volume;
+          levels.set(v.key, v.volume);
+          pl.volume = v.volume * g;
           if (wasPaused) pl.play();
         }
         wasPaused = false;
@@ -224,7 +251,7 @@ export function useSitSound(mix: SoundMix | null, plan: SitPlan, clock: SitClock
             }
           }
           if (b) {
-            b.volume = strike.volume;
+            b.volume = strike.volume * g;
             void b.seekTo(0).catch(() => {});
             b.play();
           }
@@ -235,14 +262,17 @@ export function useSitSound(mix: SoundMix | null, plan: SitPlan, clock: SitClock
     };
     tick();
     const id = setInterval(tick, 500);
+    const dip = said ? setInterval(duck, 100) : null;
     return () => {
       holdLoud(false);
       clearInterval(id);
+      if (dip) clearInterval(dip);
+      voicePlayer?.stop();
       ramp?.stop();
       players.forEach(quiet);
       bowls.forEach(quiet);
     };
-  }, [mixKey, strikes]);
+  }, [mixKey, voiceKey, strikes]);
 
   return { needsTap: false, unlock: () => {} };
 }

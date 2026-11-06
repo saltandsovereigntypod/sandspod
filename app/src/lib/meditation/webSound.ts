@@ -16,6 +16,12 @@ export type WebSound = {
   /** The program's binaural layer as two oscillators (left = carrier, right = carrier + beat) following `path` from `elapsedMs`, at `volume`; null to silence. */
   ramp(path: EarPath | null, elapsedMs: number, volume: number): void;
   strike(key: string, volume: number): void;
+  /** The layers' overall level, 0 to 1 (they dip under the voice), eased over about `seconds`. */
+  duck(gain: number, seconds?: number): void;
+  /** A recorded clip (the voice, voice.ts): fetch it ahead; play it from `offsetMs` in (any other stops); stop it. False when it isn't ready yet. */
+  loadClip(url: string): void;
+  playClip(url: string, offsetMs: number): boolean;
+  stopClip(): void;
   pause(): void;
   resume(): void;
   stop(): void;
@@ -38,7 +44,21 @@ export function createWebSound(bedUrl: (bed: string) => string): WebSound | null
   const playing = new Map<string, Playing>();
   const starting = new Set<string>();
   let stopped = false;
+  // Every layer goes through one gain, so they can dip together under the voice; the voice goes straight out.
+  const bus = ctx.createGain();
+  bus.connect(ctx.destination);
+  let clip: { url: string; source: AudioBufferSourceNode } | null = null;
   let tones: { oscs: OscillatorNode[]; gain: GainNode; anchor: number } | null = null;
+
+  function stopClip() {
+    const c = clip;
+    clip = null;
+    try {
+      c?.source.stop();
+    } catch {
+      // Already stopped.
+    }
+  }
 
   function endTones(fade = 0.4) {
     if (!tones) return;
@@ -64,9 +84,13 @@ export function createWebSound(bedUrl: (bed: string) => string): WebSound | null
     if (!p) {
       p = (async () => {
         try {
-          const pcm = samplesFor(key);
+          const pcm = key.startsWith('clip:') ? null : samplesFor(key);
           let b: AudioBuffer;
-          if (pcm) {
+          if (key.startsWith('clip:')) {
+            const res = await fetch(key.slice(5));
+            if (!res.ok) throw new Error(String(res.status));
+            b = await ctx.decodeAudioData(await res.arrayBuffer());
+          } else if (pcm) {
             b = ctx.createBuffer(pcm.channels.length, pcm.channels[0].length, pcm.rate);
             pcm.channels.forEach((c, i) => b.getChannelData(i).set(c));
           } else {
@@ -101,7 +125,7 @@ export function createWebSound(bedUrl: (bed: string) => string): WebSound | null
     source.loop = loop;
     const gain = ctx.createGain();
     gain.gain.value = 0;
-    source.connect(gain).connect(ctx.destination);
+    source.connect(gain).connect(bus);
     source.start(0, Math.max(0, offset));
     playing.set(voice.key, { source, gain });
   }
@@ -147,7 +171,7 @@ export function createWebSound(bedUrl: (bed: string) => string): WebSound | null
           o.start();
           return o;
         });
-        merger.connect(gain).connect(ctx.destination);
+        merger.connect(gain).connect(bus);
         tones = { oscs, gain, anchor };
       }
       tones.gain.gain.setTargetAtTime(volume, ctx.currentTime, 0.5);
@@ -163,9 +187,36 @@ export function createWebSound(bedUrl: (bed: string) => string): WebSound | null
       source.buffer = b;
       const gain = ctx.createGain();
       gain.gain.value = volume;
-      source.connect(gain).connect(ctx.destination);
+      source.connect(gain).connect(bus);
       source.start();
     },
+    duck(gain, seconds = 0.4) {
+      if (stopped) return;
+      bus.gain.setTargetAtTime(Math.max(0, Math.min(1, gain)), ctx.currentTime, seconds / 4);
+    },
+    loadClip(url) {
+      if (!stopped) void buffer(`clip:${url}`);
+    },
+    playClip(url, offsetMs) {
+      if (stopped) return false;
+      const b = ready.get(`clip:${url}`);
+      if (!b) {
+        void buffer(`clip:${url}`);
+        return false;
+      }
+      stopClip();
+      if (offsetMs / 1000 >= b.duration) return true;
+      const source = ctx.createBufferSource();
+      source.buffer = b;
+      source.connect(ctx.destination);
+      source.start(0, Math.max(0, offsetMs / 1000));
+      clip = { url, source };
+      source.onended = () => {
+        if (clip?.source === source) clip = null;
+      };
+      return true;
+    },
+    stopClip,
     pause() {
       void ctx.suspend().catch(() => {});
     },
@@ -174,6 +225,7 @@ export function createWebSound(bedUrl: (bed: string) => string): WebSound | null
     },
     stop() {
       endTones();
+      stopClip();
       stopped = true;
       for (const [key, p] of playing) fadeOut(key, p);
       setTimeout(() => void ctx.close().catch(() => {}), 3000);
