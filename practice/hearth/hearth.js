@@ -784,6 +784,17 @@
     ].join("");
   }
 
+  // ── Wards ──────────────────────────────────────────────────────────────
+  // Kept in the web app (this section of the website now opens the app);
+  // these pages point there for anyone arriving at an old address.
+  function wardsView() {
+    return [
+      backTo("", "Hearth & land"),
+      kit.head({ eyebrow: "Hearth & land", title: "Wards", lede: "Your doors, windows, thresholds and rooms, what guards each, and when to renew it, with reminders from your To tend list." }),
+      kit.actions([kit.button({ label: "Open your wards", url: "/rituals/craft/hearth/wards", primary: true })])
+    ].join("");
+  }
+
   // ── Drawing ────────────────────────────────────────────────────────────
   const VIEWS = {
     hearth: [homeView, "Hearth & land"],
@@ -801,7 +812,9 @@
     "hearth-forage-harvest-edit": [harvestEditView, "A harvest"],
     "hearth-recipes": [recipesView, "Kitchen witchery"],
     "hearth-recipes-recipe": [recipeView, "A recipe"],
-    "hearth-recipes-edit": [recipeEditView, "Write a recipe"]
+    "hearth-recipes-edit": [recipeEditView, "Write a recipe"],
+    "hearth-wards": [wardsView, "Wards"],
+    "hearth-wards-spot": [wardsView, "Wards"]
   };
   function draw() {
     const [fn, title] = VIEWS[view] || VIEWS.hearth;

@@ -37,6 +37,9 @@ export default function EclecticPractice() {
             />
           ))}
         </List>
+        <List>
+          <Row icon="grimoire" title="Witch’s alphabets" detail="Theban, Passing the River, Malachim, Celestial, runes and ogham, to copy or carve" last onPress={() => router.push('/rituals/craft/eclectic/alphabets' as Href)} />
+        </List>
         <Body muted>The sigil maker belongs to every practice, so it’s on the Craft home too.</Body>
       </View>
 

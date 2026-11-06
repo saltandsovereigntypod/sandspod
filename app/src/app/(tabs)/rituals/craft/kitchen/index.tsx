@@ -52,6 +52,7 @@ export default function KitchenPractice() {
       </View>
 
       <List>
+        <Row icon="altar" title="Blending lab" detail="Incense, oils, powders and teas by intent, with correspondences and safety" onPress={() => router.push('/rituals/craft/kitchen/blend' as Href)} />
         <Row
           icon="rituals"
           title="Kitchen witchery"

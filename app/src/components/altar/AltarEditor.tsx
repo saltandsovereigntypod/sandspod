@@ -69,6 +69,9 @@ import { IntentionSheet, useAltarIntention } from './workings/IntentionSheet';
 import { isProtectiveSpell, useCrystalWear, WearCard } from './CrystalWear';
 import { LayoutSheet } from './workings/LayoutSheet';
 import { SachetFeedSheet, SachetSheet } from './workings/SachetSheet';
+import { CraftWorkingPanel, GridSheet, GridTendSheet, KnotSheet, KnotTendSheet, PoppetSheet, PoppetTendSheet, type CraftWorkingKind } from './workings/CraftWorkingSheets';
+import { gridLinkOf, gridObjects } from '../../lib/altar/workings/crystalGrid';
+import { GRIDS, normaliseGrid, type Grid } from '../../lib/craft/crystal/grids';
 import { ScryingScreen } from './workings/ScryingScreen';
 import { JarRenewSheet, SpellJarSheet, type PlacedWorking } from './workings/SpellJarSheet';
 import { SpellTimerSheet } from './workings/SpellTimerSheet';
@@ -340,6 +343,12 @@ type SheetName =
   | 'potted-harvest'
   | 'potted-journal'
   | 'cord'
+  | 'poppet'
+  | 'poppet-tend'
+  | 'knots'
+  | 'knots-tend'
+  | 'grid'
+  | 'grid-tend'
   | null;
 
 const nowIso = () => new Date().toISOString();
@@ -384,7 +393,7 @@ export function AltarEditor({
   whose,
   deed,
 }: { shared?: SharedAltar; header?: ReactNode; overlay?: ReactNode; onBack?: () => void; whose?: WhoseContext | null; deed?: AltarDeedRequest | null } = {}) {
-  const params = useLocalSearchParams<{ altarId: string; from?: string; deity?: string; planet?: string; shelf?: string; kit?: string }>();
+  const params = useLocalSearchParams<{ altarId: string; from?: string; deity?: string; planet?: string; shelf?: string; kit?: string; grid?: string }>();
   const altarId = shared ? `coven:${shared.key}` : params.altarId;
   const { from, deity, planet, kit } = params;
   const store = useAltars();
@@ -1274,6 +1283,7 @@ export function AltarEditor({
       else if (action === 'ritual') openSaved('ritual', 'ritual');
       else if (action === 'cord') openCord(null);
       else if (action === 'meditate') setSheet('meditate');
+      else if (action === 'poppet' || action === 'knots' || action === 'grid') setSheet(action);
       else if (action === 'ancestor' || action === 'stone' || action === 'plant' || action === 'drawn') setSheet(action);
     });
   };
@@ -1431,6 +1441,39 @@ export function AltarEditor({
     setNotice(`${shortLabel(object.label, 'It')} is on your altar.`);
     finishDeed('card');
   };
+  /** Several things set down at once (a crystal grid's stones), the first selected. */
+  const placeMany = (objects: import('../../lib/altar/types').SavedObject[], message: string) => {
+    if (!objects.length) return;
+    const index = docRef.current?.objects.length ?? 0;
+    commit((d) => objects.reduce((acc, o) => addObject(acc, o), d));
+    setSelected(index);
+    setSheet(null);
+    setNotice(message);
+  };
+  const takeDownGrid = (gridId: string, name: string) => {
+    commit((d) => removeObjects(d, d.objects.map((o, i) => (gridLinkOf(o)?.id === gridId ? i : -1)).filter((i) => i >= 0)));
+    setSelected(null);
+    setSheet(null);
+    setNotice(`${name} is taken down. Cleanse the stones before they go back on the shelf.`);
+  };
+  // A grid asked for from Craft → Crystal → Grids: set out once the altar is open.
+  const grids = useCraft<Grid>(GRIDS);
+  const gridPlaced = useRef<string | null>(null);
+  useEffect(() => {
+    const want = params.grid;
+    if (!want || !doc || shared || gridPlaced.current === want || !grids.ready) return;
+    const timer = setTimeout(() => {
+      gridPlaced.current = want;
+      const entry = grids.entries.find((e) => e.id === want);
+      const current = docRef.current;
+      if (!entry || !current) return setNotice('That grid couldn’t be found on this device yet.');
+      if (current.objects.some((o) => gridLinkOf(o)?.id === want)) return setNotice('That grid is already set out here.');
+      const g = normaliseGrid(entry.data);
+      placeMany(gridObjects(want, g, current.objects, nowIso(), viewCenter()), `${g.name || 'Your grid'} is set out. Tap a stone to activate it and keep its log.`);
+    }, 0);
+    return () => clearTimeout(timer);
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- once per grid asked for, when the altar is ready
+  }, [params.grid, doc, grids.ready]);
   // The newest cleansing or charge done here on one of your own stones, for its log in Crystal.
   const selectedCare = useMemo(() => (selectedObject && stoneIdOf(selectedObject) ? lastAltarCareOf(selectedObject) : null), [selectedObject]);
   const ritualOverlay =
@@ -2093,6 +2136,7 @@ export function AltarEditor({
               anoint: () => setSheet('anoint'),
               renew: () => setSheet('renew'),
               feed: () => setSheet('feed'),
+              working: (kind: CraftWorkingKind) => setSheet(kind === 'poppet' ? 'poppet-tend' : kind === 'knots' ? 'knots-tend' : 'grid-tend'),
               spell: () => {
                 setSpellWith({ uid: selectedUid, label: shortLabel(selectedObject.label) });
                 openSaved('spell', 'spell timer');
@@ -2668,6 +2712,28 @@ export function AltarEditor({
             <>
               <SpellJarSheet visible={sheet === 'jar'} altar={altarCtx} center={viewCenter()} onClose={() => setSheet(null)} onPlace={placeWorking} />
               <SachetSheet visible={sheet === 'sachet'} altar={altarCtx} center={viewCenter()} onClose={() => setSheet(null)} onPlace={placeWorking} />
+              <PoppetSheet visible={sheet === 'poppet'} altar={altarCtx} center={viewCenter()} onClose={() => setSheet(null)} onPlace={placeWorking} />
+              <PoppetTendSheet
+                visible={sheet === 'poppet-tend'}
+                object={selectedObject}
+                onClose={() => setSheet(null)}
+                onUpdate={(o, said) => {
+                  changeSelected(() => o);
+                  setNotice(said);
+                }}
+              />
+              <KnotSheet visible={sheet === 'knots'} altar={altarCtx} center={viewCenter()} onClose={() => setSheet(null)} onPlace={(o) => placeMany([o], `${shortLabel(o.label, 'The cord')} is on your altar. Tap it to tie the first knot.`)} />
+              <KnotTendSheet
+                visible={sheet === 'knots-tend'}
+                object={selectedObject}
+                onClose={() => setSheet(null)}
+                onUpdate={(o, said) => {
+                  changeSelected(() => o);
+                  setNotice(said);
+                }}
+              />
+              <GridSheet visible={sheet === 'grid'} altar={altarCtx} center={viewCenter()} onClose={() => setSheet(null)} onPlace={(objects, name) => placeMany(objects, `${name} is set out. Tap a stone to activate it and keep its log.`)} />
+              <GridTendSheet visible={sheet === 'grid-tend'} object={selectedObject} onClose={() => setSheet(null)} onTakeDown={takeDownGrid} />
               <JarRenewSheet
                 visible={sheet === 'renew'}
                 object={selectedObject && jarStateOf(selectedObject) ? selectedObject : null}
@@ -3097,6 +3163,7 @@ type Actions = {
   anoint: () => void;
   renew: () => void;
   feed: () => void;
+  working: (kind: CraftWorkingKind) => void;
   spell: () => void;
   tendSpell: (entryId: string) => void;
   layouts: () => void;
@@ -3451,6 +3518,8 @@ function ObjectPanel({
           <Button label="Shake to renew" variant="outline" onPress={act.renew} />
         </View>
       )}
+
+      <CraftWorkingPanel object={object} onOpen={act.working} />
 
       {sachet && (
         <View style={styles.living}>

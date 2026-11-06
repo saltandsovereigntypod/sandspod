@@ -61,8 +61,16 @@ export default function HearthHome() {
           <Row icon="rituals" title="Recipes with intent" detail="Festival foods, offerings and your own, kept in your Grimoire" onPress={go(`${HEARTH}/recipes`)} />
           <Row icon="grimoire" title="Write a recipe" detail="Your own, with its intent and correspondences" onPress={go(`${HEARTH}/recipes/edit`)} />
           <Row icon="grimoire" title="Pantry correspondences" detail="On Kitchen & hearth · salt, honey and the cupboard" onPress={go('/rituals/craft/kitchen/pantry')} />
+          <Row icon="altar" title="Blending lab" detail="On Kitchen & hearth · incense, oils, powders and teas by intent, with safety" onPress={go('/rituals/craft/kitchen/blend')} />
           <Row icon="altar" title="Bath & body" detail="Thirty bath mixes by intention, moon and season, with safety notes, your shelves and a log" onPress={go("/rituals/craft/bath")} />
           <Row icon="calendar" title="Find a good time to cook" detail="The spell timing advisor" last onPress={go(`/rituals/craft/cosmic/timing${q({ title: 'Kitchen witchery' })}`)} />
+        </List>
+      </View>
+
+      <View style={ui.gapSmall}>
+        <SectionLabel>The house</SectionLabel>
+        <List>
+          <Row icon="altar" title="Wards" detail="Doors, windows and thresholds, what guards each, and when to renew it" last onPress={go(`${HEARTH}/wards`)} />
         </List>
       </View>
 
