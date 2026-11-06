@@ -5,6 +5,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import { Button } from '../../../../components/Button';
 import { ink, Ornament } from '../../../../components/grimoire/BlockView';
 import { LinkedReadings } from '../../../../components/divination/Linked';
+import { DreamReading } from '../../../../components/dreams/DreamReading';
 import { DreamShell } from '../../../../components/grimoire/dreams';
 import { MoonDisc } from '../../../../components/MoonDisc';
 import { SupportLink } from '../../../../components/SupportLink';
@@ -110,6 +111,7 @@ export default function DreamPage() {
           </View>
         )}
       </View>
+      <DreamReading entry={entry} all={all} />
       <LinkedReadings
         link={{ kind: 'dream', id: entry.id, title: d.title }}
         label="Readings of this dream"

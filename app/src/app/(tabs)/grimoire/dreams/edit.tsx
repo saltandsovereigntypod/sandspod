@@ -9,6 +9,7 @@ import { fullDate } from '../../../../lib/calendar';
 import {
   addSymbol,
   blankDream,
+  DREAM_MOODS,
   DREAMS,
   dreamMoon,
   normalizeDream,
@@ -167,8 +168,18 @@ function Form({ existing, entries }: { existing: CraftEntry<unknown> | null; ent
         </Chips>
       </View>
 
+      <View style={ui.gapSmall}>
+        <SectionLabel>How did it feel? (optional)</SectionLabel>
+        <Chips>
+          {DREAM_MOODS.map((m) => (
+            <Chip key={m} label={m[0].toUpperCase() + m.slice(1)} selected={dream.mood === m} onPress={() => set({ mood: dream.mood === m ? '' : m })} />
+          ))}
+        </Chips>
+      </View>
+
       <View>
         <Toggle label="Lucid" detail="You knew you were dreaming" value={dream.lucid} onChange={(lucid) => set({ lucid })} />
+        <Toggle label="Possibly prophetic" detail="It felt like more than a dream" value={!!dream.prophetic} onChange={(prophetic) => set({ prophetic })} />
         <Toggle label="Recurring" detail="You’ve had this dream before" value={dream.recurring} onChange={(recurring) => set({ recurring })} />
       </View>
 

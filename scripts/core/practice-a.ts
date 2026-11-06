@@ -22,6 +22,7 @@ export * as pantry from '../../app/src/lib/craft/kitchen/pantry.ts';
 export * as simmer from '../../app/src/lib/craft/kitchen/simmer.ts';
 export * as ancestors from '../../app/src/lib/craft/hedge/ancestors.ts';
 export * as dreams from '../../app/src/lib/craft/hedge/dreams.ts';
+export * as dreamReader from '../../app/src/lib/dreams/reader.ts';
 export * as dreamSymbols from '../../app/src/lib/craft/hedge/dreamSymbols.ts';
 export * as readings from '../../app/src/lib/craft/hedge/readings.ts';
 export * as devotion from '../../app/src/lib/craft/solitary/devotion.ts';

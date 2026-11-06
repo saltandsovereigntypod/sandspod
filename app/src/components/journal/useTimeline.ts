@@ -99,7 +99,7 @@ export function useTimelineLists(): { lists: TimelineItem[][]; cycleLocked: bool
           date: dayOf(d.date) || dayOf(e.createdAt),
           at: e.createdAt,
           title: d.title.trim() || firstLine(d.dream) || 'A dream',
-          detail: [d.moonPhase, d.symbols.slice(0, 3).join(', ') || null, d.lucid ? 'lucid' : null].filter(Boolean).join(' · '),
+          detail: d.reading ? `Reading: ${(d.reading.split('\n')[1] ?? '').slice(0, 110)}` : [d.moonPhase, d.symbols.slice(0, 3).join(', ') || null, d.lucid ? 'lucid' : null].filter(Boolean).join(' · '),
           href: DREAM_ROUTES.dream(e.id),
         };
       }),
