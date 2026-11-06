@@ -4455,6 +4455,47 @@ export const ALTAR_ARTWORK: {
       },
       {
         "category": "herbs",
+        "name": "Thistle",
+        "keywords": [
+          "protection",
+          "strength",
+          "breaking hexes",
+          "drawing off envy",
+          "endurance"
+        ],
+        "forms": [
+          {
+            "label": "Sprig",
+            "image": "../assets/altar/objects/herbs/thistle/thistle-sprig.png",
+            "type": "herb",
+            "herb": "thistle",
+            "form": "sprig"
+          },
+          {
+            "label": "Loose",
+            "image": "../assets/altar/objects/herbs/thistle/thistle-loose.png",
+            "type": "herb",
+            "herb": "thistle",
+            "form": "loose"
+          },
+          {
+            "label": "Oil",
+            "image": "../assets/altar/objects/herbs/thistle/thistle-oil.png",
+            "type": "oil",
+            "herb": "thistle",
+            "form": "oil"
+          },
+          {
+            "label": "Incense",
+            "image": "../assets/altar/objects/herbs/incense/incense.png",
+            "type": "herb",
+            "herb": "thistle",
+            "form": "incense"
+          }
+        ]
+      },
+      {
+        "category": "herbs",
         "name": "Thyme",
         "keywords": [
           "courage",
@@ -11063,6 +11104,18 @@ export const ALTAR_ARTWORK: {
         "pest repelling",
         "remembrance",
         "home protection"
+      ],
+      "thistle": [
+        "protection",
+        "strength",
+        "breaking hexes",
+        "drawing off envy",
+        "endurance",
+        "fire",
+        "mars",
+        "hex breaking",
+        "courage",
+        "envy"
       ]
     },
     "crystal": {

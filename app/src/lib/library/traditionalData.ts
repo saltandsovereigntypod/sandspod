@@ -2603,6 +2603,32 @@ export const TRADITIONAL_LIBRARY: TraditionalLibraryData = {
         "commitment",
         "venus"
       ]
+    },
+    "thistle": {
+      "DisplayName": "Thistle",
+      "Category": "Herb",
+      "Element": "Fire",
+      "Planet": "Mars",
+      "Uses": "Protection, strength, breaking hexes, drawing off envy, endurance",
+      "PairsWith": "Nettle, hawthorn, black tourmaline, red candle",
+      "Substitutions": "Nettle, teasel",
+      "TraditionalWarnings": "Thistles are prickly and cause painful scratches and splinters; wear gloves when picking them. Some thistles (including Scotch thistle and many Cirsium species) are protected or are invasive weeds, depending on where you live. Do not eat wild thistles unless you have identified them with care.",
+      "Overview": "Thistle is the name for many spiny, daisy-family plants (Cirsium, Carduus, Onopordum and others) with prickly, lobed leaves and round flower heads of purple tufted florets that turn to silvery down. The Scotch thistle (Onopordum acanthium) and the spear thistle (Cirsium vulgare) are the best-known emblems; milk thistle (Silybum marianum) is a related herb with white-veined leaves. The flowering heads and leaves are the parts used, fresh or dried.",
+      "TraditionalMeaning": "Prickly strength and protection; a defensive plant of courage, endurance and not being trodden on.",
+      "HowToUse": "Start here: dry a thistle head and keep it in a jar or on a shelf near the door as a protective charm. Pressed or dried heads can be hung as a boundary guard, or crumbled into protection jars with care for the spines. Wear gloves when handling it, and burn it only in small amounts outdoors. Store dried heads sealed, as the down scatters.",
+      "PairingNotes": "Thistle pairs well with nettle and hawthorn for protective hedge magic, black tourmaline for banishing, and red candles for strength. Purple, red and black candles suit it.",
+      "SubstitutionNotes": "Nettle or teasel can substitute for thistle in protection and strength workings, as both are prickly, defensive plants. Milk thistle is a milder, healing relative and is not interchangeable for a spiky guardian role.",
+      "SafetyAndRespect": "Wear gloves: thistle spines cause painful, easily infected scratches, and small spines can lodge in skin. Do not burn it indoors or inhale the smoke or fluffy seed. Some thistles are protected, rare or invasive, so check local rules and do not dig them up. Milk thistle can interact with medicines and cause allergic reactions in people sensitive to daisies. Magical use should not replace medical care.",
+      "Traditions": "Celtic, Christian",
+      "TraditionNotes": "Celtic: The thistle is the national emblem of Scotland. A story, probably from the 18th century, says that a Norse raider’s cry of pain as he stepped on a thistle alerted the Scots to a night attack; the Order of the Thistle dates from the 15th–17th century. Both are traditions of the Scottish crown rather than older pagan practice.\n\nChristian: In medieval Christian art the thistle was a symbol of sorrow and of Christ’s suffering, and the Virgin Mary’s milk was said to have fallen on the leaves of the milk thistle, giving them their white veins.\n\nFolk & wider practice: Thistle has long been a folk protection plant against witchcraft and the evil eye in Britain and Europe, and Our Lady’s thistle was also eaten and used as a liver remedy. Modern correspondence tables give thistle to Mars and Fire.",
+      "tags": [
+        "protection",
+        "strength",
+        "hex breaking",
+        "courage",
+        "envy",
+        "mars"
+      ]
     }
   },
   "crystal": {
