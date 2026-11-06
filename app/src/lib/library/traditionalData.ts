@@ -4762,6 +4762,33 @@ export const TRADITIONAL_LIBRARY: TraditionalLibraryData = {
         "discipline",
         "mercury"
       ]
+    },
+    "golden_healer_quartz": {
+      "DisplayName": "Golden Healer Quartz",
+      "Category": "Crystal",
+      "Element": "Fire",
+      "Planet": "Sun",
+      "Chakra": "Solar Plexus, Crown",
+      "Uses": "Optimism, self-worth, warmth of heart, spiritual connection, amplified intention",
+      "PairsWith": "Citrine, clear quartz, sunstone, gold candle",
+      "Cleansing": "Smoke, sound, moonlight",
+      "TraditionalWarnings": "Golden healer quartz is hard and stable. Some pieces are dyed or heat-treated, and a few are sold as ‘golden healer’ when they are simply stained, so ask how a piece was treated if that matters to you.",
+      "Overview": "Golden healer quartz is clear or milky quartz that is stained yellow, gold or rust-orange by iron oxides (such as limonite or hematite) coating the crystal or lying inside it. The trade name ‘golden healer’ came into use in the late 20th century; the stone is found in Arkansas, Brazil, Madagascar and Namibia and is sold as points, clusters, tumbled stones and chips. It is not the same as citrine, a heat-coloured or naturally yellow quartz.",
+      "TraditionalMeaning": "Warmth and wholeness; a modern stone of the sun, for self-worth, optimism and feeling connected to something larger.",
+      "HowToUse": "Start here: hold a golden healer quartz point in sunlight or lamplight for a minute, and say one kind thing about yourself. Points suit an altar or desk, tumbled stones suit carrying, and chips can go in jars with citrine for confidence and abundance. Keep it clean and clear of dust.",
+      "PairingNotes": "Golden healer quartz pairs well with citrine for sunny confidence, clear quartz for amplification, sunstone for warmth, and amethyst for calm. Gold, yellow and white candles suit it.",
+      "CleansingNotes": "Cleanse golden healer quartz with smoke, sound, moonlight, or visualization. It can be rinsed and dried; the iron staining is stable, but a stiff brush can scratch it.",
+      "SafetyAndRespect": "Golden healer quartz is safe to handle, but points are sharp and iron-stained pieces can leave an orange dust on skin. The healing in its name is a trade name rather than a medical claim, and the stone is no substitute for treatment. Ask about dyed or heat-treated stones if this matters to you.",
+      "Traditions": "Wheel of the Year",
+      "TraditionNotes": "Wheel of the Year: Kept on the altar for Litha and sun workings, held at the start of the day for optimism, and set among candles at Yule to call back the light.\n\nFolk & wider practice: Quartz has been prized across Europe, Asia and the Americas for thousands of years, but ‘golden healer’ is a modern marketing name from the 1990s. Its meanings come from crystal-healing books which link its colour to the Sun and the Solar Plexus.",
+      "tags": [
+        "optimism",
+        "self-worth",
+        "warmth",
+        "spiritual connection",
+        "intention",
+        "sun"
+      ]
     }
   },
   "candle": {

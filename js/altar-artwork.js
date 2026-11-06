@@ -6358,6 +6358,41 @@
         },
         {
           "category": "crystals",
+          "name": "Golden Healer Quartz",
+          "icon": "💎",
+          "keywords": [
+            "optimism",
+            "self-worth",
+            "warmth of heart",
+            "spiritual connection",
+            "amplified intention"
+          ],
+          "forms": [
+            {
+              "label": "Point",
+              "image": "../assets/altar/objects/crystals/golden-healer-quartz/golden-healer-quartz-point.png",
+              "type": "crystal",
+              "crystal": "golden_healer_quartz",
+              "form": "point"
+            },
+            {
+              "label": "Chips",
+              "image": "../assets/altar/objects/crystals/golden-healer-quartz/golden-healer-quartz-chips.png",
+              "type": "crystal",
+              "crystal": "golden_healer_quartz",
+              "form": "chips"
+            },
+            {
+              "label": "Cluster",
+              "image": "",
+              "type": "crystal",
+              "crystal": "golden_healer_quartz",
+              "form": "cluster"
+            }
+          ]
+        },
+        {
+          "category": "crystals",
           "name": "Green Aventurine",
           "icon": "💎",
           "keywords": [
@@ -12636,6 +12671,19 @@
           "study",
           "focus",
           "discipline"
+        ],
+        "golden-healer-quartz": [
+          "optimism",
+          "self-worth",
+          "warmth of heart",
+          "spiritual connection",
+          "amplified intention",
+          "fire",
+          "sun",
+          "solar plexus",
+          "crown",
+          "warmth",
+          "intention"
         ]
       },
       "deity": {
