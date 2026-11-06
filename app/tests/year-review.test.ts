@@ -8,7 +8,7 @@ import { holidayChoice } from '../src/lib/holidays.ts';
 import type { JournalRow, RitualPlan } from '../src/lib/rituals/types.ts';
 import { recordOffering } from '../src/lib/altar/devotion.ts';
 import type { SavedObject } from '../src/lib/altar/types.ts';
-import { altarRecords, covenRecords, cycleSummary, reflectionPrompts, shareCard, shareText, yearLines, yearPage, yearReview, type YearInput } from '../src/lib/grimoire/yearReview.ts';
+import { altarRecords, covenRecords, cycleSummary, practiceRecords, reflectionPrompts, shareCard, shareText, yearLines, yearPage, yearReview, type YearInput } from '../src/lib/grimoire/yearReview.ts';
 import { nextSpan, previousSpan, resolvedStart, yearSpanAt, yearTurn, YEAR_START_KEY } from '../src/lib/grimoire/yearSpan.ts';
 
 test('the year follows the person’s own new year', () => {
@@ -217,4 +217,37 @@ test('an empty year says so', () => {
   const r = yearReview(base(), yearSpanAt(new Date(2026, 5, 1), {}), new Date(2026, 9, 31));
   assert.equal(r.empty, true);
   assert.deepEqual(shareCard(r).lines, []);
+});
+
+test('the practice journals: shadow themes, devotions, ancestors and signs, never shared', () => {
+  const span = yearSpanAt(new Date(2026, 5, 1), {});
+  const practice = practiceRecords({
+    shadow: [
+      { id: 's1', createdAt: '2026-02-01T10:00:00Z', data: { date: '2026-02-01', text: 'x', tags: ['Anger'], prompt: 'sh-trigger-1' } },
+      { id: 's2', createdAt: '2026-03-01T10:00:00Z', data: { date: '2026-03-01', text: 'y', tags: ['anger'] } },
+      { id: 's3', createdAt: '2025-03-01T10:00:00Z', data: { date: '2025-03-01', text: 'last year', tags: ['anger'] } },
+    ],
+    devotion: [
+      { id: 'd1', createdAt: '2026-04-01T10:00:00Z', data: { date: '2026-04-01', deityKey: 'hekate', deityName: 'Hekate', acts: ['offering'] } },
+      { id: 'd2', createdAt: '2026-05-01T10:00:00Z', data: { date: '2026-05-01', deityKey: 'hekate', deityName: 'Hekate', text: 'a prayer' } },
+    ],
+    omens: [
+      { id: 'o1', createdAt: '2026-06-01T10:00:00Z', data: { date: '2026-06-01', seen: 'animal', what: 'A hare', meaning: 'Quick change', outcome: 'yes' } },
+      { id: 'o2', createdAt: '2026-06-02T10:00:00Z', data: { date: '2026-06-02', seen: 'number', what: '111', outcome: 'waiting' } },
+    ],
+  });
+  const r = yearReview({ ...base(), practice }, span, new Date(2026, 9, 31));
+  assert.equal(r.empty, false);
+  assert.equal(r.practice.shadow.count, 2);
+  assert.deepEqual(r.practice.shadow.themes[0], { label: 'anger', count: 2 });
+  assert.ok(r.practice.shadow.themes.some((t) => t.label === 'triggers'));
+  assert.deepEqual(r.practice.devotion.deities, [{ key: 'hekate', name: 'Hekate', count: 2 }]);
+  assert.equal(r.practice.devotion.offerings, 1);
+  assert.equal(r.practice.omens.cameToPass, 1);
+  assert.equal(r.practice.omens.read, 1);
+  assert.equal(r.practice.omens.waiting, 1);
+  assert.ok(yearLines(r).some((l) => l.includes('shadow') && l.includes('anger')));
+  assert.ok(reflectionPrompts(r).some((p) => p.includes('Hekate')));
+  const shared = shareText(r);
+  for (const word of ['shadow', 'anger', 'Hekate', 'hare', 'sign']) assert.ok(!shared.includes(word), word);
 });

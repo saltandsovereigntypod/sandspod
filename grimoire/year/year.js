@@ -155,7 +155,7 @@
   }
 
   async function load() {
-    const [journal, plans, readings, dreams, journeys, course, pages, altars, covens, cyc, sits] = await Promise.all([
+    const [journal, plans, readings, dreams, journeys, course, pages, altars, covens, cyc, sits, ...journalRows] = await Promise.all([
       safe(loadJournal, []),
       safe(loadPlans, []),
       kit.entries(R.READINGS),
@@ -166,7 +166,8 @@
       safe(loadAltars, []),
       safe(loadCovens, { gatherings: [], courses: [] }),
       safe(loadCycle, { phase: "new", data: null }),
-      kit.entries(MD.SITS)
+      kit.entries(MD.SITS),
+      ...core.JOURNALS.map((j) => kit.entries(j.collection))
     ]);
     const fromAltars = YR.altarRecords(altars, new Date());
     const latestCourse = [...course].sort((a, b) => String(b.updatedAt || "").localeCompare(String(a.updatedAt || "")))[0];
@@ -178,6 +179,7 @@
       readings: readings.map((e) => ({ ...e, data: R.normalizeReading(e.data) })),
       dreams: dreams.map((e) => ({ ...e, data: D.normalizeDream(e.data) })),
       sits: sits.map((e) => ({ id: e.id, data: MD.normalizeSit(e.data) })),
+      practice: YR.practiceRecords(Object.fromEntries(core.JOURNALS.map((j, i) => [j.kind, journalRows[i] || []]))),
       pages,
       offerings: fromAltars.offerings,
       altarChanges: fromAltars.changes,
@@ -345,6 +347,27 @@
     }
     if (cycle.phase === "locked") out.push(kit.muted("Cycle & Moon is locked in this browser, so it isn’t included. Open it to see it here; it stays private."));
 
+    if (r.practice && r.practice.total) {
+      const pr = r.practice;
+      const rows = [
+        ["shadow", pr.shadow.count, pr.shadow.themes.length ? `Coming back to ${pr.shadow.themes.slice(0, 3).map((t) => t.label).join(", ")}` : ""],
+        ["devotion", pr.devotion.count, [pr.devotion.deities.length ? `For ${pr.devotion.deities.slice(0, 3).map((d) => d.name).join(", ")}` : "", pr.devotion.offerings ? plural(pr.devotion.offerings, "offering", "offerings") : ""].filter(Boolean).join(" · ")],
+        ["ancestors", pr.ancestors.count, pr.ancestors.people ? plural(pr.ancestors.people, "person named", "people named") : ""],
+        ["omens", pr.omens.count, [pr.omens.kinds.map((k) => k.label.toLowerCase()).join(", "), pr.omens.cameToPass + pr.omens.partly ? `${pr.omens.cameToPass + pr.omens.partly} came to pass` : "", pr.omens.waiting ? `${pr.omens.waiting} still waiting` : ""].filter(Boolean).join(" · ")]
+      ].filter((row) => row[1] > 0);
+      out.push(
+        kit.section(
+          "Your practice journals",
+          kit.muted("Only you see these. They stay off the card you can share.") +
+            kit.list(
+              rows.map(([kind, count, detail]) => {
+                const def = core.JOURNALS.find((j) => j.kind === kind);
+                return kit.row({ url: core.journalWebRoutes(kind, core.journalPlace(settings, kind)).list, title: `${def.title}: ${plural(count, def.noun, def.nouns)}`, detail: detail || undefined });
+              })
+            )
+        )
+      );
+    }
     if (r.journeys.length || r.courses.length) {
       out.push(
         kit.section(
