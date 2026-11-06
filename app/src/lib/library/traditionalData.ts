@@ -2421,6 +2421,32 @@ export const TRADITIONAL_LIBRARY: TraditionalLibraryData = {
         "vitality",
         "sun"
       ]
+    },
+    "oregano": {
+      "DisplayName": "Oregano",
+      "Category": "Herb",
+      "Element": "Air",
+      "Planet": "Mercury",
+      "Uses": "Joy, strength of spirit, protection, health, gathering with others",
+      "PairsWith": "Thyme, basil, marjoram, carnelian",
+      "Substitutions": "Marjoram, thyme",
+      "TraditionalWarnings": "Oregano is safe as a culinary herb, but oregano essential oil is very strong, can burn skin and gums, and should never be taken by mouth without expert advice. Avoid medicinal amounts in pregnancy and keep concentrated oil from pets, especially cats.",
+      "Overview": "Oregano (Origanum vulgare) is a hardy perennial of the mint family, with small, oval, aromatic leaves and clusters of purple-pink bracts and tiny flowers in summer; its scent is sharp, warm, earthy and peppery. The Greek form (subspecies hirtum) is the strongest in flavour, and Mexican oregano is an unrelated plant of a different family. The leaves and flowering tops are used, fresh or dried, along with the oil.",
+      "TraditionalMeaning": "Joy of the mountains; a strong, warm herb of happiness, courage and the table shared with others.",
+      "HowToUse": "Start here: crush a pinch of dried oregano and breathe in its sharp, warm scent when you need a lift. Dried leaves are the easiest form and go into jars, sachets, bath blends and a bowl by the door; they keep their scent for about a year if sealed. Fresh sprigs can be grown in a pot on a sunny sill. Dilute the oil heavily before dressing a candle.",
+      "PairingNotes": "Oregano pairs well with thyme for courage and health, basil for love and luck, marjoram for gentler joy, and carnelian for warmth. Yellow, orange and green candles suit it.",
+      "SubstitutionNotes": "Marjoram can substitute for oregano in joy and home workings, being sweeter and gentler. Thyme can stand in for courage and health.",
+      "SafetyAndRespect": "Oregano is a common food herb, but its oil is hot and can burn skin and mucous membranes; always dilute it. Keep it from pets, especially cats, and from children. People allergic to mint-family plants may react, and medicinal amounts should be avoided in pregnancy and with blood-thinning or diabetes medicines. Magical use should not replace medical care.",
+      "Traditions": "Hellenic, Wheel of the Year",
+      "TraditionNotes": "Hellenic: The name comes from the Greek oros ganos, ‘joy of the mountain’, and the plant was worn in wedding crowns in ancient Greece and Rome; in Greek lore Aphrodite created it as a plant of happiness, and it was planted on graves so the dead would be at peace.\n\nWheel of the Year: Oregano is cut for drying in midsummer before it flowers fully, and is used in modern practice at Litha and in home blessings.\n\nFolk & wider practice: In medieval Europe oregano was strewn on floors and added to bridal bouquets, and in folk belief a sprig carried or hung at the door gave protection. Modern correspondence tables give it to Mercury and Air.",
+      "tags": [
+        "joy",
+        "courage",
+        "protection",
+        "health",
+        "community",
+        "mercury"
+      ]
     }
   },
   "crystal": {

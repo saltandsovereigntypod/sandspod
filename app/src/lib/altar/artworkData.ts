@@ -3553,6 +3553,47 @@ export const ALTAR_ARTWORK: {
       },
       {
         "category": "herbs",
+        "name": "Oregano",
+        "keywords": [
+          "joy",
+          "strength of spirit",
+          "protection",
+          "health",
+          "gathering with others"
+        ],
+        "forms": [
+          {
+            "label": "Sprig",
+            "image": "../assets/altar/objects/herbs/oregano/oregano-sprig.png",
+            "type": "herb",
+            "herb": "oregano",
+            "form": "sprig"
+          },
+          {
+            "label": "Loose",
+            "image": "../assets/altar/objects/herbs/oregano/oregano-loose.png",
+            "type": "herb",
+            "herb": "oregano",
+            "form": "loose"
+          },
+          {
+            "label": "Oil",
+            "image": "../assets/altar/objects/herbs/oregano/oregano-oil.png",
+            "type": "oil",
+            "herb": "oregano",
+            "form": "oil"
+          },
+          {
+            "label": "Incense",
+            "image": "../assets/altar/objects/herbs/incense/incense.png",
+            "type": "herb",
+            "herb": "oregano",
+            "form": "incense"
+          }
+        ]
+      },
+      {
+        "category": "herbs",
         "name": "Orris Root",
         "keywords": [
           "love",
@@ -10699,6 +10740,17 @@ export const ALTAR_ARTWORK: {
         "vitality",
         "fire",
         "sun"
+      ],
+      "oregano": [
+        "joy",
+        "strength of spirit",
+        "protection",
+        "health",
+        "gathering with others",
+        "air",
+        "mercury",
+        "courage",
+        "community"
       ]
     },
     "crystal": {
