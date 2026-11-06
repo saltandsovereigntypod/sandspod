@@ -49,7 +49,7 @@ import type { PageVersion } from '../grimoire/history';
 import type { ReviewDecision, Submission, SubmissionBlock } from '../grimoire/submissions';
 
 const COVEN_FIELDS =
-  'id,slug,name,tagline,description,tradition,tags,meeting_rhythm,joining,visibility,status,moderation_note,application_questions,altar_background,member_limit,practice_traditions,practice_holidays,practice_custom,practice_calendars,founder_id,created_at,member_count';
+  'id,slug,name,tagline,description,tradition,tags,meeting_rhythm,joining,visibility,status,moderation_note,application_questions,altar_background,member_limit,practice_traditions,practice_holidays,practice_custom,practice_calendars,founder_id,created_at,member_count,listing_approved_at';
 
 async function run<T>(promise: PromiseLike<{ data: unknown; error: { message: string } | null }>): Promise<T> {
   const { data, error } = await promise;

@@ -7,6 +7,8 @@ import { Pill, Spoken, useReport, Words } from '../../../../components/covens/ui
 import { SitTogetherCard } from '../../../../components/meditation/SitTogetherCard';
 import { Card, CheckRow, Field, MoreScreen, Notice, Section } from '../../../../components/more/ui';
 import { copyText } from '../../../../lib/copyText';
+import { changeAltarOnce, fetchCovenAltars } from '../../../../lib/covens/altarSync';
+import { togetherCandle } from '../../../../lib/covens/ritualAltar';
 import * as covens from '../../../../lib/covens/api';
 import { errorMessage, type Profile } from '../../../../lib/covens/model';
 import { blankAnswers } from '../../../../lib/rituals/lifecycle';
@@ -22,12 +24,16 @@ import {
   liveLink,
   MESSAGE_MAX,
   NOTE_MAX,
+  REACTIONS,
+  reactionLine,
+  shownReactions,
   shareLiveMessage,
   sourceHref,
   statusLine,
   whoIsHere,
   type LiveAction,
   type LiveMessage,
+  type LiveReaction,
   type LivePerson,
   type LiveRitual,
 } from '../../../../lib/together/live';
@@ -56,6 +62,7 @@ export default function RitualTogether() {
   const [note, setNote] = useState('');
   const [saved, setSaved] = useState(false);
   const [now, setNow] = useState(() => new Date());
+  const [reactions, setReactions] = useState<LiveReaction[]>([]);
   const report = useReport(userId);
   const namesRef = useRef(names);
   useEffect(() => {
@@ -96,7 +103,7 @@ export default function RitualTogether() {
   // Live: the ritual's changes as they happen, who's on the channel, a check-in each 20 seconds and a look again each 30.
   useEffect(() => {
     if (!liveId || !userId || !inIt) return;
-    const stop = api.followLive(liveId, userId, myName, () => void load(), setOnline);
+    const stop = api.followLive(liveId, userId, myName, () => void load(), setOnline, (r) => setReactions((prev) => shownReactions([...prev, r])));
     void api.hereLive(liveId).catch(() => undefined);
     const beat = setInterval(() => {
       void api.hereLive(liveId).catch(() => undefined);
@@ -127,6 +134,25 @@ export default function RitualTogether() {
     setBusy(false);
   };
   const act = (action: LiveAction) => live && run(() => api.actLive(live.id, live.version, action));
+  // The shared candle, in a coven: lit on the coven's main altar too (if the leader may tend it).
+  const lightTogether = () =>
+    live &&
+    run(async () => {
+      await api.actLive(live.id, live.version, { type: 'light' });
+      if (!live.coven_id) return;
+      const main = (await fetchCovenAltars(live.coven_id).catch(() => [])).find((a) => a.is_main);
+      const change = togetherCandle(live.title, myName, new Date().toISOString());
+      if (main && change) await changeAltarOnce(main.id, change).catch(() => undefined);
+    });
+  const react = (key: LiveReaction['key']) => {
+    if (userId) api.reactLive(liveId, userId, key);
+  };
+  // Reactions fade after a few seconds.
+  useEffect(() => {
+    if (!reactions.length) return;
+    const t = setTimeout(() => setReactions((prev) => shownReactions(prev)), 1000);
+    return () => clearTimeout(t);
+  }, [reactions]);
 
   if (!session) {
     return (
@@ -184,7 +210,8 @@ export default function RitualTogether() {
                   : 'When the leader lights the candle, everyone lights their own together.'}
               </Text>
             </View>
-            {(leads || hosts) && !live.candle_lit_at && !over && <Button label="Light the candle together" variant="outline" disabled={busy} onPress={() => void act({ type: 'light' })} />}
+            {(leads || hosts) && !live.candle_lit_at && !over && <Button label="Light the candle together" variant="outline" disabled={busy} onPress={() => void lightTogether()} />}
+            {!!live.coven_id && !live.candle_lit_at && (leads || hosts) && !over && <Text style={type.caption}>Its flame is lit on the coven’s altar too.</Text>}
           </Card>
 
           {live.status === 'gathering' && !!live.source.preparation && (
@@ -207,6 +234,19 @@ export default function RitualTogether() {
             </Card>
           )}
 
+          {!over && live.status !== 'gathering' && (
+            <View style={styles.reactRow}>
+              {REACTIONS.map((r) => (
+                <Button key={r.key} label={`${r.glyph} ${r.label}`} variant="outline" onPress={() => react(r.key)} />
+              ))}
+            </View>
+          )}
+          {!!reactions.length && (
+            <Text style={type.caption} accessibilityLiveRegion="polite">
+              {reactionLine(reactions, nameOf)}
+            </Text>
+          )}
+
           {!over && leads && (
             <View style={styles.controls}>
               {live.status === 'gathering' && <Button label="Begin the ritual" disabled={busy} onPress={() => void act({ type: 'begin' })} />}
@@ -224,6 +264,7 @@ export default function RitualTogether() {
               <Text style={type.body}>
                 {ending.done} of {ending.of} {ending.all ? '· it is done, for all of you.' : 'have said it is done.'}
               </Text>
+              {!!live.coven_ritual_id && <Text style={type.caption}>When the host ends the ritual, everyone who took part is marked present at the coven’s gathering, in the members’ record.</Text>}
               {mine?.done_at ? (
                 <Text style={type.caption}>You said it is done.</Text>
               ) : (
@@ -378,6 +419,7 @@ export default function RitualTogether() {
 const styles = StyleSheet.create({
   flex: { flex: 1 },
   candleRow: { flexDirection: 'row', alignItems: 'center', gap: 12 },
+  reactRow: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
   flame: { width: 14, height: 22, borderRadius: 999, backgroundColor: colors.gold, shadowColor: colors.gold, shadowOpacity: 0.8, shadowRadius: 10 },
   unlit: { backgroundColor: colors.surfaceRaised, shadowOpacity: 0 },
   controls: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },

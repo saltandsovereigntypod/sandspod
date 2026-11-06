@@ -35,6 +35,7 @@ import coreElderTeaching from './core/elder-teaching.ts';
 import coreElderCare from './core/elder-care.ts';
 import coreElderGovernance from './core/elder-governance.ts';
 import coreHpLeadingCoven from './core/hp-leading-coven.ts';
+import coreFounder from './core/founder.ts';
 import coreHpStewardship from './core/hp-stewardship.ts';
 
 import hellenicTradition from './hellenic/tradition.ts';
@@ -382,3 +383,11 @@ export function coursePrograms(modules: CourseModule[] = MODULES): CourseProgram
 
 /** Traditions the courses cover now (the database's templates cover the rest). */
 export const courseTraditions = (modules: CourseModule[] = MODULES) => [...new Set(coursePrograms(modules).map((p) => p.tradition))];
+
+/**
+ * The founder's training (core/founder.ts): seven modules, each a lesson, a
+ * private reflection and a short test, taken alone before a coven is listed
+ * in Find a coven (lib/covens/founding.ts). Kept beside the coven programs
+ * in js/core/course-programs.json as its `founder`.
+ */
+export const FOUNDER_COURSE: CourseModule = coreFounder;

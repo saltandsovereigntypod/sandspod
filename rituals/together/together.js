@@ -219,6 +219,30 @@
       })
     ).then(load);
 
+  // Reactions: a candle or a sparkle, broadcast on the live channel and shown for a few seconds (live.ts REACTIONS).
+  let reactions = [];
+  let lastReaction = 0;
+  const reactionsHtml = () => {
+    const shown = LV.shownReactions(reactions);
+    return shown.length ? `<p class="sp-caption" aria-live="polite">${esc(LV.reactionLine(shown, nameOf))}</p>` : "";
+  };
+  const drawReactions = () => {
+    const box = root.querySelector("[data-tg-reactions]");
+    if (box) box.innerHTML = reactionsHtml();
+  };
+  // The shared candle in a coven: lit on its main altar too (js/core/altar.js ritualAltar.togetherCandle, loaded by CovenUI.altarCore), if the leader may tend it.
+  async function candleOnCovenAltar(live) {
+    if (!live.coven_id) return;
+    try {
+      const [altars, core] = await Promise.all([D.altars(live.coven_id), UI.altarCore()]);
+      const main = (altars || []).find((a) => a.is_main);
+      const change = core.ritualAltar.togetherCandle(live.title, nameOf(context.user.id), new Date().toISOString());
+      if (main && change) await D.changeAltarOnce(main.id, change);
+    } catch {
+      // The candle is still lit together; the altar may be held or kept by someone else.
+    }
+  }
+
   function render() {
     const back = { back: "/rituals/together/", backLabel: "Rituals together" };
     const live = state.live;
@@ -254,7 +278,7 @@
       : `
         <article class="sp-card tg-candle"><span class="tg-flame${live.candle_lit_at ? " is-lit" : ""}" aria-hidden="true"></span>
           <p>${esc(live.candle_lit_at ? `The candle is lit${live.candle_lit_by ? ` by ${nameOf(live.candle_lit_by)}` : ""}. Light yours now, wherever you are.` : "When the leader lights the candle, everyone lights their own together.")}</p></article>
-        ${(leads || hosts) && !live.candle_lit_at && !over ? `<div class="sp-actions">${btn("Light the candle together", 'data-tg-act="light"')}</div>` : ""}
+        ${(leads || hosts) && !live.candle_lit_at && !over ? `<div class="sp-actions">${btn("Light the candle together", 'data-tg-act="light"')}</div>${live.coven_id ? `<p class="sp-caption">Its flame is lit on the coven’s altar too.</p>` : ""}` : ""}
         ${live.status === "gathering" && live.source?.preparation ? `<section class="sp-section"><h2 class="sp-label">Before you begin</h2><p>${prose(live.source.preparation)}</p></section>` : ""}
         ${!over && ST.isSitTogether(live) ? `<article class="sp-card" data-tg-sit>${sitHtml()}</article>` : ""}
         ${
@@ -263,6 +287,8 @@
                 ${step.body ? `<p>${prose(step.body)}</p>` : ""}${step.spoken ? `<blockquote class="rt-spoken">${prose(step.spoken)}</blockquote>` : ""}${step.minutes ? `<p class="sp-caption">About ${esc(step.minutes)} min</p>` : ""}</article>`
             : ""
         }
+        ${!over && live.status !== "gathering" ? `<div class="sp-actions">${LV.REACTIONS.map((r) => btn(`${r.glyph} ${r.label}`, `data-tg-react="${r.key}"`)).join("")}</div>` : ""}
+        <div data-tg-reactions>${reactionsHtml()}</div>
         ${
           !over && leads
             ? `<div class="sp-actions">${live.status === "gathering" ? btn("Begin the ritual", 'data-tg-act="begin"', "primary") : ""}${
@@ -275,6 +301,7 @@
           live.status === "closing"
             ? `<section class="sp-section"><h2 class="sp-label">The ending</h2>${live.source?.closing ? `<p>${prose(live.source.closing)}</p>` : ""}
                 <p>${ending.done} of ${ending.of} ${ending.all ? "· it is done, for all of you." : "have said it is done."}</p>
+                ${live.coven_ritual_id ? `<p class="sp-caption">When the host ends the ritual, everyone who took part is marked present at the coven’s gathering, in the members’ record.</p>` : ""}
                 ${mine.done_at ? `<p class="sp-caption">You said it is done.</p>` : `<div class="sp-actions">${btn("It is done", 'data-tg-act="done"', "primary")}</div>`}</section>`
             : ""
         }
@@ -442,6 +469,18 @@
         }
         return;
       }
+      if (el.dataset.tgReact) {
+        if (channel && Date.now() - lastReaction >= LV.REACTION_GAP_MS) {
+          lastReaction = Date.now();
+          channel.send({ type: "broadcast", event: "react", payload: { key: el.dataset.tgReact, user_id: me } });
+        }
+        return;
+      }
+      if (a === "light") {
+        await act({ type: "light" });
+        await candleOnCovenAltar(live);
+        return;
+      }
       if (a === "join") {
         if (await attempt(() => rpc("join_live_ritual", { p_live: liveId, p_code: null }))) {
           await load();
@@ -511,7 +550,17 @@
   function follow() {
     const mine = state.people.find((p) => p.user_id === context.user.id);
     if (channel || !mine || mine.left_at || mine.removed_at) return;
-    channel = db().channel(`live-ritual:${liveId}`, { config: { presence: { key: context.user.id } } });
+    channel = db().channel(`live-ritual:${liveId}`, { config: { presence: { key: context.user.id }, broadcast: { self: true } } });
+    channel.on("broadcast", { event: "react" }, ({ payload }) => {
+      const r = LV.readReaction(payload);
+      if (!r) return;
+      reactions = LV.shownReactions([...reactions, r]);
+      drawReactions();
+      global.setTimeout(() => {
+        reactions = LV.shownReactions(reactions);
+        drawReactions();
+      }, LV.REACTION_SHOW_MS + 100);
+    });
     for (const [table, column] of [["live_rituals", "id"], ["live_ritual_people", "live_id"], ["live_ritual_messages", "live_id"]]) {
       channel.on("postgres_changes", { event: "*", schema: "public", table, filter: `${column}=eq.${liveId}` }, () => load());
     }

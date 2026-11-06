@@ -44,14 +44,24 @@
               <option value="open">Open: anyone who signs the agreements</option>
               <option value="closed">Not taking members yet</option>
             </select></div>
-          <div class="sp-field"><label for="cv-visibility">Directory</label>
+          <div class="sp-field"><label for="cv-visibility">Find a coven</label>
             <select id="cv-visibility" name="visibility">
-              <option value="listed">Listed in the coven directory</option>
-              <option value="unlisted">Unlisted: only people with the link</option>
+              <option value="unlisted">Unlisted: by invitation</option>
+              <option value="listed">Ask to be listed in Find a coven</option>
             </select></div>
         </div>
-        <div class="sp-field"><label for="cv-founder-rank">Your title as leader</label>
-          <input id="cv-founder-rank" name="founder_rank" maxlength="60" value="High Priestess" /></div>
+        <p class="sp-caption">Every coven starts unlisted, found only by invitation, so you can practise with friends straight away. To appear in Find a coven, finish the founder’s training and apply; the Salt &amp; Sovereignty moderators read every application. <a href="${esc(href("/covens/leading/"))}">The founder’s training: Leading a coven</a></p>
+        <div class="sp-grid-2">
+          <div class="sp-field"><label for="cv-title-choice">Your title as leader</label>
+            <select id="cv-title-choice" name="title_choice">
+              <option value="High Priestess">High Priestess</option>
+              <option value="High Priest">High Priest</option>
+              <option value="Leader">Leader</option>
+              <option value="own">My own title</option>
+            </select></div>
+          <div class="sp-field" data-own-title hidden><label for="cv-founder-rank">Your own title</label>
+            <input id="cv-founder-rank" name="founder_rank" maxlength="60" placeholder="Elder, Keeper, Gothi…" /></div>
+        </div>
         <label class="cv-check"><input type="checkbox" name="guidelines" required /> <span>I’ll lead this coven by the <a href="${esc(href("/covens/guidelines/"))}" target="_blank" rel="noopener">community guidelines</a>, and I understand the Salt &amp; Sovereignty moderators can see and act on every coven.</span></label>
         <div class="sp-actions"><button class="button button--primary" type="submit">✦ Found the coven</button></div>
         <p class="cv-status" role="status" aria-live="polite" data-status></p>
@@ -61,6 +71,8 @@
     const slug = f.elements.slug;
     const preview = f.querySelector("[data-slug-preview]");
     let slugEdited = false;
+    const ownTitle = f.querySelector("[data-own-title]");
+    f.elements.title_choice.addEventListener("change", () => (ownTitle.hidden = f.elements.title_choice.value !== "own"));
     const showPreview = () => (preview.textContent = slug.value ? `saltandsovereignty.com/covens/coven/?c=${slug.value}` : "");
     f.elements.name.addEventListener("input", () => {
       if (!slugEdited) slug.value = L.slugify(f.elements.name.value);
@@ -75,12 +87,18 @@
     f.addEventListener("submit", async (event) => {
       event.preventDefault();
       const data = Object.fromEntries(new FormData(f));
-      const draft = { ...data, slug: L.slugify(data.slug), tags: L.parseTags(data.tags) };
+      const founderRank = data.title_choice === "own" ? data.founder_rank : data.title_choice;
+      delete data.title_choice;
+      const draft = { ...data, founder_rank: founderRank, slug: L.slugify(data.slug), tags: L.parseTags(data.tags) };
       const errors = L.validateCoven(draft);
       const status = f.querySelector("[data-status]");
       if (errors.length) return UI.setStatus(status, errors.join(" "), true);
       const created = await UI.busy(f, status, () => D.createCoven(draft));
-      if (created?.slug) global.location.assign(href(`/covens/coven/?c=${encodeURIComponent(created.slug)}&tab=manage`));
+      // Every coven starts unlisted; asking to be listed goes on to the training and the application.
+      if (created?.slug)
+        global.location.assign(
+          href(draft.visibility === "listed" ? `/covens/leading/?apply=${encodeURIComponent(created.slug)}` : `/covens/coven/?c=${encodeURIComponent(created.slug)}&tab=manage`)
+        );
     });
   }
 

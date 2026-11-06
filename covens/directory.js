@@ -214,7 +214,7 @@
           : UI.signInCard("see the covens you belong to")
         : `<p>Find witches to practise with: covens with their own creed, rules and ways, a gathering to talk in and an altar you tend together. Covens are for adults (18+) and follow the <a href="${esc(href("/covens/guidelines/"))}">community guidelines</a>.</p>
           <div class="sp-actions">
-            ${signedIn ? `<a class="button button--primary" href="${esc(href("/covens/new/"))}">✦ Found a coven</a>` : `<a class="button button--primary" href="${esc(href("/?sanctuary=auth"))}">Sign in to join or found a coven</a>`}
+            ${signedIn ? `<a class="button button--primary" href="${esc(href("/covens/new/"))}">✦ Found a coven</a><a class="button button--ghost" href="${esc(href("/covens/leading/"))}">Leading a coven: the founder’s training</a>` : `<a class="button button--primary" href="${esc(href("/?sanctuary=auth"))}">Sign in to join or found a coven</a>`}
             ${signedIn ? `<a class="button button--ghost" href="${esc(href("/covens/mentorship/"))}">Mentorship</a>` : ""}
             ${signedIn ? `<button class="button button--ghost" type="button" data-profile-toggle>${context.profile ? "Your community profile" : "Set up your community profile"}</button>` : ""}
             ${moderation}

@@ -148,7 +148,8 @@ export default function Covens() {
 
             {session && (
               <MenuList>
-                <MenuRow label="Mentorship" detail="Your mentors and mentees, and the directory (adults only)" icon="journey" last onPress={() => router.push('/coven/mentorship' as Href)} />
+                <MenuRow label="Mentorship" detail="Your mentors and mentees, and the directory (adults only)" icon="journey" onPress={() => router.push('/coven/mentorship' as Href)} />
+                <MenuRow label="Leading a coven" detail="The founder’s training, and listing a coven in Find a coven" icon="books" last onPress={() => router.push('/coven/leading' as Href)} />
               </MenuList>
             )}
 
@@ -193,6 +194,7 @@ export default function Covens() {
                   onPress={() => router.push('/coven/profile' as Href)}
                 />
                 <MenuRow label="Found a coven" detail="Lead a coven of your own" icon="offer" onPress={() => router.push('/coven/new' as Href)} />
+                <MenuRow label="Leading a coven" detail="The founder’s training: seven short modules" icon="books" onPress={() => router.push('/coven/leading' as Href)} />
                 <MenuRow label="Mentorship" detail="Find a mentor or offer to mentor (adults only)" icon="journey" last onPress={() => router.push('/coven/mentorship' as Href)} />
               </MenuList>
               {moderation}
