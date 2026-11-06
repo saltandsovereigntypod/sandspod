@@ -412,7 +412,7 @@
     sit.bells = T.bellsOf(sit.plan);
     sit.clock = T.startClock(Date.now());
     if (sit.extras.sound) {
-      sit.sound = M.webSound.createWebSound((bed) => `/assets/sounds/meditation/${bed}.wav`);
+      sit.sound = M.webSound.createWebSound((bed) => (["rain", "fire"].includes(bed) ? `/assets/sounds/nature/${bed}.m4a` : `/assets/sounds/meditation/${bed}.wav`));
       sit.strikes = S.bowlStrikes(sit.extras.sound, sit.plan);
     }
     sit.timer = setInterval(tick, 500);
@@ -982,7 +982,7 @@
       if (lis.run) {
         lis.run.clock = T.resumeClock(lis.run.clock, Date.now());
       } else {
-        lis.sound = M.webSound.createWebSound((bed) => `/assets/sounds/meditation/${bed}.wav`);
+        lis.sound = M.webSound.createWebSound((bed) => (["rain", "fire"].includes(bed) ? `/assets/sounds/nature/${bed}.m4a` : `/assets/sounds/meditation/${bed}.wav`));
         if (!lis.sound) return;
         lis.sound.unlock();
         lis.run = { clock: T.startClock(Date.now()), minutes: lis.minutes, endMs: LI.listenEnd(lis.minutes), stopping: false };

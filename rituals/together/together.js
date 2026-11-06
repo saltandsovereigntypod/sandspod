@@ -354,7 +354,7 @@
       sit.sound = null;
       return;
     }
-    if (!sit.sound) sit.sound = T.webSound.createWebSound((bed) => `/assets/sounds/meditation/${bed}.wav`);
+    if (!sit.sound) sit.sound = T.webSound.createWebSound((bed) => (["rain", "fire"].includes(bed) ? `/assets/sounds/nature/${bed}.m4a` : `/assets/sounds/meditation/${bed}.wav`));
     if (!sit.sound) return;
     const r = SS.soundTick(mix, s.plan, SS.bowlStrikes(mix, s.plan), sit.soundLast ?? -1, elapsed, sit.endedAt);
     sit.soundLast = elapsed;

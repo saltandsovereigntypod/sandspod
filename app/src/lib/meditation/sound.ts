@@ -1,8 +1,8 @@
 // Sound to sit with: layers you mix yourself, each at its own level. A drone
-// in a key you choose; pink or brown noise; rain; wind; a fire; a frame drum
+// in a key you choose; pink or brown noise; rain; a fire; a frame drum
 // at a trance tempo, which changes to a callback near the end of a timed sit;
 // singing-bowl rounds; and binaural tones under the noise. All of it made by
-// us (synth.ts and scripts/sounds/meditation_beds.py), nothing recorded.
+// us (synth.ts and scripts/sounds/meditation_beds.py; rain and fire are recordings in assets/sounds/nature), nothing recorded.
 // Everything fades in as you begin and out as the sit ends, and stops with
 // the timer. Each moment's mix (frameAt) is worked out from the time gone by,
 // like the bells, so a sit together hears its drum or bowls in step. Played
@@ -15,14 +15,13 @@ import { MAX_MINUTES, type SitPlan } from './timer.ts';
 
 const MIN = 60_000;
 
-export type LayerId = 'drone' | 'pink' | 'brown' | 'rain' | 'wind' | 'fire' | 'drum' | 'bowls' | 'forks' | 'binaural';
+export type LayerId = 'drone' | 'pink' | 'brown' | 'rain' | 'fire' | 'drum' | 'bowls' | 'forks' | 'binaural';
 
 export const LAYERS: { id: LayerId; label: string; line: string }[] = [
   { id: 'drone', label: 'Drone', line: 'A low, steady hum in the key you choose.' },
   { id: 'pink', label: 'Pink noise', line: 'Soft, even noise, like a distant waterfall.' },
   { id: 'brown', label: 'Brown noise', line: 'Deeper noise, like surf or a far-off rumble.' },
   { id: 'rain', label: 'Rain', line: 'Rain falling steadily.' },
-  { id: 'wind', label: 'Wind', line: 'Wind rising and falling.' },
   { id: 'fire', label: 'Fire', line: 'A fire’s low roar and crackle.' },
   { id: 'drum', label: 'Frame drum', line: 'A steady trance beat, with a callback near the end of a timed sit.' },
   { id: 'bowls', label: 'Singing bowls', line: 'A bowl struck now and then, round the seven tones, or 432 Hz.' },
@@ -30,8 +29,8 @@ export const LAYERS: { id: LayerId; label: string; line: string }[] = [
   { id: 'binaural', label: 'Binaural layers', line: 'Two close tones, one in each ear, under the noise. Headphones needed.' },
 ];
 
-/** Bed layers played from files (scripts/sounds/meditation_beds.py). */
-export const BEDS = ['pink', 'brown', 'rain', 'wind', 'fire'] as const;
+/** Bed layers played from files (scripts/sounds/meditation_beds.py; rain and fire are recordings in assets/sounds/nature). */
+export const BEDS = ['pink', 'brown', 'rain', 'fire'] as const;
 export type Bed = (typeof BEDS)[number];
 
 export const LEVELS: { value: number; label: string }[] = [

@@ -28,13 +28,7 @@ beating pair, fading over about 9 s after a soft mallet thump. The website's
 
 # Meditation sounds
 
-Everything is synthesised, nothing recorded. `meditation/pink.wav`,
-`brown.wav`, `rain.wav`, `wind.wav` and `fire.wav` (also at the website's
-`assets/sounds/meditation/`) are made by `scripts/sounds/meditation_beds.py`
-with numpy: shaped noise, filtered bursts for raindrops and crackles, and slow
-whole-loop gusts for the wind, each 6 to 10 s, its tail crossfaded into its
-head so it loops without a seam; 16-bit mono WAV at 22.05 or 16 kHz, about
-1.5 MB together. The drone, frame drum (and its callback), singing bowls and
+The pink and brown noise beds (`meditation/pink.wav`, `brown.wav`, also at the website's `assets/sounds/meditation/`) are synthesised by `scripts/sounds/meditation_beds.py` with numpy; 16-bit mono WAV. Rain and fire are real recordings, see `nature/SOURCES.md`. The drone, frame drum (and its callback), singing bowls and
 binaural tones depend on the key, tempo, tone or beat chosen, so they are
 made as a sit begins by `app/src/lib/meditation/synth.ts`, and written to the
 app's cache (not shipped).

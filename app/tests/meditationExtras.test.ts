@@ -266,3 +266,11 @@ test('focus pictures are drawn from the time', () => {
   assert.deepEqual(squarePoint(box, 14_000), { x: 50, y: 85 });
   assert.ok(breathSquareSvg(box, 0).includes('cx="15"'));
 });
+
+test('a saved mix that used the removed wind layer drops it and keeps the rest', () => {
+  const mix = cleanMix({ levels: { wind: 0.8, rain: 0.5, fire: 0.25 } });
+  assert.deepEqual(mix.levels, { rain: 0.5, fire: 0.25 });
+  const windOnly = cleanMix({ levels: { wind: 0.8 } });
+  assert.deepEqual(windOnly.levels, {});
+  assert.deepEqual(frameAt(windOnly, { minutes: 10 } as never, 1000).filter((v) => v.key === 'wind'), []);
+});

@@ -1,6 +1,6 @@
 // Listen (Meditation → Listen): the sit's sound layers (sound.ts) on their
 // own, with no bells or sit around them. Binaural beats (the alpha-to-theta
-// descent, a preset or your own beat and carrier), noise, rain, wind, fire,
+// descent, a preset or your own beat and carrier), noise, rain, fire,
 // a drone, a drum and bowls, each at its own level; play, pause and stop,
 // faded in as it begins and out as it ends; an optional stop timer. The
 // slow descent spans the timer, or 30 minutes when it's open-ended. The
