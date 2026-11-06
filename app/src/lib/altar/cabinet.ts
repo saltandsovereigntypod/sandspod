@@ -205,9 +205,9 @@ export const builtInCabinet: CabinetItem[] = ([
   }),
   ...fromArtwork(ALTAR_ARTWORK.items.deities),
   ...fromArtwork(ALTAR_ARTWORK.items.tools),
-  // The tuning fork: struck on the altar (fork.ts). Its picture is the wand's until one is painted.
+  // The tuning fork: struck on the altar (fork.ts), with its wooden striker.
   single('tools', 'Tuning Fork', ['sound', 'clearing', 'cleansing', 'tone', 'meditation'], {
-    image: '../assets/altar/objects/tools/wand/wand.png',
+    image: '../assets/altar/objects/tools/tuning-fork/tuning-fork.png',
     type: 'tool',
     tool: 'tuning-fork',
     form: 'standard',
