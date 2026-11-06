@@ -3,9 +3,10 @@ import { useState } from 'react';
 import { Image, StyleSheet, View } from 'react-native';
 
 import { Button } from '../../../../../../components/Button';
+import { asPeople, FamilyFields } from '../../../../../../components/craft/FamilyTree';
 import { Body, Field, Notice, RitualScreen, SectionLabel, Title, confirmAction, tell, ui } from '../../../../../../components/rituals/ui';
 import { keepImageOnDevice, pickImage, removeUploaded, uploadImage } from '../../../../../../lib/altar/images';
-import { ANCESTORS, blankAncestor, formatPartial, keptDaysText, normalizeAncestor, parseKeptDays, partialDate, type Ancestor, type PartialDate } from '../../../../../../lib/craft/hedge/ancestors';
+import { ANCESTORS, blankAncestor, formatPartial, keptDaysText, normalizeAncestor, parseKeptDays, partialDate, type Ancestor, type AncestorEntry, type PartialDate } from '../../../../../../lib/craft/hedge/ancestors';
 import { addEntry, removeEntry, updateEntry, useCraft, type CraftEntry } from '../../../../../../lib/craft/store';
 import { useSession } from '../../../../../../lib/session';
 
@@ -48,10 +49,10 @@ export default function AncestorForm() {
     );
   }
   // Keyed by the entry, so the form starts from its saved copy and typing is never overwritten.
-  return <Form key={existing?.id ?? 'new'} existing={existing} />;
+  return <Form key={existing?.id ?? 'new'} existing={existing} people={asPeople(entries)} />;
 }
 
-function Form({ existing }: { existing: CraftEntry<unknown> | null }) {
+function Form({ existing, people }: { existing: CraftEntry<unknown> | null; people: AncestorEntry[] }) {
   const { session } = useSession();
   const start = existing ? normalizeAncestor(existing.data) : blankAncestor();
   const [person, setPerson] = useState<Ancestor>(start);
@@ -145,6 +146,8 @@ function Form({ existing }: { existing: CraftEntry<unknown> | null }) {
         <Field label="Foods and offerings they liked" value={person.foods ?? ''} onChange={(foods) => set({ foods })} placeholder="Her apple cake, buttered soda bread, a glass of stout" multiline />
         <Field label="Their stories" value={person.stories ?? ''} onChange={(stories) => set({ stories })} placeholder="The stories told about them, and the ones they told" multiline />
       </View>
+
+      <FamilyFields people={people} selfId={existing?.id ?? null} person={person} set={set} />
 
       <View style={ui.gapSmall}>
         <SectionLabel>Other days you keep for them</SectionLabel>

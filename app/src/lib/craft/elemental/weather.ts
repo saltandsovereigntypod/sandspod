@@ -237,3 +237,20 @@ export function cacheFresh(cache: CachedForecast | null, latitude: number, longi
 export function daysAhead(days: DayWeather[], todayKey: string, count = 3): DayWeather[] {
   return days.filter((d) => d.date >= todayKey).slice(0, count);
 }
+
+/**
+ * When a storm is forecast: what to call the storm water on your shelves,
+ * and a note of which storm it was ("Thunderstorm with hail, Saturday 7
+ * November 2026"), for the Shelves form to start from. Null on other days.
+ */
+export function stormWaterFor(day: DayWeather): { name: string; notes: string } | null {
+  if (!isStorm(day.code)) return null;
+  const [y, m, d] = day.date.split('-').map(Number);
+  const weekday = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][new Date(y, m - 1, d).getDay()];
+  const month = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'][m - 1];
+  const when = `${weekday} ${d} ${month} ${y}`;
+  return {
+    name: 'Storm water',
+    notes: `Collected from the storm of ${when}: ${describeCode(day.code).toLowerCase()}. Set out before the storm, brought in after the last thunder.`,
+  };
+}

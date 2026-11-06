@@ -18,7 +18,7 @@ import { useShelfActions, useShelves } from '../../../../lib/shelves/store';
 import { dayKey } from '../../../../lib/tend/model';
 import { type } from '../../../../theme';
 
-type Params = { id?: string; key?: string; ref?: string; name?: string; image?: string; shelf?: string };
+type Params = { id?: string; key?: string; ref?: string; name?: string; image?: string; shelf?: string; notes?: string };
 
 // Add something to My Shelves (from the cabinet, the Living Library, or your
 // own with a photo), or change something already there (?id=).
@@ -52,7 +52,7 @@ function ShelfForm({ params, editing, all }: { params: Params; editing: { id: st
     const ref = params.ref || (found ? (cabinetEntry(library, found.item, found.form)?.traditionalRef ?? '') : '');
     const image = params.image || found?.form.image || '';
     const shelf = (SHELVES.some((s) => s.key === params.shelf) ? params.shelf : shelfFor(String(found?.item.category ?? ''), name, found?.form.type ?? ref.split('/')[1] ?? '')) as ShelfItem['shelf'];
-    return newItem({ name, shelf, image, cabinetKey: params.key ?? '', ref, acquired: dayKey(new Date()) });
+    return newItem({ name, shelf, image, cabinetKey: params.key ?? '', ref, acquired: dayKey(new Date()), notes: params.notes ?? '' });
     // eslint-disable-next-line react-hooks/exhaustive-deps -- chosen once, when the form opens
   }, []);
 

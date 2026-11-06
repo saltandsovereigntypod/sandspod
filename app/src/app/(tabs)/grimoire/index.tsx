@@ -102,6 +102,7 @@ export default function Grimoire() {
         <Button label="New page" onPress={() => router.push('/grimoire/new-page')} style={styles.action} />
         <Button label={NEW_LIBRARY_NOTE} variant="outline" onPress={() => router.push('/grimoire/practice')} style={styles.action} />
         <Button label="Build a spell" variant="outline" accessibilityHint="The spell builder: kept spells get a page here" onPress={() => router.push('/rituals/spell')} style={styles.action} />
+        <Button label="Print the book" variant="outline" accessibilityHint="Choose pages for a printed Book of Shadows, or a PDF" onPress={() => router.push('/grimoire/print')} style={styles.action} />
       </View>
 
       <LibraryLink />

@@ -43,6 +43,7 @@ export default function YearHome() {
       {!ready ? null : progress ? <YourYear key={progress.startedAt} /> : <Begin begin={begin} />}
       {ready && progress && <Settings change={change} />}
       <List>
+        <Row icon="calendar" title="Practice challenges" detail="7, 13, 21 or 30 days of tarot, moon journaling, devotion, grounding, plants or ancestors" onPress={() => router.push('/rituals/year/challenges')} />
         <Row icon="wheel" title="Dedication journeys" detail="The guided paths whose rite closes the year" onPress={() => router.push('/rituals/journeys')} />
         <Row icon="altar" title="Solitary practice" detail="Daily devotion, and workings for practising alone" last onPress={() => router.push('/rituals/craft/solitary')} />
       </List>

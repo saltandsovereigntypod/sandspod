@@ -51,6 +51,7 @@ export default function Readings() {
           onPress={() => router.push('/rituals/divination/draw' as Href)}
         />
         <Row icon="grimoire" title="Log a reading" detail="One you did by hand: what you asked, what came up" onPress={() => router.push('/rituals/divination/edit' as Href)} />
+        <Row icon="samhain" title="Spirit sessions" detail="Pendulum, spirit board, scrying, mediumship or trance: who came, what was said, and what bore out" onPress={() => router.push('/rituals/divination/sessions' as Href)} />
         <Row icon="wheel" title="Read the cup" detail="Tea leaves or coffee grounds: pick the shapes you see and where they lie" onPress={() => router.push('/rituals/divination/tea' as Href)} />
         <Row icon="wheel" title="Charms and bones" detail="Cast a set of small charms on a mat and read where they fall" onPress={() => router.push('/rituals/divination/charms' as Href)} />
         <Row icon="wheel" title="Geomancy" detail="Sixteen figures, four Mothers and a shield chart with a Judge" onPress={() => router.push('/rituals/divination/geomancy' as Href)} />

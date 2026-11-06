@@ -3593,6 +3593,8 @@ function ObjectPanel({
               <Text style={type.eyebrow}>How did it burn?</Text>
               <Text style={type.caption}>While it’s fresh in your mind: the flame, the smoke and the wax. Candle-readers have long looked to them.</Text>
               <Button label="Read the candle" variant="outline" onPress={act.read} />
+              <Text style={type.caption}>While the wax is still soft you can pour it into cold water and read the shapes it makes.</Text>
+              <Button label="Pour and read wax" variant="text" onPress={act.readWax} />
             </View>
           ) : read ? (
             <ChipRow>
