@@ -8226,6 +8226,47 @@
         },
         {
           "category": "crystals",
+          "name": "Serpentine",
+          "icon": "💎",
+          "keywords": [
+            "shedding the old",
+            "intuition",
+            "grounding",
+            "spiritual growth"
+          ],
+          "forms": [
+            {
+              "label": "Point",
+              "image": "",
+              "type": "crystal",
+              "crystal": "serpentine",
+              "form": "point"
+            },
+            {
+              "label": "Chips",
+              "image": "../assets/altar/objects/crystals/serpentine/serpentine-chips.png",
+              "type": "crystal",
+              "crystal": "serpentine",
+              "form": "chips"
+            },
+            {
+              "label": "Cluster",
+              "image": "",
+              "type": "crystal",
+              "crystal": "serpentine",
+              "form": "cluster"
+            },
+            {
+              "label": "Tumbled",
+              "image": "../assets/altar/objects/crystals/serpentine/serpentine-tumbled.png",
+              "type": "crystal",
+              "crystal": "serpentine",
+              "form": "tumbled"
+            }
+          ]
+        },
+        {
+          "category": "crystals",
           "name": "Shungite",
           "icon": "💎",
           "keywords": [
@@ -13160,6 +13201,18 @@
           "saturn",
           "root",
           "solar plexus"
+        ],
+        "serpentine": [
+          "kundalini and energy awakening",
+          "shedding the old",
+          "intuition",
+          "grounding",
+          "spiritual growth",
+          "earth",
+          "saturn",
+          "heart",
+          "crown",
+          "energy awakening"
         ]
       },
       "deity": {

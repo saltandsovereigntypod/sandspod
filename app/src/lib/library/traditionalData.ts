@@ -5032,6 +5032,33 @@ export const TRADITIONAL_LIBRARY: TraditionalLibraryData = {
         "perseverance",
         "saturn"
       ]
+    },
+    "serpentine": {
+      "DisplayName": "Serpentine",
+      "Category": "Crystal",
+      "Element": "Earth",
+      "Planet": "Saturn",
+      "Chakra": "Heart, Crown",
+      "Uses": "Kundalini and energy awakening, shedding the old, intuition, grounding, spiritual growth",
+      "PairsWith": "Green aventurine, clear quartz, smoky quartz, green candle",
+      "Cleansing": "Smoke, sound, moonlight",
+      "TraditionalWarnings": "Some serpentine contains fibrous chrysotile (a form of asbestos), and dust from cutting, sanding or grinding it can be harmful to lungs. Polished pieces are generally safe, but never cut, sand or burn serpentine, and wash hands after handling raw pieces. Do not use it for elixirs.",
+      "Overview": "Serpentine is a group of magnesium silicate minerals (antigorite, lizardite and chrysotile) in waxy, mottled greens, yellows and sometimes brown or black, with a snakeskin-like pattern that gave it its name (Latin serpens). It is soft to medium hard (Mohs 2.5–5.5) and is found in the UK (the Lizard peninsula in Cornwall), the USA, China, Pakistan, Afghanistan and Zimbabwe. The compact green varieties are carved as ‘new jade’ and ‘bowenite’. It is sold as tumbled stones, carvings, spheres and chips.",
+      "TraditionalMeaning": "Shedding and renewal; a snake-green stone of change, which a person might hold when leaving something behind.",
+      "HowToUse": "Start here: hold a smooth, polished serpentine when you are thinking about what to let go of, and put it down when you have named it. Tumbled stones suit pockets and bedside dishes, carvings suit the altar, and a polished palm stone is good for meditation. Keep it dry, and never grind, burn or cut it.",
+      "PairingNotes": "Serpentine pairs well with green aventurine for gentle growth, clear quartz for clarity, smoky quartz for grounding, and moonstone for cycles. Green, brown and silver candles suit it.",
+      "CleansingNotes": "Cleanse serpentine with smoke, sound, moonlight, or visualization. A quick wipe with a barely damp cloth is the most water it needs; never soak, grind or burn it.",
+      "SafetyAndRespect": "Polished serpentine is safe to handle, but it is soft, and some contains fibrous asbestos minerals that become a hazard as dust. Do not cut, sand, grind or burn it, never use it in water for elixirs, and wash hands after handling raw pieces. It is a different stone from jade, which is sold as ‘new jade’ only as a trade name. Many of its energy meanings are modern crystal lore; if you feel unwell after energy work, rest and seek care.",
+      "Traditions": "Hellenic, Roman, Wheel of the Year",
+      "TraditionNotes": "Hellenic: Greek and Roman writers (including Dioscorides and Pliny) described a green, snake-spotted stone called ophites, which was worn as a charm against snakebite and venom; this old stone is identified with serpentine, though the identification is not certain.\n\nRoman: The Romans carved serpentine ‘green porphyry’ columns and tables, and it was valued in medieval Europe as ‘serpentine marble’ and in medieval lapidaries as a defence against poison, in cups and amulets.\n\nWheel of the Year: Used at Ostara and Beltane for renewal, and in autumn for shedding the old, linked to the snake and its skin.\n\nFolk & wider practice: Serpentine rock is a major stone of the Cornish Lizard peninsula, where it was carved into ornaments from the 19th century. Maori (New Zealand) and Chinese traditions both value serpentine-like greenstones such as pounamu and ‘soft jade’, which are separate cultural stones with their own protocols; serpentine ‘new jade’ should not be passed off as them.",
+      "tags": [
+        "energy awakening",
+        "shedding the old",
+        "intuition",
+        "grounding",
+        "spiritual growth",
+        "saturn"
+      ]
     }
   },
   "candle": {
