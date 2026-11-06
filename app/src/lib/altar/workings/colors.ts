@@ -20,7 +20,7 @@ const KNOWN: Record<string, string> = {
   sandalwood: '#c49a6c', copal: '#e7d39a', vanilla: '#3b2a20', 'bay leaf': '#6f7d3c',
   anise: '#a8977a', borage: '#4f6fb8', cardamom: '#8fa267', cinquefoil: '#e3c348', 'red clover': '#b85a86',
   damiana: '#7d8a55', eucalyptus: '#8aa69e', fennel: '#a9b86a', galangal: '#c9a27a', heather: '#a3628f',
-  hibiscus: '#a3243b', honeysuckle: '#f0dca0', lilac: '#b89ad2', mullein: '#b9ba98', nutmeg: '#7a4e2e',
+  hibiscus: '#a3243b', lotus: '#eab4c0', honeysuckle: '#f0dca0', lilac: '#b89ad2', mullein: '#b9ba98', nutmeg: '#7a4e2e',
   passionflower: '#8676b8', pine: '#3f5d3a', rosehip: '#c4462c', 'rose hip': '#c4462c', sunflower: '#e8b923',
   violet: '#6b4a9c',
   // salts and the like
@@ -44,6 +44,7 @@ const KNOWN: Record<string, string> = {
   'snowflake obsidian': '#2a2a2c', 'tourmalinated quartz': '#d9dadc', 'ocean jasper': '#9db58a', mookaite: '#b0563f',
   'pink tourmaline': '#e17aa0', iolite: '#5a5fa8', morganite: '#f2c2b4', amazonite: '#6fc4b4', 'blue apatite': '#2fa0c4',
   'spirit quartz': '#a68ab8', 'desert rose': '#d4b08c',
+  lodestone: '#3a3a3c',
   // candle wax colours, for seals
   white: '#f2ede1', black: '#1d1b1a', red: '#a52a2a', green: '#3f7a4a', blue: '#335c99', yellow: '#e2c041', orange: '#d9772b',
   purple: '#6f4a9a', pink: '#e39fb5', gold: '#cfa443', silver: '#bfc3c7', brown: '#6b4a32', grey: '#8a8a8a', indigo: '#3b3a7a',

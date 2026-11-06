@@ -2680,6 +2680,48 @@
         },
         {
           "category": "herbs",
+          "name": "Lotus",
+          "icon": "🌿",
+          "keywords": [
+            "spiritual awakening",
+            "purity",
+            "rebirth",
+            "meditation",
+            "serenity"
+          ],
+          "forms": [
+            {
+              "label": "Sprig",
+              "image": "../assets/altar/objects/herbs/lotus/lotus-sprig.png",
+              "type": "herb",
+              "herb": "lotus",
+              "form": "sprig"
+            },
+            {
+              "label": "Loose",
+              "image": "../assets/altar/objects/herbs/lotus/lotus-loose.png",
+              "type": "herb",
+              "herb": "lotus",
+              "form": "loose"
+            },
+            {
+              "label": "Oil",
+              "image": "../assets/altar/objects/herbs/lotus/lotus-oil.png",
+              "type": "oil",
+              "herb": "lotus",
+              "form": "oil"
+            },
+            {
+              "label": "Incense",
+              "image": "../assets/altar/objects/herbs/incense/incense.png",
+              "type": "herb",
+              "herb": "lotus",
+              "form": "incense"
+            }
+          ]
+        },
+        {
+          "category": "herbs",
           "name": "Mandrake",
           "icon": "🌿",
           "keywords": [
@@ -5638,6 +5680,48 @@
               "image": "../assets/altar/objects/crystals/lepidolite/lepidolite-tumbled.png",
               "type": "crystal",
               "crystal": "lepidolite",
+              "form": "tumbled"
+            }
+          ]
+        },
+        {
+          "category": "crystals",
+          "name": "Lodestone",
+          "icon": "💎",
+          "keywords": [
+            "attraction",
+            "drawing luck",
+            "holding what you have",
+            "grounding",
+            "direction"
+          ],
+          "forms": [
+            {
+              "label": "Point",
+              "image": "",
+              "type": "crystal",
+              "crystal": "lodestone",
+              "form": "point"
+            },
+            {
+              "label": "Chips",
+              "image": "../assets/altar/objects/crystals/lodestone/lodestone-chips.png",
+              "type": "crystal",
+              "crystal": "lodestone",
+              "form": "chips"
+            },
+            {
+              "label": "Cluster",
+              "image": "",
+              "type": "crystal",
+              "crystal": "lodestone",
+              "form": "cluster"
+            },
+            {
+              "label": "Tumbled",
+              "image": "../assets/altar/objects/crystals/lodestone/lodestone-tumbled.png",
+              "type": "crystal",
+              "crystal": "lodestone",
               "form": "tumbled"
             }
           ]
@@ -10237,6 +10321,16 @@
           "water",
           "venus",
           "ancestors"
+        ],
+        "lotus": [
+          "spiritual awakening",
+          "purity",
+          "rebirth",
+          "meditation",
+          "serenity",
+          "water",
+          "moon",
+          "awakening"
         ]
       },
       "crystal": {
@@ -11035,6 +11129,17 @@
           "root",
           "crown",
           "home"
+        ],
+        "lodestone": [
+          "attraction",
+          "drawing luck",
+          "holding what you have",
+          "grounding",
+          "direction",
+          "earth",
+          "mars",
+          "root",
+          "luck"
         ]
       },
       "deity": {

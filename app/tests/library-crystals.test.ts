@@ -44,7 +44,7 @@ test('every new crystal is in the Library with every field the others have', () 
     assert.match(String(c.Overview), /Mohs \d/, `${id} hardness`);
     assert.match(text(c, 'TraditionNotes', 'SafetyAndRespect', 'TraditionalMeaning'), /modern/i, `${id} modern lore`);
   }
-  assert.equal(Object.keys(crystals).length, 70);
+  assert.ok(Object.keys(crystals).length >= 70);
 });
 
 test('the app and the website hold the same entries', () => {

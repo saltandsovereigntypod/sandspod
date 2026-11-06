@@ -2084,6 +2084,32 @@ export const TRADITIONAL_LIBRARY: TraditionalLibraryData = {
         "ancestors",
         "venus"
       ]
+    },
+    "lotus": {
+      "DisplayName": "Lotus",
+      "Category": "Herb",
+      "Element": "Water",
+      "Planet": "Moon",
+      "Uses": "Spiritual awakening, purity, rebirth, meditation, serenity",
+      "PairsWith": "Rose, sandalwood, jasmine, moonstone",
+      "Substitutions": "Rose, jasmine",
+      "TraditionalWarnings": "Blue lotus (Nymphaea caerulea) is a water lily, not a true lotus, and contains psychoactive alkaloids; it is restricted or banned in several countries. Sacred lotus is edible, but never ingest or smoke any lotus product you cannot identify.",
+      "Overview": "The sacred lotus (Nelumbo nucifera) is an aquatic plant that roots in mud and sends up round, waxy leaves and large pink or white flowers on tall stems; the flowers open by day and close at night. It is not the same plant as the blue lotus or ‘blue lily’ of ancient Egypt (Nymphaea caerulea), a water lily with a similar look. The petals, stamens, seeds and seed pods are the parts used, sold dried whole, as tea and as a scented or infused oil.",
+      "TraditionalMeaning": "Purity that rises from the mud; spiritual awakening, rebirth and calm that stays unstained by what surrounds it.",
+      "HowToUse": "Start here: set a dried lotus petal or a seed pod in a small dish by your meditation seat. Dried petals and seeds go into sachets, incense blends and altar bowls, and a pressed petal can be kept in a book. Lotus tea (petals or stamens) is the easiest culinary form. Most ‘lotus’ oils and perfumes are fragrance or lotus-scented blends, so check the label, and dilute any oil before dressing a candle or object.",
+      "PairingNotes": "Lotus pairs well with rose for gentle love and devotion, sandalwood for meditation, jasmine for dreams, and moonstone for lunar calm. White, pale pink or gold candles suit it; blue candles suit water and dream work.",
+      "SubstitutionNotes": "Rose can stand in for lotus in love and devotion workings, and jasmine in dream and moon work. Neither carries the symbolism of rising from mud, so say that intention aloud when you substitute.",
+      "SafetyAndRespect": "Do not confuse sacred lotus with blue lotus, which is a different plant with sedative, psychoactive effects and legal limits in many places; it is not recommended in pregnancy, with medication or before driving. Buy edible lotus only from a source that names the plant by its Latin name. Lotus is also a living sacred symbol in Hindu, Buddhist and Kemetic traditions: use it with respect rather than as decoration alone. Seed pods can crumble and the small seeds are a choking hazard for children and pets.",
+      "Traditions": "Egyptian, Hindu, Wheel of the Year",
+      "TraditionNotes": "Egyptian: The blue lotus, a water lily, opened at dawn and closed at dusk and was tied to the sun, creation and rebirth. It appears on offering tables and in tomb paintings, and Nefertem is shown rising from one.\n\nHindu: The lotus (padma) is the seat of Lakshmi and Brahma and the emblem of Saraswati and Vishnu; it is offered in puja, and its image of rising clean from mud runs through Hindu and Buddhist teaching alike.\n\nWheel of the Year: Lotus has no place in the old European festival cycle; modern practitioners use it at the full moon and for meditation, and at Litha for its link to the sun.\n\nFolk & wider practice: Lotus is a food as well as a symbol: roots, seeds and leaves are cooked and eaten across Asia, and lotus seed paste fills mooncakes. Modern correspondence tables give the flower to Water and the Moon.",
+      "tags": [
+        "awakening",
+        "purity",
+        "rebirth",
+        "meditation",
+        "serenity",
+        "moon"
+      ]
     }
   },
   "crystal": {
@@ -3975,6 +4001,33 @@ export const TRADITIONAL_LIBRARY: TraditionalLibraryData = {
         "endurance",
         "home",
         "moon"
+      ]
+    },
+    "lodestone": {
+      "DisplayName": "Lodestone",
+      "Category": "Crystal",
+      "Element": "Earth",
+      "Planet": "Mars",
+      "Chakra": "Root",
+      "Uses": "Attraction, drawing luck, holding what you have, grounding, direction",
+      "PairsWith": "Iron filings, green candle, pyrite, red jasper",
+      "Cleansing": "Smoke, sound, breath",
+      "TraditionalWarnings": "Lodestone is magnetic and can wipe cards and disturb phones and watches; keep strong magnets away from pacemakers. It rusts if left wet.",
+      "Overview": "Lodestone is a naturally magnetised piece of magnetite, an iron oxide (Fe3O4) of Mohs 5.5–6.5, dark grey-black with a dull metallic sheen. Only some magnetite is strongly magnetic, and that magnetism is thought to come from lightning strikes. It is sold as raw chunks, chips, small tumbled stones and as pairs, often with iron filings or ‘magnetic sand’.",
+      "TraditionalMeaning": "The stone that draws and holds: old folk magic of attraction, luck and fidelity, and in modern crystal use a stone of grounding and direction.",
+      "HowToUse": "Start here: keep one small lodestone in a dish and ‘feed’ it a pinch of iron filings each new moon while you say what you want to draw in. Tumbled pieces can be carried in a pouch, and chips can sit in a dry jar. Test a piece with a paper clip before buying, as plain magnetite is often sold as lodestone, and keep it dry.",
+      "PairingNotes": "Lodestone pairs well with iron filings, which it is traditionally ‘fed’ with, green candles for money and luck, pyrite for prosperity, and red jasper for steady strength. A small bowl of coins and a green or gold candle suit an attraction working.",
+      "CleansingNotes": "Cleanse lodestone with smoke, sound or breath and intention. Keep it dry: water and salt rust it. Never pass it through strong heat, which removes its magnetism.",
+      "SafetyAndRespect": "Keep magnetic stones away from bank and travel cards, phones, watches, hearing aids and pacemakers. Small pieces and filings can be swallowed by children and pets, and strong magnets can pinch fingers. The fidelity and attraction lore is old folk magic and modern practice, and is no substitute for open talk or good sense with money or a partner; it should not be used to bind another person’s will.",
+      "Traditions": "Wheel of the Year",
+      "TraditionNotes": "Wheel of the Year: Kept on the altar for luck and abundance, fed at the new moon and set among coins or a green candle at Lammas and Mabon, when what has been gathered is held.\n\nFolk & wider practice: Lodestones were carried as charms in 17th- and 18th-century Europe and are best known today in American folk magic (hoodoo and rootwork), where a lodestone is kept with iron filings, magnetic sand and sometimes oil to ‘feed’ it, and carried for luck, money and love. Greek writers such as Thales were already puzzled by the stone’s pull, and the name ‘lode’ means ‘way’, because it was used as a compass. These are folk uses, not a single closed tradition, but the rootwork use belongs to its Black American roots and deserves credit.",
+      "tags": [
+        "attraction",
+        "luck",
+        "grounding",
+        "direction",
+        "root",
+        "mars"
       ]
     }
   },

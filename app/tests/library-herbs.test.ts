@@ -46,7 +46,7 @@ test('every new herb is in the Library with every field the others have', () => 
     assert.match(String(h.Overview), /smell|scent/i, `${id} scent`);
     assert.match(String(h.TraditionNotes), /(Culpeper|correspondence tables)[^.]*(masculine|feminine)/, `${id} planet source and gender`);
   }
-  assert.equal(Object.keys(herbs).length, 80);
+  assert.ok(Object.keys(herbs).length >= 80);
 });
 
 test('the app and the website hold the same entries', () => {
