@@ -185,3 +185,18 @@ export function releasePapers(doc: AltarDocument): AltarDocument {
 
 /** How many papers lie on the altar (where the next one goes). */
 export const paperCount = (doc: AltarDocument) => doc.objects.filter((o) => !!paperOf(o)).length;
+
+/**
+ * A ritual together begun in a coven: when its candle is lit, a white candle
+ * lit on the coven's main altar too, named for the ritual, so the altar keeps
+ * the moment (rituals/together/[id].tsx, rituals/together/together.js).
+ */
+export function togetherCandle(title: string, person: string, now: string) {
+  return stepAltarChange(
+    { altar_action: 'light_candle', altar_color: 'white', altar_form: 'vigil', altar_label: `${title.slice(0, 60)}: the shared candle`, altar_image: null, title: 'The shared candle' },
+    { title },
+    person,
+    0,
+    now,
+  );
+}

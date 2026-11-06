@@ -59,6 +59,9 @@ export const COURSE_PAGES: Record<string, Place> = {
   devotion: { label: 'Daily devotion', app: '/rituals/craft/solitary/devotion', site: '/practice/solitary/devotion/' },
   timing: { label: 'The timing advisor', app: '/rituals/craft/cosmic/timing', site: '/practice/cosmic/timing/' },
   'year-and-a-day': { label: 'A Year and a Day: a year of study alone, ending in self-dedication', app: '/rituals/year', site: '/rituals/year/' },
+  support: { label: 'Support: crisis, grief and other help lines', app: '/more/support', site: '/more/support/' },
+  together: { label: 'Rituals together', app: '/rituals/together', site: '/rituals/together/' },
+  leading: { label: 'Leading a coven: the founder’s training', app: '/coven/leading', site: '/covens/leading/' },
 };
 
 /** The parts of the coven a step may open (the app's /coven/c/<slug>/<page>, the website's &tab=<tab>). */

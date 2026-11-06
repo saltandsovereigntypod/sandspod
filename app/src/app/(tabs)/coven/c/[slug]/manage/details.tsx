@@ -1,9 +1,10 @@
+import { router, type Href } from 'expo-router';
 import { useState } from 'react';
 import { Text } from 'react-native';
 
 import { Button } from '../../../../../../components/Button';
 import { CovenScreen } from '../../../../../../components/covens/CovenScreen';
-import { Chips, Field, Notice, Section } from '../../../../../../components/more/ui';
+import { Card, Chips, Field, Notice, Section } from '../../../../../../components/more/ui';
 import { ALTAR_ARTWORK } from '../../../../../../lib/altar/artworkData';
 import * as api from '../../../../../../lib/covens/api';
 import { useCoven } from '../../../../../../lib/covens/CovenContext';
@@ -75,7 +76,14 @@ function DetailsForm({ info }: { info: Coven }) {
       <Field label="When you gather" value={rhythm} onChangeText={setRhythm} maxLength={160} />
       <Field label="Tags, separated by commas" value={tags} onChangeText={setTags} />
       <Chips label="How witches join" options={JOIN_OPTIONS} value={joining} onChange={setJoining} />
-      <Chips label="Directory" options={LISTING} value={visibility} onChange={setVisibility} />
+      {info.listing_approved_at ? (
+        <Chips label="Directory" options={LISTING} value={visibility} onChange={setVisibility} />
+      ) : (
+        <Card>
+          <Text style={type.body}>Unlisted: found only by invitation. To appear in Find a coven, finish the founder’s training and apply to the moderators.</Text>
+          <Button label="Apply to be listed" variant="outline" onPress={() => router.push(`/coven/leading/apply?c=${info.slug}` as Href)} />
+        </Card>
+      )}
       <Field label="Most members (leave empty for no limit)" value={limit} onChangeText={(text) => setLimit(text.replace(/[^0-9]/g, ''))} keyboardType="number-pad" maxLength={4} />
       <Section label="Altar setting">
         <Chips label="Altar setting" options={BACKGROUNDS} value={background} onChange={setBackground} />

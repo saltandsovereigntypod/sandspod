@@ -7,6 +7,7 @@ import { Button } from '../../../components/Button';
 import { Card, CheckRow, Chips, Field, MoreScreen, Notice } from '../../../components/more/ui';
 import { WEBSITE_ORIGIN } from '../../../lib/altar/assetPaths';
 import * as api from '../../../lib/covens/api';
+import { LEADER_TITLES, LISTING_NOTE } from '../../../lib/covens/founding';
 import { errorMessage, parseTags, slugify, validateCoven, type Joining } from '../../../lib/covens/model';
 import { useSession } from '../../../lib/session';
 import { colors, type } from '../../../theme';
@@ -22,9 +23,10 @@ const JOIN_DETAIL: Record<Joining, string> = {
   closed: 'Not taking members yet.',
 };
 const LISTING = [
-  { value: 'listed', label: 'Listed' },
-  { value: 'unlisted', label: 'Unlisted (link only)' },
+  { value: 'unlisted', label: 'Unlisted (by invitation)' },
+  { value: 'listed', label: 'Ask to be listed' },
 ] as const;
+const TITLES = [...LEADER_TITLES.map((t) => ({ value: t as string, label: t })), { value: 'own', label: 'My own title' }];
 
 // Found a coven. The database sets up its first positions (Seeker to the
 // founder's own title), empty creed, rules and requirements pages and a
@@ -42,8 +44,10 @@ export default function FoundCoven() {
   const [rhythm, setRhythm] = useState('');
   const [tags, setTags] = useState('');
   const [joining, setJoining] = useState<Joining>('application');
-  const [visibility, setVisibility] = useState<'listed' | 'unlisted'>('listed');
-  const [founderRank, setFounderRank] = useState('High Priestess');
+  const [visibility, setVisibility] = useState<'listed' | 'unlisted'>('unlisted');
+  const [titleChoice, setTitleChoice] = useState<string>('High Priestess');
+  const [ownTitle, setOwnTitle] = useState('');
+  const founderRank = titleChoice === 'own' ? ownTitle : titleChoice;
   const [agreed, setAgreed] = useState(false);
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
@@ -74,7 +78,8 @@ export default function FoundCoven() {
     setMessage(null);
     try {
       const created = await api.createCoven(draft);
-      router.replace(`/coven/c/${created.slug}/manage` as Href);
+      // Every coven starts unlisted; asking to be listed goes on to the training and the application.
+      router.replace((visibility === 'listed' ? `/coven/leading/apply?c=${created.slug}` : `/coven/c/${created.slug}/manage`) as Href);
     } catch (error) {
       setMessage(/duplicate|already/i.test(String((error as Error)?.message)) ? 'Another coven already has that address. Choose another.' : errorMessage(error));
       setBusy(false);
@@ -116,8 +121,13 @@ export default function FoundCoven() {
           <Field label="Tags, separated by commas (optional)" value={tags} onChangeText={setTags} placeholder="beginners welcome, moon work" />
           <Chips label="How witches join" options={JOIN_OPTIONS} value={joining} onChange={setJoining} />
           <Text style={type.caption}>{JOIN_DETAIL[joining]}</Text>
-          <Chips label="Directory" options={LISTING} value={visibility} onChange={setVisibility} />
-          <Field label="Your title as leader" value={founderRank} onChangeText={setFounderRank} maxLength={60} />
+          <Chips label="Find a coven" options={LISTING} value={visibility} onChange={setVisibility} />
+          <Text style={type.caption}>{LISTING_NOTE}</Text>
+          <Text style={[type.caption, styles.link]} onPress={() => router.push('/coven/leading' as Href)}>
+            The founder’s training: Leading a coven
+          </Text>
+          <Chips label="Your title as leader" options={TITLES} value={titleChoice} onChange={setTitleChoice} />
+          {titleChoice === 'own' && <Field label="Your own title" value={ownTitle} onChangeText={setOwnTitle} maxLength={60} placeholder="Elder, Keeper, Gothi…" />}
           <CheckRow label="I’ll lead this coven by the community guidelines, and I understand the Salt & Sovereignty moderators can see and act on every coven." value={agreed} onChange={setAgreed}>
             <Text style={[type.caption, styles.link]} onPress={() => void WebBrowser.openBrowserAsync(`${WEBSITE_ORIGIN}/covens/guidelines/`)}>
               Read the guidelines

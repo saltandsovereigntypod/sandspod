@@ -18,7 +18,7 @@
   const L = global.CovenLogic;
   const D = global.CovenData;
   const UI = global.CovenUI;
-  const { esc, prose } = UI;
+  const { esc, prose, href } = UI;
 
   const statusLine = () => `<p class="cv-status" role="status" aria-live="polite" data-status></p>`;
 
@@ -254,7 +254,9 @@
         <div class="sp-field"><label for="m-tags">Tags, separated by commas</label><input id="m-tags" name="tags" value="${esc((coven.tags || []).join(", "))}" /></div>
         <div class="sp-grid-2">
           <div class="sp-field"><label for="m-joining">How witches join</label><select id="m-joining" name="joining">${Object.entries(L.JOINING).map(([k, v]) => `<option value="${k}"${coven.joining === k ? " selected" : ""}>${esc(v.label)}</option>`).join("")}</select></div>
-          <div class="sp-field"><label for="m-visibility">Directory</label><select id="m-visibility" name="visibility"><option value="listed"${coven.visibility === "listed" ? " selected" : ""}>Listed</option><option value="unlisted"${coven.visibility === "unlisted" ? " selected" : ""}>Unlisted (link only)</option></select></div>
+          ${coven.listing_approved_at
+            ? `<div class="sp-field"><label for="m-visibility">Directory</label><select id="m-visibility" name="visibility"><option value="listed"${coven.visibility === "listed" ? " selected" : ""}>Listed</option><option value="unlisted"${coven.visibility === "unlisted" ? " selected" : ""}>Unlisted (link only)</option></select></div>`
+            : `<div class="sp-field"><span class="sp-label">Find a coven</span><p class="sp-caption">Unlisted: found only by invitation. To appear in Find a coven, finish the founder’s training and apply to the moderators. <a href="${esc(href(`/covens/leading/?apply=${encodeURIComponent(coven.slug)}`))}">Apply to be listed</a></p><input type="hidden" name="visibility" value="unlisted" /></div>`}
         </div>
         <div class="sp-field"><label for="m-limit">Most members (leave empty for no limit)</label><input id="m-limit" name="member_limit" type="number" min="2" max="1000" value="${esc(coven.member_limit || "")}" /></div>
         <div class="sp-actions"><button class="button button--primary" type="submit">Save</button></div>

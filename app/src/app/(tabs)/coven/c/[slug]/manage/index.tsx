@@ -60,6 +60,12 @@ export default function Manage() {
               icon="library"
               onPress={() => go('pages')}
             />
+            <MenuRow
+              label="Find a coven listing"
+              detail={snap.coven.listing_approved_at ? (snap.coven.visibility === 'listed' ? 'Listed' : 'Approved; unlisted for now') : 'Unlisted. Apply to be listed after the founder’s training'}
+              icon="search"
+              onPress={() => router.push(`/coven/leading/apply?c=${coven.slug}` as never)}
+            />
             <MenuRow label="Positions" detail={`${snap.ranks.length} ${snap.ranks.length === 1 ? 'position' : 'positions'} and their powers`} icon="community" onPress={() => go('positions')} />
             <MenuRow label="Invite people" detail="Invite links, invitations in the app, and who may invite" icon="community" onPress={() => router.push(covenHref(coven.slug, 'invite'))} />
             <MenuRow label="Questions for applicants" detail={questions ? `${questions} ${questions === 1 ? 'question' : 'questions'}` : 'None yet'} icon="letters" onPress={() => go('questions')} />

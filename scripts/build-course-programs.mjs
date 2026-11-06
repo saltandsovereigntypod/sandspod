@@ -17,6 +17,8 @@ const catalog = {
   label: courses.PATH_LABEL,
   traditions: courses.COURSE_TRADITIONS,
   programs: courses.coursePrograms(),
+  // The founder's training, taken alone (the app's /coven/leading, the website's /covens/leading/).
+  founder: courses.FOUNDER_COURSE,
 };
 writeFileSync(join(root, 'js/core/course-programs.json'), JSON.stringify(catalog));
 console.log(`js/core/course-programs.json (${catalog.programs.length} programs)`);

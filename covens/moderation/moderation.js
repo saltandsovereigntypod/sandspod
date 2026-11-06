@@ -24,7 +24,7 @@
   const statusLine = () => `<p class="cv-status" role="status" aria-live="polite" data-status></p>`;
 
   function shell() {
-    const views = [["reports", "Reports"], ["heads", "Heads gone"], ["covens", "Covens"], ["bans", "Site bans"], ...(context.admin ? [["moderators", "Moderators"]] : [])];
+    const views = [["reports", "Reports"], ["listings", "Listings"], ["heads", "Heads gone"], ["covens", "Covens"], ["bans", "Site bans"], ...(context.admin ? [["moderators", "Moderators"]] : [])];
     root.innerHTML = `${header({ title: "Coven moderation", eyebrow: "Covens", back: "/covens/", backLabel: "All covens" })}
       <p class="sp-caption">You can open any coven, read its gathering and altar, remove messages and act on its members. Reports come here, never to coven leaders.</p>
       <nav class="cv-tabs" aria-label="Moderation">${views.map(([key, label]) => `<button type="button" class="cv-tab" data-view="${key}"${key === view ? ' aria-current="page"' : ""}>${esc(label)}</button>`).join("")}</nav>
@@ -194,11 +194,56 @@
     );
   }
 
+  // Covens asking to be listed in Find a coven (founding.ts): the founder's
+  // answers and training; approve, ask for changes or decline with a note.
+  async function listings(pane) {
+    const FD = global.FoundingData;
+    const Fo = global.SaltCore.covens.founding;
+    const rows = await FD.forReview();
+    await UI.loadNames(context, rows.map((r) => r.user_id));
+    const people = [...new Set(rows.map((r) => r.user_id))];
+    const trained = Object.fromEntries(await Promise.all(people.map(async (u) => [u, await FD.trainingDone(u)])));
+    const card = (r) => `<form class="sp-card" data-listing="${esc(r.id)}">
+        <p class="sp-eyebrow">${esc(Fo.STATUS_WORDS[r.status] || r.status)} · ${esc(L.relativeTime(r.decided_at || r.submitted_at))}</p>
+        <h3>${covenLink(r.covens)}</h3>
+        ${r.covens?.tagline ? `<p class="sp-caption">${esc(r.covens.tagline)}</p>` : ""}
+        <p>${esc(r.leader_title)}: <strong>${esc(UI.nameOf(context, r.user_id))}</strong> · ${trained[r.user_id] || r.training_completed_at ? `<span class="cv-pill">${esc(Fo.BADGE_LABEL)} ✓</span>` : "Training not finished"}</p>
+        <p><strong>Path</strong><br />${prose(r.path)}</p>
+        <p><strong>Experience</strong><br />${prose(r.experience)}</p>
+        <p><strong>Why</strong><br />${prose(r.why)}</p>
+        <p><strong>Keeping members safe</strong><br />${prose(r.safety)}</p>
+        <p class="sp-caption">Agreed to the coven guidelines and confirmed 18+ ${esc(L.relativeTime(r.agreed_guidelines_at))}.</p>
+        ${r.moderator_note ? `<p class="sp-caption">Note: “${esc(r.moderator_note)}”</p>` : ""}
+        ${r.status === "pending" ? `<div class="sp-field"><label for="ln-${esc(r.id)}">Note to the founder (needed to ask for changes or decline)</label><textarea id="ln-${esc(r.id)}" name="note" maxlength="2000"></textarea></div>
+          <div class="sp-actions">
+            <button class="button button--primary button--small" type="submit" value="approved">Approve and list</button>
+            <button class="button button--ghost button--small" type="submit" value="changes">Ask for changes</button>
+            <button class="button button--ghost button--small" type="submit" value="declined">Decline</button>
+          </div>` : ""}
+        ${statusLine()}</form>`;
+    const waiting = rows.filter((r) => r.status === "pending");
+    const others = rows.filter((r) => r.status !== "pending").slice(0, 20);
+    pane.innerHTML = `<p class="sp-caption">Founders apply for their coven to be listed in Find a coven after the founder’s training. Unlisted covens practise by invitation meanwhile.</p>
+      ${waiting.length ? waiting.map(card).join("") : `<p class="sp-empty">No coven is waiting to be listed.</p>`}
+      ${others.length ? `<h2 class="sp-label">Answered</h2>${others.map(card).join("")}` : ""}`;
+    pane.querySelectorAll("[data-listing]").forEach((form) =>
+      form.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        const decision = event.submitter?.value;
+        const note = form.elements.note?.value || "";
+        const status = form.querySelector("[data-status]");
+        const problem = Fo.validateDecision(decision, note);
+        if (problem) return UI.setStatus(status, problem, true);
+        if (await UI.busy(form, status, () => FD.review(form.dataset.listing, decision, note).then(() => true))) draw();
+      })
+    );
+  }
+
   async function draw() {
     shell();
     const pane = root.querySelector("[data-pane]");
     try {
-      await ({ reports, heads, covens, bans, moderators }[view] || reports)(pane);
+      await ({ reports, listings, heads, covens, bans, moderators }[view] || reports)(pane);
     } catch (error) {
       console.error(error);
       pane.innerHTML = `<p class="sp-notice">${esc(L.errorMessage(error))}</p>`;
