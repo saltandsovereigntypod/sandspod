@@ -7121,6 +7121,47 @@ export const ALTAR_ARTWORK: {
       },
       {
         "category": "crystals",
+        "name": "Nuummite",
+        "keywords": [
+          "shadow work",
+          "intuition",
+          "protection of the psyche",
+          "inner strength",
+          "magic"
+        ],
+        "forms": [
+          {
+            "label": "Point",
+            "image": "",
+            "type": "crystal",
+            "crystal": "nuummite",
+            "form": "point"
+          },
+          {
+            "label": "Chips",
+            "image": "../assets/altar/objects/crystals/nuummite/nuummite-chips.png",
+            "type": "crystal",
+            "crystal": "nuummite",
+            "form": "chips"
+          },
+          {
+            "label": "Cluster",
+            "image": "",
+            "type": "crystal",
+            "crystal": "nuummite",
+            "form": "cluster"
+          },
+          {
+            "label": "Tumbled",
+            "image": "../assets/altar/objects/crystals/nuummite/nuummite-tumbled.png",
+            "type": "crystal",
+            "crystal": "nuummite",
+            "form": "tumbled"
+          }
+        ]
+      },
+      {
+        "category": "crystals",
         "name": "Obsidian",
         "keywords": [
           "protection",
@@ -12549,6 +12590,18 @@ export const ALTAR_ARTWORK: {
         "third eye",
         "awakening",
         "letting go"
+      ],
+      "nuummite": [
+        "shadow work",
+        "intuition",
+        "protection of the psyche",
+        "inner strength",
+        "magic",
+        "earth",
+        "saturn",
+        "root",
+        "third eye",
+        "psychic protection"
       ]
     },
     "deity": {

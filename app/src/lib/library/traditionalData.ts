@@ -4870,6 +4870,33 @@ export const TRADITIONAL_LIBRARY: TraditionalLibraryData = {
         "cosmic connection",
         "mars"
       ]
+    },
+    "nuummite": {
+      "DisplayName": "Nuummite",
+      "Category": "Crystal",
+      "Element": "Earth",
+      "Planet": "Saturn",
+      "Chakra": "Root, Third Eye",
+      "Uses": "Shadow work, intuition, protection of the psyche, inner strength, magic",
+      "PairsWith": "Labradorite, black tourmaline, obsidian, black candle",
+      "Cleansing": "Smoke, sound, moonlight",
+      "TraditionalWarnings": "Nuummite is a brittle amphibole rock that may contain fibrous minerals; never cut, sand or grind it, and avoid breathing its dust. Keep it from water beyond a quick rinse.",
+      "Overview": "Nuummite is a dark, almost black metamorphic rock of anthophyllite and gedrite (amphiboles) that shows a flash of gold, copper and rainbow colour, called iridescence, when light catches its fine layers. It is one of the oldest minerals sold, about three billion years old, and is found only near Nuuk (Nuummite is named after the Greenlandic town, Nuuk) in southwestern Greenland, with similar rock in Canada and Norway. It is sold as tumbled stones, palm stones, cabochons and chips.",
+      "TraditionalMeaning": "Deep, old magic; a modern stone of the sorcerer and the shadow, said to help a person meet the hidden parts of themselves.",
+      "HowToUse": "Start here: hold a nuummite in a dim room for a few breaths before journaling or shadow work, and tilt it to see the flash. Tumbled stones suit pockets, a palm stone suits the altar, and chips can go in jars for protection. Keep a piece near the bed only if it brings you calm, as some people find it stirring.",
+      "PairingNotes": "Nuummite pairs well with labradorite for magic, black tourmaline for protection, obsidian for truth, and moonstone for balance. Black, purple and silver candles suit it.",
+      "CleansingNotes": "Cleanse nuummite with smoke, sound, moonlight, or visualization. A quick wipe with a barely damp cloth is the most water it needs; never soak it, salt it, or use acid.",
+      "SafetyAndRespect": "Nuummite is safe to handle polished, but it is brittle and can contain fibrous amphiboles, so do not cut, sand or grind it. Greenland’s nuummite is a limited resource that comes from a few mines under Greenlandic law, so buy from sellers who can name the source. The shadow work and magical meanings are modern crystal lore, and deep inner work is best done alongside real support.",
+      "Traditions": "Wheel of the Year",
+      "TraditionNotes": "Wheel of the Year: Used by modern practitioners at Samhain and the dark moon for shadow work and divination, and held in meditation to meet the unconscious.\n\nFolk & wider practice: Nuummite has been known to geologists in Greenland for some decades and entered crystal books and the gem trade in the late 20th century. It is sometimes called the ‘sorcerer’s stone’ by modern sellers, a trade name and not an old tradition; its meanings come from modern crystal-healing and witchcraft writers.",
+      "tags": [
+        "shadow work",
+        "intuition",
+        "psychic protection",
+        "inner strength",
+        "magic",
+        "saturn"
+      ]
     }
   },
   "candle": {
