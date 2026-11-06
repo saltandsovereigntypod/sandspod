@@ -2265,6 +2265,32 @@ export const TRADITIONAL_LIBRARY: TraditionalLibraryData = {
         "vitality",
         "mars"
       ]
+    },
+    "coriander": {
+      "DisplayName": "Coriander",
+      "Category": "Herb",
+      "Element": "Fire",
+      "Planet": "Mars",
+      "Uses": "Love, longevity, peace in the home, health, fidelity",
+      "PairsWith": "Cumin, cardamom, orange peel, carnelian",
+      "Substitutions": "Cumin, caraway",
+      "TraditionalWarnings": "Coriander can trigger allergies, particularly in people allergic to celery, carrot, mugwort or birch pollen, and the oil is strong enough to irritate skin. Some people find the fresh leaf tastes of soap, a trait that is partly genetic.",
+      "Overview": "Coriander (Coriandrum sativum) is a feathery annual of the carrot family, grown for both its leaves (called cilantro in North America) and its round, ridged, golden-tan seeds, which smell warm, citrusy and sweet. The leaves, seeds and essential oil are the parts used, sold fresh, dried and ground.",
+      "TraditionalMeaning": "Love, long life and a peaceful home; an old, warm spice that carries sweetness and endurance.",
+      "HowToUse": "Start here: crush a few coriander seeds between your fingers and breathe in the warm, citrus scent. Whole seeds go into jars, sachets and charm bags and keep their scent for a year or more; ground seed fades quickly. Fresh leaf is best used in the kitchen, and the oil should be diluted before dressing a candle.",
+      "PairingNotes": "Coriander pairs well with cumin for protection and fidelity, cardamom for love, orange peel for joy, and carnelian for warmth and vitality. Red, orange and yellow candles suit it.",
+      "SubstitutionNotes": "Cumin or caraway seed can substitute for coriander seed in home and protection workings, though neither has its love and longevity associations.",
+      "SafetyAndRespect": "Coriander is a common culinary herb and is safe in food amounts, but it can cause allergic reactions and skin irritation. Keep essential oil diluted and away from pets, children and eyes. Medicinal amounts should not be taken in pregnancy or alongside diabetes or blood pressure medicine without advice. Magical use should not replace medical, financial or legal support.",
+      "Traditions": "Egyptian, Wheel of the Year",
+      "TraditionNotes": "Egyptian: Coriander seeds were found in the tomb of Tutankhamun and are mentioned in ancient Egyptian medical texts, so it was prized as both a food and an aromatic of the afterlife.\n\nWheel of the Year: Coriander is sown in spring and seeds are harvested in late summer, and modern practitioners use it for love at Beltane and in sachets for the home at Lughnasadh.\n\nFolk & wider practice: Coriander is mentioned in the Bible (manna is compared to coriander seed), in the Sanskrit and Chinese herbals and in the Arabian Nights as a love charm. In medieval Europe the seeds were added to love potions and given to cure impotence, and in many places coriander seeds are given to guests for luck. Modern correspondence tables give it to Mars and Fire.",
+      "tags": [
+        "love",
+        "longevity",
+        "home peace",
+        "health",
+        "passion",
+        "mars"
+      ]
     }
   },
   "crystal": {

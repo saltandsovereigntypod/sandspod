@@ -20,7 +20,7 @@ const KNOWN: Record<string, string> = {
   sandalwood: '#c49a6c', copal: '#e7d39a', vanilla: '#3b2a20', 'bay leaf': '#6f7d3c',
   anise: '#a8977a', borage: '#4f6fb8', cardamom: '#8fa267', cinquefoil: '#e3c348', 'red clover': '#b85a86',
   damiana: '#7d8a55', eucalyptus: '#8aa69e', fennel: '#a9b86a', galangal: '#c9a27a', heather: '#a3628f',
-  hibiscus: '#a3243b', lotus: '#eab4c0', cacao: '#4a2e20', burdock: '#7a5a3a', bramble: '#3b2a45', blackthorn: '#2c3350', bergamot: '#c9c24a', 'apple blossom': '#f4d9df', honeysuckle: '#f0dca0', lilac: '#b89ad2', mullein: '#b9ba98', nutmeg: '#7a4e2e',
+  hibiscus: '#a3243b', lotus: '#eab4c0', coriander: '#b89a5a', cacao: '#4a2e20', burdock: '#7a5a3a', bramble: '#3b2a45', blackthorn: '#2c3350', bergamot: '#c9c24a', 'apple blossom': '#f4d9df', honeysuckle: '#f0dca0', lilac: '#b89ad2', mullein: '#b9ba98', nutmeg: '#7a4e2e',
   passionflower: '#8676b8', pine: '#3f5d3a', rosehip: '#c4462c', 'rose hip': '#c4462c', sunflower: '#e8b923',
   violet: '#6b4a9c',
   // salts and the like

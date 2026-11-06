@@ -1928,6 +1928,48 @@
         },
         {
           "category": "herbs",
+          "name": "Coriander",
+          "icon": "🌿",
+          "keywords": [
+            "love",
+            "longevity",
+            "peace in the home",
+            "health",
+            "fidelity"
+          ],
+          "forms": [
+            {
+              "label": "Sprig",
+              "image": "../assets/altar/objects/herbs/coriander/coriander-sprig.png",
+              "type": "herb",
+              "herb": "coriander",
+              "form": "sprig"
+            },
+            {
+              "label": "Loose",
+              "image": "../assets/altar/objects/herbs/coriander/coriander-loose.png",
+              "type": "herb",
+              "herb": "coriander",
+              "form": "loose"
+            },
+            {
+              "label": "Oil",
+              "image": "../assets/altar/objects/herbs/coriander/coriander-oil.png",
+              "type": "oil",
+              "herb": "coriander",
+              "form": "oil"
+            },
+            {
+              "label": "Incense",
+              "image": "../assets/altar/objects/herbs/incense/incense.png",
+              "type": "herb",
+              "herb": "coriander",
+              "form": "incense"
+            }
+          ]
+        },
+        {
+          "category": "herbs",
           "name": "Cypress",
           "icon": "🌿",
           "keywords": [
@@ -10647,6 +10689,17 @@
           "fire",
           "mars",
           "heart-opening"
+        ],
+        "coriander": [
+          "love",
+          "longevity",
+          "peace in the home",
+          "health",
+          "fidelity",
+          "fire",
+          "mars",
+          "home peace",
+          "passion"
         ]
       },
       "crystal": {
