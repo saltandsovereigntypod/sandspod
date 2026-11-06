@@ -7974,6 +7974,48 @@
         },
         {
           "category": "crystals",
+          "name": "Ruby Zoisite",
+          "icon": "💎",
+          "keywords": [
+            "vitality",
+            "passion for life",
+            "creative drive",
+            "joy",
+            "balanced energy"
+          ],
+          "forms": [
+            {
+              "label": "Point",
+              "image": "",
+              "type": "crystal",
+              "crystal": "ruby_zoisite",
+              "form": "point"
+            },
+            {
+              "label": "Chips",
+              "image": "../assets/altar/objects/crystals/ruby-zoisite/ruby-zoisite-chips.png",
+              "type": "crystal",
+              "crystal": "ruby_zoisite",
+              "form": "chips"
+            },
+            {
+              "label": "Cluster",
+              "image": "",
+              "type": "crystal",
+              "crystal": "ruby_zoisite",
+              "form": "cluster"
+            },
+            {
+              "label": "Tumbled",
+              "image": "../assets/altar/objects/crystals/ruby-zoisite/ruby-zoisite-tumbled.png",
+              "type": "crystal",
+              "crystal": "ruby_zoisite",
+              "form": "tumbled"
+            }
+          ]
+        },
+        {
+          "category": "crystals",
           "name": "Rutilated Quartz",
           "icon": "💎",
           "keywords": [
@@ -12997,6 +13039,18 @@
           "grief",
           "self-tenderness",
           "rest"
+        ],
+        "ruby-zoisite": [
+          "vitality",
+          "passion for life",
+          "creative drive",
+          "joy",
+          "balanced energy",
+          "earth",
+          "mars",
+          "heart",
+          "root",
+          "balance"
         ]
       },
       "deity": {

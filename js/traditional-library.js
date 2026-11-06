@@ -6501,6 +6501,43 @@ const TraditionalLibrary = {
 
             tags: ["gentle love", "emotional healing", "grief", "self-tenderness", "rest", "venus"]
         },
+
+        ruby_zoisite: {
+            DisplayName: "Ruby Zoisite",
+            Category: "Crystal",
+
+            Element: "Earth",
+
+            Planet: "Mars",
+
+            Chakra: "Heart, Root",
+
+            Uses: "Vitality, passion for life, creative drive, joy, balanced energy",
+
+            PairsWith: "Green aventurine, carnelian, garnet, red candle",
+
+            Cleansing: "Smoke, sound, moonlight",
+
+            TraditionalWarnings: "Ruby zoisite is a brittle rock of zoisite, ruby (corundum) and hornblende; the ruby crystals can break out of the matrix. It contains hornblende, so do not cut, sand or grind it, and wash hands after handling raw pieces.",
+
+            Overview: "Ruby zoisite (also called anyolite, from the Maasai word for green) is an opaque rock of vivid green zoisite with irregular patches of pink to deep red ruby (corundum), usually with black flecks of hornblende. It is found in Tanzania, near Longido, and in India, and is sold as tumbled stones, carvings, spheres, beads and chips. The ruby inside is usually opaque, low-grade and not a gem.",
+
+            TraditionalMeaning: "Life force and joy; a modern stone of the heart’s fire, for a restored appetite for living and creative drive.",
+
+            HowToUse: "Start here: keep a ruby zoisite on the desk or workspace, and hold it when you need a spark to begin something you have been putting off. Tumbled stones suit pockets, carvings suit the altar, and chips can go in jars with carnelian for drive. Wipe it with a soft cloth.",
+
+            PairingNotes: "Ruby zoisite pairs well with green aventurine for heart and luck, carnelian for energy, garnet for vitality, and clear quartz for clarity. Red, green and orange candles suit it.",
+
+            CleansingNotes: "Cleanse ruby zoisite with smoke, sound, moonlight, or visualization. A brief wipe with a barely damp cloth is the most water it needs; do not soak it or put it in salt.",
+
+            SafetyAndRespect: "Ruby zoisite is safe to handle polished, but it can chip, and raw pieces and dust contain hornblende, so wash hands after handling and do not cut or sand it. Do not use it for elixirs. The vitality meanings are modern crystal lore; it is no replacement for medical care, and persistent low energy deserves a check-up. Much anyolite is mined in Tanzania, so seek sellers who describe the source.",
+
+            Traditions: "Wheel of the Year",
+
+            TraditionNotes: "Wheel of the Year: Kept on the altar for vitality and joy, used at Beltane and Litha for fire and growth, and carried in the working day for drive.\n\nFolk & wider practice: Ruby zoisite was found in Tanzania in 1954 by a prospector in the Longido hills, and became a carving stone, then a crystal-healing stone, in the late 20th century. ‘Anyolite’ is a trade name from the Maasai word for green. Its meanings come from crystal-healing books, which link its green and red to the Heart and Root chakras and to Mars and Earth.",
+
+            tags: ["vitality", "joy", "creative drive", "passion for life", "balance", "mars"]
+        },
     },
 
     candle: {
