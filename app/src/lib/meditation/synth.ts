@@ -5,7 +5,7 @@
 // beats of the drum), so it meets itself without a seam. Plain numbers out
 // (Float32Array per channel), so the app writes them as a WAV file for
 // expo-audio (wavBytes) and the browser hands them to Web Audio as they are.
-// The noise beds (pink, brown, rain, wind, fire) are files made once by
+// The noise beds (pink, brown) are files made once by
 // scripts/sounds/meditation_beds.py. Seeded, so the same choice makes the
 // same sound. Pure.
 

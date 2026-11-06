@@ -14,9 +14,8 @@ import type { SitSoundControl } from './sitSound';
 const BEDS: Record<string, number> = {
   pink: require('../../../assets/sounds/meditation/pink.wav'),
   brown: require('../../../assets/sounds/meditation/brown.wav'),
-  rain: require('../../../assets/sounds/meditation/rain.wav'),
-  wind: require('../../../assets/sounds/meditation/wind.wav'),
-  fire: require('../../../assets/sounds/meditation/fire.wav'),
+  rain: require('../../../assets/sounds/nature/rain.m4a'),
+  fire: require('../../../assets/sounds/nature/fire.m4a'),
 };
 const bedUrl = (bed: string) => Asset.fromModule(BEDS[bed]).uri;
 
