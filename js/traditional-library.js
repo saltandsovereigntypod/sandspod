@@ -6131,6 +6131,43 @@ const TraditionalLibrary = {
 
             tags: ["safe travel", "transitions", "loss", "resilience", "clarity", "saturn"]
         },
+
+        crazy_lace_agate: {
+            DisplayName: "Crazy Lace Agate",
+            Category: "Crystal",
+
+            Element: "Earth",
+
+            Planet: "Mercury",
+
+            Chakra: "Crown",
+
+            Uses: "Cheerfulness, patience with chaos, creative flow, easing frustration, finding pattern",
+
+            PairsWith: "Citrine, carnelian, clear quartz, yellow candle",
+
+            Cleansing: "Smoke, sound, moonlight",
+
+            TraditionalWarnings: "Crazy lace agate is hard and stable, but dyed pieces (bright pink, blue or purple) can bleed in water. Silica dust from cutting or sanding is harmful to lungs.",
+
+            Overview: "Crazy lace agate is a banded chalcedony (microcrystalline quartz) of Mohs hardness 6.5–7, named for its swirling, looping, lace-like patterns of white, cream, grey, yellow and rust. Much of it comes from Chihuahua in Mexico (hence ‘Mexican lace agate’), and the stone is also found in Namibia, Australia and the USA. It is sold as tumbled stones, palm stones, beads and chips.",
+
+            TraditionalMeaning: "Cheerfulness and joy; a playful modern stone of good humour, patience and finding pattern in the tangle.",
+
+            HowToUse: "Start here: keep a small crazy lace agate on a desk or in a bag, and turn it in your fingers when a day feels heavy or tangled. Tumbled stones suit carrying, chips can go in jars with citrine for cheerfulness, and a palm stone makes a good worry stone. Wipe it with a soft cloth to keep the bands bright.",
+
+            PairingNotes: "Crazy lace agate pairs well with citrine for sunny mood, carnelian for energy, clear quartz for clarity, and rose quartz for gentleness. Yellow, orange and cream candles suit it.",
+
+            CleansingNotes: "Cleanse crazy lace agate with smoke, sound, moonlight, or visualization. Plain pieces can be rinsed and dried; dyed pieces should only be wiped.",
+
+            SafetyAndRespect: "Crazy lace agate is safe to handle, but sharp edges and the dust from cutting it are harmful; dyed stones should not go in water for elixirs. The cheering meanings are modern crystal lore; the stone is not a treatment for depression, and persistent low mood deserves proper support.",
+
+            Traditions: "Wheel of the Year",
+
+            TraditionNotes: "Wheel of the Year: Kept on the altar or desk for good humour, used at Beltane and Litha for lightness and play, and held to ease frustration.\n\nFolk & wider practice: Agate itself has been used for beads, seals and amulets since the Stone Age, and the Greeks and Romans prized banded agates, but ‘crazy lace’ was named and sold in the 20th century. Its meanings come from modern crystal-healing books, which link it to joy and the Crown chakra, and to Mercury and Earth in correspondence tables.",
+
+            tags: ["cheerfulness", "playfulness", "mood lift", "patience", "creativity", "mercury"]
+        },
     },
 
     candle: {

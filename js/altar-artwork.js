@@ -5994,6 +5994,48 @@
         },
         {
           "category": "crystals",
+          "name": "Crazy Lace Agate",
+          "icon": "💎",
+          "keywords": [
+            "cheerfulness",
+            "patience with chaos",
+            "creative flow",
+            "easing frustration",
+            "finding pattern"
+          ],
+          "forms": [
+            {
+              "label": "Point",
+              "image": "",
+              "type": "crystal",
+              "crystal": "crazy_lace_agate",
+              "form": "point"
+            },
+            {
+              "label": "Chips",
+              "image": "../assets/altar/objects/crystals/crazy-lace-agate/crazy-lace-agate-chips.png",
+              "type": "crystal",
+              "crystal": "crazy_lace_agate",
+              "form": "chips"
+            },
+            {
+              "label": "Cluster",
+              "image": "",
+              "type": "crystal",
+              "crystal": "crazy_lace_agate",
+              "form": "cluster"
+            },
+            {
+              "label": "Tumbled",
+              "image": "../assets/altar/objects/crystals/crazy-lace-agate/crazy-lace-agate-tumbled.png",
+              "type": "crystal",
+              "crystal": "crazy_lace_agate",
+              "form": "tumbled"
+            }
+          ]
+        },
+        {
+          "category": "crystals",
           "name": "Dalmatian Jasper",
           "icon": "💎",
           "keywords": [
@@ -12469,6 +12511,20 @@
           "transitions",
           "loss",
           "clarity"
+        ],
+        "crazy-lace-agate": [
+          "cheerfulness",
+          "patience with chaos",
+          "creative flow",
+          "easing frustration",
+          "finding pattern",
+          "earth",
+          "mercury",
+          "crown",
+          "playfulness",
+          "mood lift",
+          "patience",
+          "creativity"
         ]
       },
       "deity": {
