@@ -8,6 +8,7 @@ import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 import { Button } from '../Button';
 import { Card, Section, Tags } from '../more/ui';
+import { bathForKit } from '../../lib/craft/bath/bath';
 import { kitTonight, type Kit } from '../../lib/rituals/kits';
 import { colors, type } from '../../theme';
 
@@ -18,6 +19,7 @@ type Props = {
 };
 
 export function KitCard({ kit, open }: Props) {
+  const bath = bathForKit(kit.ref);
   const groups: [string, string[]][] = [
     ['Herbs', kit.correspondences.herbs],
     ['Stones', kit.correspondences.crystals],
@@ -56,6 +58,15 @@ export function KitCard({ kit, open }: Props) {
             <Text style={type.body}>{kit.premade.title}</Text>
             <Text style={type.caption}>{`${kit.premade.summary} About ${kit.premade.minutes} minutes.`}</Text>
             <Button label="Open the ritual" variant="outline" onPress={() => router.push({ pathname: '/rituals/premade/[id]', params: { id: kit.premade!.id } } as Href)} />
+          </View>
+        )}
+
+        {bath && (
+          <View style={styles.part}>
+            <Text style={styles.label}>A bath</Text>
+            <Text style={type.body}>{bath.title}</Text>
+            <Text style={type.caption}>{bath.intention}</Text>
+            <Button label="Open the bath mix" variant="outline" onPress={() => router.push({ pathname: '/rituals/craft/bath/mix', params: { id: bath.id } } as Href)} />
           </View>
         )}
 

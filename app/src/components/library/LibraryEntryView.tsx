@@ -20,6 +20,7 @@ import { colors, fonts, radius, type, fitLines } from '../../theme';
 import { ConnectedTo, LibraryJourney, RelationshipManager } from './LibraryConnections';
 import { DeityYours } from './DeityYours';
 import { MyCorrespondencesFor } from './MyCorrespondencesFor';
+import { BathMixesFor } from '../craft/BathParts';
 import { shelfFor } from '../../lib/shelves/model';
 import { HerbHearth } from '../craft/hearth';
 
@@ -227,6 +228,8 @@ export function LibraryEntryView({ entryId, back, backLabel, hrefFor, editHref }
         hrefFor={hrefFor}
         onManage={session ? () => setManaging(true) : undefined}
       />
+
+      <BathMixesFor entry={entry} />
 
       <LibraryJourney entry={entry} entries={entries} relations={relations} hrefFor={hrefFor} />
 
