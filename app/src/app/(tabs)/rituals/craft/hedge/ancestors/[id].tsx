@@ -3,6 +3,7 @@ import { useMemo, useState } from 'react';
 import { Text, View } from 'react-native';
 
 import { Button } from '../../../../../../components/Button';
+import { asPeople, FamilySection } from '../../../../../../components/craft/FamilyTree';
 import { SupportLink } from '../../../../../../components/SupportLink';
 import { AncestorJournalLink, AncestorPhoto } from '../../../../../../components/journals/screens';
 import { Body, Card, List, RitualScreen, Row, SectionLabel, Title, tell, ui } from '../../../../../../components/rituals/ui';
@@ -104,6 +105,8 @@ export default function AncestorPage() {
           <Body>{person.memory}</Body>
         </View>
       )}
+
+      <FamilySection people={asPeople(entries)} id={raw.id} />
 
       <AncestorJournalLink person={raw.id} label={`Your journal about ${person.name || 'them'}`} />
       <Button label="Edit" variant="outline" onPress={() => router.push(`/rituals/craft/hedge/ancestors/edit?id=${raw.id}` as Href)} />

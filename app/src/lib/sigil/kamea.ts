@@ -154,10 +154,15 @@ export type KameaTrace = {
  * circle on the first number and ends in a bar across the last.
  */
 export function traceKamea(letters: string, planet: PlanetId): KameaTrace | null {
+  return traceValues([...letters].map(letterNumber), planet);
+}
+
+/** Trace numbers over a planet's square (each fitted to it first): Hebrew letter values for the seals' sigils. */
+export function traceValues(numbers: number[], planet: PlanetId): KameaTrace | null {
   const square = KAMEAS[planet];
   if (!square) return null;
   const size = square.length;
-  const values = [...letters].map((ch) => fitNumber(letterNumber(ch), size)).filter((v) => v > 0);
+  const values = numbers.map((n) => fitNumber(n, size)).filter((v) => v > 0);
   const cells: [number, number][] = [];
   for (const v of values) {
     const cell = cellOf(square, v);

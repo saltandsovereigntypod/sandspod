@@ -29,6 +29,7 @@ import {
 } from '../../lib/sigil/sigil';
 import { colors, fonts, radius, type } from '../../theme';
 import { FreehandPad } from './FreehandPad';
+import { PlanetSeal } from './PlanetSeal';
 import { KameaUnderlay, SigilPicture } from './SigilPicture';
 
 const METHODS: { id: SigilMethod; label: string }[] = [
@@ -259,6 +260,7 @@ export function SigilMaker({ back, eyebrow, sectionId, fromGrimoire }: Props) {
             {suggested && letters && (
               <Body muted>{`In numerology your letters add up to ${total}, which comes down to ${digitalRoot(total)}, a number given to ${planetById(suggested)?.name}.`}</Body>
             )}
+            <PlanetSeal planet={planet} />
           </>
         )}
 

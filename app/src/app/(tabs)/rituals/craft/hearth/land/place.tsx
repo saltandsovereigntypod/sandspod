@@ -59,6 +59,7 @@ export default function LandPlaceScreen() {
         {offerings.length > 0 && <Body muted>{`Last offering ${short(offerings[0].data.on)}: ${offerings[0].data.offering}`}</Body>}
         <Body muted>Leave offerings that won’t harm the place or the creatures who live there: no plastic, nothing that won’t rot, no bread for the ducks.</Body>
         <List>
+          <Row icon="samhain" title="Spirits of this place" detail="What you’ve sensed here, where, and how your offerings were received" onPress={go(`${HEARTH}/land/spirits${q({ place: place.id })}`)} />
           <Row icon="altar" title="Set out an offering on your altar" detail="The cabinet’s Offerings drawer, for the spirit of this place" onPress={go('/altar')} />
           <Row icon="wheel" title="Its lore" detail="Local lore: the stories, spirits and sayings of your places" last onPress={go('/rituals/craft/folk/lore')} />
         </List>

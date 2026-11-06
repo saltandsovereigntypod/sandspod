@@ -925,6 +925,31 @@ export const HELP: HelpSection[] = [
         keywords: ['multi select', 'multiple', 'select all', 'bulk', 'delete several', 'move several'],
       },
       {
+        id: 'altar-knots-poppets-grids',
+        title: 'Knots, poppets and crystal grids on the altar',
+        summary: 'A witch’s ladder tied knot by knot, a poppet made and unmade, and your stones set out as a grid.',
+        steps: [
+          'Tap "Workings", then "Witch’s ladder or knots", "Poppet" or "Crystal grid".',
+          'For a ladder, say what the knots hold, choose how many (nine is the usual), and what goes into each. Tap the cord on the altar to tie each knot with its line, or untie one a day to let go.',
+          'For a poppet, read the note on consent, choose who or what it stands for, fill it from the cabinet, and tick each step of the making. Tap it to hold it each week, and to end it when the work is done.',
+          'For a grid, choose a shape, a centre stone and the points from My stones or the Library. Tap a stone to activate the grid, tend it daily and take it down; its log is in Craft → Crystal → Grids.',
+        ],
+        href: '/altar',
+        keywords: ['witch’s ladder', 'witches ladder', 'knot magic', 'knots', 'poppet', 'crystal grid', 'grid', 'cord'],
+      },
+      {
+        id: 'craft-blends-alphabets-wards',
+        title: 'The blending lab, witch’s alphabets and home wards',
+        summary: 'Blend by intent with safety notes, write in the old scripts, and keep track of the wards on your home.',
+        steps: [
+          'Blending lab: Craft → Kitchen & hearth → Blending lab. Choose incense, oil, powder or tea and an intent, add herbs, resins and oils, and read what they share, where they pull apart and what each needs for safety. Oils get a dilution in drops.',
+          'Witch’s alphabets: Craft → Eclectic → Witch’s alphabets. Type a word to see it in Theban, Passing the River, Malachim, Celestial, runes and ogham. "Keep for carving" puts it with your sigils, ready to carve on a candle.',
+          'Home wards: Craft → Hearth & land → Wards. Add each door, window, threshold or room, the wards set there, and when they were renewed. "Remind me to renew it" puts it on your To tend list, which rings the reminder.',
+        ],
+        href: '/rituals/craft/kitchen/blend',
+        keywords: ['blend', 'incense', 'anointing oil', 'dilution', 'theban', 'runes', 'ogham', 'alphabet', 'wards', 'warding', 'witch bottle', 'salt line'],
+      },
+      {
         id: 'altar-cord-cutting',
         title: 'Cord cutting on the altar',
         summary: 'A cord tied between two candles burns through when they burn down to it.',

@@ -87,6 +87,30 @@
     return `<svg class="sg-overlay" viewBox="0 0 100 100" aria-hidden="true"><g stroke="#6b4a2b" stroke-width="0.3" opacity="0.4">${lines.join("")}</g><g fill="#6b4a2b" opacity="0.4" text-anchor="middle" font-family="'Source Serif 4', serif">${numbers}</g></svg>`;
   }
 
+  /** Beside the square: the planet's numbers, and its Intelligence and Spirit traced from their Hebrew letters (as the app's PlanetSeal). */
+  function sealHtml(id) {
+    const SE = S.seals;
+    const seal = SE?.sealOf(id);
+    const p = S.planetById(id);
+    if (!seal || !p) return "";
+    const items = seal.names
+      .map((n) => {
+        const trace = SE.traceName(id, n);
+        return `<figure class="sg-seal"><span class="sg-seal__pic"><svg viewBox="0 0 100 100" aria-hidden="true"><rect width="100" height="100" rx="6" fill="#efe3c4"/>${
+          trace ? `<path d="${esc(trace.d)}" stroke="#2b1d12" stroke-width="1.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>` : ""
+        }</svg>${kameaOverlay(id)}</span><figcaption><strong>${esc(`${n.role}: ${n.name}`)}</strong> <span lang="he" dir="rtl">${esc(n.hebrew)}</span><br><span class="sp-caption">${esc(
+          `${n.letters.map((l) => `${l.name} ${l.value}`).join(" + ")} = ${SE.nameSum(n)}`
+        )}</span></figcaption></figure>`;
+      })
+      .join("");
+    return kit.details(
+      `${p.name}’s seal: its numbers, Intelligence and Spirit`,
+      `${kit.p(`Every row, column and diagonal of ${p.name}’s square adds to ${seal.line}; the whole square to ${seal.total}. Agrippa gives each planet a seal, and an Intelligence and a Spirit whose Hebrew names add up to the square’s own numbers.`)}${
+        seal.note ? kit.muted(seal.note) : ""
+      }<div class="sg-seals">${items}</div>${kit.muted(SE.SEALS_NOTE)}${kit.muted("The seal itself is a figure Agrippa prints without explaining how it was made; it isn’t redrawn here rather than guessed at.")}`
+    );
+  }
+
   // ------------------------------------------------------------------ drawing
 
   function view() {
@@ -134,7 +158,8 @@
           "Planet"
         ),
         kit.muted(`${p.name}: ${p.suits}. Its day is ${p.day}.`),
-        suggested && L ? kit.muted(`In numerology your letters add up to ${total}, which comes down to ${S.digitalRoot(total)}, a number given to ${S.planetById(suggested).name}.`) : ""
+        suggested && L ? kit.muted(`In numerology your letters add up to ${total}, which comes down to ${S.digitalRoot(total)}, a number given to ${S.planetById(suggested).name}.`) : "",
+        sealHtml(planet())
       ].join("");
     } else {
       methodBody = [

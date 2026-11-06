@@ -24,7 +24,10 @@ export type MoreAction =
   | 'stone'
   | 'plant'
   | 'drawn'
-  | 'meditate';
+  | 'meditate'
+  | 'poppet'
+  | 'knots'
+  | 'grid';
 
 type Row = { id: MoreAction; symbol: string; title: string; line: string; needsSave?: boolean };
 
@@ -33,6 +36,9 @@ const WORKINGS: Row[] = [
   { id: 'jar', symbol: '⚱', title: 'Spell jar', line: 'Build a jar in layers, a word spoken with each, and seal it with wax.' },
   { id: 'sachet', symbol: '❦', title: 'Sachet or charm bag', line: 'Fill it, tie it with knots, carry it, and feed it on its day.' },
   { id: 'cord', symbol: '➰', title: 'Cord cutting', line: 'A cord tied between two candles burns through when they burn down to it.' },
+  { id: 'knots', symbol: '⚘', title: 'Witch’s ladder or knots', line: 'Nine knots tied one by one with a line over each, kept, or untied to let go.' },
+  { id: 'poppet', symbol: '♁', title: 'Poppet', line: 'Made step by step for yourself or with consent, held weekly, unmade when done.' },
+  { id: 'grid', symbol: '✣', title: 'Crystal grid', line: 'Your stones set out in a shape round a centre stone, activated and logged.' },
   { id: 'spell', symbol: '◔', title: 'Spell over days', line: 'A seven-day candle, nine nights, a moon’s jar: the altar keeps count.', needsSave: true },
   { id: 'scry', symbol: '◉', title: 'Scrying bowl', line: 'A quiet, timed sit with dark water, then a few words on what came.', needsSave: true },
   { id: 'gratitude', symbol: '❂', title: 'Gratitude bowl', line: 'A bead for each thing you’re thankful for, filling through the moon.', needsSave: true },

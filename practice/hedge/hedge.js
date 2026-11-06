@@ -33,8 +33,11 @@
     deckEdit: "/divination/decks/edit/",
     ancestors: kit.href.tool("hedge", "ancestors"),
     person: (x) => kit.href.tool("hedge", "ancestors/person", `id=${encodeURIComponent(x)}`),
-    personEdit: (x) => kit.href.tool("hedge", "ancestors/edit", x ? `id=${encodeURIComponent(x)}` : "")
+    personEdit: (x) => kit.href.tool("hedge", "ancestors/edit", x ? `id=${encodeURIComponent(x)}` : ""),
+    tree: kit.href.tool("hedge", "ancestors/tree")
   };
+  // The family tree's logic (js/core/spirit.js), on the pages that load it: a person's page and their form.
+  const FT = global.SaltCore?.spirit?.familyTree || null;
   const supportLink = () => kit.support();
   let user = null;
   let settings = {};
@@ -167,6 +170,7 @@
       kit.list([
         kit.row({ url: url.draw(), title: "Draw cards, runes or ogham", detail: "A card for the day, the Celtic Cross and many more spreads, or one of your own" }),
         kit.row({ url: url.readingEdit(), title: "Log a reading", detail: "One you did by hand: what you asked, what came up" }),
+        kit.row({ url: "/divination/sessions/", title: "Spirit sessions", detail: "Pendulum, spirit board, scrying, mediumship or trance: who came, what was said, and what bore out" }),
         kit.row({ url: url.decks, title: "Your oracle decks", detail: "Make a deck of your own, and draw from it" }),
         kit.row({ url: "/grimoire/", title: "Card meanings", detail: "Tarot, runes, ogham, Lenormand and Kipper, in your Grimoire under Traditional Information" }),
         kit.row({ url: "/divination/patterns/", title: "Your patterns", detail: "The cards you draw most, by suit, moon and day, and the ones you haven’t met yet" }),
@@ -376,6 +380,7 @@
           )
         : "",
       kit.actions([kit.button({ label: "Add someone", url: url.personEdit(), primary: true })]),
+      people.length ? kit.list([kit.row({ url: url.tree, title: "The family tree", detail: "Generations up from you, partners together, chosen family beside" })]) : "",
       !people.length
         ? kit.card(kit.p("Add the people you remember. Dates can be as much as you know, even a year alone. Their birth and death days will be here when they come round, with a candle to light for them."))
         : kit.section("Remembered", kit.list(people.map((p) => kit.row({ url: url.person(p.id), title: p.data.name || "Unnamed", detail: kit.join([p.data.relation, A.lifespan(p.data)]) || null }))), { id: "remembered" }),
@@ -433,6 +438,7 @@
       days.length ? kit.section("Their days", days.map((a) => kit.p(`${A.anniversaryWords(a)}: ${calendar.relativeDay(now, a.date)}`)).join(""), { id: "days" }) : "",
       person.loved ? kit.section("What they loved", kit.p(person.loved), { id: "loved" }) : "",
       person.memory ? kit.section("A memory", kit.p(person.memory), { id: "memory" }) : "",
+      familyHtml(entry.id),
       // Their entries in the ancestor journal (grimoire/journals/journals.js).
       kit.list([
         kit.row({ url: `/grimoire/journals/journal/?j=ancestors&person=${encodeURIComponent(entry.id)}`, title: `Your journal about ${person.name || "them"}`, detail: "Offerings, dreams of them, family recipes and stories" }),
@@ -465,6 +471,36 @@
       placeholder: "1932"
     })}</div>${typed ? `<p class="sp-muted" aria-live="polite">${kit.esc(shown ? `Kept as ${shown}` : "That date doesn’t look right; check the day and month.")}</p>` : ""}</fieldset>`;
   }
+  /** Their parents, partners, siblings and children, and the tree (as the app's FamilySection). */
+  function familyHtml(personId) {
+    if (!FT) return "";
+    const r = FT.relativesOf(people, personId);
+    const name = (x) => people.find((p) => p.id === x)?.data.name || "Unnamed";
+    const rows = [
+      ...r.parents.map((x) => [x, "Parent"]),
+      ...r.partners.map((x) => [x, "Partner"]),
+      ...r.siblings.map((x) => [x, "Sibling"]),
+      ...r.children.map((x) => [x, "Child"])
+    ].map(([x, role]) => kit.row({ url: url.person(x), title: name(x), detail: role }));
+    return kit.section("Family", kit.list(rows) + kit.list([kit.row({ url: url.tree, title: "The family tree", detail: "Generations up, partners side by side, and chosen family beside" })]), { id: "family" });
+  }
+  /** On the form: kin, one of your parents, and their parents and partners (as the app's FamilyFields). */
+  function familyFieldsHtml(selfId) {
+    const p = personForm.person;
+    const choices = FT ? FT.linkChoices(people, selfId) : people.filter((x) => x.id !== selfId).map((x) => ({ id: x.id, name: x.data.name || "Unnamed" }));
+    const chip = (list, act, c) => kit.chip({ label: c.name, act, value: c.id, pressed: (p[list] || []).includes(c.id), a11y: `${c.name} as their ${list === "parents" ? "parent" : "partner"}` });
+    return kit.section(
+      "In the family tree (optional)",
+      kit.chips(A.KIN_KINDS.map((k) => kit.chip({ label: k.label, act: "kin", value: k.id, pressed: p.kin === k.id }))) +
+        kit.toggle({ id: "my-parent", label: "One of my parents", detail: "Someone who gave you life or raised you: the tree’s first generation up.", checked: !!p.myParent, change: "my-parent" }) +
+        (choices.length
+          ? `${kit.muted("Their parents, among the people you remember")}${kit.chips(choices.map((c) => chip("parents", "link-parent", c)))}${kit.muted("Their partners")}${kit.chips(choices.map((c) => chip("partners", "link-partner", c)))}`
+          : kit.muted("Once you’ve added others, you can link parents and partners here and they’ll find their places in the tree.")) +
+        kit.muted("Chosen family, teachers and friends needn’t be linked: they keep their own place beside the tree."),
+      { id: "family" }
+    );
+  }
+
   function ancestorEditView() {
     const existing = id ? people.find((e) => e.id === id) : null;
     const back = kit.back(existing ? url.person(existing.id) : url.ancestors, existing ? existing.data.name || "Ancestor" : "Ancestors");
@@ -500,6 +536,7 @@
         multiline: true,
         placeholder: "Strong tea, roses, a song, a nip of whisky"
       })}${kit.field({ id: "memory", label: "A memory", value: p.memory, input: "person-field", multiline: true, placeholder: "Something you want to keep" })}</div>`,
+      familyFieldsHtml(existing ? existing.id : null),
       !user ? kit.notice("Saved in this browser. Sign in to keep them with your account.") : "",
       kit.notice(personForm.problem, { live: true }),
       kit.actions([
@@ -1566,6 +1603,29 @@
     candle() {
       const entry = people.find((e) => e.id === id);
       if (entry) kit.beginRitual(A.candleDraft(entry.data));
+    },
+    kin(el) {
+      const p = personForm.person;
+      p.kin = p.kin === el.dataset.value ? "" : el.dataset.value;
+      draw();
+    },
+    "my-parent"(el) {
+      personForm.person.myParent = el.checked;
+    },
+    "link-parent"(el) {
+      const p = personForm.person;
+      const v = el.dataset.value;
+      const list = p.parents || [];
+      if (!list.includes(v) && FT && FT.wouldLoop(people, id, v)) return;
+      p.parents = list.includes(v) ? list.filter((x) => x !== v) : [...list, v].slice(-4);
+      draw();
+    },
+    "link-partner"(el) {
+      const p = personForm.person;
+      const v = el.dataset.value;
+      const list = p.partners || [];
+      p.partners = list.includes(v) ? list.filter((x) => x !== v) : [...list, v].slice(-6);
+      draw();
     },
     "person-field"(el) {
       personForm.person[el.id] = el.value;

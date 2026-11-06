@@ -41,7 +41,8 @@ export default function HearthHome() {
         <List>
           <Row icon="wheel" title="Land journal" detail={places.length ? `${places.length} ${places.length === 1 ? 'place' : 'places'} · ${notes.length} ${notes.length === 1 ? 'note' : 'notes'}` : 'Your places and what they do through the year'} onPress={go(`${HEARTH}/land`)} />
           <Row icon="calendar" title="This time last year" detail="What you noticed in these weeks of earlier years" onPress={go(`${HEARTH}/land/last-year`)} />
-          <Row icon="grimoire" title="Note what you see today" detail="Weather, frost, birdsong, blooms, water, an offering" last onPress={go(`${HEARTH}/land/note-edit`)} />
+          <Row icon="grimoire" title="Note what you see today" detail="Weather, frost, birdsong, blooms, water, an offering" onPress={go(`${HEARTH}/land/note-edit`)} />
+          <Row icon="samhain" title="Spirits of place" detail="The presences of your places, and how your offerings were received" last onPress={go(`${HEARTH}/land/spirits`)} />
         </List>
       </View>
 
@@ -61,8 +62,17 @@ export default function HearthHome() {
           <Row icon="rituals" title="Recipes with intent" detail="Festival foods, offerings and your own, kept in your Grimoire" onPress={go(`${HEARTH}/recipes`)} />
           <Row icon="grimoire" title="Write a recipe" detail="Your own, with its intent and correspondences" onPress={go(`${HEARTH}/recipes/edit`)} />
           <Row icon="grimoire" title="Pantry correspondences" detail="On Kitchen & hearth · salt, honey and the cupboard" onPress={go('/rituals/craft/kitchen/pantry')} />
+          <Row icon="altar" title="Blending lab" detail="On Kitchen & hearth · incense, oils, powders and teas by intent, with safety" onPress={go('/rituals/craft/kitchen/blend')} />
           <Row icon="altar" title="Bath & body" detail="Thirty bath mixes by intention, moon and season, with safety notes, your shelves and a log" onPress={go("/rituals/craft/bath")} />
           <Row icon="calendar" title="Find a good time to cook" detail="The spell timing advisor" last onPress={go(`/rituals/craft/cosmic/timing${q({ title: 'Kitchen witchery' })}`)} />
+        </List>
+      </View>
+
+      <View style={ui.gapSmall}>
+        <SectionLabel>The house</SectionLabel>
+        <List>
+          <Row icon="altar" title="Wards" detail="Doors, windows and thresholds, what guards each, and when to renew it" onPress={go(`${HEARTH}/wards`)} />
+          <Row icon="altar" title="Familiars" detail="Your animals, spirit companions and the remembered: care days, signs and a memorial" last onPress={go(`${HEARTH}/familiars`)} />
         </List>
       </View>
 

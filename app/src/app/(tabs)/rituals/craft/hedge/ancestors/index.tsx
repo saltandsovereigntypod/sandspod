@@ -57,6 +57,11 @@ export default function Ancestors() {
       )}
 
       <Button label="Add someone" onPress={() => router.push('/rituals/craft/hedge/ancestors/edit' as Href)} />
+      {people.length > 0 && (
+        <List>
+          <Row icon="wheel" title="The family tree" detail="Generations up from you, partners together, chosen family beside" last onPress={() => router.push('/rituals/craft/hedge/ancestors/tree' as Href)} />
+        </List>
+      )}
 
       {!ready ? (
         <Body muted>Opening…</Body>

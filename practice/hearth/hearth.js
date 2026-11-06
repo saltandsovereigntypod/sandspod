@@ -22,6 +22,9 @@
   const { land: L, forage: F, recipes: R, season: S, garden: G, moonGarden: MG, holidays: HD } = H;
   const esc = kit.esc;
   const view = root.dataset.view || "hearth";
+  // Spirits of place and familiars are drawn by practice/spirit.js (the spirit practice pages).
+  const SPIRIT_VIEWS = ["hearth-land-spirits", "hearth-land-spirit", "hearth-land-spirit-edit", "hearth-familiars", "hearth-familiars-familiar", "hearth-familiars-edit"];
+  if (SPIRIT_VIEWS.includes(view)) return;
   const params = new URLSearchParams(global.location.search);
   const param = (k) => params.get(k) || null;
 
@@ -154,7 +157,9 @@
         kit.list([
           kit.row({ url: url("land"), title: "Land journal", detail: state.places.length ? `${plural(state.places.length, "place", "places")} · ${plural(state.notes.length, "note", "notes")}` : "Your places and what they do through the year" }),
           kit.row({ url: url("land/last-year"), title: "This time last year", detail: "What you noticed in these weeks of earlier years" }),
-          kit.row({ url: url("land/note-edit"), title: "Note what you see today", detail: "Weather, frost, birdsong, blooms, water, an offering" })
+          kit.row({ url: url("land/note-edit"), title: "Note what you see today", detail: "Weather, frost, birdsong, blooms, water, an offering" }),
+          kit.row({ url: url("land/spirits"), title: "Spirits of place", detail: "The presences of your places, and how your offerings were received" }),
+          kit.row({ url: url("familiars"), title: "Familiars", detail: "Your animals, spirit companions and the remembered: care days, signs and a memorial" })
         ])
       ),
       kit.section(
@@ -208,7 +213,7 @@
     return [
       backTo("", "Hearth & land"),
       kit.head({ eyebrow: "Hearth & land", title: "Land journal", lede: "The places you know, and what they do through the year. Each note is read against its day: the moon that evening, the Wheel of the Year and the holy days of the calendars you keep." }),
-      kit.actions([kit.button({ label: "Note what you see", url: url("land/note-edit", { place: f.placeId, herb: f.herb }), primary: true }), kit.button({ label: "This time last year", url: url("land/last-year"), ghost: true })]),
+      kit.actions([kit.button({ label: "Note what you see", url: url("land/note-edit", { place: f.placeId, herb: f.herb }), primary: true }), kit.button({ label: "This time last year", url: url("land/last-year"), ghost: true }), kit.button({ label: "Spirits of place", url: url("land/spirits"), ghost: true })]),
       kit.section(
         "Your places",
         `${
@@ -272,7 +277,8 @@
           "Leave offerings that won’t harm the place or the creatures who live there: no plastic, nothing that won’t rot, no bread for the ducks."
         )}${kit.list([
           kit.row({ url: "/altar/", title: "Set out an offering on your altar", detail: "The cabinet’s Offerings drawer, for the spirit of this place" }),
-          kit.row({ url: kit.href.tool("folk", "lore"), title: "Its lore", detail: "Local lore: the stories, spirits and sayings of your places" })
+          kit.row({ url: kit.href.tool("folk", "lore"), title: "Its lore", detail: "Local lore: the stories, spirits and sayings of your places" }),
+          kit.row({ url: url("land/spirits", { place: place.id }), title: "Spirits of this place", detail: "What you’ve sensed here, where, and how your offerings were received" })
         ])}`
       ),
       p.access ? kit.card(kit.p(p.access), { label: "Access and care" }) : "",
@@ -784,6 +790,17 @@
     ].join("");
   }
 
+  // ── Wards ──────────────────────────────────────────────────────────────
+  // Kept in the web app (this section of the website now opens the app);
+  // these pages point there for anyone arriving at an old address.
+  function wardsView() {
+    return [
+      backTo("", "Hearth & land"),
+      kit.head({ eyebrow: "Hearth & land", title: "Wards", lede: "Your doors, windows, thresholds and rooms, what guards each, and when to renew it, with reminders from your To tend list." }),
+      kit.actions([kit.button({ label: "Open your wards", url: "/rituals/craft/hearth/wards", primary: true })])
+    ].join("");
+  }
+
   // ── Drawing ────────────────────────────────────────────────────────────
   const VIEWS = {
     hearth: [homeView, "Hearth & land"],
@@ -801,7 +818,9 @@
     "hearth-forage-harvest-edit": [harvestEditView, "A harvest"],
     "hearth-recipes": [recipesView, "Kitchen witchery"],
     "hearth-recipes-recipe": [recipeView, "A recipe"],
-    "hearth-recipes-edit": [recipeEditView, "Write a recipe"]
+    "hearth-recipes-edit": [recipeEditView, "Write a recipe"],
+    "hearth-wards": [wardsView, "Wards"],
+    "hearth-wards-spot": [wardsView, "Wards"]
   };
   function draw() {
     const [fn, title] = VIEWS[view] || VIEWS.hearth;
