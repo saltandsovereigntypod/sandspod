@@ -6077,6 +6077,47 @@ export const ALTAR_ARTWORK: {
       },
       {
         "category": "crystals",
+        "name": "Dumortierite",
+        "keywords": [
+          "study and memory",
+          "patience",
+          "calm focus",
+          "clear speech",
+          "steady self-discipline"
+        ],
+        "forms": [
+          {
+            "label": "Point",
+            "image": "",
+            "type": "crystal",
+            "crystal": "dumortierite",
+            "form": "point"
+          },
+          {
+            "label": "Chips",
+            "image": "../assets/altar/objects/crystals/dumortierite/dumortierite-chips.png",
+            "type": "crystal",
+            "crystal": "dumortierite",
+            "form": "chips"
+          },
+          {
+            "label": "Cluster",
+            "image": "",
+            "type": "crystal",
+            "crystal": "dumortierite",
+            "form": "cluster"
+          },
+          {
+            "label": "Tumbled",
+            "image": "../assets/altar/objects/crystals/dumortierite/dumortierite-tumbled.png",
+            "type": "crystal",
+            "crystal": "dumortierite",
+            "form": "tumbled"
+          }
+        ]
+      },
+      {
+        "category": "crystals",
         "name": "Emerald",
         "keywords": [
           "love",
@@ -12301,6 +12342,20 @@ export const ALTAR_ARTWORK: {
         "nature connection",
         "progress",
         "grounding"
+      ],
+      "dumortierite": [
+        "study and memory",
+        "patience",
+        "calm focus",
+        "clear speech",
+        "steady self-discipline",
+        "air",
+        "mercury",
+        "throat",
+        "third eye",
+        "study",
+        "focus",
+        "discipline"
       ]
     },
     "deity": {

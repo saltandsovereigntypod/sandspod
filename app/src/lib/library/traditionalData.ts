@@ -4735,6 +4735,33 @@ export const TRADITIONAL_LIBRARY: TraditionalLibraryData = {
         "grounding",
         "mercury"
       ]
+    },
+    "dumortierite": {
+      "DisplayName": "Dumortierite",
+      "Category": "Crystal",
+      "Element": "Air",
+      "Planet": "Mercury",
+      "Chakra": "Throat, Third Eye",
+      "Uses": "Study and memory, patience, calm focus, clear speech, steady self-discipline",
+      "PairsWith": "Sodalite, lapis lazuli, clear quartz, blue candle",
+      "Cleansing": "Smoke, sound, moonlight",
+      "TraditionalWarnings": "Dumortierite is hard and stable, but much ‘dumortierite’ is dumortierite quartz, and some is dyed. The dust from cutting it, as with all hard stone, contains silica and should be avoided.",
+      "Overview": "Dumortierite is an aluminium borosilicate mineral of Mohs hardness up to 8.5, found as dense, fibrous masses in deep denim blue, indigo, violet and sometimes brown or grey. It was named in 1881 after the French palaeontologist Eugène Dumortier, who found it near Lyon. Most of the stone sold is ‘dumortierite quartz’, quartz with dumortierite fibres. It is found in Brazil, Madagascar, Namibia and the USA, and is sold as tumbled stones, beads, cabochons and chips.",
+      "TraditionalMeaning": "Patience, study and calm order; a modern stone of the student and the organiser, for staying with a task.",
+      "HowToUse": "Start here: keep a small dumortierite on your desk or bag, and hold it for a few slow breaths before study, an exam or a task that needs patience. Tumbled stones suit carrying, chips can go in jars with sodalite for focus, and a bead makes a bracelet. Wipe it with a soft cloth.",
+      "PairingNotes": "Dumortierite pairs well with sodalite for logic, lapis lazuli for clarity, clear quartz for amplification, and amethyst for calm. Blue, indigo and white candles suit it.",
+      "CleansingNotes": "Cleanse dumortierite with smoke, sound, moonlight, or visualization. Plain pieces can be rinsed and dried; dyed or composite pieces should be wiped only.",
+      "SafetyAndRespect": "Dumortierite is safe to handle, but avoid the dust from cutting it. The study and patience meanings are modern crystal lore, and the stone does not replace sleep, revision or support for a learning difficulty.",
+      "Traditions": "Wheel of the Year",
+      "TraditionNotes": "Wheel of the Year: Kept on the desk or altar for study and patience, used at Lammas and Mabon around the start of the academic year, and held before important talks.\n\nFolk & wider practice: Dumortierite has no old magical tradition; it was named in 1881 and entered crystal-healing books in the late 20th century, which link it to the Throat and Third Eye chakras and to Mercury and Air. The blue dumortierite used in jewellery is often a trade name for dumortierite quartz.",
+      "tags": [
+        "study",
+        "patience",
+        "focus",
+        "clear speech",
+        "discipline",
+        "mercury"
+      ]
     }
   },
   "candle": {
