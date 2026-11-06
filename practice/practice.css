@@ -146,3 +146,22 @@
 .sg-kept { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
 .sg-kept > li { display: flex; gap: 14px; align-items: center; }
 .sg-kept__name { margin: 0 0 4px; font-family: "Cormorant Garamond", serif; font-size: 1.25rem; }
+
+/* Spirit practice (practice/spirit.js): the family tree and a challenge's days. */
+.sx-gen { display: flex; flex-wrap: wrap; gap: 0.6rem; }
+.sx-couple { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+.sx-couple--joined { border: 1px solid rgba(244, 236, 216, 0.16); border-radius: 0.9rem; padding: 0.25rem; }
+.sx-person { display: grid; gap: 0.1rem; min-width: 8rem; max-width: 14rem; padding: 0.5rem 0.75rem; border: 1px solid #e2c36d; border-radius: 0.6rem; color: inherit; text-decoration: none; }
+.sx-person--chosen { border-style: dashed; }
+.sx-person:hover, .sx-person:focus-visible { background: rgba(226, 195, 109, 0.08); }
+.sx-person__name { font-weight: 600; }
+.sx-down { text-align: center; color: #e2c36d; margin: 0; }
+.sx-days { display: flex; flex-wrap: wrap; gap: 0.4rem; margin: 0.75rem 0; }
+.sx-day { width: 2.4rem; height: 2.4rem; border-radius: 50%; border: 1px solid rgba(244, 236, 216, 0.25); background: none; color: inherit; font: inherit; cursor: pointer; }
+.sx-day.is-done { background: #e2c36d; border-color: #e2c36d; color: #102118; }
+.sx-day.is-current { outline: 2px solid #e2c36d; outline-offset: 1px; }
+.sx-date { display: grid; grid-template-columns: 1fr 1fr 1.4fr; gap: 0.5rem; }
+.sg-seals { display: flex; flex-wrap: wrap; gap: 1rem; }
+.sg-seal { margin: 0; width: 10rem; }
+.sg-seal__pic { position: relative; display: block; width: 8.25rem; aspect-ratio: 1; }
+.sg-seal__pic > svg:first-child { width: 100%; height: 100%; }

@@ -103,6 +103,7 @@
       )}%"></span></div>`;
     const footerRows = () =>
       kit.list([
+        kit.row({ url: "/rituals/year/challenges/", title: "Practice challenges", detail: "7, 13, 21 or 30 days of tarot, moon journaling, devotion, grounding, plants or ancestors" }),
         kit.row({ url: "/rituals/journeys/", title: "Dedication journeys", detail: "The guided paths whose rite closes the year" }),
         kit.row({ url: "/practice/solitary/", title: "Solitary practice", detail: "Daily devotion, and workings for practising alone" })
       ]);

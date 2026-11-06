@@ -41,7 +41,8 @@ export default function HearthHome() {
         <List>
           <Row icon="wheel" title="Land journal" detail={places.length ? `${places.length} ${places.length === 1 ? 'place' : 'places'} · ${notes.length} ${notes.length === 1 ? 'note' : 'notes'}` : 'Your places and what they do through the year'} onPress={go(`${HEARTH}/land`)} />
           <Row icon="calendar" title="This time last year" detail="What you noticed in these weeks of earlier years" onPress={go(`${HEARTH}/land/last-year`)} />
-          <Row icon="grimoire" title="Note what you see today" detail="Weather, frost, birdsong, blooms, water, an offering" last onPress={go(`${HEARTH}/land/note-edit`)} />
+          <Row icon="grimoire" title="Note what you see today" detail="Weather, frost, birdsong, blooms, water, an offering" onPress={go(`${HEARTH}/land/note-edit`)} />
+          <Row icon="samhain" title="Spirits of place" detail="The presences of your places, and how your offerings were received" last onPress={go(`${HEARTH}/land/spirits`)} />
         </List>
       </View>
 
@@ -70,7 +71,8 @@ export default function HearthHome() {
       <View style={ui.gapSmall}>
         <SectionLabel>The house</SectionLabel>
         <List>
-          <Row icon="altar" title="Wards" detail="Doors, windows and thresholds, what guards each, and when to renew it" last onPress={go(`${HEARTH}/wards`)} />
+          <Row icon="altar" title="Wards" detail="Doors, windows and thresholds, what guards each, and when to renew it" onPress={go(`${HEARTH}/wards`)} />
+          <Row icon="altar" title="Familiars" detail="Your animals, spirit companions and the remembered: care days, signs and a memorial" last onPress={go(`${HEARTH}/familiars`)} />
         </List>
       </View>
 

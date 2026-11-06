@@ -36,6 +36,7 @@ export default function LandJournal() {
       <View style={ui.actions}>
         <Button label="Note what you see" onPress={go(`${HEARTH}/land/note-edit${q({ place: placeId, herb })}`)} />
         <Button label="This time last year" variant="outline" onPress={go(`${HEARTH}/land/last-year`)} />
+        <Button label="Spirits of place" variant="outline" onPress={go(`${HEARTH}/land/spirits`)} />
       </View>
 
       <View style={ui.gapSmall}>

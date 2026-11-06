@@ -33,7 +33,29 @@ export type Ancestor = {
   photoPath?: string;
   /** Other days kept for them each year: a name day, a feast day, a wedding day. */
   days?: KeptDay[];
+  /** The family tree (familyTree.ts): ids of their parents among your ancestors, all optional. */
+  parents?: string[];
+  /** Ids of their partners, spouses or companions among your ancestors. */
+  partners?: string[];
+  /** One of the people who raised you or gave you life: the tree's first generation up. */
+  myParent?: boolean;
+  /** How they are kin to you: blood, chosen, adopted, a teacher. Blank for not said. */
+  kin?: KinKind | '';
 };
+
+export type KinKind = 'blood' | 'adopted' | 'step' | 'chosen' | 'teacher' | 'friend' | 'beloved';
+
+export const KIN_KINDS: { id: KinKind; label: string }[] = [
+  { id: 'blood', label: 'Blood kin' },
+  { id: 'adopted', label: 'Adopted or fostered' },
+  { id: 'step', label: 'Step-family or in-law' },
+  { id: 'chosen', label: 'Chosen family' },
+  { id: 'teacher', label: 'Teacher or elder' },
+  { id: 'friend', label: 'Friend' },
+  { id: 'beloved', label: 'Beloved dead' },
+];
+
+export const kinLabel = (id: string | undefined) => KIN_KINDS.find((k) => k.id === id)?.label ?? '';
 
 /** A day and month kept each year, with its name. */
 export type KeptDay = { month: number; day: number; name: string };
@@ -56,6 +78,10 @@ export const blankAncestor = (): Ancestor => ({
   photo: '',
   photoPath: '',
   days: [],
+  parents: [],
+  partners: [],
+  myParent: false,
+  kin: '',
 });
 
 const DAYS_IN_MONTH = [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
@@ -102,7 +128,16 @@ export function normalizeAncestor(raw: unknown): Ancestor {
     photo: str(r.photo),
     photoPath: str(r.photoPath),
     days: normalizeKeptDays(r.days),
+    parents: idList(r.parents, 4),
+    partners: idList(r.partners, 6),
+    myParent: r.myParent === true,
+    kin: KIN_KINDS.some((k) => k.id === r.kin) ? (r.kin as KinKind) : '',
   };
+}
+
+function idList(raw: unknown, max: number): string[] {
+  if (!Array.isArray(raw)) return [];
+  return [...new Set(raw.filter((x): x is string => typeof x === 'string' && !!x))].slice(0, max);
 }
 
 function normalizeKeptDays(raw: unknown): KeptDay[] {

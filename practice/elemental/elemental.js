@@ -220,9 +220,14 @@
     }
   }
 
-  function working(w) {
+  function working(w, day) {
     const premade = B.premade.premadeById(w.premadeId);
+    // A storm in the forecast: keep its water on your shelves, with a note of which storm (as the app's weather screen).
+    const storm = w.sign === "storm" && day ? B.weather.stormWaterFor(day) : null;
+    const stormHref = storm ? `/rituals/shelves/?${new URLSearchParams({ add: "1", name: storm.name, shelf: "oils", notes: storm.notes })}` : "";
     return `<div class="pb-working"><h3>${h.esc(`${w.title} · ${w.element}`)}</h3>${h.p(w.detail)}${w.care ? `<p class="pb-care">${h.esc(`Take care: ${w.care}`)}</p>` : ""}${
+      storm ? h.actions([h.button("Keep storm water on your shelves", { variant: "ghost", href: stormHref, attrs: { "aria-label": "Keep storm water on your shelves, with a note of which storm it came from" } })]) : ""
+    }${
       premade ? h.actions([h.button(premade.title, { variant: "ghost", href: links.premade(premade.id), attrs: { "aria-label": `${premade.title}: opens this premade working` } })]) : ""
     }</div>`;
   }
@@ -238,7 +243,7 @@
     ].filter(Boolean);
     return h.card(
       `${h.label(label)}${h.cardTitle(W.describeCode(day.code))}${h.muted(facts.join(" · "))}${
-        workings.length ? workings.map(working).join("") : h.p("Settled weather with nothing strong in it: a good day for whatever work is in front of you.")
+        workings.length ? workings.map((w) => working(w, day)).join("") : h.p("Settled weather with nothing strong in it: a good day for whatever work is in front of you.")
       }`,
       { gold: workings.length > 0 }
     );

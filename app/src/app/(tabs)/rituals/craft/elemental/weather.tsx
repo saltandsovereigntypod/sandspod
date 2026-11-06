@@ -6,7 +6,7 @@ import { Button } from '../../../../../components/Button';
 import { Body, Card, Expander, Notice, RitualScreen, SectionLabel, Title, ui } from '../../../../../components/rituals/ui';
 import { timeOfDay } from '../../../../../lib/calendar';
 import { useWeather } from '../../../../../lib/craft/elemental/useWeather';
-import { daysAhead, describeCode, workingsFor, type DayWeather, type WeatherWorking } from '../../../../../lib/craft/elemental/weather';
+import { daysAhead, describeCode, stormWaterFor, workingsFor, type DayWeather, type WeatherWorking } from '../../../../../lib/craft/elemental/weather';
 import { askDeviceLocation, usePlace } from '../../../../../lib/location';
 import { premadeById } from '../../../../../lib/rituals/premade';
 import { dateFromKey, localDateKey } from '../../../../../lib/rituals/lifecycle';
@@ -105,7 +105,7 @@ function DayCard({ day, label }: { day: DayWeather; label: string }) {
       <Text style={type.cardTitle}>{describeCode(day.code)}</Text>
       <Body muted>{facts.join(' · ')}</Body>
       {workings.length ? (
-        workings.map((w) => <Working key={w.sign} working={w} />)
+        workings.map((w) => <Working key={w.sign} working={w} day={day} />)
       ) : (
         <Body>Settled weather with nothing strong in it: a good day for whatever work is in front of you.</Body>
       )}
@@ -113,13 +113,24 @@ function DayCard({ day, label }: { day: DayWeather; label: string }) {
   );
 }
 
-function Working({ working }: { working: WeatherWorking }) {
+function Working({ working, day }: { working: WeatherWorking; day: DayWeather }) {
   const premade = premadeById(working.premadeId);
+  const storm = working.sign === 'storm' ? stormWaterFor(day) : null;
   return (
     <View style={styles.working}>
       <Text style={styles.workingTitle}>{`${working.title} · ${working.element}`}</Text>
       <Body>{working.detail}</Body>
       {!!working.care && <Text style={[type.caption, styles.care]}>{`Take care: ${working.care}`}</Text>}
+      {storm && (
+        <View style={ui.actions}>
+          <Button
+            label="Keep storm water on your shelves"
+            variant="outline"
+            accessibilityHint="Adds it to Shelves, with a note of which storm it came from"
+            onPress={() => router.push({ pathname: '/rituals/shelves/add', params: { name: storm.name, shelf: 'oils', notes: storm.notes } })}
+          />
+        </View>
+      )}
       {premade && (
         <View style={ui.actions}>
           <Button

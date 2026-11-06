@@ -201,7 +201,7 @@
         parts.push(`<button type="button" class="app-button" data-app-action="light">${lit ? "Snuff the candle" : "Light the candle"}</button>`);
       }
       if (toRead) {
-        parts.push(block("How did it burn?", caption("While it’s fresh in your mind: the flame, the smoke and the wax. Candle-readers have long looked to them.") + `<button type="button" class="app-button app-button--outline" data-app-action="read">Read the candle</button>`));
+        parts.push(block("How did it burn?", caption("While it’s fresh in your mind: the flame, the smoke and the wax. Candle-readers have long looked to them.") + `<button type="button" class="app-button app-button--outline" data-app-action="read">Read the candle</button>` + caption("Poured the soft wax into water, or watched the smoke? Keep what you saw as a reading in Divination.") + `<a class="app-button app-button--outline" href="/divination/edit/">Log a wax or smoke reading</a>`));
       } else if (read) {
         parts.push(chips([{ label: life?.spent ? "How it burned · its remnant" : "How it burned", symbol: "✧", action: "read" }]));
       }

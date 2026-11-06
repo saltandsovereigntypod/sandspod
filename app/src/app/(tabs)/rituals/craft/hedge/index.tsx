@@ -80,8 +80,14 @@ export default function HedgePractice() {
             icon="wheel"
             title="Draw cards, runes or ogham"
             detail="A card for the day, the Celtic Cross and many more spreads, or one of your own"
-            last
             onPress={() => router.push('/rituals/divination/draw' as Href)}
+          />
+          <Row
+            icon="samhain"
+            title="Spirit sessions"
+            detail="Sitting with ancestors, deities and spirits: protections, questions, what bore out"
+            last
+            onPress={() => router.push('/rituals/divination/sessions' as Href)}
           />
         </List>
         <Body muted>Readings and draws belong to every practice, so they live under Divination on the Craft home too.</Body>

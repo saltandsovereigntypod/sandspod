@@ -317,7 +317,8 @@
       image: params.get("image") || found?.form.image || "",
       cabinetKey: key,
       ref: params.get("ref") || "",
-      acquired: todayKey()
+      acquired: todayKey(),
+      notes: params.get("notes") || ""
     });
   }
 
