@@ -4,6 +4,17 @@
  */
 
 export const KEYWORD_OVERRIDES: Record<string, string[]> = {
+  'herbs:hops': ['restful sleep', 'easing grief', 'healing', 'calming anger'],
+  'herbs:poppy': ['restful sleep', 'remembrance of the dead', 'fertility', 'prosperity'],
+  'crystals:chalcedony': ['calm communication', 'goodwill between groups', 'nightmare protection', 'safe travel'],
+  'crystals:dumortierite': ['patience', 'self-discipline', 'study', 'honest speech'],
+  'crystals:kunzite': ['compassion', 'heart healing', 'easing anxiety', 'devotion'],
+  'crystals:merlinite': ['spirit contact', 'shadow work', 'intuition', 'ancestral wisdom'],
+  'crystals:moldavite': ['transformation', 'spirit contact', 'dream recall', 'courage'],
+  'crystals:nuummite': ['shadow work', 'protection', 'ancestral wisdom', 'personal sovereignty'],
+  'crystals:ruby-zoisite': ['vitality', 'passion', 'resilience', 'heart healing'],
+  'crystals:sardonyx': ['self-control', 'marriage blessing', 'courage', 'protection'],
+  'crystals:sugilite': ['self-compassion', 'easing grief', 'psychic shielding', 'restful sleep'],
   'herbs:foxglove': ['fairy contact', 'garden protection', 'secrets', 'hidden knowledge'],
   'tools:key': ['thresholds', 'unlocking', 'Hekate', 'opportunity', 'secrets'],
   'tools:athame': ['cutting', 'will', 'boundary', 'ritual circle'],
