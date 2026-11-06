@@ -2317,6 +2317,32 @@ export const TRADITIONAL_LIBRARY: TraditionalLibraryData = {
         "sleep",
         "mercury"
       ]
+    },
+    "hops": {
+      "DisplayName": "Hops",
+      "Category": "Herb",
+      "Element": "Air",
+      "Planet": "Mars",
+      "Uses": "Restful sleep, dream work, healing, calming anger, hospitality",
+      "PairsWith": "Valerian, lavender, chamomile, amethyst",
+      "Substitutions": "Lavender, chamomile",
+      "TraditionalWarnings": "Hops are poisonous to dogs, causing a dangerous rise in body temperature even from small amounts, and some people react to them with skin irritation, particularly pickers handling the fresh cones. Hops can deepen low mood and are not advised in pregnancy, in depression, or with sedatives or alcohol.",
+      "Overview": "Hops (Humulus lupulus) is a vigorous climbing vine of the hemp family, which twines clockwise up poles and hedges and bears pale green, papery, cone-shaped female flowers in late summer, dusted inside with sticky golden lupulin glands. The cones are the part used, sold dried loose or in pillow blends, and best known for bittering beer.",
+      "TraditionalMeaning": "Sleep and calm; a bitter plant of rest, dreams and gentle healing, and of the welcome of good ale.",
+      "HowToUse": "Start here: put a pinch of dried hops in a small cloth pouch and tuck it beside your pillow, away from where a pet can chew it. Dried cones go into dream pillows, sleep sachets and incense with mugwort and lavender; keep them sealed and dry, as the scent turns cheesy and stale with age. The oil should be diluted before dressing a candle.",
+      "PairingNotes": "Hops pairs well with valerian and lavender for sleep, chamomile for calm, mugwort for dreams, and amethyst for restful meditation. Blue, purple and white candles suit it.",
+      "SubstitutionNotes": "Lavender or chamomile can substitute for hops in sleep and calm workings, with a gentler, floral rather than bitter scent.",
+      "SafetyAndRespect": "Hops are highly toxic to dogs, and a small amount can be fatal, so keep them, spent brewing hops and any pillows out of reach of pets. People with depression, hormone-sensitive conditions, or on sedatives or medicines that affect the liver should ask a clinician before taking hops internally. Handling fresh hops can cause skin rashes. Magical use should not replace medical care for poor sleep.",
+      "Traditions": "Celtic, Wheel of the Year",
+      "TraditionNotes": "Celtic: Hops grew wild in British and Irish hedgerows before the beer-brewing trade made them a crop; no particular ritual use is firmly recorded for them in Celtic sources, and this entry draws on later English folk use.\n\nWheel of the Year: Hops are picked in late summer and early autumn and are linked in modern practice to Lammas, the harvest and the blessing of ale.\n\nFolk & wider practice: In England, hop pillows were a folk remedy for sleeplessness, and the story that King George III slept on one was widely told in the 18th century. Hop-picking was a seasonal work and holiday for families from London and the Midlands in Kent and Herefordshire, and hops were once hung in the house for luck. Modern correspondence tables give hops to Mars and Air.",
+      "tags": [
+        "sleep",
+        "dreams",
+        "healing",
+        "calming anger",
+        "hospitality",
+        "mars"
+      ]
     }
   },
   "crystal": {

@@ -2764,6 +2764,48 @@
         },
         {
           "category": "herbs",
+          "name": "Hops",
+          "icon": "🌿",
+          "keywords": [
+            "restful sleep",
+            "dream work",
+            "healing",
+            "calming anger",
+            "hospitality"
+          ],
+          "forms": [
+            {
+              "label": "Sprig",
+              "image": "../assets/altar/objects/herbs/hops/hops-sprig.png",
+              "type": "herb",
+              "herb": "hops",
+              "form": "sprig"
+            },
+            {
+              "label": "Loose",
+              "image": "../assets/altar/objects/herbs/hops/hops-loose.png",
+              "type": "herb",
+              "herb": "hops",
+              "form": "loose"
+            },
+            {
+              "label": "Oil",
+              "image": "../assets/altar/objects/herbs/hops/hops-oil.png",
+              "type": "oil",
+              "herb": "hops",
+              "form": "oil"
+            },
+            {
+              "label": "Incense",
+              "image": "../assets/altar/objects/herbs/incense/incense.png",
+              "type": "herb",
+              "herb": "hops",
+              "form": "incense"
+            }
+          ]
+        },
+        {
+          "category": "herbs",
           "name": "Hyssop",
           "icon": "🌿",
           "keywords": [
@@ -10753,6 +10795,17 @@
           "mercury",
           "evil eye",
           "sleep"
+        ],
+        "hops": [
+          "restful sleep",
+          "dream work",
+          "healing",
+          "calming anger",
+          "hospitality",
+          "air",
+          "mars",
+          "sleep",
+          "dreams"
         ]
       },
       "crystal": {
