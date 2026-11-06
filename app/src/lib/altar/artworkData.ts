@@ -8023,6 +8023,47 @@ export const ALTAR_ARTWORK: {
       },
       {
         "category": "crystals",
+        "name": "Septarian",
+        "keywords": [
+          "patience",
+          "endurance",
+          "grounding",
+          "emotional steadiness",
+          "perseverance"
+        ],
+        "forms": [
+          {
+            "label": "Point",
+            "image": "",
+            "type": "crystal",
+            "crystal": "septarian",
+            "form": "point"
+          },
+          {
+            "label": "Chips",
+            "image": "../assets/altar/objects/crystals/septarian/septarian-chips.png",
+            "type": "crystal",
+            "crystal": "septarian",
+            "form": "chips"
+          },
+          {
+            "label": "Cluster",
+            "image": "",
+            "type": "crystal",
+            "crystal": "septarian",
+            "form": "cluster"
+          },
+          {
+            "label": "Tumbled",
+            "image": "../assets/altar/objects/crystals/septarian/septarian-tumbled.png",
+            "type": "crystal",
+            "crystal": "septarian",
+            "form": "tumbled"
+          }
+        ]
+      },
+      {
+        "category": "crystals",
         "name": "Shungite",
         "keywords": [
           "grounding",
@@ -12818,6 +12859,17 @@ export const ALTAR_ARTWORK: {
         "fidelity",
         "protection from ill will",
         "honest speech"
+      ],
+      "septarian": [
+        "patience",
+        "endurance",
+        "grounding",
+        "emotional steadiness",
+        "perseverance",
+        "earth",
+        "saturn",
+        "root",
+        "solar plexus"
       ]
     },
     "deity": {

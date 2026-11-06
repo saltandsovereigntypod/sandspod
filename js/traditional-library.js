@@ -6575,6 +6575,43 @@ const TraditionalLibrary = {
 
             tags: ["courage", "fidelity", "protection from ill will", "clear judgement", "honest speech", "mars"]
         },
+
+        septarian: {
+            DisplayName: "Septarian",
+            Category: "Crystal",
+
+            Element: "Earth",
+
+            Planet: "Saturn",
+
+            Chakra: "Root, Solar Plexus",
+
+            Uses: "Patience, endurance, grounding, emotional steadiness, perseverance",
+
+            PairsWith: "Smoky quartz, citrine, brown jasper, brown candle",
+
+            Cleansing: "Smoke, sound, earth",
+
+            TraditionalWarnings: "Septarian is soft (Mohs 3–4) and calcite-based, so it dissolves in acids and weakens in water and salt. Keep it dry, and never soak it or make an elixir from it.",
+
+            Overview: "Septarian (or septaria) are rounded nodules of mudstone that cracked as they dried about 50 million years ago, the cracks then filling with calcite and aragonite (yellow, honey and white) to make a polygonal, turtle-shell or ‘dragon-skin’ network. It is soft (Mohs 3–4), and the best-known source is Madagascar, with Utah in the USA also known. It is sold as tumbled stones, palm stones, spheres, bookends and chips, and is often dyed, waxed or sealed.",
+
+            TraditionalMeaning: "Patience and endurance; a modern stone of the slow work, seen as a stone that cracked and was healed with gold.",
+
+            HowToUse: "Start here: hold a septarian palm stone when you are impatient or worn down, and trace the gold veins with a finger. Tumbled stones suit pockets, spheres and bookends suit the altar or desk, and chips can go in jars with citrine for steadiness. Keep it dry and out of the bath.",
+
+            PairingNotes: "Septarian pairs well with smoky quartz for grounding, citrine for sunny steadiness, brown jasper for patience, and amber for warmth. Brown, yellow and gold candles suit it.",
+
+            CleansingNotes: "Cleanse septarian with smoke, sound, earth, or visualization. Wipe it with a dry or barely damp cloth; never soak it, put it in salt or use vinegar.",
+
+            SafetyAndRespect: "Septarian is safe to handle but soft and brittle, so it can chip, and it should not be used for elixirs or in water. Much septarian is polished with wax or resin, and some is dyed, so check the surface before cleaning. Its patience meanings are modern crystal lore. Some Madagascar septarian comes from areas where the stone is dug at scale, so buy from sellers who say where it came from.",
+
+            Traditions: "Wheel of the Year",
+
+            TraditionNotes: "Wheel of the Year: Kept on the altar at Mabon and Samhain for endurance through the dark half of the year, and used in grounding work.\n\nFolk & wider practice: Septarian nodules have been known to geologists for centuries and were sometimes cut and polished for tabletops and ornaments; the name comes from the Latin septum, ‘partition’. The ‘dragon stone’ and ‘turtle stone’ names are modern trade names. Its meanings come from crystal-healing books, which link its brown and gold to the Root and Solar Plexus chakras and to Saturn and Earth.",
+
+            tags: ["patience", "endurance", "grounding", "emotional steadiness", "perseverance", "saturn"]
+        },
     },
 
     candle: {
