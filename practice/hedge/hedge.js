@@ -721,7 +721,7 @@
       own
     )}${spread.kind === "tarot" ? kit.muted(`Drawn with the ${info.name} (${info.made}).`) : ""}<div data-laid-meaning>${
       laid.pick === null ? kit.muted("Tap one for its meaning.") : meaningHtml(spread, d, laid.pick, deck, own)
-    }</div>${Or ? Or.pairsHtml(spread, d) : ""}</section>`;
+    }</div>${Or ? Or.pairsHtml(spread, d) + Or.wholeHtml(spread, d, r.question, own, deck) : ""}</section>`;
   }
 
   const drawState = {
@@ -940,6 +940,7 @@
           )
         : "",
       Or ? Or.pairsHtml(spread, d) : "",
+      Or ? Or.wholeHtml(spread, d, drawState.question, deck, drawDeck()) : "",
       spread.cast ? kit.muted(Dv.draw.CAST_NOTE) : "",
       note ? kit.muted(note) : "",
       kit.field({ id: "draw-interpretation", label: "What you make of it", value: drawState.interpretation, input: "draw-interpretation", multiline: true, placeholder: "Your reading of the reading" }),

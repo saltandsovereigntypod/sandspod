@@ -131,7 +131,7 @@ export function divinationPage(entry: DivinationEntry): DivinationPage {
       entry,
       eyebrow: group.key === 'major' ? `Major Arcana · ${n}` : `Minor Arcana · ${group.label}`,
       gloss: null,
-      sections: TAROT_SECTIONS.map((s) => ({ ...s, text: deep[s.key] })).filter((s) => s.text),
+      sections: TAROT_SECTIONS.map((s) => ({ ...s, text: deep[s.key] ?? '' })).filter((s) => s.text),
     };
   }
   const deep = staveDeep(entry.name)!;

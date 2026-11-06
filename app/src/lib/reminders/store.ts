@@ -21,7 +21,8 @@ import { getRituals, loadPlans, subscribeRituals } from '../rituals/store';
 import { cachedSettings, subscribeSettings } from '../settings/store';
 import type { RitualPlan } from '../rituals/types';
 import { syncSkyCalendar } from './calendarStore';
-import { applySchedule, permissionState, remindersSupported, requestPermission, type PermissionState } from './notifier';
+import { discreetReminders } from './discreet';
+import { applySchedule, permissionState, remindersSupported, requestPermission, setDiscreet, type PermissionState } from './notifier';
 import { anyPlanned, planReminders, type CovenSource } from './plan';
 import { PREFS_KEY, readPrefs, type ReminderPrefs } from './prefs';
 import { anyReminders, DEFAULT_SETTINGS, normalizeSettings, type Reminder, type ReminderSettings } from './schedule';
@@ -121,7 +122,8 @@ export function syncReminders(): Promise<void> {
         now: new Date(),
       });
       const permission = remindersSupported ? await permissionState() : 'unavailable';
-      const scheduled = await applySchedule(permission === 'granted' ? reminders : []);
+      setDiscreet(prefs.discreet);
+      const scheduled = await applySchedule(permission === 'granted' ? discreetReminders(reminders, prefs.discreet) : []);
       set({ permission, scheduled, prefs });
     } catch {
       // Scheduling is best effort; the settings are still saved.

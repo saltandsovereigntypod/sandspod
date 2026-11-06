@@ -391,6 +391,21 @@ export function QuietSection({ prefs, update }: Props) {
         </Card>
       </View>
       <View style={ui.gapSmall}>
+        <SectionLabel>On the lock screen</SectionLabel>
+        <Card>
+          <Toggle
+            label="Discreet notifications"
+            detail={
+              prefs.discreet
+                ? 'Every note says only “Salt & Sovereignty” and a plain line such as “You have a reminder.” or “Something to tend today.”, including coven messages, rites and requests. Open the app to see what it is.'
+                : 'Holidays, moon phases, offerings, altars, plants, candles, rituals, timers and coven notes say what they are about. Turn this on to keep craft words off your lock screen.'
+            }
+            value={prefs.discreet}
+            onChange={(on) => update(withChange(prefs, 'discreet', on))}
+          />
+        </Card>
+      </View>
+      <View style={ui.gapSmall}>
         <SectionLabel>Quiet hours</SectionLabel>
         <Card>
           <Toggle

@@ -33,16 +33,22 @@ test('every one of the 78 cards has three words and every section written', () =
     const deep = TAROT_DEEP[card.id];
     assert.equal(deep.words.length, 3, card.name);
     for (const word of deep.words) assert.ok(word.trim() && word === word.trim(), `${card.name}: "${word}"`);
-    for (const { key } of TAROT_SECTIONS) assert.ok(deep[key]?.trim(), `${card.name}: ${key}`);
+    const lore = (key: string) => key === 'history' || key === 'decks' || key === 'advice';
+    for (const { key } of TAROT_SECTIONS) if (card.arcana === 'major' || !lore(key)) assert.ok(deep[key]?.trim(), `${card.name}: ${key}`);
   }
 });
 
 test('each card runs to a reasonable length, with no section a stub', () => {
   for (const card of TAROT_DECK) {
     const deep = TAROT_DEEP[card.id];
-    const words = TAROT_SECTIONS.reduce((sum, { key }) => sum + wordCount(deep[key]), 0);
-    assert.ok(words >= 240 && words <= 430, `${card.name}: ${words} words`);
-    for (const { key } of TAROT_SECTIONS) assert.ok(wordCount(deep[key]) >= (key === 'question' ? 5 : 15), `${card.name}: ${key} is too short`);
+    const major = card.arcana === 'major';
+    const words = TAROT_SECTIONS.reduce((sum, { key }) => sum + wordCount(deep[key] ?? ''), 0);
+    // The Majors carry three more sections (history, the Marseille and Sola Busca, advice).
+    assert.ok(words >= (major ? 420 : 240) && words <= (major ? 800 : 430), `${card.name}: ${words} words`);
+    for (const { key } of TAROT_SECTIONS) {
+      if (!major && (key === 'history' || key === 'decks' || key === 'advice')) continue;
+      assert.ok(wordCount(deep[key] ?? '') >= (key === 'question' ? 5 : 15), `${card.name}: ${key} is too short`);
+    }
     assert.ok(deep.question.trim().endsWith('?'), `${card.name}: the question asks`);
   }
 });

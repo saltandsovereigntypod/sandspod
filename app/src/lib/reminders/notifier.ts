@@ -10,6 +10,7 @@ import { Platform } from 'react-native';
 import { openThread } from '../covens/unread';
 import { threadKey } from '../covens/unreadCount';
 import { CHANNELS, channelOf } from './channels';
+import { discreetAlarm } from './discreet';
 import type { Reminder } from './schedule';
 
 export const remindersSupported = true;
@@ -100,6 +101,12 @@ export async function applySchedule(reminders: Reminder[]): Promise<number> {
   return set;
 }
 
+/** Discreet notifications (prefs.discreet), as the reminders last synced it; the timers' bells follow it too. */
+let discreet = false;
+export function setDiscreet(on: boolean) {
+  discreet = on;
+}
+
 const STEP_SOURCE = 'sanctuary-ritual-step';
 const STEP_ID = 'ritual-step-alarm';
 
@@ -109,9 +116,10 @@ export async function setStepAlarm(alarm: { at: Date; title: string; body: strin
     await Notifications.cancelScheduledNotificationAsync(STEP_ID);
     if (!alarm || (await permissionState()) !== 'granted') return;
     await ensureChannel();
+    const shown = discreetAlarm(alarm, discreet);
     await Notifications.scheduleNotificationAsync({
       identifier: STEP_ID,
-      content: { title: alarm.title, body: alarm.body, sound: true, data: { source: STEP_SOURCE, url: '/rituals/run' } },
+      content: { title: shown.title, body: shown.body, sound: true, data: { source: STEP_SOURCE, url: '/rituals/run' } },
       trigger: { type: Notifications.SchedulableTriggerInputTypes.DATE, date: alarm.at, channelId: CHANNEL },
     });
   } catch {
@@ -128,9 +136,10 @@ export async function setSitAlarm(alarm: { at: Date; title: string; body: string
     await Notifications.cancelScheduledNotificationAsync(SIT_ID);
     if (!alarm || (await permissionState()) !== 'granted') return;
     await ensureChannel();
+    const shown = discreetAlarm(alarm, discreet);
     await Notifications.scheduleNotificationAsync({
       identifier: SIT_ID,
-      content: { title: alarm.title, body: alarm.body, sound: true, data: { source: SIT_SOURCE, url: '/rituals/craft/meditation' } },
+      content: { title: shown.title, body: shown.body, sound: true, data: { source: SIT_SOURCE, url: '/rituals/craft/meditation' } },
       trigger: { type: Notifications.SchedulableTriggerInputTypes.DATE, date: alarm.at, channelId: CHANNEL },
     });
   } catch {

@@ -1,4 +1,5 @@
 import { createClient, type SupabaseClient } from "https://esm.sh/@supabase/supabase-js@2.45.4";
+import { discreetPush, isDiscreet } from "./discreet.ts";
 import { answerNote, bookAnswerNote, bookNote, isFresh, requestNote, reviewersOf, wantsNotice, type Note } from "./requests.ts";
 import { cleanNote, gatheringEvent, gatheringNote, manualEvent, validZone, wantsGathering, type SentNotice } from "./gatherings.ts";
 import { acceptedNote, invitedNote, wantsInvitation } from "./invitations.ts";
@@ -398,8 +399,24 @@ async function messagePush(admin: SupabaseClient, message: MessageRow, sender: s
 
 type Push = { to: string; title: string; body: string; sound: string; channelId: string; threadId?: string; data: Record<string, unknown> };
 
+/** Neutral words for the phones of people who chose "Discreet notifications" (discreet.ts). If the lookup fails, nothing is sent rather than risk the full words. */
+async function withDiscretion(admin: SupabaseClient, notes: Push[]): Promise<Push[]> {
+  if (!notes.length) return notes;
+  const { data: owners, error } = await admin.from("push_tokens").select("token,user_id").in("token", [...new Set(notes.map((n) => n.to))]);
+  if (error) return [];
+  const users = [...new Set((owners || []).map((o: { user_id: string | null }) => o.user_id).filter((u): u is string => !!u))];
+  if (!users.length) return notes;
+  const { data: settings, error: settingsError } = await admin.from("user_settings").select("user_id,reminders:settings->>reminders_v2").in("user_id", users);
+  if (settingsError) return [];
+  const quiet = new Set((settings || []).filter((x: { reminders: string | null }) => isDiscreet(x.reminders)).map((x: { user_id: string }) => x.user_id));
+  if (!quiet.size) return notes;
+  const discreetTokens = new Set((owners || []).filter((o: { user_id: string | null }) => o.user_id && quiet.has(o.user_id)).map((o: { token: string }) => o.token));
+  return notes.map((n) => (discreetTokens.has(n.to) ? discreetPush(n) : n));
+}
+
 /** Send through Expo, a hundred at a time; phones that no longer have the app stop being sent to. */
 async function push(admin: SupabaseClient, notes: Push[]): Promise<number> {
+  notes = await withDiscretion(admin, notes);
   let sent = 0;
   const gone: string[] = [];
   for (let i = 0; i < notes.length; i += 100) {

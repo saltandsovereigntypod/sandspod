@@ -2,6 +2,10 @@ import assert from 'node:assert/strict';
 import { describe, it } from 'node:test';
 import { TAROT_DECK } from '../src/lib/divination/tarot.ts';
 import { SPREADS, type Draw } from '../src/lib/divination/draw.ts';
+import { LENORMAND } from '../src/lib/divination/oracle/lenormand.ts';
+import { KIPPER } from '../src/lib/divination/oracle/kipper.ts';
+import { lenormandReading } from '../src/lib/divination/oracle/lenormandReadings.ts';
+import { kipperReading } from '../src/lib/divination/oracle/kipperReadings.ts';
 import { composeReading, countPatterns, detectTopic, patternLines, wholeReading, type WholeItem } from '../src/lib/divination/wholeReading.ts';
 
 const item = (name: string, reversed = false, pos = 'P'): WholeItem => ({
@@ -87,5 +91,58 @@ describe('composeReading', () => {
     const spread = SPREADS.find((s) => s.kind === 'tarot' && s.positions.length === 3)!;
     const draw: Draw = { spread: spread.id, items: spread.positions.map((_, i) => ({ name: ['The Tower', 'The Star', 'Two of Cups'][i], reversed: false })) };
     assert.match(wholeReading(spread, draw, { question: 'love?' })?.text ?? '', /The Tower/);
+  });
+});
+
+describe('Lenormand, Kipper and playing cards read together', () => {
+  const spreadOf = (id: string) => SPREADS.find((s) => s.id === id)!;
+  const drawOf = (id: string, names: string[], reversed = false): Draw => ({ spread: id, items: names.map((name) => ({ name, reversed })) });
+  it('every Lenormand and Kipper card has a written reading with all six topics', () => {
+    for (const c of LENORMAND) {
+      const r = lenormandReading(c.name)!;
+      assert.ok(r, c.name);
+      for (const t of ['general', 'love', 'money', 'health', 'home', 'spirit'] as const) assert.ok(r.topics[t].length > 20, `${c.name} ${t}`);
+      assert.ok(r.why.length > 20 && r.advice.length > 15, c.name);
+    }
+    for (const c of KIPPER) {
+      const r = kipperReading(c.name)!;
+      assert.ok(r, c.name);
+      for (const t of ['health', 'home', 'spirit'] as const) assert.ok(r.topics[t].length > 30, `${c.name} ${t}`);
+    }
+    const whys = [...LENORMAND.map((c) => lenormandReading(c.name)!.why), ...KIPPER.map((c) => kipperReading(c.name)!.why)];
+    assert.equal(new Set(whys).size, whys.length, 'no reason repeated');
+  });
+  it('reads a Lenormand line by its heart, its pairs and first with last', () => {
+    const go = () => wholeReading(spreadOf('lenormand-three'), drawOf('lenormand-three', ['Ship', 'Rider', 'Letter']), { question: 'Will I hear back?' })!;
+    const r = go();
+    assert.match(r.sections[0].lines[0], /^(Yes|It depends|Not quite|No)/);
+    assert.match(r.sections[0].lines[0], /The Rider, in the heart of it/);
+    const pairs = r.sections.find((s) => s.title === 'Read in pairs')!.lines.join(' ');
+    assert.match(pairs, /Ship \+ Rider: A journey soon/);
+    assert.match(pairs, /First and last, read as a pair: Ship \+ Letter/);
+    assert.match(r.text, /Hechtel/);
+    assert.equal(r.text, go().text);
+  });
+  it('reads the Grand Tableau by houses, the cards round the significator and the four beneath', () => {
+    const names = LENORMAND.map((c) => c.name);
+    const r = wholeReading(spreadOf('lenormand-grand-tableau'), drawOf('lenormand-grand-tableau', names), { question: 'What about my love life?' })!;
+    const houses = r.sections.find((s) => s.title === 'The houses')!.lines.join(' ');
+    assert.match(houses, /The Woman lies in the House of the Woman/);
+    assert.match(houses, /Touching her/);
+    assert.match(houses, /look to the Heart: it lies in the House of the Heart/);
+    assert.ok(r.sections.some((s) => s.title === 'The four beneath'));
+  });
+  it('reads Kipper outward from the main person', () => {
+    const names = KIPPER.map((c) => c.name);
+    const r = wholeReading(spreadOf('kipper-grand-tableau'), drawOf('kipper-grand-tableau', names), { question: 'Will he call?' })!;
+    const near = r.sections.find((s) => s.title === 'Near and far')!.lines.join(' ');
+    assert.match(near, /here Main Person \(Man\), in house 1/);
+    assert.match(near, /Touching them, and acting now: Main Person \(Woman\)/);
+  });
+  it('reads playing cards by colour, suit and matching ranks', () => {
+    const r = wholeReading(spreadOf('playing-three'), drawOf('playing-three', ['Ace of Spades', 'Ace of Hearts', 'Ace of Clubs']), { question: '' })!;
+    const p = r.sections.find((s) => s.title === 'Patterns')!.lines.join(' ');
+    assert.match(p, /Three Aces/);
+    assert.match(r.text, /Etteilla/);
   });
 });

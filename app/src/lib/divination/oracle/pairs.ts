@@ -51,6 +51,40 @@ const KNOWN: Record<string, string> = {
   'Scythe + Heart': 'A sudden love, or a heartbreak cut quickly.',
   'Birds + Whip': 'A quarrel, heated words.',
   'Moon + Sun': 'Recognition and success together: honour well earned.',
+  // More pairs that today's readers broadly share. None of these comes from
+  // the 1799 game's own instructions, which gave each card a single meaning;
+  // pair-reading grew up among German and French cartomancers in the 1800s
+  // and later, and readers still differ on many of them.
+  'Heart + Coffin': 'Love that has ended, or a heart shut for now.',
+  'Fox + Tower': 'A job with a large company or a public body.',
+  'Tree + Snake': 'A health matter that winds on: see it through with care.',
+  'Coffin + Stork': 'Recovery after an ending; life picks up again.',
+  'House + Fish': 'Money from property, or a family business.',
+  'House + Key': 'A home secured: buying, or truly settling in.',
+  'Key + House': 'The right home found.',
+  'Fish + Letter': 'A statement, invoice or written offer about money.',
+  'Letter + Fish': 'A bill or a payment that comes in writing.',
+  'Child + Book': 'Study, school, or a young person’s learning.',
+  'Book + Child': 'Learning something new; a beginner’s course.',
+  'Dog + Heart': 'A loving friend; friendship turning into love.',
+  'Heart + Dog': 'Love that is loyal and faithful.',
+  'Crossroads + Mountain': 'A decision held up by an obstacle.',
+  'Mountain + Crossroads': 'One route blocked, so take another.',
+  'Scythe + Tree': 'A sudden health matter, or surgery: have it seen to.',
+  'Moon + Stars': 'Wide recognition; success in creative work.',
+  'Sun + Key': 'A certain success: as plain a yes as the deck gives.',
+  'Birds + Letter': 'Messages and chatter in writing: texts, group chats.',
+  'Rider + Ship': 'A visitor from far away, or news about travel.',
+  'Lily + Heart': 'Mature, contented love, and sensual love.',
+  'Ring + Anchor': 'A commitment that lasts; marriage for the long haul.',
+  'Anchor + Ring': 'A lasting contract or a secure job agreement.',
+  'Cross + Stork': 'A burden lifting; hard times improving.',
+  'Mice + Heart': 'Worry eating at love; heartache.',
+  'Clover + Fish': 'A small windfall; lucky money.',
+  'Bear + House': 'A strong family; property and savings.',
+  'Clouds + Snake': 'Confusion around a complicated person or situation.',
+  'Whip + Heart': 'Passion with friction, or love bruised by quarrels.',
+  'Tower + Coffin': 'An institution closing, or a long isolation ending.',
 };
 
 const cap = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);

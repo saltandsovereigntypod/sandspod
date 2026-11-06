@@ -51,6 +51,13 @@ export type ReminderPrefs = {
   quiet: { on: boolean; start: number; end: number };
   /** More than `max` notes on one day become one. */
   bundle: { on: boolean; max: number };
+  /**
+   * Discreet notifications: every note this app puts on the phone, and the
+   * coven notes sent to it (supabase/functions/coven-notify discreet.ts), say
+   * only "Salt & Sovereignty" and a neutral line, never what it is about
+   * (discreet.ts). Off unless turned on.
+   */
+  discreet: boolean;
   holidays: HolidayPrefs;
   tending: {
     plants: { on: boolean; at: number; mode: PlantMode } & Repeat & { per: Record<string, PlantPrefs> };
@@ -140,6 +147,7 @@ export const DEFAULT_PREFS: ReminderPrefs = {
   paused: false,
   pausedUntil: '',
   quiet: { on: false, start: 22 * 60, end: 7 * 60 },
+  discreet: false,
   bundle: { on: true, max: 3 },
   holidays: { on: false, at: 9 * 60, leads: [0], calendars: {}, off: [], leadsFor: {} },
   tending: {
@@ -238,6 +246,7 @@ export function normalizePrefs(input: unknown): ReminderPrefs {
     pausedUntil: day(raw.pausedUntil),
     quiet: { on: quiet.on === true, start: minuteOfDay(quiet.start, d.quiet.start), end: minuteOfDay(quiet.end, d.quiet.end) },
     bundle: { on: bool(bundle.on, d.bundle.on), max: intIn(bundle.max, 1, 20, d.bundle.max) },
+    discreet: raw.discreet === true,
     holidays: {
       on: h.on === true,
       at: minuteOfDay(h.at, d.holidays.at),
@@ -509,6 +518,7 @@ export function summaries(prefs: ReminderPrefs, settings: SettingsLike, now: Dat
     isPaused(prefs, now) ? (prefs.pausedUntil ? `Paused until ${shortDate(prefs.pausedUntil)}` : 'Paused') : '',
     prefs.quiet.on ? `Quiet ${timeLabel(prefs.quiet.start)} to ${timeLabel(prefs.quiet.end)}` : '',
     prefs.bundle.on ? `More than ${prefs.bundle.max} a day become one` : '',
+    prefs.discreet ? 'Discreet wording' : '',
   ].filter(Boolean);
   const ancestors = prefs.ancestors.on ? `${leadsLabel(prefs.ancestors.leads)} at ${timeLabel(prefs.ancestors.at)}` : 'Off';
   return { holidays, tending, planning, quiet: quietParts.join(' · ') || 'Off', ancestors: `${ancestors[0].toUpperCase()}${ancestors.slice(1)}` };

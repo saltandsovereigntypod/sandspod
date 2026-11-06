@@ -651,6 +651,24 @@ export const HELP: HelpSection[] = [
         keywords: ['quiet hours', 'do not disturb', 'pause notifications', 'too many notifications', 'summary'],
       },
       {
+        id: 'discreet-notifications',
+        title: 'Keep craft words off your lock screen',
+        summary: 'Discreet notifications make every note from the app say only "Salt & Sovereignty" and a plain line.',
+        steps: [
+          'Open Settings → Reminders, then "Quiet hours and pause".',
+          'Under "On the lock screen", switch on "Discreet notifications".',
+          'Every reminder then reads "Salt & Sovereignty" with a neutral line such as "You have a reminder.", "Something to tend today." or "A date you asked to hear about.": holidays, moon phases, offerings, altars, plants, candles, rituals, timers, Cycle & Moon, and coven messages, rites, gatherings and requests.',
+          'Tap a note to open the app at the right place, as before.',
+        ],
+        tips: [
+          'The choice is kept with your settings, so it follows you to every phone you sign in on, and coven notes sent from the server honour it too.',
+          'It changes what the phone shows, not what the app shows once open. For plain words inside the app, use Mundane mode.',
+          'A calendar file or your phone calendar still names each event; leave those off if the calendar is visible to others.',
+        ],
+        href: '/more/settings/notifications?section=quiet',
+        keywords: ['discreet', 'privacy', 'lock screen', 'hide notifications', 'neutral notifications', 'secret', 'broom closet', 'private'],
+      },
+      {
         id: 'ritual-reminders',
         title: 'Be reminded before a planned ritual',
         summary: 'Ritual reminders ring before the night you planned.',
@@ -1754,6 +1772,7 @@ export const HELP: HelpSection[] = [
           'Open Practice → Grimoire, or any page.',
           'Switch on "Mundane" at the top right.',
           'The Mundane switch is one choice, kept with your settings, so it is the same on every device. It is also in More → Settings → Grimoire.',
+          'Mundane mode changes the words inside the app. To keep craft words off your lock screen as well, switch on "Discreet notifications" in Settings → Reminders → Quiet hours and pause.',
         ],
         href: '/more/settings/book',
         keywords: ['plain language', 'discreet', 'hidden', 'non-magical words', 'privacy mode'],

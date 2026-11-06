@@ -6,6 +6,7 @@
 
 import { CUPS_DEEP } from './deep/tarotCups.ts';
 import { MAJORS_DEEP } from './deep/tarotMajors.ts';
+import { MAJORS_LORE } from './deep/majorsLore.ts';
 import { PENTACLES_DEEP } from './deep/tarotPentacles.ts';
 import { SWORDS_DEEP } from './deep/tarotSwords.ts';
 import { WANDS_DEEP } from './deep/tarotWands.ts';
@@ -14,17 +15,22 @@ import { TAROT_DECK, type TarotCard } from './tarot.ts';
 
 export type { TarotDeep, ThreeWords } from './deep/types.ts';
 
-export const TAROT_DEEP: Record<string, TarotDeep> = { ...MAJORS_DEEP, ...WANDS_DEEP, ...CUPS_DEEP, ...SWORDS_DEEP, ...PENTACLES_DEEP };
+const MAJORS_FULL: Record<string, TarotDeep> = Object.fromEntries(Object.entries(MAJORS_DEEP).map(([id, d]) => [id, { ...d, ...MAJORS_LORE[id] }]));
+
+export const TAROT_DEEP: Record<string, TarotDeep> = { ...MAJORS_FULL, ...WANDS_DEEP, ...CUPS_DEEP, ...SWORDS_DEEP, ...PENTACLES_DEEP };
 
 /** The sections of a card's page, in order. */
 export const TAROT_SECTIONS: { key: Exclude<keyof TarotDeep, 'words'>; label: string }[] = [
   { key: 'image', label: 'The image' },
+  { key: 'history', label: 'Its history' },
   { key: 'upright', label: 'Upright' },
   { key: 'reversed', label: 'Reversed' },
   { key: 'correspondences', label: 'Correspondences' },
+  { key: 'decks', label: 'In the Marseille and the Sola Busca' },
   { key: 'love', label: 'In love and relationships' },
   { key: 'work', label: 'In work and money' },
   { key: 'spirit', label: 'In spirit and practice' },
+  { key: 'advice', label: 'What to do with it' },
   { key: 'question', label: 'A question to sit with' },
 ];
 
