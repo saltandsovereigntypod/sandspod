@@ -13,6 +13,8 @@ import { POINT_GLYPH } from '../../../../../lib/astro/signs';
 import { voidOfCourse } from '../../../../../lib/astro/voidOfCourse';
 import { relativeDay, shortDate, timeOfDay } from '../../../../../lib/calendar';
 import { HOUR_PLANETS, HOUR_SUITS, isNow, nextHourOnItsDay, nextHoursOf, planFields, startOfLocalDay, vocForDay } from '../../../../../lib/craft/cosmic/hours';
+import { strikeFork } from '../../../../../components/meditation/forkSound';
+import { forkForPlanet } from '../../../../../lib/meditation/forks';
 import { askDeviceLocation, setManualPlace, usePlace } from '../../../../../lib/location';
 import { askForRitualReminders } from '../../../../../lib/reminders/store';
 import { uuid } from '../../../../../lib/rituals/lifecycle';
@@ -119,6 +121,8 @@ export default function PlanetaryHours() {
           <Body muted>{`${span(current.start, current.end)}${current.night ? ' · night' : ''} · ${countdown(current.end.getTime() - now.getTime())} left`}</Body>
           <Body>{HOUR_SUITS[current.planet].suits}</Body>
           {upcoming && <Body muted>{`Next: ${upcoming.planet}, for ${HOUR_SUITS[upcoming.planet].short}, in ${countdown(upcoming.start.getTime() - now.getTime())}.`}</Body>}
+          {forkForPlanet(current.planet) && <Button label="Strike this hour’s fork" variant="outline" onPress={() => strikeFork(forkForPlanet(current.planet)!.hz)} />}
+          {forkForPlanet(current.planet) && <Body muted>{`${forkForPlanet(current.planet)!.label}: ${forkForPlanet(current.planet)!.line} A modern pairing (Cosmic Octave), not an old planetary-hour rule.`}</Body>}
         </Card>
       )}
 

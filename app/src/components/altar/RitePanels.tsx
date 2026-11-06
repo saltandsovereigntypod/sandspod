@@ -7,6 +7,10 @@
 import { useState } from 'react';
 import { StyleSheet, Text, TextInput, View } from 'react-native';
 
+import { isTuningFork, STRIKE_FORK_LABEL, FORK_SOUND_OFF } from '../../lib/altar/fork';
+import { FORK_NOTE, FORK_SETS, forkLine, forkSet, type ForkSetId, type ForkSpec } from '../../lib/meditation/forks';
+import { useAccessibility } from '../../lib/accessibility/store';
+import { strikeFork } from '../meditation/forkSound';
 import { BOWL_TONES, EVERY_MAX, EVERY_MIN, EVERY_LABEL, isSingingBowl, STOP_LABEL, STRIKE_LABEL, toneLabel, toneOf } from '../../lib/altar/bowl';
 import {
   CAST_FOR_ME_LABEL,
@@ -33,7 +37,7 @@ import { Button } from '../Button';
 import { Chip, ChipRow } from './Chip';
 
 /** Whether the panel has anything for this object. */
-export const hasToolRites = (o: SavedObject | null | undefined) => !!o && (isCircleTool(o) || isSingingBowl(o) || isChalice(o) || isBesom(o) || isFireTool(o) || isSnuffer(o));
+export const hasToolRites = (o: SavedObject | null | undefined) => !!o && (isCircleTool(o) || isSingingBowl(o) || isTuningFork(o) || isChalice(o) || isBesom(o) || isFireTool(o) || isSnuffer(o));
 
 export type ToolRiteActs = {
   trace: (releasing: boolean) => void;
@@ -116,6 +120,8 @@ export function ToolRitePanel({
       </View>
     );
   }
+
+  if (isTuningFork(object)) return <ForkPanel />;
 
   if (isSingingBowl(object)) {
     const tone = toneOf(object);
@@ -267,3 +273,40 @@ const styles = StyleSheet.create({
   quarterName: { flex: 1, minWidth: 120 },
   reminder: { color: colors.gold },
 });
+
+/** The tuning fork's panel: choose a set and a fork, then strike it. */
+function ForkPanel() {
+  const prefs = useAccessibility();
+  const [setId, setSetId] = useState<ForkSetId>('cosmic');
+  const [pick, setPick] = useState<ForkSpec>(forkSet('cosmic').forks[0]);
+  const set = forkSet(setId);
+  return (
+    <View style={styles.box}>
+      <Text style={styles.label}>Set</Text>
+      <ChipRow>
+        {FORK_SETS.map((s) => (
+          <Chip
+            key={s.id}
+            label={s.label}
+            active={s.id === setId}
+            onPress={() => {
+              setSetId(s.id);
+              setPick(s.forks[0]);
+            }}
+          />
+        ))}
+      </ChipRow>
+      <Text style={type.caption}>{set.line}</Text>
+      <Text style={styles.label}>Fork</Text>
+      <ChipRow>
+        {set.forks.map((f) => (
+          <Chip key={f.id} label={f.label} active={f.id === pick.id} onPress={() => setPick(f)} />
+        ))}
+      </ChipRow>
+      <Text style={type.caption}>{forkLine(pick)}</Text>
+      <Button label={STRIKE_FORK_LABEL} onPress={() => (prefs.candleSounds ? strikeFork(pick.hz) : undefined)} />
+      {!prefs.candleSounds && <Text style={type.caption}>{FORK_SOUND_OFF}</Text>}
+      <Text style={type.caption}>{FORK_NOTE}</Text>
+    </View>
+  );
+}

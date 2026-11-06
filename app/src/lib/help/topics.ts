@@ -3648,6 +3648,25 @@ export const HELP: HelpSection[] = [
         keywords: ['meditation', 'meditate', 'timer', 'bell', 'sit', 'mindfulness', 'grounding', 'centring', 'centering', 'candle gazing'],
       },
       {
+        id: 'tuning-forks',
+        title: 'Strike a tuning fork',
+        summary: 'Solfeggio, planetary, chakra, grounding and clearing forks, struck once or kept as a backdrop, and on your altar.',
+        steps: [
+          'Open Practice → Craft → "Meditation" → "Listen" (or a sit’s Sound) and find "Tuning forks". Choose a set, then tap a fork to strike it and let it ring out.',
+          'Switch the layer on to have the set struck in turn every 30 seconds to 5 minutes. Pairs (128 + 136.1 Hz) are struck together, so you hear them beat.',
+          'In Craft → Timing → Planetary hours, "Strike this hour’s fork" sounds the Cosmic Octave pitch of the hour’s planet.',
+          'On the altar, place a Tuning Fork from the cabinet’s Tools, tap it and choose Strike. A crystal’s Charge panel also offers "Clear with a tuning fork (4096 Hz)", kept in its cleansing history.',
+          'In the ritual builder, add "Strike the tuning fork" or "Cleanse the space with sound" next to the bell.',
+        ],
+        tips: [
+          'The sets are modern conventions (Solfeggio from the 1970s, Cosmic Octave from Hans Cousto, 1978), and what any pitch does is a tradition of practice, not an established effect.',
+          'The 4096 Hz fork is piercing, so it is played quietly. Pairs of forks beat at the difference of their pitches: 136.1 minus 128 is about 8 Hz.',
+          'The tuning fork borrows the wand’s picture on the altar until one is painted.',
+        ],
+        href: '/rituals/craft/meditation/listen',
+        keywords: ['tuning fork', 'tuning forks', 'solfeggio', 'cosmic octave', '136.1', 'om', '128 hz', '4096', 'crystal clearing', 'sound healing', 'fork', 'planetary hour'],
+      },
+      {
         id: 'meditation-breath',
         title: 'Pace your breath',
         summary: 'A circle that grows as you breathe in and shrinks as you breathe out: box breathing, 4-7-8 or your own count.',

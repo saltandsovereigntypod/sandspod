@@ -9,6 +9,8 @@ import { View } from 'react-native';
 
 import { BEATS, BINAURAL_NOTE, BINAURAL_PRESETS, BOWL_GAPS, BOWL_SETS, CARRIERS, cleanMix, DEFAULT_MIX, KEYS, LAYERS, levelOf, LEVELS, TEMPOS, type SoundMix } from '../../lib/meditation/sound';
 import { cleanListen, LISTEN_KEY } from '../../lib/meditation/listen';
+import { FORK_GAPS, FORK_SETS } from '../../lib/meditation/forks';
+import { ForkStrikes } from './ForkStrikes';
 import { Body, Chip, Chips, Notice, ui } from '../rituals/ui';
 
 const KEY = 'meditation.sound';
@@ -83,6 +85,23 @@ export function SoundForm({ mix, onChange }: { mix: SoundMix; onChange: (m: Soun
                   ))}
                 </Chips>
                 <Body muted>The tones given to the chakras here (C to B, root to crown) are a modern crystal-bowl convention.</Body>
+              </>
+            )}
+            {l.id === 'forks' && (
+              <>
+                <Chips>
+                  {FORK_SETS.map((x) => (
+                    <Chip key={x.id} label={x.label} selected={mix.forkSet === x.id} onPress={() => set({ forkSet: x.id })} />
+                  ))}
+                </Chips>
+                {level > 0 && (
+                  <Chips>
+                    {FORK_GAPS.map((g) => (
+                      <Chip key={g} label={`Every ${g} s`} selected={mix.forkEvery === g} onPress={() => set({ forkEvery: g })} />
+                    ))}
+                  </Chips>
+                )}
+                <ForkStrikes setId={mix.forkSet} />
               </>
             )}
             {level > 0 && l.id === 'binaural' && (

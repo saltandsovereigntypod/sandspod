@@ -12,7 +12,7 @@ import { warmupOf } from './warmups.ts';
 
 export const PSYCHIC_SETTINGS_KEY = 'psychic.dropin';
 
-export type DropSoundId = 'none' | 'descent' | 'theta' | 'alpha' | 'drone' | 'bowls' | 'rain' | 'listen';
+export type DropSoundId = 'none' | 'descent' | 'theta' | 'alpha' | 'drone' | 'bowls' | 'forks' | 'forks-ground' | 'rain' | 'listen';
 
 export const DROP_SOUNDS: { id: DropSoundId; label: string; line: string; mix: SoundMix | null }[] = [
   { id: 'none', label: 'No sound', line: 'Drop in in silence.', mix: null },
@@ -21,6 +21,8 @@ export const DROP_SOUNDS: { id: DropSoundId; label: string; line: string; mix: S
   { id: 'alpha', label: 'Alpha 10 Hz', line: 'A relaxed, awake binaural alpha beat (headphones).', mix: cleanMix({ levels: { binaural: 0.5 }, binaural: 'alpha' }) },
   { id: 'drone', label: 'Drone', line: 'A low continuous tone with soft noise under it.', mix: cleanMix({ levels: { drone: 0.55, pink: 0.2 } }) },
   { id: 'bowls', label: 'Singing bowls', line: 'Bowls struck now and then over a quiet drone.', mix: cleanMix({ levels: { bowls: 0.6, drone: 0.25 }, bowlSet: 'chakras', bowlEvery: 30 }) },
+  { id: 'forks', label: 'Tuning forks', line: 'The planetary forks struck now and then, each ringing out, over a quiet drone.', mix: cleanMix({ levels: { forks: 0.6, drone: 0.2 }, forkSet: 'cosmic', forkEvery: 60 }) },
+  { id: 'forks-ground', label: 'Forks: 128 + 136.1 Hz', line: 'The grounding and OM forks struck together, then the OM pair, beating slowly.', mix: cleanMix({ levels: { forks: 0.6 }, forkSet: 'pairs', forkEvery: 60 }) },
   { id: 'rain', label: 'Rain and theta', line: 'Rain with a gentle theta beat under it.', mix: cleanMix({ levels: { rain: 0.5, binaural: 0.3 }, binaural: 'theta6' }) },
   { id: 'listen', label: 'My last Listen mix', line: 'Whatever you last set up under Meditation, Listen.', mix: null },
 ];

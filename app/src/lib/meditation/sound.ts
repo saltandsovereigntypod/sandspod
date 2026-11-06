@@ -9,12 +9,13 @@
 // by components/meditation/sitSound.ts (the app, expo-audio) and webSound.ts
 // (Web Audio: the app's web build and the website). Pure.
 
-import { bowlSamples, binauralSamples, callbackBeats, callbackSamples, droneSamples, drumLoopBeats, drumSamples, type Pcm } from './synth.ts';
+import { DEFAULT_FORK_GAP, DEFAULT_FORK_SET, FORK_GAPS, FORK_SETS, forkKey, forkRound, forkSet, parseForkKey, type ForkSetId } from './forks.ts';
+import { bowlSamples, binauralSamples, callbackBeats, callbackSamples, droneSamples, drumLoopBeats, drumSamples, forkSamples, type Pcm } from './synth.ts';
 import { MAX_MINUTES, type SitPlan } from './timer.ts';
 
 const MIN = 60_000;
 
-export type LayerId = 'drone' | 'pink' | 'brown' | 'rain' | 'wind' | 'fire' | 'drum' | 'bowls' | 'binaural';
+export type LayerId = 'drone' | 'pink' | 'brown' | 'rain' | 'wind' | 'fire' | 'drum' | 'bowls' | 'forks' | 'binaural';
 
 export const LAYERS: { id: LayerId; label: string; line: string }[] = [
   { id: 'drone', label: 'Drone', line: 'A low, steady hum in the key you choose.' },
@@ -25,6 +26,7 @@ export const LAYERS: { id: LayerId; label: string; line: string }[] = [
   { id: 'fire', label: 'Fire', line: 'A fire’s low roar and crackle.' },
   { id: 'drum', label: 'Frame drum', line: 'A steady trance beat, with a callback near the end of a timed sit.' },
   { id: 'bowls', label: 'Singing bowls', line: 'A bowl struck now and then, round the seven tones, or 432 Hz.' },
+  { id: 'forks', label: 'Tuning forks', line: 'A fork struck now and then, with a long ring: Solfeggio, planetary, chakra or a pair.' },
   { id: 'binaural', label: 'Binaural layers', line: 'Two close tones, one in each ear, under the noise. Headphones needed.' },
 ];
 
@@ -94,13 +96,16 @@ export type SoundMix = {
   bowlSet: BowlSet;
   /** Seconds between bowl strikes. */
   bowlEvery: number;
+  /** The set of forks struck round, and the seconds between strikes. */
+  forkSet: ForkSetId;
+  forkEvery: number;
   binaural: BinauralPreset;
   carrier: number;
   /** The beat, for Your own. */
   beat: number;
 };
 
-export const DEFAULT_MIX: SoundMix = { levels: {}, key: 'D', tempo: DEFAULT_TEMPO, bowlSet: 'chakras', bowlEvery: 30, binaural: 'theta6', carrier: 200, beat: 7 };
+export const DEFAULT_MIX: SoundMix = { levels: {}, key: 'D', tempo: DEFAULT_TEMPO, bowlSet: 'chakras', bowlEvery: 30, forkSet: DEFAULT_FORK_SET, forkEvery: DEFAULT_FORK_GAP, binaural: 'theta6', carrier: 200, beat: 7 };
 
 const near = <T extends number>(list: readonly T[], v: unknown, fallback: T): T => {
   const n = Number(v);
@@ -121,6 +126,8 @@ export function cleanMix(raw: unknown): SoundMix {
     tempo: near(TEMPOS, m.tempo, DEFAULT_TEMPO),
     bowlSet: BOWL_SETS.some((b) => b.value === m.bowlSet) ? (m.bowlSet as BowlSet) : 'chakras',
     bowlEvery: near(BOWL_GAPS, m.bowlEvery, 30),
+    forkSet: FORK_SETS.some((s) => s.id === m.forkSet) ? (m.forkSet as ForkSetId) : DEFAULT_FORK_SET,
+    forkEvery: near(FORK_GAPS, m.forkEvery, DEFAULT_FORK_GAP),
     binaural: BINAURAL_PRESETS.some((b) => b.value === m.binaural) ? (m.binaural as BinauralPreset) : DEFAULT_MIX.binaural,
     carrier: near(CARRIERS, m.carrier, 200),
     beat: near(BEATS, m.beat, 7),
@@ -140,6 +147,7 @@ export function mixLine(mix: SoundMix): string {
     if (l.id === 'drone') parts.push(`Drone in ${mix.key}`);
     else if (l.id === 'drum') parts.push(`Frame drum, ${mix.tempo} beats a second`);
     else if (l.id === 'bowls') parts.push(`Singing bowls every ${mix.bowlEvery} seconds`);
+    else if (l.id === 'forks') parts.push(`Tuning forks (${forkSet(mix.forkSet).label}) every ${mix.forkEvery} seconds`);
     else if (l.id === 'binaural') parts.push(mix.binaural === 'descent' ? 'Binaural layers, alpha to theta' : `Binaural layers, ${binauralBeat(mix)} Hz`);
     else parts.push(l.label);
   }
@@ -227,17 +235,23 @@ export function bowlRound(set: BowlSet): number[] {
   return set === '432' ? [7] : set === 'both' ? [...seven, 7] : seven;
 }
 
-export type Strike = { atMs: number; tone: number };
+/** A bowl strike (a tone number) or a fork strike (its key, and the layer whose level it follows). */
+export type Strike = { atMs: number; tone: number; key?: string };
 
 /** Every bowl strike (ms from the start), through the sit; an open-ended one is worked out four hours ahead. */
 export function bowlStrikes(mix: SoundMix, plan: SitPlan): Strike[] {
-  if (!levelOf(mix, 'bowls')) return [];
   const settle = plan.settle * MIN;
   const length = (plan.minutes ?? MAX_MINUTES) * MIN;
-  const round = bowlRound(mix.bowlSet);
   const out: Strike[] = [];
-  for (let t = 0, i = 0; t < length - 5_000; t += mix.bowlEvery * 1000, i++) out.push({ atMs: settle + t, tone: round[i % round.length] });
-  return out;
+  if (levelOf(mix, 'bowls')) {
+    const round = bowlRound(mix.bowlSet);
+    for (let t = 0, i = 0; t < length - 5_000; t += mix.bowlEvery * 1000, i++) out.push({ atMs: settle + t, tone: round[i % round.length] });
+  }
+  if (levelOf(mix, 'forks')) {
+    const round = forkRound(mix.forkSet);
+    for (let t = 0, i = 0; t < length - 5_000; t += mix.forkEvery * 1000, i++) out.push({ atMs: settle + t, tone: -1, key: forkKey(round[i % round.length].hz) });
+  }
+  return out.sort((a, b) => a.atMs - b.atMs);
 }
 
 /** The strikes to sound now: those after the last look and up to now, the latest only, and only if it's fresh (as the bells). */
@@ -251,8 +265,9 @@ export function strikesDue(strikes: Strike[], fromMs: number, toMs: number, grac
 export function soundTick(mix: SoundMix, plan: SitPlan, strikes: Strike[], fromMs: number, elapsedMs: number, endedAtMs: number | null = null): { voices: Voice[]; strike: { key: string; volume: number } | null } {
   const voices = frameAt(mix, plan, elapsedMs, endedAtMs);
   const due = strikesDue(strikes, fromMs, elapsedMs)[0];
-  const volume = Math.round(levelOf(mix, 'bowls') * masterAt(plan, elapsedMs, endedAtMs, 4000) * 1000) / 1000;
-  return { voices, strike: due && volume > 0 ? { key: bowlKey(due.tone), volume } : null };
+  const level = levelOf(mix, due?.key ? 'forks' : 'bowls');
+  const volume = Math.round(level * masterAt(plan, elapsedMs, endedAtMs, 4000) * 1000) / 1000;
+  return { voices, strike: due && volume > 0 ? { key: due.key ?? bowlKey(due.tone), volume } : null };
 }
 
 /** The key a bowl tone is made under. */
@@ -266,6 +281,10 @@ export function samplesFor(key: string): Pcm | null {
   if (kind === 'callback') return callbackSamples(Number(a));
   if (kind === 'binaural') return binauralSamples(Number(a), Number(b));
   if (kind === 'bowl') return bowlSamples(Number(a));
+  if (kind === 'fork') {
+    const f = parseForkKey(key);
+    return f ? forkSamples(f.hz, f.decay) : null;
+  }
   return null;
 }
 

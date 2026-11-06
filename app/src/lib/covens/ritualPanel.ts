@@ -48,6 +48,7 @@ export const DEED_HOWTO: Record<string, string> = {
   cord_cutting: 'Tap a glowing candle, then Tie a cord, and tap a second candle. The cord burns between them when they are lit.',
   scry: 'Tap Scry below: the scrying sheet opens over the altar. Gaze softly, and note what comes before you speak of it.',
   ring_bell: 'Tap the glowing bell on the altar, then Ring.',
+  strike_fork: 'Tap the tuning fork on the altar, choose which fork, then Strike it and let it ring out.',
   strike_bowl: 'Tap the glowing singing bowl on the altar, then Strike, and let it sound out.',
   cast_circle: 'Tap the glowing athame or wand on the altar, then trace the circle round the altar with your finger. Or tap Cast it for me.',
   open_circle: 'Tap the glowing athame or wand on the altar, then trace the circle the other way to release it. Or tap Release it for me.',
