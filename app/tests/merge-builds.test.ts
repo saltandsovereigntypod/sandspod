@@ -9,6 +9,9 @@ import { placeApothecary } from '../src/lib/altar/editor.ts';
 import type { AltarDocument } from '../src/lib/altar/snapshot.ts';
 import { activateGrid, gridOf, wandGridEntry, withGridEntry } from '../src/lib/altar/craftTools.ts';
 import type { SavedObject } from '../src/lib/altar/types.ts';
+import { freeForm, movedTo, practiceAsCorrespondence, practiceInput, practiceWith, toFold } from '../src/lib/craft/eclectic/practiceFold.ts';
+import { blankCorrespondence } from '../src/lib/craft/eclectic/correspondences.ts';
+import type { LibraryEntry } from '../src/lib/library/types.ts';
 import { ALL_SYMBOLS, questionsOf, symbolStart, symbolStarts } from '../src/lib/dreams/reader.ts';
 import { DREAM_SYMBOLS } from '../src/lib/craft/hedge/dreamSymbols.ts';
 import { DREAM_ROUTES } from '../src/lib/grimoire/dreams.ts';
@@ -155,4 +158,26 @@ test('dreams: one dictionary, with the old list\'s questions folded in, and one 
   assert.ok(folded >= DREAM_SYMBOLS.length - 4, `${folded} of ${DREAM_SYMBOLS.length} folded in`);
   assert.ok(symbolStarts('I saw a snake by the door').length >= 1);
   assert.equal(DREAM_ROUTES.patterns, '/grimoire/dreams/patterns');
+});
+
+test('correspondences: Library things fold into My practice once, nothing lost; free-form ones stay', () => {
+  const rosemary = { id: 'traditional:herb:rosemary', name: 'Rosemary', type: 'herb', myPractice: { Meaning: 'Remembrance', Uses: 'Washes' } } as unknown as LibraryEntry;
+  const c1 = { id: 'c1', data: { ...blankCorrespondence(), name: 'Rosemary', ref: rosemary.id, meaning: 'My gran’s garden', element: 'Fire', planet: 'Sun', pairs: 'bay', source: null, sourceNote: 'Gran' } };
+  const c2 = { id: 'c2', data: { ...blankCorrespondence(), name: 'The old oak by the river', meaning: 'Steadiness' } };
+  const pending = toFold([c1, c2], (id) => (id === rosemary.id ? rosemary : null));
+  assert.equal(pending.length, 1);
+  const merged = practiceWith(rosemary.myPractice, c1.data);
+  assert.match(String(merged.Meaning), /Remembrance/);
+  assert.match(String(merged.Meaning), /gran/);
+  assert.equal(merged.Uses, 'Washes');
+  assert.match(String(merged.Notes), /Fire · Sun/);
+  assert.equal(merged.PairsWith, 'bay');
+  // Twice is the same as once.
+  assert.deepEqual(practiceWith(merged, c1.data), merged);
+  assert.equal(practiceInput(merged).PairsWith, 'bay');
+  const moved = { ...c1, data: { ...c1.data, movedTo: rosemary.id } };
+  assert.equal(movedTo(moved.data), rosemary.id);
+  assert.deepEqual(toFold([moved, c2], () => rosemary), []);
+  assert.deepEqual(freeForm([moved, c2]).map((e) => e.id), ['c2']);
+  assert.equal(practiceAsCorrespondence({ ...rosemary, myPractice: merged })!.pairs, 'bay');
 });

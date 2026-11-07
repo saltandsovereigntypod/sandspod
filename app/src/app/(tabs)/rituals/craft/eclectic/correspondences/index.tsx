@@ -1,4 +1,6 @@
 import { router, type Href } from 'expo-router';
+import { useMyCorrespondences } from '../../../../../../lib/craft/eclectic/useMyCorrespondences';
+import { ritualsLibraryHref } from '../../../../../../lib/library';
 import { useMemo, useState } from 'react';
 import { Text, View } from 'react-native';
 
@@ -7,21 +9,20 @@ import { Body, Card, Chip, Chips, Field, List, RitualScreen, Row, SectionLabel, 
 import {
   byName,
   correspondenceDetail,
-  CORRESPONDENCES,
   ELEMENTS,
   filterCorrespondences,
-  SOURCES,
-  type MyCorrespondence,
-} from '../../../../../../lib/craft/eclectic/correspondences';
-import { useCraft } from '../../../../../../lib/craft/store';
+  SOURCES } from '../../../../../../lib/craft/eclectic/correspondences';
 import { type } from '../../../../../../theme';
 
 // My correspondences: your own meanings for things, searchable.
 export default function MyCorrespondences() {
-  const { entries, ready } = useCraft<MyCorrespondence>(CORRESPONDENCES);
+  // Free-form ones here; anything in the Library is kept in its My practice and listed below.
   const [query, setQuery] = useState('');
   const [source, setSource] = useState<string | null>(null);
   const [element, setElement] = useState<string | null>(null);
+  const both = useMyCorrespondences();
+  const { free: entries, ready } = both;
+  const practiceShown = useMemo(() => byName(filterCorrespondences(both.practice, { query, source: null, element: null })), [both.practice, query]);
 
   const shown = useMemo(() => byName(filterCorrespondences(entries, { query, source, element })), [entries, query, source, element]);
   const sourcesUsed = SOURCES.filter((s) => entries.some((e) => e.data.source === s.id));
@@ -88,6 +89,18 @@ export default function MyCorrespondences() {
         </View>
       ) : (
         <Body muted>Nothing matches. Clear a filter to see more.</Body>
+      )}
+
+      {practiceShown.length > 0 && (
+        <View style={ui.gapSmall}>
+          <SectionLabel>In My practice, in the Library</SectionLabel>
+          <Body muted>Things in the Living Library keep what they mean to you in their My practice, beside the traditional view.</Body>
+          <List>
+            {practiceShown.map((e, i, all) => (
+              <Row key={e.id} icon="grimoire" title={e.data.name} detail={correspondenceDetail(e.data) || null} last={i === all.length - 1} onPress={() => router.push(ritualsLibraryHref({ id: e.entryId }) as Href)} />
+            ))}
+          </List>
+        </View>
       )}
     </RitualScreen>
   );
