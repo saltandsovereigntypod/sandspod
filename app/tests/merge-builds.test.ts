@@ -9,6 +9,8 @@ import { placeApothecary } from '../src/lib/altar/editor.ts';
 import type { AltarDocument } from '../src/lib/altar/snapshot.ts';
 import { activateGrid, gridOf, wandGridEntry, withGridEntry } from '../src/lib/altar/craftTools.ts';
 import type { SavedObject } from '../src/lib/altar/types.ts';
+import { harvestsToShelve, shelfFromHarvest } from '../src/lib/shelves/harvest.ts';
+import { normalizeHarvest } from '../src/lib/craft/hearth/forage.ts';
 import { scryingEntry, scryingReadingsToAdd } from '../src/lib/altar/workings/scrying.ts';
 import { normalizeReading } from '../src/lib/craft/hedge/readings.ts';
 import { checkIn, newChallenge, progressOf, withToolDays } from '../src/lib/yearday/challenges.ts';
@@ -212,4 +214,18 @@ test('scrying: a sit is a reading of method scrying; old altar.scrying entries c
   assert.match(r.interpretation, /Calm/);
   // Marked once copied, so the next read finds nothing.
   assert.deepEqual(scryingReadingsToAdd([{ id: 's1', data: { ...todo[0].entry, readingId: 'r1' } }]), []);
+});
+
+test('harvests: a kept harvest goes onto My Shelves once; Shelves is the stock list', () => {
+  const kept = normalizeHarvest({ on: '2026-06-01', name: 'Elderflower', part: 'Flowers', amount: 'A basket', kept: true, storedOn: '2026-06-02', note: 'Dried on the rack' });
+  const item = shelfFromHarvest(kept);
+  assert.equal(item.shelf, 'herbs');
+  assert.equal(item.source, 'foraged');
+  assert.equal(item.acquired, '2026-06-02');
+  assert.match(item.notes, /A basket/);
+  assert.match(item.notes, /rack/);
+  const list = [{ id: 'h1', data: kept }, { id: 'h2', data: { ...kept, kept: false } }, { id: 'h3', data: { ...kept, shelfId: 'sh1' } }];
+  assert.deepEqual(harvestsToShelve(list).map((h) => h.id), ['h1']);
+  assert.equal(normalizeHarvest({ ...kept, shelfId: 'sh9' }).shelfId, 'sh9');
+  assert.deepEqual(harvestsToShelve([{ id: 'h1', data: { ...kept, shelfId: 'sh9' } }]), []);
 });
