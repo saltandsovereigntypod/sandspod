@@ -76,7 +76,7 @@
           "Your tarot decks",
           kit.card(
             B.bars(p.tarotDecks.map((d) => ({ label: d.label, count: d.count })), ["reading", "readings"]) +
-              kit.muted("Each card’s page reads in the deck it was drawn with: Waite’s for the Rider–Waite–Smith, the Marseille’s and the Sola Busca’s own.") +
+              kit.muted("Each card’s page reads in the deck it was drawn with: Waite’s for the Salt & Sovereignty Tarot and the Rider–Waite–Smith, the Marseille’s and the Sola Busca’s own.") +
               kit.list([kit.row({ url: "/divination/decks/", title: "Your decks and their meanings" })])
           )
         )

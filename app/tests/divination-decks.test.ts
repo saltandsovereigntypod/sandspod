@@ -12,6 +12,7 @@ import {
   deckInfo,
   deckOfReading,
   DEFAULT_DECK,
+  drawnNameIn,
   TAROT_DECKS,
   type DeckId,
 } from '../src/lib/divination/decks.ts';
@@ -53,12 +54,14 @@ function webpSize(bytes: Buffer): { width: number; height: number } {
   return { width: bytes.readUInt16LE(26) & 0x3fff, height: bytes.readUInt16LE(28) & 0x3fff };
 }
 
-test('three public-domain decks, the Rider–Waite–Smith first and the default', () => {
-  assert.deepEqual(DECK_IDS, ['rws', 'marseille', 'sola-busca']);
-  assert.equal(DEFAULT_DECK, 'rws');
+test('our own deck first and the default, then three public-domain decks', () => {
+  assert.deepEqual(DECK_IDS, ['salt-sovereignty', 'rws', 'marseille', 'sola-busca']);
+  assert.equal(DEFAULT_DECK, 'salt-sovereignty');
+  assert.equal(deckInfo('salt-sovereignty').name, 'Salt & Sovereignty Tarot');
+  assert.match(deckInfo('salt-sovereignty').about, /no people/);
   for (const d of TAROT_DECKS) {
     assert.ok(d.name && d.made && d.about && d.credit, d.id);
-    assert.match(d.credit, /[Pp]ublic domain/, d.id);
+    if (d.id !== 'salt-sovereignty') assert.match(d.credit, /[Pp]ublic domain/, d.id);
     assert.doesNotMatch(`${d.about} ${d.credit}`, /!/, d.id);
   }
 });
@@ -93,6 +96,10 @@ test('the website has every card of every deck, and each deck its sources', () =
     for (const card of TAROT_DECK) assert.ok(existsSync(siteFile(deckImagePath(deck, card.id))), `${deck} ${card.id}`);
     if (deck === 'rws') continue;
     const sources = readFileSync(appFile(`assets/divination/decks/${deck}/SOURCES.md`), 'utf8');
+    if (deck === 'salt-sovereignty') {
+      assert.match(sources, /original/);
+      continue;
+    }
     // A source line for every card, by id.
     for (const card of TAROT_DECK) assert.match(sources, new RegExp(`\`${card.id}\``), `${deck} SOURCES.md: ${card.id}`);
     assert.match(sources, /upload\.wikimedia\.org/);
@@ -116,20 +123,36 @@ test('each deck’s own titles: the Marseille’s Justice VIII and Strength XI, 
   assert.equal(deckCardTitle('sola-busca', 'Two of Cups'), null);
   assert.equal(cardLabelIn('marseille', 'Strength'), 'Strength (XI · La Force)');
   assert.equal(cardLabelIn('rws', 'Strength'), 'Strength');
+  assert.equal(deckCardTitle('salt-sovereignty', 'Queen of Wands'), 'Witch of Wands');
+  assert.equal(deckCardTitle('salt-sovereignty', 'Page of Cups'), 'Seeker of Cauldrons');
+  assert.equal(deckCardTitle('salt-sovereignty', 'Ace of Swords'), 'Ace of Athames');
+  assert.equal(deckCardTitle('salt-sovereignty', 'King of Pentacles'), 'Elder of Pentacles');
+  assert.equal(deckCardTitle('salt-sovereignty', 'Knight of Swords'), 'Wanderer of Athames');
+  assert.equal(deckCardTitle('salt-sovereignty', 'Three of Wands'), null);
+  assert.equal(deckCardTitle('salt-sovereignty', '12-the-hanged-man'), 'The Hanged One');
+  assert.equal(deckCardTitle('salt-sovereignty', 'The Star'), null);
+  assert.equal(cardLabelIn('salt-sovereignty', 'Queen of Wands'), 'Witch of Wands · Queen of Wands');
+  assert.equal(drawnNameIn('salt-sovereignty', 'Queen of Wands'), 'Witch of Wands · Queen of Wands');
+  assert.equal(drawnNameIn('marseille', 'Strength'), 'Strength');
+  assert.equal(drawnNameIn('salt-sovereignty', 'Fehu'), 'Fehu');
   for (const deck of ['marseille', 'sola-busca'] as const)
     for (const card of TAROT_DECK.filter((c) => c.arcana === 'major')) assert.ok(deckCardTitle(deck, card.id), `${deck} ${card.id}`);
 });
 
-test('the deck setting: a default the website shares, kept through the row and back, anything unknown read as the default', () => {
-  assert.equal(defaultSettings()[DECK_SETTING], 'rws');
-  assert.equal(chosenDeck(defaultSettings()), 'rws');
-  assert.equal(chosenDeck(null), 'rws');
-  assert.equal(chosenDeck({ tarot_deck: 'thoth' }), 'rws');
-  const row = settingsRow({ ...defaultSettings(), tarot_deck: 'sola-busca' }, 'u1');
-  assert.equal(row.settings.tarot_deck, 'sola-busca');
+test('the deck setting: our own deck until one is chosen, a deck chosen before kept, kept through the row and back', () => {
+  assert.equal(defaultSettings()[DECK_SETTING], '');
+  assert.equal(chosenDeck(defaultSettings()), 'salt-sovereignty');
+  assert.equal(chosenDeck(null), 'salt-sovereignty');
+  assert.equal(chosenDeck({ tarot_deck_choice: 'thoth' }), 'salt-sovereignty');
+  // The older key held 'rws' for everyone by default; a Marseille or Sola Busca there was chosen.
+  assert.equal(chosenDeck(normalizeSettings({ settings: { tarot_deck: 'rws' } })), 'salt-sovereignty');
+  assert.equal(chosenDeck(normalizeSettings({ settings: { tarot_deck: 'marseille' } })), 'marseille');
+  assert.equal(chosenDeck({ tarot_deck: 'marseille', tarot_deck_choice: 'rws' }), 'rws');
+  const row = settingsRow({ ...defaultSettings(), [DECK_SETTING]: 'sola-busca' }, 'u1');
+  assert.equal(row.settings[DECK_SETTING], 'sola-busca');
   const back = normalizeSettings(JSON.parse(JSON.stringify(row)));
   assert.equal(chosenDeck(back), 'sola-busca');
-  assert.equal(chosenDeck(normalizeSettings({ settings: { tarot_deck: 'marseille' } })), 'marseille');
+  assert.equal(chosenDeck(normalizeSettings({ settings: { [DECK_SETTING]: 'rws' } })), 'rws');
   assert.equal(deckInfo('nope').id, 'rws');
 });
 

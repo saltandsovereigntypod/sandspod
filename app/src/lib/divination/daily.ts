@@ -4,7 +4,7 @@
 
 import type { ReadingEntry } from '../craft/hedge/readings.ts';
 import { localDateKey } from '../rituals/lifecycle.ts';
-import { deckCardTitle, deckOfReading, type DeckId } from './decks.ts';
+import { deckCardTitle, deckNamesLead, deckOfReading, type DeckId } from './decks.ts';
 
 /** The first line of a kept card of the day's "What came up". */
 export const DAILY_LABEL = 'Card of the day';
@@ -32,7 +32,8 @@ export function todaysCard(list: ReadingEntry[], now: Date): TodaysCard | null {
 }
 
 /** "Strength (XI · La Force), reversed": the card as Today shows it, with its name in the deck it was drawn with. */
-export const todaysCardLabel = (card: Pick<TodaysCard, 'name' | 'reversed' | 'title'>) => `${card.name}${card.title ? ` (${card.title})` : ''}${card.reversed ? ', reversed' : ''}`;
+export const todaysCardLabel = (card: Pick<TodaysCard, 'name' | 'reversed' | 'title'> & { deck?: DeckId }) =>
+  `${card.title && deckNamesLead(card.deck) ? `${card.title} · ${card.name}` : `${card.name}${card.title ? ` (${card.title})` : ''}`}${card.reversed ? ', reversed' : ''}`;
 
 /** Whether Today offers a card to draw (on unless turned off in Settings). */
 export const drawOnToday = (settings: Record<string, unknown> | null | undefined) => settings?.today_draw !== false;

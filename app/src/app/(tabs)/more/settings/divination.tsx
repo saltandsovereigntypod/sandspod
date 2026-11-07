@@ -29,7 +29,7 @@ export default function DivinationSettings() {
           <>
             <Section label="Tarot deck">
               <Text style={type.caption}>
-                Every deck has all 78 cards, and each reads them in its own way: the Rider–Waite–Smith with A. E. Waite’s meanings, the others with their own. A reading you keep remembers the deck it was drawn with.
+                Every deck has all 78 cards. The Salt & Sovereignty Tarot and the Rider–Waite–Smith read them with A. E. Waite’s meanings, the Marseille and the Sola Busca in their own way. A reading you keep remembers the deck it was drawn with.
               </Text>
               <Chips label="Tarot deck" options={TAROT_DECKS.map((d) => ({ value: d.id, label: d.name }))} value={deck} onChange={(v: DeckId) => set(DECK_SETTING, v)} />
               <View style={styles.samples}>

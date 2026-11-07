@@ -5,7 +5,7 @@
 // deck's own where it has one, else Waite's, and it says whose it is. Shared
 // with the website through js/core. Pure.
 
-import { deckCardTitle, deckInfo, isDeckId, type DeckId } from '../decks.ts';
+import { deckCardTitle, deckInfo, deckNamesLead, isDeckId, type DeckId } from '../decks.ts';
 import { tarotCard, type Meaning } from '../tarot.ts';
 import { MARSEILLE_MEANINGS } from './marseille.ts';
 import { SOLA_BUSCA_MEANINGS } from './solaBusca.ts';
@@ -14,6 +14,8 @@ import type { DeckMeanings } from './types.ts';
 export type { DeckCardMeaning, DeckMeanings } from './types.ts';
 
 export const DECK_MEANINGS: Record<DeckId, DeckMeanings | null> = {
+  // The Salt & Sovereignty Tarot reads with Waite's meanings, by design.
+  'salt-sovereignty': null,
   rws: null,
   marseille: MARSEILLE_MEANINGS,
   'sola-busca': SOLA_BUSCA_MEANINGS,
@@ -69,6 +71,7 @@ export const readingHeading = (deck: DeckId) => `In the ${deckInfo(deck).name}`;
 export function readingSource(r: DeckReading | null | undefined): string | null {
   if (!r || r.deck === 'rws') return null;
   const name = deckInfo(r.deck).name;
+  if (r.deck === 'salt-sovereignty') return `The ${name} reads with A. E. Waite’s Rider–Waite–Smith meanings.`;
   if (hasOwnReading(r)) return `Read as the ${name} reads it.`;
   return `A. E. Waite’s Rider–Waite–Smith meaning, as the ${name} has no reading of its own here yet.`;
 }
@@ -115,5 +118,6 @@ export function deckPage(deck: unknown, cardId: string): DeckPage | null {
  */
 export function deckReadingLines(r: DeckReading | null | undefined): string[] {
   if (!r || r.deck === 'rws') return [];
-  return [r.title ? `In the ${deckInfo(r.deck).name}: ${r.title}` : null, r.picture, readingSource(r)].filter((l): l is string => !!l);
+  // A deck whose own names lead shows them in the card's name already.
+  return [r.title && !deckNamesLead(r.deck) ? `In the ${deckInfo(r.deck).name}: ${r.title}` : null, r.picture, readingSource(r)].filter((l): l is string => !!l);
 }
