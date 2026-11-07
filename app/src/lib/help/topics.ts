@@ -3411,9 +3411,9 @@ export const HELP: HelpSection[] = [
         id: 'practice-chart-synastry',
         title: 'Compare two charts (synastry)',
         summary: 'The aspects between two charts and where each person’s planets fall in the other’s houses.',
-        steps: ['Add at least two charts.', 'Open "All charts" and tap "Compare two charts (synastry)".', 'Choose the first and second charts; tap any contact for what it means.'],
+        steps: ['Add at least two charts.', 'Open "All charts" and tap "How your charts meet (and synastry)".', 'Choose the two charts, then open "Detail: every contact, the bi-wheel and the houses"; tap any contact for what it means.'],
         tips: ['Only charts you entered yourself can be compared.'],
-        href: '/rituals/craft/cosmic/synastry',
+        href: '/rituals/craft/cosmic/relationship?detail=1',
         keywords: ['synastry', 'compatibility', 'relationship astrology', 'two charts'],
       },
       {
