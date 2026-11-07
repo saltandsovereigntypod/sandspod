@@ -403,3 +403,16 @@ test('a coven petition’s candle and paper are its asker’s', () => {
 });
 
 export type { TendRecord };
+
+test('a thing that asks for tending reads as tended the moment it is tended, before its source catches up', async () => {
+  const { dueOf } = await import('../src/lib/tend/model.ts');
+  const now = new Date(2026, 10, 7, 12);
+  const asked = { kind: 'offering' as never, dueAt: new Date(2026, 10, 7, 8).getTime(), tendedAt: null as number | null };
+  assert.equal(dueOf(asked, null, now).state, 'due');
+  const tended = { ...asked, tendedAt: new Date(2026, 10, 7, 12, 5).getTime() };
+  const after = dueOf(tended, null, now);
+  assert.equal(after.state, 'later');
+  assert.equal(after.line, 'Tended today');
+  // Tended yesterday does not clear today's ask.
+  assert.equal(dueOf({ ...asked, tendedAt: new Date(2026, 10, 6, 20).getTime() }, null, now).state, 'due');
+});
