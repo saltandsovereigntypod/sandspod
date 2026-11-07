@@ -1,5 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { router, useLocalSearchParams, type Href } from 'expo-router';
+import { useMyStones } from '../../../lib/shelves/useStones';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { Share, StyleSheet, Text, View } from 'react-native';
 
@@ -13,8 +14,6 @@ import { Body, Card, Chip, Chips, Expander, Field, Notice, RitualScreen, Section
 import { templateNeeds, type Pantry } from '../../../lib/altar/connect/ingredients';
 import { useWorkshop } from '../../../lib/altar/workshop';
 import { DEITY_LINK_LABEL } from '../../../lib/astro/planetGuides';
-import { STONES } from '../../../lib/craft/crystal/collections';
-import type { Stone } from '../../../lib/craft/crystal/stones';
 import { PLANTS, type Plant } from '../../../lib/craft/green/garden';
 import { useCraft } from '../../../lib/craft/store';
 import { useGrimoire } from '../../../lib/grimoire/store';
@@ -105,7 +104,8 @@ export default function SpellBuilder() {
   const workshop = useWorkshop();
   const altarList = useAltars();
   const latestAltar = [...altarList.altars].sort((a, b) => String(b.updatedAt ?? b.savedAt ?? '').localeCompare(String(a.updatedAt ?? a.savedAt ?? '')))[0];
-  const { entries: stones } = useCraft<Stone>(STONES);
+  const myStonesHere = useMyStones();
+  const { entries: stones } = myStonesHere;
   const { entries: plants } = useCraft<Plant>(PLANTS);
   const onAltar = useBeginOnAltar();
 

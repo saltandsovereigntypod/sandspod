@@ -9,6 +9,8 @@ import { placeApothecary } from '../src/lib/altar/editor.ts';
 import type { AltarDocument } from '../src/lib/altar/snapshot.ts';
 import { activateGrid, gridOf, wandGridEntry, withGridEntry } from '../src/lib/altar/craftTools.ts';
 import type { SavedObject } from '../src/lib/altar/types.ts';
+import { myStones, shelfIdOfStone, shelfWithStone, stonesIntoShelves } from '../src/lib/shelves/stones.ts';
+import { cleanItem, newItem } from '../src/lib/shelves/model.ts';
 import { PIN_CROWD, poppetPlan, spreadPins } from '../src/lib/altar/workings/poppetLook.ts';
 import { makePin, pinDetail } from '../src/lib/altar/workings/poppet.ts';
 
@@ -89,4 +91,36 @@ test('poppet pins: two in the same place are drawn apart so every head shows; th
   assert.match(d.place, /^Heart/);
   assert.equal(d.note, 'Courage');
   assert.ok(d.set.startsWith('Set '));
+});
+
+test('my stones: folded into My Shelves once, care logs kept, old ids still link', () => {
+  const care = [{ id: 'c1', kind: 'cleansed' as const, at: NOW, method: 'Smoke' }];
+  const old = [
+    { id: 'st1', data: { name: 'Amethyst', key: 'amethyst', form: 'point', intentions: ['Sleep'], care } },
+    { id: 'st2', data: { name: 'Selenite', form: 'raw', intentions: [], care: [] } },
+    { id: 'st3', data: { name: 'Gone' }, deletedAt: NOW },
+  ];
+  const shelves = [{ id: 'sh1', createdAt: NOW, item: newItem({ name: 'selenite', shelf: 'crystals', notes: 'From the market' }) }];
+  const { add, update } = stonesIntoShelves(old, shelves);
+  assert.equal(add.length, 1);
+  assert.equal(add[0].stone?.stoneId, 'st1');
+  assert.deepEqual(add[0].stone?.care, care);
+  assert.equal(update.length, 1);
+  assert.equal(update[0].id, 'sh1');
+  assert.equal(update[0].item.notes, 'From the market');
+  assert.equal(update[0].item.stone?.stoneId, 'st2');
+  // Saved and read back (cleanItem keeps the stone), then nothing more to do.
+  const after = [{ id: 'sh1', createdAt: NOW, item: cleanItem(JSON.parse(JSON.stringify(update[0].item))) }, { id: 'sh2', createdAt: NOW, item: cleanItem(JSON.parse(JSON.stringify(add[0]))) }];
+  const again = stonesIntoShelves(old, after);
+  assert.deepEqual(again, { add: [], update: [] });
+  const stones = myStones(after);
+  assert.deepEqual(stones.map((s) => s.id).sort(), ['st1', 'st2']);
+  assert.equal(stones.find((s) => s.id === 'st1')!.data.intentions[0], 'Sleep');
+  assert.equal(shelfIdOfStone(after, 'st1'), 'sh2');
+  assert.equal(shelfIdOfStone(after, 'sh1'), 'sh1');
+  // A care entry written later lands on the same shelf thing, keeping its old id.
+  const st = stones.find((s) => s.id === 'st1')!;
+  const next = shelfWithStone({ ...st.data, care: [...st.data.care, { id: 'c2', kind: 'charged', at: NOW }] }, 'st1', after[1].item);
+  assert.equal(next.stone?.care.length, 2);
+  assert.equal(next.stone?.stoneId, 'st1');
 });

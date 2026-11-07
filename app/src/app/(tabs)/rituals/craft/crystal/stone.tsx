@@ -1,12 +1,13 @@
 import { router, useLocalSearchParams, type Href } from 'expo-router';
 import { useMemo, useState } from 'react';
+import { useMyStones } from '../../../../../lib/shelves/useStones';
 import { StyleSheet, Text, View } from 'react-native';
 
 import { Button } from '../../../../../components/Button';
 import { Body, Card, Chip, Chips, confirmAction, Field, List, Notice, RitualScreen, Row, SectionLabel, Title, ui } from '../../../../../components/rituals/ui';
 import { fullDate, shortDate } from '../../../../../lib/calendar';
 import { careBadges, CLEANSE_METHODS, ELIXIR_NOTE, findCare, methodWarning } from '../../../../../lib/craft/crystal/care';
-import { SETTINGS, STONES } from '../../../../../lib/craft/crystal/collections';
+import { SETTINGS } from '../../../../../lib/craft/crystal/collections';
 import {
   careHistory,
   careId,
@@ -24,7 +25,7 @@ import {
   type CrystalSettings,
   type Stone,
 } from '../../../../../lib/craft/crystal/stones';
-import { removeEntry, updateEntry, useCraft } from '../../../../../lib/craft/store';
+import {  useCraft } from '../../../../../lib/craft/store';
 import { ritualsLibraryHref } from '../../../../../lib/library';
 import { colors, fonts, radius, type } from '../../../../../theme';
 
@@ -33,7 +34,8 @@ const KINDS: CareKind[] = ['cleansed', 'charged', 'programmed'];
 // One stone: what it is, how to care for it, and everything you've done for it.
 export default function StoneDetail() {
   const { id } = useLocalSearchParams<{ id: string }>();
-  const { entries, ready } = useCraft<Stone>(STONES);
+  const myStonesHere = useMyStones();
+  const { entries, ready } = myStonesHere;
   const { entries: settings } = useCraft<CrystalSettings>(SETTINGS);
   const entry = entries.find((e) => e.id === id) ?? null;
   const stone = useMemo(() => (entry ? normaliseStone(entry.data) : null), [entry]);
@@ -66,7 +68,7 @@ export default function StoneDetail() {
   const lastCharged = lastCare(stone, 'charged');
   const lastProgrammed = lastCare(stone, 'programmed');
 
-  const save = async (data: Stone) => updateEntry(STONES, entry.id, data);
+  const save = async (data: Stone) => myStonesHere.save(entry.id, data);
 
   const log = async () => {
     setProblem(null);
@@ -99,7 +101,7 @@ export default function StoneDetail() {
 
   const remove = async () => {
     if (!(await confirmAction(`Delete ${stone.name}?`, 'It and its care history are deleted from your collection. This can’t be undone.', 'Delete'))) return;
-    await removeEntry(STONES, entry.id);
+    await myStonesHere.remove(entry.id);
     router.back();
   };
 

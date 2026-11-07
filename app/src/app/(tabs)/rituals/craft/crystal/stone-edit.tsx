@@ -1,13 +1,12 @@
 import { router, useLocalSearchParams, type Href } from 'expo-router';
 import { useMemo, useState } from 'react';
+import { useMyStones } from '../../../../../lib/shelves/useStones';
 import { View } from 'react-native';
 
 import { Button } from '../../../../../components/Button';
 import { Body, Card, Chip, Chips, Field, Notice, RitualScreen, SectionLabel, Title, ui } from '../../../../../components/rituals/ui';
 import { careByKey, careBadges, findCare, STONE_CARE } from '../../../../../lib/craft/crystal/care';
-import { STONES } from '../../../../../lib/craft/crystal/collections';
 import { isDateKey, normaliseStone, STONE_FORMS, type Stone, type StoneForm as Form } from '../../../../../lib/craft/crystal/stones';
-import { addEntry, updateEntry, useCraft, type CraftEntry } from '../../../../../lib/craft/store';
 
 const tidy = (s: string) => s.toLowerCase().replace(/[’'`]/g, '').trim();
 const POPULAR = ['amethyst', 'clear_quartz', 'rose_quartz', 'black_tourmaline', 'citrine', 'selenite', 'carnelian', 'moonstone', 'labradorite', 'smoky_quartz', 'obsidian', 'tiger_eye'];
@@ -15,7 +14,8 @@ const POPULAR = ['amethyst', 'clear_quartz', 'rose_quartz', 'black_tourmaline', 
 // Add or edit a stone: pick it from the Library's crystals or name your own.
 export default function StoneEdit() {
   const { id } = useLocalSearchParams<{ id?: string }>();
-  const { entries, ready } = useCraft<Stone>(STONES);
+  const myStonesHere = useMyStones();
+  const { entries, ready } = myStonesHere;
   if (id && !ready) {
     return (
       <RitualScreen back="Stone">
@@ -35,7 +35,8 @@ export default function StoneEdit() {
   return <StoneForm key={existing?.id ?? 'new'} existing={existing} />;
 }
 
-function StoneForm({ existing }: { existing: CraftEntry<Stone> | null }) {
+function StoneForm({ existing }: { existing: { id: string; data: Stone } | null }) {
+  const myStonesHere = useMyStones();
   const start = existing ? normaliseStone(existing.data) : null;
   const [name, setName] = useState(start?.name ?? '');
   const [key, setKey] = useState<string | null>(start?.key ?? null);
@@ -83,11 +84,11 @@ function StoneForm({ existing }: { existing: CraftEntry<Stone> | null }) {
     setSaving(true);
     try {
       if (existing) {
-        await updateEntry(STONES, existing.id, data);
+        await myStonesHere.save(existing.id, data);
         router.back();
       } else {
-        const entry = await addEntry(STONES, data);
-        router.replace({ pathname: '/rituals/craft/crystal/stone', params: { id: entry.id } } as Href);
+        const id = await myStonesHere.add(data);
+        router.replace({ pathname: '/rituals/craft/crystal/stone', params: { id } } as Href);
       }
     } finally {
       setSaving(false);
