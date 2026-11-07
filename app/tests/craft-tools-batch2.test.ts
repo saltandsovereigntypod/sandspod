@@ -117,7 +117,8 @@ test('poppet: consent, making, tending and ending', () => {
   let d = { ...emptyPoppet(), focus: 'other' as const, who: 'My sister', purpose: 'Healing' };
   assert.match(poppetProblem(d)!, /consent|asking/);
   d = { ...d, consent: true };
-  assert.match(poppetProblem(d)!, /step/);
+  // Ticking the making steps is optional: consent, purpose and who are enough.
+  assert.equal(poppetProblem(d), null);
   d = { ...d, made: MAKING_STEPS.map((s) => s.id) };
   assert.equal(poppetProblem(d), null);
   const { item, object } = poppetObject(d, [], NOW, undefined, 'p1');

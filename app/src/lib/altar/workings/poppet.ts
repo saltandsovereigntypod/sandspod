@@ -149,7 +149,7 @@ export function poppetProblem(draft: PoppetDraft): string | null {
   if (draft.focus === 'other' && !draft.consent) return 'A poppet for someone else needs their asking and their yes. Tick that they have, or make it for yourself.';
   if (!draft.purpose.trim()) return 'Say what it’s for first.';
   if (draft.focus !== 'self' && !draft.who.trim()) return 'Say who or what it stands for.';
-  if (!MAKING_STEPS.every((s) => draft.made.includes(s.id))) return 'Work through each step of the making first, ticking them as you go.';
+  // The making steps are a guide; ticking them is optional, so finishing the choices is enough.
   return null;
 }
 
