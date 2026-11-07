@@ -9,6 +9,8 @@ import { placeApothecary } from '../src/lib/altar/editor.ts';
 import type { AltarDocument } from '../src/lib/altar/snapshot.ts';
 import { activateGrid, gridOf, wandGridEntry, withGridEntry } from '../src/lib/altar/craftTools.ts';
 import type { SavedObject } from '../src/lib/altar/types.ts';
+import { PIN_CROWD, poppetPlan, spreadPins } from '../src/lib/altar/workings/poppetLook.ts';
+import { makePin, pinDetail } from '../src/lib/altar/workings/poppet.ts';
 
 const NOW = '2026-11-07T10:00:00.000Z';
 const doc = (objects: AltarDocument['objects'] = []) => ({ objects }) as unknown as AltarDocument;
@@ -67,4 +69,24 @@ test('wand grid: kept as a crystal.grids entry, and an old one migrates once wit
   const linked = withGridEntry(extra, 'g1');
   assert.deepEqual(gridOf(linked)!.ids, lit.ids);
   assert.equal(gridOf(linked)!.entryId, 'g1');
+});
+
+test('poppet pins: two in the same place are drawn apart so every head shows; the saved pins are untouched', () => {
+  const a = makePin({ x: 0.5, y: 0.4, zone: 'heart' }, 'red', 'Courage', NOW);
+  const b = makePin({ x: 0.5, y: 0.4, zone: 'heart' }, 'green', '', NOW);
+  const c = makePin({ x: 0.505, y: 0.401, zone: 'heart' }, 'white', '', NOW);
+  const far = makePin({ x: 0.2, y: 0.8, zone: 'free' }, 'red', '', NOW);
+  const drawn = spreadPins([a, b, c, far], 1.6);
+  assert.equal(drawn[0], a);
+  assert.equal(drawn[3], far);
+  for (let i = 0; i < 3; i++) for (let j = i + 1; j < 3; j++) assert.ok(Math.hypot(drawn[i].x - drawn[j].x, (drawn[i].y - drawn[j].y) * 1.6) >= PIN_CROWD * 0.99, `${i},${j}`);
+  assert.equal(b.x, 0.5);
+  // The picture draws one head per pin, at distinct places.
+  const plan = poppetPlan({ body: 'cloth' }, [a, b, c])!;
+  const heads = plan.steps.filter((s) => s.kind === 'image' && s.part === 'pinHead').map((s) => (s as { x: number }).x);
+  assert.equal(heads.length, 3);
+  const d = pinDetail(a);
+  assert.match(d.place, /^Heart/);
+  assert.equal(d.note, 'Courage');
+  assert.ok(d.set.startsWith('Set '));
 });

@@ -31,7 +31,8 @@ import { builtInCabinet, shortLabel } from '../../lib/altar/cabinet';
 import { ITEM_TYPE, isCustomCategory } from '../../lib/altar/custom';
 import { pickImage, type PickedImage } from '../../lib/altar/images';
 import type { SavedObject } from '../../lib/altar/types';
-import { builderFor } from '../../lib/altar/workings/build';
+import { buildOf, builderFor, withBuild } from '../../lib/altar/workings/build';
+import { PinList } from './workings/PoppetParts';
 import { deleteApothecary, saveApothecary, useWorkshop } from '../../lib/altar/workshop';
 import { useLibrary } from '../../lib/library';
 import { colors, fonts, radius, touch, type } from '../../theme';
@@ -51,7 +52,7 @@ type ListProps = {
 };
 
 export function ApothecarySheet({ visible, onClose, onMake, onEdit, onPlace }: ListProps) {
-  const { apothecary } = useWorkshop();
+  const { apothecary, userId } = useWorkshop();
   return (
     <Sheet visible={visible} eyebrow="Apothecary · jars & sachets" title="Your workings" onClose={onClose}>
       <Button label="Make something new" onPress={onMake} />
@@ -75,6 +76,19 @@ export function ApothecarySheet({ visible, onClose, onMake, onEdit, onPlace }: L
                 <Text style={type.caption} numberOfLines={1}>
                   {item.ingredients.map((i) => i.label).join(', ')}
                 </Text>
+                {(() => {
+                  const b = buildOf(item);
+                  if (b?.kind !== 'poppet' || !b.pins.length) return null;
+                  return (
+                    <PinList
+                      pins={b.pins}
+                      removeLabel="Remove"
+                      onRemove={(i) => {
+                        if (userId) void saveApothecary(userId, withBuild(item, { ...b, pins: b.pins.filter((_, n) => n !== i) }), null).catch(() => undefined);
+                      }}
+                    />
+                  );
+                })()}
                 {isItemDue(item, new Date()) && <Text style={[type.caption, styles.due]}>Did it work? Its look-back day has come. Open the recipe to say.</Text>}
                 <ChipRow>
                   <Chip label="Place" symbol="✦" accessibilityLabel={`Place ${item.name} on the altar`} onPress={() => onPlace(item)} />
