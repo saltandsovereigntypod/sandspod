@@ -9,6 +9,8 @@ import { placeApothecary } from '../src/lib/altar/editor.ts';
 import type { AltarDocument } from '../src/lib/altar/snapshot.ts';
 import { activateGrid, gridOf, wandGridEntry, withGridEntry } from '../src/lib/altar/craftTools.ts';
 import type { SavedObject } from '../src/lib/altar/types.ts';
+import { scryingEntry, scryingReadingsToAdd } from '../src/lib/altar/workings/scrying.ts';
+import { normalizeReading } from '../src/lib/craft/hedge/readings.ts';
 import { checkIn, newChallenge, progressOf, withToolDays } from '../src/lib/yearday/challenges.ts';
 import { freeForm, movedTo, practiceAsCorrespondence, practiceInput, practiceWith, toFold } from '../src/lib/craft/eclectic/practiceFold.ts';
 import { blankCorrespondence } from '../src/lib/craft/eclectic/correspondences.ts';
@@ -196,4 +198,18 @@ test('challenges: a tool theme counts the tool\'s own record as the day, without
   // Not a tool theme: unchanged.
   const plants = newChallenge('plants', 7, '2026-11-01');
   assert.equal(withToolDays(plants, ['2026-11-01']), plants);
+});
+
+test('scrying: a sit is a reading of method scrying; old altar.scrying entries copy into the log once', () => {
+  const old = scryingEntry({ saw: 'A door in the water', symbols: 'door', feelings: 'Calm' }, { altarId: 'a1', minutes: 10, satMinutes: 8, moonPhase: 'Full Moon', at: NOW, vessel: 'mirror' });
+  const todo = scryingReadingsToAdd([{ id: 's1', data: old }, { id: 's2', data: { ...old, readingId: 'r9' } }, { id: 's3', data: old, deletedAt: NOW }]);
+  assert.equal(todo.length, 1);
+  const r = normalizeReading(todo[0].reading);
+  assert.equal(r.method, 'scrying');
+  assert.equal(r.date, '2026-11-07');
+  assert.match(r.cameUp, /door in the water/);
+  assert.match(r.interpretation, /black mirror/);
+  assert.match(r.interpretation, /Calm/);
+  // Marked once copied, so the next read finds nothing.
+  assert.deepEqual(scryingReadingsToAdd([{ id: 's1', data: { ...todo[0].entry, readingId: 'r1' } }]), []);
 });

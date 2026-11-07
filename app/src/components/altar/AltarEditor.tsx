@@ -88,6 +88,7 @@ import { feedingDue, feedingLine, sachetStateOf } from '../../lib/altar/workings
 import { daysSinceRenewal, jarStateOf } from '../../lib/altar/workings/spellJar';
 import { backfillBuilds, buildFromObject, builderFor } from '../../lib/altar/workings/build';
 import { gridOf, wandGridEntry, withGridEntry } from '../../lib/altar/craftTools';
+import { useScryingIntoReadings } from '../../lib/altar/workings/useScryingIntoReadings';
 import { SPELLS_COLLECTION, spellToday, tickSpell, type SpellEntry } from '../../lib/altar/workings/spells';
 import { AltarOptionsSheet, FlameReadingSheet, IncenseSheet, OfferingSheet } from './LivingSheets';
 import { SymbolReadSheet } from './SymbolReadSheet';
@@ -832,6 +833,8 @@ export function AltarEditor({
 
   // Your own items come from the workshop store, so the spell builder and apothecary see the same list.
   const workshop = useWorkshop();
+  // Older scrying sits kept only with the altar join the divination log, once.
+  useScryingIntoReadings();
   // Migration on read: a jar, sachet or poppet built before its design was kept on its My Apothecary item gets it from the copy on this altar.
   const backfilled = useRef(new Set<string>());
   useEffect(() => {
