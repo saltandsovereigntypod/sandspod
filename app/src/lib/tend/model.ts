@@ -492,6 +492,8 @@ function rhythmDue(item: Pick<Tendable, 'kind' | 'dueAt' | 'tendedAt'>, record: 
 
   if (rhythm.kind === 'asks') {
     if (item.dueAt == null) return { state: 'resting', at: null, line: '' };
+    // Tended since it asked: done for today, even before its source (an altar, a coven) catches up.
+    if (item.dueAt < tomorrow && tendedToday && last >= Math.min(item.dueAt, today)) return { state: 'later', at: null, line: 'Tended today' };
     if (item.dueAt < tomorrow) return { state: 'due', at: item.dueAt, line: 'Wants tending today' };
     return { state: 'later', at: item.dueAt, line: `Next ${dayWords(item.dueAt, now)}` };
   }
