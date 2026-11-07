@@ -47,7 +47,7 @@ export default function DreamSymbols() {
       {symbols.length > 0 && (
         <View style={ui.gapSmall}>
           <SectionLabel>What keeps returning</SectionLabel>
-          <Chips>
+          <Chips label="What keeps returning">
             {symbols.map((s) => {
               const last = dateFromKey(s.last);
               return (
@@ -88,7 +88,7 @@ export default function DreamSymbols() {
         <View style={ui.gapSmall}>
           <SectionLabel>Cards that keep coming up</SectionLabel>
           <Body muted>Across the readings of your dreams (Read this dream, on a dream’s page).</Body>
-          <Chips>
+          <Chips label="Cards that keep coming up">
             {cards.map((c) => (
               <Chip key={c.name} label={`${c.name} · ${c.count}`} a11yLabel={`${c.name}, in ${c.count} dream readings`} />
             ))}

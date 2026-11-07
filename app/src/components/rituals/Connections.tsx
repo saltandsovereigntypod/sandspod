@@ -36,7 +36,7 @@ export function Connections({ grimoirePageId, altarId, altars = [], altarsKnown 
   return (
     <View style={ui.gapSmall}>
       <SectionLabel>Connected</SectionLabel>
-      <Chips>
+      <Chips label="Connected">
         {!!grimoirePageId && (
           <Chip
             label="Grimoire page"

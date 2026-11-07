@@ -108,7 +108,7 @@ function Form({ existing }: { existing: CraftEntry<unknown> | null }) {
 
       <View style={ui.gapSmall}>
         <SectionLabel>Method</SectionLabel>
-        <Chips>
+        <Chips label="Method">
           {METHODS.map((m) => (
             <Chip key={m.id} label={m.label} selected={reading.method === m.id} onPress={() => set({ method: m.id })} />
           ))}
@@ -119,7 +119,7 @@ function Form({ existing }: { existing: CraftEntry<unknown> | null }) {
 
       <View style={ui.gapSmall}>
         <SectionLabel>When?</SectionLabel>
-        <Chips>
+        <Chips label="When?">
           {recent.map((day, i) => {
             const key = localDateKey(day);
             return (
@@ -194,7 +194,7 @@ function Form({ existing }: { existing: CraftEntry<unknown> | null }) {
 
       <View style={ui.gapSmall}>
         <SectionLabel>Come back to it</SectionLabel>
-        <Chips>
+        <Chips label="Come back to it">
           {LOOK_BACK_CHOICES.map((c) => {
             const key = lookBackFrom(reading.date, c.days);
             return <Chip key={c.days} label={c.label} selected={reading.lookBack === key} onPress={() => set({ lookBack: key })} />;

@@ -125,7 +125,7 @@ export default function CycleShare() {
           ) : (
             <Card>
               <Text style={type.caption}>Everyone in these covens</Text>
-              <Chips>
+              <Chips multiple>
                 {choices.covens.map((c) => (
                   <Chip key={c.id} label={c.name} selected={covens.includes(c.id)} onPress={() => setCovens(toggle(covens, c.id))} />
                 ))}
@@ -133,7 +133,7 @@ export default function CycleShare() {
               {choices.people.length > 0 && (
                 <Expander title="Or only certain people" initiallyOpen={people.length > 0}>
                   <View style={ui.gapSmall}>
-                    <Chips>
+                    <Chips multiple>
                       {choices.people.map((p) => (
                         <Chip key={p.id} label={p.name} selected={people.includes(p.id)} onPress={() => setPeople(toggle(people, p.id))} />
                       ))}

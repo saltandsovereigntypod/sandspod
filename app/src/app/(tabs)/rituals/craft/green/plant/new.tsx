@@ -94,7 +94,7 @@ function PlantForm({ existing }: { existing: CraftEntry<unknown> | null }) {
       {!existing && (
         <View style={ui.gap}>
           <SectionLabel>When it began</SectionLabel>
-          <Chips>
+          <Chips label="When it began">
             <Chip label="Sowed as seed" selected={startedBy === 'sowed'} onPress={() => setStartedBy('sowed')} />
             <Chip label="Planted" selected={startedBy === 'planted'} onPress={() => setStartedBy('planted')} />
           </Chips>

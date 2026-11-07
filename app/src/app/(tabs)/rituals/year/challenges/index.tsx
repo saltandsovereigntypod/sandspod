@@ -67,7 +67,7 @@ export default function Challenges() {
 
       <Card accent>
         <SectionLabel>Begin a challenge</SectionLabel>
-        <Chips>
+        <Chips label="Begin a challenge">
           {THEMES.map((t) => (
             <Chip key={t.id} label={t.title} selected={theme === t.id} onPress={() => setTheme(t.id)} />
           ))}

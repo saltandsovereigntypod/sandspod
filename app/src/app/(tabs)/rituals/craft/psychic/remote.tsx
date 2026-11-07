@@ -140,7 +140,7 @@ export default function Remote() {
           </Card>
           <View style={ui.gapSmall}>
             <SectionLabel>How close were your impressions?</SectionLabel>
-            <Chips>
+            <Chips label="How close were your impressions?">
               {[1, 2, 3, 4, 5].map((n) => (
                 <Chip key={n} label={`${n}`} selected={close === n} onPress={() => setClose(n)} />
               ))}

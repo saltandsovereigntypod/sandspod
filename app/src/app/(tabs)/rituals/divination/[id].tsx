@@ -140,7 +140,7 @@ export default function ReadingPage() {
       {reading.drawn.length > 0 && (
         <View style={ui.gapSmall}>
           <SectionLabel>Drawn</SectionLabel>
-          <Chips>
+          <Chips label="Drawn">
             {reading.drawn.map((n, i) => {
               const gloss = glossOf(n);
               return <Chip key={n} label={`${i + 1}. ${n}${gloss ? ` · ${gloss}` : ''}`} />;

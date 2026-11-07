@@ -112,7 +112,7 @@ export function TendCard({ mix }: { mix: BathMix }) {
     <Card>
       <SectionLabel>Make it a rhythm</SectionLabel>
       <Body muted>{existing?.rhythm ? `In To tend: ${rhythmLabel(existing.rhythm).toLowerCase()}.` : 'A reminder in To tend for when this bath is due, so it becomes part of your month.'}</Body>
-      <Chips>
+      <Chips label="Make it a rhythm">
         {TEND_CHOICES.map((c) => (
           <Chip key={c.label} label={c.label} selected={!!existing?.rhythm && JSON.stringify(existing.rhythm) === JSON.stringify(c.rhythm)} onPress={() => void choose(c.rhythm, c.label)} />
         ))}

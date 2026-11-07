@@ -166,7 +166,7 @@ export default function CommunityRitual() {
           <Card>
             <SectionLabel>Which coven?</SectionLabel>
             <Body muted>It’s kept with the coven’s templates, credited, for planning a gathering from.</Body>
-            <Chips>
+            <Chips label="Which coven?">
               {leads.map((c) => (
                 <Chip key={c.id} label={c.name} onPress={() => void toCoven(c.id, c.name)} />
               ))}

@@ -108,7 +108,7 @@ export function DreamReading({ entry, all }: { entry: DreamEntry; all: DreamEntr
           {reading.library.length > 0 && (
             <View style={styles.wrap}>
               <SectionLabel>From the Library</SectionLabel>
-              <Chips>
+              <Chips label="From the Library">
                 {reading.library.map((l) => (
                   <Chip key={l.id} label={l.name} a11yLabel={`Open ${l.name} in the Library`} onPress={() => router.push(grimoireLibraryHref(l) as Href)} />
                 ))}

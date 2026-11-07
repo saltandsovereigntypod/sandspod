@@ -95,7 +95,7 @@ export default function SitLog() {
 
       <View style={ui.gapSmall}>
         <SectionLabel>What kind of practice</SectionLabel>
-        <Chips>
+        <Chips label="What kind of practice">
           {SIT_KINDS.map((k) => (
             <Chip key={k.value} label={k.label} selected={draft.kind === k.value} onPress={() => set({ kind: k.value })} />
           ))}
@@ -116,7 +116,7 @@ export default function SitLog() {
         <SectionLabel>Before and after</SectionLabel>
         <Field label="Your intention" value={draft.intention ?? ''} onChange={(intention) => set({ intention })} />
         <Body muted>How you felt before</Body>
-        <Chips>
+        <Chips label="Before and after">
           {[1, 2, 3, 4, 5].map((n) => (
             <Chip key={n} label={String(n)} a11yLabel={`Before: ${n}, ${MOOD_WORDS[n]}`} selected={draft.before === n} onPress={() => set({ before: draft.before === n ? undefined : n })} />
           ))}
@@ -132,7 +132,7 @@ export default function SitLog() {
 
       <View style={ui.gapSmall}>
         <SectionLabel>How settled</SectionLabel>
-        <Chips>
+        <Chips label="How settled">
           {[1, 2, 3, 4, 5].map((n) => (
             <Chip key={n} label={String(n)} a11yLabel={`${n}, ${SETTLED_WORDS[n]}`} selected={draft.settled === n} onPress={() => set({ settled: draft.settled === n ? null : n })} />
           ))}
@@ -148,7 +148,7 @@ export default function SitLog() {
           </Body>
         ))}
         <Field label="Anything that came: images, words, feelings" value={draft.cameUp} onChange={(cameUp) => set({ cameUp })} multiline />
-        <Chips>
+        <Chips multiple>
           {CAME_UP_TAGS.map((t) => (
             <Chip key={t.value} label={t.label} selected={draft.tags.includes(t.value)} onPress={() => set({ tags: draft.tags.includes(t.value) ? draft.tags.filter((x) => x !== t.value) : [...draft.tags, t.value] })} />
           ))}

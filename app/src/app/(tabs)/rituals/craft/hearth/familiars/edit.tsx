@@ -70,7 +70,7 @@ function Form({ id, start }: { id: string | null; start: Familiar }) {
         {f.kind !== 'spirit' && (
           <View style={ui.gapSmall}>
             <SectionLabel>Animal</SectionLabel>
-            <Chips>
+            <Chips label="Animal">
               {ANIMALS.map((a) => (
                 <Chip key={a.id} label={a.label} selected={f.animal === a.id} onPress={() => set({ animal: a.id })} />
               ))}
@@ -86,7 +86,7 @@ function Form({ id, start }: { id: string | null; start: Familiar }) {
 
       <View style={ui.gapSmall}>
         <SectionLabel>The work they join</SectionLabel>
-        <Chips>
+        <Chips multiple label="The work they join">
           {WORK_KINDS.map((w) => (
             <Chip key={w.id} label={w.label} selected={f.work.includes(w.id)} onPress={() => set({ work: f.work.includes(w.id) ? f.work.filter((x) => x !== w.id) : [...f.work, w.id] })} />
           ))}

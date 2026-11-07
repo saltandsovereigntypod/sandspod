@@ -79,7 +79,7 @@ export default function PrintBook() {
             return (
               <View key={g.key} style={ui.gapSmall}>
                 <SectionLabel>{`${g.label} · ${on} of ${g.ids.length}`}</SectionLabel>
-                <Chips>
+                <Chips multiple>
                   <Chip label={on === g.ids.length ? 'All in this section ✓' : 'All in this section'} onPress={() => toggle(g.ids, on !== g.ids.length)} />
                   {g.ids.map((id) => {
                     const page = all.find((p) => p.page.id === id)!.page;

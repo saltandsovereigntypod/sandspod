@@ -179,7 +179,7 @@ export default function SpellTiming() {
 
       <View style={ui.gapSmall}>
         <SectionLabel>What is it for?</SectionLabel>
-        <Chips>
+        <Chips label="What is it for?">
           {TIMING_INTENTS.map((i) => (
             <Chip key={i.key} label={i.label} selected={intentKey === i.key} onPress={() => setIntentKey(intentKey === i.key ? null : i.key)} />
           ))}
@@ -189,7 +189,7 @@ export default function SpellTiming() {
 
       <View style={ui.gapSmall}>
         <SectionLabel>How far ahead?</SectionLabel>
-        <Chips>
+        <Chips label="How far ahead?">
           {TIMING_SPANS.map((d) => (
             <Chip key={d} label={d === 7 ? 'The next week' : d === 30 ? 'The next month' : 'The next three months'} selected={days === d} onPress={() => setDays(d)} />
           ))}

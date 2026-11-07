@@ -90,7 +90,7 @@ export default function Charts() {
       <Card>
         <SectionLabel>How charts are drawn</SectionLabel>
         <TermText style={type.caption} text="House systems: Placidus is the most common; Whole Sign is the oldest; Equal works everywhere." />
-        <Chips>
+        <Chips label="How charts are drawn">
           {(['placidus', 'whole-sign', 'equal'] as HouseSystem[]).map((h) => (
             <Chip key={h} label={HOUSE_SYSTEM_LABEL[h]} selected={(settings?.astro_house_system ?? 'placidus') === h} onPress={() => set({ astro_house_system: h })} />
           ))}

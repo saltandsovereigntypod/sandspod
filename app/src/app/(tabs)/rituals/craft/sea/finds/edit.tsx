@@ -100,7 +100,7 @@ function FindEditor({ existing, entries }: { existing: CraftEntry<ShoreFind> | n
 
       <View style={ui.gap}>
         <SectionLabel>What it is</SectionLabel>
-        <Chips>
+        <Chips label="What it is">
           {FIND_KINDS.map((k) => (
             <Chip key={k.id} label={k.label} selected={find.kind === k.id} onPress={() => set({ kind: k.id as FindKind })} />
           ))}
@@ -121,7 +121,7 @@ function FindEditor({ existing, entries }: { existing: CraftEntry<ShoreFind> | n
         <SectionLabel>Where and when</SectionLabel>
         <Field label="Beach or shore" value={find.where} onChange={(where) => set({ where })} placeholder="Where the tide left it" />
         {places.length > 0 && (
-          <Chips>
+          <Chips label="Where and when">
             {places.slice(0, 8).map((p) => (
               <Chip key={p} label={p} selected={find.where === p} onPress={() => set({ where: p })} />
             ))}

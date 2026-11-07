@@ -462,7 +462,7 @@ export default function YearInReview() {
 
       <View style={ui.gapSmall}>
         <SectionLabel>Where your year begins</SectionLabel>
-        <Chips>
+        <Chips label="Where your year begins">
           {YEAR_STARTS.map((o) => (
             <Chip
               key={o.id}

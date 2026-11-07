@@ -132,7 +132,7 @@ export default function LandJournal() {
       {seen.length > 0 && (
         <View style={ui.gapSmall}>
           <SectionLabel>Herbs and trees you’ve seen</SectionLabel>
-          <Chips>
+          <Chips label="Herbs and trees you’ve seen">
             {seen.map((h) => (
               <Chip key={h.key} label={`${h.name} · ${h.count}`} selected={herb === h.key} onPress={() => setHerb(herb === h.key ? null : h.key)} />
             ))}

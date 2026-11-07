@@ -39,7 +39,7 @@ export default function LocalLore() {
           {places.length > 1 && !query && (
             <View style={ui.gapSmall}>
               <SectionLabel>Your places</SectionLabel>
-              <Chips>
+              <Chips label="Your places">
                 {places.map((p) => (
                   <Chip key={p.where} label={`${p.where} · ${p.count}`} a11yLabel={`${p.where}, ${p.count}. Show its lore`} onPress={() => setQuery(p.where)} />
                 ))}

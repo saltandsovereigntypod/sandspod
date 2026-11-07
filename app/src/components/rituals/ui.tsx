@@ -2,7 +2,7 @@
 // rules: vertical scrolling only, chips that wrap, 44pt targets, real labels.
 
 import { router } from 'expo-router';
-import { useState, type ReactNode } from 'react';
+import { Children, isValidElement, useState, type ReactElement, type ReactNode } from 'react';
 import {
   Alert,
   KeyboardAvoidingView,
@@ -23,6 +23,8 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { colors, fonts, radius, space, touch, type } from '../../theme';
 import { Button } from '../Button';
 import { Icon, type IconName } from '../Icon';
+import { shouldFold } from '../../lib/optionPicker';
+import { OptionPicker } from './OptionPicker';
 
 type ShellProps = {
   children: ReactNode;
@@ -158,8 +160,30 @@ export function List({ children }: { children: ReactNode }) {
   return <View style={styles.list}>{children}</View>;
 }
 
-/** Wrapping chips; never a sideways scroll. */
-export function Chips({ children }: { children: ReactNode }) {
+type ChipProps = { label: string; selected?: boolean; onPress?: () => void; hint?: string; a11yLabel?: string };
+
+/**
+ * Wrapping chips; never a sideways scroll. A long run of choosable chips
+ * (more than eight) folds into one OptionPicker row that opens a sheet.
+ * `multiple` keeps that sheet open for ticking several; `label` names it.
+ */
+export function Chips({ children, multiple, label, placeholder }: { children: ReactNode; multiple?: boolean; label?: string; placeholder?: string }) {
+  const kids = Children.toArray(children);
+  if (shouldFold(kids.length)) {
+    const chips = kids.filter(
+      (k): k is ReactElement<ChipProps> => isValidElement(k) && k.type === Chip && !!(k.props as ChipProps).onPress && (k.props as ChipProps).selected !== undefined,
+    );
+    if (chips.length === kids.length) {
+      const items = chips.map((c, i) => ({
+        key: String(c.key ?? i),
+        label: c.props.label,
+        selected: !!c.props.selected,
+        onPress: c.props.onPress!,
+        a11yLabel: c.props.a11yLabel,
+      }));
+      return <OptionPicker items={items} multiple={multiple || items.filter((i) => i.selected).length > 1} label={label} placeholder={placeholder} />;
+    }
+  }
   return <View style={styles.chips}>{children}</View>;
 }
 

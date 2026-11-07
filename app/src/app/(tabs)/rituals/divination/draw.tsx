@@ -316,7 +316,7 @@ export default function DrawScreen() {
 
       <View style={ui.gapSmall}>
         <SectionLabel>What to draw</SectionLabel>
-        <Chips>
+        <Chips label="What to draw">
           {kinds.map((k) => (
             <Chip key={k.id} label={k.label} selected={kindId === k.id} onPress={() => chooseKind(k.id)} />
           ))}
@@ -399,7 +399,7 @@ export default function DrawScreen() {
           {!spread.cast && (
             <View style={ui.gapSmall}>
               <SectionLabel>How</SectionLabel>
-              <Chips>
+              <Chips label="How">
                 <Chip label="Draw here" selected={!byHand} onPress={() => {
                   setByHand(false);
                   setPlaced([]);
@@ -411,7 +411,7 @@ export default function DrawScreen() {
           {kindId === 'tarot' && (
             <View style={ui.gapSmall}>
               <SectionLabel>Deck</SectionLabel>
-              <Chips>
+              <Chips label="Deck">
                 {TAROT_DECKS.map((d) => (
                   <Chip key={d.id} label={d.name} selected={deck === d.id} onPress={() => deck !== d.id && setDeck(d.id)} />
                 ))}
@@ -522,7 +522,7 @@ export default function DrawScreen() {
           <Field label="What you make of it" value={interpretation} onChange={setInterpretation} placeholder="Your reading of the reading" multiline />
           <View style={ui.gapSmall}>
             <SectionLabel>Come back to it</SectionLabel>
-            <Chips>
+            <Chips label="Come back to it">
               {DRAW_LOOK_BACK.map((c) => {
                 const key = lookBackFrom(today, c.days);
                 return <Chip key={c.days} label={c.label} selected={chosenLookBack === key} onPress={() => setLookBack(key)} />;

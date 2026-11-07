@@ -64,7 +64,7 @@ export default function FolkCalendar() {
 
       <View style={ui.gapSmall}>
         <SectionLabel>Through the year</SectionLabel>
-        <Chips>
+        <Chips label="Through the year">
           {Array.from({ length: 12 }, (_, i) => i + 1).map((m) => (
             <Chip key={m} label={monthName(m - 1).slice(0, 3)} a11yLabel={monthName(m - 1)} selected={month === m} onPress={() => setMonth(m)} />
           ))}

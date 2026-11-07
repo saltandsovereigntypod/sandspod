@@ -68,7 +68,7 @@ export default function Geomancy() {
       <Field label="The question" value={question} onChange={setQuestion} placeholder="Hold it in mind as you make the marks" multiline />
       <View style={ui.gapSmall}>
         <SectionLabel>What is it about?</SectionLabel>
-        <Chips>
+        <Chips label="What is it about?">
           {TOPICS.map((t) => (
             <Chip key={t.id} label={t.label} selected={topic === t.id} hint={t.about} onPress={() => setTopic(t.id)} />
           ))}

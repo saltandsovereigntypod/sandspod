@@ -82,7 +82,7 @@ function Form({ existing, start }: { existing: CraftEntry<unknown> | null; start
       <Field label="How much" value={h.amount} onChange={(amount) => set({ amount })} placeholder="A basket, 40 g, three bundles" />
       <View style={ui.gapSmall}>
         <SectionLabel>Where from</SectionLabel>
-        <Chips>
+        <Chips label="Where from">
           <Chip label="Not one of my places" selected={!h.placeId} onPress={() => set({ placeId: null })} />
           {places.map((p) => (
             <Chip key={p.id} label={p.data.name} selected={h.placeId === p.id} onPress={() => set({ placeId: p.id })} />
@@ -91,7 +91,7 @@ function Form({ existing, start }: { existing: CraftEntry<unknown> | null; start
       </View>
       <View style={ui.gapSmall}>
         <SectionLabel>For</SectionLabel>
-        <Chips>
+        <Chips label="For">
           {HARVEST_USES.map((u) => (
             <Chip key={u.id} label={u.label} selected={h.use === u.id} onPress={() => set({ use: u.id, kept: u.id === 'drying' || u.id === 'apothecary' ? true : h.kept })} />
           ))}

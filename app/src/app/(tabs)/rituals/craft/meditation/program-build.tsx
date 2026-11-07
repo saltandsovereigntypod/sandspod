@@ -59,28 +59,28 @@ export default function BuildProgram() {
 
       <View style={ui.gapSmall}>
         <SectionLabel>Start at (Hz)</SectionLabel>
-        <Chips>{STARTS.map((v) => <Chip key={v} label={`${v} Hz`} selected={s.start === v} onPress={() => set({ start: v })} />)}</Chips>
+        <Chips label="Start at (Hz)">{STARTS.map((v) => <Chip key={v} label={`${v} Hz`} selected={s.start === v} onPress={() => set({ start: v })} />)}</Chips>
         <SectionLabel>Settle and hold at (Hz)</SectionLabel>
-        <Chips>{HOLDS.map((v) => <Chip key={v} label={`${v} Hz`} selected={s.hold === v} onPress={() => set({ hold: v })} />)}</Chips>
+        <Chips label="Settle and hold at (Hz)">{HOLDS.map((v) => <Chip key={v} label={`${v} Hz`} selected={s.hold === v} onPress={() => set({ hold: v })} />)}</Chips>
         <SectionLabel>Settling takes</SectionLabel>
-        <Chips>{DESCENDS.map((v) => <Chip key={v} label={`${v} min`} selected={s.descendMin === v} onPress={() => set({ descendMin: v })} />)}</Chips>
+        <Chips label="Settling takes">{DESCENDS.map((v) => <Chip key={v} label={`${v} min`} selected={s.descendMin === v} onPress={() => set({ descendMin: v })} />)}</Chips>
         <SectionLabel>Hold for</SectionLabel>
-        <Chips>{HOLD_MINS.map((v) => <Chip key={v} label={`${v} min`} selected={s.holdMin === v} onPress={() => set({ holdMin: v })} />)}</Chips>
+        <Chips label="Hold for">{HOLD_MINS.map((v) => <Chip key={v} label={`${v} min`} selected={s.holdMin === v} onPress={() => set({ holdMin: v })} />)}</Chips>
         <SectionLabel>Return takes</SectionLabel>
-        <Chips>{RETURNS.map((v) => <Chip key={v} label={`${v} min`} selected={clean.returnMin === v} onPress={() => set({ returnMin: v })} />)}</Chips>
+        <Chips label="Return takes">{RETURNS.map((v) => <Chip key={v} label={`${v} min`} selected={clean.returnMin === v} onPress={() => set({ returnMin: v })} />)}</Chips>
         {deep && <Notice>Under 8 Hz the program always ends by bringing you back up through alpha to low beta, for at least three minutes.</Notice>}
         <Body muted>{`In all ${customMinutes(clean)} minutes.`}</Body>
       </View>
 
       <View style={ui.gapSmall}>
         <SectionLabel>Carrier tone</SectionLabel>
-        <Chips>
+        <Chips label="Carrier tone">
           {CARRIER_CHOICES.filter((c) => CARRIER_PICKS.includes(c.id)).map((c) => (
             <Chip key={c.id} label={c.label} selected={s.carrier === c.id} onPress={() => set({ carrier: c.id })} />
           ))}
         </Chips>
         <SectionLabel>Bed</SectionLabel>
-        <Chips>{BED_CHOICES.map((b) => <Chip key={b.id} label={b.label} selected={s.bed === b.id} onPress={() => set({ bed: b.id })} />)}</Chips>
+        <Chips label="Bed">{BED_CHOICES.map((b) => <Chip key={b.id} label={b.label} selected={s.bed === b.id} onPress={() => set({ bed: b.id })} />)}</Chips>
         <Toggle label="Breathing pacer" detail="Six breaths a minute, on screen." value={s.breath} onChange={(breath) => set({ breath })} />
       </View>
 

@@ -84,7 +84,7 @@ export default function BathBuild() {
 
       <View style={ui.gapSmall}>
         <SectionLabel>What it is for</SectionLabel>
-        <Chips>
+        <Chips label="What it is for">
           {SPELL_INTENTS.map((i) => (
             <Chip
               key={i.key}
@@ -104,7 +104,7 @@ export default function BathBuild() {
       {!!suggested && (
         <View style={ui.gapSmall}>
           <SectionLabel>{`Suggested for ${intentLabel?.toLowerCase()}`}</SectionLabel>
-          <Chips>
+          <Chips multiple>
             {options.map((o) => (
               <Chip key={o.name} label={o.kind === 'crystal' ? `${o.name} (beside the bath)` : o.name} selected={chosen.some((c) => c.name === o.name)} onPress={() => toggle(o)} />
             ))}
@@ -128,7 +128,7 @@ export default function BathBuild() {
           <SectionLabel>Add something of your own</SectionLabel>
           <Field label="Name" value={cName} onChange={setCName} placeholder="Oat milk" />
           <Field label="Amount" value={cAmount} onChange={setCAmount} placeholder="1 cup" />
-          <Chips>
+          <Chips label="Add something of your own">
             {CUSTOM_KINDS.map((k) => (
               <Chip key={k.value} label={k.label} selected={cKind === k.value} onPress={() => setCKind(k.value)} />
             ))}
@@ -140,7 +140,7 @@ export default function BathBuild() {
       {!!intent && (
         <View style={ui.gapSmall}>
           <SectionLabel>How you will prepare it</SectionLabel>
-          <Chips>
+          <Chips label="How you will prepare it">
             {METHODS.map((m) => (
               <Chip key={m.value} label={m.label} selected={method === m.value} onPress={() => setMethod(m.value)} />
             ))}

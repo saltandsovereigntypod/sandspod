@@ -103,7 +103,7 @@ export default function Telepathy() {
           ) : (
             <Card accent>
               <SectionLabel>A new session</SectionLabel>
-              <Chips>
+              <Chips label="A new session">
                 <Chip label="A pair" selected={draft.kind === 'pair'} onPress={() => set({ kind: 'pair', covenId: null })} />
                 <Chip label="A coven" selected={draft.kind === 'coven'} onPress={() => set({ kind: 'coven', covenId: covens[0]?.id ?? null })} />
               </Chips>
@@ -120,26 +120,26 @@ export default function Telepathy() {
               )}
               <Field label="Name (optional)" value={draft.title} onChange={(v) => set({ title: v })} placeholder="Full moon circle" />
               <SectionLabel>Target</SectionLabel>
-              <Chips>
+              <Chips label="Target">
                 {TARGET_TYPES.map((t) => (
                   <Chip key={t.id} label={t.label} selected={draft.target === t.id} onPress={() => set({ target: t.id })} />
                 ))}
               </Chips>
               <Body muted>{TARGET_TYPES.find((t) => t.id === draft.target)?.detail}</Body>
               <SectionLabel>Rounds</SectionLabel>
-              <Chips>
+              <Chips label="Rounds">
                 {ROUND_CHOICES.map((n) => (
                   <Chip key={n} label={String(n)} selected={draft.rounds === n} onPress={() => set({ rounds: n })} />
                 ))}
               </Chips>
               <SectionLabel>Seconds a round</SectionLabel>
-              <Chips>
+              <Chips label="Seconds a round">
                 {SECONDS_CHOICES.map((n) => (
                   <Chip key={n} label={String(n)} selected={draft.seconds === n} onPress={() => set({ seconds: n })} />
                 ))}
               </Chips>
               <SectionLabel>Who sends</SectionLabel>
-              <Chips>
+              <Chips label="Who sends">
                 {SENDER_MODES.map((m) => (
                   <Chip key={m.id} label={m.label} selected={draft.senderMode === m.id} onPress={() => set({ senderMode: m.id })} />
                 ))}
@@ -153,7 +153,7 @@ export default function Telepathy() {
               )}
               {draft.kind === 'coven' && <Body muted>In a coven session one person sends each round and everyone else receives. With the same sender, that is you.</Body>}
               <SectionLabel>Start</SectionLabel>
-              <Chips>
+              <Chips label="Start">
                 {starts.map((o, i) => (
                   <Chip key={o.label} label={o.label} selected={startIx === i} onPress={() => setStartIx(i)} />
                 ))}

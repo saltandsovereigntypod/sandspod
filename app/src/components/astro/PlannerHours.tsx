@@ -30,7 +30,7 @@ export function PlannerHours({ night, time, onPick, initialPlanet }: { night: Da
     <View style={{ gap: 8 }}>
       <SectionLabel>Planetary hours that day</SectionLabel>
       {inHour && <TermText style={type.caption} text={`${timeOfDay(at)} falls in the hour of ${inHour.planet}: ${HOUR_SUITS[inHour.planet].short}. The day belongs to ${hours[0].planet}.`} />}
-      <Chips>
+      <Chips label="Planetary hours that day">
         {HOUR_PLANETS.map((p) => (
           <Chip key={p} label={p} selected={planet === p} onPress={() => setPlanet(planet === p ? null : p)} a11yLabel={`${p} hours that day`} />
         ))}

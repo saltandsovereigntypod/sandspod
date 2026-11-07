@@ -104,9 +104,9 @@ export default function PlanetGuideScreen() {
         <Body>{`Number and square: ${g.square}`}</Body>
         <Body>{`Angel: ${g.angel.name} (${g.angel.source}). Intelligence: ${g.intelligence} (Agrippa).`}</Body>
         <SectionLabel>Herbs</SectionLabel>
-        <Chips>{g.herbs.map(chip)}</Chips>
+        <Chips label="Herbs">{g.herbs.map(chip)}</Chips>
         <SectionLabel>Stones</SectionLabel>
-        <Chips>{g.stones.map(chip)}</Chips>
+        <Chips label="Stones">{g.stones.map(chip)}</Chips>
         {fromLibrary.length > 0 && (
           <>
             <SectionLabel>{`Everything in your Living Library under ${planet}`}</SectionLabel>

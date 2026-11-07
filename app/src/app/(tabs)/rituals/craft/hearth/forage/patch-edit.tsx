@@ -62,7 +62,7 @@ function Form({ existing, start }: { existing: CraftEntry<unknown> | null; start
       <Title eyebrow="What grows where">{existing ? patch.name : 'Something that grows'}</Title>
       <View style={ui.gapSmall}>
         <SectionLabel>A wild plant from the foraging notes</SectionLabel>
-        <Chips>
+        <Chips label="A wild plant from the foraging notes">
           {FORAGE_PLANTS.map((f) => (
             <Chip key={f.key} label={f.name} selected={patch.forage === f.key} onPress={() => set(patch.forage === f.key ? { forage: null } : { forage: f.key, name: patch.name || f.name, herb: f.library ?? patch.herb })} />
           ))}
@@ -72,7 +72,7 @@ function Form({ existing, start }: { existing: CraftEntry<unknown> | null; start
       <HerbPicker label="Its Living Library entry (optional)" value={patch.herb ? [patch.herb] : []} onChange={(keys) => set({ herb: keys[keys.length - 1] ?? null })} single />
       <View style={ui.gapSmall}>
         <SectionLabel>Where</SectionLabel>
-        <Chips>
+        <Chips label="Where">
           {places.map((p) => (
             <Chip key={p.id} label={p.data.name} selected={patch.placeId === p.id} onPress={() => set({ placeId: patch.placeId === p.id ? null : p.id })} />
           ))}

@@ -147,13 +147,13 @@ function ShelfForm({ params, editing, all }: { params: Params; editing: { id: st
           <Text style={type.cardTitle}>{`Its label (${VESSELS[vessel].name.toLowerCase()})`}</Text>
           <Field label="What the label says" value={item.label} onChange={(label) => set({ label: label.slice(0, LABEL_MAX) })} placeholder={item.name || 'Its name'} />
           <SectionLabel>Label</SectionLabel>
-          <Chips>
+          <Chips label="Label">
             {LABEL_STYLES.map((s) => (
               <Chip key={s.value} label={s.label} selected={item.labelStyle === s.value} onPress={() => set({ labelStyle: s.value })} />
             ))}
           </Chips>
           <SectionLabel>Writing</SectionLabel>
-          <Chips>
+          <Chips label="Writing">
             {LABEL_FONTS.map((f) => (
               <Chip key={f.value} label={f.label} selected={item.labelFont === f.value} onPress={() => set({ labelFont: f.value })} />
             ))}
@@ -163,7 +163,7 @@ function ShelfForm({ params, editing, all }: { params: Params; editing: { id: st
 
       <View style={ui.gapSmall}>
         <SectionLabel>Shelf</SectionLabel>
-        <Chips>
+        <Chips label="Shelf">
           {SHELVES.map((s) => (
             <Chip key={s.key} label={s.label} selected={item.shelf === s.key} onPress={() => set({ shelf: s.key, tend: { ...item.tend, on: item.tend.rhythm ? item.tend.on : !!tendPlanFor(s.key, item.name) } })} />
           ))}
@@ -172,7 +172,7 @@ function ShelfForm({ params, editing, all }: { params: Params; editing: { id: st
 
       <View style={ui.gapSmall}>
         <SectionLabel>How much</SectionLabel>
-        <Chips>
+        <Chips label="How much">
           <Chip label="A count" selected={item.qty.kind === 'count'} onPress={() => set({ qty: { kind: 'count', n: item.qty.kind === 'count' ? item.qty.n : 1 } })} />
           <Chip label="Full, half or low" selected={item.qty.kind === 'level'} onPress={() => set({ qty: { kind: 'level', level: item.qty.kind === 'level' ? item.qty.level : 'full' } })} />
         </Chips>
@@ -200,7 +200,7 @@ function ShelfForm({ params, editing, all }: { params: Params; editing: { id: st
 
       <View style={ui.gapSmall}>
         <SectionLabel>Where it came from</SectionLabel>
-        <Chips>
+        <Chips label="Where it came from">
           {SOURCES.map((s) => (
             <Chip key={s.value} label={s.label} selected={item.source === s.value} onPress={() => set({ source: s.value })} />
           ))}

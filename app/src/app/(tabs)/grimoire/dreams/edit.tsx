@@ -110,7 +110,7 @@ function Form({ existing, entries }: { existing: CraftEntry<unknown> | null; ent
 
       <View style={ui.gapSmall}>
         <SectionLabel>Which morning?</SectionLabel>
-        <Chips>
+        <Chips label="Which morning?">
           {recent.map((day, i) => {
             const key = localDateKey(day);
             return (
@@ -139,7 +139,7 @@ function Form({ existing, entries }: { existing: CraftEntry<unknown> | null; ent
       <View style={ui.gapSmall}>
         <SectionLabel>Symbols</SectionLabel>
         {dream.symbols.length > 0 && (
-          <Chips>
+          <Chips label="Symbols">
             {dream.symbols.map((s) => (
               <Chip key={s} label={`${s}  ×`} a11yLabel={`Remove ${s}`} onPress={() => set({ symbols: dream.symbols.filter((x) => x !== s) })} />
             ))}
@@ -161,7 +161,7 @@ function Form({ existing, entries }: { existing: CraftEntry<unknown> | null; ent
 
       <View style={ui.gapSmall}>
         <SectionLabel>How vivid?</SectionLabel>
-        <Chips>
+        <Chips label="How vivid?">
           {VIVIDNESS.map((v) => (
             <Chip key={v.value} label={`${v.value} · ${v.label}`} selected={dream.vividness === v.value} onPress={() => set({ vividness: v.value })} />
           ))}
@@ -170,7 +170,7 @@ function Form({ existing, entries }: { existing: CraftEntry<unknown> | null; ent
 
       <View style={ui.gapSmall}>
         <SectionLabel>How did it feel? (optional)</SectionLabel>
-        <Chips>
+        <Chips label="How did it feel? (optional)">
           {DREAM_MOODS.map((m) => (
             <Chip key={m} label={m[0].toUpperCase() + m.slice(1)} selected={dream.mood === m} onPress={() => set({ mood: dream.mood === m ? '' : m })} />
           ))}

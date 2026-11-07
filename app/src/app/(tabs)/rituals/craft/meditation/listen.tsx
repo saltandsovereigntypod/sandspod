@@ -109,7 +109,7 @@ export default function Listen() {
 
       <View style={ui.gapSmall}>
         <SectionLabel>Stop after</SectionLabel>
-        <Chips>
+        <Chips label="Stop after">
           {LISTEN_TIMERS.map((m) => (
             <Chip key={String(m)} label={timerLabel(m)} selected={minutes === m} onPress={() => setMinutes(m)} />
           ))}

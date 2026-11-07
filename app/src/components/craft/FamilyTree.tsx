@@ -25,7 +25,7 @@ export function FamilyFields({ people, selfId, person, set }: { people: Ancestor
   return (
     <View style={ui.gapSmall}>
       <SectionLabel>In the family tree (optional)</SectionLabel>
-      <Chips>
+      <Chips label="In the family tree (optional)">
         {KIN_KINDS.map((k) => (
           <Chip key={k.id} label={k.label} selected={person.kin === k.id} onPress={() => set({ kin: person.kin === k.id ? '' : k.id })} />
         ))}
@@ -46,7 +46,7 @@ export function FamilyFields({ people, selfId, person, set }: { people: Ancestor
             ))}
           </Chips>
           <Body muted>Their partners</Body>
-          <Chips>
+          <Chips multiple>
             {choices.map((c) => (
               <Chip key={c.id} label={c.name} selected={partners.includes(c.id)} a11yLabel={`${c.name} as their partner`} onPress={() => set({ partners: toggle(partners, c.id, 6) })} />
             ))}

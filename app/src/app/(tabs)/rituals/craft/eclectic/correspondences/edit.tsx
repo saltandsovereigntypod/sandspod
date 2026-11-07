@@ -196,7 +196,7 @@ function CorrespondenceEditor({ existing, start }: { existing: CraftEntry<MyCorr
 
       <View style={ui.gap}>
         <SectionLabel>Where it came from</SectionLabel>
-        <Chips>
+        <Chips label="Where it came from">
           {SOURCES.map((s) => (
             <Chip key={s.id} label={s.label} selected={c.source === s.id} onPress={() => set({ source: c.source === s.id ? null : s.id })} />
           ))}

@@ -226,7 +226,7 @@ function DeityFilter({ list, value, onChange }: { list: { data: JournalEntryData
   return (
     <View style={ui.gapSmall}>
       <SectionLabel>By god or spirit</SectionLabel>
-      <Chips>
+      <Chips label="By god or spirit">
         {log.map((d) => {
           const id = d.key || `name:${d.name.toLowerCase()}`;
           return <Chip key={id} label={`${d.name} · ${d.count}`} selected={value === id} onPress={() => onChange(value === id ? '' : id)} a11yLabel={`Only ${d.name}`} />;
@@ -463,7 +463,7 @@ function EntryPage({ kind }: { kind: JournalKind }) {
         <Card>
           <SectionLabel>Did it come to pass?</SectionLabel>
           {!!d.checkOn && d.outcome === 'waiting' && <Body muted>{`You asked to look back on ${fullDate(d.checkOn) ?? d.checkOn}.`}</Body>}
-          <Chips>
+          <Chips label="Did it come to pass?">
             {OUTCOMES.map((o) => (
               <Chip key={o.value} label={o.label} selected={d.outcome === o.value} onPress={busy ? undefined : () => void setOutcome(o.value)} />
             ))}
@@ -656,7 +656,7 @@ function EntryForm({ kind, existingId, start }: { kind: JournalKind; existingId:
       <View style={ui.gapSmall}>
         <SectionLabel>Prompt</SectionLabel>
         <Body>{prompt ? prompt.text : 'No prompt: write whatever is with you.'}</Body>
-        <Chips>
+        <Chips label="Prompt">
           {!prompt && <Chip label="Today’s prompt" onPress={() => set({ prompt: promptOfDay(kind, now).id })} />}
           <Chip label={showPrompts ? 'Hide prompts' : 'Choose a prompt'} onPress={() => setShowPrompts(!showPrompts)} />
           {!!prompt && <Chip label="No prompt" onPress={() => set({ prompt: '' })} />}
@@ -688,7 +688,7 @@ function EntryForm({ kind, existingId, start }: { kind: JournalKind; existingId:
             )}
           </Chips>
           <SectionLabel>What it was</SectionLabel>
-          <Chips>
+          <Chips multiple label="What it was">
             {DEVOTION_ACTS.map((a) => (
               <Chip key={a.id} label={a.label} hint={a.hint} selected={entry.acts.includes(a.id)} onPress={() => toggle('acts', a.id)} />
             ))}
@@ -696,7 +696,7 @@ function EntryForm({ kind, existingId, start }: { kind: JournalKind; existingId:
           {entry.acts.includes('offering') && (
             <>
               <SectionLabel>Offerings</SectionLabel>
-              <Chips>
+              <Chips multiple label="Offerings">
                 {OFFERING_TYPES.map((o) => (
                   <Chip key={o} label={o} selected={entry.offerings.includes(o)} onPress={() => toggle('offerings', o)} />
                 ))}
@@ -706,7 +706,7 @@ function EntryForm({ kind, existingId, start }: { kind: JournalKind; existingId:
           {(entry.acts.includes('offering') || entry.acts.includes('sign')) && (
             <>
               <SectionLabel>How it was received</SectionLabel>
-              <Chips>
+              <Chips label="How it was received">
                 {RESPONSES.map((r) => (
                   <Chip key={r} label={r} selected={entry.response === r} onPress={() => set({ response: entry.response === r ? '' : r })} />
                 ))}
@@ -719,14 +719,14 @@ function EntryForm({ kind, existingId, start }: { kind: JournalKind; existingId:
       {kind === 'ancestors' && (
         <View style={ui.gapSmall}>
           <SectionLabel>What it’s about</SectionLabel>
-          <Chips>
+          <Chips label="What it’s about">
             {ANCESTOR_TOPICS.map((t) => (
               <Chip key={t.id} label={t.label} hint={t.hint} selected={entry.about === t.id} onPress={() => set({ about: t.id })} />
             ))}
           </Chips>
           <SectionLabel>Who</SectionLabel>
           {people.length ? (
-            <Chips>
+            <Chips multiple label="Who">
               {people.map((p) => (
                 <Chip key={p.id} label={p.data.name || 'Unnamed'} selected={entry.people.includes(p.id)} onPress={() => toggle('people', p.id)} />
               ))}
@@ -741,7 +741,7 @@ function EntryForm({ kind, existingId, start }: { kind: JournalKind; existingId:
       {kind === 'omens' && (
         <View style={ui.gapSmall}>
           <SectionLabel>What kind of sign</SectionLabel>
-          <Chips>
+          <Chips label="What kind of sign">
             {OMEN_KINDS.map((t) => (
               <Chip key={t.id} label={t.label} hint={t.hint} selected={entry.seen === t.id} onPress={() => set({ seen: t.id })} />
             ))}
@@ -758,7 +758,7 @@ function EntryForm({ kind, existingId, start }: { kind: JournalKind; existingId:
 
       <View style={ui.gapSmall}>
         <SectionLabel>When</SectionLabel>
-        <Chips>
+        <Chips label="When">
           {recent.map((key, i) => (
             <Chip key={key} label={i === 0 ? 'Today' : i === 1 ? 'Yesterday' : (fullDate(key)?.replace(/, \d{4}$/, '') ?? key)} selected={entry.date === key} onPress={() => setWhen(key, entry.time)} />
           ))}
@@ -780,7 +780,7 @@ function EntryForm({ kind, existingId, start }: { kind: JournalKind; existingId:
       {kind === 'omens' && (
         <View style={ui.gapSmall}>
           <SectionLabel>Look back</SectionLabel>
-          <Chips>
+          <Chips label="Look back">
             {checkOnChoices(entry.date).map((c) => (
               <Chip key={c.label} label={c.label} selected={entry.checkOn === c.value} onPress={() => set({ checkOn: c.value })} />
             ))}
@@ -788,7 +788,7 @@ function EntryForm({ kind, existingId, start }: { kind: JournalKind; existingId:
           {!!existingId && (
             <>
               <SectionLabel>Did it come to pass?</SectionLabel>
-              <Chips>
+              <Chips label="Did it come to pass?">
                 {OUTCOMES.map((o) => (
                   <Chip key={o.value} label={o.label} selected={entry.outcome === o.value} onPress={() => set({ outcome: o.value })} />
                 ))}
@@ -802,7 +802,7 @@ function EntryForm({ kind, existingId, start }: { kind: JournalKind; existingId:
       <View style={ui.gapSmall}>
         <SectionLabel>Tags</SectionLabel>
         {entry.tags.length > 0 && (
-          <Chips>
+          <Chips label="Tags">
             {entry.tags.map((t) => (
               <Chip key={t} label={`${t}  ×`} a11yLabel={`Remove ${t}`} onPress={() => set({ tags: entry.tags.filter((x) => x !== t) })} />
             ))}
@@ -830,7 +830,7 @@ function EntryForm({ kind, existingId, start }: { kind: JournalKind; existingId:
       <View style={ui.gapSmall}>
         <SectionLabel>Link to your Grimoire</SectionLabel>
         {entry.links.length > 0 && (
-          <Chips>
+          <Chips label="Link to your Grimoire">
             {entry.links.map((l) => (
               <Chip key={`${l.type}-${l.id}`} label={`${l.title || 'Untitled'}  ×`} a11yLabel={`Unlink ${l.title}`} onPress={() => set({ links: withoutLink(entry.links, l) })} />
             ))}
@@ -860,7 +860,7 @@ function EntryForm({ kind, existingId, start }: { kind: JournalKind; existingId:
         {dreams.length > 0 && (
           <>
             <Body muted>Or a recent dream</Body>
-            <Chips>
+            <Chips multiple>
               {dreams.map((dr) => (
                 <Chip key={dr.id} label={dr.data.title || 'Untitled dream'} selected={entry.links.some((l) => l.type === 'dream' && l.id === dr.id)} onPress={() => set({ links: entry.links.some((l) => l.type === 'dream' && l.id === dr.id) ? withoutLink(entry.links, { type: 'dream', id: dr.id }) : withLink(entry.links, { type: 'dream', id: dr.id, title: dr.data.title || 'Untitled dream' }) })} />
               ))}

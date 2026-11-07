@@ -83,7 +83,7 @@ function Form({ id, start }: { id: string | null; start: SpiritSession }) {
 
       <View style={ui.gapSmall}>
         <SectionLabel>How</SectionLabel>
-        <Chips>
+        <Chips label="How">
           {SESSION_METHODS.map((m) => (
             <Chip key={m.id} label={m.label} selected={s.method === m.id} onPress={() => setMethod(m.id)} />
           ))}
@@ -94,7 +94,7 @@ function Form({ id, start }: { id: string | null; start: SpiritSession }) {
 
       <View style={ui.gapSmall}>
         <SectionLabel>With whom</SectionLabel>
-        <Chips>
+        <Chips label="With whom">
           {WHO_KINDS.map((w) => (
             <Chip key={w.id} label={w.label} selected={s.whoKind === w.id} onPress={() => set({ whoKind: w.id })} />
           ))}
@@ -112,7 +112,7 @@ function Form({ id, start }: { id: string | null; start: SpiritSession }) {
 
       <View style={ui.gapSmall}>
         <SectionLabel>Protections</SectionLabel>
-        <Chips>
+        <Chips multiple label="Protections">
           {PROTECTIONS.map((p) => (
             <Chip key={p.id} label={p.label} selected={s.protections.includes(p.id)} onPress={() => set({ protections: s.protections.includes(p.id) ? s.protections.filter((x) => x !== p.id) : [...s.protections, p.id] })} />
           ))}
@@ -140,7 +140,7 @@ function Form({ id, start }: { id: string | null; start: SpiritSession }) {
         <SectionLabel>Closing</SectionLabel>
         <Field label="How you closed" value={s.closing} onChange={(closing) => set({ closing })} multiline />
         <Toggle label="Closed fully" detail="Thanked them, said it was over, put the tools away" value={s.closed} onChange={(closed) => set({ closed })} />
-        <Chips>
+        <Chips label="Closing">
           {AFTERS.map((a) => (
             <Chip key={a.id} label={a.label} selected={s.after === a.id} onPress={() => set({ after: s.after === a.id ? '' : a.id })} />
           ))}

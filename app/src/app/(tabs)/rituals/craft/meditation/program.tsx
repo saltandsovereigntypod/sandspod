@@ -77,7 +77,7 @@ export default function ProgramScreen() {
 
       <View style={ui.gapSmall}>
         <SectionLabel>Length</SectionLabel>
-        <Chips>
+        <Chips label="Length">
           {lengths.map((m) => (
             <Chip key={m} label={`${m} min`} selected={len === m} onPress={() => setMinutes(m)} />
           ))}
@@ -93,7 +93,7 @@ export default function ProgramScreen() {
         {program.carriers.length > 1 && (
           <>
             <SectionLabel>Carrier tone</SectionLabel>
-            <Chips>
+            <Chips label="Carrier tone">
               {program.carriers.slice(0, 5).map((cid) => (
                 <Chip key={cid} label={carrierLabel(cid)} selected={compiled.carrier === cid} onPress={() => setOpts((o) => ({ ...o, carrier: cid }))} />
               ))}

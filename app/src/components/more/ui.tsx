@@ -21,7 +21,9 @@ import { useAccessibility, useAccessibleText } from '../../lib/accessibility/sto
 import { richTextBlocks } from '../../lib/library/richText';
 import { colors, fonts, radius, space, touch, type } from '../../theme';
 import { HeaderTools } from '../HeaderTools';
+import { shouldFold } from '../../lib/optionPicker';
 import { Icon } from '../Icon';
+import { OptionPicker } from '../rituals/OptionPicker';
 import { MoreIcon, type MoreIconName } from './MoreIcon';
 
 export function MoreScreen({
@@ -195,13 +197,20 @@ export function Chips<T extends string>({
   value,
   onChange,
   label,
+  keepChips,
 }: {
   options: readonly { value: T; label: string }[];
   value: T;
   onChange: (value: T) => void;
   label: string;
+  /** Keep chips even when the list is long (the altar's own screens). */
+  keepChips?: boolean;
 }) {
   const t = useAccessibleText();
+  if (!keepChips && shouldFold(options.length)) {
+    const items = options.map((o) => ({ key: o.value, label: o.label, selected: o.value === value, onPress: () => onChange(o.value) }));
+    return <OptionPicker items={items} label={label} />;
+  }
   return (
     <View accessibilityRole="radiogroup" accessibilityLabel={label} style={styles.chips}>
       {options.map((option) => {

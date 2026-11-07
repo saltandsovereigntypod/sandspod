@@ -59,19 +59,19 @@ export default function Relationship() {
       ) : (
         <>
           <SectionLabel>First chart</SectionLabel>
-          <Chips>
+          <Chips label="First chart">
             {usable.map((c) => (
               <Chip key={c.saved.id} label={c.saved.name} selected={a?.saved.id === c.saved.id} onPress={() => setA(c.saved.id)} />
             ))}
           </Chips>
           <SectionLabel>The other chart</SectionLabel>
-          <Chips>
+          <Chips label="The other chart">
             {usable.filter((c) => c.saved.id !== a?.saved.id).map((c) => (
               <Chip key={c.saved.id} label={c.saved.name} selected={b?.saved.id === c.saved.id} onPress={() => setB(c.saved.id)} />
             ))}
           </Chips>
           <SectionLabel>The relationship</SectionLabel>
-          <Chips>
+          <Chips label="The relationship">
             {REL_TYPES.map((t) => (
               <Chip key={t.key} label={t.label} selected={kind === t.key} onPress={() => setKind(t.key)} />
             ))}
@@ -128,7 +128,7 @@ export default function Relationship() {
 
           <Card>
             <SectionLabel>Good days together</SectionLabel>
-            <Chips>
+            <Chips label="Good days together">
               {GOOD_DAY_INTENTS.map((d) => (
                 <Chip key={d.key} label={d.label} selected={dayKey === d.key} onPress={() => setDayKey(d.key)} />
               ))}

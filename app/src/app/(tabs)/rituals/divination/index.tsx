@@ -109,7 +109,7 @@ export default function Readings() {
           {repeats.length > 0 && (
             <View style={ui.gapSmall}>
               <SectionLabel>Turning up again</SectionLabel>
-              <Chips>
+              <Chips label="Turning up again">
                 {repeats.map((r) => (
                   <Chip key={r.name} label={`${r.name} · ${r.count}`} a11yLabel={`${r.name}, in ${r.count} readings. Search for it`} onPress={() => setQuery(r.name)} />
                 ))}
@@ -122,7 +122,7 @@ export default function Readings() {
             <SectionLabel>All readings</SectionLabel>
             <Field label="Search readings" value={query} onChange={setQuery} placeholder="A question, a card, a word" />
             {used.length > 1 && (
-              <Chips>
+              <Chips label="All readings">
                 <Chip label="All" selected={method === null} onPress={() => setMethod(null)} />
                 {used.map((m) => (
                   <Chip key={m.id} label={m.label} selected={method === m.id} onPress={() => setMethod(method === m.id ? null : m.id)} />

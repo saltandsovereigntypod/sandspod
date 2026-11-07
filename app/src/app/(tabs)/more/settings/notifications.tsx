@@ -106,7 +106,7 @@ function MoonSection({ settings, loaded }: { settings: ReminderSettings; loaded:
           <View style={ui.gapSmall}>
             <SectionLabel>Also remind me</SectionLabel>
             <Body muted>You’ll always hear on the day itself. Add earlier heads-ups if you’d like time to prepare.</Body>
-            <Chips>
+            <Chips multiple label="Also remind me">
               <Chip label="The day before" selected={settings.dayBefore} onPress={() => void updateReminderSettings({ dayBefore: !settings.dayBefore })} />
               {DAYS_AHEAD_CHOICES.map((days) => (
                 <Chip key={days} label={days === 7 ? 'A week before' : `${days} days before`} selected={settings.daysAhead.includes(days)} onPress={() => toggleAhead(days)} />

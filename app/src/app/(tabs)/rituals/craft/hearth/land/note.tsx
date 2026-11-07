@@ -53,7 +53,7 @@ export default function LandNoteScreen() {
       {n.herbs.length > 0 && (
         <View style={ui.gapSmall}>
           <SectionLabel>Herbs and trees seen</SectionLabel>
-          <Chips>
+          <Chips label="Herbs and trees seen">
             {n.herbs.map((h) => (
               <Chip key={h} label={herbName(h) ?? h} onPress={() => router.push(ritualsLibraryHref({ id: `traditional:herb:${h}` }) as Href)} />
             ))}
@@ -64,7 +64,7 @@ export default function LandNoteScreen() {
       {(n.plants.length > 0 || n.potted.length > 0) && (
         <View style={ui.gapSmall}>
           <SectionLabel>Your plants</SectionLabel>
-          <Chips>
+          <Chips label="Your plants">
             {n.plants.map((pid) => {
               const g = garden.find((e) => e.id === pid);
               return <Chip key={pid} label={g ? asPlant(g.data).name : 'A garden plant'} onPress={g ? go(`/rituals/craft/green/plant/${pid}`) : undefined} />;

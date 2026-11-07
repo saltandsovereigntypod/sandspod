@@ -93,7 +93,7 @@ export function HolidayCalendarSection({ prefs, update, settings, group: groupId
       {on && (
         <View style={ui.gapSmall}>
           <SectionLabel>How far ahead</SectionLabel>
-          <Chips>
+          <Chips label="How far ahead">
             <Chip label={`As all calendars (${leadsLabel(prefs.holidays.leads)})`} selected={!ownLeads} onPress={() => update(withChange(prefs, `holidays.calendars.${group.id}`, { on: true }))} />
           </Chips>
           <LeadChips value={ownLeads ?? []} onChange={(leads) => update(withChange(prefs, `holidays.calendars.${group.id}`, { on: true, leads }))} />

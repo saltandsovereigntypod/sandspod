@@ -111,7 +111,7 @@ export default function JournalEntry() {
       {altarItems.length > 0 && (
         <View style={ui.gapSmall}>
           <SectionLabel>On the altar</SectionLabel>
-          <Chips>
+          <Chips label="On the altar">
             {altarItems.map((label, i) => (
               <Chip key={`${label}-${i}`} label={label} />
             ))}

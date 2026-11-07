@@ -39,13 +39,13 @@ export default function Synastry() {
         <>
           <View style={ui.gapSmall}>
             <SectionLabel>First chart (inner wheel)</SectionLabel>
-            <Chips>
+            <Chips label="First chart (inner wheel)">
               {usable.map((c) => (
                 <Chip key={c.saved.id} label={c.saved.name} selected={a?.saved.id === c.saved.id} onPress={() => setA(c.saved.id)} />
               ))}
             </Chips>
             <SectionLabel>Second chart (outer ring)</SectionLabel>
-            <Chips>
+            <Chips label="Second chart (outer ring)">
               {usable
                 .filter((c) => c.saved.id !== a?.saved.id)
                 .map((c) => (

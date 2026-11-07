@@ -147,7 +147,7 @@ function ChartForm({ existing, startAsMe }: { existing: SavedChart | null; start
       <Card>
         <SectionLabel>Whose chart</SectionLabel>
         <Field label="Name" value={name} onChange={setName} placeholder="e.g. Me, or a friend’s name" />
-        <Chips>
+        <Chips label="Whose chart">
           <Chip label="Mine" selected={me} onPress={() => setMe(true)} />
           <Chip label="Someone else’s" selected={!me} onPress={() => setMe(false)} />
         </Chips>

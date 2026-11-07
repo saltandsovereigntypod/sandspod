@@ -238,7 +238,7 @@ export function DropIn({ onStart, startDisabled, startLabel = 'Start' }: { onSta
         <View style={ui.gap}>
           <View style={ui.gapSmall}>
             <SectionLabel>Sound</SectionLabel>
-            <Chips>
+            <Chips label="Sound">
               {DROP_SOUNDS.map((o) => (
                 <Chip key={o.id} label={o.label} selected={s.sound === o.id} onPress={() => d.set({ sound: o.id })} />
               ))}
@@ -248,7 +248,7 @@ export function DropIn({ onStart, startDisabled, startLabel = 'Start' }: { onSta
           </View>
           <Toggle label="Guided drop-in" detail="The grounding and opening warm-ups, a line at a time" value={s.guided} onChange={(v) => d.set({ guided: v })} />
           {s.guided && (
-            <Chips>
+            <Chips multiple>
               {WARMUPS.map((w) => (
                 <Chip key={w.id} label={w.title} selected={s.warmups.includes(w.id)} onPress={() => d.set({ warmups: WARMUPS.map((x) => x.id).filter((x) => (x === w.id ? !s.warmups.includes(x) : s.warmups.includes(x))) })} />
               ))}
@@ -256,7 +256,7 @@ export function DropIn({ onStart, startDisabled, startLabel = 'Start' }: { onSta
           )}
           <View style={ui.gapSmall}>
             <SectionLabel>Drop in for</SectionLabel>
-            <Chips>
+            <Chips label="Drop in for">
               {DROP_LENGTHS.map((m) => (
                 <Chip key={String(m)} label={dropLabel(m)} selected={s.dropMinutes === m} onPress={() => d.set({ dropMinutes: m })} />
               ))}
@@ -279,7 +279,7 @@ export function RevealSettings() {
   return (
     <View style={ui.gapSmall}>
       <SectionLabel>Reveal after</SectionLabel>
-      <Chips>
+      <Chips label="Reveal after">
         {REVEAL_PRESETS.map((v) => (
           <Chip key={String(v)} label={v === null ? 'Manual (I’ll tap reveal)' : revealLabel(v)} selected={!showCustom && s.revealSec === v} onPress={() => { setShowCustom(false); set({ revealSec: v }); }} />
         ))}

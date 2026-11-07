@@ -63,7 +63,7 @@ export function PullPicker({ spread, pool, placed, onChange, reversible }: Props
       {reversible && placed.some(Boolean) && (
         <View style={ui.gapSmall}>
           <SectionLabel>Any that came up reversed?</SectionLabel>
-          <Chips>
+          <Chips label="Any that came up reversed?">
             {placed.map((p, i) =>
               p ? <Chip key={i} label={`${i + 1}. ${p.name}`} selected={p.reversed} a11yLabel={`${p.name}, ${p.reversed ? 'reversed. Turn upright' : 'upright. Turn reversed'}`} onPress={() => turn(i)} /> : null,
             )}

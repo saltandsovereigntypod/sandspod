@@ -61,7 +61,7 @@ export default function CorrespondenceFinder() {
 
       <View style={ui.gapSmall}>
         <SectionLabel>What is it for?</SectionLabel>
-        <Chips>
+        <Chips label="What is it for?">
           {SPELL_INTENTS.map((i) => (
             <Chip key={i.key} label={i.label} selected={query.intent === i.key} onPress={() => set({ intent: query.intent === i.key ? null : i.key })} />
           ))}
@@ -123,7 +123,7 @@ export default function CorrespondenceFinder() {
           {result.mine.length > 0 && (
             <View style={ui.gapSmall}>
               <SectionLabel>From your own correspondences</SectionLabel>
-              <Chips>
+              <Chips multiple label="From your own correspondences">
                 {result.mine.map((m) => (
                   <Chip key={m.id} label={m.name} selected={own.includes(m.name)} a11yLabel={`${m.name}: ${m.meaning}`} onPress={() => toggleOwn(m.name)} />
                 ))}
