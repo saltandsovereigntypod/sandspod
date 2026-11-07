@@ -15,7 +15,8 @@ import { GridBuilder } from '../../craft/GridBuilder';
 import { shortLabel } from '../../../lib/altar/cabinet';
 import { gridLinkOf, gridObjects } from '../../../lib/altar/workings/crystalGrid';
 import { chantLine, emptyKnots, endKnots, KNOT_CHARMS, KNOT_COUNTS, KNOT_ENDS, knotObject, knotOrder, knotsLine, knotsProblem, knotStateOf, MODES, nextKnot, STYLES, tieKnot, tiedCount, TRADITIONAL_KNOTS, UNTIE_LINE, untieKnot, untiedToday, type KnotDraft } from '../../../lib/altar/workings/knots';
-import { addPoppetFilling, BODIES, emptyPoppet, endPoppet, ENDINGS, FOCUS, MAKING_STEPS, POPPET_ETHICS, poppetItem, poppetLine, poppetObject, poppetProblem, poppetStateOf, tendPoppet, toggleStep, type PoppetDraft, type PoppetEnd } from '../../../lib/altar/workings/poppet';
+import { addDraftPin, addPoppetFilling, BODIES, emptyPoppet, endPoppet, ENDINGS, FOCUS, holdCount, MAKING_STEPS, pinPoppet, POPPET_ETHICS, poppetItem, poppetLine, poppetObject, poppetProblem, poppetStateOf, removeDraftPin, setLook, tendPoppet, toggleStep, unpinPoppet, type PoppetDraft, type PoppetEnd } from '../../../lib/altar/workings/poppet';
+import { artBodyOf, lookWords } from '../../../lib/altar/workings/poppetLook';
 import { startItemLookBack } from '../../../lib/altar/apothecaryLookBack';
 import type { SavedObject } from '../../../lib/altar/types';
 import { saveApothecary, useWorkshop } from '../../../lib/altar/workshop';
@@ -27,6 +28,7 @@ import { colors, touch, type } from '../../../theme';
 import { Chip, ChipRow } from '../Chip';
 import { Sheet } from '../Sheet';
 import { Field, IngredientPicker, Label, nowIso, sheetStyles, type AltarContext, type Picked } from './common';
+import { BodyChooser, ColourChooser, EyeChooser, LinkChooser, PinBoard, PinList, PinMaker, SealChooser, StuffingChooser, usesOf } from './PoppetParts';
 import type { PlacedWorking } from './SpellJarSheet';
 
 const PURPOSES = ['Healing', 'Protection', 'Rest', 'Courage', 'Self-love', 'A fresh start'];
@@ -86,7 +88,8 @@ function PoppetBuilder({ altar, center, onPlace }: { altar: AltarContext; center
 
   return (
     <View style={sheetStyles.section}>
-      <Figure colors={d.fillings.map((f) => f.color)} />
+      {artBodyOf(d.body) ? <PinBoard look={{ ...d.look, body: d.body }} pins={d.pins} /> : <Figure colors={d.fillings.map((f) => f.color)} />}
+      {artBodyOf(d.body) && <Text style={[type.caption, styles.centerText]}>{lookWords({ ...d.look, body: d.body })}</Text>}
       <View style={sheetStyles.card}>
         <Label>Before you begin</Label>
         <Text style={sheetStyles.body}>{POPPET_ETHICS}</Text>
@@ -113,36 +116,62 @@ function PoppetBuilder({ altar, center, onPlace }: { altar: AltarContext; center
       </ChipRow>
       <Field label="Its purpose, in your words" value={d.purpose} onChangeText={(purpose) => setD((x) => ({ ...x, purpose }))} placeholder="Or in your own words" maxLength={120} />
 
-      <Label>Its body</Label>
-      <ChipRow>
-        {BODIES.map((b) => (
-          <Chip key={b.key} label={b.label} active={d.body === b.key} onPress={() => setD((x) => ({ ...x, body: b.key }))} />
-        ))}
-      </ChipRow>
-      <Text style={type.caption}>{BODIES.find((b) => b.key === d.body)?.line}</Text>
-
-      <Label>Fill it</Label>
-      <ChipRow>
-        {(['herb', 'stone', 'item'] as const).map((k) => (
-          <Chip key={k} label={k === 'herb' ? 'Herbs' : k === 'stone' ? 'Stones' : 'Small things'} active={kind === k} onPress={() => setKind(k)} />
-        ))}
-      </ChipRow>
-      <IngredientPicker key={kind} onPick={add} kinds={kind === 'herb' ? ['herb', 'cabinet'] : kind === 'stone' ? ['crystal', 'cabinet'] : ['salt', 'apothecary', 'cabinet']} suggestFor={d.purpose} placeholder={kind === 'item' ? 'A written name, a button, a thread…' : kind === 'stone' ? 'Search stones…' : 'Search herbs…'} chosen={d.fillings.map((f) => f.label)} />
-      {d.fillings.length > 0 && (
-        <ChipRow>
-          {d.fillings.map((f, i) => (
-            <Chip key={`${f.label}-${i}`} label={`${f.label}  ×`} accessibilityLabel={`Take out ${f.label}`} onPress={() => setD((x) => ({ ...x, fillings: x.fillings.filter((_, j) => j !== i) }))} />
-          ))}
-        </ChipRow>
-      )}
-
       <Label>Make it</Label>
-      {MAKING_STEPS.map((s, i) => (
-        <Pressable key={s.id} accessibilityRole="checkbox" accessibilityState={{ checked: d.made.includes(s.id) }} onPress={() => setD((x) => toggleStep(x, s.id))} style={styles.step}>
-          <Text style={sheetStyles.value}>{`${d.made.includes(s.id) ? '✓' : `${i + 1}.`} ${s.title}`}</Text>
-          <Text style={sheetStyles.body}>{s.text}</Text>
-        </Pressable>
+      {MAKING_STEPS.map((step, i) => (
+        <View key={step.id} style={styles.stepBox}>
+          <Pressable accessibilityRole="checkbox" accessibilityState={{ checked: d.made.includes(step.id) }} onPress={() => setD((x) => toggleStep(x, step.id))} style={styles.stepHead}>
+            <Text style={sheetStyles.value}>{`${d.made.includes(step.id) ? '✓' : `${i + 1}.`} ${step.title}`}</Text>
+            <Text style={sheetStyles.body}>{step.text}</Text>
+          </Pressable>
+          {step.id === 'shape' && (
+            <>
+              <BodyChooser bodies={BODIES} body={d.body} onBody={(body) => setD((x) => setLook(x, { body }))} />
+              {artBodyOf(d.body) && (
+                <>
+                  <ColourChooser look={{ ...d.look, body: d.body }} onColour={(colour) => setD((x) => setLook(x, { colour }))} />
+                  <EyeChooser eyes={d.look.eyes} onEyes={(eyes) => setD((x) => setLook(x, { eyes }))} />
+                </>
+              )}
+            </>
+          )}
+          {step.id === 'fill' && (
+            <>
+              <StuffingChooser
+                stuffing={d.look.stuffing}
+                onStuffing={(stuffing) => setD((x) => setLook(x, { stuffing }))}
+                chosen={d.fillings.map((f) => f.label)}
+                onAdd={(label, k) => setD((x) => addPoppetFilling(x, label, k, {}, entries))}
+              />
+              <Label>Herbs, stones and small things</Label>
+              <ChipRow>
+                {(['herb', 'stone', 'item'] as const).map((k) => (
+                  <Chip key={k} label={k === 'herb' ? 'Herbs' : k === 'stone' ? 'Stones' : 'Small things'} active={kind === k} onPress={() => setKind(k)} />
+                ))}
+              </ChipRow>
+              <IngredientPicker key={kind} onPick={add} kinds={kind === 'herb' ? ['herb', 'cabinet'] : kind === 'stone' ? ['crystal', 'cabinet'] : ['salt', 'apothecary', 'cabinet']} suggestFor={d.purpose} placeholder={kind === 'item' ? 'A written name, a button, a thread…' : kind === 'stone' ? 'Search stones…' : 'Search herbs…'} chosen={d.fillings.map((f) => f.label)} />
+              {d.fillings.length > 0 && (
+                <ChipRow>
+                  {d.fillings.map((f, j) => (
+                    <Chip key={`${f.label}-${j}`} label={`${f.label}  ×`} accessibilityLabel={`Take out ${f.label}`} onPress={() => setD((x) => ({ ...x, fillings: x.fillings.filter((_, n) => n !== j) }))} />
+                  ))}
+                </ChipRow>
+              )}
+              {d.fillings.some((f) => usesOf(f.label)) && <Text style={type.caption}>{d.fillings.map((f) => (usesOf(f.label) ? `${f.label}: ${usesOf(f.label)}` : '')).filter(Boolean).join('. ')}</Text>}
+            </>
+          )}
+          {step.id === 'link' && <LinkChooser taglock={d.look.taglock} onTaglock={(taglock) => setD((x) => setLook(x, { taglock }))} />}
+          {step.id === 'close' && <SealChooser seal={d.look.seal} onSeal={(seal) => setD((x) => setLook(x, { seal }))} />}
+        </View>
       ))}
+
+      {artBodyOf(d.body) && (
+        <View style={sheetStyles.section}>
+          <Label>Pins (optional)</Label>
+          <Text style={type.caption}>Pins in a poppet here are for healing and focus: each one sets an intention into that part of the body. You can add or take them out later on the altar.</Text>
+          <PinMaker look={{ ...d.look, body: d.body }} pins={d.pins} onSet={(pin) => setD((x) => addDraftPin(x, pin))} />
+          <PinList pins={d.pins} onRemove={(i) => setD((x) => removeDraftPin(x, i))} removeLabel="Remove" />
+        </View>
+      )}
 
       <Field label="Name the poppet" value={d.name} onChangeText={(name) => setD((x) => ({ ...x, name }))} placeholder="A name of its own (optional)" maxLength={60} />
       {problem && <Text style={sheetStyles.problem}>{problem}</Text>}
@@ -160,7 +189,14 @@ export function PoppetTendSheet({ visible, object, onClose, onUpdate }: { visibl
     <Sheet visible={visible && !!state} size="half" eyebrow="Poppet" title={shortLabel(object?.label, 'Poppet')} onClose={onClose}>
       {state && object && (
         <View style={sheetStyles.section}>
-          <Figure colors={state.fillings.map((f) => f.color)} ended={!!state.ended} />
+          {state.look && artBodyOf(state.body) ? (
+            <View style={{ opacity: state.ended ? 0.62 : 1 }}>
+              <PinBoard look={{ ...state.look, body: state.body }} pins={state.pins} />
+            </View>
+          ) : (
+            <Figure colors={state.fillings.map((f) => f.color)} ended={!!state.ended} />
+          )}
+          {state.look && <Text style={[type.caption, styles.centerText]}>{lookWords({ ...state.look, body: state.body })}</Text>}
           <Text style={type.body}>{`For ${state.purpose.toLowerCase() || 'a working'}${state.who ? `, standing for ${state.who}` : state.focus === 'self' ? ', standing for you' : ''}.`}</Text>
           <Text style={type.caption}>{poppetLine(state, now)}</Text>
           {!state.ended && (
@@ -173,6 +209,20 @@ export function PoppetTendSheet({ visible, object, onClose, onUpdate }: { visibl
                   setWords('');
                 }}
               />
+              {state.look && artBodyOf(state.body) && (
+                <>
+                  <Label>Pins</Label>
+                  <PinList
+                    pins={state.pins}
+                    onRemove={(i) => {
+                      onUpdate(unpinPoppet(object, i, nowIso(), words), 'The pin is out. Thank it for its work.');
+                      setWords('');
+                    }}
+                  />
+                  {state.pins.length > 0 && <Text style={type.caption}>Taking a pin out is kept as its own moment, with anything you say above.</Text>}
+                  <PinMaker look={{ ...state.look, body: state.body }} pins={state.pins} label="Set it in" onSet={(pin) => onUpdate(pinPoppet(object, pin, nowIso()), 'The pin is in.')} />
+                </>
+              )}
               <Label>When the work is done</Label>
               <ChipRow>
                 {ENDINGS.map((e) => (
@@ -187,7 +237,17 @@ export function PoppetTendSheet({ visible, object, onClose, onUpdate }: { visibl
               )}
             </>
           )}
-          {state.tendings.length > 0 && <Text style={type.caption}>{`Held ${state.tendings.length} time${state.tendings.length === 1 ? '' : 's'}.`}</Text>}
+          {holdCount(state) > 0 && <Text style={type.caption}>{`Held ${holdCount(state)} time${holdCount(state) === 1 ? '' : 's'}.`}</Text>}
+          {state.tendings.some((t) => t.kind === 'pin' || t.kind === 'unpin') && (
+            <View style={sheetStyles.section}>
+              {state.tendings
+                .filter((t) => t.kind === 'pin' || t.kind === 'unpin')
+                .slice(-6)
+                .map((t, i) => (
+                  <Text key={`${t.at}-${i}`} style={type.caption}>{`${new Date(t.at).toLocaleDateString(undefined, { day: 'numeric', month: 'short' })}: ${t.text}`}</Text>
+                ))}
+            </View>
+          )}
         </View>
       )}
     </Sheet>
@@ -467,5 +527,8 @@ export function CraftWorkingPanel({ object, onOpen }: { object: SavedObject; onO
 const styles = StyleSheet.create({
   toggle: { minHeight: touch, justifyContent: 'center', borderTopWidth: 1, borderTopColor: colors.hairline, paddingTop: 8 },
   step: { minHeight: touch, gap: 4, paddingVertical: 8, borderTopWidth: 1, borderTopColor: colors.hairline },
+  stepBox: { gap: 10, paddingVertical: 8, borderTopWidth: 1, borderTopColor: colors.hairline },
+  stepHead: { minHeight: touch, gap: 4 },
+  centerText: { textAlign: 'center' },
   living: { gap: 8, paddingTop: 10, borderTopWidth: 1, borderTopColor: colors.hairline },
 });

@@ -37,6 +37,9 @@ import { VesselLabelText } from '../shelves/VesselLabel';
 import { cleanVesselLabel, containedRect, VESSELS } from '../../lib/altar/vesselLabel';
 import { FoodHeap } from './FoodHeap';
 import { JarOnAltar } from './workings/JarOnAltar';
+import { PoppetFigure } from './PoppetFigure';
+import { poppetStateOf } from '../../lib/altar/workings/poppet';
+import { artBodyOf } from '../../lib/altar/workings/poppetLook';
 import { jarArt } from '../../lib/altar/workings/spellJar';
 import { FramePhoto } from './FramePhoto';
 import { frameOf, framePhotoRect, framePhotoTint, isFrame } from '../../lib/altar/frame';
@@ -551,6 +554,11 @@ export const AltarObjectArt = memo(function AltarObjectArt({ object, width, heig
   const photoRect = frame && picture ? framePhotoRect(object, width, height) : null;
   // A spell jar built in a glass of its own: its layers and seal over the glass.
   const jar = useMemo(() => jarArt(object, width, height), [object, width, height]);
+  // A poppet made with the customiser: its body, dye, eyes and pins, drawn as it looks.
+  const poppet = useMemo(() => {
+    const s = poppetStateOf(object);
+    return s?.look && artBodyOf(s.body) ? { look: { ...s.look, body: s.body }, pins: s.pins, ended: !!s.ended } : null;
+  }, [object]);
   const vesselLabel = (() => {
     const l = cleanVesselLabel(object.vesselLabel);
     return l?.vessel && l.text && object.imagePath === VESSELS[l.vessel].image ? l : null;
@@ -570,6 +578,19 @@ export const AltarObjectArt = memo(function AltarObjectArt({ object, width, heig
           <CandlePicture source={source} geometry={geometry} style={spent ? styles.spentImage : undefined} />
         ) : source && stickCut && stick ? (
           <StickPicture source={source} stick={stick} ash={ash} />
+        ) : poppet ? (
+          <View style={[styles.content, { paddingHorizontal: width * IMAGE_INSET.x, paddingVertical: width * IMAGE_INSET.y }]}>
+            <PoppetFigure
+              look={poppet.look}
+              pins={poppet.pins}
+              width={width * (1 - IMAGE_INSET.x * 2)}
+              height={height - width * IMAGE_INSET.y * 2}
+              lights={lights}
+              reach={lightReach}
+              still={stillLight}
+              dim={poppet.ended}
+            />
+          </View>
         ) : picture ? (
           // The website's image sits in the button's content box (6px / 1px padding on 80px).
           <View

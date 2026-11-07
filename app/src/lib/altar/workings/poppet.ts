@@ -16,6 +16,7 @@ import { readLivingState } from '../livingState.ts';
 import type { SavedObject } from '../types.ts';
 import { newId } from '../uid.ts';
 import { appPart, withAppPart } from './appState.ts';
+import { lookWords, MAX_PINS, pinColour, ZONES } from './poppetLook.ts';
 import { filling, type Filling, type FillingKind } from './sachet.ts';
 
 export type PoppetFocus = 'self' | 'other' | 'situation' | 'symbolic';
@@ -61,11 +62,17 @@ export const ENDINGS: { key: PoppetEnd; label: string; text: string }[] = [
   { key: 'keep', label: 'Keep it', text: 'A protection poppet of yourself can stay, tended. Wrap it in clean cloth and keep it somewhere safe.' },
 ];
 
-/** How it looks: room for the body's colour, eyes, stuffing and a taglock (not chosen yet; kept when present). */
-export type PoppetLook = { body?: PoppetBody; colour?: string; eyes?: string; stuffing?: string; taglock?: string; [key: string]: unknown };
-/** A pin set into the body: where (0–1 across and down the figure), its colour and what it means. */
-export type PoppetPin = { x: number; y: number; colour: string; meaning: string; at: string };
-export type Tending = { at: string; text: string };
+/**
+ * How it looks (lib/altar/workings/poppetLook): the body, its dye (a candle
+ * colour's key, or '' for undyed), the eyes, what it's stuffed with, the kind
+ * of taglock (a label only: no picture, hair or name is ever stored) and how
+ * it was sealed.
+ */
+export type PoppetLook = { body?: PoppetBody; colour?: string; eyes?: string; stuffing?: string; taglock?: string; seal?: string; [key: string]: unknown };
+/** A pin set into the body: where (0–1 across and down the body's picture), its colour and what it means, and the place and a note. */
+export type PoppetPin = { x: number; y: number; colour: string; meaning: string; at: string; zone?: string; note?: string };
+/** A moment in its keeping: held and spoken to, or a pin set in or taken out. */
+export type Tending = { at: string; text: string; kind?: 'hold' | 'pin' | 'unpin' };
 
 /** What livingState.app.poppet holds. */
 export type PoppetState = {
@@ -86,9 +93,48 @@ export type PoppetState = {
   ended?: { how: PoppetEnd; at: string; note: string };
 };
 
-export type PoppetDraft = { name: string; focus: PoppetFocus; who: string; purpose: string; body: PoppetBody; fillings: Filling[]; made: string[]; consent: boolean };
+export type PoppetDraft = { name: string; focus: PoppetFocus; who: string; purpose: string; body: PoppetBody; fillings: Filling[]; made: string[]; consent: boolean; look: PoppetLook; pins: PoppetPin[] };
 
-export const emptyPoppet = (): PoppetDraft => ({ name: '', focus: 'self', who: '', purpose: '', body: 'cloth', fillings: [], made: [], consent: false });
+export const emptyPoppet = (): PoppetDraft => ({ name: '', focus: 'self', who: '', purpose: '', body: 'cloth', fillings: [], made: [], consent: false, look: { body: 'cloth', colour: '', eyes: 'button', stuffing: '', taglock: '', seal: '' }, pins: [] });
+
+/** Change the look (the body is kept in both places, as it always was). */
+export const setLook = (draft: PoppetDraft, change: Partial<PoppetLook>): PoppetDraft => {
+  const look = { ...draft.look, ...change };
+  return { ...draft, look, body: (look.body as PoppetBody) ?? draft.body };
+};
+
+const cleanText = (s: unknown, max: number) => String(s ?? '').replace(/\s+/g, ' ').trim().slice(0, max);
+
+/** A pin as it is set in: its place, colour, what the colour means and your note. */
+export function makePin(at: { x: number; y: number; zone: string }, colour: string, note: string, now: string): PoppetPin {
+  const c = pinColour(colour);
+  const pin: PoppetPin = { x: Math.round(at.x * 1000) / 1000, y: Math.round(at.y * 1000) / 1000, colour: c.key, meaning: c.meaning, at: now, zone: ZONES.some((z) => z.key === at.zone) ? at.zone : 'free' };
+  const n = cleanText(note, 120);
+  if (n) pin.note = n;
+  return pin;
+}
+
+export const pinWords = (pin: PoppetPin) => {
+  const zone = ZONES.find((z) => z.key === pin.zone && z.key !== 'free');
+  return `${pinColour(pin.colour).label} pin${zone ? ` in the ${zone.label.toLowerCase()}` : ''}${pin.note ? `: ${pin.note}` : ''}`;
+};
+
+export const addDraftPin = (draft: PoppetDraft, pin: PoppetPin): PoppetDraft => (draft.pins.length >= MAX_PINS ? draft : { ...draft, pins: [...draft.pins, pin] });
+export const removeDraftPin = (draft: PoppetDraft, index: number): PoppetDraft => ({ ...draft, pins: draft.pins.filter((_, i) => i !== index) });
+
+/** Only the look's known keys, as short labels. */
+export function cleanLook(raw: unknown, body: PoppetBody): PoppetLook {
+  const r = raw && typeof raw === 'object' ? (raw as Record<string, unknown>) : {};
+  return { ...r, body, colour: cleanText(r.colour, 20), eyes: cleanText(r.eyes, 20) || 'button', stuffing: cleanText(r.stuffing, 40), taglock: cleanText(r.taglock, 20), seal: cleanText(r.seal, 20) };
+}
+
+function cleanPins(raw: unknown): PoppetPin[] {
+  if (!Array.isArray(raw)) return [];
+  return raw
+    .filter((p): p is Record<string, unknown> => !!p && typeof p === 'object' && Number.isFinite(Number((p as PoppetPin).x)) && Number.isFinite(Number((p as PoppetPin).y)))
+    .map((p) => ({ ...p, x: Number(p.x), y: Number(p.y), colour: cleanText(p.colour, 20) || 'white', meaning: cleanText(p.meaning, 120), at: cleanText(p.at, 40) }) as PoppetPin)
+    .slice(0, MAX_PINS);
+}
 
 export function addPoppetFilling(draft: PoppetDraft, label: string, kind: FillingKind, extra: { herb?: string; crystal?: string } = {}, entries?: LibraryEntry[] | null): PoppetDraft {
   const f = filling(label, kind, extra, entries);
@@ -129,7 +175,7 @@ export function poppetItem(draft: PoppetDraft, now: string, id: string = newId()
     typeLabel: type.label,
     imagePath: type.image,
     intention: draft.purpose.trim(),
-    notes: `${body.label} poppet${draft.focus === 'other' ? ', made with their consent' : ''}.`,
+    notes: `${draft.look ? lookWords({ ...draft.look, body: draft.body }) : `${body.label} poppet`}${draft.focus === 'other' ? ', made with their consent' : ''}.`,
     details: { poppet_focus: focus.website, representation_notes: draft.who.trim() || (draft.focus === 'self' ? 'Myself' : '') },
     ingredients: draft.fillings.map(fillingIngredient),
     // Held each week while it works.
@@ -165,7 +211,8 @@ export function poppetObject(
     fillings: draft.fillings,
     made: draft.made,
     consent: draft.focus === 'other' ? draft.consent : false,
-    pins: [],
+    look: cleanLook(draft.look, draft.body),
+    pins: cleanPins(draft.pins),
     tendings: [],
     madeAt: now,
   };
@@ -182,7 +229,8 @@ export function poppetStateOf(object: SavedObject): PoppetState | null {
     ...s,
     fillings: Array.isArray(s.fillings) ? s.fillings : [],
     made: Array.isArray(s.made) ? s.made : [],
-    pins: Array.isArray(s.pins) ? s.pins : [],
+    pins: cleanPins(s.pins),
+    ...(s.look ? { look: cleanLook(s.look, BODIES.some((b) => b.key === s.body) ? s.body : 'cloth') } : {}),
     tendings: Array.isArray(s.tendings) ? s.tendings : [],
     focus: FOCUS.some((f) => f.key === s.focus) ? s.focus : 'self',
     body: BODIES.some((b) => b.key === s.body) ? s.body : 'cloth',
@@ -198,6 +246,24 @@ export function tendPoppet(object: SavedObject, now: string, text = 'Held and sp
     apothecary: { ...(state.apothecary as object), lastTendedAt: now, nextTendingAt: new Date(Date.parse(now) + WEEK).toISOString() },
   });
 }
+
+/** A pin set into it on the altar, logged as a moment of its own. */
+export function pinPoppet(object: SavedObject, pin: PoppetPin, now: string): SavedObject {
+  const s = poppetStateOf(object);
+  if (!s || s.ended || s.pins.length >= MAX_PINS) return object;
+  return withAppPart(object, 'poppet', { ...s, pins: [...s.pins, pin], tendings: [...s.tendings, { at: now, text: `Set in a ${pinWords(pin)}`.slice(0, 300), kind: 'pin' as const }].slice(-60) }, now);
+}
+
+/** A pin taken out, logged as a moment of its own, with what was said. */
+export function unpinPoppet(object: SavedObject, index: number, now: string, note = ''): SavedObject {
+  const s = poppetStateOf(object);
+  const pin = s?.pins[index];
+  if (!s || !pin) return object;
+  const said = cleanText(note, 200);
+  return withAppPart(object, 'poppet', { ...s, pins: s.pins.filter((_, i) => i !== index), tendings: [...s.tendings, { at: now, text: `Took out the ${pinWords(pin)}${said ? ` (${said})` : ''}`.slice(0, 300), kind: 'unpin' as const }].slice(-60) }, now);
+}
+
+export const holdCount = (s: PoppetState) => s.tendings.filter((t) => !t.kind || t.kind === 'hold').length;
 
 /** The work is done: how it was ended, kept on the object. */
 export function endPoppet(object: SavedObject, how: PoppetEnd, now: string, note = ''): SavedObject {

@@ -949,7 +949,8 @@ export const HELP: HelpSection[] = [
         steps: [
           'Tap "Workings", then "Witch’s ladder or knots", "Poppet" or "Crystal grid".',
           'For a ladder, say what the knots hold, choose how many (nine is the usual), and what goes into each. Tap the cord on the altar to tie each knot with its line, or untie one a day to let go.',
-          'For a poppet, read the note on consent, choose who or what it stands for, fill it from the cabinet, and tick each step of the making. Tap it to hold it each week, and to end it when the work is done.',
+          'For a poppet, read the note on consent, choose who or what it stands for, and work through each step of the making: its body (cloth, wax, clay, corn husk or a root, each with a little of its history), its colour (with the meaning of that candle colour), its eyes, what fills it (from your shelves and the cabinet), the kind of link, and how it is sealed. Only the kind of link is noted, never a photo or hair.',
+          'Pins are optional: tap the body (or choose head, heart, belly, hands or feet), pick a colour, whose meaning is shown, and add a short note. Taking a pin out later is kept as its own moment. Tap the poppet to hold it each week, and to end it when the work is done.',
           'For a grid, choose a shape, a centre stone and the points from My stones or the Library. Tap a stone to activate the grid, tend it daily and take it down; its log is in Craft → Crystal → Grids.',
         ],
         href: '/altar',
