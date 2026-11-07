@@ -1,6 +1,6 @@
 # Salt & Sovereignty Tarot: Style Guide
 
-Version 2.0 (replaces v1.0, the candlelit oil-painting direction, which the owner rejected). Art is generated with Canva AI. The frame, numerals and names are added in code.
+Version 3.0. v3 keeps the v2 forest, light and Hekate direction but makes every card **simpler**: one centred subject, flatter illustration, fewer gold lines and a plainer frame (owner, round 2: *"getting there, but I'm still wanting a little more simple of cards"*). v1.0, the candlelit oil-painting direction, was rejected. Art is generated with Canva AI. The frame, numerals and names are added in code.
 
 Owner brief: *"Needs to feel S&S but witchy, and less realistic looking. I would be happier without using people at all. A mossy wooded forest with sunshine and moonlight, and Hekate as an undertone but not prominent. Wandering Moon tarot meets the attached image."* The attached image is the owner's own Moon/Sun pair, and it is the visual anchor for this guide.
 
@@ -13,7 +13,7 @@ Owner brief: *"Needs to feel S&S but witchy, and less realistic looking. I would
 3. **Meaning first.** Each card keeps its Rider-Waite-Smith (RWS) meaning, carried by symbols and creatures that a reader can still recognise.
 4. **One forest.** Every card is a place in the same mossy wood: the same moss, stones, light and gold linework. Each suit has its own corner of that forest.
 5. **Hekate is felt, not seen.** She appears only through quiet signs (section 6), never as a figure.
-6. **AI paints, code finishes.** The AI makes only the art panel. The border, hanging ornaments, name plate and back are drawn in code, so they are crisp and identical on every card.
+6. **AI paints, code finishes.** The AI makes only the art panel. The border, top ornament, name plate and back are drawn in code, so they are crisp and identical on every card.
 
 Mood reference: Wandering Moon tarot (whimsical, botanical, hand-illustrated, nature instead of people). Use it for mood only. Never copy its compositions, creatures-per-card or designs.
 
@@ -35,10 +35,10 @@ The app keeps traditional ids and names (`cups-13` = Queen of Cups). The S&S nam
 
 ### Technique
 
-- **Ink line:** fine, slightly irregular sepia-black outlines on stones, bark, leaves and creatures. It should look drawn, not traced.
-- **Watercolour and gouache:** soft washes with visible paper grain, granulation in shadows, and opaque gouache highlights on moss, petals and water glints.
-- **Gold leaf:** thin gold linework for celestial things (moon and sun halos, stars, hanging chains, carved symbols). It is used as accent, never as a flat fill.
-- **Detail density:** rich in the foreground (ferns, mushrooms, small crystals, flowers) and simpler in the background, so the subject reads at thumbnail size.
+- **Simple first:** a flat, clean storybook illustration that reads at phone thumbnail size. Less texture and fine detail, more calm space.
+- **Ink line:** confident, even dark outlines on the subject and the few supporting shapes. Background trees can be flat silhouettes with no outline.
+- **Washes:** soft flat watercolour or gouache washes with gentle gradients in sky and mist. No dense granulation, hatching or busy texture.
+- **Gold:** in the art, only as small glints (moonlight on water, a crystal, a sunlit rim). All gold ornament is drawn by the frame code.
 
 ### Palette
 
@@ -52,7 +52,7 @@ The app keeps traditional ids and names (`cups-13` = Queen of Cups). The S&S nam
 | Deep forest black | edges, deepest shadows | `#0E110D` |
 | Frame gold (code only) | border, ornaments, type | `#C9A54C` |
 
-Accents allowed in small amounts: foxglove pink, heather purple, labradorite blue, ember orange (Wands only), and pale mushroom cream.
+Each card uses **3 or 4 of these colours plus gold**, chosen by its light (below). Accents allowed in very small amounts: foxglove pink, heather purple, labradorite blue, ember orange (Wands only), and pale mushroom cream.
 
 ### Light logic
 
@@ -68,43 +68,39 @@ There is always a visible light source (moon, sun, lantern, glow-worms, fireflie
 
 ### Composition
 
-- Vertical panel, ratio about 0.58 (62 x 107 mm). One clear subject sits in the middle third. The sky or canopy sits in the top quarter, and stays fairly clear so the code-drawn hanging ornaments read against it.
-- Foreground framing of ferns, moss mounds and mushrooms in the bottom quarter. Keep the bottom 8% simple, because the name plate overlaps that zone slightly.
-- Creatures are naturalistic in anatomy but softly stylised, not cartoon. No clothes, no human expressions, and no anthropomorphic poses.
-- Count matters: numbered minors show the exact number of suit objects, and they must be countable.
+- Vertical panel, ratio about 0.58 (62 x 107 mm). **One focal subject, centred**, filling about the middle half of the panel.
+- **Generous empty space** around it: open sky, mist, still water or dark forest silhouette. The top fifth stays clear for the frame ornament.
+- **At most 2 or 3 supporting elements** (for example a few ferns, one mushroom cluster, one moth). No clutter of flowers, crystals or hanging things.
+- Keep the bottom 8% plain (ferns or moss in silhouette), because the name plate overlaps it.
+- Creatures are softly stylised, not cartoon. No clothes, no human expressions, and no anthropomorphic poses.
+- Count matters: numbered minors show the exact number of suit objects, arranged simply (a row, arc or stack) so they can be counted at a glance.
 
 ### Avoid on every card
 
-People or any part of a person; text or letters in the art; painted borders or frames; photoreal rendering; neon or saturated digital glow; gore; skulls as a focal point; closed-practice regalia; copied Wandering Moon or RWS compositions.
+People or any part of a person; text or letters in the art; painted borders or frames; photoreal rendering; neon or saturated digital glow; busy texture, hanging ornaments or clutter in the art; gore; skulls as a focal point; closed-practice regalia; copied Wandering Moon or RWS compositions.
 
 ---
 
 ## 3. Frame spec (built in code)
 
-The frame follows the owner's reference and is drawn with Pillow (`tarot2-frame.py` in the session scratchpad; a production copy belongs in `scripts/tarot/`).
+The frame is drawn with Pillow (`tarot3-frame.py` in the session scratchpad; a production copy belongs in `scripts/tarot/`). It is deliberately plain so the art carries the card.
 
 - **Card:** 70 x 120 mm. App export 600 x 1030 px, rendered at 4x and downsampled.
-- **Ground:** deep forest black `#0E110D` behind everything, with rounded outer corners (radius about 3 mm).
-- **Border:** a thin gold double line, outer line 1.5 mm from the edge and inner line 0.6 mm inside it, in `#C9A54C`, with a 0.2 mm `#6E5524` shadow. The corners are softly rounded, with a small dot-and-dash at each corner.
-- **Art panel:** inset inside the inner line, with a top arch rising slightly at the centre, as in the reference. A soft 3 mm vignette at the edges blends into black.
-- **Hanging ornaments:** code draws four thin gold chains from the top arch, set symmetrically: two long ones ending in crescents facing outward, and two short ones ending in four-point stars. The **centre ornament is painted by the AI** (prompt slot `[ornament]`): a triple moon or crescent for moon cards, a rayed sun for sun cards, and a sun-and-crescent for dawn or dusk cards. That way it can glow into the scene. Code never adds a second centre emblem.
-- **Name plate:** a dark band (`#14170F`, 88% opaque over the art) across the bottom 11% of the card, with gold double-line top and bottom rules. The name is centred in **gold serif capitals** (Cormorant Garamond SemiBold, tracking +12%). Long names go on two lines ("WITCH" / "OF WANDS").
-- **Plate emblems:** one gold emblem left and one right of the name.
+- **Ground:** deep forest black `#0E110D`, rounded outer corners (radius about 3 mm).
+- **Border:** a **single thin gold line** (`#C9A54C`, 0.25 mm) 1.8 mm from the edge, with a small gold corner mark (a dot and two short ticks) inside each corner. No double lines, arch or chains.
+- **Art panel:** a plain rectangle inside the border with a 1 mm black margin and a soft vignette into black at the edges.
+- **Numeral:** small gold serif Roman numeral (Majors) or rank (minors) centred at the top, sitting in a short gap in the border line.
+- **Top ornament:** one small gold emblem centred just under the numeral, and nothing else: a crescent for moon cards, a rayed sun for sun cards, or the suit emblem for minors.
+- **Name plate:** a plain dark band (`#14170F`, about 90% opaque) across the bottom 10%, with one thin gold rule on top. The name is centred in **gold serif capitals** (Cormorant Garamond SemiBold, tracking +12%). Long names go on two lines ("WITCH" / "OF WANDS"). No side emblems.
 
-| Group | Emblem |
+| Group | Top ornament |
 |---|---|
-| Moon Majors (High Priestess, Moon, Star, Hermit, Death, Hanged One) | Crescent moons facing inward |
-| Sun Majors (Sun, Empress, Emperor, Strength, Chariot, Lovers, Fool) | Rayed suns |
+| Moon Majors (High Priestess, Moon, Star, Hermit, Death, Hanged One) | Crescent moon |
+| Sun Majors (Sun, Empress, Emperor, Strength, Chariot, Lovers, Fool) | Rayed sun |
 | Remaining Majors | Eight-point star |
-| Wands | Wand: shaft with a lozenge crystal tip |
-| Cauldrons | Small cauldron with three steam lines |
-| Athames | Upright blade with crossguard |
-| Pentacles | Circled pentagram |
+| Wands / Cauldrons / Athames / Pentacles | Wand with lozenge tip / cauldron with steam / upright blade / circled pentagram |
 
-- **Numeral:** a small gold Roman numeral (Majors) or rank (minors) is set centred on the top border, on a tiny black cartouche between the hanging chains.
-- **Card back:** deep forest black, double gold border, a centred triple moon over a three-way path mark, mirrored top and bottom so it reads the same reversed. No text.
-
-The frame script `tarot2-frame.py` implements this spec; the test cards were framed with it.
+- **Card back:** deep forest black, single gold border with corner marks, one centred triple moon. Symmetric so it reads the same reversed. No text.
 
 Exports: `00-the-fool.webp` and similar at 600 x 1030 (WebP q85), thumbnails at 200 x 343, and print masters at 898 x 1488 px minimum (76 x 126 mm with bleed, 300 dpi; AI-upscale 2x and check softness first).
 
@@ -159,7 +155,6 @@ Recurring S&S motifs:
 - Small quartz and amethyst crystals.
 - Ferns.
 - Still water that reflects the sky.
-- Gold celestial linework (crescents, stars, rayed suns).
 
 The owner's wand (aspen and labradorite) appears whenever a wand is shown.
 
@@ -168,29 +163,24 @@ The owner's wand (aspen and labradorite) appears whenever a wand is shown.
 ## 7. Prompt template (Canva AI generate-image, `PORTRAIT_9_16`)
 
 ```
-Hand-illustrated tarot card art in ink linework with watercolour and gouache
-texture and fine gold-leaf linework; storybook botanical illustration, not
-photorealistic. NO people, no human figures, no faces, no hands, no text, no
-letters, no border, no frame.
-Scene: [CARD NAME]. [SUBJECT: creature, place or object, with suit objects counted].
-[SETTING: suit corner of the mossy forest]. [2-4 FOREGROUND DETAILS: ferns,
-mushrooms, crystals, flowers]. [OPTIONAL: one Hekate sign].
-[LIGHT: moonlit silver-violet | warm sunlit gold | dusk/dawn blend].
-Palette moss green, bark brown, dusk violet, moonlit silver, sunlit gold, deep
-forest black. Fine gold celestial linework: [ornament] hanging on a thin gold
-chain from the top of the picture. Quiet, witchy, whimsical, richly detailed,
-vertical composition.
+Simple flat illustrated tarot card art, clean confident ink outlines, soft flat
+watercolour washes, limited palette of [3-4 COLOURS] with small gold accents;
+minimal detail, lots of empty space, readable as a small thumbnail; storybook
+illustration, not photorealistic. NO people, no figures, no faces, no hands, no
+text, no letters, no border, no frame.
+Scene: [CARD NAME]. One clear centred subject: [SUBJECT, suit objects counted].
+[EMPTY SPACE: sky, mist, water or dark forest silhouette around it].
+Only two supporting details: [e.g. a few ferns at the bottom edge, one moth].
+[OPTIONAL: one Hekate sign]. Quiet, witchy, [serene | warm], vertical composition.
 ```
 
-Rules: generate once per card, and regenerate at most once, only when the result is clearly off-brief (a person appears, text appears, it looks photoreal, or the count is wrong). Crop to 0.58 in code.
+Rules: generate once per card, and regenerate at most once, only when the result is clearly off-brief (a person, text, photorealism, clutter, or a wrong count). Crop to 0.58 in code.
 
-### Test-card prompts (the slots filled)
+### Test-card prompts (subject lines)
 
-**The High Priestess (II, moon).** Scene: The High Priestess as a place. Deep in a mossy wooded forest at night, two tall moss-covered standing stones, one pale grey and one near-black, flank a still dark forest pool that mirrors a full silver moon above. Between the stones hangs a veil of trailing moss and silver ivy strung with small pomegranates. A closed old leather book with a crescent-moon clasp rests on a mossy ledge at the foot of the pale stone. A faint triple-moon symbol is carved into the dark stone. White lilies and ferns at the water's edge, glowing pale mushrooms, small quartz crystals, fireflies. Moonlit silver-violet light. Gold ornament: a crescent and tiny stars.
-
-**Ace of Cauldrons (water, dawn).** Scene: Ace of Cauldrons. In a mossy wooded forest beside a small waterfall, a single small black iron cauldron sits on a moss-covered rock, brimming over with clear glowing water that spills in five thin streams into a pool with water lilies. A pale moth hovers above the rim; dew on ferns; a crescent moon reflected in the pool; tiny mushrooms and small crystals. Dawn light: soft sunlit gold blending into silver-violet mist. Gold ornament: a sun-and-crescent.
-
-**Witch of Wands (fire, sun).** Scene: Witch of Wands. A sleek black cat with amber eyes sits upright on a sun-warmed mossy stone in a clearing at the edge of an oak and aspen forest. Leaning against the stone is a wand of pale aspen wood tipped with a labradorite crystal flashing blue and gold. Tall sunflowers and foxgloves, ferns and small mushrooms, a small old iron lantern glowing on the stone, golden embers and dandelion seeds drifting. Warm late-afternoon sunlight. Gold ornament: a radiant sun.
+- **The High Priestess (II, moon; teal-black, moss, violet, silver):** two simple moss-topped standing stones, one pale and one dark, either side of a small round pool reflecting a large full moon in an empty night sky; a few ferns; a faint crescent carved on one stone.
+- **Ace of Cauldrons (dawn mist; same palette):** one small black iron cauldron on a round mossy stone, brimming with glowing silver water spilling into a still pool; one pale moth; a few ferns.
+- **Witch of Wands (sun; black, moss, sunlit gold, violet):** a black cat with amber eyes sitting upright on a smooth mossy stone, the aspen-and-labradorite wand leaning against it; golden haze behind; a few ferns and one foxglove.
 
 ---
 
@@ -227,8 +217,8 @@ Numbered minors follow their RWS meanings, set in the suit's corner with the exa
 
 ## 9. Production checklist
 
-1. Fill the template, then generate once (`PORTRAIT_9_16`).
+1. Fill the template (one subject, two supporting details), then generate once (`PORTRAIT_9_16`).
 2. Reject and regenerate (once) only for people, text, photorealism or a wrong count.
 3. Crop to 0.58 and frame with the frame script; check the plate wording against `app` ids.
-4. Check at thumbnail size: does the subject still read?
+4. Check at thumbnail size: does the subject read at once, with clear space around it?
 5. Export WebP 600 x 1030 plus a thumbnail; make print masters later from the upscaled art.
