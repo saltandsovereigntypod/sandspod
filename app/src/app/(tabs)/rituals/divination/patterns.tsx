@@ -105,7 +105,7 @@ export default function DivinationPatterns() {
               <SectionLabel>Your tarot decks</SectionLabel>
               <Card>
                 <Bars wideLabel unit={['reading', 'readings']} rows={p.tarotDecks.map((d) => ({ key: d.deck, label: d.label, count: d.count }))} />
-                <Body muted>Each card’s page reads in the deck it was drawn with: Waite’s for the Rider–Waite–Smith, the Marseille’s and the Sola Busca’s own.</Body>
+                <Body muted>Each card’s page reads in the deck it was drawn with: Waite’s for the Salt & Sovereignty Tarot and the Rider–Waite–Smith, the Marseille’s and the Sola Busca’s own.</Body>
                 <Row icon="wheel" title="Your decks and their meanings" last onPress={() => router.push('/rituals/divination/decks' as Href)} />
               </Card>
             </View>

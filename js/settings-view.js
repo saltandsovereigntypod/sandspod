@@ -25,7 +25,7 @@
     if (!moreLoading) moreLoading = MORE_SCRIPTS.reduce((chain, src) => chain.then(() => new Promise((resolve, reject) => { if ((src.includes("guides") && global.SaltCore?.guides) || (src.includes("coven-paths") && global.SaltCovenPaths) || (src.includes("settings-more") && global.SettingsMore)) return resolve(); const script = doc.createElement("script"); script.src = src; script.onload = resolve; script.onerror = reject; doc.head.append(script); })), global.SaltScripts?.traditionalLibrary() || Promise.resolve()).then(() => true).catch(() => { moreLoading = null; return false; });
     return moreLoading;
   }
-  const categoryForName = (name = "") => name.startsWith("library_") ? "library" : name.startsWith("companion_") ? "companion" : name.startsWith("living_state_") ? "objects" : ["preferred_name", "pronouns", "magical_name", "sanctuary_greeting_name"].includes(name) ? "identity" : ["default_altar_background", "crystal_wear"].includes(name) ? "appearance" : name === "tarot_deck" ? "divination" : "book";
+  const categoryForName = (name = "") => name.startsWith("library_") ? "library" : name.startsWith("companion_") ? "companion" : name.startsWith("living_state_") ? "objects" : ["preferred_name", "pronouns", "magical_name", "sanctuary_greeting_name"].includes(name) ? "identity" : ["default_altar_background", "crystal_wear"].includes(name) ? "appearance" : name === "tarot_deck_choice" ? "divination" : "book";
   function backgroundOptions(items = [], saved = "") {
     const names = [...new Set(items.map((item) => item?.name || item?.background).filter(Boolean))];
     if (saved && !names.includes(saved)) names.unshift(saved);
@@ -99,7 +99,7 @@
     loadMore().then((ok) => { form.querySelectorAll("[data-settings-more-loading]").forEach((node) => { if (ok) node.remove(); else node.textContent = "These settings couldn’t load just now. Please check your connection and open Settings again."; }); if (ok) return global.SettingsMore.mount({ practice: buckets.practice, calendar: buckets.calendar, library: buckets.library, today: buckets.today, location: buckets.location, divination: buckets.divination, covens: buckets.covens }); return null; }).catch((error) => console.error(error));
     global.SaltAccountDataUI?.mount?.(buckets.account, user);
     global.SanctuaryBackupUI?.mount?.(buckets.account, user);
-    form.querySelectorAll("[name]").forEach((input) => { const value = saved[input.name]; if (input.type === "checkbox") input.checked = Boolean(value); else if (value != null) input.value = value; });
+    form.querySelectorAll("[name]").forEach((input) => { const value = input.name === "tarot_deck_choice" && typeof global.effectiveTarotDeck === "function" ? global.effectiveTarotDeck(saved) : saved[input.name]; if (input.type === "checkbox") input.checked = Boolean(value); else if (value != null) input.value = value; });
     const save = form.querySelector('button[type="submit"]'); save.textContent = "Save Changes"; save.disabled = true;
     const status = document.createElement("p"); status.className = "settings-save-status"; status.setAttribute("role", "status"); status.setAttribute("aria-live", "polite"); status.textContent = "All changes saved."; form.append(status);
     form.addEventListener("input", () => { form.dataset.dirty = "true"; save.disabled = false; status.textContent = "Unsaved changes."; });

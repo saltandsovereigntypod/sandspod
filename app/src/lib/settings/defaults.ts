@@ -106,7 +106,9 @@ export function defaultSettings(): Settings {
     journal_omens_place: 'grimoire',
     // The Grimoire home as you've arranged it, as JSON ('' until first arranged): lib/grimoire/layout.ts.
     grimoire_layout: '',
+    // The tarot deck: tarot_deck_choice once chosen ('' until then: the Salt & Sovereignty Tarot); tarot_deck is the older key (lib/divination/decks.ts chosenDeck).
     tarot_deck: 'rws',
+    tarot_deck_choice: '',
     // Where Year in review begins the year (lib/grimoire/yearSpan.ts): 'calendar', 'january', 'samhain' or 'moon'.
     year_review_start: 'calendar',
     sync_traditional_library_to_grimoire: false,

@@ -3,7 +3,8 @@
 The website keeps each deck's 78 cards as 600px-tall WebP: the
 Rider-Waite-Smith (Pamela Colman Smith, 1909) in ../assets/divination/tarot,
 the Tarot de Marseille (Nicolas Conver, 1760) and the Sola Busca (about 1491)
-in ../assets/divination/decks/<deck>; all public domain, with every card's
+in ../assets/divination/decks/<deck>; all public domain but the Salt &
+Sovereignty Tarot (our own, 2026, in ../assets/divination/decks/salt-sovereignty), with every card's
 source in app/assets/divination/decks/<deck>/SOURCES.md (and
 ../assets/divination/SOURCES.md for the Rider-Waite-Smith). The app bundles
 them so draws work offline, packed seven across and two down on six sheets
@@ -29,6 +30,7 @@ DECKS = {
     "rws": (SITE / "tarot", APP / "assets" / "divination" / "tarot-sheets"),
     "marseille": (SITE / "decks" / "marseille", APP / "assets" / "divination" / "decks" / "marseille"),
     "sola-busca": (SITE / "decks" / "sola-busca", APP / "assets" / "divination" / "decks" / "sola-busca"),
+    "salt-sovereignty": (SITE / "decks" / "salt-sovereignty", APP / "assets" / "divination" / "decks" / "salt-sovereignty"),
 }
 
 old = APP / "assets" / "divination" / "tarot"

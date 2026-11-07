@@ -1,7 +1,11 @@
-// The tarot decks to draw with, all public domain: Pamela Colman Smith's
+// The tarot decks to draw with: the Salt & Sovereignty Tarot, the app's own
+// deck and the default for anyone who hasn't chosen one, and three in the
+// public domain: Pamela Colman Smith's
 // Rider–Waite–Smith (1909), the default; Nicolas Conver's Tarot de Marseille
 // (1760, in A. Camoin's printing of about 1890–1900); and the Sola Busca
-// (Italy, about 1491), the oldest complete 78-card deck. Every deck uses the
+// (Italy, about 1491), the oldest complete 78-card deck.
+// The Salt & Sovereignty Tarot reads with Waite's meanings, under its own
+// suit and court names (Cauldrons, Athames; Seeker, Wanderer, Witch, Elder). Every deck uses the
 // same 78 card ids; a deck changes the picture, the card's own title where
 // the deck names it differently, and the meanings: the Rider–Waite–Smith
 // reads with Waite's (tarot.ts), the others with their own
@@ -12,7 +16,7 @@
 
 import { MAJORS, TAROT_DECK, type Suit, type TarotCard } from './tarot.ts';
 
-export type DeckId = 'rws' | 'marseille' | 'sola-busca';
+export type DeckId = 'salt-sovereignty' | 'rws' | 'marseille' | 'sola-busca';
 
 export type TarotDeckInfo = {
   id: DeckId;
@@ -26,12 +30,30 @@ export type TarotDeckInfo = {
   credit: string;
 };
 
-export const DEFAULT_DECK: DeckId = 'rws';
+/** The deck for anyone who hasn't chosen one. */
+export const DEFAULT_DECK: DeckId = 'salt-sovereignty';
 
-/** The settings key (in `user_settings.settings`, as on the website). */
-export const DECK_SETTING = 'tarot_deck';
+/** The deck a kept reading from before decks was drawn with. */
+export const LEGACY_DECK: DeckId = 'rws';
+
+/**
+ * The settings key a chosen deck is saved under (in `user_settings.settings`,
+ * as on the website); '' until someone chooses. The older `tarot_deck` held
+ * 'rws' for everyone by default, so only a deck other than that one there
+ * counts as chosen.
+ */
+export const DECK_SETTING = 'tarot_deck_choice';
+export const OLD_DECK_SETTING = 'tarot_deck';
 
 export const TAROT_DECKS: TarotDeckInfo[] = [
+  {
+    id: 'salt-sovereignty',
+    name: 'Salt & Sovereignty Tarot',
+    made: 'Salt & Sovereignty, 2026',
+    about:
+      'Our own deck, illustrated for this app: 78 cards set in one mossy forest, with no people in them, only creatures, plants, stones and light. Cups are Cauldrons and Swords are Athames, and the court cards are the Seeker, Wanderer, Witch and Elder (Page, Knight, Queen and King). It reads with the Rider–Waite–Smith meanings.',
+    credit: 'Salt & Sovereignty Tarot, an original deck illustrated for Salt & Sovereignty, 2026.',
+  },
   {
     id: 'rws',
     name: 'Rider–Waite–Smith',
@@ -62,13 +84,21 @@ const DECK_IDS = TAROT_DECKS.map((d) => d.id);
 export const isDeckId = (value: unknown): value is DeckId => typeof value === 'string' && (DECK_IDS as string[]).includes(value);
 
 /** A deck by id; anything unknown (or missing) is the Rider–Waite–Smith. */
-export const deckInfo = (id: unknown): TarotDeckInfo => TAROT_DECKS.find((d) => d.id === id) ?? TAROT_DECKS[0];
+export const deckInfo = (id: unknown): TarotDeckInfo => TAROT_DECKS.find((d) => d.id === id) ?? TAROT_DECKS.find((d) => d.id === LEGACY_DECK)!;
 
-/** The deck chosen in settings. */
-export const chosenDeck = (settings: Record<string, unknown> | null | undefined): DeckId => (isDeckId(settings?.[DECK_SETTING]) ? (settings![DECK_SETTING] as DeckId) : DEFAULT_DECK);
+/**
+ * The deck chosen in settings: the one chosen, or a Marseille or Sola Busca
+ * picked before the choice had its own key, or else the Salt & Sovereignty Tarot.
+ */
+export const chosenDeck = (settings: Record<string, unknown> | null | undefined): DeckId => {
+  const choice = settings?.[DECK_SETTING];
+  if (isDeckId(choice)) return choice;
+  const old = settings?.[OLD_DECK_SETTING];
+  return isDeckId(old) && old !== LEGACY_DECK && old !== DEFAULT_DECK ? old : DEFAULT_DECK;
+};
 
 /** The deck a kept reading was drawn with: its own `deck`, or the Rider–Waite–Smith for readings from before decks. */
-export const deckOfReading = (reading: { deck?: unknown } | null | undefined): DeckId => (isDeckId(reading?.deck) ? (reading!.deck as DeckId) : DEFAULT_DECK);
+export const deckOfReading = (reading: { deck?: unknown } | null | undefined): DeckId => (isDeckId(reading?.deck) ? (reading!.deck as DeckId) : LEGACY_DECK);
 
 // ─── Card titles in each deck ────────────────────────────────────────────
 
@@ -132,6 +162,11 @@ const SOLA_BUSCA_MAJORS = [
 
 const SOLA_BUSCA_SUITS: Record<Suit, string> = { Wands: 'Batons', Cups: 'Cups', Swords: 'Swords', Pentacles: 'Coins' };
 
+// The Salt & Sovereignty Tarot's suits and courts (docs/tarot/style-guide.md).
+const SS_SUITS: Record<Suit, string> = { Wands: 'Wands', Cups: 'Cauldrons', Swords: 'Athames', Pentacles: 'Pentacles' };
+const SS_COURTS = ['Seeker', 'Wanderer', 'Witch', 'Elder'];
+const RANK_WORDS = ['Ace', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine', 'Ten'];
+
 const majorNumber = (card: TarotCard) => Number(card.id.slice(0, 2));
 const minorRank = (card: TarotCard) => Number(card.id.slice(-2)) - 1;
 
@@ -144,6 +179,12 @@ const minorRank = (card: TarotCard) => Number(card.id.slice(-2)) - 1;
 export function deckCardTitle(deck: DeckId, idOrName: string): string | null {
   const card = TAROT_DECK.find((c) => c.id === idOrName || c.name === idOrName);
   if (!card || deck === 'rws') return null;
+  if (deck === 'salt-sovereignty') {
+    if (card.arcana === 'major') return card.name === 'The Hanged Man' ? 'The Hanged One' : null;
+    const rank = minorRank(card);
+    const title = `${rank >= 10 ? SS_COURTS[rank - 10] : RANK_WORDS[rank]} of ${SS_SUITS[card.suit!]}`;
+    return title === card.name ? null : title;
+  }
   if (deck === 'marseille') {
     if (card.arcana === 'major') return MARSEILLE_MAJORS[majorNumber(card)];
     const rank = FRENCH_RANKS[minorRank(card)];
@@ -158,13 +199,20 @@ export function deckCardTitle(deck: DeckId, idOrName: string): string | null {
   return suit === card.suit ? null : card.name.replace(card.suit!, suit);
 }
 
-/** "The Fool", or "Strength (XI · La Force)" where the deck titles it differently. */
+/** Whether a deck's own card names lead, with the traditional name after: the Salt & Sovereignty Tarot. */
+export const deckNamesLead = (deck: unknown) => deck === 'salt-sovereignty';
+
+/** "The Fool", or "Strength (XI · La Force)" where the deck titles it differently; "Witch of Wands · Queen of Wands" in the Salt & Sovereignty Tarot. */
 export function cardLabelIn(deck: DeckId, idOrName: string): string {
   const card = TAROT_DECK.find((c) => c.id === idOrName || c.name === idOrName);
   if (!card) return idOrName;
   const title = deckCardTitle(deck, card.id);
+  if (title && deckNamesLead(deck)) return `${title} · ${card.name}`;
   return title ? `${card.name} (${title})` : card.name;
 }
+
+/** A drawn card's name as a deck shows it: "Witch of Wands · Queen of Wands" in the Salt & Sovereignty Tarot, the name itself elsewhere (and for anything not a tarot card). */
+export const drawnNameIn = (deck: unknown, name: string): string => (deckNamesLead(deck) ? cardLabelIn(deck as DeckId, name) : name);
 
 // ─── Pictures ────────────────────────────────────────────────────────────
 
@@ -177,6 +225,7 @@ export function deckImagePath(deck: DeckId, cardId: string): string {
 export function deckPictureLabel(deck: DeckId): string {
   if (deck === 'marseille') return 'from Nicolas Conver’s Tarot de Marseille';
   if (deck === 'sola-busca') return 'from the Sola Busca tarot';
+  if (deck === 'salt-sovereignty') return 'from the Salt & Sovereignty Tarot';
   return 'Pamela Colman Smith’s picture';
 }
 

@@ -17,7 +17,7 @@ import { lookBackFrom, normalizeReading, READINGS, type ReadingLink, type Readin
 import { addEntry, useCraft } from '../../../../lib/craft/store';
 import { customSpreads, entryIdOfSpread, SPREADS_COLLECTION } from '../../../../lib/divination/custom';
 import { DECK_READING_NOTES } from '../../../../lib/divination/deckMeanings';
-import { chosenDeck, DECK_SETTING, deckInfo, TAROT_DECKS, type DeckId } from '../../../../lib/divination/decks';
+import { chosenDeck, DECK_SETTING, deckInfo, drawnNameIn, TAROT_DECKS, type DeckId } from '../../../../lib/divination/decks';
 import { todaysCard, todaysCardLabel } from '../../../../lib/divination/daily';
 import { clearDrawDraft, loadDrawDraft, saveDrawDraft } from '../../../../lib/divination/draftStore';
 import { draftKey, draftSummary, isFreshDraft, opensOwnDraw, restoreDraft, stampDraft, type DrawDraft } from '../../../../lib/divination/drawDraft';
@@ -468,7 +468,7 @@ export default function DrawScreen() {
         <Card accent>
           <SectionLabel>{position && spread.positions.length > 1 ? `${(selected ?? 0) + 1} · ${position.name}` : spread.label}</SectionLabel>
           {position && spread.positions.length > 1 && <Body muted>{position.about}</Body>}
-          <Text style={type.cardTitle}>{`${shown.glyph ? `${shown.glyph}  ` : ''}${shown.name}${shown.reversed ? ', reversed' : ''}`}</Text>
+          <Text style={type.cardTitle}>{`${shown.glyph ? `${shown.glyph}  ` : ''}${shown.card ? drawnNameIn(tarotDeck, shown.name) : shown.name}${shown.reversed ? ', reversed' : ''}`}</Text>
           <DeckReadingLines reading={shown.inDeck} />
           {!!shown.gloss && <Body muted>{shown.gloss}</Body>}
           {!!shown.meaning.keywords && <Text style={[type.body, { color: colors.gold }]}>{shown.meaning.keywords}</Text>}
@@ -484,7 +484,7 @@ export default function DrawScreen() {
             <Row
               key={i}
               icon="wheel"
-              title={`${i + 1}. ${item.name}${item.reversed ? ', reversed' : ''}`}
+              title={`${i + 1}. ${ownDeck ? item.name : drawnNameIn(tarotDeck, item.name)}${item.reversed ? ', reversed' : ''}`}
               detail={[placeOf(spread, draw, i)?.name, meaningOf(item, ownDeck?.data, tarotDeck)?.meaning.keywords].filter(Boolean).join(' · ')}
               last={i === draw.items.length - 1}
               onPress={() => {

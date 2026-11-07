@@ -5,8 +5,8 @@
 // missed goes back to the first box. Progress is kept per deck as a craft
 // entry (collection `divination.study`). Pure, so it can be tested.
 
-import { deckInfo, TAROT_DECKS, type DeckId } from './decks.ts';
-import { deckMeaning } from './deckMeanings/index.ts';
+import { cardLabelIn, deckInfo, deckNamesLead, TAROT_DECKS, type DeckId } from './decks.ts';
+import { DECK_MEANINGS, deckMeaning } from './deckMeanings/index.ts';
 import { KIPPER } from './oracle/kipper.ts';
 import { PLAYING_ALL } from './oracle/playing.ts';
 import { FIGURES } from './geomancy.ts';
@@ -36,10 +36,10 @@ export type StudyDeck = { id: string; name: string; detail: string };
 
 export type OwnDeckLike = { id: string; data: { name: string; cards: { id: string; name: string; keywords: string; meaning: string; reversed: string; photo: string }[] } };
 
-/** Every deck there is to study: the three tarots, runes, ogham, Lenormand, Kipper, and your own. */
+/** Every deck there is to study: the tarots, runes, ogham, Lenormand, Kipper, and your own. */
 export function studyDecks(own: OwnDeckLike[] = []): StudyDeck[] {
   return [
-    ...TAROT_DECKS.map((d) => ({ id: `tarot:${d.id}`, name: `Tarot · ${d.name}`, detail: d.id === 'rws' ? 'Waite’s meanings, 78 cards' : `This deck’s own reading, 78 cards` })),
+    ...TAROT_DECKS.map((d) => ({ id: `tarot:${d.id}`, name: `Tarot · ${d.name}`, detail: DECK_MEANINGS[d.id] ? `This deck’s own reading, 78 cards` : 'Waite’s meanings, 78 cards' })),
     { id: 'runes', name: 'Runes', detail: 'The Elder Futhark, 24 runes' },
     { id: 'ogham', name: 'Ogham', detail: 'The twenty feda' },
     { id: 'lenormand', name: 'Lenormand', detail: '36 cards' },
@@ -56,7 +56,7 @@ export function studyCards(deckId: string, own: OwnDeckLike[] = []): StudyCard[]
     const deck = deckInfo(deckId.slice(6)).id as DeckId;
     return TAROT_DECK.map((card) => {
       const r = deckMeaning(deck, card.id)!;
-      return { id: card.id, name: r.title ?? card.name, glyph: '', keywords: r.upright.keywords, text: r.upright.text, reversed: r.reversed.keywords, picture: { kind: 'tarot', id: card.id } };
+      return { id: card.id, name: deckNamesLead(deck) ? cardLabelIn(deck, card.id) : (r.title ?? card.name), glyph: '', keywords: r.upright.keywords, text: r.upright.text, reversed: r.reversed.keywords, picture: { kind: 'tarot', id: card.id } };
     });
   }
   if (deckId === 'runes' || deckId === 'ogham') {
