@@ -39,7 +39,8 @@ export default function BathHome() {
       <List>
         <Row icon="grimoire" title="Build your own" detail="Choose an intention, and the Library suggests herbs, stones and amounts" onPress={go(`${BATH_HOME}/build`)} />
         <Row icon="calendar" title="Log a bath" detail={logged ? `${logged} kept in your Journal` : 'How it felt and what you noticed, kept in your Journal'} onPress={go(`${BATH_HOME}/log`)} />
-        <Row icon="altar" title="My Shelves" detail="What you have, and what is running low" last onPress={go('/altar?tab=shelves')} />
+        <Row icon="altar" title="My Shelves" detail="What you have, and what is running low" onPress={go('/altar?tab=shelves')} />
+        <Row icon="grimoire" title="Blending lab" detail="Incense, oils, powders and teas, checked part by part and kept in My Apothecary" last onPress={go('/rituals/craft/kitchen/blend')} />
       </List>
 
       {own.length > 0 && (

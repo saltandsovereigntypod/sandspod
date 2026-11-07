@@ -31,6 +31,8 @@ import { builtInCabinet, shortLabel } from '../../lib/altar/cabinet';
 import { ITEM_TYPE, isCustomCategory } from '../../lib/altar/custom';
 import { pickImage, type PickedImage } from '../../lib/altar/images';
 import type { SavedObject } from '../../lib/altar/types';
+import { router, type Href } from 'expo-router';
+import { blendIdOf, LAB_TYPES } from '../../lib/craft/kitchen/blendApothecary';
 import { buildOf, builderFor, withBuild } from '../../lib/altar/workings/build';
 import { PinList } from './workings/PoppetParts';
 import { deleteApothecary, saveApothecary, useWorkshop } from '../../lib/altar/workshop';
@@ -287,6 +289,18 @@ function Editor({ target, altarObjects, onClose, onSaved, onDeleted, onBuild }: 
         </ChipRow>
         {isNew && !!onBuild && <Text style={type.caption}>A spell jar, sachet or poppet opens its own builder, layer by layer, and is kept here in My Apothecary.</Text>}
       </Group>
+
+      {LAB_TYPES.includes(item.type) && (
+        <Button
+          label={blendIdOf(item) ? 'Open it in the Blending lab' : 'Check in the Blending lab'}
+          variant="text"
+          accessibilityHint="Reads each part for the form and gives its safety notes; keeping it there updates this item"
+          onPress={() => {
+            onClose();
+            router.push((blendIdOf(item) ? { pathname: '/rituals/craft/kitchen/blend', params: { id: blendIdOf(item) } } : '/rituals/craft/kitchen/blend') as Href);
+          }}
+        />
+      )}
 
       <Group label="Name">
         <Input value={item.name} onChangeText={(name) => change({ name })} placeholder="Protection Jar, Dream Oil…" label="Name" />

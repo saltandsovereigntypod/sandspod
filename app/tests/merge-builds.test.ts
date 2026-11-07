@@ -9,6 +9,8 @@ import { placeApothecary } from '../src/lib/altar/editor.ts';
 import type { AltarDocument } from '../src/lib/altar/snapshot.ts';
 import { activateGrid, gridOf, wandGridEntry, withGridEntry } from '../src/lib/altar/craftTools.ts';
 import type { SavedObject } from '../src/lib/altar/types.ts';
+import { apothecaryFromBlend, blendIdOf, itemForBlend } from '../src/lib/craft/kitchen/blendApothecary.ts';
+import { emptyBlend } from '../src/lib/craft/kitchen/blend.ts';
 import { myStones, shelfIdOfStone, shelfWithStone, stonesIntoShelves } from '../src/lib/shelves/stones.ts';
 import { cleanItem, newItem } from '../src/lib/shelves/model.ts';
 import { PIN_CROWD, poppetPlan, spreadPins } from '../src/lib/altar/workings/poppetLook.ts';
@@ -123,4 +125,20 @@ test('my stones: folded into My Shelves once, care logs kept, old ids still link
   const next = shelfWithStone({ ...st.data, care: [...st.data.care, { id: 'c2', kind: 'charged', at: NOW }] }, 'st1', after[1].item);
   assert.equal(next.stone?.care.length, 2);
   assert.equal(next.stone?.stoneId, 'st1');
+});
+
+test('blending lab: a kept blend is one My Apothecary item, of the right type, with its safety notes', () => {
+  const blend = { ...emptyBlend(), form: 'oil' as const, intent: 'Sleep', parts: [{ name: 'Cinnamon', as: 'oil' as const, parts: 2 }, { name: 'Lavender', as: 'oil' as const, parts: 1 }] };
+  const item = apothecaryFromBlend(blend, 'b1', NOW);
+  assert.equal(item.type, 'oil-tincture');
+  assert.equal(blendIdOf(item), 'b1');
+  assert.equal(item.ingredients.length, 2);
+  assert.match(item.notes, /Safety/);
+  const saved = { ...item, id: 'a1', metadata: { ...item.metadata, lookBack: { when: 'moon' } } };
+  assert.equal(itemForBlend([saved], 'b1'), saved);
+  const again = apothecaryFromBlend({ ...blend, form: 'tea' }, 'b1', NOW, saved);
+  assert.equal(again.id, 'a1');
+  assert.equal(again.type, 'herb-mix');
+  assert.deepEqual((again.metadata as Record<string, unknown>).lookBack, { when: 'moon' });
+  assert.equal(apothecaryFromBlend({ ...blend, form: 'incense' }, 'b2', NOW).type, 'incense');
 });
