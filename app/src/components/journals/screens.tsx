@@ -11,7 +11,7 @@ import { currentHour } from '../../lib/astro/hours';
 import { useAltars } from '../../lib/altar/store';
 import { fullDate, relativeDay } from '../../lib/calendar';
 import { ancestorDays, formatPartial, lifespan, upcomingAnniversaries } from '../../lib/craft/hedge/ancestors';
-import { DREAM_SYMBOLS } from '../../lib/craft/hedge/dreamSymbols';
+import { symbolStarts } from '../../lib/dreams/reader';
 import { DREAMS, normalizeDream, sortDreams } from '../../lib/craft/hedge/dreams';
 import { addEntry, removeEntry, updateEntry, useCraft } from '../../lib/craft/store';
 import { DREAM_ROUTES } from '../../lib/grimoire/dreams';
@@ -330,7 +330,7 @@ function JournalLinks({ kind }: { kind: JournalKind }) {
             ]
           : [
               { title: 'Planetary hours', detail: 'Which planet rules the hour now', href: '/rituals/craft/cosmic/hours', icon: 'wheel' },
-              { title: 'Dream symbols', detail: 'Common associations, as starting points', href: DREAM_ROUTES.patterns, icon: 'grimoire' },
+              { title: 'Dream symbols and patterns', detail: 'The dream dictionary, and what keeps returning', href: DREAM_ROUTES.patterns, icon: 'grimoire' },
               { title: 'Local lore', detail: 'What’s said of the creatures and places near you', href: '/rituals/craft/folk/lore', icon: 'samhain' },
             ];
   return (
@@ -379,7 +379,7 @@ function EntryPage({ kind }: { kind: JournalKind }) {
   const startPoints =
     kind === 'omens'
       ? {
-          symbols: matchingNames(`${d.what} ${d.meaning}`, DREAM_SYMBOLS, (x) => [x.symbol, ...x.also]),
+          symbols: symbolStarts(`${d.what} ${d.meaning}`),
           library: matchingNames(`${d.what} ${d.meaning}`, traditionalEntries(), (x) => [x.name]),
         }
       : null;
@@ -476,8 +476,8 @@ function EntryPage({ kind }: { kind: JournalKind }) {
         <View style={ui.gapSmall}>
           <SectionLabel>Places to start</SectionLabel>
           {startPoints.symbols.map((x) => (
-            <Card key={x.symbol}>
-              <Text style={type.cardTitle}>{x.symbol}</Text>
+            <Card key={x.id}>
+              <Text style={type.cardTitle}>{x.name}</Text>
               <Body>{x.notes}</Body>
               <Body muted>{x.ask}</Body>
             </Card>

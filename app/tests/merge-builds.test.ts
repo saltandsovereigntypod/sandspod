@@ -9,6 +9,9 @@ import { placeApothecary } from '../src/lib/altar/editor.ts';
 import type { AltarDocument } from '../src/lib/altar/snapshot.ts';
 import { activateGrid, gridOf, wandGridEntry, withGridEntry } from '../src/lib/altar/craftTools.ts';
 import type { SavedObject } from '../src/lib/altar/types.ts';
+import { ALL_SYMBOLS, questionsOf, symbolStart, symbolStarts } from '../src/lib/dreams/reader.ts';
+import { DREAM_SYMBOLS } from '../src/lib/craft/hedge/dreamSymbols.ts';
+import { DREAM_ROUTES } from '../src/lib/grimoire/dreams.ts';
 import { apothecaryFromBlend, blendIdOf, itemForBlend } from '../src/lib/craft/kitchen/blendApothecary.ts';
 import { emptyBlend } from '../src/lib/craft/kitchen/blend.ts';
 import { myStones, shelfIdOfStone, shelfWithStone, stonesIntoShelves } from '../src/lib/shelves/stones.ts';
@@ -141,4 +144,15 @@ test('blending lab: a kept blend is one My Apothecary item, of the right type, w
   assert.equal(again.type, 'herb-mix');
   assert.deepEqual((again.metadata as Record<string, unknown>).lookBack, { when: 'moon' });
   assert.equal(apothecaryFromBlend({ ...blend, form: 'incense' }, 'b2', NOW).type, 'incense');
+});
+
+test('dreams: one dictionary, with the old list\'s questions folded in, and one Patterns page', () => {
+  const water = symbolStart('water')!;
+  assert.equal(water.id, 'water');
+  assert.equal(water.ask, DREAM_SYMBOLS.find((d) => d.symbol === 'water')!.ask);
+  let folded = 0;
+  for (const s of ALL_SYMBOLS) if (DREAM_SYMBOLS.some((d) => questionsOf(s)[0] === d.ask)) folded++;
+  assert.ok(folded >= DREAM_SYMBOLS.length - 4, `${folded} of ${DREAM_SYMBOLS.length} folded in`);
+  assert.ok(symbolStarts('I saw a snake by the door').length >= 1);
+  assert.equal(DREAM_ROUTES.patterns, '/grimoire/dreams/patterns');
 });

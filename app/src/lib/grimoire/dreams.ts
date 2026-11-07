@@ -14,8 +14,10 @@ export const DREAMS_SHELF = { key: 'dreams', title: 'Dreams' } as const;
 export const DREAM_ROUTES = {
   journal: '/grimoire/dreams',
   write: '/grimoire/dreams/edit',
-  patterns: '/grimoire/dreams/symbols',
+  /** The one Patterns page: what keeps returning, the moons, and the dream dictionary (/grimoire/dreams/symbols redirects here). */
+  patterns: '/grimoire/dreams/patterns',
   dictionary: '/grimoire/dreams/dictionary',
+  /** The same page, kept for older links. */
   insights: '/grimoire/dreams/patterns',
   dream: (id: string) => `/grimoire/dreams/${encodeURIComponent(id)}`,
   edit: (id: string) => `/grimoire/dreams/edit?id=${encodeURIComponent(id)}`,

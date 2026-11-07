@@ -1893,7 +1893,7 @@ export const HELP: HelpSection[] = [
           'Optionally mark it Lucid or Recurring, then tap "Keep this dream".',
         ],
         tips: [
-          'Tap "Symbols and moons" to see what keeps returning and the phases your dreams cluster in.',
+          'Tap "Patterns and symbols" to see what keeps returning and the phases your dreams cluster in.',
           'Turn on "Last night’s dream" under Remind me for a gentle morning nudge. In the morning, Today also offers a place to catch a line or two.',
           'To hide the Dreams shelf, switch off "Show Dreams" in More, then Settings, then "Grimoire".',
         ],
@@ -2000,11 +2000,11 @@ export const HELP: HelpSection[] = [
         title: 'Look up common dream symbols',
         summary: 'Associations to start from; yours matter most.',
         steps: [
-          'Open Dreams in the Grimoire and tap "Dream symbols" ("Symbols and moons" once you have a few dreams).',
-          'Open a symbol to read its notes and a question to ask yourself.',
-          'See "What keeps returning" for your own repeated symbols.',
+          'Open Dreams in the Grimoire and tap "Patterns and symbols".',
+          'Under "The dream dictionary", search for a symbol and open it to read its notes and a question to ask yourself.',
+          'Above it, see what keeps returning, the moons you dream under and what came true.',
         ],
-        href: '/grimoire/dreams/symbols',
+        href: '/grimoire/dreams/patterns',
         keywords: ['dream dictionary', 'dream meaning'],
       },
       {
@@ -3051,7 +3051,7 @@ export const HELP: HelpSection[] = [
           'Open the dream in Grimoire → Dreams and tap "Read this dream". Or, as you draw, choose "Dream reading" under Deep work, then the dream under "The dream it’s for".',
           'Tap "Shuffle and draw", turn the cards over, and tap "Keep this reading".',
           'The reading shows on the dream’s page under "Readings of this dream", and the reading says which dream it was for.',
-          'In "Symbols and moons", "Cards that keep coming up" counts the cards that return across your dream readings.',
+          'In "Patterns and symbols", "Cards that keep coming up" counts the cards that return across your dream readings.',
         ],
         href: '/grimoire/dreams',
         keywords: ['dream', 'dream reading', 'dream tarot', 'dream meaning', 'interpret dream', 'symbols', 'recurring cards'],

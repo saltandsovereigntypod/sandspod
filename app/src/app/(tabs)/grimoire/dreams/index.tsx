@@ -60,11 +60,10 @@ export default function Dreams() {
       <List>
         <Row
           icon="wheel"
-          title={dreams.length >= 3 ? 'Symbols and moons' : 'Dream symbols'}
-          detail={dreams.length >= 3 ? 'What keeps returning, the phases your dreams cluster in, and common symbols' : 'Common associations, as starting points'}
+          title="Patterns and symbols"
+          detail={dreams.length >= 3 ? 'What keeps returning, the moons you dream under, what came true, and the dream dictionary' : 'The dream dictionary: common symbols, as starting points'}
           onPress={() => router.push(DREAM_ROUTES.patterns as Href)}
         />
-        <Row icon="grimoire" title="Patterns" detail="Symbols this month, by moon, and what came true" onPress={() => router.push(DREAM_ROUTES.insights as Href)} />
         <Row icon="grimoire" title="Your dream dictionary" detail="Your own meanings, shown first in every reading" last onPress={() => router.push(DREAM_ROUTES.dictionary as Href)} />
       </List>
 
