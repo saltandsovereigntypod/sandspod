@@ -42,6 +42,8 @@ PACKED_FORMS = {
     "herbs": ("sprig", "loose", "oil", "powder"),
     "crystals": ("chips", "point", "cluster", "tumbled"),
     "plants": ("young", "established", "lush"),
+    # The poppet customiser's parts (poppet/<bodies|eyes|pin>/<name>.png): one sheet each.
+    "poppet": ("cloth", "wax", "clay", "husk", "root", "button", "cross", "bead", "stone", "seam", "head", "glint", "stub"),
 }
 # Deity statues (objects/tools/deities/<key>/<key>-statue.png) are packed too,
 # a few to a sheet in alphabetical order of key: assets/altar/sheets/deities/<first key>.webp.
@@ -56,6 +58,9 @@ MAX_SIDE = 4096
 def packed_group(rel):
     """(category, id, form) when this picture goes on an item's sheet, else None."""
     parts = rel.split("/")
+    m = re.match(r"^poppet/(bodies|eyes|pin)/([a-z]+)\.png$", rel)
+    if m and m.group(2) in PACKED_FORMS["poppet"]:
+        return "poppet", m.group(1), m.group(2)
     if len(parts) != 4 or parts[0] != "objects" or parts[1] not in PACKED_FORMS:
         return None
     m = re.match(r"^[a-z0-9-]+-([a-z]+)\.png$", parts[3], re.I)
