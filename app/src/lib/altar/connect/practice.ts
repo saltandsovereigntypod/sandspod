@@ -62,13 +62,14 @@ export function cabinetCrystalFor(stone: Stone): CabinetItem | null {
 }
 
 /** One of your stones on the altar: a crystal object named for it, linked by stoneId. */
-export function stoneObject(entry: Entry<Stone>, existing: SavedObject[], now: string, center?: { cx: number; cy: number }): SavedObject {
+export function stoneObject(entry: Entry<Stone> & { shelfId?: string }, existing: SavedObject[], now: string, center?: { cx: number; cy: number }): SavedObject {
   const stone = normaliseStone(entry.data);
   const item = cabinetCrystalFor(stone);
   const form = formWith(item, STONE_FORM_TO_CABINET[stone.form] ?? ['point']);
   if (!item || !form) throw new Error('No crystal artwork to place.');
   const placed = { ...placeForm(item, form, existing, now, center), label: stone.name };
-  return setAppState(placed, { stone: { id: entry.id, name: stone.name } }, now, false);
+  // My stones are crystals on My Shelves: the placed stone is that shelf thing too (shelfItemId), so its story follows it.
+  return setAppState({ ...placed, ...(entry.shelfId ? { shelfItemId: entry.shelfId } : {}) }, { stone: { id: entry.id, name: stone.name } }, now, false);
 }
 
 export type StoneBadges = {

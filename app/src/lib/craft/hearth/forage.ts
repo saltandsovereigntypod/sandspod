@@ -1,8 +1,9 @@
 // Foraging & garden: a foraging calendar for common wild plants of temperate
 // hedgerows, woods and shores, each with how to know it, the look-alikes
 // that can hurt you, and how to take with care; what grows where on the
-// places in your land journal; and a harvest log that keeps what you've
-// gathered and dried as a store cupboard for the kitchen and the apothecary.
+// places in your land journal; and a harvest log of what you've gathered.
+// What you keep (dried, jarred) goes onto My Shelves, the one stock list
+// (lib/shelves/harvest.ts), linked by the harvest's shelfId.
 //
 // The months are for the temperate northern hemisphere (a British or northern
 // European hedgerow, much of the northern US) and turned six months south of
@@ -620,8 +621,10 @@ export type Harvest = {
   part: string;
   amount: string;
   use: HarvestUse;
-  /** Still in the store cupboard. */
+  /** Kept to use later (dried, jarred): it is on My Shelves. */
   kept: boolean;
+  /** The thing on My Shelves it became, once kept; '' until then. */
+  shelfId: string;
   /** When it went in a jar: dried, or made into something. */
   storedOn: string;
   note: string;
@@ -638,6 +641,7 @@ export const blankHarvest = (now: Date, input: Partial<Harvest> = {}): Harvest =
   amount: '',
   use: 'kitchen',
   kept: false,
+  shelfId: '',
   storedOn: '',
   note: '',
   ...input,
@@ -656,6 +660,7 @@ export function normalizeHarvest(raw: unknown): Harvest {
     amount: str(r.amount),
     use: HARVEST_USES.some((u) => u.id === r.use) ? (r.use as HarvestUse) : 'kitchen',
     kept: r.kept === true,
+    shelfId: str(r.shelfId),
     storedOn: dateFromKey(str(r.storedOn)) ? str(r.storedOn) : '',
     note: str(r.note),
   };
@@ -674,7 +679,7 @@ export function sortHarvests<T extends { createdAt: string; data: Harvest }>(lis
   return [...list].sort((a, b) => (a.data.on === b.data.on ? (a.createdAt < b.createdAt ? 1 : -1) : a.data.on < b.data.on ? 1 : -1));
 }
 
-/** The store cupboard: what's kept, oldest first (use it first). */
+/** What's kept (and so on My Shelves), oldest first (use it first). */
 export function storeCupboard<T extends { createdAt: string; data: Harvest }>(list: T[]): T[] {
   return sortHarvests(list.filter((h) => h.data.kept)).reverse();
 }

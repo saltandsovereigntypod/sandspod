@@ -209,17 +209,23 @@ export function PoppetTendSheet({ visible, object, onClose, onUpdate }: { visibl
                   setWords('');
                 }}
               />
-              {state.look && artBodyOf(state.body) && (
+              {state.pins.length > 0 && (
                 <>
-                  <Label>Pins</Label>
+                  <Label>{`Pins (${state.pins.length})`}</Label>
                   <PinList
                     pins={state.pins}
+                    removeLabel="Remove"
                     onRemove={(i) => {
                       onUpdate(unpinPoppet(object, i, nowIso(), words), 'The pin is out. Thank it for its work.');
                       setWords('');
                     }}
                   />
-                  {state.pins.length > 0 && <Text style={type.caption}>Taking a pin out is kept as its own moment, with anything you say above.</Text>}
+                  <Text style={type.caption}>Taking a pin out is kept as its own moment, with anything you say above.</Text>
+                </>
+              )}
+              {state.look && artBodyOf(state.body) && (
+                <>
+                  {state.pins.length === 0 && <Label>Pins</Label>}
                   <PinMaker look={{ ...state.look, body: state.body }} pins={state.pins} label="Set it in" onSet={(pin) => onUpdate(pinPoppet(object, pin, nowIso()), 'The pin is in.')} />
                 </>
               )}
@@ -235,6 +241,12 @@ export function PoppetTendSheet({ visible, object, onClose, onUpdate }: { visibl
                   <Button label="It’s done" variant="outline" onPress={() => onUpdate(endPoppet(object, ending, nowIso(), words), 'The poppet’s work is done. Thank it.')} />
                 </>
               )}
+            </>
+          )}
+          {state.ended && state.pins.length > 0 && (
+            <>
+              <Label>{`Pins (${state.pins.length})`}</Label>
+              <PinList pins={state.pins} />
             </>
           )}
           {holdCount(state) > 0 && <Text style={type.caption}>{`Held ${holdCount(state)} time${holdCount(state) === 1 ? '' : 's'}.`}</Text>}

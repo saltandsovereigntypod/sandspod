@@ -31,6 +31,8 @@ import {
 } from '../../../../../lib/craft/kitchen/blend';
 import { addEntry, removeEntry, updateEntry, useCraft } from '../../../../../lib/craft/store';
 import { useGrimoire } from '../../../../../lib/grimoire/store';
+import { saveApothecary, useWorkshop } from '../../../../../lib/altar/workshop';
+import { apothecaryFromBlend, itemForBlend } from '../../../../../lib/craft/kitchen/blendApothecary';
 import { useLibrary } from '../../../../../lib/library';
 import { useShelves } from '../../../../../lib/shelves/store';
 import { colors, type } from '../../../../../theme';
@@ -48,6 +50,7 @@ export default function BlendingLab() {
   const { entries: shelves } = useShelves();
   const { entries: kept } = useCraft<Blend>(BLENDS);
   const grimoire = useGrimoire();
+  const workshop = useWorkshop();
   const [id, setId] = useState<string | null>(openId ?? null);
   const start = useMemo(() => (openId ? kept.find((e) => e.id === openId) : null), [openId, kept]);
   const [blend, setBlend] = useState<Blend>(() => (start ? normaliseBlend(start.data) : emptyBlend()));
@@ -84,10 +87,21 @@ export default function BlendingLab() {
 
   const save = async () => {
     const data = { ...blend, name: blendName(blend) };
+    const blendId = id ?? (await addEntry<Blend>(BLENDS, data)).id;
     if (id) await updateEntry<Blend>(BLENDS, id, data);
-    else setId((await addEntry<Blend>(BLENDS, data)).id);
+    else setId(blendId);
     setBlend(data);
-    setNotice('Kept with your blends.');
+    // Kept in My Apothecary too, with its safety notes, ready for the altar.
+    let inApothecary = false;
+    if (workshop.userId) {
+      try {
+        await saveApothecary(workshop.userId, apothecaryFromBlend(data, blendId, new Date().toISOString(), itemForBlend(workshop.apothecary, blendId)), null);
+        inApothecary = true;
+      } catch {
+        // Kept with your blends; My Apothecary catches up the next time it is kept.
+      }
+    }
+    setNotice(inApothecary ? 'Kept with your blends and in My Apothecary, ready to place on an altar.' : 'Kept with your blends.');
   };
   const toGrimoire = async () => {
     if (page) return router.push({ pathname: '/grimoire/[pageId]', params: { pageId: page.id } });

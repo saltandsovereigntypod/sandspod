@@ -131,11 +131,8 @@ export function tendingSources(altars: SavedAltar[], stones: StoneEntry[], now: 
     }
   }
   out.offerings = offeringsDue(docs, at, at + days * DAY);
-  for (const stone of stones) {
-    if (!stone || stone.deletedAt) continue;
-    const name = str(stone.data?.name) || 'Unnamed stone';
-    const care = findCare(stone.data?.key ?? null, name);
-    out.crystals.push({ id: `stone:${stone.id}`, name, key: care?.key ?? null, where: 'My stones' });
-  }
+  // My stones are crystals on My Shelves now: To tend reminds you of them
+  // (full-moon cleansing), so they are not listed here as well.
+  void stones;
   return out;
 }

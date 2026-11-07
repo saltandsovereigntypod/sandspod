@@ -130,7 +130,7 @@ export default function Journal() {
       <SectionLabel>More from your journal</SectionLabel>
       <List>
         <Row icon="today" title="Your moon" detail="Patterns in your rituals: which moons you work under, and what for" onPress={() => router.push('/rituals/journal/insights')} />
-        <Row icon="grimoire" title="Dream symbols" detail="The symbols that come back in your dreams" onPress={() => router.push('/grimoire/dreams/symbols' as Href)} />
+        <Row icon="grimoire" title="Dream symbols" detail="The symbols that come back in your dreams" onPress={() => router.push('/grimoire/dreams/patterns' as Href)} />
         <Row icon="calendar" title="Reading patterns" detail="The cards you draw most, by moon and day" onPress={() => router.push('/rituals/divination/patterns' as Href)} />
         {apothecary.length > 0 && (
           <Row

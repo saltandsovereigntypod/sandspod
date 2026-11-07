@@ -126,7 +126,8 @@ test("the Reminders page offers the app's choices", () => {
 test("tending sources and covens read the same on the website as in the app", () => {
   const altars = G.altarSnapshot.parseLocalAltars(JSON.stringify([{ id: "a1", name: "Brigid", objects: [{ type: "crystal", crystal: "selenite", label: "", altarObjectId: "o1" }] }]));
   const src = G.reminderSources.tendingSources(altars, [{ id: "s1", data: { name: "Rose quartz", key: null } }], NOW);
-  assert.deepEqual(src.crystals.map((c) => [c.id, c.name, c.key]), [["a1:o1", "Selenite", "selenite"], ["stone:s1", "Rose quartz", "rose_quartz"]]);
+  // My stones are crystals on My Shelves: To tend reminds of them, so only altar crystals are listed here.
+  assert.deepEqual(src.crystals.map((c) => [c.id, c.name, c.key]), [["a1:o1", "Selenite", "selenite"]]);
   const standing = { coven: { id: "c1", slug: "s", name: "C", status: "active", founder_id: "me", practice_traditions: ["wheel"] }, membership: { coven_id: "c1", user_id: "me", rank_id: null, status: "active", muted_until: null, joined_at: "" }, ranks: [] };
   const [c] = G.reminderCovens.covenSources([standing], [], "me", NOW);
   assert.equal(c.leader, true);

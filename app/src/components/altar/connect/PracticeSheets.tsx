@@ -4,15 +4,16 @@
 // the altar can be added to the stone's own care log in Crystal.
 
 import { router, type Href } from 'expo-router';
+import { useMyStones } from '../../../lib/shelves/useStones';
 import { useMemo, useState } from 'react';
 import { Text, View } from 'react-native';
 
 import { Button } from '../../Button';
-import { SETTINGS, STONES } from '../../../lib/craft/crystal/collections';
-import { normaliseRule, normaliseStone, type CrystalSettings, type Stone } from '../../../lib/craft/crystal/stones';
+import { SETTINGS } from '../../../lib/craft/crystal/collections';
+import { normaliseRule, normaliseStone, type CrystalSettings } from '../../../lib/craft/crystal/stones';
 import { asPlant, PLANTS, type Plant } from '../../../lib/craft/green/garden';
 import { methodLabel, normalizeReading, READINGS, sortReadings, type Reading } from '../../../lib/craft/hedge/readings';
-import { updateEntry, useCraft } from '../../../lib/craft/store';
+import {  useCraft } from '../../../lib/craft/store';
 import {
   careWarnings,
   drawnOf,
@@ -61,7 +62,8 @@ const onAltar = (objects: SavedObject[], id: string, of: (o: SavedObject) => str
 
 /** Place one of your own stones as a crystal on the altar. */
 export function StoneSheet({ visible, altar, onClose, onPlace }: SheetProps) {
-  const { entries, ready } = useCraft<Stone>(STONES);
+  const myStonesHere = useMyStones();
+  const { entries, ready } = myStonesHere;
   const { entries: settings } = useCraft<CrystalSettings>(SETTINGS);
   const rule = useMemo(() => normaliseRule(settings[0]?.data?.cleanse), [settings]);
   const now = useMemo(() => new Date(), []);
@@ -107,7 +109,8 @@ type StonePanelProps = {
 /** The object panel section for a stone from your collection: its cleansing and care. */
 export function StonePanelSection({ object, altarName, lastAltarCare }: StonePanelProps) {
   const id = stoneIdOf(object);
-  const { entries } = useCraft<Stone>(STONES);
+  const myStonesHere = useMyStones();
+  const { entries } = myStonesHere;
   const { entries: settings } = useCraft<CrystalSettings>(SETTINGS);
   const [saved, setSaved] = useState<string | null>(null);
   const entry = entries.find((e) => e.id === id);
@@ -125,7 +128,7 @@ export function StonePanelSection({ object, altarName, lastAltarCare }: StonePan
   const warnings = lastAltarCare ? careWarnings(stone, lastAltarCare.methods) : [];
   const addToLog = async () => {
     if (!lastAltarCare) return;
-    await updateEntry(STONES, entry.id, stoneCareFromAltar(stone, { ...lastAltarCare, altarName }));
+    await myStonesHere.save(entry.id, stoneCareFromAltar(stone, { ...lastAltarCare, altarName }));
     setSaved(lastAltarCare.kind === 'cleansed' ? 'Added to its cleansing log in Crystal.' : 'Added to its care log in Crystal.');
   };
   return (

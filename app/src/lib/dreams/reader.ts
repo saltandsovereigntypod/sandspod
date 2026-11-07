@@ -8,6 +8,7 @@ import { SYMBOLS as NATURE } from './symbols/nature-places.ts';
 import { SYMBOLS as PEOPLE } from './symbols/people-objects-spirit.ts';
 import { composer, hash, joinNames, roundRobin, stem, stems, tokens } from '../symbolReading.ts';
 import type { DreamSymbol, Feeling } from './symbols/types.ts';
+import { DREAM_SYMBOLS as STARTERS } from '../craft/hedge/dreamSymbols.ts';
 
 export { stem, tokens };
 
@@ -464,7 +465,7 @@ export function readDream(input: ReadInput): Reading {
   }
 
   // Questions: round-robin across the strongest symbols, rotated by the seed
-  const pools = symbols.filter((s) => s.symbol).map((s) => s.symbol!.questions);
+  const pools = symbols.filter((s) => s.symbol).map((s) => questionsOf(s.symbol!));
   const questions = roundRobin(pools, seed, 3, fresh);
 
   // Something to do
@@ -611,4 +612,42 @@ export function cameTrueRate(dreams: Pick<PatternDream, 'cameTrue' | 'prophetic'
     ? 'No dreams marked as having come true yet.'
     : `${came} of your ${total} ${total === 1 ? 'dream' : 'dreams'} ${came === 1 ? 'has' : 'have'} been marked as coming true (${Math.round((came / total) * 100)}%). Remember that memory favours the hits.`;
   return { total, came, flagged, cameOfFlagged, line };
+}
+
+// ─── The old "Common symbols" list, folded in ────────────────────────────
+// The Grimoire once had a second, shorter symbol list (craft/hedge/
+// dreamSymbols.ts) with a question to ask for each. This dictionary is the
+// one list now; those questions join the questions of the symbol they name.
+
+let asks: Map<string, string> | null = null;
+function asksById(): Map<string, string> {
+  if (asks) return asks;
+  asks = new Map();
+  for (const s of STARTERS) {
+    const hit = [s.symbol, ...s.also].map((w) => matchSymbols(w)[0]?.subject.symbol).find(Boolean);
+    if (hit && !asks.has(hit.id)) asks.set(hit.id, s.ask);
+  }
+  return asks;
+}
+
+/** A symbol's questions, with the old list's question for it first when there was one. */
+export function questionsOf(symbol: DreamSymbol): string[] {
+  const ask = asksById().get(symbol.id);
+  return ask && !symbol.questions.includes(ask) ? [ask, ...symbol.questions] : symbol.questions;
+}
+
+/** A place to start with one symbol, from this dictionary: what it is often taken to mean, and a question to ask. */
+export function symbolStart(word: string, dictionary: DictionaryEntry[] = []): { name: string; notes: string; ask: string; id: string } | null {
+  const hit = matchSymbols(word, dictionary)[0]?.subject;
+  if (!hit) return null;
+  if (!hit.symbol) return hit.personal ? { id: hit.key, name: hit.name, notes: hit.personal, ask: 'What does it mean to you now?' } : null;
+  return { id: hit.symbol.id, name: hit.symbol.name, notes: hit.symbol.psyche, ask: questionsOf(hit.symbol)[0] ?? '' };
+}
+
+/** The symbols named in some words (an omen, a note), each as a place to start. */
+export function symbolStarts(text: string, max = 4): { name: string; notes: string; ask: string; id: string }[] {
+  return matchSymbols(text)
+    .map((m) => (m.subject.symbol ? { id: m.subject.symbol.id, name: m.subject.symbol.name, notes: m.subject.symbol.psyche, ask: questionsOf(m.subject.symbol)[0] ?? '' } : null))
+    .filter((x): x is { name: string; notes: string; ask: string; id: string } => !!x)
+    .slice(0, max);
 }

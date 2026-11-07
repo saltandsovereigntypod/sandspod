@@ -1,0 +1,231 @@
+import assert from 'node:assert/strict';
+import { test } from 'node:test';
+
+import { addLayer, emptyJar, jarItem, jarLayer, jarObject, jarStateOf } from '../src/lib/altar/workings/spellJar.ts';
+import { addFilling, emptySachet, filling, sachetObject, sachetStateOf } from '../src/lib/altar/workings/sachet.ts';
+import { emptyPoppet, poppetObject, poppetStateOf } from '../src/lib/altar/workings/poppet.ts';
+import { backfillBuilds, buildOf, builderFor } from '../src/lib/altar/workings/build.ts';
+import { placeApothecary } from '../src/lib/altar/editor.ts';
+import type { AltarDocument } from '../src/lib/altar/snapshot.ts';
+import { activateGrid, gridOf, wandGridEntry, withGridEntry } from '../src/lib/altar/craftTools.ts';
+import type { SavedObject } from '../src/lib/altar/types.ts';
+import { harvestsToShelve, shelfFromHarvest } from '../src/lib/shelves/harvest.ts';
+import { normalizeHarvest } from '../src/lib/craft/hearth/forage.ts';
+import { scryingEntry, scryingReadingsToAdd } from '../src/lib/altar/workings/scrying.ts';
+import { normalizeReading } from '../src/lib/craft/hedge/readings.ts';
+import { checkIn, newChallenge, progressOf, withToolDays } from '../src/lib/yearday/challenges.ts';
+import { freeForm, movedTo, practiceAsCorrespondence, practiceInput, practiceWith, toFold } from '../src/lib/craft/eclectic/practiceFold.ts';
+import { blankCorrespondence } from '../src/lib/craft/eclectic/correspondences.ts';
+import type { LibraryEntry } from '../src/lib/library/types.ts';
+import { ALL_SYMBOLS, questionsOf, symbolStart, symbolStarts } from '../src/lib/dreams/reader.ts';
+import { DREAM_SYMBOLS } from '../src/lib/craft/hedge/dreamSymbols.ts';
+import { DREAM_ROUTES } from '../src/lib/grimoire/dreams.ts';
+import { apothecaryFromBlend, blendIdOf, itemForBlend } from '../src/lib/craft/kitchen/blendApothecary.ts';
+import { emptyBlend } from '../src/lib/craft/kitchen/blend.ts';
+import { myStones, shelfIdOfStone, shelfWithStone, stonesIntoShelves } from '../src/lib/shelves/stones.ts';
+import { cleanItem, newItem } from '../src/lib/shelves/model.ts';
+import { PIN_CROWD, poppetPlan, spreadPins } from '../src/lib/altar/workings/poppetLook.ts';
+import { makePin, pinDetail } from '../src/lib/altar/workings/poppet.ts';
+
+const NOW = '2026-11-07T10:00:00.000Z';
+const doc = (objects: AltarDocument['objects'] = []) => ({ objects }) as unknown as AltarDocument;
+
+test('builders: the design is kept on the My Apothecary item and placing it again restores it', () => {
+  const jar = addLayer({ ...emptyJar('Protection'), vessel: 'bottle' }, jarLayer({ label: 'Salt', source: 'salt' }, NOW));
+  const item = jarItem(jar, NOW, 'j1');
+  assert.equal(buildOf(item)?.kind, 'jar');
+  const placed = placeApothecary(doc(), item, NOW).objects[0];
+  const state = jarStateOf(placed)!;
+  assert.equal(state.layers[0].label, 'Salt');
+  assert.equal(state.vessel, 'bottle');
+  assert.deepEqual(state.renewals, []);
+});
+
+test('builders: an item without a design places as before', () => {
+  const item = { ...jarItem(emptyJar('x'), NOW, 'j2'), metadata: {} };
+  const placed = placeApothecary(doc(), item, NOW).objects[0];
+  assert.equal(jarStateOf(placed), null);
+  assert.equal(placed.apothecaryItemId, 'j2');
+});
+
+test('builders: migration copies the design from the placed copy, once, without losing anything', () => {
+  const s = addFilling(emptySachet('Luck'), filling('Basil', 'herb'));
+  const { item: sItem, object: sObj } = sachetObject(s, [], NOW, undefined, 's1');
+  const { item: pItem, object: pObj } = poppetObject({ ...emptyPoppet(), purpose: 'Rest' }, [], NOW, undefined, 'p1');
+  const jarOld = { ...jarItem(emptyJar('a'), NOW, 'j3'), metadata: { lookBack: { when: 'moon' } } };
+  const { object: jObj } = jarObject(addLayer(emptyJar('a'), jarLayer({ label: 'Rose', source: 'typed' }, NOW)), [], NOW, undefined, jarOld);
+  const old = [sItem, pItem, jarOld].map((i) => {
+    const metadata = { ...(i.metadata ?? {}) } as Record<string, unknown>;
+    delete metadata.build;
+    return { ...i, metadata };
+  });
+  const changed = backfillBuilds(old, [sObj, pObj, jObj]);
+  assert.equal(changed.length, 3);
+  const jar = changed.find((i) => i.id === 'j3')!;
+  assert.deepEqual((jar.metadata as Record<string, unknown>).lookBack, { when: 'moon' });
+  assert.equal(buildOf(jar)?.kind, 'jar');
+  assert.equal(sachetStateOf(sObj)?.fillings[0].label, 'Basil');
+  assert.equal(poppetStateOf(pObj)?.purpose, 'Rest');
+  // Idempotent: done once, nothing changes again.
+  assert.deepEqual(backfillBuilds(changed, [sObj, pObj, jObj]), []);
+  assert.equal(builderFor('herb-mix'), null);
+});
+
+test('wand grid: kept as a crystal.grids entry, and an old one migrates once without losing the lines', () => {
+  const stone = (id: string, x: number, y: number) => ({ type: 'crystal', label: `Stone ${id}`, form: 'tumbled', altarObjectId: id, x, y }) as unknown as SavedObject;
+  const objects = [stone('a', 0.3, 0.3), stone('b', 0.7, 0.3), stone('c', 0.5, 0.7), stone('m', 0.5, 0.45), stone('d', 0.2, 0.6)];
+  const extra = activateGrid({}, objects, NOW);
+  const lit = gridOf(extra)!;
+  assert.equal(lit.entryId, undefined);
+  const entry = wandGridEntry(lit, objects, 'altar1', NOW)!;
+  assert.equal(entry.status, 'active');
+  assert.equal(entry.altarId, 'altar1');
+  assert.equal(entry.points.length + (entry.centre ? 1 : 0), 5);
+  const linked = withGridEntry(extra, 'g1');
+  assert.deepEqual(gridOf(linked)!.ids, lit.ids);
+  assert.equal(gridOf(linked)!.entryId, 'g1');
+});
+
+test('poppet pins: two in the same place are drawn apart so every head shows; the saved pins are untouched', () => {
+  const a = makePin({ x: 0.5, y: 0.4, zone: 'heart' }, 'red', 'Courage', NOW);
+  const b = makePin({ x: 0.5, y: 0.4, zone: 'heart' }, 'green', '', NOW);
+  const c = makePin({ x: 0.505, y: 0.401, zone: 'heart' }, 'white', '', NOW);
+  const far = makePin({ x: 0.2, y: 0.8, zone: 'free' }, 'red', '', NOW);
+  const drawn = spreadPins([a, b, c, far], 1.6);
+  assert.equal(drawn[0], a);
+  assert.equal(drawn[3], far);
+  for (let i = 0; i < 3; i++) for (let j = i + 1; j < 3; j++) assert.ok(Math.hypot(drawn[i].x - drawn[j].x, (drawn[i].y - drawn[j].y) * 1.6) >= PIN_CROWD * 0.99, `${i},${j}`);
+  assert.equal(b.x, 0.5);
+  // The picture draws one head per pin, at distinct places.
+  const plan = poppetPlan({ body: 'cloth' }, [a, b, c])!;
+  const heads = plan.steps.filter((s) => s.kind === 'image' && s.part === 'pinHead').map((s) => (s as { x: number }).x);
+  assert.equal(heads.length, 3);
+  const d = pinDetail(a);
+  assert.match(d.place, /^Heart/);
+  assert.equal(d.note, 'Courage');
+  assert.ok(d.set.startsWith('Set '));
+});
+
+test('my stones: folded into My Shelves once, care logs kept, old ids still link', () => {
+  const care = [{ id: 'c1', kind: 'cleansed' as const, at: NOW, method: 'Smoke' }];
+  const old = [
+    { id: 'st1', data: { name: 'Amethyst', key: 'amethyst', form: 'point', intentions: ['Sleep'], care } },
+    { id: 'st2', data: { name: 'Selenite', form: 'raw', intentions: [], care: [] } },
+    { id: 'st3', data: { name: 'Gone' }, deletedAt: NOW },
+  ];
+  const shelves = [{ id: 'sh1', createdAt: NOW, item: newItem({ name: 'selenite', shelf: 'crystals', notes: 'From the market' }) }];
+  const { add, update } = stonesIntoShelves(old, shelves);
+  assert.equal(add.length, 1);
+  assert.equal(add[0].stone?.stoneId, 'st1');
+  assert.deepEqual(add[0].stone?.care, care);
+  assert.equal(update.length, 1);
+  assert.equal(update[0].id, 'sh1');
+  assert.equal(update[0].item.notes, 'From the market');
+  assert.equal(update[0].item.stone?.stoneId, 'st2');
+  // Saved and read back (cleanItem keeps the stone), then nothing more to do.
+  const after = [{ id: 'sh1', createdAt: NOW, item: cleanItem(JSON.parse(JSON.stringify(update[0].item))) }, { id: 'sh2', createdAt: NOW, item: cleanItem(JSON.parse(JSON.stringify(add[0]))) }];
+  const again = stonesIntoShelves(old, after);
+  assert.deepEqual(again, { add: [], update: [] });
+  const stones = myStones(after);
+  assert.deepEqual(stones.map((s) => s.id).sort(), ['st1', 'st2']);
+  assert.equal(stones.find((s) => s.id === 'st1')!.data.intentions[0], 'Sleep');
+  assert.equal(shelfIdOfStone(after, 'st1'), 'sh2');
+  assert.equal(shelfIdOfStone(after, 'sh1'), 'sh1');
+  // A care entry written later lands on the same shelf thing, keeping its old id.
+  const st = stones.find((s) => s.id === 'st1')!;
+  const next = shelfWithStone({ ...st.data, care: [...st.data.care, { id: 'c2', kind: 'charged', at: NOW }] }, 'st1', after[1].item);
+  assert.equal(next.stone?.care.length, 2);
+  assert.equal(next.stone?.stoneId, 'st1');
+});
+
+test('blending lab: a kept blend is one My Apothecary item, of the right type, with its safety notes', () => {
+  const blend = { ...emptyBlend(), form: 'oil' as const, intent: 'Sleep', parts: [{ name: 'Cinnamon', as: 'oil' as const, parts: 2 }, { name: 'Lavender', as: 'oil' as const, parts: 1 }] };
+  const item = apothecaryFromBlend(blend, 'b1', NOW);
+  assert.equal(item.type, 'oil-tincture');
+  assert.equal(blendIdOf(item), 'b1');
+  assert.equal(item.ingredients.length, 2);
+  assert.match(item.notes, /Safety/);
+  const saved = { ...item, id: 'a1', metadata: { ...item.metadata, lookBack: { when: 'moon' } } };
+  assert.equal(itemForBlend([saved], 'b1'), saved);
+  const again = apothecaryFromBlend({ ...blend, form: 'tea' }, 'b1', NOW, saved);
+  assert.equal(again.id, 'a1');
+  assert.equal(again.type, 'herb-mix');
+  assert.deepEqual((again.metadata as Record<string, unknown>).lookBack, { when: 'moon' });
+  assert.equal(apothecaryFromBlend({ ...blend, form: 'incense' }, 'b2', NOW).type, 'incense');
+});
+
+test('dreams: one dictionary, with the old list\'s questions folded in, and one Patterns page', () => {
+  const water = symbolStart('water')!;
+  assert.equal(water.id, 'water');
+  assert.equal(water.ask, DREAM_SYMBOLS.find((d) => d.symbol === 'water')!.ask);
+  let folded = 0;
+  for (const s of ALL_SYMBOLS) if (DREAM_SYMBOLS.some((d) => questionsOf(s)[0] === d.ask)) folded++;
+  assert.ok(folded >= DREAM_SYMBOLS.length - 4, `${folded} of ${DREAM_SYMBOLS.length} folded in`);
+  assert.ok(symbolStarts('I saw a snake by the door').length >= 1);
+  assert.equal(DREAM_ROUTES.patterns, '/grimoire/dreams/patterns');
+});
+
+test('correspondences: Library things fold into My practice once, nothing lost; free-form ones stay', () => {
+  const rosemary = { id: 'traditional:herb:rosemary', name: 'Rosemary', type: 'herb', myPractice: { Meaning: 'Remembrance', Uses: 'Washes' } } as unknown as LibraryEntry;
+  const c1 = { id: 'c1', data: { ...blankCorrespondence(), name: 'Rosemary', ref: rosemary.id, meaning: 'My gran’s garden', element: 'Fire', planet: 'Sun', pairs: 'bay', source: null, sourceNote: 'Gran' } };
+  const c2 = { id: 'c2', data: { ...blankCorrespondence(), name: 'The old oak by the river', meaning: 'Steadiness' } };
+  const pending = toFold([c1, c2], (id) => (id === rosemary.id ? rosemary : null));
+  assert.equal(pending.length, 1);
+  const merged = practiceWith(rosemary.myPractice, c1.data);
+  assert.match(String(merged.Meaning), /Remembrance/);
+  assert.match(String(merged.Meaning), /gran/);
+  assert.equal(merged.Uses, 'Washes');
+  assert.match(String(merged.Notes), /Fire · Sun/);
+  assert.equal(merged.PairsWith, 'bay');
+  // Twice is the same as once.
+  assert.deepEqual(practiceWith(merged, c1.data), merged);
+  assert.equal(practiceInput(merged).PairsWith, 'bay');
+  const moved = { ...c1, data: { ...c1.data, movedTo: rosemary.id } };
+  assert.equal(movedTo(moved.data), rosemary.id);
+  assert.deepEqual(toFold([moved, c2], () => rosemary), []);
+  assert.deepEqual(freeForm([moved, c2]).map((e) => e.id), ['c2']);
+  assert.equal(practiceAsCorrespondence({ ...rosemary, myPractice: merged })!.pairs, 'bay');
+});
+
+test('challenges: a tool theme counts the tool\'s own record as the day, without writing one', () => {
+  const c = checkIn(newChallenge('devotion', 7, '2026-11-01'), 1, 'By hand', '2026-11-01');
+  const shown = withToolDays(c, ['2026-11-01', '2026-11-02', '2026-11-04', '2026-12-25']);
+  assert.equal(shown.checkins['1'].note, 'By hand');
+  assert.equal(shown.checkins['1'].from, undefined);
+  assert.ok(shown.checkins['2'].from);
+  assert.ok(shown.checkins['4'].from);
+  assert.equal(Object.keys(shown.checkins).length, 3);
+  assert.equal(Object.keys(c.checkins).length, 1);
+  assert.equal(progressOf(shown, new Date(2026, 10, 4, 12)).done, 3);
+  // Not a tool theme: unchanged.
+  const plants = newChallenge('plants', 7, '2026-11-01');
+  assert.equal(withToolDays(plants, ['2026-11-01']), plants);
+});
+
+test('scrying: a sit is a reading of method scrying; old altar.scrying entries copy into the log once', () => {
+  const old = scryingEntry({ saw: 'A door in the water', symbols: 'door', feelings: 'Calm' }, { altarId: 'a1', minutes: 10, satMinutes: 8, moonPhase: 'Full Moon', at: NOW, vessel: 'mirror' });
+  const todo = scryingReadingsToAdd([{ id: 's1', data: old }, { id: 's2', data: { ...old, readingId: 'r9' } }, { id: 's3', data: old, deletedAt: NOW }]);
+  assert.equal(todo.length, 1);
+  const r = normalizeReading(todo[0].reading);
+  assert.equal(r.method, 'scrying');
+  assert.equal(r.date, '2026-11-07');
+  assert.match(r.cameUp, /door in the water/);
+  assert.match(r.interpretation, /black mirror/);
+  assert.match(r.interpretation, /Calm/);
+  // Marked once copied, so the next read finds nothing.
+  assert.deepEqual(scryingReadingsToAdd([{ id: 's1', data: { ...todo[0].entry, readingId: 'r1' } }]), []);
+});
+
+test('harvests: a kept harvest goes onto My Shelves once; Shelves is the stock list', () => {
+  const kept = normalizeHarvest({ on: '2026-06-01', name: 'Elderflower', part: 'Flowers', amount: 'A basket', kept: true, storedOn: '2026-06-02', note: 'Dried on the rack' });
+  const item = shelfFromHarvest(kept);
+  assert.equal(item.shelf, 'herbs');
+  assert.equal(item.source, 'foraged');
+  assert.equal(item.acquired, '2026-06-02');
+  assert.match(item.notes, /A basket/);
+  assert.match(item.notes, /rack/);
+  const list = [{ id: 'h1', data: kept }, { id: 'h2', data: { ...kept, kept: false } }, { id: 'h3', data: { ...kept, shelfId: 'sh1' } }];
+  assert.deepEqual(harvestsToShelve(list).map((h) => h.id), ['h1']);
+  assert.equal(normalizeHarvest({ ...kept, shelfId: 'sh9' }).shelfId, 'sh9');
+  assert.deepEqual(harvestsToShelve([{ id: 'h1', data: { ...kept, shelfId: 'sh9' } }]), []);
+});

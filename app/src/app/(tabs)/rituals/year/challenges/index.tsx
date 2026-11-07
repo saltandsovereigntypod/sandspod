@@ -1,4 +1,5 @@
 import { router, type Href } from 'expo-router';
+import { useToolDaysByTheme } from '../../../../../lib/yearday/useToolDays';
 import { useMemo, useState } from 'react';
 import { View } from 'react-native';
 
@@ -6,7 +7,7 @@ import { Button } from '../../../../../components/Button';
 import { Body, Card, Chip, Chips, List, RitualScreen, Row, SectionLabel, Title, ui } from '../../../../../components/rituals/ui';
 import { addEntry, useCraft } from '../../../../../lib/craft/store';
 import { localDateKey } from '../../../../../lib/rituals/lifecycle';
-import { CHALLENGES, challengeTitle, LENGTHS, newChallenge, normalizeChallenge, progressOf, THEMES, type ChallengeLength, type ThemeId } from '../../../../../lib/yearday/challenges';
+import { CHALLENGES, challengeTitle, LENGTHS, newChallenge, normalizeChallenge, progressOf, withToolDays, THEMES, type ChallengeLength, type ThemeId } from '../../../../../lib/yearday/challenges';
 
 const open = (id: string) => router.push(`/rituals/year/challenges/challenge?id=${id}` as Href);
 
@@ -14,13 +15,17 @@ const open = (id: string) => router.push(`/rituals/year/challenges/challenge?id=
 export default function Challenges() {
   const raw = useCraft<unknown>(CHALLENGES);
   const now = useMemo(() => new Date(), []);
+  const toolDays = useToolDaysByTheme();
   const all = useMemo(
     () =>
       raw.entries
-        .map((e) => ({ id: e.id, c: normalizeChallenge(e.data) }))
+        .map((e) => {
+          const c = normalizeChallenge(e.data);
+          return { id: e.id, c: c ? withToolDays(c, toolDays[c.theme] ?? []) : null };
+        })
         .filter((x): x is { id: string; c: NonNullable<typeof x.c> } => !!x.c)
         .sort((a, b) => b.c.start.localeCompare(a.c.start)),
-    [raw.entries],
+    [raw.entries, toolDays],
   );
   const active = all.filter((x) => !x.c.finished && !progressOf(x.c, now).over);
   const past = all.filter((x) => !active.includes(x));

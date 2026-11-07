@@ -32,6 +32,7 @@ import { moveTogether, removeObjects } from './selection.ts';
 import type { AltarDocument } from './snapshot.ts';
 import type { SavedObject } from './types.ts';
 import { newId } from './uid.ts';
+import { builtObject } from './workings/build.ts';
 import type { SigilMark } from '../sigil/sigil.ts';
 
 const isTrue = (value: unknown) => value === 'true';
@@ -226,7 +227,8 @@ export function setBackground(doc: AltarDocument, background: string, background
 
 /** Place a working from My Apothecary, in the middle of the altar's surface. */
 export function placeApothecary(doc: AltarDocument, item: ApothecaryItem, now: string): AltarDocument {
-  return addObject(doc, apothecaryObject(item, doc.objects, now));
+  // A jar, sachet or poppet built on an altar comes back as built (build.ts).
+  return addObject(doc, builtObject(item, doc.objects, now) ?? apothecaryObject(item, doc.objects, now));
 }
 
 /**

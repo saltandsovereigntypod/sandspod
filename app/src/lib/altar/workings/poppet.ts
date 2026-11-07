@@ -119,6 +119,21 @@ export const pinWords = (pin: PoppetPin) => {
   return `${pinColour(pin.colour).label} pin${zone ? ` in the ${zone.label.toLowerCase()}` : ''}${pin.note ? `: ${pin.note}` : ''}`;
 };
 
+/** Everything about one pin, for listing it: its colour, what the colour means, its place, your note and the day it was set. */
+export function pinDetail(pin: PoppetPin): { title: string; colour: string; meaning: string; place: string; note: string; set: string } {
+  const c = pinColour(pin.colour);
+  const zone = ZONES.find((z) => z.key === (pin.zone ?? 'free')) ?? ZONES[ZONES.length - 1];
+  const day = pin.at && !Number.isNaN(Date.parse(pin.at)) ? new Date(pin.at).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }) : '';
+  return {
+    title: `${c.label} pin`,
+    colour: c.label,
+    meaning: pin.meaning || c.meaning,
+    place: zone.key === 'free' ? 'Anywhere on the body' : `${zone.label}: ${zone.meaning.toLowerCase()}`,
+    note: pin.note ?? '',
+    set: day ? `Set ${day}` : '',
+  };
+}
+
 export const addDraftPin = (draft: PoppetDraft, pin: PoppetPin): PoppetDraft => (draft.pins.length >= MAX_PINS ? draft : { ...draft, pins: [...draft.pins, pin] });
 export const removeDraftPin = (draft: PoppetDraft, index: number): PoppetDraft => ({ ...draft, pins: draft.pins.filter((_, i) => i !== index) });
 
@@ -180,6 +195,10 @@ export function poppetItem(draft: PoppetDraft, now: string, id: string = newId()
     ingredients: draft.fillings.map(fillingIngredient),
     // Held each week while it works.
     livingState: { ...DEFAULT_LIVING, tending_interval_days: 7 },
+    // The design, so placing it again from My Apothecary sets out the same poppet (build.ts).
+    metadata: {
+      build: { kind: 'poppet', focus: draft.focus, who: draft.who.trim(), body: draft.body, fillings: draft.fillings, made: draft.made, consent: draft.focus === 'other' ? draft.consent : false, look: cleanLook(draft.look, draft.body), pins: cleanPins(draft.pins) },
+    },
     logToGrimoire: false,
     grimoireStatus: '',
     grimoireEntryId: '',

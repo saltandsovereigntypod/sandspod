@@ -1,12 +1,11 @@
 import { router, useLocalSearchParams, type Href } from 'expo-router';
+import { useMyCorrespondences } from '../../../lib/craft/eclectic/useMyCorrespondences';
 import { useMemo, useState } from 'react';
 import { Text, View } from 'react-native';
 
 import { Button } from '../../../components/Button';
 import { Body, Card, Chip, Chips, Expander, Field, List, RitualScreen, Row, SectionLabel, Title, ui } from '../../../components/rituals/ui';
 import { adviseTiming, scoreWord, windowWhen } from '../../../lib/craft/cosmic/timing';
-import { CORRESPONDENCES, type MyCorrespondence } from '../../../lib/craft/eclectic/correspondences';
-import { useCraft } from '../../../lib/craft/store';
 import { ritualsLibraryHref } from '../../../lib/library';
 import {
   builderParams,
@@ -31,7 +30,8 @@ const entryIdOf = (ref: string) => ref.replace(/\//g, ':');
 // for it. "Build a spell" opens the spell builder with what you chose.
 export default function CorrespondenceFinder() {
   const params = useLocalSearchParams<{ intent?: string; moon?: string; planet?: string; q?: string }>();
-  const { entries: mine } = useCraft<MyCorrespondence>(CORRESPONDENCES);
+  // Your free-form correspondences and your My practice in the Library, together.
+  const { all: mine } = useMyCorrespondences();
   const [query, setQuery] = useState<FinderQuery>(() => ({
     intent: spellIntent(params.intent)?.key ?? null,
     moon: FINDER_TIDES.includes(params.moon as MoonTide) ? (params.moon as MoonTide) : null,

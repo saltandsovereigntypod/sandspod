@@ -1,4 +1,4 @@
-import { router, useLocalSearchParams } from 'expo-router';
+import { router, useLocalSearchParams, type Href } from 'expo-router';
 import { useMemo, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
@@ -113,6 +113,14 @@ export default function ShelfThing() {
           accessibilityHint={latest ? `Opens ${latest.name || 'your altar'} with it set down` : 'Opens a new altar with it set down'}
         />
         <Button label="Change" variant="outline" onPress={() => router.push({ pathname: '/rituals/shelves/add', params: { id: entry.id } })} />
+        {item.shelf === 'crystals' && (
+          <Button
+            label={`${item.stone?.care.length ? 'Its' : 'Start its'} cleansing and care log`}
+            variant="text"
+            accessibilityHint="My stones: cleansed, charged and programmed, and what it is for"
+            onPress={() => router.push({ pathname: '/rituals/craft/crystal/stone', params: { id: item.stone?.stoneId || entry.id } } as Href)}
+          />
+        )}
       </View>
 
       <List>

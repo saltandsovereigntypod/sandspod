@@ -1,4 +1,6 @@
-import { router, useLocalSearchParams } from 'expo-router';
+import { router, useLocalSearchParams, type Href } from 'expo-router';
+import { useShelfActions } from '../../../../../../lib/shelves/store';
+import { shelfFromHarvest } from '../../../../../../lib/shelves/harvest';
 import { useState } from 'react';
 import { View } from 'react-native';
 
@@ -45,6 +47,7 @@ function Form({ existing, start }: { existing: CraftEntry<unknown> | null; start
   const { places } = useLand();
   const [h, setH] = useState<Harvest>(() => (existing ? normalizeHarvest(existing.data) : start()));
   const [saving, setSaving] = useState(false);
+  const shelf = useShelfActions();
   const set = (p: Partial<Harvest>) => setH((x) => ({ ...x, ...p }));
   const forage = forageByKey(h.forage) ?? matchForage(h.name, h.herb);
 
@@ -54,9 +57,11 @@ function Form({ existing, start }: { existing: CraftEntry<unknown> | null; start
       tell('Name it first', 'What did you gather?');
       return;
     }
-    const data: Harvest = { ...h, name, forage: h.forage ?? forage?.key ?? null, storedOn: h.kept && !h.storedOn ? localDateKey(new Date()) : h.storedOn };
+    let data: Harvest = { ...h, name, forage: h.forage ?? forage?.key ?? null, storedOn: h.kept && !h.storedOn ? localDateKey(new Date()) : h.storedOn };
     setSaving(true);
     try {
+      // Kept: it goes onto My Shelves, the one list of what you have, once.
+      if (data.kept && !data.shelfId) data = { ...data, shelfId: await shelf.add(shelfFromHarvest(data)) };
       if (existing) await updateEntry(LAND_HARVESTS, existing.id, data);
       else await addEntry(LAND_HARVESTS, data);
       router.back();
@@ -97,7 +102,8 @@ function Form({ existing, start }: { existing: CraftEntry<unknown> | null; start
           ))}
         </Chips>
       </View>
-      <Toggle label="Still in the store cupboard" detail="Dried, jarred or kept to use later" value={h.kept} onChange={(kept) => set({ kept })} />
+      <Toggle label="Kept, on My Shelves" detail="Dried, jarred or kept to use later: it goes onto your Herbs shelf" value={h.kept} onChange={(kept) => set({ kept })} />
+      {!!h.shelfId && <Button label="Open it on My Shelves" variant="text" onPress={() => router.push(`/rituals/shelves/${h.shelfId}` as Href)} />}
       <Field label="Notes" value={h.note} onChange={(note) => set({ note })} placeholder="Dried on the rack for a week; smelled of honey" multiline />
       {forage && (
         <List>

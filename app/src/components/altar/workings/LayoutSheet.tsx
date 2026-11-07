@@ -24,9 +24,11 @@ type Props = {
   onClose: () => void;
   /** Arrange: apply plan.moves (applyMoves(doc.objects, plan.moves)). */
   onApply: (plan: LayoutPlan) => void;
+  /** A grid to keep, in its shape and with its log: Workings → Crystal grid. */
+  onGridBuilder?: () => void;
 };
 
-export function LayoutSheet({ visible, altar, selected, onClose, onApply }: Props) {
+export function LayoutSheet({ visible, altar, selected, onClose, onApply, onGridBuilder }: Props) {
   const { entries } = useLibrary();
   const [kind, setKind] = useState<LayoutKind | null>(null);
   const plan = visible && kind ? layoutPlan(kind, altar.objects, altar.background, entries) : null;
@@ -48,6 +50,7 @@ export function LayoutSheet({ visible, altar, selected, onClose, onApply }: Prop
       {plan ? (
         <View style={sheetStyles.section}>
           <Text style={type.body}>{plan.note}</Text>
+          {kind === 'grid' && !!onGridBuilder && <Button label="Plan a grid to keep, with its log" variant="text" accessibilityHint="Workings: Crystal grid, kept in Craft, Crystal, Grids" onPress={onGridBuilder} />}
           {plan.moves.length ? (
             <>
               {plan.moves.map((m) => (

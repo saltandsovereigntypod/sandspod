@@ -9,17 +9,19 @@ import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 import { Button } from '../Button';
 import { Card, Section } from '../more/ui';
-import { correspondenceDetail, CORRESPONDENCES, forLibraryEntry, pairNames, type MyCorrespondence } from '../../lib/craft/eclectic/correspondences';
-import { useCraft } from '../../lib/craft/store';
-import type { LibraryEntry } from '../../lib/library';
+import { correspondenceDetail, forLibraryEntry, pairNames } from '../../lib/craft/eclectic/correspondences';
+import { ritualsPracticeHref, type LibraryEntry } from '../../lib/library';
+import { useMyCorrespondences } from '../../lib/craft/eclectic/useMyCorrespondences';
 import { colors, type } from '../../theme';
 
 const openOne = (id: string) => router.push({ pathname: '/rituals/craft/eclectic/correspondences/[id]', params: { id } } as Href);
 
 export function MyCorrespondencesFor({ entry }: { entry: Pick<LibraryEntry, 'id' | 'name'> }) {
-  const { entries } = useCraft<MyCorrespondence>(CORRESPONDENCES);
+  // What it means to you lives in its My practice (above); here only your free-form notes that name it.
+  const { free: entries } = useMyCorrespondences();
   const { about, pairedWith } = useMemo(() => forLibraryEntry(entries, entry), [entries, entry]);
   const pairs = [...new Set(about.flatMap((e) => pairNames(e.data)))];
+  if (!about.length && !pairedWith.length) return null;
 
   return (
     <Section label="Your correspondences">
@@ -36,15 +38,8 @@ export function MyCorrespondencesFor({ entry }: { entry: Pick<LibraryEntry, 'id'
             <Text style={type.caption}>{`Paired with ${e.data.name}${e.data.meaning.trim() ? `: ${e.data.meaning.trim()}` : ''}`}</Text>
           </Pressable>
         ))}
-        {!about.length && !pairedWith.length && (
-          <Text style={type.caption}>What does it mean to you? A memory, a person, what you pair it with. Yours sits beside the Library’s, and the correspondence finder uses it.</Text>
-        )}
         <View style={styles.actions}>
-          <Button
-            label={about.length ? 'Add another note' : 'Add your own correspondence'}
-            variant="outline"
-            onPress={() => router.push({ pathname: '/rituals/craft/eclectic/correspondences/edit', params: { ref: entry.id, name: entry.name } } as Href)}
-          />
+          <Button label="Write it in My practice" variant="outline" onPress={() => router.push(ritualsPracticeHref(entry) as Href)} />
         </View>
       </Card>
     </Section>

@@ -1,8 +1,12 @@
 // Water-bowl scrying: a quiet timed sit with a dark bowl, then a few words on
-// what came. The words go to the ritual journal (its JournalAnswers shape)
-// when that's available; otherwise to the craft store, `altar.scrying`.
+// what came. It is kept as a reading in your divination log (`hedge.readings`,
+// method "scrying") like every other reading, and in the ritual journal when
+// that's available. Older sits kept only in `altar.scrying` are copied into
+// the log once (scryingReadingsToAdd; the old entries are kept, marked).
 
 import type { JournalAnswers } from '../../rituals/types.ts';
+import { lookBackFrom, moonForReading, type Reading } from '../../craft/hedge/readings.ts';
+import { localDateKey } from '../../rituals/lifecycle.ts';
 
 export const SCRYING_COLLECTION = 'altar.scrying';
 export const SCRYING_MINUTES = [5, 10, 15] as const;
@@ -111,4 +115,37 @@ export function reflectionPaths(count = 4): { cx: number; cy: number; rx: number
       opacity: 0.08 + 0.04 * ((i + 1) % 3),
     };
   });
+}
+
+const VESSEL_WORD: Record<ScryVessel, string> = { bowl: 'a water bowl', mirror: 'a black mirror', cauldron: 'the cauldron' };
+
+/** A scrying sit as a reading in the divination log (method "scrying"). */
+export function scryingReading(entry: ScryingEntry): Reading {
+  const date = Number.isNaN(Date.parse(entry.at)) ? localDateKey(new Date()) : localDateKey(new Date(entry.at));
+  const vessel = scryVessel(entry.vessel);
+  const sat = entry.satMinutes || entry.minutes;
+  return {
+    date,
+    method: 'scrying',
+    question: '',
+    drawn: [],
+    cameUp: [entry.saw.trim(), entry.symbols.trim() ? `Symbols: ${entry.symbols.trim()}` : ''].filter(Boolean).join('\n'),
+    interpretation: [entry.feelings.trim() ? `Felt: ${entry.feelings.trim()}` : '', `Scried in ${VESSEL_WORD[vessel]} for ${Math.max(1, Math.round(sat))} minute${Math.round(sat) > 1 ? 's' : ''}, on the altar.`].filter(Boolean).join('\n'),
+    lookBack: lookBackFrom(date, 30),
+    outcome: '',
+    outcomeDate: '',
+    moonPhase: (entry.moonPhase || moonForReading(date)) as Reading['moonPhase'],
+  };
+}
+
+/** Migration on read: the old altar.scrying entries not yet in the log (they are marked with readingId once copied, never removed). */
+export function scryingReadingsToAdd(entries: { id: string; data: unknown; deletedAt?: string | null }[]): { id: string; entry: ScryingEntry; reading: Reading }[] {
+  const out: { id: string; entry: ScryingEntry; reading: Reading }[] = [];
+  for (const e of entries) {
+    const d = (e.data && typeof e.data === 'object' ? e.data : {}) as Partial<ScryingEntry> & { readingId?: string };
+    if (e.deletedAt || d.readingId || typeof d.at !== 'string') continue;
+    const entry: ScryingEntry = { altarId: String(d.altarId ?? ''), minutes: Number(d.minutes) || 0, satMinutes: Number(d.satMinutes) || 0, moonPhase: String(d.moonPhase ?? ''), at: d.at, saw: String(d.saw ?? ''), symbols: String(d.symbols ?? ''), feelings: String(d.feelings ?? ''), ...(d.vessel ? { vessel: scryVessel(d.vessel) } : {}) };
+    out.push({ id: e.id, entry, reading: scryingReading(entry) });
+  }
+  return out;
 }

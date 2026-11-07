@@ -12,7 +12,7 @@ import { SupportLink } from '../../../../components/SupportLink';
 import { JournalBacklinks } from '../../../../components/journals/screens';
 import { MOON_IN_SIGN } from '../../../../lib/astro/meanings';
 import { fullDate } from '../../../../lib/calendar';
-import { symbolReference } from '../../../../lib/craft/hedge/dreamSymbols';
+import { symbolStart } from '../../../../lib/dreams/reader';
 import { DREAMS, dreamMoonDisc, normalizeDream, returningSymbols, VIVIDNESS } from '../../../../lib/craft/hedge/dreams';
 import { useCraft } from '../../../../lib/craft/store';
 import { DREAM_ROUTES } from '../../../../lib/grimoire/dreams';
@@ -36,7 +36,7 @@ export default function DreamPage() {
   const d = entry.data;
   const disc = dreamMoonDisc(d.date);
   const back = returningSymbols(all, entry);
-  const refs = d.symbols.map((s) => ({ s, ref: symbolReference(s) })).filter((x) => x.ref);
+  const refs = d.symbols.map((s) => ({ s, ref: symbolStart(s) })).filter((x) => x.ref);
   const marks = [d.lucid ? 'Lucid' : null, d.recurring ? 'Recurring' : null, `Vividness ${d.vividness} · ${VIVIDNESS[d.vividness - 1]?.label ?? ''}`].filter(Boolean) as string[];
   const mood = MOON_IN_SIGN[d.moonSign]?.mood;
 

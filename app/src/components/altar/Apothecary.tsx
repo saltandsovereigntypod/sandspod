@@ -31,6 +31,10 @@ import { builtInCabinet, shortLabel } from '../../lib/altar/cabinet';
 import { ITEM_TYPE, isCustomCategory } from '../../lib/altar/custom';
 import { pickImage, type PickedImage } from '../../lib/altar/images';
 import type { SavedObject } from '../../lib/altar/types';
+import { router, type Href } from 'expo-router';
+import { blendIdOf, LAB_TYPES } from '../../lib/craft/kitchen/blendApothecary';
+import { buildOf, builderFor, withBuild } from '../../lib/altar/workings/build';
+import { PinList } from './workings/PoppetParts';
 import { deleteApothecary, saveApothecary, useWorkshop } from '../../lib/altar/workshop';
 import { useLibrary } from '../../lib/library';
 import { colors, fonts, radius, touch, type } from '../../theme';
@@ -50,7 +54,7 @@ type ListProps = {
 };
 
 export function ApothecarySheet({ visible, onClose, onMake, onEdit, onPlace }: ListProps) {
-  const { apothecary } = useWorkshop();
+  const { apothecary, userId } = useWorkshop();
   return (
     <Sheet visible={visible} eyebrow="Apothecary · jars & sachets" title="Your workings" onClose={onClose}>
       <Button label="Make something new" onPress={onMake} />
@@ -74,6 +78,19 @@ export function ApothecarySheet({ visible, onClose, onMake, onEdit, onPlace }: L
                 <Text style={type.caption} numberOfLines={1}>
                   {item.ingredients.map((i) => i.label).join(', ')}
                 </Text>
+                {(() => {
+                  const b = buildOf(item);
+                  if (b?.kind !== 'poppet' || !b.pins.length) return null;
+                  return (
+                    <PinList
+                      pins={b.pins}
+                      removeLabel="Remove"
+                      onRemove={(i) => {
+                        if (userId) void saveApothecary(userId, withBuild(item, { ...b, pins: b.pins.filter((_, n) => n !== i) }), null).catch(() => undefined);
+                      }}
+                    />
+                  );
+                })()}
                 {isItemDue(item, new Date()) && <Text style={[type.caption, styles.due]}>Did it work? Its look-back day has come. Open the recipe to say.</Text>}
                 <ChipRow>
                   <Chip label="Place" symbol="✦" accessibilityLabel={`Place ${item.name} on the altar`} onPress={() => onPlace(item)} />
@@ -99,6 +116,8 @@ type EditorProps = {
   onClose: () => void;
   onSaved: (saved: SavedWorking) => void;
   onDeleted: (item: ApothecaryItem) => void;
+  /** A spell jar, sachet or poppet is made in its own builder on the altar (build.ts). */
+  onBuild?: (type: ApothecaryTypeId) => void;
 };
 
 export function ApothecaryEditor(props: EditorProps) {
@@ -135,7 +154,7 @@ function blank(type: ApothecaryTypeId): ApothecaryItem {
   };
 }
 
-function Editor({ target, altarObjects, onClose, onSaved, onDeleted }: EditorProps & { target: ApothecaryTarget }) {
+function Editor({ target, altarObjects, onClose, onSaved, onDeleted, onBuild }: EditorProps & { target: ApothecaryTarget }) {
   const workshop = useWorkshop();
   const { entries } = useLibrary();
   const isNew = !target.item;
@@ -265,10 +284,23 @@ function Editor({ target, altarObjects, onClose, onSaved, onDeleted }: EditorPro
       <Group label="What are you making?">
         <ChipRow>
           {APOTHECARY_TYPES.map((t) => (
-            <Chip key={t.id} label={t.label} active={item.type === t.id} onPress={() => setType(t.id)} />
+            <Chip key={t.id} label={t.label} active={item.type === t.id} onPress={() => (isNew && onBuild && builderFor(t.id) ? onBuild(t.id) : setType(t.id))} />
           ))}
         </ChipRow>
+        {isNew && !!onBuild && <Text style={type.caption}>A spell jar, sachet or poppet opens its own builder, layer by layer, and is kept here in My Apothecary.</Text>}
       </Group>
+
+      {LAB_TYPES.includes(item.type) && (
+        <Button
+          label={blendIdOf(item) ? 'Open it in the Blending lab' : 'Check in the Blending lab'}
+          variant="text"
+          accessibilityHint="Reads each part for the form and gives its safety notes; keeping it there updates this item"
+          onPress={() => {
+            onClose();
+            router.push((blendIdOf(item) ? { pathname: '/rituals/craft/kitchen/blend', params: { id: blendIdOf(item) } } : '/rituals/craft/kitchen/blend') as Href);
+          }}
+        />
+      )}
 
       <Group label="Name">
         <Input value={item.name} onChangeText={(name) => change({ name })} placeholder="Protection Jar, Dream Oil…" label="Name" />

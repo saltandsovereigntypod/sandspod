@@ -4,7 +4,10 @@ import { View } from 'react-native';
 
 import { Button } from '../../../../../components/Button';
 import { useCharts } from '../../../../../components/astro/useCharts';
-import { Body, Card, Chip, Chips, RitualScreen, SectionLabel, Title } from '../../../../../components/rituals/ui';
+import { Body, Card, Chip, Chips, Expander, RitualScreen, SectionLabel, Title } from '../../../../../components/rituals/ui';
+import { SynastryDetail } from '../../../../../components/astro/SynastryDetail';
+import { type } from '../../../../../theme';
+import { TermText } from '../../../../../components/astro/Explain';
 import { ShareCardButton } from '../../../../../components/share/ShareCard';
 import { reading } from '../../../../../lib/astro/relationship';
 import { GOOD_DAY_INTENTS, GROUP_TITLE, MAGIC_INTENTS, REL_TYPES, type RelType } from '../../../../../lib/astro/relationshipText';
@@ -17,7 +20,7 @@ const ASPECT_WORD: Record<string, string> = { conjunction: 'conjunct', sextile: 
 
 // "How your charts meet": two saved charts, read for the kind of bond. No scores.
 export default function Relationship() {
-  const params = useLocalSearchParams<{ a?: string; b?: string; type?: string }>();
+  const params = useLocalSearchParams<{ a?: string; b?: string; type?: string; detail?: string }>();
   const { charts } = useCharts();
   const place = usePlace();
   const usable = charts.filter((c) => c.chart);
@@ -125,6 +128,13 @@ export default function Relationship() {
               <Body key={l}>{l}</Body>
             ))}
           </Card>
+
+          {a?.chart && b?.chart && (
+            <Expander title="Detail: every contact, the bi-wheel and the houses" initiallyOpen={params.detail === '1'}>
+              <TermText style={type.body} text="Synastry compares two charts: the aspects one person’s planets make to the other’s, and where each falls in the other’s houses. It describes dynamics, not destiny." />
+              <SynastryDetail a={{ chart: a.chart, saved: a.saved }} b={{ chart: b.chart, saved: b.saved }} />
+            </Expander>
+          )}
 
           <Card>
             <SectionLabel>Good days together</SectionLabel>

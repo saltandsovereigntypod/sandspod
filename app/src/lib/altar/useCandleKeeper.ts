@@ -12,7 +12,6 @@ import { AppState } from 'react-native';
 import { useCraft } from '../craft/store';
 import { ALTAR_OPTIONS, altarOptionsFor, type AltarOptions } from './altarOptions';
 import { nextAltarBurnout, settleAltars } from './burnout';
-import { STONES } from '../craft/crystal/collections';
 import { tendingSources } from '../reminders/sources';
 import { setTendingSources } from '../reminders/store';
 import { useAltars } from './store';
@@ -22,7 +21,6 @@ export function useCandleKeeper() {
   const [wake, setWake] = useState(0);
   const busy = useRef(false);
   const { entries: optionEntries, ready: optionsReady } = useCraft<AltarOptions>(ALTAR_OPTIONS);
-  const { entries: stones } = useCraft<{ key?: string | null; name?: string }>(STONES);
 
   useEffect(() => {
     const sub = AppState.addEventListener('change', (next) => {
@@ -33,7 +31,7 @@ export function useCandleKeeper() {
 
   useEffect(() => {
     if (status === 'loading' || status === 'idle' || busy.current) return;
-    setTendingSources(tendingSources(altars, stones, new Date()));
+    setTendingSources(tendingSources(altars, [], new Date()));
     const changed = settleAltars(altars, new Date().toISOString(), {
       // Moon charges wait until each altar's options are known (New Moons are its choice).
       moon: optionsReady,
@@ -58,5 +56,5 @@ export function useCandleKeeper() {
     if (next == null) return;
     const timer = setTimeout(() => setWake((w) => w + 1), Math.min(Math.max(0, next - Date.now()) + 1000, 6 * 60 * 60 * 1000));
     return () => clearTimeout(timer);
-  }, [altars, save, status, wake, optionEntries, optionsReady, stones]);
+  }, [altars, save, status, wake, optionEntries, optionsReady]);
 }

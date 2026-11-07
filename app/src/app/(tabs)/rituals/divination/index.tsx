@@ -1,4 +1,5 @@
 import { router, type Href } from 'expo-router';
+import { useScryingIntoReadings } from '../../../../lib/altar/workings/useScryingIntoReadings';
 import { useMemo, useState } from 'react';
 import { View } from 'react-native';
 
@@ -28,6 +29,7 @@ function detail(e: ReadingEntry): string {
 }
 
 export default function Readings() {
+  useScryingIntoReadings();
   const { entries, ready } = useCraft<unknown>(READINGS);
   const [query, setQuery] = useState('');
   const [method, setMethod] = useState<ReadingMethod | null>(null);

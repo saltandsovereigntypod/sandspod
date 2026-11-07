@@ -11,7 +11,7 @@ import { Button } from '../../Button';
 import { builtInCabinet } from '../../../lib/altar/cabinet';
 import { keywordLine } from '../../../lib/altar/cabinetKeywords';
 import type { PoppetBody, PoppetLook, PoppetPin } from '../../../lib/altar/workings/poppet';
-import { makePin, pinWords } from '../../../lib/altar/workings/poppet';
+import { makePin, pinDetail, pinWords } from '../../../lib/altar/workings/poppet';
 import {
   artBodyOf,
   bodyToPicture,
@@ -151,15 +151,21 @@ export function PinList({ pins, onRemove, removeLabel = 'Take out' }: { pins: Po
   if (!pins.length) return null;
   return (
     <View style={sheetStyles.section}>
-      {pins.map((p, i) => (
+      {pins.map((p, i) => {
+        const d = pinDetail(p);
+        return (
         <View key={`${p.at}-${i}`} style={[sheetStyles.between, styles.pinRow]}>
           <View style={styles.pinText}>
-            <Text style={sheetStyles.value}>{pinWords({ ...p, note: '' })}</Text>
-            <Text style={type.caption}>{p.note || p.meaning}</Text>
+            <Text style={sheetStyles.value}>{d.title}</Text>
+            <Text style={type.caption}>{`Colour: ${d.meaning}`}</Text>
+            <Text style={type.caption}>{`Place: ${d.place}`}</Text>
+            {!!d.note && <Text style={type.caption}>{`Your note: ${d.note}`}</Text>}
+            {!!d.set && <Text style={type.caption}>{d.set}</Text>}
           </View>
           {onRemove && <Chip label={removeLabel} accessibilityLabel={`${removeLabel}: ${pinWords(p)}`} onPress={() => onRemove(i)} />}
         </View>
-      ))}
+        );
+      })}
     </View>
   );
 }

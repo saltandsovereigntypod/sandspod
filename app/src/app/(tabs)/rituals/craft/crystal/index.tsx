@@ -1,10 +1,11 @@
 import { router, type Href } from 'expo-router';
 import { Text, View } from 'react-native';
+import { useMyStones } from '../../../../../lib/shelves/useStones';
 
 import { Body, Card, List, RitualScreen, Row, SectionLabel, Title, ui } from '../../../../../components/rituals/ui';
 import { STONE_CARE } from '../../../../../lib/craft/crystal/care';
-import { SETTINGS, STONES } from '../../../../../lib/craft/crystal/collections';
-import { cleanseStatus, normaliseRule, normaliseStone, type CrystalSettings, type Stone } from '../../../../../lib/craft/crystal/stones';
+import { SETTINGS } from '../../../../../lib/craft/crystal/collections';
+import { cleanseStatus, normaliseRule, normaliseStone, type CrystalSettings } from '../../../../../lib/craft/crystal/stones';
 import { CRAFT_TOOLS } from '../../../../../lib/craft/practices';
 import { useCraft } from '../../../../../lib/craft/store';
 import { moonState, nextPhase } from '../../../../../lib/moon';
@@ -18,7 +19,8 @@ const ROUTES = ['/rituals/craft/crystal/stones', '/rituals/craft/crystal/care'];
 export default function CrystalPractice() {
   const about = PRACTICES.find((p) => p.id === 'crystal')?.about;
   const tools = CRAFT_TOOLS.crystal;
-  const { entries } = useCraft<Stone>(STONES);
+  const myStonesHere = useMyStones();
+  const { entries } = myStonesHere;
   const { entries: settings } = useCraft<CrystalSettings>(SETTINGS);
   const rule = normaliseRule(settings[0]?.data?.cleanse);
   const now = new Date();

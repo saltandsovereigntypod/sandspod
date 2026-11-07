@@ -16,6 +16,9 @@ import { readingObject } from '../../lib/altar/connect/practice';
 import { drawResult, pendulumResult, type DivinationResult } from '../../lib/altar/divinationResult';
 import {
   activateGrid,
+  gridOf,
+  wandGridEntry,
+  withGridEntry,
   addToMortar,
   answerLabel,
   askPendulum,
@@ -77,7 +80,8 @@ import { saveApothecary } from '../../lib/altar/workshop';
 import type { ScryVessel } from '../../lib/altar/workings/scrying';
 import type { AltarDeed } from '../../lib/covens/altarActions';
 import { READINGS } from '../../lib/craft/hedge/readings';
-import { addEntry } from '../../lib/craft/store';
+import { addEntry, listEntriesOnce, updateEntry } from '../../lib/craft/store';
+import { GRIDS, logGrid, normaliseGrid, type Grid as CrystalGrid } from '../../lib/craft/crystal/grids';
 import { chosenDeck } from '../../lib/divination/decks';
 import { drawOptions, drawSpread, meaningOf, readingFromDraw, spreadById } from '../../lib/divination/draw';
 import { CraftPanel, GridBar, type CraftActs } from './CraftPanels';
@@ -110,6 +114,8 @@ type Deps = {
   /** The ids of what is chosen while selecting several (null when not choosing). */
   chosenIds: string[] | null;
   stopSelecting: () => void;
+  /** This altar's id when it is your own (a wand grid is kept in Craft → Crystal → Grids), else null. */
+  altarId?: string | null;
 };
 
 export function useCraftTools(deps: Deps) {
@@ -142,6 +148,10 @@ export function useCraftTools(deps: Deps) {
     const n = crystalsOf(stones).length;
     commit((d) => ({ ...d, extra: activateGrid(d.extra, stones, at, deps.me || undefined) }));
     log(gridLine(n, wand >= 0));
+    // Its home is Craft → Crystal → Grids: kept there, with its log, and linked from the altar.
+    const lit = gridOf(activateGrid({}, stones, at));
+    const entry = lit && deps.altarId && deps.userId ? wandGridEntry(lit, docRef.current?.objects ?? [], deps.altarId, at) : null;
+    if (entry) void addEntry(GRIDS, entry).then((e) => commit((d) => (gridOf(d.extra)?.at === at ? { ...d, extra: withGridEntry(d.extra, e.id) } : d))).catch(() => undefined);
     show('grid', wand >= 0 ? uidOf(docRef.current?.objects[wand]) : uidOf(stones[0]));
     say(wand >= 0 ? `The grid is lit: ${n} stones, joined by lines of light.` : `The grid is lit: ${n} stones. Set a wand on the altar to activate the next one with it.`);
     deps.finishDeed('grid');
@@ -289,6 +299,14 @@ export function useCraftTools(deps: Deps) {
     },
     gridAll: () => grid(crystalsOf(docRef.current?.objects ?? [])),
     releaseGrid: () => {
+      const entryId = gridOf(docRef.current?.extra)?.entryId;
+      if (entryId)
+        void listEntriesOnce<CrystalGrid>(GRIDS)
+          .then((list) => {
+            const e = list.find((x) => x.id === entryId);
+            if (e && normaliseGrid(e.data).status !== 'closed') return updateEntry(GRIDS, entryId, logGrid(normaliseGrid(e.data), 'closed', 'Let it rest on the altar.', nowIso()));
+          })
+          .catch(() => undefined);
       commit((d) => ({ ...d, extra: releaseGrid(d.extra) }));
       log(GRID_RELEASED);
       say('The grid rests.');

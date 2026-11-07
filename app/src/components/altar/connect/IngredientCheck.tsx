@@ -3,13 +3,12 @@
 // stones and in your garden. For the premade detail screen and the altar.
 
 import { useMemo, useState } from 'react';
+import { useMyStones } from '../../../lib/shelves/useStones';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 import { checkIngredients, foundWords, type Need, type NeedResult } from '../../../lib/altar/connect/ingredients';
 import type { SavedObject } from '../../../lib/altar/types';
 import { useWorkshop } from '../../../lib/altar/workshop';
-import { STONES } from '../../../lib/craft/crystal/collections';
-import type { Stone } from '../../../lib/craft/crystal/stones';
 import { PLANTS, type Plant } from '../../../lib/craft/green/garden';
 import { useCraft } from '../../../lib/craft/store';
 import { useAccessibleText } from '../../../lib/accessibility/store';
@@ -35,7 +34,8 @@ export function IngredientCheck({ needs, objects = [], altarName, open = false, 
   const shelfActions = useShelfActions();
   const [used, setUsed] = useState<string[]>([]);
   const workshop = useWorkshop();
-  const { entries: stones } = useCraft<Stone>(STONES);
+  const myStonesHere = useMyStones();
+  const { entries: stones } = myStonesHere;
   const { entries: plants } = useCraft<Plant>(PLANTS);
   const [expanded, setExpanded] = useState(open);
   const t = useAccessibleText();

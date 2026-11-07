@@ -4,6 +4,7 @@
 // scrying mirror (black glass with the altar's candlelight in it) and the
 // cauldron filled with water (craftTools.ts), each kept in the altar's History.
 
+import { READINGS } from '../../../lib/craft/hedge/readings';
 import { useEffect, useState } from 'react';
 import { Animated, Easing, Modal, type ModalProps, Pressable, ScrollView, StyleSheet, Text, View, useWindowDimensions } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -18,11 +19,11 @@ import {
   clock,
   hasNotes,
   reflectionPaths,
-  SCRYING_COLLECTION,
   SCRYING_MINUTES,
   SCRYING_PROMPTS,
   SCRY_VESSELS,
   scryingEntry,
+  scryingReading,
   scryingJournalAnswers,
   secondsLeft,
   type ScryingNotes,
@@ -209,11 +210,12 @@ function Scrying({ altar, onClose, onSaved, vessel = 'bowl', candles = 0 }: Omit
     const at = new Date();
     const moonPhase = moonState(at).name;
     let where: 'journal' | 'craft' = 'journal';
+    // Kept in the divination log like every other reading; the ritual journal too when it can be reached.
+    await addEntry(READINGS, scryingReading(scryingEntry(notes, { altarId: altar.id, minutes, satMinutes: sat, moonPhase, at: at.toISOString(), vessel })));
     try {
       await saveJournal({ session: null, answers: scryingJournalAnswers(notes, { minutes: Math.max(1, Math.round(sat)), moonPhase, altarName: altar.name, date: at, vessel }) });
     } catch {
       where = 'craft';
-      await addEntry(SCRYING_COLLECTION, scryingEntry(notes, { altarId: altar.id, minutes, satMinutes: sat, moonPhase, at: at.toISOString(), vessel }));
     }
     setSaving(false);
     setSavedTo(where);
@@ -272,7 +274,7 @@ function Scrying({ altar, onClose, onSaved, vessel = 'bowl', candles = 0 }: Omit
 
       {phase === 'done' && (
         <View style={styles.block}>
-          <Text style={styles.lede}>{savedTo === 'journal' ? 'Saved to your ritual journal.' : 'Saved with this altar.'} Drink some water, and come back to the room.</Text>
+          <Text style={styles.lede}>{savedTo === 'journal' ? 'Saved in your divination log and your ritual journal.' : 'Saved in your divination log.'} Drink some water, and come back to the room.</Text>
           <Button label="Close" onPress={onClose} />
         </View>
       )}

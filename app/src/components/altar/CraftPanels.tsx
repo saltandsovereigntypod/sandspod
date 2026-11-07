@@ -49,6 +49,18 @@ import { usePlace } from '../../lib/location';
 import type { SavedObject } from '../../lib/altar/types';
 import { colors, type } from '../../theme';
 import { Button } from '../Button';
+import { router, type Href } from 'expo-router';
+
+/** The wand's grid is kept in Craft → Crystal → Grids, with its log. */
+function GridHomeLink({ entryId }: { entryId?: string }) {
+  return (
+    <Button
+      label="Its log in Crystal grids"
+      variant="text"
+      onPress={() => router.push((entryId ? { pathname: '/rituals/craft/crystal/grids', params: { id: entryId } } : '/rituals/craft/crystal/grids') as Href)}
+    />
+  );
+}
 import { Chip, ChipRow } from './Chip';
 
 export type CraftActs = {
@@ -282,7 +294,7 @@ function Cauldron({ object, act }: { object: SavedObject; act: CraftActs }) {
   );
 }
 
-function Crystal({ object, objects, inGrid, crystals, act }: { object: SavedObject; objects: SavedObject[]; inGrid: boolean; crystals: number; act: CraftActs }) {
+function Crystal({ object, objects, inGrid, gridEntry, crystals, act }: { object: SavedObject; objects: SavedObject[]; inGrid: boolean; gridEntry?: string; crystals: number; act: CraftActs }) {
   const c = chargingOf(object);
   const glow = chargingGlow(object);
   const place = usePlace();
@@ -339,7 +351,10 @@ function Crystal({ object, objects, inGrid, crystals, act }: { object: SavedObje
         }}
       />
       {inGrid ? (
-        <Button label="Let the grid rest" variant="outline" onPress={act.releaseGrid} />
+        <>
+          <Button label="Let the grid rest" variant="outline" onPress={act.releaseGrid} />
+          <GridHomeLink entryId={gridEntry} />
+        </>
       ) : (
         crystals >= GRID_MIN && <Text style={type.caption}>For a crystal grid, tap Select, choose {GRID_MIN} or more crystals, and activate them with the wand.</Text>
       )}
@@ -370,7 +385,7 @@ export function CraftPanel({
   if (isPendulum(object)) return <Pendulum calibration={calibration} act={act} />;
   if (isMortar(object)) return <Mortar object={object} choices={choices} act={act} />;
   if (isCauldron(object)) return <Cauldron object={object} act={act} />;
-  if (object.type === 'crystal') return <Crystal object={object} objects={objects} inGrid={!!grid?.ids.includes(String(object.altarObjectId))} crystals={crystals} act={act} />;
+  if (object.type === 'crystal') return <Crystal object={object} objects={objects} inGrid={!!grid?.ids.includes(String(object.altarObjectId))} gridEntry={grid?.entryId} crystals={crystals} act={act} />;
   if (isBolline(object)) {
     return (
       <View style={styles.box}>
@@ -414,7 +429,13 @@ export function CraftPanel({
     );
   }
   if (isWand(object)) {
-    if (grid) return <Button label="Let the crystal grid rest" variant="outline" onPress={act.releaseGrid} />;
+    if (grid)
+      return (
+        <View style={styles.box}>
+          <Button label="Let the crystal grid rest" variant="outline" onPress={act.releaseGrid} />
+          <GridHomeLink entryId={grid.entryId} />
+        </View>
+      );
     if (crystals >= GRID_MIN) {
       return (
         <View style={styles.box}>

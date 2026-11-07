@@ -1,11 +1,12 @@
 import { router, type Href } from 'expo-router';
 import { useMemo } from 'react';
+import { useMyStones } from '../../../../../lib/shelves/useStones';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 import { Button } from '../../../../../components/Button';
 import { Body, Chip, Chips, Expander, Notice, RitualScreen, SectionLabel, Title, ui } from '../../../../../components/rituals/ui';
 import { careBadges, findCare } from '../../../../../lib/craft/crystal/care';
-import { SETTINGS, STONES } from '../../../../../lib/craft/crystal/collections';
+import { SETTINGS } from '../../../../../lib/craft/crystal/collections';
 import {
   cleanseStatus,
   daysAgo,
@@ -14,9 +15,7 @@ import {
   sortStones,
   STONE_FORMS,
   type CleanseRule,
-  type CrystalSettings,
-  type Stone,
-} from '../../../../../lib/craft/crystal/stones';
+  type CrystalSettings } from '../../../../../lib/craft/crystal/stones';
 import { addEntry, updateEntry, useCraft } from '../../../../../lib/craft/store';
 import { colors, fonts, radius, type } from '../../../../../theme';
 
@@ -32,7 +31,8 @@ const sameRule = (a: CleanseRule, b: CleanseRule) => a.kind === b.kind && (a.kin
 
 // My stones: the collection, those due for cleansing first.
 export default function MyStones() {
-  const { entries, ready } = useCraft<Stone>(STONES);
+  const myStonesHere = useMyStones();
+  const { entries, ready } = myStonesHere;
   const { entries: settings } = useCraft<CrystalSettings>(SETTINGS);
   const rule = useMemo(() => normaliseRule(settings[0]?.data?.cleanse), [settings]);
   const now = useMemo(() => new Date(), []);
@@ -52,6 +52,8 @@ export default function MyStones() {
     <RitualScreen back="Crystal">
       <Title eyebrow="Crystal">My stones</Title>
       <Button label="Add a stone" onPress={() => router.push('/rituals/craft/crystal/stone-edit' as Href)} />
+      <Body muted>Your stones are the crystals on My Shelves: one list, tended in To tend at the full moon.</Body>
+      <Button label="All on My Shelves" variant="text" onPress={() => router.push('/rituals/shelves' as Href)} />
 
       {ready && stones.length === 0 && (
         <Body muted>

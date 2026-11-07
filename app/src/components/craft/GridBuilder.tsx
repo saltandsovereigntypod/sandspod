@@ -4,13 +4,12 @@
 // Crystal → Grids and the altar's Workings.
 
 import { useMemo, useState } from 'react';
+import { useMyStones } from '../../lib/shelves/useStones';
 import { Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 import Svg, { Circle, Line } from 'react-native-svg';
 
 import { DURATIONS, pointStones, SHAPES, shapeOf, shapePoints, type Grid, type GridStone } from '../../lib/craft/crystal/grids';
-import { STONES } from '../../lib/craft/crystal/collections';
-import { normaliseStone, type Stone } from '../../lib/craft/crystal/stones';
-import { useCraft } from '../../lib/craft/store';
+import { normaliseStone } from '../../lib/craft/crystal/stones';
 import { useLibrary } from '../../lib/library';
 import { colors, fonts, radius, touch, type } from '../../theme';
 
@@ -51,7 +50,8 @@ function Pill({ label, on, onPress, hint }: { label: string; on?: boolean; onPre
 }
 
 export function GridBuilder({ grid, onChange }: { grid: Grid; onChange: (next: Grid) => void }) {
-  const { entries: mine } = useCraft<Stone>(STONES);
+  const myStonesHere = useMyStones();
+  const { entries: mine } = myStonesHere;
   const { entries: library } = useLibrary();
   const [query, setQuery] = useState('');
   const [picking, setPicking] = useState<'centre' | 'points'>('centre');

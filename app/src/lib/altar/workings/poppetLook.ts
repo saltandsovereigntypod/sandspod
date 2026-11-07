@@ -268,7 +268,7 @@ export function poppetPlan(look: LookInput, pins: PinInput[] = []): PoppetPictur
   const k = size / PIN_ART.w;
   const headH = PIN_ART.head.h * k;
   const stubH = PIN_ART.stub.h * k;
-  for (const pin of pins.slice(0, MAX_PINS)) {
+  for (const pin of spreadPins(pins.slice(0, MAX_PINS), bh / bw)) {
     const ox = PAD + clamp01(pin.x) * bw;
     const oy = PAD + clamp01(pin.y) * bh;
     const rot = pinAngle(pin.x, pin.y);
@@ -289,6 +289,30 @@ export function poppetPlan(look: LookInput, pins: PinInput[] = []): PoppetPictur
 }
 
 export const MAX_PINS = 13;
+
+/** Pins closer than this (a share of the body's width) would hide one another. */
+export const PIN_CROWD = 0.045;
+
+/**
+ * Where each pin is drawn: where it was set, unless an earlier pin is already
+ * there (two in the heart, say). Then it moves a little way round the spot, in
+ * a small spiral, so every pin head shows. The saved pins are not changed.
+ * `aspect` is the body's height over its width (y is a share of the height).
+ */
+export function spreadPins<T extends { x: number; y: number }>(pins: T[], aspect = 1): T[] {
+  const placed: { x: number; y: number }[] = [];
+  const near = (a: { x: number; y: number }, b: { x: number; y: number }) => Math.hypot(a.x - b.x, (a.y - b.y) * aspect) < PIN_CROWD;
+  return pins.map((pin) => {
+    let at = { x: clamp01(pin.x), y: clamp01(pin.y) };
+    for (let k = 1; k <= 24 && placed.some((p) => near(p, at)); k++) {
+      const a = k * 2.39996; // the golden angle, so each step lands in a fresh direction
+      const r = PIN_CROWD * (0.9 + 0.35 * Math.sqrt(k));
+      at = { x: clamp01(pin.x + r * Math.cos(a)), y: clamp01(pin.y + (r * Math.sin(a)) / aspect) };
+    }
+    placed.push(at);
+    return at.x === pin.x && at.y === pin.y ? pin : { ...pin, x: round3(at.x), y: round3(at.y) };
+  });
+}
 const clamp01 = (n: number) => (Number.isFinite(n) ? Math.min(1, Math.max(0, n)) : 0.5);
 
 /** Where a point on the body (0–1 of the body picture) lands in the whole picture (0–1), for tapping and markers. */
