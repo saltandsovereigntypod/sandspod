@@ -11,6 +11,8 @@ import {
   CHALLENGES,
   challengeTitle,
   checkIn,
+  TOOL_THEMES,
+  withToolDays,
   dateOfDay,
   FINISH_QUESTIONS,
   normalizeChallenge,
@@ -22,12 +24,16 @@ import {
   uncheck,
 } from '../../../../../lib/yearday/challenges';
 import { colors, fonts, type } from '../../../../../theme';
+import { useToolDays } from '../../../../../lib/yearday/useToolDays';
 
 export default function ChallengePage() {
   const { id } = useLocalSearchParams<{ id?: string }>();
   const raw = useCraft<unknown>(CHALLENGES);
   const entry = raw.entries.find((e) => e.id === id) ?? null;
-  const c = useMemo(() => (entry ? normalizeChallenge(entry.data) : null), [entry]);
+  const saved = useMemo(() => (entry ? normalizeChallenge(entry.data) : null), [entry]);
+  // A theme that is a tool counts that tool's own record of the day; only hand check-ins are saved here.
+  const toolDays = useToolDays(saved?.theme);
+  const c = useMemo(() => (saved ? withToolDays(saved, toolDays) : null), [saved, toolDays]);
   const now = useMemo(() => new Date(), []);
   const [pick, setPick] = useState<number | null>(null);
   const [note, setNote] = useState<string | null>(null);
@@ -49,6 +55,8 @@ export default function ChallengePage() {
   const existing = c.checkins[String(day)];
   const future = day > p.day;
   const save = (next: typeof c) => void updateEntry(CHALLENGES, entry.id, next);
+  const base = saved!;
+  const tool = TOOL_THEMES[c.theme];
 
   return (
     <RitualScreen back="Challenges">
@@ -82,6 +90,16 @@ export default function ChallengePage() {
         <Text style={type.cardTitle}>{promptOn(prompts[day - 1], date)}</Text>
         {future ? (
           <Body muted>This day hasn’t come yet.</Body>
+        ) : existing?.from ? (
+          <Body muted>{`Done: counted from ${existing.from} on this day.`}</Body>
+        ) : tool ? (
+          <>
+            <Body muted>{`This day is counted when you keep ${tool.what}; nothing to write twice.`}</Body>
+            <View style={ui.actions}>
+              <Button label={tool.label} onPress={() => router.push((c.theme === 'moon' ? { pathname: tool.app, params: { date: localDateKey(date) } } : tool.app) as Href)} />
+            </View>
+            {!!existing && <Button label="Undo this check-in" variant="text" onPress={() => save(uncheck(base, day))} />}
+          </>
         ) : (
           <>
             <Field label="Your check-in" value={note ?? existing?.note ?? ''} onChange={setNote} multiline placeholder="A line or two: what you did, what you noticed" />
@@ -89,11 +107,11 @@ export default function ChallengePage() {
               <Button
                 label={existing ? 'Update' : 'Check in'}
                 onPress={() => {
-                  save(checkIn(c, day, (note ?? existing?.note ?? '').trim(), localDateKey(new Date())));
+                  save(checkIn(base, day, (note ?? existing?.note ?? '').trim(), localDateKey(new Date())));
                   setNote(null);
                 }}
               />
-              {!!existing && <Button label="Undo" variant="text" onPress={() => save(uncheck(c, day))} />}
+              {!!existing && <Button label="Undo" variant="text" onPress={() => save(uncheck(base, day))} />}
             </View>
           </>
         )}
@@ -107,7 +125,7 @@ export default function ChallengePage() {
           <Button
             label={c.finished ? 'Save' : 'Finish the challenge'}
             onPress={() => {
-              save({ ...c, reflection: (reflection ?? c.reflection).trim(), finished: c.finished || localDateKey(new Date()) });
+              save({ ...base, reflection: (reflection ?? c.reflection).trim(), finished: c.finished || localDateKey(new Date()) });
               setReflection(null);
             }}
           />

@@ -9,6 +9,7 @@ import { placeApothecary } from '../src/lib/altar/editor.ts';
 import type { AltarDocument } from '../src/lib/altar/snapshot.ts';
 import { activateGrid, gridOf, wandGridEntry, withGridEntry } from '../src/lib/altar/craftTools.ts';
 import type { SavedObject } from '../src/lib/altar/types.ts';
+import { checkIn, newChallenge, progressOf, withToolDays } from '../src/lib/yearday/challenges.ts';
 import { freeForm, movedTo, practiceAsCorrespondence, practiceInput, practiceWith, toFold } from '../src/lib/craft/eclectic/practiceFold.ts';
 import { blankCorrespondence } from '../src/lib/craft/eclectic/correspondences.ts';
 import type { LibraryEntry } from '../src/lib/library/types.ts';
@@ -180,4 +181,19 @@ test('correspondences: Library things fold into My practice once, nothing lost; 
   assert.deepEqual(toFold([moved, c2], () => rosemary), []);
   assert.deepEqual(freeForm([moved, c2]).map((e) => e.id), ['c2']);
   assert.equal(practiceAsCorrespondence({ ...rosemary, myPractice: merged })!.pairs, 'bay');
+});
+
+test('challenges: a tool theme counts the tool\'s own record as the day, without writing one', () => {
+  const c = checkIn(newChallenge('devotion', 7, '2026-11-01'), 1, 'By hand', '2026-11-01');
+  const shown = withToolDays(c, ['2026-11-01', '2026-11-02', '2026-11-04', '2026-12-25']);
+  assert.equal(shown.checkins['1'].note, 'By hand');
+  assert.equal(shown.checkins['1'].from, undefined);
+  assert.ok(shown.checkins['2'].from);
+  assert.ok(shown.checkins['4'].from);
+  assert.equal(Object.keys(shown.checkins).length, 3);
+  assert.equal(Object.keys(c.checkins).length, 1);
+  assert.equal(progressOf(shown, new Date(2026, 10, 4, 12)).done, 3);
+  // Not a tool theme: unchanged.
+  const plants = newChallenge('plants', 7, '2026-11-01');
+  assert.equal(withToolDays(plants, ['2026-11-01']), plants);
 });

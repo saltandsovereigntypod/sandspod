@@ -294,7 +294,34 @@ export function promptOn(prompt: string, date: Date): string {
   return prompt.replace(/\{phase\}/g, () => moonState(new Date(date.getFullYear(), date.getMonth(), date.getDate(), 21)).name.toLowerCase());
 }
 
-export type CheckIn = { on: string; note: string };
+/** A day checked in: by hand, or (`from`) counted from that tool's own record of the day, never saved twice. */
+export type CheckIn = { on: string; note: string; from?: string };
+
+/**
+ * Themes that are a tool already in the app: the day is done when that tool
+ * has its own record for the day (a devotion kept, a sit logged, a moon or
+ * cycle note written, a card drawn and kept in your readings). The check-in
+ * opens the tool; nothing separate is written.
+ */
+export const TOOL_THEMES: Partial<Record<ThemeId, { label: string; app: string; what: string }>> = {
+  devotion: { label: 'Open daily devotion', app: '/rituals/craft/solitary/devotion', what: 'your daily devotion' },
+  grounding: { label: 'Sit (Meditation)', app: '/rituals/craft/meditation', what: 'a sit in Meditation' },
+  moon: { label: 'Write today’s moon note', app: '/rituals/cycle/log', what: 'your note in Cycle & Moon' },
+  tarot: { label: 'Draw today’s card', app: '/rituals/divination/draw', what: 'a card drawn and kept in your readings' },
+};
+
+/** The challenge with each day the tool has a record for counted as checked in (as `from`), hand check-ins kept as they are. */
+export function withToolDays(c: Challenge, dates: Iterable<string>): Challenge {
+  const tool = TOOL_THEMES[c.theme];
+  if (!tool) return c;
+  const set = new Set(dates);
+  let checkins = c.checkins;
+  for (let n = 1; n <= c.length; n++) {
+    const date = dateOfDay(c, n);
+    if (!checkins[String(n)] && set.has(date)) checkins = { ...checkins, [String(n)]: { on: date, note: '', from: tool.what } };
+  }
+  return checkins === c.checkins ? c : { ...c, checkins };
+}
 
 export type Challenge = {
   theme: ThemeId;
