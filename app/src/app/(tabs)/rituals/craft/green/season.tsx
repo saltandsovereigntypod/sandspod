@@ -67,7 +67,7 @@ export default function GardenCalendar() {
 
       <View style={ui.gapSmall}>
         <SectionLabel>Hemisphere</SectionLabel>
-        <Chips>
+        <Chips label="Hemisphere">
           <Chip label="Northern" selected={hemisphere === 'north'} onPress={() => setHemisphere('north')} />
           <Chip label="Southern" selected={hemisphere === 'south'} onPress={() => setHemisphere('south')} />
         </Chips>
@@ -75,7 +75,7 @@ export default function GardenCalendar() {
 
       <View style={ui.gapSmall}>
         <SectionLabel>Month</SectionLabel>
-        <Chips>
+        <Chips label="Month">
           {SHORT.map((m, i) => (
             <Chip key={m} label={m} a11yLabel={MONTH_NAMES[i]} selected={month === i + 1} onPress={() => setMonth(i + 1)} />
           ))}

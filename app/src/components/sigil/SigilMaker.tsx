@@ -179,7 +179,7 @@ export function SigilMaker({ back, eyebrow, sectionId, fromGrimoire }: Props) {
 
       <View style={ui.gap}>
         <SectionLabel>How to make it</SectionLabel>
-        <Chips>
+        <Chips label="How to make it">
           {METHODS.map((m) => (
             <Chip
               key={m.id}
@@ -293,7 +293,7 @@ export function SigilMaker({ back, eyebrow, sectionId, fromGrimoire }: Props) {
 
       <View style={ui.gap}>
         <SectionLabel>How it looks</SectionLabel>
-        <Chips>
+        <Chips label="How it looks">
           {WEIGHTS.map((w) => (
             <Chip key={w.id} label={`${w.label} line`} selected={weight === w.value} onPress={() => setWeight(w.value)} />
           ))}

@@ -62,7 +62,7 @@ export default function Psychometry() {
               {things.length > 0 && (
                 <View style={ui.gapSmall}>
                   <SectionLabel>From your shelves</SectionLabel>
-                  <Chips>
+                  <Chips label="From your shelves">
                     {things.map((e) => (
                       <Chip key={e.id} label={e.item.name} selected={pick?.name === e.item.name} onPress={() => { setPick({ name: e.item.name, ref: e.item.ref }); setFree(''); }} />
                     ))}
@@ -101,7 +101,7 @@ export default function Psychometry() {
               </Card>
               <View style={ui.gapSmall}>
                 <SectionLabel>How much lined up?</SectionLabel>
-                <Chips>
+                <Chips label="How much lined up?">
                   {[1, 2, 3, 4, 5].map((n) => (
                     <Chip key={n} label={`${n}`} selected={close === n} onPress={() => setClose(n)} />
                   ))}

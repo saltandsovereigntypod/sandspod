@@ -82,7 +82,7 @@ function Form({ existing, start }: { existing: CraftEntry<unknown> | null; start
       <Field label="Title" value={r.title} onChange={(title) => set({ title })} placeholder="Grandmother’s seed cake" />
       <View style={ui.gapSmall}>
         <SectionLabel>What it’s for</SectionLabel>
-        <Chips>
+        <Chips label="What it’s for">
           <Chip label="Just good food" selected={!r.intent} onPress={() => set({ intent: null })} />
           {INTENT_CHOICES.map((i) => (
             <Chip key={i.key} label={i.label} selected={r.intent === i.key} onPress={() => set({ intent: i.key })} />
@@ -99,26 +99,26 @@ function Form({ existing, start }: { existing: CraftEntry<unknown> | null; start
       </View>
       <View style={ui.gapSmall}>
         <SectionLabel>For the festivals</SectionLabel>
-        <Chips>
+        <Chips multiple label="For the festivals">
           {Object.entries(FESTIVAL_NAMES).map(([ref, name]) => (
             <Chip key={ref} label={name} selected={r.festivals.includes(ref)} onPress={() => set({ festivals: toggle(r.festivals, ref) })} />
           ))}
         </Chips>
         <SectionLabel>On the altar with it</SectionLabel>
-        <Chips>
+        <Chips multiple label="On the altar with it">
           {Object.entries(SEASONAL_NAMES).map(([id, name]) => (
             <Chip key={id} label={name} selected={r.seasonal.includes(id)} onPress={() => set({ seasonal: toggle(r.seasonal, id) })} />
           ))}
         </Chips>
         <SectionLabel>As an offering</SectionLabel>
-        <Chips>
+        <Chips label="As an offering">
           <Chip label="Not an offering" selected={!r.offering} onPress={() => set({ offering: null })} />
           {Object.entries(OFFERING_NAMES).map(([id, name]) => (
             <Chip key={id} label={name} selected={r.offering === id} onPress={() => set({ offering: id })} />
           ))}
         </Chips>
         <SectionLabel>Allergens</SectionLabel>
-        <Chips>
+        <Chips multiple label="Allergens">
           {ALLERGENS.map((a) => (
             <Chip key={a.id} label={a.label} selected={r.allergens.includes(a.id)} onPress={() => set({ allergens: toggle(r.allergens, a.id) as Recipe['allergens'] })} />
           ))}

@@ -115,7 +115,7 @@ export function PlaceChooser({ kind }: { kind: JournalKind }) {
   return (
     <View style={styles.gapSmall}>
       <SectionLabel>Where this journal lives</SectionLabel>
-      <Chips>
+      <Chips label="Where this journal lives">
         {PLACE_OPTIONS.map((o) => (
           <Chip key={o.value} label={o.label} selected={place === o.value} onPress={() => void choose(o.value)} />
         ))}

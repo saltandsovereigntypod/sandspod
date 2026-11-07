@@ -118,7 +118,7 @@ export default function StoneDetail() {
       {care ? (
         <Card>
           <SectionLabel>Care</SectionLabel>
-          <Chips>
+          <Chips label="Care">
             {careBadges(care).map((b) => (
               <Chip key={b} label={b} />
             ))}
@@ -140,7 +140,7 @@ export default function StoneDetail() {
       <View style={ui.gap}>
         <SectionLabel>Log care</SectionLabel>
         <Card>
-          <Chips>
+          <Chips label="Log care">
             {KINDS.map((k) => (
               <Chip
                 key={k}

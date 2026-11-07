@@ -244,7 +244,7 @@ function TendPanel({ item, ctx, onDone }: { item: ListItem; ctx: TendContext; on
       {rhythm.kind !== 'asks' && <RemindPicker item={item} rhythm={rhythm} run={run} act={act} />}
 
       <SectionLabel>When it’s done</SectionLabel>
-      <Chips>
+      <Chips label="When it’s done">
         {endsOf(item).map((how) => (
           <Chip key={how} label={END_WORDS[how].label} selected={ending === how} onPress={() => setEnding(ending === how ? null : how)} />
         ))}
@@ -368,7 +368,7 @@ function OwnForm({ ctx, item, onDone }: { ctx: TendContext; item?: ListItem; onD
       {!item && <SectionLabel>Add your own</SectionLabel>}
       {status && <Notice>{status}</Notice>}
       <Field label="What is it?" value={name} onChange={setName} placeholder="Cleanse the house" />
-      <Chips>
+      <Chips label="Add your own">
         {OWN_TYPES.map((t) => (
           <Chip key={t.value} label={t.label} selected={kind === t.value} onPress={() => setKind(t.value)} />
         ))}
@@ -443,7 +443,7 @@ function OwnPanel({ item, ctx, onDone }: { item: ListItem; ctx: TendContext; onD
       {status && <Notice>{status}</Notice>}
       {!!own?.notes && <Body muted>{own.notes}</Body>}
       <SectionLabel>How (optional)</SectionLabel>
-      <Chips>
+      <Chips multiple label="How (optional)">
         {hows.map((h) => (
           <Chip key={h} label={h} selected={how.includes(h)} onPress={() => setHow(how.includes(h) ? how.filter((x) => x !== h) : [...how, h])} />
         ))}

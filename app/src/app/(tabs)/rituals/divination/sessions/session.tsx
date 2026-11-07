@@ -46,7 +46,7 @@ export default function SessionPage() {
       {s.protections.length > 0 && (
         <View style={ui.gapSmall}>
           <SectionLabel>Protections</SectionLabel>
-          <Chips>
+          <Chips label="Protections">
             {s.protections.map((p) => (
               <Chip key={p} label={PROTECTIONS.find((x) => x.id === p)?.label ?? p} />
             ))}

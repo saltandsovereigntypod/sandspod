@@ -110,7 +110,7 @@ export default function BlendingLab() {
 
       <View style={ui.gapSmall}>
         <SectionLabel>Make it as</SectionLabel>
-        <Chips>
+        <Chips label="Make it as">
           {FORMS.map((f) => (
             <Chip key={f.key} label={f.label} selected={blend.form === f.key} onPress={() => setBlend((b) => ({ ...b, form: f.key as BlendForm, parts: b.parts.map((p) => ({ ...p, as: defaultAs(p.name, f.key) })) }))} />
           ))}
@@ -120,7 +120,7 @@ export default function BlendingLab() {
 
       <View style={ui.gapSmall}>
         <SectionLabel>For</SectionLabel>
-        <Chips>
+        <Chips label="For">
           {INTENTS.map((i) => (
             <Chip key={i} label={i} selected={blend.intent === i} onPress={() => setBlend((b) => ({ ...b, intent: i }))} />
           ))}
@@ -172,7 +172,7 @@ export default function BlendingLab() {
       {blend.form === 'oil' && (
         <View style={ui.gapSmall}>
           <SectionLabel>Carrier and strength</SectionLabel>
-          <Chips>
+          <Chips label="Carrier and strength">
             {CARRIERS.map((c) => (
               <Chip key={c} label={c} selected={blend.carrier === c} onPress={() => setBlend((b) => ({ ...b, carrier: c }))} />
             ))}

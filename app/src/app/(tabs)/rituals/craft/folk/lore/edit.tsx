@@ -69,7 +69,7 @@ function Form({ existing }: { existing: CraftEntry<unknown> | null }) {
 
       <View style={ui.gapSmall}>
         <SectionLabel>What kind?</SectionLabel>
-        <Chips>
+        <Chips label="What kind?">
           {LORE_KINDS.map((k) => (
             <Chip key={k.id} label={k.label} selected={lore.kind === k.id} onPress={() => set({ kind: k.id })} />
           ))}
@@ -86,7 +86,7 @@ function Form({ existing }: { existing: CraftEntry<unknown> | null }) {
 
       <View style={ui.gapSmall}>
         <SectionLabel>When you heard it</SectionLabel>
-        <Chips>
+        <Chips label="When you heard it">
           <Chip label="Today" selected={lore.heard === today} onPress={() => set({ heard: today })} />
           <Chip label="Not sure" selected={!lore.heard} onPress={() => set({ heard: '' })} />
           {!!lore.heard && lore.heard !== today && <Chip label={fullDate(lore.heard) ?? lore.heard} selected onPress={() => undefined} />}

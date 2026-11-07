@@ -73,7 +73,7 @@ function Form({ existing, place, herb }: { existing: CraftEntry<LandNote> | null
 
       <View style={ui.gapSmall}>
         <SectionLabel>Where</SectionLabel>
-        <Chips>
+        <Chips label="Where">
           <Chip label="Out and about" selected={!note.placeId} onPress={() => set({ placeId: null })} />
           {places
             .filter((p) => !p.data.archived || p.id === note.placeId)
@@ -85,7 +85,7 @@ function Form({ existing, place, herb }: { existing: CraftEntry<LandNote> | null
 
       <View style={ui.gapSmall}>
         <SectionLabel>What kind of note?</SectionLabel>
-        <Chips>
+        <Chips multiple label="What kind of note?">
           {NOTE_KINDS.map((k) => (
             <Chip key={k.id} label={k.label} selected={note.kinds.includes(k.id)} hint={k.hint} onPress={() => set({ kinds: toggle(note.kinds, k.id) })} />
           ))}
@@ -100,7 +100,7 @@ function Form({ existing, place, herb }: { existing: CraftEntry<LandNote> | null
       {(note.kinds.includes('frost') || !!note.frost) && (
         <View style={ui.gapSmall}>
           <SectionLabel>Mark a frost</SectionLabel>
-          <Chips>
+          <Chips multiple label="Mark a frost">
             <Chip label="Just a frost" selected={!note.frost} onPress={() => set({ frost: null })} />
             {FROST_MARKS.map((f) => (
               <Chip key={f.id} label={f.label} selected={note.frost === f.id} onPress={() => set({ frost: f.id, kinds: note.kinds.includes('frost') ? note.kinds : [...note.kinds, 'frost'] })} />
@@ -113,7 +113,7 @@ function Form({ existing, place, herb }: { existing: CraftEntry<LandNote> | null
       {showWater && (
         <View style={ui.gapSmall}>
           <SectionLabel>The water</SectionLabel>
-          <Chips>
+          <Chips label="The water">
             {WATER_LEVELS.map((w) => (
               <Chip key={w.id} label={w.label} selected={note.water === w.id} onPress={() => set({ water: note.water === w.id ? null : w.id })} />
             ))}
@@ -126,7 +126,7 @@ function Form({ existing, place, herb }: { existing: CraftEntry<LandNote> | null
       {garden.length > 0 && (
         <View style={ui.gapSmall}>
           <SectionLabel>From My garden</SectionLabel>
-          <Chips>
+          <Chips multiple label="From My garden">
             {garden.map((g) => (
               <Chip key={g.id} label={g.plant.name} selected={note.plants.includes(g.id)} onPress={() => set({ plants: toggle(note.plants, g.id) })} />
             ))}
@@ -137,7 +137,7 @@ function Form({ existing, place, herb }: { existing: CraftEntry<LandNote> | null
       {potted.length > 0 && (
         <View style={ui.gapSmall}>
           <SectionLabel>Potted plants on your altars</SectionLabel>
-          <Chips>
+          <Chips multiple label="Potted plants on your altars">
             {potted.map((p) => (
               <Chip key={p.id} label={p.name} selected={note.potted.some((x) => x.id === p.id)} onPress={() => set({ potted: toggle(note.potted, p, (a, b) => a.id === b.id) })} />
             ))}

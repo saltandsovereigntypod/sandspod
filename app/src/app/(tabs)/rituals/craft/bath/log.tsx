@@ -65,7 +65,7 @@ function Form({ id, start, mixParam }: { id: string | null; start: BathLog | nul
       <Title eyebrow="Journal">{id ? 'Your bath' : 'Log a bath'}</Title>
       <View style={ui.gapSmall}>
         <SectionLabel>Which mix</SectionLabel>
-        <Chips>
+        <Chips label="Which mix">
           <Chip label="Something of my own" selected={!mixId} onPress={() => setMixId('')} />
           {choices.map((m) => (
             <Chip key={m.id} label={m.title} selected={mixId === m.id} onPress={() => setMixId(m.id)} />
@@ -76,7 +76,7 @@ function Form({ id, start, mixParam }: { id: string | null; start: BathLog | nul
       </View>
       <View style={ui.gapSmall}>
         <SectionLabel>How it felt</SectionLabel>
-        <Chips>
+        <Chips multiple label="How it felt">
           {FEELINGS.map((f) => (
             <Chip key={f} label={f} selected={felt.includes(f)} onPress={() => toggle(f)} />
           ))}

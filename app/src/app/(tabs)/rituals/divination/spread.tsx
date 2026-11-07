@@ -83,7 +83,7 @@ function Form({ existing, startKind }: { existing: CraftEntry<unknown> | null; s
 
       <View style={ui.gapSmall}>
         <SectionLabel>What to draw</SectionLabel>
-        <Chips>
+        <Chips label="What to draw">
           {KINDS.map((k) => (
             <Chip key={k.id} label={k.label} selected={data.kind === k.id} onPress={() => set({ kind: k.id })} />
           ))}
@@ -92,7 +92,7 @@ function Form({ existing, startKind }: { existing: CraftEntry<unknown> | null; s
 
       <View style={ui.gapSmall}>
         <SectionLabel>Its shape</SectionLabel>
-        <Chips>
+        <Chips label="Its shape">
           {SHAPES.map((s) => (
             <Chip key={s.id} label={s.label} selected={data.shape === s.id} onPress={() => set({ shape: s.id })} />
           ))}

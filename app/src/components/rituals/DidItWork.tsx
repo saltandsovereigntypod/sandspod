@@ -63,7 +63,7 @@ export function LookBackPicker({
   return (
     <View style={ui.gapSmall}>
       <SectionLabel>Did it work? Look back</SectionLabel>
-      <Chips>
+      <Chips label="Did it work? Look back">
         {choices.map((c) => {
           const day = dateFromKey(c.date);
           return (
@@ -182,7 +182,7 @@ export function DidItWork({ entry, compact, onSave }: { entry: JournalRow; compa
       <SectionLabel>Did it work?</SectionLabel>
       {due && <Body>{dueQuestion(entry, dayWords)}</Body>}
       {compact && !due && <Body>{entry.title || 'Untitled Ritual'}</Body>}
-      <Chips>
+      <Chips label="Did it work?">
         {ANSWERS.map((a) => (
           <Chip key={a.id} label={a.label} selected={answer === a.id} onPress={() => setAnswer(answer === a.id ? null : a.id)} />
         ))}

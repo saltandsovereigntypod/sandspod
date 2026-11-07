@@ -129,7 +129,7 @@ export default function PlanetaryHours() {
       {place && (
         <View style={ui.gap}>
           <SectionLabel>Find the next hour of</SectionLabel>
-          <Chips>
+          <Chips label="Find the next hour of">
             {HOUR_PLANETS.map((p) => (
               <Chip key={p} label={`${POINT_GLYPH[p]} ${p}`} selected={pick === p} onPress={() => setPick(pick === p ? null : p)} a11yLabel={`Next hours of ${p}`} />
             ))}

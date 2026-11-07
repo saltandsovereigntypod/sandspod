@@ -340,7 +340,7 @@ export default function ShareRitual() {
 
       <Card>
         <SectionLabel>Credit it to</SectionLabel>
-        <Chips>
+        <Chips label="Credit it to">
           {credits.map((o) => (
             <Chip key={o.value} label={o.value === 'coven' && covenName ? covenName : o.label} selected={shareAs === o.value} onPress={() => setShareAs(o.value)} />
           ))}

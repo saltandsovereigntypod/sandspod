@@ -67,7 +67,7 @@ function Form({ existing }: { existing: CraftEntry<LandPlace> | null }) {
 
       <View style={ui.gapSmall}>
         <SectionLabel>What kind of place?</SectionLabel>
-        <Chips>
+        <Chips label="What kind of place?">
           {PLACE_KINDS.map((k) => (
             <Chip key={k.id} label={k.label} selected={place.kind === k.id} onPress={() => set({ kind: k.id })} />
           ))}

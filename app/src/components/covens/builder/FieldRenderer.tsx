@@ -5,7 +5,9 @@ import { cleanValues, COLOUR_OPTIONS, defaultPartWords, optionLabel, partsOf, ty
 import { SWATCH } from '../../../lib/covens/model';
 import { searchEntries, type PickEntry } from '../../../lib/covens/picker';
 import type { NamedThing } from '../../../lib/covens/builder';
+import { shouldFold } from '../../../lib/optionPicker';
 import { colors, fonts, radius, touch, type } from '../../../theme';
+import { OptionPicker } from '../../rituals/OptionPicker';
 import { Chips, Field } from '../../more/ui';
 import { SearchPicker } from '../SearchPicker';
 
@@ -26,6 +28,13 @@ export type FieldContext = {
 
 /** Toggle chips for "any of" choices. */
 export function MultiChips({ label, options, value, onChange }: { label: string; options: { value: string; label: string }[]; value: string[]; onChange: (v: string[]) => void }) {
+  if (shouldFold(options.length)) {
+    const items = options.map((o) => {
+      const on = value.includes(o.value);
+      return { key: o.value, label: o.label, selected: on, onPress: () => onChange(on ? value.filter((v) => v !== o.value) : [...value, o.value]) };
+    });
+    return <OptionPicker items={items} multiple label={label} />;
+  }
   return (
     <View accessibilityLabel={label} style={styles.wrap}>
       {options.map((o) => {

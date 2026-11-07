@@ -45,7 +45,7 @@ export function RepeatPicker({ value, onChange, choices = EVERY_CHOICES }: { val
 /** How far ahead: any of on the day, the day before, three days, a week. */
 export function LeadChips({ value, onChange, choices = LEAD_DAY_CHOICES }: { value: number[]; onChange: (next: number[]) => void; choices?: readonly number[] }) {
   return (
-    <Chips>
+    <Chips multiple label="How far ahead">
       {choices.map((days) => (
         <Chip
           key={days}

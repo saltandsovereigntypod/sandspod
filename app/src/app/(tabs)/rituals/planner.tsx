@@ -137,7 +137,7 @@ export default function Planner() {
 
       <View style={ui.gapSmall}>
         <SectionLabel>What is it for?</SectionLabel>
-        <Chips>
+        <Chips label="What is it for?">
           {INTENTIONS.map((i) => (
             <Chip key={i.key} label={i.label} selected={intentionKey === i.key} onPress={() => setIntentionKey(intentionKey === i.key ? null : i.key)} />
           ))}
@@ -193,7 +193,7 @@ export default function Planner() {
           <PlannerHours night={night} time={time} onPick={setTime} initialPlanet={params.hour} />
 
           <SectionLabel>Which ritual?</SectionLabel>
-          <Chips>
+          <Chips label="Which ritual?">
             {draft && <Chip label={draft.title} selected={attach.kind === 'draft'} onPress={() => setAttach({ kind: 'draft' })} />}
             {rituals.templates.map((t) => (
               <Chip key={t.id} label={t.title} selected={attach.kind === 'template' && attach.id === t.id} onPress={() => setAttach({ kind: 'template', id: t.id })} />
@@ -225,7 +225,7 @@ export default function Planner() {
         <View style={ui.gapSmall}>
           <SectionLabel>From the Library</SectionLabel>
           <Body muted>Tap to add to what you'll gather.</Body>
-          <Chips>
+          <Chips label="From the Library">
             {[...ingredients.candle, ...ingredients.herb, ...ingredients.crystal].map((item) => (
               <Chip
                 key={item.ref}

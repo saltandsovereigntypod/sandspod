@@ -89,7 +89,7 @@ export default function Esp() {
           <Body muted>A hidden target is chosen first, then you guess, then it is shown. Each guess is one trial. Expect to land near chance; the point is practice, and an honest record.</Body>
           <View style={ui.gapSmall}>
             <SectionLabel>What to guess</SectionLabel>
-            <Chips>
+            <Chips label="What to guess">
               {ESP_MODES.map((o) => (
                 <Chip key={o.id} label={o.label} selected={mode === o.id} onPress={() => setMode(o.id)} />
               ))}
@@ -98,7 +98,7 @@ export default function Esp() {
           </View>
           <View style={ui.gapSmall}>
             <SectionLabel>How many trials</SectionLabel>
-            <Chips>
+            <Chips label="How many trials">
               {RUN_LENGTHS.map((n) => (
                 <Chip key={n} label={`${n} trials`} selected={length === n} onPress={() => setLength(n)} />
               ))}

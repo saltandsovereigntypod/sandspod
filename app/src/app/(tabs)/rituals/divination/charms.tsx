@@ -95,7 +95,7 @@ export default function CharmCasting() {
 
       <View style={ui.gapSmall}>
         <SectionLabel>Your set</SectionLabel>
-        <Chips>
+        <Chips multiple label="Your set">
           {all.map((c) => (
             <Chip key={c.id} label={c.name} selected={setIds.includes(c.id)} onPress={() => toggle(c.id)} />
           ))}

@@ -119,7 +119,7 @@ export default function PlantDetail() {
 
       <Card accent>
         <SectionLabel>Log something</SectionLabel>
-        <Chips>
+        <Chips label="Log something">
           {EVENT_KINDS.map((k) => (
             <Chip key={k.kind} label={k.label} selected={kind === k.kind} onPress={() => setKind(k.kind)} />
           ))}

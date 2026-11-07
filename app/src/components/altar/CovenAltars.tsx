@@ -119,7 +119,7 @@ export function CovenAltars({
           <Card>
             <Text style={type.cardTitle}>Start a coven altar</Text>
             {startable.length > 1 && (
-              <Chips label="Which coven?" options={startable.map((c) => ({ value: c.id, label: c.name }))} value={chosen?.id ?? ''} onChange={setStartIn} />
+              <Chips keepChips label="Which coven?" options={startable.map((c) => ({ value: c.id, label: c.name }))} value={chosen?.id ?? ''} onChange={setStartIn} />
             )}
             {chosen && (
               <>

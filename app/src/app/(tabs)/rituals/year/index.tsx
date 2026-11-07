@@ -77,7 +77,7 @@ function Begin({ begin }: { begin: (track: TrackId, start: string, south?: boole
       </Body>
 
       <SectionLabel>Your track</SectionLabel>
-      <Chips>
+      <Chips label="Your track">
         {TRACKS.map((t) => (
           <Chip key={t.id} label={t.name} selected={t.id === trackId} onPress={() => setTrackId(t.id)} />
         ))}
@@ -92,7 +92,7 @@ function Begin({ begin }: { begin: (track: TrackId, start: string, south?: boole
       )}
 
       <SectionLabel>When to begin</SectionLabel>
-      <Chips>
+      <Chips label="When to begin">
         {choices.map((c) => (
           <Chip key={c.key} label={`${c.label} · ${shortWords(c.date)}`} selected={chosen === c.date && !typedOk} onPress={() => (setDate(c.date), setTyped(''))} />
         ))}

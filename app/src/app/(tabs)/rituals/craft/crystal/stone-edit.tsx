@@ -101,7 +101,7 @@ function StoneForm({ existing }: { existing: CraftEntry<Stone> | null }) {
       <Card>
         <SectionLabel>Which stone</SectionLabel>
         <Field label="Name" value={name} onChange={typeName} placeholder="Search the Library, or type your own" />
-        <Chips>
+        <Chips label="Which stone">
           {matches.map((c) => (
             <Chip
               key={c.key}
@@ -127,7 +127,7 @@ function StoneForm({ existing }: { existing: CraftEntry<Stone> | null }) {
 
       <Card>
         <SectionLabel>Form</SectionLabel>
-        <Chips>
+        <Chips label="Form">
           {STONE_FORMS.map((f) => (
             <Chip key={f.key} label={f.label} selected={form === f.key} onPress={() => setForm(f.key)} />
           ))}

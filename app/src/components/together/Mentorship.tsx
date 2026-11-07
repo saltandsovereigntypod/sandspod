@@ -22,7 +22,9 @@ import {
   type MentorListing,
   type MentorRole,
 } from '../../lib/together/mentorship';
+import { shouldFold } from '../../lib/optionPicker';
 import { colors, fonts, radius, type } from '../../theme';
+import { OptionPicker } from '../rituals/OptionPicker';
 
 export function Boundaries() {
   return (
@@ -38,6 +40,18 @@ export function Boundaries() {
 
 /** Choose any number: each chip toggles. */
 export function ManyChips({ label, options, value, onChange }: { label: string; options: readonly { id: string; label: string }[]; value: string[]; onChange: (next: string[]) => void }) {
+  if (shouldFold(options.length)) {
+    const items = options.map((o) => {
+      const on = value.includes(o.id);
+      return { key: o.id, label: o.label, selected: on, onPress: () => onChange(on ? value.filter((v) => v !== o.id) : [...value, o.id]) };
+    });
+    return (
+      <View style={styles.gap}>
+        <Text style={type.caption}>{label}</Text>
+        <OptionPicker items={items} multiple label={label} />
+      </View>
+    );
+  }
   return (
     <View style={styles.gap}>
       <Text style={type.caption}>{label}</Text>

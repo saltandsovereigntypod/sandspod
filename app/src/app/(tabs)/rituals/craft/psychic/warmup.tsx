@@ -45,7 +45,7 @@ export default function Warmup() {
       <Body muted>Short guided tune-ins to take before an exercise. Grounding and opening are a good pair. They are our own words, drawing on modern meditation and witchcraft practice; the third eye and the aura are ideas from spiritual traditions, not things that have been measured, and the scripts treat them as ways to focus attention.</Body>
       <View style={ui.gapSmall}>
         <SectionLabel>Choose, in this order</SectionLabel>
-        <Chips>
+        <Chips multiple label="Choose, in this order">
           {WARMUPS.map((w) => (
             <Chip key={w.id} label={`${w.title} · ${w.minutes} min`} selected={chosen.includes(w.id)} onPress={() => toggle(w.id)} />
           ))}

@@ -275,7 +275,7 @@ export default function SpellBuilder() {
 
       <View style={ui.gapSmall}>
         <SectionLabel>1 · What is it for?</SectionLabel>
-        <Chips>
+        <Chips label="1 · What is it for?">
           {SPELL_INTENTS.map((i) => (
             <Chip key={i.key} label={i.label} selected={spec.intent === i.key} onPress={() => chooseIntent(i.key)} />
           ))}
@@ -286,7 +286,7 @@ export default function SpellBuilder() {
 
       <View style={ui.gapSmall}>
         <SectionLabel>2 · Its form</SectionLabel>
-        <Chips>
+        <Chips label="2 · Its form">
           {SPELL_METHODS.map((m) => (
             <Chip key={m.key} label={m.label} selected={spec.method === m.key} a11yLabel={`${m.label}: ${m.line}`} onPress={() => update({ method: m.key })} />
           ))}
@@ -401,7 +401,7 @@ export default function SpellBuilder() {
           </Card>
         ))}
         <Expander title="All deities in the Library">
-          <Chips>
+          <Chips multiple>
             {allDeities().map((d) => (
               <Chip key={d.key} label={d.name} selected={spec.deities.some((x) => x.key === d.key)} a11yLabel={`${d.name}, ${d.tradition}`} onPress={() => toggleDeity(d.key, d.name)} />
             ))}
@@ -413,7 +413,7 @@ export default function SpellBuilder() {
       <View style={ui.gapSmall}>
         <SectionLabel>5 · When</SectionLabel>
         <Text style={type.eyebrow}>The moon</Text>
-        <Chips>
+        <Chips label="5 · When">
           {(intent ? suggestMoons(intent) : (['new', 'waxing', 'full', 'waning'] as const).map((tide) => ({ tide, label: tide, best: false }))).map((m) => (
             <Chip key={m.tide} label={`${m.label}${m.best ? ' · best' : ''}`} selected={spec.moon === m.tide} onPress={() => update({ moon: spec.moon === m.tide ? null : m.tide })} />
           ))}

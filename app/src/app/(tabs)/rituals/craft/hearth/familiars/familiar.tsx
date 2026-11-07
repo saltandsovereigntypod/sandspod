@@ -85,7 +85,7 @@ export default function FamiliarPage() {
       {f.work.length > 0 && (
         <View style={ui.gapSmall}>
           <SectionLabel>The work they join</SectionLabel>
-          <Chips>
+          <Chips label="The work they join">
             {f.work.map((w) => (
               <Chip key={w} label={WORK_KINDS.find((k) => k.id === w)?.label ?? w} />
             ))}
@@ -110,7 +110,7 @@ export default function FamiliarPage() {
         <SectionLabel>Signs and notes</SectionLabel>
         {note ? (
           <Card>
-            <Chips>
+            <Chips label="Signs and notes">
               {NOTE_KINDS.map((k) => (
                 <Chip key={k.id} label={k.label} selected={note.kind === k.id} onPress={() => setNote({ ...note, kind: k.id })} />
               ))}

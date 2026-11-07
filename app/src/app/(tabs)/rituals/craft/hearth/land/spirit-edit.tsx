@@ -60,7 +60,7 @@ function Form({ id, start }: { id: string | null; start: PlaceSpirit }) {
       <Title eyebrow={id ? 'Edit' : 'Spirits of place'}>{id ? s.name || 'A spirit of place' : 'Add a spirit of place'}</Title>
       <View style={ui.gapSmall}>
         <SectionLabel>What kind of presence?</SectionLabel>
-        <Chips>
+        <Chips label="What kind of presence?">
           {SPIRIT_KINDS.map((k) => (
             <Chip key={k.id} label={k.label} selected={s.kind === k.id} onPress={() => set({ kind: k.id })} />
           ))}
@@ -70,7 +70,7 @@ function Form({ id, start }: { id: string | null; start: PlaceSpirit }) {
       <View style={ui.gapSmall}>
         <SectionLabel>Where</SectionLabel>
         {places.length ? (
-          <Chips>
+          <Chips label="Where">
             {places.map((p) => (
               <Chip key={p.id} label={p.data.name} selected={s.placeId === p.id} onPress={() => set({ placeId: s.placeId === p.id ? null : p.id })} />
             ))}

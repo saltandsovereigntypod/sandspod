@@ -142,7 +142,7 @@ export default function CycleLog() {
         {GROUPS.map((g) => (
           <View key={g.group} style={ui.gapSmall}>
             <Text style={type.caption}>{g.label}</Text>
-            <Chips>
+            <Chips multiple>
               {SYMPTOMS.filter((x) => x.group === g.group).map((x) => (
                 <Chip key={x.id} label={chipLabel(x.label, note.symptoms[x.id])} selected={!!note.symptoms[x.id]} onPress={() => symptom(x.id)} />
               ))}

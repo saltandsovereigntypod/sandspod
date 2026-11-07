@@ -69,7 +69,7 @@ export default function PantryItemView() {
 
       <View style={ui.gapSmall}>
         <SectionLabel>Make a simmer pot for</SectionLabel>
-        <Chips>
+        <Chips label="Make a simmer pot for">
           {item.intentions.map((key) => (
             <Chip
               key={key}

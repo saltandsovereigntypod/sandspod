@@ -91,7 +91,7 @@ export default function WardSpotScreen() {
 
       <View style={ui.gapSmall}>
         <SectionLabel>What it is</SectionLabel>
-        <Chips>
+        <Chips label="What it is">
           {SPOT_KINDS.map((k) => (
             <Chip key={k.key} label={k.label} selected={spot.kind === k.key} onPress={() => setSpot((s) => ({ ...s, kind: k.key }))} />
           ))}

@@ -96,7 +96,7 @@ export default function CycleSettingsScreen() {
               <SectionLabel>About my body</SectionLabel>
               <Card>
                 <Body muted>Optional. It changes the wording and when an estimate would be honest: none while pregnant, and a range rather than a day when cycles vary.</Body>
-                <Chips>
+                <Chips label="About my body">
                   {SITUATIONS.map((x) => (
                     <Chip
                       key={x.value}

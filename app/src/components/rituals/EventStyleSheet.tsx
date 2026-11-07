@@ -72,7 +72,7 @@ function StyleForm({
 
       <View style={styles.group}>
         <SectionLabel>When</SectionLabel>
-        <Chips>
+        <Chips label="When">
           <Chip label="All day" selected={draft.timing === 'allDay'} onPress={() => change({ timing: 'allDay' })} />
           {kind !== 'holiday' && (
             <Chip label="At the exact moment" selected={draft.timing === 'exact'} onPress={() => change({ timing: 'exact' })} />
@@ -85,7 +85,7 @@ function StyleForm({
       {draft.timing !== 'allDay' && (
         <View style={styles.group}>
           <SectionLabel>How long</SectionLabel>
-          <Chips>
+          <Chips label="How long">
             {DURATION_CHOICES.map((minutes) => (
               <Chip key={minutes} label={DURATION_LABELS[minutes]} selected={draft.duration === minutes} onPress={() => change({ duration: minutes })} />
             ))}
@@ -95,7 +95,7 @@ function StyleForm({
 
       <View style={styles.group}>
         <SectionLabel>Alert</SectionLabel>
-        <Chips>
+        <Chips label="Alert">
           <Chip label="None" selected={draft.alert == null} onPress={() => change({ alert: null })} />
           {alertChoices(draft.timing).map((choice) => (
             <Chip key={choice.offset} label={choice.label} selected={draft.alert === choice.offset} onPress={() => change({ alert: choice.offset })} />

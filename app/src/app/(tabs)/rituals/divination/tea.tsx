@@ -64,7 +64,7 @@ export default function TeaReading() {
 
       <View style={ui.gapSmall}>
         <SectionLabel>Where does the next shape lie?</SectionLabel>
-        <Chips>
+        <Chips label="Where does the next shape lie?">
           {DEPTHS.map((d) => (
             <Chip key={d.id} label={d.label} selected={depth === d.id} hint={d.detail} onPress={() => setDepth(d.id)} />
           ))}
@@ -80,7 +80,7 @@ export default function TeaReading() {
       <View style={ui.gapSmall}>
         <SectionLabel>Shapes</SectionLabel>
         <Field label="Search shapes" value={query} onChange={setQuery} placeholder="anchor, bird, ring, a letter…" />
-        <Chips>
+        <Chips label="Shapes">
           {found.map((s) => (
             <Chip key={s.id} label={s.name} a11yLabel={`Add ${s.name}, ${placeWords(depth, side)}`} onPress={() => add(s.id)} />
           ))}
@@ -91,7 +91,7 @@ export default function TeaReading() {
       {seen.length > 0 && (
         <View style={ui.gapSmall}>
           <SectionLabel>What you saw</SectionLabel>
-          <Chips>
+          <Chips label="What you saw">
             {seen.map((s, i) => (
               <Chip key={`${s.id}${i}`} selected label={`${teaSymbolById(s.id)?.name}: ${placeWords(s.depth, s.side)}`} a11yLabel={`Remove ${teaSymbolById(s.id)?.name}`} onPress={() => remove(i)} />
             ))}

@@ -70,7 +70,7 @@ export default function RecipeScreen() {
           {recipe.festivals.length > 0 && (
             <>
               <SectionLabel>For the festivals</SectionLabel>
-              <Chips>
+              <Chips label="For the festivals">
                 {recipe.festivals.map((ref) => (
                   <Chip key={ref} label={festivalName(ref)} onPress={hasHolyPage(ref) ? () => router.push({ pathname: '/today/holy/[ref]', params: { ref } }) : undefined} />
                 ))}
@@ -80,7 +80,7 @@ export default function RecipeScreen() {
           {(recipe.seasonal.length > 0 || !!recipe.offering) && (
             <>
               <SectionLabel>On the altar with it</SectionLabel>
-              <Chips>
+              <Chips label="On the altar with it">
                 {recipe.seasonal.map((s) => (
                   <Chip key={s} label={SEASONAL_NAMES[s]} a11yLabel={`${SEASONAL_NAMES[s]}, in the cabinet’s Seasonal drawer`} onPress={go('/altar')} />
                 ))}

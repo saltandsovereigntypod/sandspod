@@ -35,7 +35,7 @@ export default function Ingredient() {
       {goodFor.length > 0 && (
         <View style={ui.gapSmall}>
           <SectionLabel>Plan a working with it</SectionLabel>
-          <Chips>
+          <Chips label="Plan a working with it">
             {goodFor.map((intention) => (
               <Chip
                 key={intention.key}
