@@ -364,7 +364,8 @@ function createMySanctuaryPanel() {
 
           <label>
             Tarot Deck
-            <select name="tarot_deck">
+            <select name="tarot_deck_choice">
+              <option value="salt-sovereignty">Salt &amp; Sovereignty Tarot (our own deck, 2026)</option>
               <option value="rws">Rider–Waite–Smith (Pamela Colman Smith, 1909)</option>
               <option value="marseille">Tarot de Marseille (Nicolas Conver, 1760)</option>
               <option value="sola-busca">Sola Busca (Italy, about 1491)</option>

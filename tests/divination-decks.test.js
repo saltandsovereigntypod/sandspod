@@ -23,8 +23,8 @@ function loadCore(name) {
 test("both divination bundles carry the decks, and every card of every deck is on the site", () => {
   const Dv = loadCore("divination");
   const Lib = loadCore("divination-library");
-  assert.deepEqual(Array.from(Dv.decks.TAROT_DECKS, (d) => d.id), ["rws", "marseille", "sola-busca"]);
-  assert.deepEqual(Array.from(Lib.decks.TAROT_DECKS, (d) => d.id), ["rws", "marseille", "sola-busca"]);
+  assert.deepEqual(Array.from(Dv.decks.TAROT_DECKS, (d) => d.id), ["salt-sovereignty", "rws", "marseille", "sola-busca"]);
+  assert.deepEqual(Array.from(Lib.decks.TAROT_DECKS, (d) => d.id), ["salt-sovereignty", "rws", "marseille", "sola-busca"]);
   for (const deck of Dv.decks.TAROT_DECKS) {
     for (const card of Dv.tarot.TAROT_DECK) {
       const file = path.join(root, Dv.decks.deckImagePath(deck.id, card.id));
@@ -55,13 +55,17 @@ test("a draw keeps its deck, and the reading's page shows that deck", () => {
 
 test("the deck is a setting in the form (saving the form keeps it), under Divination", () => {
   const sanctuary = read("js/my-sanctuary.js");
-  const select = sanctuary.match(/<select name="tarot_deck">([\s\S]*?)<\/select>/);
+  const select = sanctuary.match(/<select name="tarot_deck_choice">([\s\S]*?)<\/select>/);
   assert.ok(select);
-  assert.deepEqual([...select[1].matchAll(/value="([^"]+)"/g)].map((m) => m[1]), ["rws", "marseille", "sola-busca"]);
+  assert.deepEqual([...select[1].matchAll(/value="([^"]+)"/g)].map((m) => m[1]), ["salt-sovereignty", "rws", "marseille", "sola-busca"]);
   const context = { window: { addEventListener() {} }, document: { addEventListener() {} } };
-  vm.runInNewContext(`${read("js/my-settings.js")}\nthis.defaults = getDefaultMySettings();`, context);
-  assert.equal(context.defaults.tarot_deck, "rws");
-  assert.match(read("js/settings-view.js"), /name === "tarot_deck" \? "divination"/);
+  vm.runInNewContext(`${read("js/my-settings.js")}\nthis.defaults = getDefaultMySettings(); this.effective = effectiveTarotDeck;`, context);
+  assert.equal(context.defaults.tarot_deck_choice, "");
+  // The form shows the deck in use: our own until one is chosen, a Marseille or Sola Busca picked before kept.
+  assert.equal(context.effective(context.defaults), "salt-sovereignty");
+  assert.equal(context.effective({ tarot_deck: "marseille", tarot_deck_choice: "" }), "marseille");
+  assert.equal(context.effective({ tarot_deck: "marseille", tarot_deck_choice: "rws" }), "rws");
+  assert.match(read("js/settings-view.js"), /name === "tarot_deck_choice" \? "divination"/);
 });
 
 test("the Book of Shadows shows a card in your deck, the others a tap away", () => {

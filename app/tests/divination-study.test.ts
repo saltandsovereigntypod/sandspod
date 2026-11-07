@@ -10,7 +10,7 @@ const day = (d: number) => new Date(2026, 10, d, 10);
 
 test('every deck has its cards, the tarot in each deck’s own reading', () => {
   const ids = studyDecks().map((d) => d.id);
-  assert.deepEqual(ids, ['tarot:rws', 'tarot:marseille', 'tarot:sola-busca', 'runes', 'ogham', 'lenormand', 'kipper', 'playing', 'geomancy']);
+  assert.deepEqual(ids, ['tarot:salt-sovereignty', 'tarot:rws', 'tarot:marseille', 'tarot:sola-busca', 'runes', 'ogham', 'lenormand', 'kipper', 'playing', 'geomancy']);
   assert.equal(studyCards('tarot:rws').length, 78);
   assert.equal(studyCards('runes').length, 24);
   assert.equal(studyCards('ogham').length, 20);
@@ -22,6 +22,7 @@ test('every deck has its cards, the tarot in each deck’s own reading', () => {
   const marseille = studyCards('tarot:marseille').find((c) => c.id === '00-the-fool')!;
   assert.ok(rws.keywords && marseille.keywords);
   assert.notEqual(marseille.name + marseille.keywords, rws.name + rws.keywords, 'Marseille reads in its own way');
+  assert.equal(studyCards('tarot:salt-sovereignty').find((c) => c.id === 'wands-13')!.name, 'Witch of Wands · Queen of Wands');
   for (const c of studyCards('runes')) assert.ok(c.keywords && c.glyph, c.name);
 });
 
@@ -30,7 +31,7 @@ test('your own decks can be studied when their cards have meanings', () => {
     { id: 'd1', data: { name: 'Moon oracle', cards: [{ id: 'c1', name: 'Tide', keywords: 'ebb and flow', meaning: 'Things turn.', reversed: '', photo: '' }, { id: 'c2', name: 'Blank', keywords: '', meaning: '', reversed: '', photo: '' }] } },
     { id: 'd2', data: { name: 'Empty', cards: [] } },
   ];
-  assert.deepEqual(studyDecks(own).slice(9).map((d) => d.id), ['own:d1']);
+  assert.deepEqual(studyDecks(own).slice(10).map((d) => d.id), ['own:d1']);
   assert.deepEqual(studyCards('own:d1', own).map((c) => c.name), ['Tide']);
 });
 

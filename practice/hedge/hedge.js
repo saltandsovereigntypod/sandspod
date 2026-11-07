@@ -558,10 +558,11 @@
     '<g transform="translate(19 40) scale(0.85)"><path d="M15.5 4.5a7.5 7.5 0 1 0 4 13.6A6 6 0 0 1 15.5 4.5z" fill="none" stroke="#e2c36d" stroke-width="1.3"/>' +
     '<circle cx="5" cy="4" r="0.9" fill="#e2c36d"/><circle cx="20" cy="21" r="0.9" fill="#e2c36d"/></g></svg>';
 
-  const itemName = (item) => `${item.name}${item.reversed ? ", reversed" : ""}`;
-  function placeLabel(spread, d, i, shown) {
+  // A tarot card's name as its deck shows it ("Witch of Wands · Queen of Wands" in the Salt & Sovereignty Tarot).
+  const itemName = (item, tarotDeck) => `${tarotDeck ? Dv.decks.drawnNameIn(tarotDeck, item.name) : item.name}${item.reversed ? ", reversed" : ""}`;
+  function placeLabel(spread, d, i, shown, tarotDeck) {
     const place = spread.positions.length > 1 ? `${i + 1}, ${Dv.draw.placeOf(spread, d, i)?.name}: ` : "";
-    return shown ? `${place}${itemName(d.items[i])}` : `${place}face down`;
+    return shown ? `${place}${itemName(d.items[i], spread.kind === "tarot" ? tarotDeck : null)}` : `${place}face down`;
   }
 
   /** One card, rune or stave that turns over (`act` on press, value = its place); `deck` the tarot deck, `own` a deck of your own. */
@@ -586,7 +587,7 @@
       back = `<span class="dv-face ${cls}"></span>`;
       front = `<span class="dv-face dv-front ${cls}">${m?.glyph ? `<span class="dv-glyph" aria-hidden="true">${kit.esc(m.glyph)}</span>` : ""}</span>`;
     }
-    return `<button type="button" class="dv-flip${shape}${shown ? " is-turned" : ""}" data-act="${act}" data-value="${i}" aria-label="${kit.esc(placeLabel(spread, d, i, shown))}"${
+    return `<button type="button" class="dv-flip${shape}${shown ? " is-turned" : ""}" data-act="${act}" data-value="${i}" aria-label="${kit.esc(placeLabel(spread, d, i, shown, own ? null : deck))}"${
       selected ? ' aria-current="true"' : ""
     } title="${shown ? "Shows its meaning" : "Turns it over"}"><span class="dv-inner">${back}${front}</span></button>`;
   }
@@ -694,7 +695,7 @@
     const runes = !m.own && Dv.links?.runeMeaningsHref ? Dv.links.runeMeaningsHref(m.name) : null;
     return kit.card(
       `${place ? kit.muted(place.about) : ""}<p class="dv-meaning__name">${m.glyph ? `<span class="dv-glyph" aria-hidden="true">${kit.esc(m.glyph)}</span>  ` : ""}${kit.esc(
-        itemName(m)
+        itemName(m, m.card ? tarotDeck : null)
       )}</p>${deckLines.map((line) => kit.muted(line)).join("")}${m.gloss ? kit.muted(m.gloss) : ""}${m.meaning.keywords ? `<p class="dv-meaning__words">${kit.esc(m.meaning.keywords)}</p>` : ""}${kit.p(m.meaning.text)}${
         more ? `<p class="dv-meaning__more"><a href="${kit.esc(more)}" target="_blank" rel="noopener">Read more</a>${runes ? ` · <a href="${kit.esc(runes)}">All rune meanings</a>` : ""}</p>` : runes ? `<p class="dv-meaning__more"><a href="${kit.esc(runes)}">All rune meanings</a></p>` : ""
       }`,
@@ -932,7 +933,7 @@
               kit.row({
                 act: "draw-pick",
                 data: { value: i },
-                title: `${i + 1}. ${itemName(item)}`,
+                title: `${i + 1}. ${itemName(item, spread.kind === "tarot" && !deck ? drawDeck() : null)}`,
                 detail: kit.join([Dv.draw.placeOf(spread, d, i)?.name, Dv.draw.meaningOf(item, deck, spread.kind === "tarot" ? drawDeck() : null)?.meaning.keywords])
               })
             ),
@@ -1110,7 +1111,7 @@
     root.querySelectorAll('[data-act="draw-turn"]').forEach((el) => {
       const i = Number(el.dataset.value);
       el.classList.toggle("is-turned", !!drawState.revealed[i]);
-      el.setAttribute("aria-label", placeLabel(spread, d, i, !!drawState.revealed[i]));
+      el.setAttribute("aria-label", placeLabel(spread, d, i, !!drawState.revealed[i], currentDeck() ? null : drawDeck()));
       el.title = drawState.revealed[i] ? "Shows its meaning" : "Turns it over";
       if (drawState.selected === i) el.setAttribute("aria-current", "true");
       else el.removeAttribute("aria-current");

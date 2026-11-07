@@ -169,7 +169,7 @@ async function renderDivinationPage(kind, id, { deck: drawnWith } = {}) {
     : "";
   // Your deck first; the others a tap away, just for this page.
   const deckChoice = entry.cardId
-    ? `<p class="divination-deck-title">${escapeHtml(deckTitle ? `${info.name}: ${deckTitle}` : `${info.name}, ${info.made}`)}</p>
+    ? `<p class="divination-deck-title">${escapeHtml(deckTitle ? `${info.name}: ${D.deckNamesLead && D.deckNamesLead(deck) ? D.cardLabelIn(deck, entry.cardId) : deckTitle}` : `${info.name}, ${info.made}`)}</p>
        <div class="divination-decks" role="group" aria-label="Deck">${D.TAROT_DECKS.map(
          (d) => `<button type="button" class="divination-deck" data-divination-deck="${escapeHtml(d.id)}" aria-pressed="${d.id === deck ? "true" : "false"}">${escapeHtml(d.name)}</button>`
        ).join("")}</div>`
@@ -191,7 +191,7 @@ async function renderDivinationPage(kind, id, { deck: drawnWith } = {}) {
       </div>
       <header class="book-reader-header book-library-header">
         <p class="eyebrow">${escapeHtml(page.eyebrow)}</p>
-        <h1>${escapeHtml(entry.name)}</h1>
+        <h1>${escapeHtml(deckTitle && D.deckNamesLead && D.deckNamesLead(deck) ? deckTitle : entry.name)}</h1>
         ${
           showTraditional
             ? `${figure}

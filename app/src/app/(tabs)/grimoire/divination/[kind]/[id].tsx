@@ -8,7 +8,7 @@ import { ResearchFooter } from '../../../../../components/ResearchNote';
 import { YourDraws } from '../../../../../components/divination/YourDraws';
 import { Card, Chips, MoreScreen, Notice, Section } from '../../../../../components/more/ui';
 import { deckMeaning, deckPage, readingSource, RWS_TRADITION } from '../../../../../lib/divination/deckMeanings';
-import { chosenDeck, deckCardTitle, deckInfo, deckPictureLabel, isDeckId, TAROT_DECKS, type DeckId } from '../../../../../lib/divination/decks';
+import { cardLabelIn, chosenDeck, deckCardTitle, deckInfo, deckNamesLead, deckPictureLabel, isDeckId, TAROT_DECKS, type DeckId } from '../../../../../lib/divination/decks';
 import { divinationPage, findDivination, wordsLine } from '../../../../../lib/divination/library';
 import { deckImages } from '../../../../../lib/divination/tarotAssets';
 import { TarotArt } from '../../../../../components/divination/TarotArt';
@@ -46,7 +46,7 @@ export default function DivinationEntryPage() {
   const fallback = entry.cardId && !own ? readingSource(deckMeaning(deck, entry.cardId)) : null;
 
   return (
-    <MoreScreen title={entry.name} eyebrow={page.eyebrow} back="/grimoire" backLabel="Back to your Grimoire">
+    <MoreScreen title={deckTitle && deckNamesLead(deck) ? deckTitle : entry.name} eyebrow={page.eyebrow} back="/grimoire" backLabel="Back to your Grimoire">
       {settings?.library_traditional_enabled === false ? (
         <Notice tone="muted">Traditional Information is turned off in your Living Library settings, so this page is hidden.</Notice>
       ) : (
@@ -68,7 +68,7 @@ export default function DivinationEntryPage() {
           </View>
           {!!art && (
             <View style={styles.decks}>
-              <Text style={[type.caption, styles.center]}>{deckTitle ? `${deckInfo(deck).name}: ${deckTitle}` : `${deckInfo(deck).name}, ${deckInfo(deck).made}`}</Text>
+              <Text style={[type.caption, styles.center]}>{deckTitle ? `${deckInfo(deck).name}: ${deckNamesLead(deck) ? cardLabelIn(deck, entry.cardId!) : deckTitle}` : `${deckInfo(deck).name}, ${deckInfo(deck).made}`}</Text>
               <Chips label="Deck" options={TAROT_DECKS.map((d) => ({ value: d.id, label: d.name }))} value={deck} onChange={setLooking} />
             </View>
           )}

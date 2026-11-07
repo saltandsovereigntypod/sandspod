@@ -76,3 +76,10 @@ cards are drawn in words. See `app/assets/divination/decks/kipper/SOURCES.md`.
 Photos of your own cards are yours: uploaded to your account's own folder
 (`user-assets/<you>/oracle-decks/`) when you're signed in, as the altar's
 photos are, and kept on your device otherwise.
+
+## Tarot: the Salt & Sovereignty Tarot, `decks/salt-sovereignty/*.webp`
+
+Our own deck, illustrated for this app in 2026 (not public domain), and the
+default for anyone who hasn't chosen a deck. It reads with Waite's meanings
+under its own suit and court names. See
+`app/assets/divination/decks/salt-sovereignty/SOURCES.md`.

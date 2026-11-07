@@ -25,6 +25,8 @@ function getDefaultMySettings() {
     // The app's lib/grimoire/layout.ts and the website's grimoire/js/ui/layout.js read and write it.
     grimoire_layout: "",
     tarot_deck: "rws",
+    // The deck chosen ("" until chosen: the Salt & Sovereignty Tarot); see app/src/lib/divination/decks.ts chosenDeck.
+    tarot_deck_choice: "",
     crystal_wear: "gentle",
     year_review_start: "calendar",
 
@@ -210,6 +212,15 @@ async function saveMySettings(settings) {
   return row;
 }
 
+// The tarot deck the settings form shows: the one chosen, or a Marseille or
+// Sola Busca picked under the older key, else the Salt & Sovereignty Tarot
+// (the same as chosenDeck in app/src/lib/divination/decks.ts).
+function effectiveTarotDeck(settings = {}) {
+  const decks = ["salt-sovereignty", "rws", "marseille", "sola-busca"];
+  if (decks.includes(settings.tarot_deck_choice)) return settings.tarot_deck_choice;
+  return ["marseille", "sola-busca"].includes(settings.tarot_deck) ? settings.tarot_deck : "salt-sovereignty";
+}
+
 async function populateMySettingsForm() {
   const form = document.querySelector("[data-my-settings-form]");
   if (!form) return;
@@ -224,7 +235,7 @@ async function populateMySettingsForm() {
       return;
     }
 
-    form.elements[key].value = value || "";
+    form.elements[key].value = (key === "tarot_deck_choice" ? effectiveTarotDeck(settings) : value) || "";
   });
 }
 
