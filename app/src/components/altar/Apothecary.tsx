@@ -31,6 +31,7 @@ import { builtInCabinet, shortLabel } from '../../lib/altar/cabinet';
 import { ITEM_TYPE, isCustomCategory } from '../../lib/altar/custom';
 import { pickImage, type PickedImage } from '../../lib/altar/images';
 import type { SavedObject } from '../../lib/altar/types';
+import { builderFor } from '../../lib/altar/workings/build';
 import { deleteApothecary, saveApothecary, useWorkshop } from '../../lib/altar/workshop';
 import { useLibrary } from '../../lib/library';
 import { colors, fonts, radius, touch, type } from '../../theme';
@@ -99,6 +100,8 @@ type EditorProps = {
   onClose: () => void;
   onSaved: (saved: SavedWorking) => void;
   onDeleted: (item: ApothecaryItem) => void;
+  /** A spell jar, sachet or poppet is made in its own builder on the altar (build.ts). */
+  onBuild?: (type: ApothecaryTypeId) => void;
 };
 
 export function ApothecaryEditor(props: EditorProps) {
@@ -135,7 +138,7 @@ function blank(type: ApothecaryTypeId): ApothecaryItem {
   };
 }
 
-function Editor({ target, altarObjects, onClose, onSaved, onDeleted }: EditorProps & { target: ApothecaryTarget }) {
+function Editor({ target, altarObjects, onClose, onSaved, onDeleted, onBuild }: EditorProps & { target: ApothecaryTarget }) {
   const workshop = useWorkshop();
   const { entries } = useLibrary();
   const isNew = !target.item;
@@ -265,9 +268,10 @@ function Editor({ target, altarObjects, onClose, onSaved, onDeleted }: EditorPro
       <Group label="What are you making?">
         <ChipRow>
           {APOTHECARY_TYPES.map((t) => (
-            <Chip key={t.id} label={t.label} active={item.type === t.id} onPress={() => setType(t.id)} />
+            <Chip key={t.id} label={t.label} active={item.type === t.id} onPress={() => (isNew && onBuild && builderFor(t.id) ? onBuild(t.id) : setType(t.id))} />
           ))}
         </ChipRow>
+        {isNew && !!onBuild && <Text style={type.caption}>A spell jar, sachet or poppet opens its own builder, layer by layer, and is kept here in My Apothecary.</Text>}
       </Group>
 
       <Group label="Name">

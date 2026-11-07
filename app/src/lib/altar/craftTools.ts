@@ -22,6 +22,7 @@ import { cordsOf, cordState, updateCord, type Cord } from './cord.ts';
 import { setOffering } from './offerings.ts';
 import type { AltarDocument } from './snapshot.ts';
 import type { SavedObject } from './types.ts';
+import { emptyGrid, logGrid, type Grid as CrystalGrid, type GridShape, type GridStone } from '../craft/crystal/grids.ts';
 import { lookBackFrom, moonForReading, type Reading } from '../craft/hedge/readings.ts';
 import { localDateKey } from '../rituals/lifecycle.ts';
 
@@ -336,15 +337,50 @@ export const chargeLineFor = (name: string, how: ChargePlace) => `${name} was ${
 
 // ── The crystal grid ────────────────────────────────────────────────────
 
-/** A grid of stones lit with the wand, kept with the altar (`grid`), by the stones' ids. */
-export type Grid = { ids: string[]; at: string; by?: string };
+/**
+ * A grid of stones lit with the wand, kept with the altar (`grid`), by the
+ * stones' ids, for drawing its lines. Its home is a `crystal.grids` entry
+ * (Craft → Crystal → Grids), named by entryId, where its log is kept.
+ */
+export type Grid = { ids: string[]; at: string; by?: string; entryId?: string };
 export const GRID_MIN = 3;
 
 export function gridOf(extra: Extra | null | undefined): Grid | null {
   const g = extra?.grid as Partial<Grid> | null | undefined;
   if (!g || !Array.isArray(g.ids)) return null;
   const ids = g.ids.filter((i): i is string => typeof i === 'string' && !!i);
-  return ids.length >= GRID_MIN ? { ids, at: String(g.at || ''), ...(g.by ? { by: String(g.by) } : {}) } : null;
+  return ids.length >= GRID_MIN ? { ids, at: String(g.at || ''), ...(g.by ? { by: String(g.by) } : {}), ...(g.entryId ? { entryId: String(g.entryId) } : {}) } : null;
+}
+
+/** The wand's grid linked to its crystal.grids entry. */
+export function withGridEntry(extra: Extra, entryId: string): Extra {
+  const g = gridOf(extra);
+  return g ? { ...extra, grid: { ...g, entryId } } : extra;
+}
+
+/**
+ * The wand's grid as a crystal.grids entry (CrystalGrid): the stone nearest the
+ * middle at the centre, the rest as its points, active from when it was lit.
+ * Used when the wand lights one, and to migrate a grid lit before entries were
+ * kept (extra.grid with no entryId).
+ */
+export function wandGridEntry(grid: Grid, objects: SavedObject[], altarId: string, now: string): CrystalGrid | null {
+  const stones = grid.ids.map((id) => objects.find((o) => o.altarObjectId === id)).filter((o): o is SavedObject => !!o);
+  if (stones.length < GRID_MIN) return null;
+  const pts = stones.map((o) => displayBox(o));
+  const cx = pts.reduce((s, p) => s + p.cx, 0) / pts.length;
+  const cy = pts.reduce((s, p) => s + p.cy, 0) / pts.length;
+  const d = (i: number) => Math.hypot(pts[i].cx - cx, (pts[i].cy - cy) / STAGE_ASPECT);
+  const hub = stones.reduce((best, _, i) => (d(i) < d(best) ? i : best), 0);
+  const asStone = (o: SavedObject): GridStone => {
+    const own = appStateOf(o).stone as { id?: string } | undefined;
+    return { name: String(o.label || 'Crystal').slice(0, 60), ...(own?.id ? { stoneId: String(own.id) } : {}) };
+  };
+  const points = stones.filter((_, i) => i !== hub).map(asStone);
+  const shape: GridShape = points.length === 3 ? 'triangle' : points.length === 4 ? 'square' : points.length === 5 ? 'star' : points.length === 6 ? 'seed' : 'circle';
+  const at = grid.at || now;
+  const base: CrystalGrid = { ...emptyGrid(shape), name: 'Wand grid', intent: 'Lit with the wand on my altar', centre: asStone(stones[hub]), points, days: 0, altarId };
+  return logGrid(base, 'activated', `Lit with the wand: ${stones.length} stones.`, at);
 }
 
 /** Why these can't make a grid, or null. */

@@ -142,6 +142,10 @@ export const SPELL_METHODS: SpellMethod[] = [
   },
 ];
 
+/** The altar builder a form is made in, step by step (Workings on the altar), or null. */
+export const ALTAR_BUILDERS: Record<string, 'jar' | 'sachet' | 'poppet' | 'knots'> = { jar: 'jar', sachet: 'sachet', charm_bag: 'sachet', poppet: 'poppet', knot: 'knots' };
+export const altarBuilderFor = (key: string | null | undefined) => (key ? ALTAR_BUILDERS[key] ?? null : null);
+
 export const methodOf = (key: string | null | undefined): SpellMethod => SPELL_METHODS.find((m) => m.key === key) ?? SPELL_METHODS[0];
 
 // ── Steps ──────────────────────────────────────────────────────────────────

@@ -216,6 +216,8 @@ export function jarItem(draft: JarDraft, now: string, id: string = newId()): Apo
     details: {},
     ingredients: draft.layers.map(layerIngredient),
     livingState: { ...DEFAULT_LIVING },
+    // The design, so placing it again from My Apothecary sets out the same jar (build.ts).
+    metadata: { build: { kind: 'jar', layers: draft.layers, seal: draft.seal, ...(draft.vessel ? { vessel: draft.vessel } : {}) } },
     logToGrimoire: false,
     grimoireStatus: '',
     grimoireEntryId: '',

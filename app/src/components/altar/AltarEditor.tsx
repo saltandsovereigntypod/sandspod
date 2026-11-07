@@ -86,6 +86,8 @@ import type { TonightAltar } from '../../lib/altar/tonight';
 import { nightCandle, waxLook } from '../../lib/altar/wax';
 import { feedingDue, feedingLine, sachetStateOf } from '../../lib/altar/workings/sachet';
 import { daysSinceRenewal, jarStateOf } from '../../lib/altar/workings/spellJar';
+import { backfillBuilds, buildFromObject, builderFor } from '../../lib/altar/workings/build';
+import { gridOf, wandGridEntry, withGridEntry } from '../../lib/altar/craftTools';
 import { SPELLS_COLLECTION, spellToday, tickSpell, type SpellEntry } from '../../lib/altar/workings/spells';
 import { AltarOptionsSheet, FlameReadingSheet, IncenseSheet, OfferingSheet } from './LivingSheets';
 import { SymbolReadSheet } from './SymbolReadSheet';
@@ -188,7 +190,7 @@ import { careForCrystal, dedicateCrystal, humanize, offeringsOf, recordOffering,
 import { CustomItemSheet } from './CustomItemSheet';
 import { ApothecaryEditor, ApothecarySheet, type ApothecaryTarget, type SavedWorking } from './Apothecary';
 import { TendSheet } from './TendSheet';
-import { saveTendingBlend, useWorkshop } from '../../lib/altar/workshop';
+import { saveApothecary, saveTendingBlend, useWorkshop } from '../../lib/altar/workshop';
 import { newId } from '../../lib/altar/uid';
 import { giveFromAltar } from '../../lib/altar/offerFromAltar';
 import { ARCHIVE_WORDS, isArchived, withArchived } from '../../lib/altar/archive';
@@ -393,7 +395,7 @@ export function AltarEditor({
   whose,
   deed,
 }: { shared?: SharedAltar; header?: ReactNode; overlay?: ReactNode; onBack?: () => void; whose?: WhoseContext | null; deed?: AltarDeedRequest | null } = {}) {
-  const params = useLocalSearchParams<{ altarId: string; from?: string; deity?: string; planet?: string; shelf?: string; kit?: string; grid?: string }>();
+  const params = useLocalSearchParams<{ altarId: string; from?: string; deity?: string; planet?: string; shelf?: string; kit?: string; grid?: string; build?: string }>();
   const altarId = shared ? `coven:${shared.key}` : params.altarId;
   const { from, deity, planet, kit } = params;
   const store = useAltars();
@@ -830,6 +832,16 @@ export function AltarEditor({
 
   // Your own items come from the workshop store, so the spell builder and apothecary see the same list.
   const workshop = useWorkshop();
+  // Migration on read: a jar, sachet or poppet built before its design was kept on its My Apothecary item gets it from the copy on this altar.
+  const backfilled = useRef(new Set<string>());
+  useEffect(() => {
+    if (!doc || !workshop.userId || workshop.status !== 'ready') return;
+    for (const item of backfillBuilds(workshop.apothecary, doc.objects)) {
+      if (backfilled.current.has(item.id)) continue;
+      backfilled.current.add(item.id);
+      void saveApothecary(workshop.userId, item, null).catch(() => backfilled.current.delete(item.id));
+    }
+  }, [doc, workshop.userId, workshop.status, workshop.apothecary]);
   // The festivals that are near, from the calendars you keep and the traditional calendars you show, and the season it is bring their seasonal things to the top of the drawer.
   const near = useMemo(() => seasonalNear(new Date(), holidayChoice(settings), { settings, place: here }), [settings, here]);
   // A photo being chosen and saved for an ancestor frame.
@@ -1456,6 +1468,29 @@ export function AltarEditor({
     setSheet(null);
     setNotice(`${name} is taken down. Cleanse the stones before they go back on the shelf.`);
   };
+  // Migration on read: a grid lit with the wand before grids were kept in Craft → Crystal → Grids gets its entry there, once.
+  const wandGridMigrated = useRef<string | null>(null);
+  useEffect(() => {
+    const lit = doc ? gridOf(doc.extra) : null;
+    if (!lit || lit.entryId || shared || !sourceId || !workshop.userId || wandGridMigrated.current === lit.at) return;
+    wandGridMigrated.current = lit.at;
+    const entry = wandGridEntry(lit, doc!.objects, sourceId, nowIso());
+    if (entry)
+      void addEntry(GRIDS, entry)
+        .then((e) => commit((d) => (gridOf(d.extra)?.at === lit.at ? { ...d, extra: withGridEntry(d.extra, e.id) } : d)))
+        .catch(() => (wandGridMigrated.current = null));
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- once per lit grid, when the altar is ready
+  }, [doc, sourceId, workshop.userId]);
+  // "Make it on an altar" from the spell builder: its builder opens once the altar is ready.
+  const buildOpened = useRef(false);
+  useEffect(() => {
+    const want = params.build;
+    if (!doc || shared || buildOpened.current || (want !== 'jar' && want !== 'sachet' && want !== 'poppet' && want !== 'knots')) return;
+    buildOpened.current = true;
+    const timer = setTimeout(() => setSheet(want), 0);
+    return () => clearTimeout(timer);
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- once, when the altar is ready
+  }, [params.build, doc]);
   // A grid asked for from Craft → Crystal → Grids: set out once the altar is open.
   const grids = useCraft<Grid>(GRIDS);
   const gridPlaced = useRef<string | null>(null);
@@ -1635,6 +1670,7 @@ export function AltarEditor({
     setResult({ ...r, notes: notes.trim() });
   };
   const craft = useCraftTools({
+    altarId: shared ? null : sourceId,
     doc,
     docRef,
     commit,
@@ -2356,10 +2392,18 @@ export function AltarEditor({
             onClose={() => setSheet(null)}
             onMake={() => {
               setSheet(null);
-              afterSheetCloses(() => setWorking({ item: null }));
+              afterSheetCloses(() => setWorking({ item: null, type: 'herb-mix' }));
             }}
             onEdit={(item) => {
               setSheet(null);
+              // A jar, sachet or poppet on this altar opens its own tending; anything else, the recipe.
+              const kind = builderFor(item.type);
+              const at = kind && doc ? doc.objects.findIndex((o) => o.apothecaryItemId === item.id && buildFromObject(o)) : -1;
+              if (kind && at >= 0) {
+                setSelected(at);
+                afterSheetCloses(() => setSheet(kind === 'jar' ? 'renew' : kind === 'sachet' ? 'feed' : 'poppet-tend'));
+                return;
+              }
               afterSheetCloses(() => setWorking({ item }));
             }}
             onPlace={(item) => {
@@ -2369,6 +2413,11 @@ export function AltarEditor({
           />
           <ApothecaryEditor
             target={working}
+            onBuild={(t) => {
+              setWorking(null);
+              const kind = builderFor(t);
+              if (kind) afterSheetCloses(() => setSheet(kind));
+            }}
             altarObjects={doc.objects}
             onClose={() => setWorking(null)}
             onSaved={workingSaved}
@@ -2827,6 +2876,10 @@ export function AltarEditor({
                 }}
               />
               <LayoutSheet
+                onGridBuilder={() => {
+                  setSheet(null);
+                  afterSheetCloses(() => setSheet('grid'));
+                }}
                 visible={sheet === 'layouts'}
                 altar={altarCtx}
                 selected={selectedObject}

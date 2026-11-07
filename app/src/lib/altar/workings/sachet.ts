@@ -152,6 +152,8 @@ export function sachetItem(draft: SachetDraft, now: string, id: string = newId()
     ingredients: draft.fillings.map(fillingIngredient),
     // Tended weekly, on its day.
     livingState: { ...DEFAULT_LIVING, tending_interval_days: 7 },
+    // The design, so placing it again from My Apothecary sets out the same bag (build.ts).
+    metadata: { build: { kind: 'sachet', fillings: draft.fillings, knots: draft.knots, carried: draft.carried, planet } },
     logToGrimoire: false,
     grimoireStatus: '',
     grimoireEntryId: '',

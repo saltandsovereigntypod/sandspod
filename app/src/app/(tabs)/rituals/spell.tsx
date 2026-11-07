@@ -18,6 +18,7 @@ import type { Stone } from '../../../lib/craft/crystal/stones';
 import { PLANTS, type Plant } from '../../../lib/craft/green/garden';
 import { useCraft } from '../../../lib/craft/store';
 import { useGrimoire } from '../../../lib/grimoire/store';
+import { useAltars } from '../../../lib/altar/store';
 import { ritualsLibraryHref } from '../../../lib/library';
 import { handOffDraft } from '../../../lib/rituals/handoff';
 import { premadeById } from '../../../lib/rituals/premade';
@@ -29,6 +30,7 @@ import {
   deityOf,
   GENERAL_SUBSTITUTES,
   methodOf,
+  altarBuilderFor,
   methodSteps,
   openTemplate,
   ownedFirst,
@@ -101,6 +103,8 @@ export default function SpellBuilder() {
   const rituals = useRituals();
   const grimoire = useGrimoire();
   const workshop = useWorkshop();
+  const altarList = useAltars();
+  const latestAltar = [...altarList.altars].sort((a, b) => String(b.updatedAt ?? b.savedAt ?? '').localeCompare(String(a.updatedAt ?? a.savedAt ?? '')))[0];
   const { entries: stones } = useCraft<Stone>(STONES);
   const { entries: plants } = useCraft<Plant>(PLANTS);
   const onAltar = useBeginOnAltar();
@@ -294,6 +298,14 @@ export default function SpellBuilder() {
         <Body>{method.line}</Body>
         {method.needs.length > 0 && <Body muted>{`You'll also need: ${method.needs.join('; ').toLowerCase()}.`}</Body>}
         {!!method.history && <Body muted>{method.history}</Body>}
+        {!!altarBuilderFor(spec.method) && (
+          <Button
+            label="Make it on an altar"
+            variant="text"
+            accessibilityHint="Opens the altar builder, step by step; what you make is kept in My Apothecary"
+            onPress={() => router.push({ pathname: '/altar/[altarId]', params: { altarId: latestAltar?.id ?? 'new', build: altarBuilderFor(spec.method)! } } as Href)}
+          />
+        )}
         {spec.method === 'sigil' && <Button label="Open the sigil maker" variant="text" onPress={() => router.push('/rituals/sigil')} />}
         {spec.method === 'bath' && <Button label="Bath mixes: premade and build your own" variant="text" accessibilityHint="Thirty premade baths with safety notes, or one built from the Library" onPress={() => router.push((spec.intent ? { pathname: '/rituals/craft/bath/build', params: { intent: spec.intent } } : '/rituals/craft/bath') as Href)} />}
         {spec.method === 'simmer' && <Button label="Simmer pot ideas in the kitchen" variant="text" onPress={() => router.push('/rituals/craft/kitchen/simmer' as Href)} />}

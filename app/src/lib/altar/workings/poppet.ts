@@ -180,6 +180,10 @@ export function poppetItem(draft: PoppetDraft, now: string, id: string = newId()
     ingredients: draft.fillings.map(fillingIngredient),
     // Held each week while it works.
     livingState: { ...DEFAULT_LIVING, tending_interval_days: 7 },
+    // The design, so placing it again from My Apothecary sets out the same poppet (build.ts).
+    metadata: {
+      build: { kind: 'poppet', focus: draft.focus, who: draft.who.trim(), body: draft.body, fillings: draft.fillings, made: draft.made, consent: draft.focus === 'other' ? draft.consent : false, look: cleanLook(draft.look, draft.body), pins: cleanPins(draft.pins) },
+    },
     logToGrimoire: false,
     grimoireStatus: '',
     grimoireEntryId: '',
